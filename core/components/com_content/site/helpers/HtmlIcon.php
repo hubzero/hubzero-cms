@@ -48,7 +48,7 @@ class HtmlIcon
      *
      * @param   object  $article  The article in question.
      * @param   object  $params   The article parameters
-     * @param   array   $attribs  Not used??
+     * @param   array<mixed>   $attribs  Not used??
      * @return  string  The HTML for the article edit icon.
      */
     public static function email($article, $params, $attribs = [])
@@ -87,7 +87,7 @@ class HtmlIcon
      *
      * @param   object  $article  The article in question.
      * @param   object|mixed  $params   The article parameters
-     * @param   array   $attribs  Not used??
+     * @param   array<mixed>   $attribs  Not used??
      * @return  string|null  The HTML for the article edit icon.
      */
     public static function edit($article, $params, $attribs = [])
@@ -159,7 +159,7 @@ class HtmlIcon
      *
      * @param   object  $article
      * @param   object  $params
-     * @param   array   $attribs
+     * @param   array<mixed>   $attribs
      * @return  string
      */
     public static function printPopup($article, $params, $attribs = [])
@@ -190,7 +190,7 @@ class HtmlIcon
      *
      * @param   object  $article
      * @param   object  $params
-     * @param   array   $attribs
+     * @param   array<mixed>   $attribs
      * @return  string
      */
     public static function printScreen($article, $params, $attribs = [])

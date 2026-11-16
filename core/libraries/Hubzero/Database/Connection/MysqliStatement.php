@@ -23,7 +23,7 @@ class MysqliStatement
     /**
      * Pending bindings
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $bindings = [];
 
@@ -118,7 +118,7 @@ class MysqliStatement
     /**
      * Fetch array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function fetchArray()
     {
@@ -131,7 +131,7 @@ class MysqliStatement
     /**
      * Fetch assoc
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function fetchAssoc()
     {

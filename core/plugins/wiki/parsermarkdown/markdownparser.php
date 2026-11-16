@@ -19,7 +19,7 @@ class MarkdownParser
     /**
      * Token storage for stripped blocks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $tokens = [];
 
@@ -33,7 +33,7 @@ class MarkdownParser
     /**
      * Configuration options
      *
-     * @var array
+     * @var array<mixed>
      */
     private $config = [
         'option'    => null,
@@ -56,7 +56,7 @@ class MarkdownParser
     /**
      * Data store
      *
-     * @var array
+     * @var array<mixed>
      */
     private $data = [
         'input'  => null,
@@ -247,7 +247,7 @@ class MarkdownParser
     /**
      * Wrap an older math formula in $$ delimiters for MathJax to render
      *
-     * @param   array   $matches    Wiki markup matching a <math>formula</math>
+     * @param   array<mixed>   $matches    Wiki markup matching a <math>formula</math>
      * @return  string
      */
     private function stripMath($matches)
@@ -296,7 +296,7 @@ class MarkdownParser
      * Store an item in the shelf
      * Returns a unique ID as a placeholder for content retrieval later on
      *
-     * @param      array   $matches Content to store
+     * @param      array<mixed>   $matches Content to store
      * @return     string Unique ID
      */
     private function dataPush($matches)

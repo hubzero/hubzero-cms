@@ -27,7 +27,7 @@ class File extends None
     /**
      * A list of files to ignore
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $skip = [
         '.svn',
@@ -42,7 +42,7 @@ class File extends None
     /**
      * Create a new file cache store instance.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -283,7 +283,7 @@ class File extends None
     /**
      * Get all cached data
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {
@@ -403,7 +403,7 @@ class File extends None
     /**
      * Check if the given data is expired
      *
-     * @param   array    $data
+     * @param   array<mixed>    $data
      * @return  boolean
      */
     protected function isDataExpired(array $data)

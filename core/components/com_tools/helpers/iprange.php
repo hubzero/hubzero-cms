@@ -94,7 +94,7 @@ class Iprange
      *
      * @param   string  $from  Address, or network as 192.0.2.0/24 or 2001:db8::/32
      * @param   string  $to    Address, ignored when $from is a network
-     * @return  array|false  array(ipFROM, ipTO), or false when the input is
+     * @return  array<mixed>|false  array(ipFROM, ipTO), or false when the input is
      *                       not an address or network, ends before it
      *                       starts, or starts and ends in different families
      */

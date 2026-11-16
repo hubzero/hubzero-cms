@@ -30,7 +30,7 @@ class SqlParser
      * - Inline comments (-- within a line, outside strings)
      *
      * @param   string  $sql  SQL content to split
-     * @return  array   Array of individual SQL statements
+     * @return  array<int, mixed>   Array of individual SQL statements
      */
     public static function splitStatements(string $sql): array
     {
@@ -139,7 +139,7 @@ class SqlParser
      *
      * @param   string       $path    Path to the SQL file
      * @param   string|null  $prefix  Table prefix (if null, no replacement is done)
-     * @return  array|false  Array of statements, or false if file cannot be read
+     * @return  array<mixed>|false  Array of statements, or false if file cannot be read
      */
     public static function loadFile(string $path, ?string $prefix = null)
     {

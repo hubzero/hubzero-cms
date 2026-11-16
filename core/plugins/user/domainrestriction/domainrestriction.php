@@ -36,9 +36,9 @@ class Domainrestriction extends Plugin
     /**
      * Utility method to act on a user before it has been saved.
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isNew    True if a new user is stored.
-     * @param   array  $new  True if user was succesfully stored in the database.
+     * @param   array<mixed>  $new  True if user was succesfully stored in the database.
      * @return  bool
      */
     public function onUserBeforeSave($user, $isNew, $new)
@@ -127,7 +127,7 @@ class Domainrestriction extends Plugin
      *
      * This method assigns the user to access groups based on plugin settings
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -145,8 +145,8 @@ class Domainrestriction extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onUserLogin($user, $options)
@@ -235,7 +235,7 @@ class Domainrestriction extends Plugin
      * Whether an address is one of a list of single addresses
      *
      * @param   string  $ip
-     * @param   array   $addresses
+     * @param   array<mixed>   $addresses
      * @return  bool
      */
     private function inList($ip, $addresses)
@@ -315,7 +315,7 @@ class Domainrestriction extends Plugin
     /**
      * Update a user's groups
      *
-     * @param   array  $user
+     * @param   array<mixed>  $user
      * @return  bool
      */
     private function updateGroups($user)
@@ -408,7 +408,7 @@ class Domainrestriction extends Plugin
     /**
      * Get assignment key
      *
-     * @param   array  $assignments
+     * @param   array<mixed>  $assignments
      * @return  mixed
      */
     private function getAssignmentsKey($assignments)

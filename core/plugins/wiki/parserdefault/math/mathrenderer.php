@@ -26,7 +26,7 @@ class MathRenderer
     /**
      * Parameters
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $params = [];
 
@@ -97,7 +97,7 @@ class MathRenderer
      * Constructor
      *
      * @param      string $tex    LaTeX formula
-     * @param      array  $params Parameters (not used?)
+     * @param      array<mixed>  $params Parameters (not used?)
      * @return     void
      */
     public function __construct($tex, $params = [])
@@ -465,7 +465,7 @@ class MathRenderer
      * or html (simple)
      *
      * @param      string $tex    LaTeX formula
-     * @param      array  $params Parameters (not used?)
+     * @param      array<mixed>  $params Parameters (not used?)
      * @return     string
      */
     public static function renderMath($tex, $params = [])

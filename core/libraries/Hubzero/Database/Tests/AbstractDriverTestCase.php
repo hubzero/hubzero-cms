@@ -55,7 +55,7 @@ abstract class AbstractDriverTestCase extends TestCase
     /**
      * Test database configurations
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $testDatabases = [];
 
@@ -122,7 +122,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * Override this to return table names in drop order (children before parents).
      * Tables are dropped in tearDownAfterClass().
      *
-     * @return array Table names
+     * @return array<mixed> Table names
      */
     protected static function getTestTables(): array
     {
@@ -135,7 +135,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * Override this to return sequence names that should be dropped
      * in tearDownAfterClass().
      *
-     * @return array Sequence names
+     * @return array<mixed> Sequence names
      */
     protected static function getTestSequences(): array
     {
@@ -218,7 +218,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * Adding a new backend requires zero PHP changes — just update
      * the env vars in phpunit.xml.
      *
-     * @return array Database configurations keyed by backend name
+     * @return array<mixed> Database configurations keyed by backend name
      */
     protected static function loadDatabaseConfig(): array
     {
@@ -266,7 +266,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * running any tests. By only creating connections here, multiple classes
      * can safely use the same table names.
      *
-     * @return array Array of [dbName, driver] pairs
+     * @return array<mixed> Array of [dbName, driver] pairs
      */
     public static function databaseProvider(): array
     {
@@ -316,7 +316,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * getDatabaseManager() in subclasses that need custom drivers.
      *
      * @param  string $dbName Database name (config key)
-     * @param  array  $config Database configuration (must include 'driver')
+     * @param  array<mixed>  $config Database configuration (must include 'driver')
      * @return \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @throws \RuntimeException If driver is unknown or unavailable
      */
@@ -490,7 +490,7 @@ abstract class AbstractDriverTestCase extends TestCase
     /**
      * Commit any outstanding transactions across all drivers
      *
-     * @param array $drivers Array of cached drivers
+     * @param array<mixed> $drivers Array of cached drivers
      * @return void
      */
     protected static function commitPendingTransactions(array $drivers): void

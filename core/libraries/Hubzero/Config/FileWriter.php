@@ -30,7 +30,7 @@ class FileWriter
     /**
      * Formatting options for the specified format
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $options = [];
 
@@ -39,7 +39,7 @@ class FileWriter
      *
      * @param   string  $format
      * @param   string  $path
-     * @param   array   $options  Formatting options
+     * @param   array<mixed>   $options  Formatting options
      * @return  void
      */
     public function __construct($format, $path, $options = ['format' => 'array'])
@@ -52,7 +52,7 @@ class FileWriter
     /**
      * Create a new file configuration loader.
      *
-     * @param   array|object  $contents
+     * @param   array<mixed>|object  $contents
      * @param   string  $group
      * @param   string|null  $client
      * @return  boolean
@@ -101,7 +101,7 @@ class FileWriter
      *
      * @param   mixed   $contents
      * @param   string  $format
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public function toContent($contents, $format, $options = [])

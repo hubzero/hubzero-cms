@@ -24,7 +24,7 @@ class Head extends Renderer
      * Renders the document head and returns the results as a string
      *
      * @param   string  $head     (unused)
-     * @param   array   $params   Associative array of values
+     * @param   array<mixed>   $params   Associative array of values
      * @param   string|null  $content  The script
      * @return  string  The output of the script
      */

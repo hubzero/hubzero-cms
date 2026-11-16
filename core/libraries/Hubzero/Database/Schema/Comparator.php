@@ -54,7 +54,7 @@ class Comparator
      *
      * Maps various type names to canonical forms for comparison.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeAliases = [
         'integer' => 'int',
@@ -71,7 +71,7 @@ class Comparator
     /**
      * Integer types (display width should be ignored for comparison)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $integerTypes = [
         'tinyint',
@@ -84,14 +84,14 @@ class Comparator
     /**
      * Table rename hints: old_name => new_name
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $tableRenameHints = [];
 
     /**
      * Column rename hints: table_name => [old_col => new_col, ...]
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $columnRenameHints = [];
 
@@ -132,7 +132,7 @@ class Comparator
     /**
      * Add multiple table rename hints at once
      *
-     * @param  array  $hints  [old_name => new_name, ...]
+     * @param  array<mixed>  $hints  [old_name => new_name, ...]
      * @return $this
      */
     public function addTableRenameHints(array $hints): self
@@ -167,7 +167,7 @@ class Comparator
      * Add multiple column rename hints for a table
      *
      * @param  string  $tableName  Table name
-     * @param  array   $hints      [old_col => new_col, ...]
+     * @param  array<mixed>   $hints      [old_col => new_col, ...]
      * @return $this
      */
     public function addColumnRenameHints(string $tableName, array $hints): self
@@ -212,7 +212,7 @@ class Comparator
     /**
      * Get table rename hints
      *
-     * @return array  [old_name => new_name, ...]
+     * @return array<mixed>  [old_name => new_name, ...]
      */
     public function getTableRenameHints(): array
     {
@@ -223,7 +223,7 @@ class Comparator
      * Get column rename hints for a specific table
      *
      * @param  string  $tableName
-     * @return array  [old_col => new_col, ...]
+     * @return array<mixed>  [old_col => new_col, ...]
      */
     public function getColumnRenameHints(string $tableName): array
     {
@@ -398,9 +398,9 @@ class Comparator
      *
      * Compares table structures to find likely renames based on column similarity.
      *
-     * @param  array  $fromTables  Unmatched tables from source [name => TableInfo]
-     * @param  array  $toTables    Unmatched tables from target [name => TableInfo]
-     * @return array  [old_name => new_name, ...]
+     * @param  array<mixed>  $fromTables  Unmatched tables from source [name => TableInfo]
+     * @param  array<mixed>  $toTables    Unmatched tables from target [name => TableInfo]
+     * @return array<mixed>  [old_name => new_name, ...]
      */
     protected function detectTableRenames(array $fromTables, array $toTables): array
     {
@@ -583,9 +583,9 @@ class Comparator
      *
      * Compares column definitions to find likely renames based on type similarity.
      *
-     * @param  array  $fromColumns  Unmatched columns from source [name => ColumnInfo]
-     * @param  array  $toColumns    Unmatched columns from target [name => ColumnInfo]
-     * @return array  [old_name => new_name, ...]
+     * @param  array<mixed>  $fromColumns  Unmatched columns from source [name => ColumnInfo]
+     * @param  array<mixed>  $toColumns    Unmatched columns from target [name => ColumnInfo]
+     * @return array<mixed>  [old_name => new_name, ...]
      */
     protected function detectColumnRenames(array $fromColumns, array $toColumns): array
     {
@@ -828,7 +828,7 @@ class Comparator
      * Find an index with equivalent columns (regardless of name)
      *
      * @param  IndexInfo  $needle
-     * @param  array      $haystack  IndexInfo[] indexed by name
+     * @param  array<mixed>      $haystack  IndexInfo[] indexed by name
      * @return IndexInfo|null
      */
     protected function findEquivalentIndex(IndexInfo $needle, array $haystack): ?IndexInfo
@@ -932,7 +932,7 @@ class Comparator
      * Find a foreign key with equivalent definition (regardless of name)
      *
      * @param  ForeignKeyInfo  $needle
-     * @param  array           $haystack  ForeignKeyInfo[] indexed by name
+     * @param  array<mixed>           $haystack  ForeignKeyInfo[] indexed by name
      * @return ForeignKeyInfo|null
      */
     protected function findEquivalentForeignKey(ForeignKeyInfo $needle, array $haystack): ?ForeignKeyInfo
@@ -1110,8 +1110,8 @@ class Comparator
     /**
      * Index an array of objects by their getName() method
      *
-     * @param  array  $items  Objects with getName() method
-     * @return array  Indexed by name
+     * @param  array<mixed>  $items  Objects with getName() method
+     * @return array<mixed>  Indexed by name
      */
     protected function indexByName(array $items): array
     {

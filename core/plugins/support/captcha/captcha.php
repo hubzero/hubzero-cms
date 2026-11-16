@@ -44,7 +44,7 @@ class Captcha extends Plugin
 
     /**
      * Pseudo-randomized sequences for lists
-     * @var array
+     * @var array<mixed>
      */
     private $sequence = [
         [0, 2, 4, 1, 3],
@@ -61,7 +61,7 @@ class Captcha extends Plugin
 
     /**
      * Text-based CAPTCHA questions
-     * @var array
+     * @var array<mixed>
      */
     private $questions = [
         [
@@ -177,7 +177,7 @@ class Captcha extends Plugin
      * Constructor
      *
      * @param      object &$subject Event observer
-     * @param      array  $config   Optional config values
+     * @param      array<mixed>  $config   Optional config values
      * @return     void
      */
     public function __construct(&$subject, $config)
@@ -755,7 +755,7 @@ class Captcha extends Plugin
      * Converts HEX color to RGB
      *
      * @param   string  $hex  Hex value to convert
-     * @return  array
+     * @return  array<mixed>
      */
     private function hexToRgb($hex)
     {

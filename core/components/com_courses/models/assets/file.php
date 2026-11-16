@@ -27,7 +27,7 @@ class File extends Handler
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected static $info = [
         'action_message' => 'Post notes or slides (i.e. a downloadable file)',
@@ -71,7 +71,7 @@ class File extends Handler
     /**
      * Create method for this handler
      *
-     * @return  array  of assets created
+     * @return  array<string, mixed>  of assets created
      **/
     public function create($localPath = null)
     {

@@ -25,7 +25,7 @@ class PaymentProvider
     /**
      * List of button vars
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $buttonVars;
 
@@ -76,7 +76,7 @@ class PaymentProvider
     /**
      * Set post back info ($_POST)
      *
-     * @param   array  $postMessage
+     * @param   array<mixed>  $postMessage
      * @return  string    associated transaction ID if $_POST data is valid, false otherwise
      */
     public function setPostBack($postMessage)

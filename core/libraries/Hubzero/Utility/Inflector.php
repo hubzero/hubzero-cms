@@ -16,7 +16,7 @@ class Inflector
     /**
      * Words that should not be inflected.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $uncountable_words = [
         'equipment',
@@ -44,7 +44,7 @@ class Inflector
      * the Database package free of external dependencies. Changes here should
      * be kept in sync with Relational::$pluralRules.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $plural_rules = [
         '/^(ox)$/i'                 => '\1\2en',     // ox
@@ -71,7 +71,7 @@ class Inflector
     /**
      * Singular inflector rules.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $singular_rules = [
         '/(virus)es$/i'          => '\1',

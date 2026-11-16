@@ -56,7 +56,7 @@ class Job extends Table
      * @param   integer  $current  Get current?
      * @param   integer  $admin    Admin access?
      * @param   integer  $active   Active openings?
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getMyOpenings($uid = null, $current = 0, $admin = 0, $active = 0)
     {
@@ -112,11 +112,11 @@ class Job extends Table
     /**
      * Get job openings
      *
-     * @param   array    $filters       Filters to build query from
+     * @param   array<mixed>    $filters       Filters to build query from
      * @param   integer  $uid           User ID
      * @param   integer  $admin         Admin access?
      * @param   string   $subscription  Subscription code
-     * @return  array|string|null
+     * @return  array<int, \stdClass>|string|null
      */
     public function getOpenings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
     {

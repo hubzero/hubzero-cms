@@ -21,7 +21,7 @@ class Migration20260810000000PlgCronGroups extends Base
     /**
      * event => (title, recurrence)
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected static $jobs = [
         'expireGroupMemberships' => [

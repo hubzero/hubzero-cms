@@ -40,7 +40,7 @@ class Economy extends Obj
     /**
      * Get all contributors of all resources
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getCons()
     {

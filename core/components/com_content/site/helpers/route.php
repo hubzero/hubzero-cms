@@ -21,14 +21,14 @@ abstract class Route
     /**
      * Lookup
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $lookup;
 
     /**
      * Language Lookup
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $lang_lookup = [];
 
@@ -155,7 +155,7 @@ abstract class Route
     /**
      * Find an item in a haystack
      *
-     * @param   array|null  $needles
+     * @param   array<mixed>|null  $needles
      * @return  mixed
      */
     protected static function findItem($needles = null)

@@ -62,7 +62,7 @@ class Respondent extends Table
     /**
      * Get racial information for a user
      *
-     * @param    integer|array  $resp_id
+     * @param    integer|array<mixed>  $resp_id
      * @return   mixed
      */
     public static function getRacialIdentification($resp_id)
@@ -121,7 +121,7 @@ class Respondent extends Table
     /**
      * Constructor
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  void
      * @throws  Exception
      */
@@ -201,7 +201,7 @@ class Respondent extends Table
     /**
      * Get a list of records
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getRecords()
     {

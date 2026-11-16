@@ -34,8 +34,8 @@ class Legacy implements RouterInterface
     /**
      * Generic preprocess function for missing or legacy component router
      *
-     * @param   array  $query  An associative array of URL arguments
-     * @return  array  The URL arguments to use to assemble the subsequent URL.
+     * @param   array<mixed>  $query  An associative array of URL arguments
+     * @return  array<mixed>  The URL arguments to use to assemble the subsequent URL.
      */
     public function preprocess($query)
     {
@@ -45,8 +45,8 @@ class Legacy implements RouterInterface
     /**
      * Generic build function for missing or legacy component router
      *
-     * @param   array  &$query  An array of URL arguments
-     * @return  array  The URL arguments to use to assemble the subsequent URL.
+     * @param   array<mixed>  &$query  An array of URL arguments
+     * @return  array<mixed>  The URL arguments to use to assemble the subsequent URL.
      */
     public function build(&$query)
     {
@@ -62,8 +62,8 @@ class Legacy implements RouterInterface
     /**
      * Generic parse function for missing or legacy component router
      *
-     * @param   array  &$segments  The segments of the URL to parse.
-     * @return  array  The URL attributes to be used by the application.
+     * @param   array<mixed>  &$segments  The segments of the URL to parse.
+     * @return  array<mixed>  The URL attributes to be used by the application.
      */
     public function parse(&$segments)
     {

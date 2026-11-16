@@ -139,7 +139,7 @@ class Forum extends Plugin
      *
      * @param  array|mixed  $groups   the group ids to look up
      * @param  string $interval the length of time to go back to look for posts
-     * @return array
+     * @return array<mixed>
      **/
     private function getPosts($groups, $interval = 'day')
     {
@@ -169,7 +169,7 @@ class Forum extends Plugin
      * Handles the actual sending of emails (or queuing them to be sent)
      *
      * @param  int    $user     the user id to send to
-     * @param  array  $posts    the posts to include in the email
+     * @param  array<mixed>  $posts    the posts to include in the email
      * @param  string $interval the distribution interval
      * @return void
      **/

@@ -184,7 +184,7 @@ class Flavor extends Base implements CommandInterface
      * Say what a flavor names that the hub does not have - not a difference,
      * but a mistyped path looks exactly like this
      *
-     * @param   array  $notes
+     * @param   array<mixed>  $notes
      * @return  void
      */
     protected function notes(array $notes)
@@ -250,7 +250,7 @@ class Flavor extends Base implements CommandInterface
      * Every flavor, or a plain error if the files do not read
      *
      * @param   Finder  $finder
-     * @return  array
+     * @return  array<mixed>
      */
     protected function flavors(Finder $finder)
     {

@@ -81,7 +81,7 @@ class Watch extends Relational
     /**
      * Generates automatic email field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticEmail($data)
@@ -96,7 +96,7 @@ class Watch extends Relational
     /**
      * Generates automatic email field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticItemType($data)

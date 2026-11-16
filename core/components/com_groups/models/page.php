@@ -81,7 +81,7 @@ class Page extends Model
     /**
      * Get Page Versions
      *
-     * @param   array   $opt
+     * @param   array<mixed>   $opt
      * @return  object  \Hubzero\Base\ItemList
      */
     public function versions($opt = [])

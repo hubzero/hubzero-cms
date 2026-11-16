@@ -82,7 +82,7 @@ class DatabaseInfo
     /**
      * Create a new DatabaseInfo instance
      *
-     * @param array $data Database data from introspection
+     * @param array<mixed> $data Database data from introspection
      */
     public function __construct(array $data = [])
     {
@@ -146,7 +146,7 @@ class DatabaseInfo
     /**
      * Get all table names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getTableNames(): array
     {
@@ -230,7 +230,7 @@ class DatabaseInfo
      * Returns an array of all foreign keys across all tables,
      * useful for understanding the database relationship graph.
      *
-     * @return array  Array of ['table' => TableInfo, 'foreign_key' => ForeignKeyInfo]
+     * @return array<int, mixed>  Array of ['table' => TableInfo, 'foreign_key' => ForeignKeyInfo]
      */
     public function getAllForeignKeys(): array
     {
@@ -320,7 +320,7 @@ class DatabaseInfo
      * - Used for schema comparison
      * - Reconstructed into a DatabaseInfo object
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {
@@ -337,7 +337,7 @@ class DatabaseInfo
     /**
      * Create a DatabaseInfo instance from an array
      *
-     * @param  array  $data
+     * @param  array<mixed>  $data
      * @return self
      */
     public static function fromArray(array $data): self

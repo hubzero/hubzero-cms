@@ -82,14 +82,14 @@ class Uri
     /**
      * Query variable hash
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $vars = [];
 
     /**
      * An array of URI instances.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
@@ -253,7 +253,7 @@ class Uri
     /**
      * Returns full uri string.
      *
-     * @param   array   $parts  An array specifying the parts to render.
+     * @param   array<mixed>   $parts  An array specifying the parts to render.
      * @return  string  The rendered URI string.
      */
     public function toString($parts = ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'])
@@ -371,7 +371,7 @@ class Uri
      * Returns flat query string.
      *
      * @param   boolean  $toArray  True to return the query as a key => value pair array.
-     * @return  string|array   Query string.
+     * @return  string|array<mixed>   Query string.
      */
     public function getQuery($toArray = false)
     {

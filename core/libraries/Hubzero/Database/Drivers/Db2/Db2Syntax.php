@@ -36,7 +36,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Maps DB2-specific types to generic type names
      * that match what other drivers return.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeMappings = [
         // Integer types
@@ -108,9 +108,9 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the column query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -415,7 +415,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * DB2 uses TRUNCATE TABLE with IMMEDIATE option
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {

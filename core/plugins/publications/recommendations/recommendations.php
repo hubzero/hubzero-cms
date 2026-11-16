@@ -28,7 +28,7 @@ class Recommendations extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   integer  $miniview     View style
-     * @return  array
+     * @return  array<mixed>
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {

@@ -39,7 +39,7 @@ class Auth extends Relational
     /**
      * Generates automatic owned logged date/time
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  string
      **/
     public function automaticLogged($data)
@@ -50,7 +50,7 @@ class Auth extends Relational
     /**
      * Generates automatic source ip
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  string
      **/
     public function automaticIp($data)

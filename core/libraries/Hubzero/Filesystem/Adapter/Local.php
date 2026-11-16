@@ -95,7 +95,7 @@ class Local implements AdapterInterface
     /**
      * Delete a file
      *
-     * @param   string|array  $path  A path, or a list of them
+     * @param   string|array<mixed>  $path  A path, or a list of them
      * @return  bool  False if any could not be deleted
      */
     public function delete($path)
@@ -414,7 +414,7 @@ class Local implements AdapterInterface
      * Normalize the file info.
      *
      * @param   \SplFileInfo $file  SplFileInfo
-     * @return  array
+     * @return  array<mixed>
      */
     protected function normalizeFileInfo(SplFileInfo $file, $base = null)
     {

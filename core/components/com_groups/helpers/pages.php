@@ -232,7 +232,7 @@ class Pages
     /**
      * Get page approvers
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getPageApprovers()
     {
@@ -244,7 +244,7 @@ class Pages
      * Get page approvers Emails and names
      * (used for emailing purposes)
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getPageApproversEmail()
     {

@@ -81,7 +81,7 @@ class Entity extends Obj
      * instantiate an entity and not even worry about whether its a dir
      * or file at the time of creation.
      *
-     * @param   array   $properties  The properties to use to build a new entity from
+     * @param   array<mixed>   $properties  The properties to use to build a new entity from
      * @param   object|null  $adapter     The filesystem adapter to use for interaction with the entity
      * @return  object
      **/
@@ -93,7 +93,7 @@ class Entity extends Obj
     /**
      * Gets the most specialized object for a given entity type
      *
-     * @param   array   $properties  The properties to use to build a new entity from
+     * @param   array<mixed>   $properties  The properties to use to build a new entity from
      * @param   object  $adapter     The filesystem adapter to use for interaction with the entity
      * @return  \Hubzero\Filesystem\Directory|object|\Hubzero\Filesystem\File
      **/
@@ -130,7 +130,7 @@ class Entity extends Obj
      * unnamed functions to their get* equivalent.
      *
      * @param   string  $name       The function name being called
-     * @param   array   $arguments  The arguments to be passed to the function
+     * @param   array<mixed>   $arguments  The arguments to be passed to the function
      * @return  mixed
      **/
     public function __call($name, $arguments)

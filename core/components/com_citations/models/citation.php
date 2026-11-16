@@ -149,7 +149,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Returns results based on filters applied.
      *
-     * @param   array    $filters  the string contaning the various applied filters.
+     * @param   array<mixed>    $filters  the string contaning the various applied filters.
      * @param   boolean  $admin
      * @return  object   Citation
      */
@@ -321,7 +321,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      *                         for multiple columns.
      * @param   int    $depth  value indicating if the produced query string should be nested in parenthesis with other
      *                         querys of the same depth.
-     * @param   array  $searchableFields
+     * @param   array<mixed>  $searchableFields
      * @return  $this
      */
     public function filterBySearch(
@@ -347,7 +347,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Applies filters based on reference type included in the applied filters.
      *
-     * @param   array  $filters  contains all the values included for filtering the results returned
+     * @param   array<mixed>  $filters  contains all the values included for filtering the results returned
      * @return  $this
      */
     public function filterByReftype($filters)
@@ -458,8 +458,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Sorts resulted citations sorted by year and then separated by affiliated/non-affilated.
      *
-     * @param array $filters contains all the values included for filtering the results returned
-     * @return array object
+     * @param array<mixed> $filters contains all the values included for filtering the results returned
+     * @return array<mixed> object
      */
     public static function getYearlyStats($filters = [])
     {
@@ -687,7 +687,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Update tags
      *
-     * @param   string|array   $tags
+     * @param   string|array<mixed>   $tags
      * @param   string   $label
      * @param   integer  $strength
      * @return  void
@@ -765,7 +765,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Format a citation
      *
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @param   string|null  $highlight
      * @return  string
      */
@@ -1195,7 +1195,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Citation links and badges
      *
-     * @param   array   $openurl   Data to append
+     * @param   array<mixed>   $openurl   Data to append
      * @return  string
      */
     public function citationDetails($openurl = [])
@@ -1355,7 +1355,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Output a citation's OpenURL
      *
-     * @param   array   $openurl   OpenURL data
+     * @param   array<mixed>   $openurl   OpenURL data
      * @param   object  $citation  Citation
      * @return  string  HTML
      */

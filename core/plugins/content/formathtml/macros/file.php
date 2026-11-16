@@ -36,7 +36,7 @@ class File extends Macro
     /**
      * Container for element attributes
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $attr = [];
 
@@ -210,7 +210,7 @@ class File extends Macro
      * Parse attribute=value pairs
      * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
      *
-     * @param   array $matches Values matching attr=val pairs
+     * @param   array<mixed> $matches Values matching attr=val pairs
      * @return  string  Empty: the match is removed
      */
     public function parseAttributeValuePair($matches)
@@ -335,7 +335,7 @@ class File extends Macro
      * Handle single attribute values
      * EX: [[Image(myimage.png, nolink, right)]]
      *
-     * @param   array $matches Values matching the single attribute pattern
+     * @param   array<mixed> $matches Values matching the single attribute pattern
      * @return  string  Empty: the match is removed
      */
     public function parseSingleAttribute($matches)
@@ -473,7 +473,7 @@ class File extends Macro
      * Generates HTML to either embed a file or link to file for download
      *
      * @param   string $file File to embed
-     * @param   array  $attr Attributes to apply to the HTML
+     * @param   array<mixed>  $attr Attributes to apply to the HTML
      * @return  string
      */
     private function embed($file, $attr = [])

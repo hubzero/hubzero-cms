@@ -70,7 +70,7 @@ class Authorization
     /**
      * Get a user's groups
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroups()
     {
@@ -99,7 +99,7 @@ class Authorization
     /**
      * Get group IDs
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroupIds()
     {
@@ -109,7 +109,7 @@ class Authorization
     /**
      * Get group names
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroupNames()
     {

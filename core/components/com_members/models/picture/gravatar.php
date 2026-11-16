@@ -32,7 +32,7 @@ class Gravatar
     /**
      * Config values
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $config = [
         'secure'         => false,
@@ -46,7 +46,7 @@ class Gravatar
     /**
      * Constructor
      *
-     * @param   array  $config
+     * @param   array<mixed>  $config
      * @return  void
      */
     public function __construct($config = [])
@@ -170,7 +170,7 @@ class Gravatar
     /**
      * Get size parameter
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function sizeParameter()
     {
@@ -184,7 +184,7 @@ class Gravatar
     /**
      * Get fallback image URL
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function fallbackParameter()
     {

@@ -20,7 +20,7 @@ class RoleOrder
     /**
      * Months, by the name or abbreviation a role might use
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $months = [
         'jan' => 1,
@@ -41,7 +41,7 @@ class RoleOrder
     /**
      * Seasons, as the month they start
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $seasons = [
         'spring' => 3,
@@ -134,8 +134,8 @@ class RoleOrder
     /**
      * Put roles in the default order
      *
-     * @param   array  $roles  Rows with 'id' and 'name' keys
-     * @return  array  The same rows, ordered
+     * @param   array<mixed>  $roles  Rows with 'id' and 'name' keys
+     * @return  array<mixed>  The same rows, ordered
      */
     public static function sort(array $roles)
     {

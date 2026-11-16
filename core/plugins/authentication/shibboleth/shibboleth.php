@@ -26,7 +26,7 @@ class Shibboleth extends Plugin
      * Logs data to the shibboleth debug log
      *
      * @param   string         $msg   the message to log
-     * @param   string|array|object  $data  additional data to log
+     * @param   string|array<mixed>|object  $data  additional data to log
      * @return  void
      **/
     private static function log($msg, $data = '')
@@ -122,7 +122,7 @@ class Shibboleth extends Plugin
      * the timeout to prevent load issues.
      *
      * @param   string        $ip       the ip address to look up
-     * @param   string|array  $dns      the dns server to use
+     * @param   string|array<mixed>  $dns      the dns server to use
      * @param   int           $timeout  the timeout after which requests should expire
      * @return  string
      **/
@@ -208,7 +208,7 @@ class Shibboleth extends Plugin
     /**
      * Summary (if any) ...
      *
-     * @return  array  Array of service, user, and task
+     * @return  array<int, mixed>  Array of service, user, and task
      */
     private static function getLoginParams()
     {
@@ -375,7 +375,7 @@ class Shibboleth extends Plugin
      * Actions to perform when logging in a user session
      *
      * @param   mixed &$credentials Parameter description (if any) ...
-     * @param   array &$options Parameter description (if any) ...
+     * @param   array<mixed> &$options Parameter description (if any) ...
      * @return  void
      */
     public function login(&$credentials, &$options)
@@ -581,8 +581,8 @@ class Shibboleth extends Plugin
      * This method should handle any authentication and report back to the subject
      *
      * @access  public
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -596,8 +596,8 @@ class Shibboleth extends Plugin
      * This method should handle any authentication and report back to the subject
      *
      * @access  public
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      * @since   1.5
      *
@@ -708,7 +708,7 @@ class Shibboleth extends Plugin
 
     /**
      * @access  public
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function link($options = [])

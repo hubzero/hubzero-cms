@@ -18,7 +18,7 @@ class Migration20190228114147ComCourses extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__courses_asset_views' => [

@@ -349,7 +349,7 @@ class Resources extends Plugin
      * Handles the actual sending of emails
      *
      * @param   int     $user      the user id to send to
-     * @param   array|\Hubzero\Database\Rows   $posts     the posts to include in the email
+     * @param   array<mixed>|\Hubzero\Database\Rows   $posts     the posts to include in the email
      * @param   object  $params    the cron job params
      * @return  bool
      **/

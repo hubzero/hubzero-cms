@@ -111,7 +111,7 @@ class SessionClass extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  Database query
      */
     protected function buildQuery($filters = [])
@@ -139,8 +139,8 @@ class SessionClass extends Table
      * Get a count of, single entry, or list of entries
      *
      * @param   string   $what     Data to return
-     * @param   array    $filters  Filters to apply to data retrieval
-     * @param   array    $select   List of fields to select
+     * @param   array<mixed>    $filters  Filters to apply to data retrieval
+     * @param   array<mixed>    $select   List of fields to select
      * @return  mixed
      */
     public function find($what = '', $filters = [], $select = [])
@@ -215,8 +215,8 @@ class SessionClass extends Table
     /**
      * Get the an object list of quotas classes
      *
-     * @param   array|null  $id  Start and limit, needed for pagination
-     * @return  array  Return password rule records
+     * @param   array<mixed>|null  $id  Start and limit, needed for pagination
+     * @return  array<int, mixed>  Return password rule records
      */
     public function getGroupIds($id = null)
     {
@@ -240,7 +240,7 @@ class SessionClass extends Table
      * Get the an object list of quotas classes
      *
      * @param   array|mixed  $groups  Start and limit, needed for pagination
-     * @return  array|bool  Return password rule records
+     * @return  array<mixed>|bool  Return password rule records
      */
     public function setGroupIds($groups = [])
     {

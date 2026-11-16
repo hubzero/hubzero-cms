@@ -16,7 +16,7 @@ interface MessageStore
     /**
      * Store a message
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @param   string  $domain
      * @return  void
      */
@@ -26,7 +26,7 @@ interface MessageStore
      * Return a list of messages
      *
      * @param   string  $domain
-     * @return  array
+     * @return  array<mixed>
      */
     public function retrieve($domain);
 

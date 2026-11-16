@@ -24,7 +24,7 @@ class Sliders
      * Creates a panes and loads the javascript behavior for it.
      *
      * @param   string  $group   The pane identifier.
-     * @param   array   $params  An array of options.
+     * @param   array<mixed>   $params  An array of options.
      * @return  string
      */
     public static function start($group = 'sliders', $params = [])
@@ -81,7 +81,7 @@ class Sliders
      * Load the JavaScript behavior.
      *
      * @param   string  $group   The pane identifier.
-     * @param   array   $params  Array of options.
+     * @param   array<mixed>   $params  Array of options.
      * @return  void
      */
     protected static function behavior($group, $params = [])

@@ -27,7 +27,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
     /**
      * Return table names created by this test for automatic cleanup
      *
-     * @return array
+     * @return array<mixed>
      */
     protected static function getTestTables(): array
     {

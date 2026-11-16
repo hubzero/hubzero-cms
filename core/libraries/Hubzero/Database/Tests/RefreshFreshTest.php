@@ -26,7 +26,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Return table names for automatic cleanup (children before parents)
      *
-     * @return array
+     * @return array<int, mixed>
      */
     protected static function getTestTables(): array
     {

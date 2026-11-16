@@ -31,7 +31,7 @@ class Field extends Relational
     /**
      * Field values for a group
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $groupAnswers;
 
@@ -91,7 +91,7 @@ class Field extends Relational
     /**
      * Generates automatic option_other field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticOptionOther($data)
@@ -106,7 +106,7 @@ class Field extends Relational
     /**
      * Generates automatic option_blank field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticOptionBlank($data)
@@ -121,7 +121,7 @@ class Field extends Relational
     /**
      * Generates automatic required field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticRequired($data)
@@ -136,7 +136,7 @@ class Field extends Relational
     /**
      * Generates automatic readonly field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticReadonly($data)
@@ -151,7 +151,7 @@ class Field extends Relational
     /**
      * Generates automatic disabled field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticDisabled($data)
@@ -166,7 +166,7 @@ class Field extends Relational
     /**
      * Generates automatic multiple field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticMultiple($data)
@@ -181,7 +181,7 @@ class Field extends Relational
     /**
      * Generates automatic parent_option field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticParentOption($data)
@@ -196,7 +196,7 @@ class Field extends Relational
     /**
      * Generates automatic name field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticName($data)
@@ -211,7 +211,7 @@ class Field extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -222,7 +222,7 @@ class Field extends Relational
     /**
      * Generates automatic modified by field value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -397,7 +397,7 @@ class Field extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -516,7 +516,7 @@ class Field extends Relational
      * during validation when not chosen
      *
      * @param   mixed   $fields  Iterable object or array
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  mixed
      */
     public static function resolveDependencies($fields, $data = [])
@@ -579,7 +579,7 @@ class Field extends Relational
      * Helper method to convert list of fields and field options to XML
      *
      * @param   mixed   $fields  Iterable object or array
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public static function toXml($fields, $data = [])

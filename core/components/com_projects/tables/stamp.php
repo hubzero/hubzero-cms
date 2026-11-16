@@ -64,7 +64,7 @@ class Stamp extends Table
      *
      * @param   integer  $projectid  Project ID
      * @param   string   $type
-     * @return  array|false|null   array
+     * @return  array<mixed>|false|null   array
      */
     public function getPubList($projectid = 0, $type = '')
     {

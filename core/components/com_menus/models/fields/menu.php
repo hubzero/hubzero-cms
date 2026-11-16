@@ -32,7 +32,7 @@ class Menu extends Select
      * Leaving them out of the list is what makes "never displayed" true rather
      * than merely intended.
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

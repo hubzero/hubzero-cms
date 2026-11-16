@@ -47,7 +47,7 @@ final class WrappedListener
      * Load the given listener group.
      *
      * @param   string  $method
-     * @param   array   $arguments
+     * @param   array<mixed>   $arguments
      * @return  mixed
      */
     public function __call($method, $arguments)

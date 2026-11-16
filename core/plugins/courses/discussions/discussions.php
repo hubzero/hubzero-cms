@@ -80,7 +80,7 @@ class Discussions extends Plugin
     protected $lecture = null;
 
     /**
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $instructors = null;
 
@@ -98,7 +98,7 @@ class Discussions extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onCourseAreas()
     {
@@ -115,7 +115,7 @@ class Discussions extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onSectionEdit()
     {
@@ -125,7 +125,7 @@ class Discussions extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onAssetgroupEdit()
     {
@@ -819,7 +819,7 @@ class Discussions extends Plugin
      * Get an entire thread
      *
      * @param   object  $post
-     * @param   array   $filters  Filters to apply
+     * @param   array<mixed>   $filters  Filters to apply
      * @return  object
      */
     protected function thread($post, $filters = [])
@@ -897,7 +897,7 @@ class Discussions extends Plugin
      * Get a filtered list of threads
      *
      * @param   object  $post     \Components\Forum\Models\Post
-     * @param   array   $filters  Filters to apply
+     * @param   array<mixed>   $filters  Filters to apply
      * @return  object
      */
     protected function threadsSearch($post, $filters = [])
@@ -961,7 +961,7 @@ class Discussions extends Plugin
      * Get a filtered list of threads
      *
      * @param   object  $post     \Components\Forum\Models\Post
-     * @param   array   $filters  Filters to apply
+     * @param   array<mixed>   $filters  Filters to apply
      * @return  object
      */
     protected function postThreads($post, $filters = [])
@@ -1035,8 +1035,8 @@ class Discussions extends Plugin
      * Get a filtered list of posts for a thread
      *
      * @param   object  $post     \Components\Forum\Models\Post
-     * @param   array   $filters  Filters to apply
-     * @return  object|array
+     * @param   array<mixed>   $filters  Filters to apply
+     * @return  object|array<mixed>
      */
     protected function posts($post, $filters = [])
     {
@@ -1111,8 +1111,8 @@ class Discussions extends Plugin
     /**
      * Recursive function to build tree
      *
-     * @param   array    $children  Container for parent/children mapping
-     * @param   array    $list      List of records
+     * @param   array<mixed>    $children  Container for parent/children mapping
+     * @param   array<mixed>    $list      List of records
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      */
@@ -2258,8 +2258,8 @@ class Discussions extends Plugin
      *
      * @param   integer  $id        Parent ID
      * @param   string   $indent    Indent text
-     * @param   array    $list      List of records
-     * @param   array    $children  Container for parent/children mapping
+     * @param   array<mixed>    $list      List of records
+     * @param   array<mixed>    $children  Container for parent/children mapping
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type

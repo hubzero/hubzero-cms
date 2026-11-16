@@ -52,8 +52,8 @@ class PageCategory extends Table
     /**
      * Find all records matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -67,8 +67,8 @@ class PageCategory extends Table
     /**
      * Get count of records matching filters
      *
-     * @param   array  $filters
-     * @return  array|null
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>|null
      */
     public function count($filters = [])
     {
@@ -82,7 +82,7 @@ class PageCategory extends Table
     /**
      * Build query string for getting list or count of records
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])
@@ -113,7 +113,7 @@ class PageCategory extends Table
      * Get categories for a group
      *
      * @param   object|mixed  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public function getCategories($group)
     {

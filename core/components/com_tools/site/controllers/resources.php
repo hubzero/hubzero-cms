@@ -329,7 +329,7 @@ class Resources extends SiteController
      * Update the associated resource page for this tool
      *
      * @param   integer|null  $rid        Resource ID
-     * @param   array    $status     Fields to update
+     * @param   array<mixed>    $status     Fields to update
      * @param   int|string  $published  Published state
      * @param   integer  $newtool    Updating for a new tool?
      * @return  boolean  True if no errors
@@ -371,7 +371,7 @@ class Resources extends SiteController
      * Generate a resource page from tool data
      *
      * @param   integer  $toolid  Tool ID
-     * @param   array    $tool    Tool info to generate resource from
+     * @param   array<mixed>    $tool    Tool info to generate resource from
      * @return  mixed    False if error, integer if success
      */
     public function createPage($toolid, $tool)
@@ -541,8 +541,8 @@ class Resources extends SiteController
     /**
      * Push a user's groups' alias to an array for easier searching
      *
-     * @param   array  $groups  User's groups
-     * @return  array
+     * @param   array<mixed>  $groups  User's groups
+     * @return  array<int, mixed>
      */
     private function getUsersGroups($groups)
     {

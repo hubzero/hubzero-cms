@@ -40,7 +40,7 @@ class Section extends Base
     /**
      * List of members
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $members = null;
 
@@ -315,7 +315,7 @@ class Section extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -382,7 +382,7 @@ class Section extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
@@ -620,7 +620,7 @@ class Section extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
@@ -672,7 +672,7 @@ class Section extends Base
      * Generate coupon codes
      *
      * @param     integer $num Number of codes to generate
-     * @return    array
+     * @return    array<int, mixed>
      */
     public function generateCodes($num = 1)
     {

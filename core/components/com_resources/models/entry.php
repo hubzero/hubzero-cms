@@ -192,7 +192,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic alias field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -227,7 +227,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic fulltxt field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticFulltxt($data)
@@ -245,7 +245,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * attachment link adder and uploader, child resources) never set it, so
      * a strict-mode database refused the insert
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticFootertext($data)
@@ -256,7 +256,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic introtext field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticIntrotext($data)
@@ -322,7 +322,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get all the groups allowed to access a resource
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function transformGroups()
     {
@@ -351,7 +351,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get all the users allowed to access a resource
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function transformUsers()
     {
@@ -455,7 +455,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Get a list of contributors on this resource by role
      *
      * @param   mixed  $idx  Index value
-     * @return  array
+     * @return  array<mixed>
      */
     public function contributors($idx = null)
     {
@@ -918,7 +918,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform description
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function fields()
     {
@@ -1511,7 +1511,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Build a query based on commonly used filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function allWithFilters($filters = [])
@@ -1694,7 +1694,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get the groups allowed to access a resource
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroups()
     {

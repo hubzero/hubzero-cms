@@ -28,7 +28,7 @@ class Github extends Plugin
      * been stored (for private repos). Establishing that token is an explicit,
      * manager-initiated step -- see authorize().
      *
-     * @param   array   $params  Any connection params needed
+     * @param   array<mixed>   $params  Any connection params needed
      * @return  object
      **/
     public static function init($params = [])
@@ -47,7 +47,7 @@ class Github extends Plugin
      * triggered implicitly by browsing. Public repositories never reach this
      * path -- they are read anonymously by init().
      *
-     * @param   array  $params  The stored connection params
+     * @param   array<mixed>  $params  The stored connection params
      * @return  void
      **/
     public static function authorize($params = [])

@@ -207,7 +207,7 @@ class WriteTrimmingTest extends TestCase
     /**
      * Title and body of the most recent note
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function row()
     {
@@ -215,7 +215,7 @@ class WriteTrimmingTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     private function titles()
     {
@@ -224,7 +224,7 @@ class WriteTrimmingTest extends TestCase
 
     /**
      * @param   string  $sql
-     * @return  array
+     * @return  array<mixed>
      */
     private function column($sql)
     {

@@ -19,7 +19,7 @@ class ResourceChildSorter
     /**
      * Description for 'order'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $order;
 

@@ -110,7 +110,7 @@ class Template extends Relational
     /**
      * Generates automatic element field value
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticElement($data)
@@ -213,7 +213,7 @@ class Template extends Relational
     /**
      * Method to get a list of all the files to edit in a template.
      *
-     * @return  array  A nested array of relevant files.
+     * @return  array<mixed>  A nested array of relevant files.
      */
     public function files()
     {

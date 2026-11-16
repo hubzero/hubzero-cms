@@ -68,7 +68,7 @@ class Download
      * Get a count or list of downloads
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public static function getDownloads($rtrn = 'list', $filters = [])
@@ -201,7 +201,7 @@ class Download
      * Get a count or list of downloads by SKU
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public static function getDownloadsSku($rtrn = 'list', $filters = [])
@@ -283,7 +283,7 @@ class Download
     /**
      * Set downloads status
      *
-     * @param   array  $dIds    download ids
+     * @param   array<mixed>  $dIds    download ids
      * @param   int    $status  0 - deactivate, 1 - activate
      * @return  mixed
      */

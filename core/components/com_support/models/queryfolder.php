@@ -86,7 +86,7 @@ class QueryFolder extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -99,7 +99,7 @@ class QueryFolder extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -120,7 +120,7 @@ class QueryFolder extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -170,7 +170,7 @@ class QueryFolder extends Relational
     /**
      * The shared folders, building the defaults when there are none yet
      *
-     * @return  array  The iscore=1 folders every user is cloned from
+     * @return  array<mixed>  The iscore=1 folders every user is cloned from
      */
     public static function ensureCore()
     {
@@ -236,7 +236,7 @@ class QueryFolder extends Relational
      * ensureCore() instead, or they get a personal copy they never asked for.
      *
      * @param   integer  $user_id  User ID
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function cloneCore($user_id = 0)
     {

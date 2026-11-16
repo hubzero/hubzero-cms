@@ -21,14 +21,14 @@ abstract class Store extends Obj implements SessionHandlerInterface
     /**
      * Storage instances container.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
     /**
      * Constructor
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  void
      */
     public function __construct($options = [])
@@ -40,7 +40,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * Returns a session storage handler object, only creating it if it doesn't already exist.
      *
      * @param   string  $name     The session store to instantiate
-     * @param   array   $options  Array of options
+     * @param   array<mixed>   $options  Array of options
      * @return  object
      */
     public static function getInstance($name = 'none', $options = [])
@@ -64,7 +64,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
     /**
      * Register the functions of this class with PHP's session handler
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function register($options = [])
@@ -172,8 +172,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
     /**
      * Get list of all sessions
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<mixed>
      */
     public function all($filters = [])
     {

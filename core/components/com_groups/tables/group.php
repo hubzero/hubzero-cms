@@ -155,7 +155,7 @@ class Group extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  database query
      */
     private function buildMembersQuery($filters = [])
@@ -207,7 +207,7 @@ class Group extends Table
      *
      * @param   string  $role     Role [member, invitee, applicant, manager]
      * @param   string  $tbl      Table alias
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  string
      */
     private function groupTable($role = 'member', $tbl = 'm', $filters = [])
@@ -225,7 +225,7 @@ class Group extends Table
     /**
      * Get count of members
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  string|null  Return course units
      */
     public function countMembers($filters = [])
@@ -240,8 +240,8 @@ class Group extends Table
     /**
      * Get an object list of members
      *
-     * @param   array   $filters
-     * @return  array  Return course units
+     * @param   array<mixed>   $filters
+     * @return  array<mixed>  Return course units
      */
     public function findMembers($filters = [])
     {

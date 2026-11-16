@@ -29,7 +29,7 @@ interface StepInterface
     /**
      * Process form submission
      *
-     * @param  array  $data  POST data
+     * @param  array<mixed>  $data  POST data
      * @return bool|string  True to continue, string error message on failure
      */
     public function process($data);

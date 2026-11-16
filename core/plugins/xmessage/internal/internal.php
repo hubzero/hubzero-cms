@@ -28,7 +28,7 @@ class Internal extends Plugin
     /**
      * Send a message to a user
      *
-     * @param      array   $from     Message 'from' data (e.g., name, address)
+     * @param      array<mixed>   $from     Message 'from' data (e.g., name, address)
      * @param      object  $xmessage The message to send
      * @param      object  $user     User to send the message to
      * @param      string  $action   Messaging method (e.g., email, smstxt, etc.)

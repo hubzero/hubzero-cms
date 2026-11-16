@@ -36,7 +36,7 @@ class Upay extends Plugin
      *
      * @param   object  $cart
      * @param   object  $user
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function onRenderPaymentOptions($cart, $user)
     {
@@ -54,7 +54,7 @@ class Upay extends Plugin
     /**
      * Post back
      *
-     * @param   array  $postData
+     * @param   array<mixed>  $postData
      * @return  mixed
      */
     public function onPostback($postData)

@@ -87,7 +87,7 @@ class Config
      *
      * Passed data will be merged with existing data.
      *
-     * @param   array  $data  The data to save
+     * @param   array<mixed>  $data  The data to save
      * @return  bool
      **/
     public static function save($data)
@@ -125,9 +125,9 @@ class Config
      * differently.  Namely, if a nested array is not associative, we want it to append items
      * to it, rather than completely overwrite the value of the nested element.
      *
-     * @param   array  $existing  The existing data
-     * @param   array  $incoming  The new data
-     * @return  array
+     * @param   array<mixed>  $existing  The existing data
+     * @param   array<mixed>  $incoming  The new data
+     * @return  array<mixed>
      **/
     private function merge($existing, $incoming)
     {
@@ -150,7 +150,7 @@ class Config
      * Multi-dimensional array_unique function
      *
      * @param   array|mixed  $var  The array to make unique
-     * @return  array
+     * @return  array<mixed>
      **/
     private function unique($var)
     {

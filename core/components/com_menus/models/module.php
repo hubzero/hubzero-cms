@@ -132,7 +132,7 @@ class Module extends Relational
      * Get the list of modules not in trash.
      *
      * @param   integer  $pk
-     * @return  array    An array of module records (id, title, position)
+     * @return  array<mixed>    An array of module records (id, title, position)
      */
     public static function getModules($pk = 0)
     {

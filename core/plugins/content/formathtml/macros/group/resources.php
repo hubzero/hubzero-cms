@@ -146,7 +146,7 @@ class Resources extends GroupMacro
     /**
      * Get item limit
      *
-     * @param   array    $args     Macro Arguments
+     * @param   array<mixed>    $args     Macro Arguments
      * @param   integer  $default  Default return value
      * @return  mixed
      */
@@ -167,7 +167,7 @@ class Resources extends GroupMacro
     /**
      * Get class
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getClass(&$args)
@@ -184,7 +184,7 @@ class Resources extends GroupMacro
     /**
      * Get type
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getType(&$args)

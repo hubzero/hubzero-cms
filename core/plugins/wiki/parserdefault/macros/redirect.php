@@ -104,7 +104,7 @@ class Redirect extends WikiMacro
     /**
      * Get macro args
      *
-     * @return  array  List of arguments
+     * @return  array<int, string>  List of arguments
      */
     protected function getArgs()
     {

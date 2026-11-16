@@ -54,7 +54,7 @@ class Helpsites extends Element
      *
      * @param   string  $pathToXml  Path to an XML file.
      * @param   string|null  $selected   Language tag to select (if exists).
-     * @return  array   An array of arrays (text, value, selected).
+     * @return  array<int, mixed>   An array of arrays (text, value, selected).
      */
     public static function createSiteList($pathToXml, $selected = null)
     {

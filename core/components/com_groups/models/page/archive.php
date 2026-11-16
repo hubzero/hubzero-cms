@@ -69,7 +69,7 @@ class Archive extends Obj
      * Get a list of group pages
      *
      * @param      string  $rtrn    What data to return
-     * @param      array   $filters Filters to apply to data retrieval
+     * @param      array<mixed>   $filters Filters to apply to data retrieval
      * @param      boolean $clear Clear cached data?
      * @return     mixed
      */
@@ -128,7 +128,7 @@ class Archive extends Obj
      *
      * @param      string  $key         Page key to reset
      * @param      string|int $value       New value to set
-     * @param      array   $filters     Filters passed to pages() method
+     * @param      array<mixed>   $filters     Filters passed to pages() method
      * @return     mixed
      */
     public function reset($key = 'home', $value = 0, $filters = [])

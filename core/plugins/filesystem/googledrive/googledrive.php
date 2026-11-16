@@ -24,7 +24,7 @@ class Googledrive extends Plugin
     /**
      * Initializes the Google Drive connection
      *
-     * @param   array   $params  Any connection params needed
+     * @param   array<mixed>   $params  Any connection params needed
      * @return  object
      **/
     public static function init($params = [])

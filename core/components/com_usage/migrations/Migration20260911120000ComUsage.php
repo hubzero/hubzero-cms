@@ -106,7 +106,7 @@ class Migration20260911120000ComUsage extends Base
      *
      * Reaches it the way the component's own helper does.
      *
-     * @param   array  $saved  The component params as an array
+     * @param   array<mixed>  $saved  The component params as an array
      * @return  boolean
      **/
     private function reaches(array $saved)

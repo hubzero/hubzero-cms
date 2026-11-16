@@ -71,7 +71,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -101,7 +101,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Configure SQLite-specific connection settings
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      */
     protected function configureSqlite($options)
@@ -135,7 +135,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string   $table     The name of the database table.
      * @param   boolean  $typeOnly  True to only return field types.
-     * @return  array    An array of fields for the database table.
+     * @return  array<mixed>    An array of fields for the database table.
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -173,7 +173,7 @@ class SqliteDriver extends BaseSqlDriver
      * Returns both primary keys and indexes
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -220,7 +220,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getTableList()
     {
@@ -234,8 +234,8 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -306,7 +306,7 @@ class SqliteDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -415,7 +415,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Always empty array (SQLite has no ENUM)
+     * @return  array<mixed>   Always empty array (SQLite has no ENUM)
      **/
     public function getEnumValues($table, $column)
     {
@@ -561,7 +561,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
-     * @param   array   $options    MySQL-specific options (ignored on SQLite)
+     * @param   array<mixed>   $options    MySQL-specific options (ignored on SQLite)
      * @return  bool
      **/
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -617,7 +617,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      **/
     public function getViews(): array
     {
@@ -634,7 +634,7 @@ class SqliteDriver extends BaseSqlDriver
      * SQLite is file-based, so this returns the list of attached databases.
      * The main database is always named 'main'.
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      **/
     public function getDatabaseNames(): array
     {
@@ -693,7 +693,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Returns a list of all emulated sequences
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      **/
     public function getSequences(): array
     {
@@ -718,7 +718,7 @@ class SqliteDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (ignored)
+     * @param   array<mixed>   $options    Additional options (ignored)
      * @return  bool
      **/
     public function createSequence(
@@ -1076,7 +1076,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string  $abstractType  The original abstract type name
      * @param   string  $nativeType    The mapped database type
-     * @param   array   $modifiers     Column modifiers (ignored)
+     * @param   array<mixed>   $modifiers     Column modifiers (ignored)
      * @return  string  The native type unchanged
      */
     protected function applyColumnModifiers(
@@ -1152,7 +1152,7 @@ class SqliteDriver extends BaseSqlDriver
      * Gets index information for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -1194,7 +1194,7 @@ class SqliteDriver extends BaseSqlDriver
      * - on_delete: The ON DELETE action
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     public function getForeignKeys($table)
     {
@@ -1229,7 +1229,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Version number (x.y.z format)
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'sqlite_version': Alias for driver_version (deprecated, use driver_version)
@@ -1441,7 +1441,7 @@ class SqliteDriver extends BaseSqlDriver
      * Normalize an abstract type to its SQLite equivalent
      *
      * @param  string $type      Abstract type name
-     * @param  array  $modifiers Column modifiers (e.g., length, precision)
+     * @param  array<mixed>  $modifiers Column modifiers (e.g., length, precision)
      * @return string
      */
     public function normalizeColumnType(
@@ -1651,7 +1651,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * SQLite uses the || operator for concatenation
      *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
+     * @param   array<mixed>  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -1669,7 +1669,7 @@ class SqliteDriver extends BaseSqlDriver
      * SQLite uses the || operator for concatenation
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings to concatenate
+     * @param   array<mixed>   $strings    Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -2549,7 +2549,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2598,7 +2598,7 @@ class SqliteDriver extends BaseSqlDriver
      * This would require recreating the table.
      *
      * @param   string        $table    Table name (with or without prefix)
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2773,7 +2773,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s) to index
+     * @param   array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  string
      */
@@ -2829,7 +2829,7 @@ class SqliteDriver extends BaseSqlDriver
      * that PRAGMA table_info returns, for use in table rebuild operations.
      *
      * @param   \Hubzero\Database\Schema\TableInfo  $tableInfo  Table information
-     * @return  array  Array of objects with PRAGMA table_info structure
+     * @return  array<int, mixed>  Array of objects with PRAGMA table_info structure
      */
     protected function convertTableInfoToColumnStructure(\Hubzero\Database\Schema\TableInfo $tableInfo): array
     {
@@ -2861,7 +2861,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string  $table    Table name (already prefixed)
      * @param   \Hubzero\Database\Schema\AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements
+     * @return  array<int, mixed>  Array of SQL statements
      */
     protected function buildSqliteTableRebuild(
         string $table,
@@ -3053,7 +3053,7 @@ class SqliteDriver extends BaseSqlDriver
      * We need to parse sqlite_master to find them.
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -3088,7 +3088,7 @@ class SqliteDriver extends BaseSqlDriver
      * rebuild operations.
      *
      * @param   string  $table  Table name
-     * @return  array   Array of column info objects
+     * @return  array<mixed>   Array of column info objects
      */
     public function getTableColumnInfo(string $table): array
     {
@@ -3105,7 +3105,7 @@ class SqliteDriver extends BaseSqlDriver
      * operations.
      *
      * @param   string  $table  Table name
-     * @return  array   Array of index info objects
+     * @return  array<mixed>   Array of index info objects
      */
     public function getTableIndexList(string $table): array
     {
@@ -3122,7 +3122,7 @@ class SqliteDriver extends BaseSqlDriver
      * operations.
      *
      * @param   string  $index  Index name
-     * @return  array   Array of column info objects
+     * @return  array<mixed>   Array of column info objects
      */
     public function getIndexColumnInfo(string $index): array
     {
@@ -3185,7 +3185,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * Uses PRAGMA statments to get current settings
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {

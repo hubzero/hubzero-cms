@@ -23,7 +23,7 @@ class Cookie
      *
      * @param  string   $namespace - make sure the cookie name is unique
      * @param  int      $lifetime  - how long the cookie should last
-     * @param  array    $data      - data to be saved in cookie
+     * @param  array<mixed>    $data      - data to be saved in cookie
      * @return void
      **/
     public static function bake($namespace, $lifetime, $data = [])

@@ -23,7 +23,7 @@ class Wiki extends Content
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'A textual wiki page',
@@ -33,7 +33,7 @@ class Wiki extends Content
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<mixed> of assets created
      **/
     public function create()
     {
@@ -132,7 +132,7 @@ class Wiki extends Content
      * Edit method for this handler
      *
      * @param  object $asset - asset
-     * @return array  (string) type, (string) text
+     * @return array<string, mixed>  (string) type, (string) text
      **/
     public function edit($asset)
     {

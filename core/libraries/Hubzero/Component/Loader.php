@@ -32,14 +32,14 @@ class Loader
     /**
      * The component list cache
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $components = [];
 
     /**
      * The component router cache
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $routers = [];
 
@@ -126,7 +126,7 @@ class Loader
     /**
      * Make sure component name follows naming conventions
      *
-     * @param   string|array  $option  The element value for the extension
+     * @param   string|array<mixed>  $option  The element value for the extension
      * @return  string
      */
     public function canonical($option)
@@ -156,7 +156,7 @@ class Loader
      * Render the component.
      *
      * @param   string  $option  The component option.
-     * @param   array   $params  The component parameters
+     * @param   array<mixed>   $params  The component parameters
      * @return  string
      */
     public function render($option, $params = [])

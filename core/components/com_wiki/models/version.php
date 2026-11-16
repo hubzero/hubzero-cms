@@ -83,7 +83,7 @@ class Version extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      */
     public function automaticVersion($data)
@@ -97,7 +97,7 @@ class Version extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      */
     public function automaticLength($data)

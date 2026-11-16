@@ -129,7 +129,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -143,7 +143,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified by field value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -598,7 +598,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Split metadata into parts
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function transformMetadata()
     {
@@ -730,7 +730,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get tag cloud
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function tags()
     {

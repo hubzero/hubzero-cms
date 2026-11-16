@@ -22,7 +22,7 @@ class BoostDouble
     /**
      * Stubbed by the tests to return a set of boosts
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {

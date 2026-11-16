@@ -99,7 +99,7 @@ class SequenceInfo
     /**
      * Constructor
      *
-     * @param array $data Associative array of sequence properties
+     * @param array<mixed> $data Associative array of sequence properties
      */
     public function __construct(array $data = [])
     {
@@ -234,7 +234,7 @@ class SequenceInfo
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

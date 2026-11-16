@@ -145,7 +145,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $terms
      * @access public
-     * @return array
+     * @return array<mixed>
      */
     public function getSuggestions($terms)
     {
@@ -294,7 +294,7 @@ class SolrQueryAdapter implements QueryInterface
      * addFacet
      *
      * @param mixed $name
-     * @param array $query
+     * @param array<mixed> $query
      * @access public
      * @return static
      */
@@ -440,7 +440,7 @@ class SolrQueryAdapter implements QueryInterface
      * getResults
      *
      * @access public
-     * @return array
+     * @return array<mixed>
      */
     public function getResults()
     {
@@ -463,7 +463,7 @@ class SolrQueryAdapter implements QueryInterface
     /**
      * makeQueryString
      *
-     * @param array $query
+     * @param array<mixed> $query
      * @access private
      * @return string|null  Null for an operator other than '='
      */

@@ -16,7 +16,7 @@ class CharacterClass
     /**
      * List of character classes
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     public static $classes = null;
 
@@ -70,7 +70,7 @@ class CharacterClass
      * Match character class
      *
      * @param   string  $char
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function match($char = '')
     {

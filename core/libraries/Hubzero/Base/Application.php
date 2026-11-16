@@ -50,7 +50,7 @@ class Application extends Container
     /**
      * All of the registered service providers.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $serviceProviders = [];
 
@@ -109,7 +109,7 @@ class Application extends Container
      * Handle dynamic, static calls to the object.
      *
      * @param   string  $method
-     * @param   array   $args
+     * @param   array<mixed>   $args
      * @return  mixed
      */
     public function __call($method, $args)
@@ -145,7 +145,7 @@ class Application extends Container
     /**
      * Register facades with the autoloader
      *
-     * @param   array  $aliases
+     * @param   array<mixed>  $aliases
      * @return  void
      */
     public function registerFacades($aliases = [])
@@ -161,7 +161,7 @@ class Application extends Container
      * Register a service provider with the application.
      *
      * @param  mixed   $provider  \Hubzero\Base\ServiceProvider|string
-     * @param  array   $options
+     * @param  array<mixed>   $options
      * @return object
      */
     public function register($provider, $options = []) //, $force = false)
@@ -247,7 +247,7 @@ class Application extends Container
     /**
      * Detect the application's current environment.
      *
-     * @param   array|string  $clients
+     * @param   array<mixed>|string  $clients
      * @return  string
      */
     public function detectClient($clients)
@@ -296,7 +296,7 @@ class Application extends Container
      *
      * @param   string  $url      Url to redirect to
      * @param   string|null  $message  Message to display on redirect.
-     * @param   array|string|null $type  Message type.
+     * @param   array<mixed>|string|null $type  Message type.
      * @return  never
      */
     public function redirect($url, $message = null, $type = 'success')
@@ -424,8 +424,8 @@ class Application extends Container
     /**
      * Get only runnable services
      *
-     * @param   array  $services  Unfiltered services
-     * @return  array  Filtered runnable services
+     * @param   array<mixed>  $services  Unfiltered services
+     * @return  array<mixed>  Filtered runnable services
      */
     protected function middleware($services)
     {

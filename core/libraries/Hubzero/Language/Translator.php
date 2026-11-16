@@ -29,14 +29,14 @@ class Translator extends Obj
     /**
      * List of languages
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $languages = [];
 
     /**
      * javascript strings
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $jsStrings = [];
 
@@ -64,21 +64,21 @@ class Translator extends Obj
     /**
      * An array of orphaned text.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $orphans = [];
 
     /**
      * Array holding the language metadata.
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $metadata = null;
 
     /**
      * Array holding the language locale or boolean null if none.
      *
-     * @var array|boolean|null
+     * @var array<mixed>|boolean|null
      */
     protected $locale = null;
 
@@ -92,35 +92,35 @@ class Translator extends Obj
     /**
      * A nested array of language files that have been loaded
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $paths = [];
 
     /**
      * List of language files that are in error state
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $errorfiles = [];
 
     /**
      * Translations
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $strings = null;
 
     /**
      * An array of used text, used during debugging.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $used = [];
 
     /**
      * An array used to store overrides.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $override = [];
 
@@ -134,14 +134,14 @@ class Translator extends Obj
     /**
      * Name of the transliterator function for this language.
      *
-     * @var callable|array|null
+     * @var callable|array<mixed>|null
      */
     protected $transliterator = null;
 
     /**
      * A list of callback functions for this language.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $callbacks = [
         'pluralSuffixes'       => null,
@@ -357,7 +357,7 @@ class Translator extends Obj
     /**
      * Getter for transliteration function
      *
-     * @return  callable|string|array|null  The transliterator, null when none is set
+     * @return  callable|string|array<mixed>|null  The transliterator, null when none is set
      */
     public function getTransliterator()
     {
@@ -381,7 +381,7 @@ class Translator extends Obj
      * Returns an array of suffixes for plural rules.
      *
      * @param   integer  $count  The count number the rule is for.
-     * @return  array    The array of suffixes.
+     * @return  array<mixed>    The array of suffixes.
      */
     public function getPluralSuffixes($count)
     {
@@ -418,7 +418,7 @@ class Translator extends Obj
     /**
      * Returns an array of ignored search words
      *
-     * @return  array  The array of ignored search words.
+     * @return  array<mixed>  The array of ignored search words.
      */
     public function getIgnoredSearchWords()
     {
@@ -787,7 +787,7 @@ class Translator extends Obj
      *
      * @param   string   $fileName  The language ini file path.
      * @param   boolean  $debug     If set to true debug language ini file.
-     * @return  array  The strings parsed.
+     * @return  array<mixed>  The strings parsed.
      * @throws  \RuntimeException On debug
      */
     public static function parseIniFile($fileName, $debug = false)
@@ -833,7 +833,7 @@ class Translator extends Obj
      * Parses a language file.
      *
      * @param   string  $fileName  The name of the file.
-     * @return  array  The array of parsed strings.
+     * @return  array<mixed>  The array of parsed strings.
      */
     protected function parse($fileName)
     {
@@ -873,7 +873,7 @@ class Translator extends Obj
     /**
      * Determine who called the translator.
      *
-     * @return  array|null  Caller information.
+     * @return  array<mixed>|null  Caller information.
      */
     protected function getCallerInfo()
     {
@@ -922,7 +922,7 @@ class Translator extends Obj
      * Get a list of language files that have been loaded.
      *
      * @param   string|null  $extension  An optional extension name.
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function getPaths($extension = null)
     {
@@ -940,7 +940,7 @@ class Translator extends Obj
     /**
      * Get a list of language files that are in error state.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getErrorFiles()
     {
@@ -1016,7 +1016,7 @@ class Translator extends Obj
     /**
      * Get the list of orphaned strings if being tracked.
      *
-     * @return  array  Orphaned text.
+     * @return  array<mixed>  Orphaned text.
      */
     public function getOrphans()
     {
@@ -1028,7 +1028,7 @@ class Translator extends Obj
      *
      * Used strings are those strings requested and found either as a string or a constant.
      *
-     * @return  array  Used strings.
+     * @return  array<mixed>  Used strings.
      */
     public function getUsed()
     {
@@ -1094,7 +1094,7 @@ class Translator extends Obj
      * Returns a list of known languages for an area
      *
      * @param   string  $basePath  The basepath to use
-     * @return  array   key/value pair with the language file and real name.
+     * @return  array<mixed>   key/value pair with the language file and real name.
      */
     public static function getKnownLanguages($basePath = PATH_APP, $client = null)
     {
@@ -1108,7 +1108,7 @@ class Translator extends Obj
      * Get published content languages from the database.
      *
      * @param   string|null  $key  Column to index the result array by (e.g. 'lang_code')
-     * @return  array   Array of language objects, optionally indexed by $key
+     * @return  array<\stdClass>   Array of language objects, optionally indexed by $key
      */
     public static function getLanguages($key = null)
     {
@@ -1221,7 +1221,7 @@ class Translator extends Obj
     /**
      * Get the language locale based on current language.
      *
-     * @return  array  The locale according to the language.
+     * @return  array<mixed>  The locale according to the language.
      */
     public function getLocale()
     {
@@ -1252,7 +1252,7 @@ class Translator extends Obj
      * Searches for language directories within a certain base dir.
      *
      * @param   string|null  $dir  directory of files.
-     * @return  array   Array holding the found languages as filename => real name pairs.
+     * @return  array<mixed>   Array holding the found languages as filename => real name pairs.
      */
     public static function parseLanguageFiles($dir = null)
     {
@@ -1290,7 +1290,7 @@ class Translator extends Obj
      * Parse XML file for language information.
      *
      * @param   string  $path  Path to the XML files.
-     * @return  array|null   Array holding the found metadata as a key => value pair.
+     * @return  array<mixed>|null   Array holding the found metadata as a key => value pair.
      */
     public static function parseXMLLanguageFile($path)
     {
@@ -1366,7 +1366,7 @@ class Translator extends Obj
      * Get available languages
      *
      * @param   string  $key  Array key
-     * @return  array   An array of published languages
+     * @return  array<mixed>   An array of published languages
      */
     public function available($key = 'default')
     {
@@ -1421,7 +1421,7 @@ class Translator extends Obj
      * @param   boolean  $caching         True if caching is used
      * @param   boolean  $installed       True to list only the languages installed for the client
      * @param   integer|null  $client          Client ID
-     * @return  array    List of system languages
+     * @return  array<int, mixed>    List of system languages
      */
     public static function getList(
         $actualLanguage,
@@ -1620,7 +1620,7 @@ class Translator extends Obj
      * Translate a string into the current language and stores it in the JavaScript language store.
      *
      * @param   string|null   $string                The language key.
-     * @param   boolean|array  $jsSafe                Ensure the output is JavaScript safe.
+     * @param   boolean|array<mixed>  $jsSafe                Ensure the output is JavaScript safe.
      * @param   boolean  $interpretBackSlashes  Interpret \t and \n.
      * @return  mixed
      */

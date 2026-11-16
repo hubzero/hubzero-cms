@@ -70,7 +70,7 @@ class Owner extends Table
      * Get project owner count
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  mixed    False or integer
      */
     public function countOwners($projectid = null, $filters = [])
@@ -104,8 +104,8 @@ class Owner extends Table
      * Get owner information
      *
      * @param   integer|null $projectid
-     * @param   array   $ids
-     * @param   array   $groups
+     * @param   array<mixed>   $ids
+     * @param   array<mixed>   $groups
      * @return  mixed   False or array
      */
     public function getInfo($projectid = null, $ids = [], $groups = [])
@@ -379,8 +379,8 @@ class Owner extends Table
      *
      * @param   integer|null  $projectid
      * @param   string   $service
-     * @param   array    $exclude
-     * @return  bool|array
+     * @param   array<mixed>    $exclude
+     * @return  bool|array<mixed>
      */
     public function getConnected($projectid = null, $service = 'google', $exclude = [])
     {
@@ -424,8 +424,8 @@ class Owner extends Table
      * Get project owners
      *
      * @param   integer|null|mixed  $projectid
-     * @param   array    $filters
-     * @return  array|false
+     * @param   array<mixed>    $filters
+     * @return  array<mixed>|false
      */
     public function getOwners($projectid = null, $filters = [])
     {
@@ -546,7 +546,7 @@ class Owner extends Table
      * @param   string   $what
      * @param   boolean|int $native
      * @param   integer  $join     verify if group exists
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getProjectGroups($projectid = null, $what = 'o.groupid', $native = 0, $join = 0)
     {
@@ -782,7 +782,7 @@ class Owner extends Table
      * Remove project owners
      *
      * @param   integer|null  $projectid
-     * @param   array|string    $users      user or owner ids to remove
+     * @param   array<mixed>|string    $users      user or owner ids to remove
      * @param   boolean|int $byownerid  owner ids in users array?
      * @param   boolean|int $remove     permanently remove if true
      * @param   int|string  $status     what status to set
@@ -836,7 +836,7 @@ class Owner extends Table
      * Reassign role
      *
      * @param   integer|null  $projectid
-     * @param   array    $users      user or owner ids to remove
+     * @param   array<mixed>    $users      user or owner ids to remove
      * @param   boolean|int $byownerid  owner ids in users array?
      * @param   integer  $role       new role
      * @return  mixed    false if errors, integer - number of members with role changed
@@ -1274,7 +1274,7 @@ class Owner extends Table
     /**
      * Get team stats
      *
-     * @param   array   $exclude
+     * @param   array<mixed>   $exclude
      * @param   string  $get
      * @param   string|null  $when  the day, as Y-m-d
      * @return  mixed
@@ -1374,10 +1374,10 @@ class Owner extends Table
     /**
      * Get top projects by team size
      *
-     * @param   array    $exclude
+     * @param   array<mixed>    $exclude
      * @param   integer  $limit
      * @param   boolean  $publicOnly
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getTopTeamProjects($exclude = [], $limit = 3, $publicOnly = false)
     {

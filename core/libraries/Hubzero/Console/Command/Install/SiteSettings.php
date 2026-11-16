@@ -49,7 +49,7 @@ class SiteSettings
      * Load existing configuration from config files
      *
      * @param   string  $appPath  Path to the app directory
-     * @return  array   Existing configuration values (empty array if none)
+     * @return  array<string, mixed>   Existing configuration values (empty array if none)
      */
     public static function loadExistingConfig($appPath)
     {
@@ -98,8 +98,8 @@ class SiteSettings
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string|null  $appPath   Path to the app directory
-     * @param   array|null   $existing  Existing configuration to use as defaults
-     * @return  array|null  Configuration array or null if cancelled
+     * @param   array<mixed>|null   $existing  Existing configuration to use as defaults
+     * @return  array<mixed>|null  Configuration array or null if cancelled
      */
     public static function configure($ansi = true, $appPath = null, $existing = null)
     {
@@ -229,8 +229,8 @@ class SiteSettings
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
-     * @param   array   $existing  Existing configuration to fall back on
-     * @return  array|null  Configuration array, or null if an answer was unusable
+     * @param   array<mixed>   $existing  Existing configuration to fall back on
+     * @return  array<mixed>|null  Configuration array, or null if an answer was unusable
      */
     private static function configureUnattended($ansi, $appPath, array $existing)
     {
@@ -573,7 +573,7 @@ class SiteSettings
     /**
      * Display an interactive menu with arrow key navigation
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $default        Default selected index
      * @param   bool   $ansi           Whether to use ANSI colors
      * @param   bool   $showBackspace  Whether to show backspace hint
@@ -593,7 +593,7 @@ class SiteSettings
     /**
      * Run the interactive arrow-key menu
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $default        Default selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  int    Selected index, or -1 if backspace/cancelled
@@ -640,7 +640,7 @@ class SiteSettings
     /**
      * Draw the menu options
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $selected       Currently selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  void
@@ -665,7 +665,7 @@ class SiteSettings
     /**
      * Redraw the menu (move cursor up and redraw)
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $selected       Currently selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  void
@@ -682,7 +682,7 @@ class SiteSettings
     /**
      * Run the numbered fallback menu
      *
-     * @param   array  $options  Array of option labels
+     * @param   array<mixed>  $options  Array of option labels
      * @param   int    $default  Default selected index
      * @param   bool   $ansi     Whether to use ANSI colors
      * @return  int    Selected index

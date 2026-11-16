@@ -94,7 +94,7 @@ class Simple implements Cipher
     /**
      * Method to generate a new encryption key[/pair] object.
      *
-     * @param   array   $options  Key generation options.
+     * @param   array<mixed>   $options  Key generation options.
      * @return  object
      */
     public function generateKey(array $options = [])
@@ -211,7 +211,7 @@ class Simple implements Cipher
      * Convert hex to an array of integers
      *
      * @param   string  $hex  The hex string to convert to an integer array.
-     * @return  array   An array of integers.
+     * @return  array<mixed>   An array of integers.
      */
     private function hexToIntArray($hex)
     {

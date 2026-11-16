@@ -21,21 +21,21 @@ class Migration
     /**
      * Paths in which to search for migration scripts
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $searchPaths = [];
 
     /**
      * Array holding paths to migration scripts
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $files = [];
 
     /**
      * Array holding files affected during this migration (i.e. those that are/would be run)
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $affectedFiles = [];
 
@@ -59,14 +59,14 @@ class Migration
     /**
      * Log messages themselves (stored as array to return to browser, or other client)
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $log = [];
 
     /**
      * Array of callbacks
      *
-     * @var array|null
+     * @var array<mixed>|null
      **/
     private $callbacks;
 
@@ -1183,7 +1183,7 @@ class Migration
      * Returns counts and details about pending, executed, and failed migrations.
      *
      * @param   string|null  $extension  Optional extension filter
-     * @return  array|false  Status array or false on error
+     * @return  array<mixed>|false  Status array or false on error
      **/
     public function getStatus($extension = null)
     {
@@ -1315,7 +1315,7 @@ class Migration
      *
      * @param   string       $alias      The alias to resolve
      * @param   string|null  $extension  Optional extension filter
-     * @return  array|false  Array with 'file' and 'info' keys, or false if not found
+     * @return  array<mixed>|false  Array with 'file' and 'info' keys, or false if not found
      **/
     public function resolveAlias($alias, $extension = null)
     {
@@ -1481,7 +1481,7 @@ class Migration
     /**
      * Get list of valid migration aliases
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getValidAliases()
     {
@@ -1562,7 +1562,7 @@ class Migration
      * the root off the front of the path.
      *
      * @param   string  $path  An absolute path inside the core or app tree
-     * @return  array|null  The path from the core/app segment on, or null
+     * @return  array<mixed>|null  The path from the core/app segment on, or null
      */
     private function splitTreePath($path)
     {

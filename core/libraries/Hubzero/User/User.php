@@ -102,7 +102,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access groups
      *
-     * @var    array|null
+     * @var    array<mixed>|null
      * @since  2.1.0
      */
     protected $authGroups = null;
@@ -110,7 +110,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access levels
      *
-     * @var    array|null
+     * @var    array<mixed>|null
      * @since  2.1.0
      */
     protected $authLevels = null;
@@ -118,7 +118,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access actions
      *
-     * @var    array|null
+     * @var    array<mixed>|null
      * @since  2.1.0
      */
     protected $authActions = null;
@@ -134,7 +134,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * List of picture resolvers
      *
-     * @var    array
+     * @var    array<mixed>
      * @since  2.1.0
      */
     public static $pictureResolvers = [];
@@ -155,7 +155,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Serializes the model data for storage
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function __serialize()
     {
@@ -182,7 +182,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Unserializes the data into a new model
      *
-     * @param   array $data  The data to build from
+     * @param   array<mixed> $data  The data to build from
      * @return  void
      */
     public function __unserialize($data)
@@ -255,7 +255,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Generates automatic registerDate field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRegisterDate($data)
@@ -268,7 +268,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Generates automatic registerIP field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRegisterIP($data)
@@ -282,7 +282,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Generates automatic access field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAccess($data)
@@ -351,9 +351,9 @@ class User extends \Hubzero\Database\Relational
      * can still be saved. Third-party-auth placeholder accounts
      * ("-<auth_link_id>") and de-identified accounts have no home directory.
      *
-     * @param   array  $new  Data being saved
-     * @param   array  $old  Stored data (empty for a new account)
-     * @return  array  Error messages
+     * @param   array<mixed>  $new  Data being saved
+     * @param   array<mixed>  $old  Stored data (empty for a new account)
+     * @return  array<int, mixed>  Error messages
      */
     public static function identityErrors(array $new, array $old)
     {
@@ -432,7 +432,7 @@ class User extends \Hubzero\Database\Relational
      * Get groups
      *
      * @param   string  $role
-     * @return  array
+     * @return  array<mixed>
      */
     public function groups($role = 'all')
     {
@@ -535,7 +535,7 @@ class User extends \Hubzero\Database\Relational
      * This must be used when setting data to be saved. Otherwise, the properties
      * will be attached directly to the model itself and not included in the save.
      *
-     * @param   array|string  $key    The key to set, or array of key/value pairs
+     * @param   array<mixed>|string  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
      * @return  object        $this   Chainable
      * @since   2.1.0
@@ -920,8 +920,8 @@ class User extends \Hubzero\Database\Relational
      *
      * @param   string  $component  The component from which to retrieve the categories
      * @param   string  $action     The name of the section within the component from which to retrieve the actions.
-     * @return  array   List of categories that this group can do this action to (empty array if none). Categories must
-     *                  be published.
+     * @return  array<int, mixed>   List of categories that this group can do this action to (empty array if none).
+     *                              Categories must be published.
      * @since   2.1.0
      */
     public function getAuthorisedCategories($component, $action)
@@ -955,7 +955,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Gets an array of the authorised access levels for the user
      *
-     * @return  array
+     * @return  array<mixed>
      * @since   2.1.0
      */
     public function getAuthorisedViewLevels()
@@ -974,7 +974,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Gets an array of the authorised user groups
      *
-     * @return  array
+     * @return  array<mixed>
      * @since   2.1.0
      */
     public function getAuthorisedGroups()

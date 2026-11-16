@@ -41,14 +41,14 @@ class Bundle
     /**
      * Contents of archive
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $contents = null;
 
     /**
      * Instance constructor
      *
-     * @param   array  $args  Instantiation data
+     * @param   array<mixed>  $args  Instantiation data
      * @return  void
      */
     public function __construct($args)
@@ -94,7 +94,7 @@ class Bundle
     /**
      * Builds a hierarchical array of bundle's contents
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getContents()
     {
@@ -122,7 +122,7 @@ class Bundle
     /**
      * Replace bundle element w/ hierarchical array of contents
      *
-     * @param   array   $contents
+     * @param   array<mixed>   $contents
      * @return  void
      */
     protected function expandBundleFile(&$contents)
@@ -144,7 +144,7 @@ class Bundle
     /**
      * Gets index of bundle element
      *
-     * @param   array     $contents
+     * @param   array<mixed>     $contents
      * @return  integer
      */
     protected static function getBundleIndex($contents)

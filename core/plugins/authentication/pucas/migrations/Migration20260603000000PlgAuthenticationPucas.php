@@ -71,7 +71,7 @@ class Migration20260603000000PlgAuthenticationPucas extends Base
     /**
      * Load the current pucas plugin params as an associative array.
      *
-     * @return  array|false  params array, or false if the plugin row is absent
+     * @return  array<mixed>|false  params array, or false if the plugin row is absent
      **/
     protected function currentParams()
     {

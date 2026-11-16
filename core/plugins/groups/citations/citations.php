@@ -106,7 +106,7 @@ class Citations extends Plugin
     /**
      * Get Tab
      *
-     * @return  array  plugin tab details
+     * @return  array<mixed>  plugin tab details
      */
     public function &onGroupAreas()
     {
@@ -129,9 +129,9 @@ class Citations extends Plugin
      * @param   integer  $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
-     * @param   array    $access      What can be accessed
-     * @param   array|null    $areas       Active area(s)
-     * @return  array
+     * @param   array<mixed>    $access      What can be accessed
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @return  array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -1436,7 +1436,7 @@ class Citations extends Plugin
      * OCLC discontinued the worldcatlibraries.org registry lookup API
      * (deadline: November 2025). Commented out until a replacement is found.
      *
-     * @return  array  $openURL
+     * @return  array<mixed>  $openURL
      */
     private function handleOpenURL()
     {
@@ -1515,9 +1515,9 @@ class Citations extends Plugin
     /**
      * Applies filters to Citations model and returns applied filters
      *
-     * @param   array    $filters   Array of POST values
+     * @param   array<mixed>    $filters   Array of POST values
      * @param   integer  $scope_id  Value of scope id
-     * @return  array    Sanitized and validated filter values
+     * @return  array<string, mixed>    Sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {

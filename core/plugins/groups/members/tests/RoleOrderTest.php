@@ -20,7 +20,7 @@ class RoleOrderTest extends Basic
     /**
      * Role names and the term they name, as Y-m
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function terms(): array
     {

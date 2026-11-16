@@ -100,7 +100,7 @@ class Inertia extends Base implements CommandInterface
 
     /**
      * @param   string  $root
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function findTemplateFiles(string $root): array
     {
@@ -130,7 +130,7 @@ class Inertia extends Base implements CommandInterface
     /**
      * @param   string  $file
      * @param   string  $contents
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function lintFile(string $file, string $contents): array
     {

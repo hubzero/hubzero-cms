@@ -39,7 +39,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Maps Oracle-specific types to generic type names
      * that match what other drivers return.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeMappings = [
         // Integer types
@@ -233,7 +233,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Split a comma-separated column list, respecting parentheses
      *
      * @param   string  $columns  The comma-separated column string
-     * @return  array   Array of column expressions
+     * @return  array<int, mixed>   Array of column expressions
      */
     private function splitSelectColumns(string $columns): array
     {
@@ -510,9 +510,9 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the column query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -792,7 +792,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Oracle uses simple TRUNCATE TABLE syntax
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {
@@ -1010,7 +1010,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Returns true if the table has an identity column and the
      * insert data does NOT include explicit values for it.
      *
-     * @param   array  $columns  Column names in the insert data
+     * @param   array<mixed>  $columns  Column names in the insert data
      * @return  bool
      */
     protected function tableHasIdentityConflict(

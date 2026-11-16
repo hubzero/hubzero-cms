@@ -1451,8 +1451,8 @@ class Questions extends SiteController
     /**
      * Get a list of people to be notified of updates
      *
-     * @param   array  $recipients
-     * @return  array
+     * @param   array<mixed>  $recipients
+     * @return  array<mixed>
      */
     protected function recipients($recipients = [])
     {

@@ -38,7 +38,7 @@ class Event implements ArrayAccess, Countable
     /**
      * The event arguments.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $arguments;
 
@@ -52,7 +52,7 @@ class Event implements ArrayAccess, Countable
     /**
      * An array of error messages or Exception objects.
      *
-     * @var    array
+     * @var    array<mixed>
      */
     protected $response = [];
 
@@ -60,7 +60,7 @@ class Event implements ArrayAccess, Countable
      * Constructor.
      *
      * @param  string  $name       The event name.
-     * @param  array   $arguments  The event arguments.
+     * @param  array<mixed>   $arguments  The event arguments.
      */
     public function __construct($name, array $arguments = [])
     {
@@ -180,7 +180,7 @@ class Event implements ArrayAccess, Countable
     /**
      * Get all event arguments.
      *
-     * @return  array  An associative array of argument names as keys
+     * @return  array<mixed>  An associative array of argument names as keys
      *                 and their values as values.
      */
     public function getArguments()
@@ -214,7 +214,7 @@ class Event implements ArrayAccess, Countable
     /**
      * Serialize the event.
      *
-     * @return  array  The event's name, arguments and stopped flag.
+     * @return  array<int, mixed>  The event's name, arguments and stopped flag.
      */
     public function __serialize()
     {
@@ -237,7 +237,7 @@ class Event implements ArrayAccess, Countable
     /**
      * Unserialize the event.
      *
-     * @param   array  $data The serialized event.
+     * @param   array<mixed>  $data The serialized event.
      * @return  void
      */
     public function __unserialize($data)
@@ -261,7 +261,7 @@ class Event implements ArrayAccess, Countable
     /**
      * Get the list of responses from triggered listeners.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getResponse()
     {

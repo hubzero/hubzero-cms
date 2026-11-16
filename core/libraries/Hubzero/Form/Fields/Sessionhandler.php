@@ -27,7 +27,7 @@ class Sessionhandler extends Select
     /**
      * Method to get the session handler field options.
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

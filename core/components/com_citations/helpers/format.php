@@ -34,7 +34,7 @@ class Format
     /**
      * Description for '_template_keys'
      *
-     * @var  array|string
+     * @var  array<mixed>|string
      */
     protected $templateKeys = [
         "type" => "{TYPE}",
@@ -79,7 +79,7 @@ class Format
     /**
      * Values used by COINs
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $coinsKeys = [
         'title'        => 'rft.atitle',
@@ -99,7 +99,7 @@ class Format
     /**
      * Default formats
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $defaultFormat = [
         'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, "
@@ -154,7 +154,7 @@ class Format
     /**
      * Function to get the formatter template keys being used
      *
-     * @return  array  Template string that is being used to format citations
+     * @return  array<mixed>  Template string that is being used to format citations
      */
     public function getTemplateKeys()
     {
@@ -501,7 +501,7 @@ class Format
      * @param   object  $citation  Citation record
      * @param   object  $database  Database
      * @param   object  $config    Registry
-     * @param   array   $openurl   Data to append
+     * @param   array<mixed>   $openurl   Data to append
      * @return  string
      */
     public function citationDetails($citation, $database, $config, $openurl)
@@ -552,7 +552,7 @@ class Format
     /**
      * Output a citation's OpenURL
      *
-     * @param   array   $openurl   OpenURL data
+     * @param   array<mixed>   $openurl   OpenURL data
      * @param   object  $citation  Citation
      * @return  string  HTML
      */
@@ -759,7 +759,7 @@ class Format
      * Output a tagcloud of badges associated with a citation
      *
      * @param   boolean  $includeHtml
-     * @return  string|array   HTML, or the raw tags when $includeHtml is false
+     * @return  string|array<mixed>   HTML, or the raw tags when $includeHtml is false
      */
     public static function citationBadges(&$cite, $includeHtml = true)
     {
@@ -800,7 +800,7 @@ class Format
      *
      * @param   object  $cite  Citation
      * @param   object|bool $includeHtml  Database
-     * @return  string|array  HTML, or the raw tags when $includeHtml is false
+     * @return  string|array<mixed>  HTML, or the raw tags when $includeHtml is false
      */
     public static function citationTags(&$cite, $includeHtml = true)
     {

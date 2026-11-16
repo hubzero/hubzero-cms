@@ -273,7 +273,7 @@ class Schema
     /**
      * Connect to the database using configuration
      *
-     * @param   array  $config  Database configuration
+     * @param   array<mixed>  $config  Database configuration
      * @param   bool   $ansi    Whether to use ANSI colors
      * @return  \PDO|null  PDO connection or null on failure
      **/
@@ -296,7 +296,7 @@ class Schema
     /**
      * Connect using Hubzero standalone PDO connector and return native PDO
      *
-     * @param   array  $config  Database configuration
+     * @param   array<mixed>  $config  Database configuration
      * @return  \PDO
      * @throws  \PDOException
      */
@@ -327,7 +327,7 @@ class Schema
     /**
      * Resolve CLI installer driver/connection combo using test-suite naming conventions
      *
-     * @param   array   $config  Database configuration
+     * @param   array<mixed>   $config  Database configuration
      * @return  string  Normalized driver name
      * @throws  \PDOException
      */
@@ -352,7 +352,7 @@ class Schema
     /**
      * Build MySQL DSN from installer config
      *
-     * @param   array   $config  Database configuration
+     * @param   array<mixed>   $config  Database configuration
      * @return  string
      */
     private static function buildMysqlDsn(array $config): string

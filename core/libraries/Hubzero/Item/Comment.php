@@ -138,7 +138,7 @@ class Comment extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticItemType($data)
@@ -194,7 +194,7 @@ class Comment extends Relational
     /**
      * Get either a count of or list of replies
      *
-     * @param   array   $filters  Filters to apply to query
+     * @param   array<mixed>   $filters  Filters to apply to query
      * @return  object
      */
     public function replies($filters = [])

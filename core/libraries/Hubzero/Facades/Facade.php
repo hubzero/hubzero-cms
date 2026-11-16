@@ -26,7 +26,7 @@ abstract class Facade
     /**
      * The application aliases being loaded
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $aliases;
 
@@ -92,7 +92,7 @@ abstract class Facade
     /**
      * Create aliases
      *
-     * @param   array  $aliases
+     * @param   array<mixed>  $aliases
      * @return  void
      */
     public static function createAliases(array $aliases)
@@ -140,7 +140,7 @@ abstract class Facade
      * Handle dynamic, static calls to the object.
      *
      * @param   string  $method
-     * @param   array   $args
+     * @param   array<mixed>   $args
      * @return  mixed
      */
     public static function __callStatic($method, $args)

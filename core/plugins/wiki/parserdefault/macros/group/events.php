@@ -84,8 +84,8 @@ class Events extends GroupMacro
      * Get a list of events for a group
      *
      * @param      object $group
-     * @param      array  $filters
-     * @return     array
+     * @param      array<mixed>  $filters
+     * @return     array<int, \stdClass>
      */
     private function getGroupEvents($group, $filters = [])
     {
@@ -116,7 +116,7 @@ class Events extends GroupMacro
      * Render the events
      *
      * @param      object  $group  The group
-     * @param      array  $events Array of events
+     * @param      array<mixed>  $events Array of events
      * @return     string
      */
     private function renderEvents($group, $events)

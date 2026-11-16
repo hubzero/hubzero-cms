@@ -86,7 +86,7 @@ class Publication extends Table
     /**
      * Build query
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @param   bool   $admin
      * @return  string  string
      */
@@ -370,7 +370,7 @@ class Publication extends Table
     /**
      * Get record count
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  int
      */
@@ -391,9 +391,9 @@ class Publication extends Table
     /**
      * Get records
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
-     * @return  array|null
+     * @return  array<int, \stdClass>|null
      */
     public function getRecords($filters = [], $admin = false)
     {
@@ -589,7 +589,7 @@ class Publication extends Table
     /**
      * Get top-level publication stats
      *
-     * @param   array   $validProjects
+     * @param   array<mixed>   $validProjects
      * @param   string|mixed  $get
      * @param   string|null  $when
      * @return  mixed

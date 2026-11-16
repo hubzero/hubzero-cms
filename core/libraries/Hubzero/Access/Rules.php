@@ -18,7 +18,7 @@ class Rules
     /**
      * A named array.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
@@ -51,7 +51,7 @@ class Rules
     /**
      * Get the data for the action.
      *
-     * @return  array  A named array of Rule objects.
+     * @return  array<mixed>  A named array of Rule objects.
      */
     public function getData()
     {
@@ -103,7 +103,7 @@ class Rules
      * Merges an array of identities for an action.
      *
      * @param   string  $action      The name of the action.
-     * @param   array   $identities  An array of identities
+     * @param   array<mixed>   $identities  An array of identities
      * @return  void
      */
     public function mergeAction($action, $identities)

@@ -49,7 +49,7 @@ class Query
      *
      * @param   string  $orderby    The ordering code.
      * @param   string  $orderDate  The ordering code for the date.
-     * @return  array  The SQL field(s) to order by.
+     * @return  array<mixed>  The SQL field(s) to order by.
      */
     public static function orderbySecondary($orderby, $orderDate = 'created')
     {
@@ -135,7 +135,7 @@ class Query
      * Get join information for the voting query.
      *
      * @param   object|null  $params  An options object for the article.
-     * @return  array   A named array with "select" and "join" keys.
+     * @return  array<mixed>   A named array with "select" and "join" keys.
      */
     public static function buildVotingQuery($params = null)
     {
@@ -172,7 +172,7 @@ class Query
      *
      * @param   array|mixed    $articles    Array of intro text articles
      * @param   integer  $numColumns  Number of columns in the layout
-     * @return  array    Reordered array to achieve desired ordering down columns
+     * @return  array<mixed>    Reordered array to achieve desired ordering down columns
      */
     public static function orderDownColumns(&$articles, $numColumns = 1)
     {

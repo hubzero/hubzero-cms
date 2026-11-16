@@ -281,7 +281,7 @@ class PrivilegeManager
     /**
      * Get the sudo user info (from posix_getpwnam)
      *
-     * @return array|null  User info array or null
+     * @return array<mixed>|null  User info array or null
      */
     public function getSudoUserInfo(): ?array
     {

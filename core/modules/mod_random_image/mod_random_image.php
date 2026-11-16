@@ -48,7 +48,7 @@ class RandomImage extends Module
      * Get a random image from a list
      *
      * @param   object  $params  Registry
-     * @param   array   $images  List of images in a directory
+     * @param   array<mixed>   $images  List of images in a directory
      * @return  string
      */
     public static function getRandomImage(&$params, $images)
@@ -94,7 +94,7 @@ class RandomImage extends Module
      *
      * @param   object  $params  Registry
      * @param   string  $folder  Directory to look in
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getImages(&$params, $folder)
     {

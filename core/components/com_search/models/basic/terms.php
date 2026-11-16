@@ -27,42 +27,42 @@ class Terms extends Obj
     /**
      * Positive chunks
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $positive_chunks;
 
     /**
      * Optional chunks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $optional_chunks = [];
 
     /**
      * Forbidden chunks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $forbidden_chunks = [];
 
     /**
      * Mandatory chunks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $mandatory_chunks = [];
 
     /**
      * Search section
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $section = null;
 
     /**
      * Quoted terms
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $quoted = [];
 
@@ -119,7 +119,7 @@ class Terms extends Obj
     /**
      * Get a section
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function getSection()
     {
@@ -130,7 +130,7 @@ class Terms extends Obj
     /**
      * Get optional chunks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOptionalChunks()
     {
@@ -140,7 +140,7 @@ class Terms extends Obj
     /**
      * Get forbidden chunks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getForbiddenChunks()
     {
@@ -150,7 +150,7 @@ class Terms extends Obj
     /**
      * Get mandatory chunks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMandatoryChunks()
     {
@@ -160,7 +160,7 @@ class Terms extends Obj
     /**
      * Get positive chunks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPositiveChunks()
     {
@@ -173,7 +173,7 @@ class Terms extends Obj
     /**
      * Get stemmed chunks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getStemmedChunks()
     {

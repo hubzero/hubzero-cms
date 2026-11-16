@@ -21,7 +21,7 @@ class Formatwiki extends Plugin
      * consults it before honouring a {FORMAT:RENDERED} marker: the marker on its
      * own is text, and text can be stored.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $rendered = [];
 

@@ -63,7 +63,7 @@ class Permissions
      *
      * @param   string  $uid  User ID
      * @param   string  $gid  Group ID
-     * @return  array
+     * @return  array<int, array<string, mixed>>
      */
     public static function getGroupMemberRoles($uid, $gid)
     {

@@ -37,7 +37,7 @@ class Activity extends Plugin
      *
      * @param  object $user   Current user
      * @param  object $member Member profile
-     * @return array
+     * @return array<string, mixed>
      */
     public function &onMembersAreas($user, $member)
     {
@@ -59,8 +59,8 @@ class Activity extends Plugin
      * @param  object $user   User
      * @param  object $member Members Profile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>
      */
     public function onMembers($user, $member, $option, $areas)
     {

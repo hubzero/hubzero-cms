@@ -150,7 +150,7 @@ class Token
      * Function to decrypt email token
      *
      * @param   string  $t  Email token
-     * @return  array   Email token details
+     * @return  array<int, mixed>   Email token details
      */
     public function decryptEmailToken($t)
     {

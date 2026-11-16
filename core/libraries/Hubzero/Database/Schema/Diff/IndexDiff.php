@@ -181,7 +181,7 @@ class IndexDiff
     /**
      * Get a list of what changed
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function getChanges(): array
     {
@@ -203,7 +203,7 @@ class IndexDiff
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

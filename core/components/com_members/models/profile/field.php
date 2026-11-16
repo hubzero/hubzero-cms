@@ -100,7 +100,7 @@ class Field extends Relational
     /**
      * Generates automatic name field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticName($data)
@@ -145,7 +145,7 @@ class Field extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -258,7 +258,7 @@ class Field extends Relational
      * during validation when not chosen
      *
      * @param   mixed   $fields  Iterable object or array
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  mixed
      */
     public static function resolveDependencies($fields, $data = [])
@@ -324,7 +324,7 @@ class Field extends Relational
      *
      * @param   mixed   $fields  Iterable object or array
      * @param   string|null  $action
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public static function toXml($fields, $action = null, $data = [])

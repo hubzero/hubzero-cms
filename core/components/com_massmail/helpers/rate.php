@@ -86,7 +86,7 @@ class Rate
      * @param   string   $field
      * @param   integer  $min
      * @param   integer  $max
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function expandField($field, $min, $max)
     {

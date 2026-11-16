@@ -137,7 +137,7 @@ class Tools extends Base
     /**
      * Push database results to $this for internal use
      *
-     * @param      array &$result Database records
+     * @param      array<mixed> &$result Database records
      * @return     boolean False if errors, true on success
      */
     public function process($result)

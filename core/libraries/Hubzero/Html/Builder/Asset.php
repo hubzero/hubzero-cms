@@ -24,7 +24,7 @@ class Asset
      * @param   boolean  $relative        path to file is relative to /core folder
      * @param   boolean  $detect_browser  detect browser to include specific browser files
      * @param   boolean  $detect_debug    detect debug to include compressed files if debug is on
-     * @return  array    files to be included
+     * @return  array<mixed>    files to be included
      */
     protected static function includeRelativeFiles($folder, $file, $relative, $detect_browser, $detect_debug)
     {
@@ -203,8 +203,8 @@ class Asset
      *
      * @param   string   $file       The relative or absolute URL to use for the src attribute
      * @param   string   $alt        The alt text.
-     * @param   string|array|null   $attribs    The target attribute to use
-     * @param   array|false $relative   An associative array of attributes to add
+     * @param   string|array<mixed>|null   $attribs    The target attribute to use
+     * @param   array<mixed>|false $relative   An associative array of attributes to add
      * @param   boolean  $path_only  If set to true, it tries to find an override for the file in the template
      * @return  string|null
      */
@@ -238,7 +238,7 @@ class Asset
      * Write a <link rel="stylesheet" style="text/css" /> element
      *
      * @param   string   $file            path to file
-     * @param   array    $attribs         attributes to be added to the stylesheet
+     * @param   array<mixed>    $attribs         attributes to be added to the stylesheet
      * @param   boolean  $relative        path to file is relative to /core folder
      * @param   boolean  $path_only       return the path to the file only
      * @param   boolean  $detect_browser  detect browser to include specific browser css files
@@ -349,7 +349,7 @@ class Asset
      * Load an icon's SVG representation
      *
      * @param   string  $symbol
-     * @param   array|bool $ariahidden
+     * @param   array<mixed>|bool $ariahidden
      * @return  string
      */
     public static function icon($symbol, $ariahidden = true)

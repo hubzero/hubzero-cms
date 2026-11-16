@@ -51,7 +51,7 @@ class Project extends Table
     /**
      * Build query
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @param   integer  $uid
      * @param   boolean|int $showall
@@ -370,7 +370,7 @@ class Project extends Table
     /**
      * Get item count
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   bool|string  $admin
      * @param   integer  $uid
      * @param   boolean|int $showall
@@ -392,12 +392,12 @@ class Project extends Table
     /**
      * Get records
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   bool|string  $admin
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete
-     * @return  array|null
+     * @return  array<int, \stdClass>|null
      */
     public function getRecords($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
@@ -451,7 +451,7 @@ class Project extends Table
      * @param   string  $tag
      * @param   bool    $include
      * @param   string  $get
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getProjectsByTag($tag = 'test', $include = true, $get = 'id')
     {
@@ -483,9 +483,9 @@ class Project extends Table
      *
      * @param   integer  $groupid
      * @param   integer  $uid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   integer  $setup_complete
-     * @return  string|array|null
+     * @return  string|array<mixed>|null
      */
     public function getGroupProjects($groupid = 0, $uid = 0, $filters = [], $setup_complete = 3)
     {
@@ -568,7 +568,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   integer  $active
      * @param   integer  $include_provisioned
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getUserProjectIds($uid = 0, $active = 1, $include_provisioned = 0)
     {
@@ -603,7 +603,7 @@ class Project extends Table
      * @param   integer  $groupid
      * @param   integer  $uid
      * @param   integer  $active
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroupProjectIds($groupid = 0, $uid = 0, $active = 1)
     {
@@ -648,7 +648,7 @@ class Project extends Table
     /**
      * Get count of new activity since user last visit (multiple projects)
      *
-     * @param   array    $projects
+     * @param   array<mixed>    $projects
      * @param   integer  $uid
      * @return  int|string|null
      */

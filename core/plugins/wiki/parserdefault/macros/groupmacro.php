@@ -35,7 +35,7 @@ class GroupMacro extends WikiMacro
 
     /**
      * Get macro args
-     * @return array of arguments
+     * @return array<int, string> of arguments
      */
     protected function getArgs()
     {

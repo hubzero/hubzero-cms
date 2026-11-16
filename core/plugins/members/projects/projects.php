@@ -42,7 +42,7 @@ class Projects extends Plugin
      * Constructor
      *
      * @param  object &$subject Event observer
-     * @param  array  $config   Optional config values
+     * @param  array<mixed>  $config   Optional config values
      * @return void
      */
     public function __construct(&$subject, $config)
@@ -59,7 +59,7 @@ class Projects extends Plugin
      *
      * @param  object $user
      * @param  object $member
-     * @return array
+     * @return array<string, mixed>
      */
     public function &onMembersAreas($user, $member)
     {
@@ -83,7 +83,7 @@ class Projects extends Plugin
      * @param  object $member Current member page
      * @param  string $option Start of records to pull
      * @param  array|mixed  $areas  Active area(s)
-     * @return array
+     * @return array<mixed>
      */
     public function onMembers($user, $member, $option, $areas)
     {

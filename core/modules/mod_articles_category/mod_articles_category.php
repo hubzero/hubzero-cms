@@ -437,7 +437,7 @@ class ArticlesCategory extends Module
      * @param   string  $fieldName
      * @param   string  $article_grouping_direction
      * @param   string|null  $fieldNameToKeep
-     * @return  array
+     * @return  array<mixed>
      */
     public static function groupBy($list, $fieldName, $article_grouping_direction, $fieldNameToKeep = null)
     {
@@ -477,7 +477,7 @@ class ArticlesCategory extends Module
      * @param   string  $type
      * @param   string  $article_grouping_direction
      * @param   string  $month_year_format
-     * @return  array
+     * @return  array<mixed>
      */
     public static function groupByDate($list, $type, $article_grouping_direction, $month_year_format = 'F Y')
     {
@@ -539,10 +539,10 @@ class ArticlesCategory extends Module
      * used user variables (@pID) and FIND_IN_SET() for recursive traversal.
      *
      * @param   int    $parentId          The parent category ID to start from
-     * @param   array  $authorisedLevels  Array of authorised access levels
+     * @param   array<mixed>  $authorisedLevels  Array of authorised access levels
      * @param   int    $maxDepth          Maximum depth to traverse (0 = unlimited)
      * @param   int    $currentDepth      Current depth in recursion (internal use)
-     * @return  array  Array of child category IDs
+     * @return  array<mixed>  Array of child category IDs
      */
     protected static function getChildCategoryIds($parentId, $authorisedLevels, $maxDepth = 0, $currentDepth = 1)
     {

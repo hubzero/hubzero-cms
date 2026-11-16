@@ -111,7 +111,7 @@ class Version extends Table
      *
      * @param   integer|null  $pid      Pub ID
      * @param   string   $exclude  Version number or name
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getUsedLabels($pid = null, $exclude = 'dev')
     {
@@ -187,8 +187,8 @@ class Version extends Table
      * Get records
      *
      * @param   integer|null  $pid     Pub ID
-     * @param   array    $filters  Query filters
-     * @return  array|false|null
+     * @param   array<mixed>    $filters  Query filters
+     * @return  array<mixed>|false|null
      */
     public function getVersions($pid, $filters = [])
     {
@@ -574,7 +574,7 @@ class Version extends Table
     /**
      * Get top-level publication version stats
      *
-     * @param   array   $validProjects
+     * @param   array<mixed>   $validProjects
      * @param   string  $get
      * @return  mixed
      */

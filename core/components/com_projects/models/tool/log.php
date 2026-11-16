@@ -112,7 +112,7 @@ class Log extends Model
      * Get item history
      *
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  object  list
      */
     public function getHistory($filters = [])

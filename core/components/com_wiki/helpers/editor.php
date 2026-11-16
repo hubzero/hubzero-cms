@@ -114,7 +114,7 @@ class Editor extends Obj
      * @param   string   $cls     The width of the text area (px or %)
      * @param   integer  $col     The number of columns for the textarea
      * @param   integer  $row     The number of rows for the textarea
-     * @param   array    $params  Associative array of editor parameters
+     * @param   array<mixed>    $params  Associative array of editor parameters
      * @return  mixed
      */
     public function display($name, $id, $html, $cls, $col, $row, $params = [])
@@ -238,7 +238,7 @@ class Editor extends Obj
     /**
      * Load the editor
      *
-     * @param   array  $config  Associative array of editor config parameters
+     * @param   array<mixed>  $config  Associative array of editor config parameters
      * @return  void
      */
     private function load($config = [])

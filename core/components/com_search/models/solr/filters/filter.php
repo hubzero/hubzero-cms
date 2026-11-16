@@ -88,7 +88,7 @@ class Filter extends Relational
     /**
      * Make sure params are a string
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string|void
      */
     public function automaticParams($data)
@@ -107,7 +107,7 @@ class Filter extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -119,7 +119,7 @@ class Filter extends Relational
     /**
      * Generates automatic modified by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModifiedBy($data)

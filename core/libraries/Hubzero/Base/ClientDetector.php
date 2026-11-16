@@ -36,7 +36,7 @@ class ClientDetector
     /**
      * Detect the application's current client.
      *
-     * @param   array  $environments
+     * @param   array<mixed>  $environments
      * @return  object
      */
     public function detect($environments)
@@ -51,7 +51,7 @@ class ClientDetector
     /**
      * Determine client for a web request.
      *
-     * @param   array   $environments
+     * @param   array<mixed>   $environments
      * @return  object
      */
     protected function detectWebClient($environments)
@@ -112,7 +112,7 @@ class ClientDetector
     /**
      * Determine if the client is command-line
      *
-     * @param   array   $environments
+     * @param   array<mixed>   $environments
      * @return  bool
      */
     protected function detectConsoleClient($environments)

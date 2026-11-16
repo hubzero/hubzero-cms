@@ -91,7 +91,7 @@ class Seeker extends Table
     /**
      * Count seekers
      *
-     * @param   array    $filters    Filters to build query
+     * @param   array<mixed>    $filters    Filters to build query
      * @param   integer  $uid        User ID
      * @param   integer  $excludeme  Exclude a user?
      * @param   integer  $admin      Admin access?
@@ -117,12 +117,12 @@ class Seeker extends Table
     /**
      * Get a list of seekers
      *
-     * @param   array    $filters    Filters to build query
+     * @param   array<mixed>    $filters    Filters to build query
      * @param   integer  $uid        User ID
      * @param   integer  $excludeme  Exclude a user?
      * @param   integer  $admin      Admin access?
      * @param   integer  $count      Get record counts
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSeekers($filters, $uid = 0, $excludeme = 0, $admin = 0, $count = 0)
     {
@@ -255,7 +255,7 @@ class Seeker extends Table
      * @param   integer|null  $uid    User ID
      * @param   integer  $eid    Employer ID
      * @param   integer  $admin  Admin access?
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getSeeker($uid, $eid = 0, $admin = 0)
     {

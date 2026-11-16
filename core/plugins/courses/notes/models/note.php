@@ -61,7 +61,7 @@ class Note extends Relational
     /**
      * Generates automatic state field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticState($data)

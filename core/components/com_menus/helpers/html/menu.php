@@ -19,21 +19,21 @@ class HtmlMenu
     /**
      * Cached array of the menus.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $menus = null;
 
     /**
      * Cached array of the menus items.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $items = null;
 
     /**
      * Get a list of the available menus.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function menus()
     {
@@ -56,8 +56,8 @@ class HtmlMenu
     /**
      * Returns an array of menu items grouped by menu.
      *
-     * @param   array  $config  An array of configuration options.
-     * @return  array
+     * @param   array<mixed>  $config  An array of configuration options.
+     * @return  array<mixed>
      */
     public static function menuitems($config = [])
     {
@@ -135,7 +135,7 @@ class HtmlMenu
      * @param   string  $name      The name of the control.
      * @param   string|null  $selected  The value of the selected option.
      * @param   string|null  $attribs   Attributes for the control.
-     * @param   array   $config    An array of options for the control.
+     * @param   array<mixed>   $config    An array of options for the control.
      * @return  string
      */
     public static function menuitemlist($name, $selected = null, $attribs = null, $config = [])
@@ -191,7 +191,7 @@ class HtmlMenu
      *
      * @param   boolean  $all         True if all can be selected
      * @param   boolean  $unassigned  True if unassigned can be selected
-     * @return  array
+     * @return  array<mixed>
      */
     public static function linkoptions($all = false, $unassigned = false)
     {
@@ -262,12 +262,12 @@ class HtmlMenu
      *
      * @param   integer  $id         Id of the menu item
      * @param   string   $indent     The indentation string
-     * @param   array    $list       The list to process
-     * @param   array    &$children  The children of the current item
+     * @param   array<mixed>    $list       The list to process
+     * @param   array<mixed>    &$children  The children of the current item
      * @param   integer  $maxlevel   The maximum number of levels in the tree
      * @param   integer  $level      The starting level
      * @param   string|int $type       Type of link: component, URL, alias, separator
-     * @return  array
+     * @return  array<mixed>
      */
     public static function treerecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1)
     {

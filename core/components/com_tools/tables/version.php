@@ -85,7 +85,7 @@ class Version extends Table
      * Get all tool versions for all tools
      *
      * @param   integer  $includedev  Include dev versions?
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getAll($includedev = 1)
     {
@@ -331,10 +331,10 @@ class Version extends Table
      * Get versions for a tool
      *
      * @param   int|string   $toolid
-     * @param   array    &$versions
+     * @param   array<mixed>    &$versions
      * @param   string   $toolname
      * @param   integer  $exclude_dev
-     * @return  array
+     * @return  array<mixed>
      */
     public function getToolVersions($toolid, &$versions, $toolname = '', $exclude_dev = 0)
     {
@@ -381,7 +381,7 @@ class Version extends Table
      * @param   string|null   $revision
      * @param   string   $toolname
      * @param   string   $instance
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function getVersionInfo($id, $revision = '', $toolname = '', $instance = '')
     {
@@ -517,7 +517,7 @@ class Version extends Table
      * Check if a license is valid
      *
      * @param   string   $toolname
-     * @param   array    $license
+     * @param   array<mixed>    $license
      * @param   string   $code
      * @param   string   &$error
      * @param   integer  $result
@@ -543,8 +543,8 @@ class Version extends Table
     /**
      * Validate tool registration
      *
-     * @param   array    &$tool
-     * @param   array    &$err
+     * @param   array<mixed>    &$tool
+     * @param   array<mixed>    &$err
      * @param   string   $id
      * @param   object   $config
      * @param   integer  $checker

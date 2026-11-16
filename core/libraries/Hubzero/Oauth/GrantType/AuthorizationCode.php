@@ -29,7 +29,7 @@ class AuthorizationCode implements GrantTypeInterface
     /**
      * The authorization code being exchanged, as storage returned it
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $authCode;
 
@@ -150,7 +150,7 @@ class AuthorizationCode implements GrantTypeInterface
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope
-     * @return  array  Access token
+     * @return  array<mixed>  Access token
      */
     public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
     {

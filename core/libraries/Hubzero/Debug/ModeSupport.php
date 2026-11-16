@@ -17,10 +17,10 @@ class ModeSupport
      * Preserve debug mode param in outbound params when debug is enabled.
      *
      * @param   bool    $enabled
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     public static function preserveParam(bool $enabled, array $params, string $name, string $value): array
     {

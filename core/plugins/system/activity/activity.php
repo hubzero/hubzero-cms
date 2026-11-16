@@ -20,8 +20,8 @@ class Activity extends Plugin
     /**
      * Log an activity
      *
-     * @param   array  $activity
-     * @param   array  $recipients
+     * @param   array<mixed>  $activity
+     * @param   array<mixed>  $recipients
      * @return  void
      */
     public function logActivity($activity, $recipients = [])

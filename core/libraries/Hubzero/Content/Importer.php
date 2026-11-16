@@ -29,7 +29,7 @@ class Importer
     /**
      * Array of Import Adapters
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $adapters;
 
@@ -178,7 +178,7 @@ class Importer
      * Process import data
      *
      * @param   \Hubzero\Content\Import\Model\Import $import
-     * @param   array    $callbacks  Array of Closure Objects
+     * @param   array<mixed>    $callbacks  Array of Closure Objects
      * @param   int|bool  $dryRun     Dry run?
      * @return  mixed
      */

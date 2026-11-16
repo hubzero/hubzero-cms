@@ -50,7 +50,7 @@ class Compiler extends Obj
     /**
      * Get array of file types
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getFormatsArray()
     {

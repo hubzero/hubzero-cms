@@ -21,7 +21,7 @@ class Help extends Base implements CommandInterface
     /**
      * List of commands
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $commands = [];
 
@@ -138,8 +138,8 @@ class Help extends Base implements CommandInterface
     /**
      * Merge flat list of commands into dimensional array
      *
-     * @param   array  $commands  The commands to parse
-     * @return  array
+     * @param   array<mixed>  $commands  The commands to parse
+     * @return  array<mixed>
      **/
     private function mergeCommands($commands)
     {

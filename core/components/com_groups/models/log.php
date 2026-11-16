@@ -58,7 +58,7 @@ class Log extends Model
     /**
      * Returns array of log defaults
      *
-     * @return    array
+     * @return    array<mixed>
      */
     protected static function logDefaults()
     {
@@ -75,7 +75,7 @@ class Log extends Model
     /**
      * Log a Group action
      *
-     * @param   array|null  $options
+     * @param   array<mixed>|null  $options
      * @return  mixed
      */
     public static function log(?array $options = null)

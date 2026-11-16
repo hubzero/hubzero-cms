@@ -27,8 +27,8 @@ class PgsqlGrammar extends BaseSchemaGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -38,7 +38,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
     /**
      * Type mappings from abstract types to PostgreSQL types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types (PostgreSQL has no TINYINT or MEDIUMINT)
@@ -84,7 +84,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
     /**
      * Serial type mappings for auto-increment columns
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $serialMap = [
         'tinyInteger' => 'SMALLSERIAL',
@@ -101,7 +101,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * elements are CREATE INDEX statements.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function compileCreate(TableDefinition $blueprint): array
     {
@@ -162,7 +162,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * PostgreSQL does not support inline indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineIndex(string $name, array $columns): ?string
@@ -176,7 +176,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * PostgreSQL does not support inline unique indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineUniqueIndex(string $name, array $columns): ?string
@@ -190,7 +190,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * PostgreSQL does not support inline fulltext indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineFulltextIndex(string $name, array $columns): ?string
@@ -202,7 +202,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * Compile an ALTER TABLE statement to add columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterAdd(TableDefinition $blueprint): array
     {
@@ -222,7 +222,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * PostgreSQL uses separate ALTER COLUMN statements for each modification
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterModify(TableDefinition $blueprint): array
     {
@@ -406,7 +406,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * Override to support PostgreSQL-specific index types
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function compileIndexes(TableDefinition $blueprint): array
     {
@@ -455,7 +455,7 @@ class PgsqlGrammar extends BaseSchemaGrammar
      * Compile ALTER TABLE operations into SQL statements for PostgreSQL
      *
      * @param   AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements to execute
+     * @return  array<int, mixed>  Array of SQL statements to execute
      */
     public function compileAlterTable(AlterTableBuilder $builder): array
     {

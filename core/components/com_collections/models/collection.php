@@ -303,7 +303,7 @@ class Collection extends Base
      *   Accepts an array of filters for database query
      *   that retrieves results
      *
-     * @param   array   $filters Filters to apply
+     * @param   array<mixed>   $filters Filters to apply
      * @param   boolean $clear   Clear cached data?
      * @return  mixed   Integer or object
      */

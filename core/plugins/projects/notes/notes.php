@@ -96,7 +96,7 @@ class Notes extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param   string|null  $alias
-     * @return  array   Plugin name and title
+     * @return  array<mixed>   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -115,7 +115,7 @@ class Notes extends Plugin
      * Event call to return count of items
      *
      * @param   object  $model  Project
-     * @return  array   integer
+     * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
     {
@@ -136,9 +136,9 @@ class Notes extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
      * @param   string|null  $tool    Name of tool wiki belongs to
-     * @return  array|null   Return array of html
+     * @return  array<mixed>|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null, $tool = null)
     {
@@ -626,7 +626,7 @@ class Notes extends Plugin
     /**
      * List project notes available for publishing
      *
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function browser()
     {

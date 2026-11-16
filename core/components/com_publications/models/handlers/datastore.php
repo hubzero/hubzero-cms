@@ -33,7 +33,7 @@ class DataStore extends Base
     /**
      * Get default params for the handler
      *
-     * @param   array   $savedConfig
+     * @param   array<mixed>   $savedConfig
      * @return  object
      */
     public function getConfig($savedConfig = [])
@@ -77,7 +77,7 @@ class DataStore extends Base
     /**
      * Draw list of included items
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $attConfigs
      * @param   object   $pub
      * @param   boolean  $authorized
@@ -92,7 +92,7 @@ class DataStore extends Base
     /**
      * Draw attachment
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @param   object  $params
      * @return  void
      */
@@ -105,7 +105,7 @@ class DataStore extends Base
     /**
      * Check for changed selections etc
      *
-     * @param   array   $attachments
+     * @param   array<mixed>   $attachments
      * @return  object
      */
     public function getStatus($attachments)
@@ -140,7 +140,7 @@ class DataStore extends Base
     /**
      * Check against handler-specific requirements
      *
-     * @param   array   $attachments
+     * @param   array<mixed>   $attachments
      * @return  bool
      */
     public function checkRequired($attachments)

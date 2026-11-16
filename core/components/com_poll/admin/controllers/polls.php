@@ -30,7 +30,7 @@ class Polls extends AdminController
     /**
      * Constructor
      *
-     * @param   array  $config  Optional configurations to be used
+     * @param   array<mixed>  $config  Optional configurations to be used
      * @return  void
      */
     public function __construct($config = [])

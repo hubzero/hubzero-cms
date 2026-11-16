@@ -79,7 +79,7 @@ class OneToManyThrough extends OneToMany
      * Get keys based on a given constraint
      *
      * @param   \Closure  $constraint  The constraint function to apply
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -93,7 +93,7 @@ class OneToManyThrough extends OneToMany
      *
      * @param   int     $count     The count to limit by
      * @param   string  $operator  The comparison operator used between the column and the count
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -157,7 +157,7 @@ class OneToManyThrough extends OneToMany
     /**
      * Gets the relations that will be seeded on to the provided rows
      *
-     * @param   array    $keys        The keys for which to fetch related items
+     * @param   array<mixed>    $keys        The keys for which to fetch related items
      * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/
@@ -178,8 +178,8 @@ class OneToManyThrough extends OneToMany
     /**
      * Sorts the relations into arrays keyed by the related key
      *
-     * @param   array  $relations  The relations to sort
-     * @return  array
+     * @param   array<mixed>  $relations  The relations to sort
+     * @return  array<mixed>
      **/
     protected function getResultsByRelatedKey($relations)
     {

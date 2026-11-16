@@ -22,7 +22,7 @@ class Filters
      * Gets the request filters and returns them
      *
      * @param   string  $namespace  The application state variable namespace
-     * @return  array
+     * @return  array<mixed>
      **/
     public static function getFilters($namespace)
     {
@@ -63,8 +63,8 @@ class Filters
     /**
      * Gets the field names
      *
-     * @param   array  $exclude  An array of columns to exclude
-     * @return  array
+     * @param   array<mixed>  $exclude  An array of columns to exclude
+     * @return  array<int, mixed>
      */
     public static function getFieldNames($exclude = [])
     {
@@ -123,7 +123,7 @@ class Filters
      * either by changing the display column (ex: 'user_id' => 'User'),
      * or by changing the display value (ex: '1' to 'yes', or '1000' to Sam Wilson)
      *
-     * @param   array  $q  Query arguments
+     * @param   array<mixed>  $q  Query arguments
      */
     public static function filtersMap($q = [])
     {
@@ -176,9 +176,9 @@ class Filters
      *
      * ex: change hub_id to Hub
      *
-     * @param   array   $vals    incoming values
+     * @param   array<mixed>   $vals    incoming values
      * @param   string  $column  incoming column for which values pertain
-     * @return  array   $return  outgoing values
+     * @return  array<int, mixed>   $return  outgoing values
      */
     public static function filtersOverrides($vals, $column)
     {

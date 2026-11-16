@@ -114,8 +114,8 @@ class Event extends Table
      * Get events for a date range
      *
      * @param   string  $period   Date range [month, year, week, day]
-     * @param   array   $filters  Extra filters to apply to query
-     * @return  array
+     * @param   array<mixed>   $filters  Extra filters to apply to query
+     * @return  array<int, \stdClass>
      */
     public function getEvents($period = 'month', $filters = [])
     {
@@ -290,7 +290,7 @@ class Event extends Table
     /**
      * Get a record count
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -318,8 +318,8 @@ class Event extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {
@@ -364,8 +364,8 @@ class Event extends Table
     /**
      * Find all events matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -379,7 +379,7 @@ class Event extends Table
     /**
      * Get count of events matching filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -394,7 +394,7 @@ class Event extends Table
     /**
      * Build query string for getting list or count of events
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])

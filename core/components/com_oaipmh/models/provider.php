@@ -21,7 +21,7 @@ interface Provider
     /**
      * Return data for records
      *
-     * @param  array  $filters
+     * @param  array<mixed>  $filters
      */
     public function records($filters = []);
 

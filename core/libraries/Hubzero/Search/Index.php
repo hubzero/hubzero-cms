@@ -107,7 +107,7 @@ class Index
     /**
      * delete - Deletes a document from the index
      *
-     * @param string|array $id  A document ID, or the fields of the documents to delete
+     * @param string|array<mixed> $id  A document ID, or the fields of the documents to delete
      * @access public
      * @return mixed
      */

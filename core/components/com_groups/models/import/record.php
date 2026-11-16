@@ -29,14 +29,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Profile
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $description = [];
 
     /**
      * Handlers instances container
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $handlers = [];
 
@@ -44,7 +44,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *  Constructor
      *
      * @param   mixed   $raw      Raw data
-     * @param   array   $options  Import options
+     * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
@@ -482,7 +482,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Return a list of all available processors.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function handlers()
     {

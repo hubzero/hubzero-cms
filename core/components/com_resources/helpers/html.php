@@ -29,7 +29,7 @@ class Html
      * Generate a select form
      *
      * @param   string  $content     Content to filter
-     * @param   array   $disallowed  List of styles to remove
+     * @param   array<mixed>   $disallowed  List of styles to remove
      * @return  string  HTML
      */
     public static function stripStyles($content, $disallowed = [])
@@ -136,7 +136,7 @@ class Html
     /**
      * Generate a select list for groups
      *
-     * @param   array   $groups  Groups to populate list
+     * @param   array<mixed>   $groups  Groups to populate list
      * @param   string  $value   Value to select
      * @param   string  $name
      * @param   string  $class
@@ -228,7 +228,7 @@ class Html
      * Generate a select form
      *
      * @param   string  $name   Field name
-     * @param   array   $array  Data to populate select with
+     * @param   array<mixed>   $array  Data to populate select with
      * @param   mixed   $value  Value to select
      * @param   string  $class  Class to add
      * @return  string  HTML
@@ -553,8 +553,8 @@ class Html
     /**
      * Display resource sub view content
      *
-     * @param   array   $sections  Active plugins' content
-     * @param   array   $cats      Active plugins' names
+     * @param   array<mixed>   $sections  Active plugins' content
+     * @param   array<mixed>   $cats      Active plugins' names
      * @param   string  $active    Current plugin name
      * @param   string  $h         Hide class
      * @param   string  $c         Extra classes
@@ -602,7 +602,7 @@ class Html
      *
      * @param   string  $option  Component name
      * @param   string  $id      Resource ID
-     * @param   array   $cats    Active plugins' names
+     * @param   array<mixed>   $cats    Active plugins' names
      * @param   string  $active  Current plugin name
      * @param   string  $alias   Resource alias
      * @return  string  HTML

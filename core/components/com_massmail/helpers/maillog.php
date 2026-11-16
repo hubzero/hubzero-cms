@@ -133,7 +133,7 @@ class MailLog
      * External deliveries in each of the last 60 minutes, computed live from the
      * log tail. Returns 60 buckets oldest-first: [['label' => 'HH:MM', 'value' => n], ...].
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function sentLastHourByMinute()
     {

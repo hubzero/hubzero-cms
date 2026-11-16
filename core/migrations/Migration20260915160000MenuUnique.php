@@ -155,7 +155,7 @@ class Migration20260915160000MenuUnique extends Base
     /**
      * Menu items sharing a client, parent, alias and language
      *
-     * @return  array  One array of rows per collision
+     * @return  array<mixed>  One array of rows per collision
      */
     protected function duplicates()
     {
@@ -189,7 +189,7 @@ class Migration20260915160000MenuUnique extends Base
     /**
      * Give an item an alias nothing else under its parent is using
      *
-     * @param   array  $row  The one to rename
+     * @param   array<mixed>  $row  The one to rename
      * @return  void
      */
     protected function rename(array $row)

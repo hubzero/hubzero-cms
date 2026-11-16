@@ -28,7 +28,7 @@ class Select extends Element
      * Get the options for the element
      *
      * @param   object  &$node  XMLElement node object containing the settings for the element
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getOptions(&$node)
     {

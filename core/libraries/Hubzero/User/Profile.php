@@ -307,49 +307,49 @@ class Profile extends Obj
     /**
      * List of diabilities
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvDisability = [];
 
     /**
      * List of hispanic options
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvHispanic = [];
 
     /**
      * List of races
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvRace = [];
 
     /**
      * Description for 'auxvAdmin'
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvAdmin = [];
 
     /**
      * Description for 'auxvHost'
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvHost = [];
 
     /**
      * List of Edu levels
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvEdulevel = [];
 
     /**
      * List of roles
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $auxvRole = [];
 
@@ -1289,7 +1289,7 @@ class Profile extends Obj
      * Remove from a list of values for multi-value properties
      *
      * @param   string             $property  Property name
-     * @param   array|string|null  $value     Property values, a single value, or null to remove none
+     * @param   array<mixed>|string|null  $value     Property values, a single value, or null to remove none
      * @return  boolean            True on success, False on error
      */
     public function remove($property, $value)
@@ -1425,7 +1425,7 @@ class Profile extends Obj
      *
      * @param   string  $uid  User ID
      * @param   string  $gid  Group ID
-     * @return  array
+     * @return  array<int, array<string, mixed>>
      */
     public static function getGroupMemberRoles($uid, $gid)
     {
@@ -1470,7 +1470,7 @@ class Profile extends Obj
      * Get the groups for a user
      *
      * @param   string  $role  The group set to return. Returns all groups if not set
-     * @return  array   Array of groups
+     * @return  array<mixed>   Array of groups
      */
     public function getGroups($role = 'all')
     {

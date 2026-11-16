@@ -902,7 +902,7 @@ class Tags extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   array|null  $tags  Tags currently viewing
+     * @param   array<mixed>|null  $tags  Tags currently viewing
      * @return  void
      */
     protected function buildPathway($tags = null)
@@ -937,7 +937,7 @@ class Tags extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   array|null  $tags  Tags currently viewing
+     * @param   array<mixed>|null  $tags  Tags currently viewing
      * @return  void
      */
     protected function buildTitle($tags = null)

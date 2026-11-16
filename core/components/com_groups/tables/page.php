@@ -58,8 +58,8 @@ class Page extends Table
     /**
      * Find all pages matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<mixed>
      */
     public function find($filters = [])
     {
@@ -78,7 +78,7 @@ class Page extends Table
     /**
      * Get count of pages matching filters
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -93,7 +93,7 @@ class Page extends Table
     /**
      * Build query string for getting list or count of pages
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])

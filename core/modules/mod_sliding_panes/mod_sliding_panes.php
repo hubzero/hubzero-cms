@@ -47,7 +47,7 @@ class SlidingPanes extends Module
     /**
      * Get a list of content articles
      *
-     * @return     array
+     * @return     array<mixed>
      */
     private function getList()
     {

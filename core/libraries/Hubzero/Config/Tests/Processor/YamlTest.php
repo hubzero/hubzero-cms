@@ -34,7 +34,7 @@ class YamlTest extends TestCase
     /**
      * Expected datain array form
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $arr = null;
 

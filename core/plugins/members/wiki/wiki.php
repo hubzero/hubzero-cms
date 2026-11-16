@@ -26,7 +26,7 @@ class Wiki extends Plugin
     /**
      * Return a list of categories
      *
-     * @return array
+     * @return array<mixed>
      */
     public function &onMembersContributionsAreas()
     {
@@ -63,8 +63,8 @@ class Wiki extends Plugin
      * @param  integer $limit      Number of record to return
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
-     * @param  array|null   $areas      Areas to return data for
-     * @return array|int|\Hubzero\Database\Rows
+     * @param  array<mixed>|null   $areas      Areas to return data for
+     * @return array<mixed>|int|\Hubzero\Database\Rows
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {

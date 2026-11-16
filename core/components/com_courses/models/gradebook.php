@@ -64,9 +64,9 @@ class GradeBook extends Base
      * provide a scope, limiting the grades to an array of items, such as unit, course, or asset.
      * The results will be returned as an array with student id as the uppermost key.
      *
-     * @param      int|array|null $scope      scope for which to pull grades (unit, course, asset)
-     * @param      int|array|null $member_id  user id for which to pull grades
-     * @return     array $grades
+     * @param      int|array<mixed>|null $scope      scope for which to pull grades (unit, course, asset)
+     * @param      int|array<mixed>|null $member_id  user id for which to pull grades
+     * @return     array<mixed> $grades
      */
     public function grades($scope = null, $member_id = null)
     {
@@ -119,7 +119,7 @@ class GradeBook extends Base
      * Generate summary statistics
      *
      * @param      bool  $section - section only?
-     * @return     array $stats
+     * @return     array<mixed> $stats
      */
     public function summaryStats($section = true)
     {
@@ -165,7 +165,7 @@ class GradeBook extends Base
      * entire view, or an exam, where we know when they've actually finished it).
      *
      * @param      int|null $member_id
-     * @return     array $progress
+     * @return     array<mixed> $progress
      */
     public function progress($member_id = null)
     {
@@ -301,7 +301,7 @@ class GradeBook extends Base
      * Get asset views/completions
      *
      * @param  (int) $member_id
-     * @return (array)
+     * @return (array<mixed>)
      **/
     public function views($member_id)
     {
@@ -329,7 +329,7 @@ class GradeBook extends Base
     /**
      * Calculate scores for each unit and the course as a whole
      *
-     * @param      int|array|null $member_id
+     * @param      int|array<mixed>|null $member_id
      * @param      int|null|mixed $asset_id
      * @return     boolean true on success, false otherwise
      */
@@ -587,7 +587,7 @@ class GradeBook extends Base
      *
      * @param      int|null|mixed $member_id (optional)
      * @param      bool $section only (optional)
-     * @return     array|false
+     * @return     array<mixed>|false
      **/
     public function passing($section = true, $member_id = null)
     {
@@ -679,8 +679,8 @@ class GradeBook extends Base
     /**
      * Check whether or not the student is passing the course and has completed all items
      *
-     * @param      int|array|null $member_id
-     * @return     array
+     * @param      int|array<mixed>|null $member_id
+     * @return     array<int, mixed>
      **/
     public function isEligibleForRecognition($member_id = null)
     {
@@ -874,7 +874,7 @@ class GradeBook extends Base
     /**
      * Get grades for this course
      *
-     * @return array
+     * @return array<mixed>
      **/
     private function fetchGrades($filters = [])
     {

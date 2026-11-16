@@ -113,7 +113,7 @@ class Courses extends Obj
      * Get a list of courses
      *   Accepts an array of filters to build query from
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean $clear   Clear cached results?
      * @return     mixed
      */
@@ -163,7 +163,7 @@ class Courses extends Obj
      * Get a list of courses
      *   Accepts an array of filters to build query from
      *
-     * @param      array $filters Filters to build query from
+     * @param      array<mixed> $filters Filters to build query from
      * @return     mixed
      */
     public function tags($what = 'cloud', $filters = [], $clear = false)

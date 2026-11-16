@@ -30,7 +30,7 @@ class Csp extends Plugin
     /**
      * List of policies we can enforce
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $policies = [
         'base-uri',

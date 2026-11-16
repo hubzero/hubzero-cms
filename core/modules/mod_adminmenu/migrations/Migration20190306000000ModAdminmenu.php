@@ -19,7 +19,7 @@ class Migration20190306000000ModAdminmenu extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $components = [
         'com_cache',

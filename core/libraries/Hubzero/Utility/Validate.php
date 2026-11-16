@@ -20,7 +20,7 @@ class Validate
     /**
      * Some complex patterns needed in multiple places
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $pattern = [
         'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})',
@@ -34,7 +34,7 @@ class Validate
      * $check can be passed as an array:
      * array('check' => 'valueToCheck');
      *
-     * @param   string|array  $check  Value to check
+     * @param   string|array<mixed>  $check  Value to check
      * @return  boolean  Success
      */
     public static function notEmpty($check)
@@ -59,7 +59,7 @@ class Validate
      * $check can be passed as an array:
      * array('check' => 'valueToCheck');
      *
-     * @param   string|array  $check  Value to check
+     * @param   string|array<mixed>  $check  Value to check
      * @return  boolean  Success
      */
     public static function alphaNumeric($check)
@@ -99,7 +99,7 @@ class Validate
      * $check can be passed as an array:
      * array('check' => 'valueToCheck');
      *
-     * @param   string|array|int|null  $check  Value to check
+     * @param   string|array<mixed>|int|null  $check  Value to check
      * @return  boolean  Success
      */
     public static function blank($check)
@@ -558,7 +558,7 @@ class Validate
      * Only uses getmxrr() checking for deep validation if PHP 5.3.0+ is used, or
      * any PHP version on a non-windows distribution
      *
-     * @param   string|array   $check  Value to check
+     * @param   string|array<mixed>   $check  Value to check
      * @param   boolean|null  $deep   Perform a deeper validation (if true), by also checking availability of host
      * @param   string|null   $regex  Regex to use (if none it will use built in regex)
      * @return  boolean  Success
@@ -653,7 +653,7 @@ class Validate
      *
      * @see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
      *
-     * @param  string|array $check   Value to check (string or array)
+     * @param  string|array<mixed> $check   Value to check (string or array)
      * @param  string|null       $regex   Regular expression to use
      * @param  string       $country Country code (defaults to 'all')
      * @return boolean Success
@@ -750,8 +750,8 @@ class Validate
      * Get the values to use when value sent to validation method is
      * an array.
      *
-     * @param   array  $params  Parameters sent to validation method
-     * @return  array
+     * @param   array<mixed>  $params  Parameters sent to validation method
+     * @return  array<mixed>
      * @codeCoverageIgnore
      */
     protected static function defaults($params)

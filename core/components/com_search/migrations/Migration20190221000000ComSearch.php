@@ -18,7 +18,7 @@ class Migration20190221000000ComSearch extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__search_blacklist' => [

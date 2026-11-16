@@ -109,7 +109,7 @@ class Idp extends SiteController
      * untrusted issuer never receives signed XML (DESIGN.md §7.2).
      *
      * @param   object  $request  \Psr\Http\Message\ServerRequestInterface
-     * @return  array   [AuthnRequest, ServiceProvider]
+     * @return  array<int, mixed>   [AuthnRequest, ServiceProvider]
      */
     protected function validateAuthnRequest($request)
     {

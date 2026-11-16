@@ -86,7 +86,7 @@ class Asset extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -161,7 +161,7 @@ class Asset extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string|null Return course units
      */
     public function count($filters = [])
@@ -179,8 +179,8 @@ class Asset extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
-     * @return array Return course units
+     * @param  array<mixed> $filters
+     * @return array<int, \stdClass> Return course units
      */
     public function find($filters = [])
     {
@@ -215,8 +215,8 @@ class Asset extends Table
      *
      * @param  string $scope
      * @param  int    $scope_id
-     * @param  array  $filters
-     * @return array Return course assets
+     * @param  array<mixed>  $filters
+     * @return array<int, \stdClass> Return course assets
      */
     public function findByScope($scope, $scope_id, $filters = [])
     {

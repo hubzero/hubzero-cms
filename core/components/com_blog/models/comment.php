@@ -96,7 +96,7 @@ class Comment extends Relational
     /**
      * Generates automatic state field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticState($data)
@@ -110,7 +110,7 @@ class Comment extends Relational
     /**
      * Generates automatic state field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticAnonymous($data)
@@ -124,7 +124,7 @@ class Comment extends Relational
     /**
      * Generates automatic state field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticParent($data)
@@ -138,7 +138,7 @@ class Comment extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -149,7 +149,7 @@ class Comment extends Relational
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -273,7 +273,7 @@ class Comment extends Relational
     /**
      * Get either a count of or list of replies
      *
-     * @param   array  $filters  Filters to apply to query
+     * @param   array<mixed>  $filters  Filters to apply to query
      * @return  object
      */
     public function replies($filters = [])

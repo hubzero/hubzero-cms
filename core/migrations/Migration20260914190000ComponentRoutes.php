@@ -42,7 +42,7 @@ class Migration20260914190000ComponentRoutes extends Base
      * for a different reason: it routes through articles and categories and has
      * never answered at /content.
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $notPages = [
         'com_content',

@@ -98,7 +98,7 @@ class Field extends Relational
     /**
      * Generates automatic name field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticName($data)
@@ -143,7 +143,7 @@ class Field extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)

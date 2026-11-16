@@ -71,7 +71,7 @@ class Mailing extends Relational
      * `modified_by` are stamped on any content or status change without each
      * caller having to set them.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $renew = [
         'modified',
@@ -81,7 +81,7 @@ class Mailing extends Relational
     /**
      * Generate the automatic `modified` value (now).
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticModified($data)
@@ -92,7 +92,7 @@ class Mailing extends Relational
     /**
      * Generate the automatic `modified_by` value (current user).
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  integer
      */
     public function automaticModifiedBy($data)
@@ -231,7 +231,7 @@ class Mailing extends Relational
     /**
      * Human-readable list of selectable statuses
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function statuses()
     {

@@ -78,7 +78,7 @@ class TokenProb extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)

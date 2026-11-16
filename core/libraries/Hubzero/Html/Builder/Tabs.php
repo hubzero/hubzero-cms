@@ -24,7 +24,7 @@ class Tabs
      * Creates a panes and creates the JavaScript object for it.
      *
      * @param   string  $group   The pane identifier.
-     * @param   array   $params  An array of option.
+     * @param   array<mixed>   $params  An array of option.
      * @return  string
      */
     public static function start($group = 'tabs', $params = [])
@@ -72,7 +72,7 @@ class Tabs
      * Load the JavaScript behavior.
      *
      * @param   string  $group   The pane identifier.
-     * @param   array   $params  Array of options.
+     * @param   array<mixed>   $params  Array of options.
      * @return  void
      */
     protected static function behavior($group, $params = [])

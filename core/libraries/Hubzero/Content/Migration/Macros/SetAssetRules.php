@@ -21,7 +21,7 @@ class SetAssetRules extends Macro
      * Sets the asset rules
      *
      * @param   string  $element  The element to which the rules apply
-     * @param   array   $rules    The incoming rules to set
+     * @param   array<mixed>   $rules    The incoming rules to set
      * @return  bool
      **/
     public function __invoke($element, $rules)

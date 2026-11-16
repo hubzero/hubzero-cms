@@ -67,7 +67,7 @@ class Preference extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param  array $data The data being saved
+     * @param  array<mixed> $data The data being saved
      * @return string
      */
     public function automaticModified($data)

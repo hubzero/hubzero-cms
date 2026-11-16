@@ -52,7 +52,7 @@ class Manager extends Obj
      * - fix_browser
      * - fix_adress
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $security = ['fix_browser'];
 
@@ -82,7 +82,7 @@ class Manager extends Obj
      * Constructor
      *
      * @param   string  $store    The type of storage for the session.
-     * @param   array   $options  Optional parameters
+     * @param   array<mixed>   $options  Optional parameters
      */
     public function __construct($store = 'none', $options = [])
     {
@@ -246,7 +246,7 @@ class Manager extends Obj
     /**
      * Checks for a form token in the request.
      *
-     * @param   string|array  $method  The request method, or methods, in which to look for the token key.
+     * @param   string|array<mixed>  $method  The request method, or methods, in which to look for the token key.
      * @param   boolean  $capture  Return result instead of throwing exception?
      * @return  boolean  True if found and valid, false otherwise.
      */
@@ -319,7 +319,7 @@ class Manager extends Obj
     /**
      * Get the session handlers
      *
-     * @return  array  An array of available session handlers
+     * @return  array<mixed>  An array of available session handlers
      */
     public static function getStores()
     {
@@ -767,7 +767,7 @@ class Manager extends Obj
     /**
      * Set additional session options
      *
-     * @param   array    $options  List of parameter
+     * @param   array<mixed>    $options  List of parameter
      * @return  boolean  True on success
      */
     protected function setOptions($options)

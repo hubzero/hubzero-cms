@@ -22,7 +22,7 @@ class Store extends Plugin
      * Constructor
      *
      * @param   object  &$subject  The object to observe
-     * @param   array   $config    An optional associative array of configuration settings
+     * @param   array<mixed>   $config    An optional associative array of configuration settings
      */
     public function __construct(&$subject, $config)
     {
@@ -39,7 +39,7 @@ class Store extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function onOfferingEdit()
     {

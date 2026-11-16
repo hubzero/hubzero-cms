@@ -248,7 +248,7 @@ class SeedRepairTest extends Basic
     /**
      * @param   SqliteDriver  $db
      * @param   string        $table
-     * @param   array         $rows   Rows keyed by column
+     * @param   array<mixed>         $rows   Rows keyed by column
      * @return  void
      */
     private function insert($db, $table, array $rows)
@@ -265,7 +265,7 @@ class SeedRepairTest extends Basic
     /**
      * @param   SqliteDriver  $db
      * @param   string        $table
-     * @param   array         $key
+     * @param   array<mixed>         $key
      * @param   string        $column
      * @param   string        $value
      * @return  void
@@ -281,7 +281,7 @@ class SeedRepairTest extends Basic
     /**
      * @param   SqliteDriver  $db
      * @param   string        $table
-     * @return  array
+     * @return  array<mixed>
      */
     private function rows($db, $table)
     {

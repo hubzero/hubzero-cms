@@ -343,7 +343,7 @@ class Goals extends Radio
     /**
      * Render the supplied value
      *
-     * @param   array|string  $value
+     * @param   array<mixed>|string  $value
      * @return  string
      */
     public function renderValue($value)

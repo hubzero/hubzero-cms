@@ -26,7 +26,7 @@ class Menus
     /**
      * Defines the valid request variables for the reverse lookup.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $filter = ['option', 'view', 'layout'];
 
@@ -94,7 +94,7 @@ class Menus
     /**
      * Get the menu list for create a menu module
      *
-     * @return  array  The menu array list
+     * @return  array<mixed>  The menu array list
      */
     public static function getMenuTypes()
     {
@@ -113,8 +113,8 @@ class Menus
      * @param   int     $parentId   An optional parent ID to pivot results around.
      * @param   int     $mode       An optional mode. If parent ID is set and mode=2,
      *                              the parent and children are excluded from the list.
-     * @param   array   $published  An optional array of states
-     * @param   array   $languages
+     * @param   array<mixed>   $published  An optional array of states
+     * @param   array<mixed>   $languages
      * @return  mixed
      */
     public static function getMenuLinks(
@@ -236,7 +236,7 @@ class Menus
      * Get associations
      *
      * @param   integer  $pk
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getAssociations($pk)
     {

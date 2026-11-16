@@ -59,7 +59,7 @@ class View extends Obj
     /**
      * Root directory of the override
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $overrideRoot = null;
 
@@ -94,7 +94,7 @@ class View extends Obj
     /**
      * The set of search directories for resources (templates)
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $searchPaths = [
         'template' => [],
@@ -118,14 +118,14 @@ class View extends Obj
     /**
      * The registered helpers.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $helpers = [];
 
     /**
      * Constructor
      *
-     * @param   array  $config  A named configuration array for object construction.<br/>
+     * @param   array<mixed>  $config  A named configuration array for object construction.<br/>
      *                          name: the name (optional) of the view (defaults to the view class name suffix).<br/>
      *                          charset: the character set to use for display<br/>
      *                          escape: the name (optional) of the function to use for escaping strings<br/>
@@ -639,7 +639,7 @@ class View extends Obj
      * Create the filename for a resource
      *
      * @param   string  $type   The resource type to create the filename for
-     * @param   array   $parts  An associative array of filename information
+     * @param   array<mixed>   $parts  An associative array of filename information
      * @return  string  The filename
      */
     protected function createFileName($type, $parts = [])
@@ -726,7 +726,7 @@ class View extends Obj
      * Dynamically handle calls to the class.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      * @throws  \BadMethodCallException
      * @since   1.3.1

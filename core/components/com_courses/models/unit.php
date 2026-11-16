@@ -189,8 +189,8 @@ class Unit extends Base
      * Reset the asset groups to top level
      *
      * @param   mixed $idx     Index value
-     * @param   array $filters Filters to apply to results query
-     * @return  array
+     * @param   array<mixed> $filters Filters to apply to results query
+     * @return  array<mixed>
      */
     public function resetAssetgroups($idx = null, $filters = [])
     {
@@ -205,7 +205,7 @@ class Unit extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param   mixed $idx     Index value
-     * @param   array $filters Filters to apply to results query
+     * @param   array<mixed> $filters Filters to apply to results query
      * @return  mixed  The list, one asset group, or a list of ids or titles, as asked
      */
     public function assetgroups($idx = null, $filters = [])
@@ -373,7 +373,7 @@ class Unit extends Base
      * Get a list of assets for a unit
      *   Accepts an array of filters to apply to the list of assets
      *
-     * @param   array $filters Filters to apply
+     * @param   array<mixed> $filters Filters to apply
      * @return  object \Components\Courses\Models\Iterator
      */
     public function assets($filters = [])

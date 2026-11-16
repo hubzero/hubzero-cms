@@ -52,7 +52,7 @@ abstract class Format
      * Converts an object into a formatted string.
      *
      * @param   object  $object   Data Source Object.
-     * @param   array|null   $options  An array of options for the formatter.
+     * @param   array<mixed>|null   $options  An array of options for the formatter.
      * @return  string  Formatted string.
      */
     abstract public function objectToString($object, $options = null);
@@ -61,7 +61,7 @@ abstract class Format
      * Converts a formatted string into an object.
      *
      * @param   string  $data     Formatted string
-     * @param   array|null   $options  An array of options for the formatter.
+     * @param   array<mixed>|null   $options  An array of options for the formatter.
      * @return  object  Data Object
      */
     abstract public function stringToObject($data, $options = null);

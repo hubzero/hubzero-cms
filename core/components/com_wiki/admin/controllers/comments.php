@@ -135,8 +135,8 @@ class Comments extends AdminController
      *
      * @param   integer  $id        Parent ID
      * @param   string   $indent    Indent text
-     * @param   array    $list      List of records
-     * @param   array    $children  Container for parent/children mapping
+     * @param   array<mixed>    $list      List of records
+     * @param   array<mixed>    $children  Container for parent/children mapping
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type

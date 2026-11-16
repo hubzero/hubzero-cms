@@ -50,7 +50,7 @@ abstract class Modules
     /**
      * Get a list of filter options for the state of a module.
      *
-     * @return  array  An array of option elements.
+     * @return  array<int, mixed>  An array of option elements.
      */
     public static function getStateOptions()
     {
@@ -66,7 +66,7 @@ abstract class Modules
     /**
      * Get a list of filter options for the application clients.
      *
-     * @return  array  An array of option elements.
+     * @return  array<int, mixed>  An array of option elements.
      */
     public static function getClientOptions()
     {
@@ -82,7 +82,7 @@ abstract class Modules
      * Get a list of postions
      *
      * @param   integer  $clientId
-     * @return  array    An array of option elements.
+     * @return  array<int, mixed>    An array of option elements.
      */
     public static function getPositions($clientId)
     {
@@ -126,7 +126,7 @@ abstract class Modules
      * @param   integer  $clientId
      * @param   integer|string $state
      * @param   string   $template
-     * @return  array
+     * @return  array<\stdClass>
      */
     public static function getTemplates($clientId = 0, $state = '', $template = '')
     {
@@ -157,7 +157,7 @@ abstract class Modules
      * Get a list of the unique modules installed in the client application.
      *
      * @param   integer  $clientId  The client id.
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getModules($clientId)
     {
@@ -199,7 +199,7 @@ abstract class Modules
      * Get a list of the assignment options for modules to menus.
      *
      * @param   integer  $clientId  The client id.
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getAssignmentOptions($clientId)
     {
@@ -220,7 +220,7 @@ abstract class Modules
      *
      * @param   integer  $clientId  The client id
      * @param   string   $state     The state of the template
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function templates($clientId = 0, $state = '')
     {
@@ -235,7 +235,7 @@ abstract class Modules
     /**
      * Get a list of template types
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function types()
     {
@@ -248,7 +248,7 @@ abstract class Modules
     /**
      * Get a list of template states
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function templateStates()
     {
@@ -348,7 +348,7 @@ abstract class Modules
      * Method to get the field options.
      *
      * @param   integer  $clientId  The client ID
-     * @return  array    The field option objects.
+     * @return  array<mixed>    The field option objects.
      */
     public static function positionList($clientId = 0)
     {

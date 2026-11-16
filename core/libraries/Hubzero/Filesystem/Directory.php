@@ -66,7 +66,7 @@ class Directory extends Entity
      * Gets a list of directory objects with a depth for walking a directory structure
      *
      * @param       int $depth  How deep you currently are since beginning to walk
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function getSubDirs($depth = 0)
     {

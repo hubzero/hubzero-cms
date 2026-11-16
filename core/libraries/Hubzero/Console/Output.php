@@ -18,7 +18,7 @@ class Output
     /**
      * Array containing lines to be rendered out
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $response = [];
 
@@ -89,7 +89,7 @@ class Output
     /**
      * Add a new line to the output buffer (not actually a real php output buffer)
      *
-     * @param   string|array|bool  $message  Text of line
+     * @param   string|array<mixed>|bool  $message  Text of line
      * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for
      *                            posibilities)
      * @param   bool    $newLine  Whether or not line should end with a new line
@@ -164,7 +164,7 @@ class Output
     /**
      * Renders rows in a table-like structure
      *
-     * @param   array  $rows     The rows of text to render
+     * @param   array<mixed>  $rows     The rows of text to render
      * @param   bool   $headers  If the first row contains header information
      * @return  $this
      **/
@@ -237,7 +237,7 @@ class Output
      * can also be provided with a message type, which translates to
      * one of the predefined styles used in formatLine().
      *
-     * @param   array  $lines  Array of lines to add
+     * @param   array<mixed>  $lines  Array of lines to add
      * @return  void
      **/
     public function addLinesFromArray($lines)
@@ -250,7 +250,7 @@ class Output
     /**
      * Helper method to add an associative array to the output buffer.
      *
-     * @param array $lines The lines to add
+     * @param array<mixed> $lines The lines to add
      * @return void
      **/
     public function addRawFromAssocArray($lines, $indentation = 0)
@@ -426,7 +426,7 @@ class Output
      * @param   callable  $callback  Function to call for each item, receives ($item, $key, $progress)
      * @param   string    $message   Optional message to display before progress
      * @param   string    $type      Progress type ('percentage', 'ratio', 'bar', 'bar_eta')
-     * @return  array     Results from each callback invocation
+     * @return  array<mixed>     Results from each callback invocation
      **/
     public function withProgress($items, callable $callback, string $message = '', string $type = 'bar'): array
     {
@@ -468,7 +468,7 @@ class Output
      * @param   string    $message        Optional message to display before progress
      * @param   string    $type           Progress type
      * @param   string    $finishMessage  Message to display when complete
-     * @return  array     Results from each callback invocation
+     * @return  array<mixed>     Results from each callback invocation
      **/
     public function withProgressFinish(
         $items,

@@ -18,7 +18,7 @@ class Migration20190306000000ComWhatsnew extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $components = [
         'com_whatsnew',

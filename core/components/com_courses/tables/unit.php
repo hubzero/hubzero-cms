@@ -114,7 +114,7 @@ class Unit extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -151,7 +151,7 @@ class Unit extends Table
     /**
      * Get a count of course offering units
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string|null Return course units
      */
     public function count($filters = [])
@@ -166,8 +166,8 @@ class Unit extends Table
     /**
      * Get an object list of course offering units
      *
-     * @param  array $filters
-     * @return array|null Return course units
+     * @param  array<mixed> $filters
+     * @return array<int, \stdClass>|null Return course units
      */
     public function find($filters = [])
     {

@@ -99,7 +99,7 @@ class Menu extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticMenutype($data)
@@ -397,7 +397,7 @@ class Menu extends Relational
     /**
      * Gets a list of all mod_mainmenu modules and collates them by menutype
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getModules()
     {

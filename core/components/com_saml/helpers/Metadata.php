@@ -42,7 +42,7 @@ class Metadata
      * them. Formats absent here (transient, kerberos, X.509 subject names…)
      * are ignored on import and left for an admin to decide.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $nameIdSources = [
         'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress' => 'email',
@@ -116,7 +116,7 @@ class Metadata
      * Parse an SP EntityDescriptor into ServiceProvider field values
      *
      * @param   string  $xml
-     * @return  array|false  array with entity_id, acs_url, slo_url,
+     * @return  array<mixed>|false  array with entity_id, acs_url, slo_url,
      *                       signing_cert, want_requests_signed — or false
      */
     public static function parse($xml)

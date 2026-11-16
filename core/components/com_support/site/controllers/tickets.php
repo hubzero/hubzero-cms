@@ -2313,7 +2313,7 @@ class Tickets extends SiteController
     /**
      * Parses incoming data for ticket filtering on the main ticket list
      *
-     * @return  array  An array of filters to apply
+     * @return  array<mixed>  An array of filters to apply
      */
     private function getFilters()
     {

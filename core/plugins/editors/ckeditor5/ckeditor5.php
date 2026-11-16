@@ -131,7 +131,7 @@ class Ckeditor5 extends Plugin
      * @param  string|null  $id  An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
      * @param   string|null   $asset
      * @param   object|null   $author
-     * @param   array    $params  Associative array of editor parameters.
+     * @param   array<mixed>    $params  Associative array of editor parameters.
      * @return  string
      */
     public function onDisplay(
@@ -379,8 +379,8 @@ class Ckeditor5 extends Plugin
      * Build a config object
      *
      * @param   string $delimiter
-     * @param   string|array $input
-     * @return  array
+     * @param   string|array<mixed> $input
+     * @return  array<mixed>
      */
     private function split($delimiter, $input)
     {

@@ -24,13 +24,13 @@ class MappedDiff extends Diff
      * case-insensitive diffs, or diffs which ignore
      * changes in white-space.
      *
-     * @param   array  $from_lines          An array of strings. (Typically these are lines from a file.)
-     * @param   array  $to_lines Parameter  An array of strings.
-     * @param   array  $mapped_from_lines   This array should have the same size number of elements as
+     * @param   array<mixed>  $from_lines          An array of strings. (Typically these are lines from a file.)
+     * @param   array<mixed>  $to_lines Parameter  An array of strings.
+     * @param   array<mixed>  $mapped_from_lines   This array should have the same size number of elements as
      *                                      $from_lines. The elements in $mapped_from_lines and
      *                                      $mapped_to_lines are what is actually compared when
      *                                      computing the diff.
-     * @param   array  $mapped_to_lines     This array should have the same number of elements as $to_lines.
+     * @param   array<mixed>  $mapped_to_lines     This array should have the same number of elements as $to_lines.
      * @return  void
      */
     public function __construct($from_lines, $to_lines, $mapped_from_lines, $mapped_to_lines)

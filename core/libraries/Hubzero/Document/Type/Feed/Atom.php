@@ -36,7 +36,7 @@ class Atom extends Renderer
      * Render the feed.
      *
      * @param   string  $name     The name of the element to render
-     * @param   array|null   $params   Array of values
+     * @param   array<mixed>|null   $params   Array of values
      * @param   string|null  $content  Override the output of the renderer
      * @return  string  The output of the script
      */

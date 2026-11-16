@@ -626,7 +626,7 @@ class Media extends SiteController
      * request facts) makes the next occurrence diagnosable instead of silent.
      *
      * @param   string  $reason   Short reason / branch identifier
-     * @param   array   $context  Extra key => value context
+     * @param   array<mixed>   $context  Extra key => value context
      * @return  void
      */
     protected function logUploadIssue($reason, $context = [])

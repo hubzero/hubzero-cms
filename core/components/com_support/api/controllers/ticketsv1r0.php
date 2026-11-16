@@ -151,7 +151,7 @@ class Ticketsv1r0 extends ApiController
      * Calculate time
      *
      * @param   string|null  $val  Timestamp or word [month, year, week, day]
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     private function toTimestamp($val = null)
     {

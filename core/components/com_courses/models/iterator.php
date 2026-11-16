@@ -30,14 +30,14 @@ class Iterator implements \Countable, \Iterator
     /**
      * Container for properties
      *
-     * @var array
+     * @var array<mixed>
      */
     private $data = [];
 
     /**
      * Constructor
      *
-     * @param      array|null $data Array of data
+     * @param      array<mixed>|null $data Array of data
      * @return     void
      */
     public function __construct($data = null)

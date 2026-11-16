@@ -30,7 +30,7 @@ class Arr
     /**
      * Option to set the object key to sort on.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $sortKey;
 
@@ -94,7 +94,7 @@ class Arr
     /**
      * Utility function to map an array to a string.
      *
-     * @param   array|null    $array         The array to map.
+     * @param   array<mixed>|null    $array         The array to map.
      * @param   string   $inner_glue    The glue (optional, defaults to '=') between the key and the value.
      * @param   string   $outer_glue    The glue (optional, defaults to ' ') between array elements.
      * @param   boolean  $keepOuterKey  True if final key should be kept.
@@ -127,7 +127,7 @@ class Arr
      * @param   mixed    $item     The source object or array
      * @param   boolean  $recurse  True to recurse through multi-level objects
      * @param   string|null   $regex    An optional regular expression to match on field names
-     * @return  array  The array mapped from the given object
+     * @return  array<mixed>  The array mapped from the given object
      */
     public static function fromObject($item, $recurse = true, $regex = null)
     {
@@ -158,7 +158,7 @@ class Arr
      *
      * @param   array|mixed   &$array  The source array
      * @param   string  $index   The index of the column or name of object property
-     * @return  array  Column of values from the source array
+     * @return  array<int, mixed>  Column of values from the source array
      */
     public static function getColumn(&$array, $index)
     {
@@ -184,7 +184,7 @@ class Arr
     /**
      * Utility function to return a value from a named array or a specified default
      *
-     * @param   array   &$array   A named array
+     * @param   array<mixed>   &$array   A named array
      * @param   string|int  $name     The key to search for
      * @param   mixed   $default  The default value to give if no key found
      * @param   string  $type     Return type for the variable (INT, FLOAT, STRING, WORD, BOOLEAN, ARRAY)
@@ -271,10 +271,10 @@ class Arr
     /**
      * Pivots an array to create a reverse lookup of an array of scalars, arrays or objects.
      *
-     * @param   array   $source  The source array.
+     * @param   array<mixed>   $source  The source array.
      * @param   string|null  $key     Where the elements of the source array are objects or arrays, the key to pivot on.
-     * @return  array   An array of arrays pivoted either on the value of the keys, or an individual key of an object or
-     *                  array.
+     * @return  array<mixed>   An array of arrays pivoted either on the value of the keys, or an individual key of an
+     *                         object or array.
      */
     public static function pivot($source, $key = null)
     {
@@ -331,13 +331,13 @@ class Arr
     /**
      * Utility function to sort an array of objects on a given field
      *
-     * @param   array  &$a             An array of objects
+     * @param   array<mixed>  &$a             An array of objects
      * @param   mixed  $k              The key (string) or a array of key to sort on
      * @param   mixed  $direction      Direction (integer) or an array of direction to sort in [1 = Ascending] [-1 =
      *                                 Descending]
      * @param   mixed  $caseSensitive  Boolean or array of booleans to let sort occur case sensitive or insensitive
      * @param   mixed  $locale         Boolean or array of booleans to let sort occur using the locale language or not
-     * @return  array  The sorted array of objects
+     * @return  array<mixed>  The sorted array of objects
      */
     public static function sortObjects(&$a, $k, $direction = 1, $caseSensitive = true, $locale = false)
     {
@@ -365,8 +365,8 @@ class Arr
     /**
      * Callback function for sorting an array of objects on a key
      *
-     * @param   array    &$a  An array of objects
-     * @param   array    &$b  An array of objects
+     * @param   array<mixed>    &$a  An array of objects
+     * @param   array<mixed>    &$b  An array of objects
      * @return  integer  Comparison status
      */
     protected static function compareObjects($a, $b)
@@ -442,9 +442,9 @@ class Arr
     /**
      * Filters keys from given array based on whitelist
      *
-     * @param    array   $unfiltered   Array to filter
-     * @param    array   $whitelist    List of allowed keys
-     * @return   array
+     * @param    array<mixed>   $unfiltered   Array to filter
+     * @param    array<mixed>   $whitelist    List of allowed keys
+     * @return   array<mixed>
      */
     public static function filterKeys($unfiltered, $whitelist)
     {
@@ -458,7 +458,7 @@ class Arr
     /**
      * Returns value under given key and removes key from array
      *
-     * @param   array    $array    Array to pluck from
+     * @param   array<mixed>    $array    Array to pluck from
      * @param   string   $name     Key to search for
      * @param   mixed    $default  Default value to return if key not found
      * @return   mixed
@@ -477,8 +477,8 @@ class Arr
      * strings in an array.
      *
      * @codeCoverageIgnore
-     * @param   array  $data
-     * @return  array
+     * @param   array<mixed>  $data
+     * @return  array<mixed>
      */
     public static function meMatey($data)
     {

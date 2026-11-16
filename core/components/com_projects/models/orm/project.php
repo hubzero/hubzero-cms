@@ -223,7 +223,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -237,7 +237,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      */
     public function automaticCreatedByUser($data)

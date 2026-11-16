@@ -20,7 +20,7 @@ class Truncate extends AbstractHelper
      *
      * @param   string|null   $text     Text to truncate
      * @param   integer|null|mixed  $length   Length to truncate to
-     * @param   array    $options  Options
+     * @param   array<mixed>    $options  Options
      * @return  string
      * @throws  \InvalidArgumentException If no text is passed or length isn't a positive integer
      */

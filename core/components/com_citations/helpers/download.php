@@ -41,7 +41,7 @@ class Download
     /**
      * List of formatters
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $formatters = [];
 

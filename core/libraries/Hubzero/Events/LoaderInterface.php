@@ -24,7 +24,7 @@ interface LoaderInterface
      * Load the given listener group.
      *
      * @param   string  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public function loadListeners($group);
 }

@@ -57,7 +57,7 @@ class View extends AbstractView
     /**
      * Constructor
      *
-     * @param   array  $config  A named configuration array for object construction.<br/>
+     * @param   array<mixed>  $config  A named configuration array for object construction.<br/>
      * @return  void
      */
     public function __construct($config = [])
@@ -146,7 +146,7 @@ class View extends AbstractView
      * Dynamically handle calls to the class.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      * @throws  \BadMethodCallException
      * @since   1.3.1

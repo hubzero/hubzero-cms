@@ -23,9 +23,9 @@ class Premis
     /**
      * Register (or find) a user and manage course enrollment
      *
-     * @param   array  $user     User data: fName, lName, email, casId, premisId, password, premisEnrollmentId
-     * @param   array  $courses  Course data: add, drop (course aliases)
-     * @return  array  ['status' => 'ok'|'error', 'message' => '...']
+     * @param   array<mixed>  $user     User data: fName, lName, email, casId, premisId, password, premisEnrollmentId
+     * @param   array<mixed>  $courses  Course data: add, drop (course aliases)
+     * @return  array<mixed>  ['status' => 'ok'|'error', 'message' => '...']
      */
     public static function doRegistration($user, $courses)
     {
@@ -82,7 +82,7 @@ class Premis
     /**
      * Create a new user account from PREMIS data
      *
-     * @param   array  $user  User data array
+     * @param   array<mixed>  $user  User data array
      * @return  User|false
      */
     protected static function createUser($user)
@@ -170,7 +170,7 @@ class Premis
      *
      * @param   int     $userId   User ID
      * @param   string  $courses  Comma-separated course aliases
-     * @return  array   Status messages
+     * @return  array<int, mixed>   Status messages
      */
     protected static function enrollInCourses($userId, $courses)
     {
@@ -217,7 +217,7 @@ class Premis
      *
      * @param   int     $userId   User ID
      * @param   string  $courses  Comma-separated course aliases
-     * @return  array   Status messages
+     * @return  array<int, mixed>   Status messages
      */
     protected static function dropFromCourses($userId, $courses)
     {

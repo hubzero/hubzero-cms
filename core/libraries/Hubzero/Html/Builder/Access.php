@@ -20,7 +20,7 @@ class Access
     /**
      * A cached array of the asset groups
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected static $asset_groups = null;
 
@@ -125,7 +125,7 @@ class Access
      * Returns a UL list of user groups with check boxes
      *
      * @param   string   $name             The name of the checkbox controls array
-     * @param   array    $selected         An array of the checked boxes
+     * @param   array<mixed>    $selected         An array of the checked boxes
      * @param   boolean  $checkSuperAdmin  If false only super admins can add to super admin groups
      * @return  string
      */
@@ -207,7 +207,7 @@ class Access
      * Returns a UL list of actions with check boxes
      *
      * @param   string  $name       The name of the checkbox controls array
-     * @param   array   $selected   An array of the checked boxes
+     * @param   array<mixed>   $selected   An array of the checked boxes
      * @param   string  $component  The component the permissions apply to
      * @param   string  $section    The section (within a component) the permissions apply to
      * @return  string
@@ -263,7 +263,7 @@ class Access
     /**
      * Gets a list of the asset groups as an array of options.
      *
-     * @param   array  $config  An array of options for the options
+     * @param   array<mixed>  $config  An array of options for the options
      * @return  mixed  An array or false if an error occurs
      */
     public static function assetgroups($config = [])
@@ -299,7 +299,7 @@ class Access
      * @param   string  $name      The name of the select element
      * @param   mixed   $selected  The selected asset group id
      * @param   string|null  $attribs   Optional attributes for the select field
-     * @param   array   $config    An array of options for the control
+     * @param   array<mixed>   $config    An array of options for the control
      * @return  mixed   An HTML string or null if an error occurs
      */
     public static function assetgrouplist($name, $selected, $attribs = null, $config = [])

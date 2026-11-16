@@ -75,14 +75,14 @@ class Attachment extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $dimensions = null;
 
     /**
      * Ensure no invalid characters
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticFilename($data)

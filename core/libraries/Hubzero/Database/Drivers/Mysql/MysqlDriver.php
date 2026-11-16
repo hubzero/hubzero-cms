@@ -78,7 +78,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -182,7 +182,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Full version string from server
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'mysql_version': Alias for driver_version (deprecated, use driver_version)
@@ -225,7 +225,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $abstractType  The abstract type name
      * @param   string  $nativeType    The mapped MySQL type
-     * @param   array   $modifiers     Column modifiers
+     * @param   array<mixed>   $modifiers     Column modifiers
      * @return  string  The type with modifiers applied
      */
     protected function applyColumnModifiers(
@@ -265,7 +265,7 @@ class MysqlDriver extends BaseSqlDriver
      * - AFTER and FIRST for column positioning
      *
      * @param   string  $name        The column name
-     * @param   array   $definition  The column definition
+     * @param   array<mixed>   $definition  The column definition
      * @return  string  The SQL column definition string
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -438,7 +438,7 @@ class MysqlDriver extends BaseSqlDriver
      * Returns information about the replication status when running
      * as a master or slave in a replication topology.
      *
-     * @return  array|null  Replication status or null if not replicating
+     * @return  array<mixed>|null  Replication status or null if not replicating
      */
     public function getReplicationStatus()
     {
@@ -508,7 +508,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get list of connected slave servers (when running as master)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSlaveHosts()
     {
@@ -548,7 +548,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * The buffer pool is InnoDB's main memory cache for data and indexes.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getInnodbBufferPoolStats()
     {
@@ -619,7 +619,7 @@ class MysqlDriver extends BaseSqlDriver
      * Requires Performance Schema to be enabled.
      *
      * @param   int  $limit  Maximum number of queries to return
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSlowQueries($limit = 10)
     {
@@ -649,7 +649,7 @@ class MysqlDriver extends BaseSqlDriver
      * Get table I/O statistics from Performance Schema
      *
      * @param   string|null  $table  Table name (optional, returns all if not specified)
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableIoStats($table = null)
     {
@@ -843,7 +843,7 @@ class MysqlDriver extends BaseSqlDriver
      * Get all CHECK constraints for a table
      *
      * @param   string  $table  Table name
-     * @return  array  Array of constraint objects with 'name' and 'expression' properties
+     * @return  array<mixed>  Array of constraint objects with 'name' and 'expression' properties
      */
     public function getCheckConstraints(string $table): array
     {
@@ -997,7 +997,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $jsonColumn  Column containing JSON data
      * @param   string  $path        JSON path expression
-     * @param   array   $columns     Column definitions for output
+     * @param   array<mixed>   $columns     Column definitions for output
      * @return  string  SQL for JSON_TABLE
      */
     public function sqlJsonTable(string $jsonColumn, string $path, array $columns): string
@@ -1043,7 +1043,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get list of installed plugins
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPlugins(): array
     {
@@ -1112,7 +1112,7 @@ class MysqlDriver extends BaseSqlDriver
      * Get MySQL global status variables
      *
      * @param   string|null  $like  Optional LIKE pattern to filter variables
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalStatus($like = null): array
     {
@@ -1129,7 +1129,7 @@ class MysqlDriver extends BaseSqlDriver
      * Get MySQL global variables
      *
      * @param   string|null  $like  Optional LIKE pattern to filter variables
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables($like = null): array
     {
@@ -1145,7 +1145,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get current connection information
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnectionInfo(): array
     {
@@ -1174,7 +1174,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get current number of connections
      *
-     * @return  array  Array with 'current', 'max', and 'max_used' keys
+     * @return  array<mixed>  Array with 'current', 'max', and 'max_used' keys
      */
     public function getConnectionStats(): array
     {
@@ -1232,8 +1232,8 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -1245,7 +1245,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -1258,8 +1258,8 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Retrieves key information about the given tables
      *
-     * @param   string|array  $table  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $table  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -1273,7 +1273,7 @@ class MysqlDriver extends BaseSqlDriver
      * Provided for consistency with PostgreSQL and SQLite drivers.
      *
      * @param   string  $table  The table name
-     * @return  array   Array of index objects with 'name', 'columns', 'unique' keys
+     * @return  array<mixed>   Array of index objects with 'name', 'columns', 'unique' keys
      */
     public function getIndexes($table)
     {
@@ -1294,7 +1294,7 @@ class MysqlDriver extends BaseSqlDriver
      * - on_delete: The ON DELETE action
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     public function getForeignKeys($table)
     {
@@ -1332,7 +1332,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList()
     {
@@ -1461,7 +1461,7 @@ class MysqlDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<\stdClass>
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -1583,7 +1583,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Array of allowed values, empty array if not an ENUM
+     * @return  array<int, string>   Array of allowed values, empty array if not an ENUM
      **/
     public function getEnumValues($table, $column)
     {
@@ -1664,7 +1664,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
-     * @param   array   $options    MySQL-specific view options:
+     * @param   array<mixed>   $options    MySQL-specific view options:
      *                              - algorithm: UNDEFINED, MERGE, or TEMPTABLE (default: UNDEFINED)
      *                              - definer: User who owns the view (default: CURRENT_USER)
      *                              - security: DEFINER or INVOKER (default: INVOKER)
@@ -1727,7 +1727,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      **/
     public function getViews(): array
     {
@@ -1741,7 +1741,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all database names on the server
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      **/
     public function getDatabaseNames(): array
     {
@@ -1796,7 +1796,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all emulated sequences
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      **/
     public function getSequences(): array
     {
@@ -1822,7 +1822,7 @@ class MysqlDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (ignored)
+     * @param   array<mixed>   $options    Additional options (ignored)
      * @return  bool
      **/
     public function createSequence(
@@ -2601,7 +2601,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2654,7 +2654,7 @@ class MysqlDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name (with or without prefix)
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2757,7 +2757,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s) to index
+     * @param   array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  string
      */

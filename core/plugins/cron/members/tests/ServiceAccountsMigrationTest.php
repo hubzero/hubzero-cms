@@ -131,7 +131,7 @@ class ServiceAccountsMigrationTest extends Basic
      * Access groups by id
      *
      * @param   object  $pdo
-     * @return  array
+     * @return  array<mixed>
      */
     private static function tree($pdo)
     {
@@ -151,7 +151,7 @@ class ServiceAccountsMigrationTest extends Basic
      * intervals are disjoint or nested, and no bound is used twice. Gaps are
      * allowed: the install data has them.
      *
-     * @param   array  $rows
+     * @param   array<mixed>  $rows
      * @return  bool
      */
     private static function nestedSetIsValid($rows)

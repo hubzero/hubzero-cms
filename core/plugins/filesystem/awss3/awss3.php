@@ -20,7 +20,7 @@ class Awss3 extends Plugin
     /**
      * Initializes the AWS S3 connection
      *
-     * @param   array   $params  Any connection params needed
+     * @param   array<mixed>   $params  Any connection params needed
      * @return  object
      **/
     public static function init($params = [])

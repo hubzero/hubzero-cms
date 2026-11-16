@@ -2623,7 +2623,7 @@ class Wishlists extends SiteController
      * Get an array of filters from the request
      *
      * @param   int|bool  $admin
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function getFilters($admin = 0)
     {
@@ -2707,12 +2707,12 @@ class Wishlists extends SiteController
      * Build a select list of users
      *
      * @param   string   $name
-     * @param   array    $ownerids
+     * @param   array<mixed>    $ownerids
      * @param   string   $active
      * @param   integer  $nouser
      * @param   string|null   $javascript
      * @param   string   $order
-     * @return  array
+     * @return  array<mixed>
      */
     public function userSelect($name, $ownerids, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
@@ -2882,8 +2882,8 @@ class Wishlists extends SiteController
      * Convert effort value to a time
      *
      * @param   float  $rawnum  Number to convert
-     * @param   array  $due     Array to populate
-     * @return  array
+     * @param   array<mixed>  $due     Array to populate
+     * @return  array<mixed>
      */
     public function convertTime($rawnum, $due = [])
     {

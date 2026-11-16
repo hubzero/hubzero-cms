@@ -18,7 +18,7 @@ class Html
     /**
      * Outputs a <select> element with a specific value chosen
      *
-     * @param   array   $categories  Data to populate list with
+     * @param   array<mixed>   $categories  Data to populate list with
      * @param   string  $name        Field name
      * @return  string  HTML <select>
      */

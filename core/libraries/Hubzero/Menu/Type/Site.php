@@ -124,10 +124,10 @@ class Site extends Base
     /**
      * Gets menu items by attribute
      *
-     * @param   string|array  $attributes  The field name, or names
+     * @param   string|array<mixed>  $attributes  The field name, or names
      * @param   mixed         $values      The value of the field, or values; a null value drops that filter
      * @param   boolean  $firstonly   If true, only returns the first item found
-     * @return  array
+     * @return  array<mixed>
      */
     public function getItems($attributes, $values, $firstonly = false)
     {

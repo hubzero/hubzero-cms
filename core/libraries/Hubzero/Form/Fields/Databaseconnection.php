@@ -29,7 +29,7 @@ class Databaseconnection extends Select
      * This method produces a drop down list of available databases supported
      * by Database drivers that are also supported by the application.
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

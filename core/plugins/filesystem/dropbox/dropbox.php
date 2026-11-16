@@ -25,7 +25,7 @@ class Dropbox extends Plugin
     /**
      * Initializes the Dropbox connection
      *
-     * @param   array   $params  Client application data
+     * @param   array<mixed>   $params  Client application data
      * @return  DropboxAdapter
      **/
     public static function init($params = [])
@@ -48,7 +48,7 @@ class Dropbox extends Plugin
     /**
      * Retrieves Dropbox code used to get access token
      *
-     * @param   array   $params  Client application data
+     * @param   array<mixed>   $params  Client application data
      * @return  void
      **/
     protected static function getAccessToken($params)

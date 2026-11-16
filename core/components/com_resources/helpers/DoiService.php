@@ -40,7 +40,7 @@ class DoiService extends Obj
     /**
      * Constructor
      *
-     * @param   array|null  $pub
+     * @param   array<mixed>|null  $pub
      * @return  void
      */
     public function __construct($pub = null)
@@ -147,7 +147,7 @@ class DoiService extends Obj
     /**
      * Map data to DOI fields
      *
-     * @param   array|null  $pub
+     * @param   array<mixed>|null  $pub
      * @return  bool|null
      */
     public function mapData($pub = null)

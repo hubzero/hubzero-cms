@@ -159,7 +159,7 @@ class Wish extends Relational
     /**
      * Generates automatic proposed field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticProposed($data)
@@ -173,7 +173,7 @@ class Wish extends Relational
     /**
      * Generates automatic proposed field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticProposedBy($data)

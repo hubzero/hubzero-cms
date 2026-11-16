@@ -98,7 +98,7 @@ class Accesstoken extends Relational
     /**
      * Generates automatic expires field
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticExpires($data)

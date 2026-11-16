@@ -82,7 +82,7 @@ class Html
     /**
      * Output a response for a multi-option field
      *
-     * @param   array   $response_array  Response codes
+     * @param   array<mixed>   $response_array  Response codes
      * @return  string
      */
     public static function propercaseMultiresponse($response_array)

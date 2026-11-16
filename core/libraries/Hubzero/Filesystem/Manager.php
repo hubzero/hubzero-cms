@@ -18,7 +18,7 @@ class Manager
     /**
      * Cached adapters for reuse
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private static $adapters = [];
 
@@ -26,7 +26,7 @@ class Manager
      * Parses the location input into mount and mount names
      *
      * @param   mixed  $location  The location to parse
-     * @return  array
+     * @return  array<int, mixed>
      **/
     protected static function parseLocation($location)
     {
@@ -101,7 +101,7 @@ class Manager
      * Returns the appropriate adapter
      *
      * @param   string  $name    The adapter name to instantiate
-     * @param   array   $params  Any initialization parameters
+     * @param   array<mixed>   $params  Any initialization parameters
      * @param   string|null  $key     A custom key under which to store the adapter
      * @return  object
      **/

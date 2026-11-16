@@ -262,7 +262,7 @@ class Helper
      * @param   int|string  $uid
      * @param   string  $type
      * @param   int|string|null  $cat
-     * @return  array    Group records, or membership lists keyed by type; empty if there are none
+     * @return  array<mixed>    Group records, or membership lists keyed by type; empty if there are none
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {
@@ -361,7 +361,7 @@ class Helper
      * @param   string  $uid
      * @param   string  $type
      * @param   string|null  $cat
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public static function getCourses($uid, $type = 'all', $cat = null)
     {
@@ -425,7 +425,7 @@ class Helper
      *
      * @param   integer  $uid
      * @param   integer  $pid
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getCommonGroups($uid, $pid)
     {

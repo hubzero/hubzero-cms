@@ -42,7 +42,7 @@ class Radio extends Base
      * Return any options this element may have
      *
      * @param   string  $name          Name of the field
-     * @param   string|array  $value         Value to check against
+     * @param   string|array<mixed>  $value         Value to check against
      * @param   object  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML

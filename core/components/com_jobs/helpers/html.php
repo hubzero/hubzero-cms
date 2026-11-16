@@ -72,7 +72,7 @@ class Html
      * Generate a select form
      *
      * @param   string  $name   Field name
-     * @param   array   $array  Data to populate select with
+     * @param   array<mixed>   $array  Data to populate select with
      * @param   mixed   $value  Value to select
      * @param   string  $class  Class to add
      * @return  string  HTML

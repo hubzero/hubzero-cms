@@ -57,28 +57,28 @@ class Connect extends Obj
     /**
      * Connection configuration
      *
-     * @var array
+     * @var array<mixed>
      */
     private $connect = [];
 
     /**
      * Available services
      *
-     * @var array
+     * @var array<mixed>
      */
     private $services = ['google', 'dropbox'];
 
     /**
      * Service client
      *
-     * @var array
+     * @var array<mixed>
      */
     public $client = [];
 
     /**
      * Service API
      *
-     * @var array
+     * @var array<mixed>
      */
     public $api = [];
 
@@ -154,7 +154,7 @@ class Connect extends Obj
     /**
      * Get active services
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getActive()
     {
@@ -178,7 +178,7 @@ class Connect extends Obj
     /**
      * Get services
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getServices()
     {
@@ -204,7 +204,7 @@ class Connect extends Obj
      * Get connections
      *
      * @param   integer  $uid  User ID
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnections($uid = 0)
     {
@@ -277,7 +277,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   boolean  $active   Only get active service
-     * @return  array|false  false or array with configs
+     * @return  array<mixed>|false  false or array with configs
      */
     public function getConfigs($service = 'google', $active = true)
     {
@@ -563,7 +563,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @param   array    $shared   Array of emails with whom master remote folder is shared
+     * @param   array<mixed>    $shared   Array of emails with whom master remote folder is shared
      * @return  String|bool
      */
     public function getRemoteDirectory($service = 'google', $uid = 0, $shared = [])
@@ -854,10 +854,10 @@ class Connect extends Obj
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
-     * @param   array    $local      Array of local file info
+     * @param   array<mixed>    $local      Array of local file info
      * @param   string|int $parentId   Parent folder ID
      * @param   boolean  $convert    Convert for remote editing? (Google only)
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function updateRemoteFile(
         $projectid = null,
@@ -967,9 +967,9 @@ class Connect extends Obj
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
-     * @param   array    $local      Array of local file info
+     * @param   array<mixed>    $local      Array of local file info
      * @param   string|int $parentId   Parent folder ID
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function renameRemoteItem(
         $projectid = null,
@@ -1051,9 +1051,9 @@ class Connect extends Obj
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
-     * @param   array    $local      Array of local file info
+     * @param   array<mixed>    $local      Array of local file info
      * @param   string|int $parentId   Parent folder ID
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function moveRemoteItem(
         $projectid = null,
@@ -1174,7 +1174,7 @@ class Connect extends Obj
      * @param   string   $title           Folder name
      * @param   string   $path            Path to folder
      * @param   string|int $parentId        Parent folder ID
-     * @param   array    &$remoteFolders  Collector array
+     * @param   array<mixed>    &$remoteFolders  Collector array
      * @return  integer|false|null (folder ID)
      */
     public function createRemoteFolder(
@@ -1262,8 +1262,8 @@ class Connect extends Obj
      * @param   integer|null  $projectid       Project ID
      * @param   string   $service         Service name (google or dropbox)
      * @param   integer  $uid             User ID
-     * @param   array    $local           Array of local file info
-     * @param   array    &$remoteFolders  Collector array
+     * @param   array<mixed>    $local           Array of local file info
+     * @param   array<mixed>    &$remoteFolders  Collector array
      * @return  integer|false
      */
     public function prepRemoteParent(
@@ -1322,7 +1322,7 @@ class Connect extends Obj
      * @param   string|int $id       Remote ID
      * @param   integer  $uid      User ID
      * @param   string   $service  Service name (google)
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getFileHistory($id = 0, $uid = 0, $service = 'google')
     {
@@ -1369,7 +1369,7 @@ class Connect extends Obj
      * @param   integer  $revision  remote revision ID
      * @param   integer  $uid       User ID
      * @param   string   $service   Service name (google)
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getFileRevision($id = 0, $revision = 0, $uid = 0, $service = 'google')
     {
@@ -1415,8 +1415,8 @@ class Connect extends Obj
      * @param   integer  $uid             User ID
      * @param   string   $service         Service name (google or dropbox)
      * @param   string   $file            File path
-     * @param   array    &$versions       Versions collector array
-     * @param   array    &$timestamps     Collector array
+     * @param   array<mixed>    &$versions       Versions collector array
+     * @param   array<mixed>    &$timestamps     Collector array
      * @param   integer  $original        Source file?
      * @return  void
      */
@@ -1596,9 +1596,9 @@ class Connect extends Obj
      * @param   string   $service        Service name (google or dropbox)
      * @param   integer  $uid            User ID
      * @param   string|int|false   $startChangeId  Last Change ID
-     * @param   array    $remotes        Collector array for active items
-     * @param   array    $deletes        Collector array for deleted items
-     * @param   array    $connections    Array of local-remote connections
+     * @param   array<mixed>    $remotes        Collector array for active items
+     * @param   array<mixed>    $deletes        Collector array for deleted items
+     * @param   array<mixed>    $connections    Array of local-remote connections
      * @param   string   $path           Path
      * @return  integer|false  change ID
      */
@@ -1640,8 +1640,8 @@ class Connect extends Obj
      * @param   string   $service      Service name (google or dropbox)
      * @param   integer  $uid          User ID
      * @param   string   $since        last sync date
-     * @param   array    $connections  Array of local-remote connections
-     * @return  array|false
+     * @param   array<mixed>    $connections  Array of local-remote connections
+     * @return  array<mixed>|false
      */
     public function getRemoteItems($service = 'google', $uid = 0, $since = '', $connections = [])
     {
@@ -1701,7 +1701,7 @@ class Connect extends Obj
      *
      * @param   string   $service         Service name (google or dropbox)
      * @param   integer  $uid             User ID
-     * @param   array    &$remoteFolders  Collector array
+     * @param   array<mixed>    &$remoteFolders  Collector array
      * @param   string   $path
      * @return  bool
      */
@@ -1831,7 +1831,7 @@ class Connect extends Obj
      *
      * @param   string   $service     Service name (google or dropbox)
      * @param   integer  $uid         User ID
-     * @param   array    $remote      Remote resource array
+     * @param   array<mixed>    $remote      Remote resource array
      * @param   string   $path        Project repo path
      * @param   boolean  $getContent  Output file content? Or write to file
      * @return  string|bool or boolean
@@ -1863,7 +1863,7 @@ class Connect extends Obj
      *
      * @param   string   $service     Service name (google or dropbox)
      * @param   integer  $uid         User ID
-     * @param   array    $remote      Remote resource array
+     * @param   array<mixed>    $remote      Remote resource array
      * @param   string   $fpath       File path relative to repo path
      * @param   string   $path        Project repo path
      * @param   string   $ext         Extension
@@ -1945,7 +1945,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @param   array    $remote   Remote resource array
+     * @param   array<mixed>    $remote   Remote resource array
      * @param   object|array{}|null  $config  Component configuration
      * @param   string|null   $alias    Project alias name
      * @return  bool
@@ -2029,7 +2029,7 @@ class Connect extends Obj
      *
      * @param   string  $url
      * @param   string  $method
-     * @param   array|null   $postvals
+     * @param   array<mixed>|null   $postvals
      * @return  bool|string string
      */
     public function runCurl($url, $method = 'GET', $postvals = null)

@@ -31,7 +31,7 @@ class Viewperm extends Table
      *
      * @param   int|string|null  $sess      Session number
      * @param   string|null   $username  User to load for
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function loadViewperm($sess = null, $username = null)
     {

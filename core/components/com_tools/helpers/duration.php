@@ -63,7 +63,7 @@ class Duration
      *
      * @param   integer|null  $seconds
      * @param   string        $default  The unit to offer when there is no length
-     * @return  array  The number, empty for no length, and its unit
+     * @return  array<int, mixed>  The number, empty for no length, and its unit
      */
     public static function fromSeconds($seconds, $default = 'hours')
     {

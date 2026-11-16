@@ -16,14 +16,14 @@ class Memory extends None
     /**
      * Data container
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
     /**
      * Create a new file cache store instance.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -202,7 +202,7 @@ class Memory extends None
     /**
      * Check if the given data is expired
      *
-     * @param   array    $data
+     * @param   array<mixed>    $data
      * @return  boolean
      */
     protected function isDataExpired(array $data)

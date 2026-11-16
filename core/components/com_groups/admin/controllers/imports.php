@@ -458,7 +458,7 @@ class Imports extends AdminController
      *
      * @param   string  $event   Hook we want
      * @param   object  $import  Import Model
-     * @return  array  Closure
+     * @return  array<mixed>  Closure
      */
     private function getHooks($event, $import)
     {
@@ -545,7 +545,7 @@ class Imports extends AdminController
     /**
      * Quote a CSV row
      *
-     * @param   array  $vals
+     * @param   array<mixed>  $vals
      * @return  string
      */
     public function quoteCsvRow($vals)

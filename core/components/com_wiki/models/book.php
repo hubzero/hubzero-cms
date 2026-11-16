@@ -149,7 +149,7 @@ class Book extends Obj
     /**
      * Get an associative list of default pages and their content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function defaultPages()
     {
@@ -290,7 +290,7 @@ class Book extends Obj
     /**
      * Get a count or list of pages
      *
-     * @param   array  $filters  Filters to apply
+     * @param   array<mixed>  $filters  Filters to apply
      * @return  mixed
      */
     public function pages($filters = [])
@@ -340,8 +340,8 @@ class Book extends Obj
     /**
      * Get page templates
      *
-     * @param   array  $filters  Filters to apply
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to apply
+     * @return  array<mixed>
      */
     public function templates($filters = [])
     {
@@ -353,7 +353,7 @@ class Book extends Obj
     /**
      * Get a list of special pages
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function special()
     {

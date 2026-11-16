@@ -89,7 +89,7 @@ class Module extends Relational
     /**
      * Generates automatic publish_up field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishUp($data)
@@ -108,7 +108,7 @@ class Module extends Relational
     /**
      * Generates automatic publish_down field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishDown($data)
@@ -243,7 +243,7 @@ class Module extends Relational
      *
      * @param   string   $title        The title.
      * @param   string   $position     The position.
-     * @return  array    Contains the modified title.
+     * @return  array<int, mixed>    Contains the modified title.
      */
     public function generateNewTitle($title, $position)
     {
@@ -505,8 +505,8 @@ class Module extends Relational
     /**
      * Saves the manually set order of records.
      *
-     * @param   array|null  $pks    An array of primary key ids.
-     * @param   array|null  $order  An array of order values.
+     * @param   array<mixed>|null  $pks    An array of primary key ids.
+     * @param   array<mixed>|null  $order  An array of order values.
      * @return  bool
      */
     public static function saveorder($pks = null, $order = null)
@@ -534,7 +534,7 @@ class Module extends Relational
     /**
      * Get menu assignments
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function menuAssigned()
     {
@@ -585,7 +585,7 @@ class Module extends Relational
      * Save menu assignments for a module
      *
      * @param   integer|string|mixed  $assignment  A menu item number, or none
-     * @param   array    $assigned
+     * @param   array<mixed>    $assigned
      * @return  bool
      */
     public function saveAssignment($assignment, $assigned)

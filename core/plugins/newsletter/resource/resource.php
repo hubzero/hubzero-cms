@@ -34,7 +34,7 @@ class Resource extends Plugin
      * @param   integer  $num
      * @param   string   $dateField
      * @param   string   $sort
-     * @return  array
+     * @return  array<mixed>
      */
     public function onGetLatest($num = 5, $dateField = 'created', $sort = 'DESC')
     {

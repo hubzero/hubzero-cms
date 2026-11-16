@@ -80,7 +80,7 @@ class License extends Table
     /**
      * Build a query from filters
      *
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  string  SQL
      */
     protected function buildQuery($filters = [])
@@ -107,7 +107,7 @@ class License extends Table
     /**
      * Get record counts
      *
-     * @param   array  $filters  Filters to build query from
+     * @param   array<mixed>  $filters  Filters to build query from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -123,8 +123,8 @@ class License extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to build query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to build query from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {
@@ -153,8 +153,8 @@ class License extends Table
     /**
      * Get licenses
      *
-     * @param   array   $filters  Filters to build query from
-     * @return  array|null
+     * @param   array<mixed>   $filters  Filters to build query from
+     * @return  array<int, \stdClass>|null
      */
     public function getLicenses($filters = [])
     {
@@ -173,7 +173,7 @@ class License extends Table
      *
      * @param   object|null  $manifest
      * @param   object|null  $selected
-     * @return  array|false|null
+     * @return  array<mixed>|false|null
      */
     public function getBlockLicenses($manifest = null, $selected = null)
     {
@@ -218,7 +218,7 @@ class License extends Table
     /**
      * Get default license
      *
-     * @return  array|null
+     * @return  array<int, \stdClass>|null
      */
     public function getDefaultLicense()
     {

@@ -372,7 +372,7 @@ class Codes extends AdminController
     /**
      * Quote a CSV row
      *
-     * @param   array   $vals
+     * @param   array<mixed>   $vals
      * @return  string
      */
     public function quoteCsvRow($vals)

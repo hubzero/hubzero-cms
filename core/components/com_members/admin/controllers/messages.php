@@ -394,10 +394,10 @@ class Messages extends AdminController
     /**
      * Build a select list of methods
      *
-     * @param   array   $notimethods  Methods
+     * @param   array<mixed>   $notimethods  Methods
      * @param   string  $name         Field name
-     * @param   array   $values       Option values
-     * @param   array   $ids          Option IDs
+     * @param   array<mixed>   $values       Option values
+     * @param   array<mixed>   $ids          Option IDs
      * @return  string
      */
     public static function selectMethod($notimethods, $name, $values = [], $ids = [])

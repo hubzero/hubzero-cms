@@ -75,7 +75,7 @@ class Vote extends Relational
     /**
      * Generates automatic voted field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticVoted($data)
@@ -86,7 +86,7 @@ class Vote extends Relational
     /**
      * Generates automatic userid field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticVoter($data)
@@ -97,7 +97,7 @@ class Vote extends Relational
     /**
      * Generates automatic userid field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticIp($data)

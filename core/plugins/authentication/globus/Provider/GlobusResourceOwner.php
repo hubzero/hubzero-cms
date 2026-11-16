@@ -21,14 +21,14 @@ class GlobusResourceOwner implements ResourceOwnerInterface
     /**
      * Raw response
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $response;
 
     /**
      * Creates new resource owner.
      *
-     * @param array  $response
+     * @param array<mixed>  $response
      */
     public function __construct(array $response = [])
     {
@@ -172,7 +172,7 @@ class GlobusResourceOwner implements ResourceOwnerInterface
     /**
      * Return all of the owner details available as an array.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray()
     {

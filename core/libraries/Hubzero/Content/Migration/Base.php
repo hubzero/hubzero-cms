@@ -79,21 +79,21 @@ class Base
     /**
      * Available callbacks
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $callbacks = [];
 
     /**
      * Options
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $options = [];
 
     /**
      * Errors
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $errors = [];
 
@@ -114,14 +114,14 @@ class Base
     /**
      * Macros
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected static $macros = [];
 
     /**
      * Registered list of namespaces in which to search for commands
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected static $macroNamespaces = [];
 
@@ -129,7 +129,7 @@ class Base
      * Constructor
      *
      * @param   object  $db         Database object (primary)
-     * @param   array   $callbacks  Callbacks
+     * @param   array<mixed>   $callbacks  Callbacks
      * @param   object|null  $altDb      Alternate db
      * @return  void
      **/
@@ -152,7 +152,7 @@ class Base
      *
      * @param   string  $callback  Name of callback to use
      * @param   string  $func      Name of callback function to call
-     * @param   array   $args      Args to pass to callback function
+     * @param   array<mixed>   $args      Args to pass to callback function
      * @return  mixed
      **/
     public function callback($callback, $func, $args = [])
@@ -426,7 +426,7 @@ class Base
     /**
      * Get errors
      *
-     * @return  array  Errors
+     * @return  array<mixed>  Errors
      **/
     public function getErrors()
     {
@@ -477,7 +477,7 @@ class Base
      * @param   string   $name            Component name
      * @param   string|null   $option          com_xyz
      * @param   integer  $enabled         Whether or not the component should be enabled
-     * @param   string|array  $params     Component params (if already known), as JSON or an array
+     * @param   string|array<mixed>  $params     Component params (if already known), as JSON or an array
      * @param   boolean  $createMenuItem  Create an admin menu item for this component
      * @param   boolean|null  $createRoute     Create the site route for this component
      * @return  boolean
@@ -505,7 +505,7 @@ class Base
      * @param   integer  $client     Admin or site client
      * @param   integer  $enabled    Whether or not the template should be enabled
      * @param   integer  $home       Whether or not this should become the enabled template
-     * @param   array|null    $styles     Template styles
+     * @param   array<mixed>|null    $styles     Template styles
      * @param   integer  $protected  Whether or not the template is a core one or not
      * @return  boolean
      */
@@ -533,7 +533,7 @@ class Base
      * @param   integer  $client     Admin or site client
      * @param   integer  $enabled    Ignored (always 1)
      * @param   integer  $home       Ignored (always 1)
-     * @param   array|null    $styles     Template styles
+     * @param   array<mixed>|null    $styles     Template styles
      * @param   integer  $protected  Whether or not the template is a core one or not
      * @return  boolean
      */
@@ -553,7 +553,7 @@ class Base
      * Dynamically handle calls to the class.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      * @throws  \BadMethodCallException
      */
@@ -589,7 +589,7 @@ class Base
      * Generates ALTER TABLE SQL query to add columns absent from given table
      *
      * @param   string  $table    Given table
-     * @param   array   $columns  Columns to add to given table
+     * @param   array<mixed>   $columns  Columns to add to given table
      * @return  string
      **/
     protected function generateSafeAddColumns($table, $columns)
@@ -607,7 +607,7 @@ class Base
      * Generates ADD COLUMN SQL statement if column absent from given table
      *
      * @param   string  $table       Given table
-     * @param   array   $columnData  Data for column to be added
+     * @param   array<mixed>   $columnData  Data for column to be added
      * @return  string
      **/
     protected function safeAddColumn($table, $columnData)
@@ -627,7 +627,7 @@ class Base
      * Generates ALTER TABLE SQL query to drop columns present on given table
      *
      * @param   string  $table    Given table
-     * @param   array   $columns  Columns to drop from given table
+     * @param   array<mixed>   $columns  Columns to drop from given table
      * @return  string
      **/
     protected function generateSafeDropColumns($table, $columns)
@@ -645,7 +645,7 @@ class Base
      * Generates DROP COLUMN SQL statement if column present on given table
      *
      * @param   string  $table       Given table
-     * @param   array   $columnData  Data for column to be dropped
+     * @param   array<mixed>   $columnData  Data for column to be dropped
      * @return  string
      **/
     protected function safeDropColumn($table, $columnData)
@@ -665,7 +665,7 @@ class Base
      * Generates SQL statements to alter table for each column
      *
      * @param   string  $table         Given table
-     * @param   array   $columns       Columns to be affected by query
+     * @param   array<mixed>   $columns       Columns to be affected by query
      * @param   string  $functionName  Function to generate per column statements
      * @return  string
      **/

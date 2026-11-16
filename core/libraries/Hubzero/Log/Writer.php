@@ -40,7 +40,7 @@ class Writer
     /**
      * All of the error levels.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $levels = [
         'debug',
@@ -80,7 +80,7 @@ class Writer
      * Call Monolog with the given method and parameters.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     protected function callMonolog($method, $parameters)
@@ -229,7 +229,7 @@ class Writer
      *
      * @param   string  $level
      * @param   string  $message
-     * @param   array   $context
+     * @param   array<mixed>   $context
      * @return  void
      */
     protected function triggerLogEvent($level, $message, array $context = [])
@@ -246,7 +246,7 @@ class Writer
      * Dynamically handle error additions.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

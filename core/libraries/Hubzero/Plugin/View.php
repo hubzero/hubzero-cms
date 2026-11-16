@@ -39,7 +39,7 @@ class View extends AbstractView
     /**
      * Constructor
      *
-     * @param   array  $config  A named configuration array for object construction.
+     * @param   array<mixed>  $config  A named configuration array for object construction.
      * @return  void
      */
     public function __construct($config = [])
@@ -213,8 +213,8 @@ class View extends AbstractView
      * Sets an entire array of search paths for templates or resources.
      *
      * @param   string        $type  The type of path to set, typically 'template'.
-     * @param   string|array  $path  The new set of search paths. If null or false, resets to the current directory
-     *                               only.
+     * @param   string|array<mixed>  $path  The new set of search paths. If null or false, resets to the current
+     *                                      directory only.
      * @return  void
      */
     protected function setPath($type, $path)
@@ -270,7 +270,7 @@ class View extends AbstractView
      * Dynamically handle calls to the class.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      * @throws  \BadMethodCallException
      * @since   1.3.1

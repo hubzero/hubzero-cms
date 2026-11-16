@@ -455,7 +455,7 @@ class MigrationGenerator
     /**
      * Generate up() method code from SQL statements
      *
-     * @param  array   $sql
+     * @param  array<mixed>   $sql
      * @param  string  $tableName
      * @return string
      */
@@ -490,7 +490,7 @@ class MigrationGenerator
     /**
      * Generate down() method code from SQL statements
      *
-     * @param  array   $sql
+     * @param  array<mixed>   $sql
      * @param  string  $tableName
      * @return string
      */
@@ -526,7 +526,7 @@ class MigrationGenerator
      * Generate up() code for schema-level diff
      *
      * @param  SchemaDiff  $diff
-     * @param  array       $sql
+     * @param  array<mixed>       $sql
      * @return string
      */
     protected function generateSchemaUpCode(SchemaDiff $diff, array $sql): string
@@ -570,7 +570,7 @@ class MigrationGenerator
      * Generate down() code for schema-level diff
      *
      * @param  SchemaDiff  $diff
-     * @param  array       $sql
+     * @param  array<mixed>       $sql
      * @return string
      */
     protected function generateSchemaDownCode(SchemaDiff $diff, array $sql): string

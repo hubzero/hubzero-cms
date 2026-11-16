@@ -194,7 +194,7 @@ class Membership
      * per row.
      *
      * @param   integer  $gidNumber
-     * @return  array
+     * @return  array<mixed>
      */
     public static function termsFor($gidNumber)
     {
@@ -333,7 +333,7 @@ class Membership
      * chosen by a manager is never overwritten by the default.
      *
      * @param   integer  $gidNumber
-     * @param   array    $uidNumbers
+     * @param   array<mixed>    $uidNumbers
      * @return  integer  rows given a term
      */
     public static function applyDefaultTerm($gidNumber, $uidNumbers)
@@ -419,7 +419,7 @@ class Membership
      * Memberships whose term has lapsed, oldest first
      *
      * @param   integer  $limit
-     * @return  array
+     * @return  array<mixed>
      */
     public static function expired($limit = 500)
     {
@@ -705,7 +705,7 @@ class Membership
      * the caller does not have to look them up per row.
      *
      * @param   integer  $gidNumber
-     * @param   array    $uidNumbers
+     * @param   array<mixed>    $uidNumbers
      * @param   string   $reason
      * @param   integer|null  $actor
      * @return  integer  rows archived
@@ -829,7 +829,7 @@ class Membership
     /**
      * The configured warning thresholds, in days, largest first
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function warningDays()
     {
@@ -843,7 +843,7 @@ class Membership
      * configured hub behind it.
      *
      * @param   string  $raw
-     * @return  array
+     * @return  array<mixed>
      */
     public static function parseWarningDays($raw)
     {
@@ -881,7 +881,7 @@ class Membership
      *
      * @param   integer  $days
      * @param   integer  $limit
-     * @return  array
+     * @return  array<mixed>
      */
     public static function dueForWarning($days, $limit = 1000)
     {
@@ -938,7 +938,7 @@ class Membership
      * than in component params: this is state, not configuration, and saving
      * the config form would otherwise wipe it.
      *
-     * @param   array  $result  as returned by reap()
+     * @param   array<mixed>  $result  as returned by reap()
      * @return  boolean
      */
     public static function heartbeat($result = [])
@@ -1018,7 +1018,7 @@ class Membership
      * Reap every lapsed membership, in batches
      *
      * @param   integer|null  $limit  rows to consider in this pass
-     * @return  array    counts: revoked, skipped, groups
+     * @return  array<mixed>    counts: revoked, skipped, groups
      */
     public static function reap($limit = null)
     {

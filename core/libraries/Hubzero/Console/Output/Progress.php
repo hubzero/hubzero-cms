@@ -126,7 +126,7 @@ class Progress extends Output
     /**
      * Spinner frames for indeterminate progress
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $spinnerFrames = ['|', '/', '-', '\\'];
 
@@ -257,7 +257,7 @@ class Progress extends Output
     /**
      * Set custom spinner frames
      *
-     * @param   array  $frames  Array of spinner frame characters
+     * @param   array<mixed>  $frames  Array of spinner frame characters
      * @return  $this
      **/
     public function setSpinnerFrames(array $frames): self

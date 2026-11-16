@@ -211,11 +211,11 @@ class Grid
     /**
      * Returns an array of standard published state filter options.
      *
-     * @param   array   $config  An array of configuration options.
+     * @param   array<mixed>   $config  An array of configuration options.
      *                           This array can contain a list of key/value pairs where values are boolean
      *                           and keys can be taken from 'published', 'unpublished', 'archived', 'trash', 'all'.
      *                           These pairs determine which values are displayed.
-     * @return  array  The HTML code for the select tag
+     * @return  array<int, mixed>  The HTML code for the select tag
      */
     public static function publishedOptions($config = [])
     {
@@ -285,7 +285,7 @@ class Grid
     /**
      * Method to create an icon for saving a new ordering in a grid
      *
-     * @param   array   $rows  The array of rows of rows
+     * @param   array<mixed>   $rows  The array of rows of rows
      * @param   string  $cls   Classname to apply
      * @param   string  $task  The task to use, defaults to save order
      * @return  string
@@ -388,7 +388,7 @@ class Grid
      * @param   integer       $i           The row index.
      * @param   string        $editorName  The name of the editor.
      * @param   string        $time        The time that the object was checked out.
-     * @param   string|array  $prefix      An optional task prefix or an array of options
+     * @param   string|array<mixed>  $prefix      An optional task prefix or an array of options
      * @param   boolean       $enabled     True to enable the action.
      * @param   string        $checkbox    An optional prefix for checkboxes.
      * @return  string  The required HTML.
@@ -433,14 +433,14 @@ class Grid
     /**
      * Returns a state on a grid
      *
-     * @param   array         $states     array of value/state. Each state is an array of the form
+     * @param   array<mixed>         $states     array of value/state. Each state is an array of the form
      *                                    (task, text, title,html active class, HTML inactive class)
      *                                    or ('task'=>task, 'text'=>text, 'active_title'=>active title,
      * 'inactive_title'=>inactive title, 'tip'=>boolean, 'active_class'=>html active class,
      *                                    'inactive_class'=>html inactive class)
      * @param   integer       $value      The state value.
      * @param   integer       $i          The row index
-     * @param   string|array  $prefix     An optional task prefix or an array of options
+     * @param   string|array<mixed>  $prefix     An optional task prefix or an array of options
      * @param   boolean       $enabled    An optional setting for access control on the action.
      * @param   boolean       $translate  An optional setting for translation.
      * @param   string        $checkbox   An optional prefix for checkboxes.
@@ -512,7 +512,7 @@ class Grid
      *
      * @param   integer       $value         The state value.
      * @param   integer       $i             The row index
-     * @param   string|array  $prefix        An optional task prefix or an array of options
+     * @param   string|array<mixed>  $prefix        An optional task prefix or an array of options
      * @param   boolean       $enabled       An optional setting for access control on the action.
      * @param   string        $checkbox      An optional prefix for checkboxes.
      * @param   string|null        $publish_up    An optional start publishing date.
@@ -720,7 +720,7 @@ class Grid
      *
      * @param   integer       $value     The state value.
      * @param   integer       $i         The row index
-     * @param   string|array  $prefix    An optional task prefix or an array of options
+     * @param   string|array<mixed>  $prefix    An optional task prefix or an array of options
      * @param   boolean       $enabled   An optional setting for access control on the action.
      * @param   string        $checkbox  An optional prefix for checkboxes.
      * @return  string        The HTML code

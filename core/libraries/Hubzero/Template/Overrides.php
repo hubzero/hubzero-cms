@@ -32,7 +32,7 @@ class Overrides
     /**
      * Template roots whose html/ directories may hold overrides, highest priority first
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function roots()
     {

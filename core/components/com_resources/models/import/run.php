@@ -63,7 +63,7 @@ class Run extends Relational
     /**
      * Generates automatic ran at field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticRanAt($data)
@@ -74,7 +74,7 @@ class Run extends Relational
     /**
      * Generates automatic ran by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticRanBy($data)

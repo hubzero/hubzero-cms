@@ -70,7 +70,7 @@ class Page extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -83,7 +83,7 @@ class Page extends Relational
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticLft($data)
@@ -98,7 +98,7 @@ class Page extends Relational
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRgt($data)

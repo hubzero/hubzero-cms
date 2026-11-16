@@ -126,7 +126,7 @@ class BundleBuilderTest extends Basic
     /**
      * Call the protected downloadLinkName().
      *
-     * @param   array  $version
+     * @param   array<mixed>  $version
      * @return  string
      */
     protected function downloadLinkName($version)
@@ -141,7 +141,7 @@ class BundleBuilderTest extends Basic
      *
      * @param   \ZipArchive  $zip
      * @param   string       $name
-     * @param   array        $metadata
+     * @param   array<mixed>        $metadata
      * @return  void
      */
     protected function ensureMetadata($zip, $name, $metadata)

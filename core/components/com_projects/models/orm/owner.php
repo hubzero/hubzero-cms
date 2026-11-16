@@ -180,7 +180,7 @@ class Owner extends Relational
      * @param   string|int|null   $role       get owners in specific role or all
      * @param   integer  $uids   get user ids (1) or owner ids (0)
      * @param   integer  $active     get only active users (1) or any
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getIds($projectid, $role = null, $uids = 0, $active = 1)
     {

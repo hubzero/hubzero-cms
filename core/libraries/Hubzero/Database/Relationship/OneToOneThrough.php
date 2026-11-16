@@ -114,7 +114,7 @@ class OneToOneThrough extends Relationship
      * Get keys based on a given constraint
      *
      * @param   \Closure  $constraint  The constraint function to apply
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -176,7 +176,7 @@ class OneToOneThrough extends Relationship
     /**
      * Gets the relations that will be seeded on to the provided rows
      *
-     * @param   array    $keys        The keys for which to fetch related items
+     * @param   array<mixed>    $keys        The keys for which to fetch related items
      * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/
@@ -200,7 +200,7 @@ class OneToOneThrough extends Relationship
      * For OneToOneThrough, we store single models instead of collections
      *
      * @param   iterable|object  $relations  The relations to sort
-     * @return  array
+     * @return  array<mixed>
      **/
     protected function getResultsByRelatedKey($relations)
     {

@@ -72,7 +72,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -128,7 +128,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * CUBRID version query via SELECT version().
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Full version string from server
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'comment': Version comment/description
@@ -155,7 +155,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -209,8 +209,8 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * `pk_tablename_id`) instead of the canonical `PRIMARY` key name. This
      * method normalizes that key name to `PRIMARY` for framework consistency.
      *
-     * @param   string|array  $table  A table name
-     * @return  array
+     * @param   string|array<mixed>  $table  A table name
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -257,7 +257,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Gets index information for a table.
      *
      * @param   string  $table
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -269,7 +269,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Get list of tables.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList()
     {
@@ -279,8 +279,8 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Show CREATE TABLE output for one or more tables.
      *
-     * @param   string|array  $tables
-     * @return  array
+     * @param   string|array<mixed>  $tables
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -516,7 +516,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * SQL helper: CONCAT().
      *
-     * @param   array  $strings
+     * @param   array<mixed>  $strings
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -528,7 +528,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * SQL helper: CONCAT_WS().
      *
      * @param   string  $separator
-     * @param   array   $strings
+     * @param   array<mixed>   $strings
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -827,7 +827,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string        $table
      * @param   string        $name
-     * @param   string|array  $columns
+     * @param   string|array<mixed>  $columns
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -857,7 +857,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Add table primary key.
      *
      * @param   string        $table
-     * @param   string|array  $columns
+     * @param   string|array<mixed>  $columns
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -927,7 +927,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string        $table
      * @param   string        $name
-     * @param   array  $columns
+     * @param   array<mixed>  $columns
      * @param   bool          $unique
      * @return  string
      */
@@ -1017,7 +1017,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * CUBRID doesn't support UNSIGNED modifier, display widths, or ENUM/SET types. Convert them appropriately.
      *
      * @param   string  $type       The column type
-     * @param   array   $modifiers  Column modifiers
+     * @param   array<mixed>   $modifiers  Column modifiers
      * @return  string
      */
     public function normalizeColumnType(string $type, array $modifiers = []): string
@@ -1085,7 +1085,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * CUBRID doesn't support UNSIGNED modifier or display widths.
      *
      * @param   string  $name        Column name
-     * @param   array   $definition  Column definition array with 'type' and 'modifiers' keys
+     * @param   array<mixed>   $definition  Column definition array with 'type' and 'modifiers' keys
      * @return  string  Column definition SQL
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -1156,7 +1156,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * CUBRID doesn't support ON UPDATE CASCADE - convert to NO ACTION.
      *
-     * @param   array   $fk     Foreign key definition array
+     * @param   array<mixed>   $fk     Foreign key definition array
      * @param   string  $table  Table name (without prefix)
      * @return  string  Foreign key constraint SQL
      */
@@ -1191,7 +1191,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * foreign key metadata via PDO::CUBRID_SCH_IMPORTED_KEYS.
      *
      * @param   string  $tableName  The table name
-     * @return  array   Array of foreign key objects
+     * @return  array<mixed>   Array of foreign key objects
      */
     public function getForeignKeys($tableName)
     {
@@ -1239,7 +1239,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * filter for the pk_ prefix.
      *
      * @param   string  $table  The table name
-     * @return  array   Array of primary key column names
+     * @return  array<mixed>   Array of primary key column names
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -1433,7 +1433,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view
-     * @param   array   $options    Ignored for CUBRID (MySQL compatibility)
+     * @param   array<mixed>   $options    Ignored for CUBRID (MySQL compatibility)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -1584,7 +1584,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Return list of views in the current database.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getViews(): array
     {
@@ -1613,7 +1613,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Load SHOW COLUMNS rows for a table as objects.
      *
      * @param   string  $table
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getShowColumnsRows($table): array
     {
@@ -1627,7 +1627,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Load SHOW KEYS rows for a table as objects.
      *
      * @param   string  $table
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getShowKeysRows($table): array
     {
@@ -1639,7 +1639,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $table
      * @param   string  $column
-     * @return  array
+     * @return  array<mixed>
      */
     public function getEnumValues($table, $column)
     {
@@ -1706,7 +1706,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $table
      * @param   string  $column
-     * @return  array|null
+     * @return  array<string, mixed>|null
      */
     protected function getShowColumnAssoc($table, $column)
     {
@@ -1824,7 +1824,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Build a comma-separated, quoted identifier list.
      *
-     * @param   array  $identifiers
+     * @param   array<mixed>  $identifiers
      * @return  string
      */
     protected function buildQuotedIdentifierList(array $identifiers): string
@@ -1852,7 +1852,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Resolve FK name from a CUBRID schema row.
      *
-     * @param   array   $row
+     * @param   array<mixed>   $row
      * @param   string  $tableName
      * @return  string
      */
@@ -1869,7 +1869,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Create normalized foreign key info object from a schema row.
      *
      * @param   string  $name
-     * @param   array   $row
+     * @param   array<mixed>   $row
      * @return  object
      */
     protected function createForeignKeyInfoFromSchemaRow(string $name, array $row)
@@ -1895,7 +1895,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Append local/foreign column names from schema row to FK info object.
      *
      * @param   object  $foreignKeyInfo
-     * @param   array   $row
+     * @param   array<mixed>   $row
      * @return  void
      */
     protected function appendForeignKeyColumnsFromSchemaRow($foreignKeyInfo, array $row): void
@@ -1913,7 +1913,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Return CUBRID FK action code map.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getForeignKeyActionMap(): array
     {
@@ -2015,7 +2015,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Parse enum(...) column type string into value list.
      *
      * @param   string  $columnType
-     * @return  array
+     * @return  array<int, string>
      */
     protected function parseEnumValuesFromColumnType($columnType): array
     {
@@ -2029,7 +2029,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Build ENUM(...) type definition from values.
      *
-     * @param   array  $values
+     * @param   array<mixed>  $values
      * @return  string
      */
     protected function buildEnumColumnDefinition(array $values): string
@@ -2040,7 +2040,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * List emulated sequences.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSequences(): array
     {
@@ -2057,7 +2057,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @param   string  $name
      * @param   int     $start
      * @param   int     $increment
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -2229,7 +2229,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * CUBRID doesn't support SHOW ENGINES.
      * Return a default engine list.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getEngines()
     {
@@ -2303,7 +2303,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Fetches a row from the result set as an array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function fetchArray()
     {
@@ -2315,7 +2315,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Fetches a row from the result set as an associative array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function fetchAssoc()
     {
@@ -2372,8 +2372,8 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * when using PDO::PARAM_INT type hints in bindValue(). Work around this by
      * not specifying types - let PDO infer them from the PHP values.
      *
-     * @param   array  $bindings  The param bindings
-     * @param   array  $type      The param types (ignored for CUBRID)
+     * @param   array<mixed>  $bindings  The param bindings
+     * @param   array<mixed>  $type      The param types (ignored for CUBRID)
      * @return  $this
      */
     public function bind($bindings, $type = [])

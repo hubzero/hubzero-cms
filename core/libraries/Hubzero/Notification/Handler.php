@@ -151,7 +151,7 @@ class Handler
      * Get all messages
      *
      * @param   string|null  $domain
-     * @return  array
+     * @return  array<mixed>
      */
     public function messages($domain = null)
     {
@@ -175,7 +175,7 @@ class Handler
      * Get the instance as an array.
      *
      * @param   string|null  $domain
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray($domain = null)
     {

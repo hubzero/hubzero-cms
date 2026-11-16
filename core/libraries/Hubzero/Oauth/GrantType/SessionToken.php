@@ -35,7 +35,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
     /**
      * Array to hold authenticated user data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $userInfo = [];
 
@@ -132,7 +132,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope
-     * @return  array  Access token
+     * @return  array<mixed>  Access token
      */
     public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
     {

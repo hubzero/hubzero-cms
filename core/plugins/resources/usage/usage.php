@@ -31,7 +31,7 @@ class Usage extends Plugin
      * Return the alias and name for this category of content
      *
      * @param   object $model  Current resource
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onResourcesAreas($model)
     {
@@ -52,7 +52,7 @@ class Usage extends Plugin
      * @param   string  $option  Name of the component
      * @param   array|mixed   $areas   Active area(s)
      * @param   string  $rtrn    Data to be returned
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
@@ -277,7 +277,7 @@ class Usage extends Plugin
      *
      * @param   integer  $id      Resource ID
      * @param   int|string  $period  Resource period
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getOverview($id, $period = 1)
     {
@@ -299,7 +299,7 @@ class Usage extends Plugin
      * @param   integer  $top       Value type (1 = country, 2 = domain, 3 = org)
      * @param   int|string|null  $tid       Stats ID for that tool
      * @param   string   $datetime  Timestamp YYYY-MM-DD
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getTopValue($id, $top, $tid, $datetime, $prd = 14)
     {
@@ -464,7 +464,7 @@ class Usage extends Plugin
      *
      * @param   integer  $id        Resource ID
      * @param   string   $datetime  Timestamp YYYY-MM-DD
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTopValues($id, $datetime)
     {

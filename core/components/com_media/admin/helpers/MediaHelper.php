@@ -71,7 +71,7 @@ class MediaHelper
     /**
      * Checks if the file can be uploaded
      *
-     * @param   array    $file  File information
+     * @param   array<mixed>    $file  File information
      * @param   string|null   $err   An error message to be returned
      * @return  boolean
      */
@@ -363,7 +363,7 @@ class MediaHelper
      * @param   integer  $width   Original width
      * @param   integer  $height  Original height
      * @param   integer  $target  Target size
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function imageResize($width, $height, $target)
     {
@@ -387,7 +387,7 @@ class MediaHelper
      * Count files in a directory
      *
      * @param   string  $dir  Directory
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function countFiles($dir)
     {
@@ -437,7 +437,7 @@ class MediaHelper
      *
      * @param   string  $directory
      * @param   string  $folder
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getChildren($directory, $folder)
     {
@@ -458,9 +458,9 @@ class MediaHelper
     /**
      * Build a folder tree
      *
-     * @param   array   $folders
+     * @param   array<mixed>   $folders
      * @param   string  $path
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function buildFolderTree($folders, $parent_id = 0, $path = '')
     {
@@ -483,7 +483,7 @@ class MediaHelper
     /**
      * Build a path
      *
-     * @param   array   $folders
+     * @param   array<mixed>   $folders
      * @param   string  $path
      * @return  void
      */

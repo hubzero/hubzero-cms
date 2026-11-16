@@ -38,7 +38,7 @@ class Profile extends Plugin
      *
      * @param  object $user   User
      * @param  object $member Profile
-     * @return array   Plugin name
+     * @return array<mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -57,8 +57,8 @@ class Profile extends Plugin
      * @param  object $user   User
      * @param  object $member Profile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -204,7 +204,7 @@ class Profile extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param  array|\Hubzero\Database\Rows  $fields  Fields filled in
+     * @param  array<mixed>|\Hubzero\Database\Rows  $fields  Fields filled in
      * @param  object $profile Profile
      * @return integer
      */

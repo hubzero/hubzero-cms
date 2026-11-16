@@ -116,7 +116,7 @@ class Git
     /**
      * Get the status of the repository
      *
-     * @return  array|string  Changed paths grouped by kind, or an empty string if git reported nothing
+     * @return  array<mixed>|string  Changed paths grouped by kind, or an empty string if git reported nothing
      **/
     public function status()
     {
@@ -189,7 +189,7 @@ class Git
      * @param   string|null       $search     Filter by search string
      * @param   string|null  $format     Format of response, or null for git's default
      * @param   bool         $count      Return count of entires
-     * @return  array|string
+     * @return  array<mixed>|string
      **/
     public function log(
         $length = null,
@@ -306,7 +306,7 @@ class Git
      * @param   bool    $dryRun      Whether or not to do the run, or just check what's incoming
      * @param   bool    $allowNonFf  Whether or not to allow non fast forward pulls (i.e. merges)
      * @param  string|null  $source  Where this repository should pull from (this should be a valid git remote/branch)
-     * @return  array
+     * @return  array<mixed>
      **/
     public function update($dryRun = true, $allowNonFf = false, $source = null)
     {
@@ -421,7 +421,7 @@ class Git
      * @param   string  $ref        The ref to push from/to (the same name unless $remoteRef is provided)
      * @param   string  $remote     The remote name to push to
      * @param   string|null  $remoteRef  The remote ref if it differs in name from the local one
-     * @return  array
+     * @return  array<string, mixed>
      **/
     public function push($ref = 'master', $remote = 'origin', $remoteRef = null)
     {
@@ -586,7 +586,7 @@ class Git
      * Call a git command
      *
      * @param   string  $cmd   Git command being called
-     * @param   array   $arguments  Arguments for the specific command
+     * @param   array<mixed>   $arguments  Arguments for the specific command
      * @return  string|false|null  The output, as shell_exec() returns it
      **/
     private function call($cmd, $arguments = [])

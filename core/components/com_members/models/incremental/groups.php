@@ -18,7 +18,7 @@ class Groups
     /**
      * Possible columns
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $possibleCols = [];
 
@@ -53,7 +53,7 @@ class Groups
     /**
      * Get all groups
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getAllGroups()
     {
@@ -80,7 +80,7 @@ class Groups
     /**
      * Get all possible columns
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPossibleColumns()
     {
@@ -91,7 +91,7 @@ class Groups
      * Get active columns for a user
      *
      * @param   integer  $uid
-     * @return  array
+     * @return  array<mixed>
      */
     public function getActiveColumns($uid)
     {

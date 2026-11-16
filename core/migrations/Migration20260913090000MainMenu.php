@@ -48,7 +48,7 @@ class Migration20260913090000MainMenu extends Base
      * Every one of these was opened as a guest on a hub with nothing in it
      * before being put in the list.
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $routes = [
         'resources'    => ['Resources', 'com_resources'],
@@ -82,7 +82,7 @@ class Migration20260913090000MainMenu extends Base
     /**
      * The navigation: each group, and which routes hang under it.
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $groups = [
         'discover' => [
@@ -306,7 +306,7 @@ class Migration20260913090000MainMenu extends Base
      * The flat route for each component
      *
      * @param   integer  $root
-     * @return  array    Route alias to the menu item id that answers it
+     * @return  array<mixed>    Route alias to the menu item id that answers it
      **/
     protected function addRoutes($root)
     {
@@ -344,7 +344,7 @@ class Migration20260913090000MainMenu extends Base
      * The groups, and an alias under each pointing at a route
      *
      * @param   integer  $root
-     * @param   array    $ids
+     * @param   array<mixed>    $ids
      *
      * @return  void
      **/
@@ -401,7 +401,7 @@ class Migration20260913090000MainMenu extends Base
     /**
      * One menu item, at lft and rgt of nothing until the tree is computed
      *
-     * @param   array  $item
+     * @param   array<mixed>  $item
      * @return  integer  Its id
      **/
     protected function addItem($item)

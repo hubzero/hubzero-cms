@@ -32,7 +32,7 @@ class Publications extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -43,7 +43,7 @@ class Publications extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onWhatsnewAreas()
     {
@@ -58,9 +58,9 @@ class Publications extends Plugin
      * @param   object|mixed   $period      Time period to pull results for
      * @param   mixed    $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
-     * @param   array|null    $areas       Active area(s)
-     * @param   array    $tagids      Array of tag IDs
-     * @return  array|object|int
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @param   array<mixed>    $tagids      Array of tag IDs
+     * @return  array<mixed>|object|int
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {

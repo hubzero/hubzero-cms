@@ -60,8 +60,8 @@ interface ConnectionInterface
      * Binds parameters to a prepared statement
      *
      * @param   mixed  $statement  The prepared statement handle
-     * @param   array  $bindings   The parameter values to bind
-     * @param   array  $types      Optional type hints for parameters
+     * @param   array<mixed>  $bindings   The parameter values to bind
+     * @param   array<mixed>  $types      Optional type hints for parameters
      * @return  void
      */
     public function bind($statement, array $bindings, array $types = []): void;
@@ -87,7 +87,7 @@ interface ConnectionInterface
      * Fetches a single row as a numeric array
      *
      * @param   mixed  $statement  The executed statement handle
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function fetchArray($statement): ?array;
 
@@ -95,7 +95,7 @@ interface ConnectionInterface
      * Fetches a single row as an associative array
      *
      * @param   mixed  $statement  The executed statement handle
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function fetchAssoc($statement): ?array;
 

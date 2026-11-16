@@ -85,7 +85,7 @@ class Migration20260915170000ComponentRoutesAll extends Base
     /**
      * The site components this hub has installed
      *
-     * @return  array  element => id and enabled
+     * @return  array<mixed>  element => id and enabled
      */
     protected function components()
     {

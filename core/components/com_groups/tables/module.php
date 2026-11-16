@@ -58,8 +58,8 @@ class Module extends Table
     /**
      * Find all modules matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -73,7 +73,7 @@ class Module extends Table
     /**
      * Get count of modules matching filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -88,7 +88,7 @@ class Module extends Table
     /**
      * Build query string for getting list or count of records
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])

@@ -25,7 +25,7 @@ class RouteTest extends Basic
     /**
      * Things people type, and what should be stored
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function routes()
     {

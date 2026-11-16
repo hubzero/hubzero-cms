@@ -385,7 +385,7 @@ class Admin implements StepInterface
      * Parse a full name into givenName, middleName, and surname
      *
      * @param   string  $name  Full name to parse
-     * @return  array   Array with givenName, middleName, surname keys
+     * @return  array<mixed>   Array with givenName, middleName, surname keys
      */
     private function parseNameParts($name)
     {

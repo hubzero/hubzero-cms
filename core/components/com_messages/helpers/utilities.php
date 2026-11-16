@@ -63,7 +63,7 @@ class Utilities
     /**
      * Get a list of filter options for the state of a module.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getStateOptions()
     {

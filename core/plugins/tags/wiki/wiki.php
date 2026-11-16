@@ -29,7 +29,7 @@ class Wiki extends Plugin
     /**
      * Retrieve records for items tagged with specific tags
      *
-     * @param   array    $tags        Tags to match records against
+     * @param   array<mixed>    $tags        Tags to match records against
      * @param   mixed    $limit       SQL record limit
      * @param   integer  $limitstart  SQL record limit start
      * @param   string   $sort        The field to sort records by
@@ -98,7 +98,7 @@ class Wiki extends Plugin
     /**
      * Build a database query
      *
-     * @param   array   $filters  Options for building the query
+     * @param   array<mixed>   $filters  Options for building the query
      * @return  string  SQL
      */
     private function buildPluginQuery($filters = [])

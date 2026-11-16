@@ -77,7 +77,7 @@ class Access extends Table
      * @param   integer|null  $pid       pub id
      * @param   string   $version   version name or number
      * @param   string   $sysgroup  name of system group
-     * @return  array|false|null
+     * @return  array<mixed>|false|null
      */
     public function getGroups($vid = null, $pid = null, $version = 'default', $sysgroup = '')
     {
@@ -118,7 +118,7 @@ class Access extends Table
      * Save groups
      *
      * @param   integer|null  $vid       pub version id
-     * @param   array|string $groups
+     * @param   array<mixed>|string $groups
      * @param   string|int $sysgroup  name of system group
      * @return  integer|false
      */

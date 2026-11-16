@@ -285,7 +285,7 @@ class SchemaManager
      *
      * @param   string  $table     The table name
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableColumns(string $table, bool $typeOnly = true): array
     {
@@ -296,7 +296,7 @@ class SchemaManager
      * Get the column names for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getColumnListing(string $table): array
     {
@@ -563,7 +563,7 @@ class SchemaManager
      * Get key/index information for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys(string $table): array
     {
@@ -574,7 +574,7 @@ class SchemaManager
      * Get index/key names for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexNames(string $table): array
     {
@@ -636,7 +636,7 @@ class SchemaManager
      * Get primary key column names for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPrimaryKeyColumns(string $table): array
     {
@@ -667,7 +667,7 @@ class SchemaManager
      * - on_delete: Delete action (CASCADE, SET NULL, RESTRICT, NO ACTION)
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getForeignKeys(string $table): array
     {
@@ -689,8 +689,8 @@ class SchemaManager
     /**
      * Get the CREATE TABLE statement for a table
      *
-     * @param   string|array  $tables  A table name or list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables): array
     {
@@ -700,7 +700,7 @@ class SchemaManager
     /**
      * Get all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList(): array
     {
@@ -845,7 +845,7 @@ class SchemaManager
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Array of allowed values, empty if not an ENUM or unsupported
+     * @return  array<mixed>   Array of allowed values, empty if not an ENUM or unsupported
      */
     public function getEnumValues(string $table, string $column): array
     {
@@ -927,7 +927,7 @@ class SchemaManager
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view
-     * @param   array   $options    MySQL-specific view options (ignored on SQLite/PostgreSQL):
+     * @param   array<mixed>   $options    MySQL-specific view options (ignored on SQLite/PostgreSQL):
      *                              - algorithm: UNDEFINED, MERGE, or TEMPTABLE (default: UNDEFINED)
      *                              - definer: User who owns the view (default: CURRENT_USER)
      *                              - security: DEFINER or INVOKER (default: INVOKER)
@@ -964,7 +964,7 @@ class SchemaManager
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      */
     public function getViews(): array
     {
@@ -976,7 +976,7 @@ class SchemaManager
      *
      * Note: SQLite is file-based and returns attached database names.
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      */
     public function getDatabaseNames(): array
     {
@@ -993,7 +993,7 @@ class SchemaManager
      * Sequences are supported by PostgreSQL, Oracle, and SQL Server (2012+).
      * MySQL and SQLite do not support sequences and will return an empty array.
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      */
     public function getSequences(): array
     {
@@ -1006,7 +1006,7 @@ class SchemaManager
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (min, max, cycle, cache, schema)
+     * @param   array<mixed>   $options    Additional options (min, max, cycle, cache, schema)
      * @return  bool
      * @throws  \RuntimeException  If sequences are not supported by the driver
      */
@@ -1072,7 +1072,7 @@ class SchemaManager
      *
      * @param   string        $table    The table name
      * @param   string        $name     The index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -1085,7 +1085,7 @@ class SchemaManager
      *
      * @param   string        $table    The table name
      * @param   string        $name     The index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
@@ -1099,7 +1099,7 @@ class SchemaManager
      *
      * @param   string        $table    The table name
      * @param   string        $name     The index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addUniqueIndex(string $table, string $name, $columns): bool
@@ -1134,7 +1134,7 @@ class SchemaManager
      * Add a primary key to a table
      *
      * @param   string        $table    The table name
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -1354,7 +1354,7 @@ class SchemaManager
      *
      * @param   string|TableInfo  $from  Original table (name or TableInfo)
      * @param   string|TableInfo  $to    New table (name or TableInfo)
-     * @return  array  Array of SQL statements
+     * @return  array<mixed>  Array of SQL statements
      */
     public function generateTableDiffSql($from, $to): array
     {
@@ -1371,7 +1371,7 @@ class SchemaManager
      *
      * @param   string|TableInfo  $from  Original table (name or TableInfo)
      * @param   string|TableInfo  $to    New table (name or TableInfo)
-     * @return  array  Array of SQL statements
+     * @return  array<mixed>  Array of SQL statements
      */
     public function generateTableDiffSqlReverse($from, $to): array
     {
@@ -1461,7 +1461,7 @@ class SchemaManager
      *
      * @param   DatabaseInfo  $from  Original database schema
      * @param   DatabaseInfo  $to    Target database schema
-     * @return  array  Array of SQL statements
+     * @return  array<mixed>  Array of SQL statements
      */
     public function generateSchemaDiffSql(DatabaseInfo $from, DatabaseInfo $to): array
     {
@@ -1478,7 +1478,7 @@ class SchemaManager
      *
      * @param   DatabaseInfo  $from  Original database schema
      * @param   DatabaseInfo  $to    Target database schema
-     * @return  array  Array of SQL statements
+     * @return  array<mixed>  Array of SQL statements
      */
     public function generateSchemaDiffSqlReverse(DatabaseInfo $from, DatabaseInfo $to): array
     {
@@ -1524,7 +1524,7 @@ class SchemaManager
      *
      * @param   DatabaseInfo  $targetSchema  The target schema
      * @param   string|null   $prefix        Table prefix filter for introspection
-     * @return  array  Array of SQL statements
+     * @return  array<mixed>  Array of SQL statements
      */
     public function generateMigrationTo(DatabaseInfo $targetSchema, ?string $prefix = null): array
     {

@@ -56,7 +56,7 @@ class Local
      * user            - optional parameter
      * protocolVersion - spamd protocol version (defaults to 1.5)
      *
-     * @param array $params SpamAssassin parameters
+     * @param array<mixed> $params SpamAssassin parameters
      */
     public function __construct(array $params)
     {
@@ -91,7 +91,7 @@ class Local
      *
      * @param string $cmd               Protocol command to be executed
      * @param string $message           Full email message
-     * @param array  $additionalHeaders Associative array with additional headers
+     * @param array<mixed>  $additionalHeaders Associative array with additional headers
      */
     protected function exec($cmd, $message, array $additionalHeaders = [])
     {
@@ -152,7 +152,7 @@ class Local
      * Reads all input from the SpamAssassin server after data was written
      *
      * @param  resource $socket Socket connection created by getSocket()
-     * @return array Array containing output headers and message
+     * @return array<int, mixed> Array containing output headers and message
      */
     protected function read($socket)
     {
@@ -360,7 +360,7 @@ class Local
      * Returns all rules matched by the message
      *
      * @param  string $message Raw email message
-     * @return array Array containing the names of the rules matched
+     * @return array<mixed> Array containing the names of the rules matched
      */
     public function symbols($message)
     {

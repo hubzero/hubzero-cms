@@ -146,7 +146,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array|\ArrayAccess   $data  the data being saved
+     * @param   array<mixed>|\ArrayAccess   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -166,7 +166,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticAllowComments($data)
@@ -179,7 +179,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic publish_up field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishUp($data)
@@ -201,7 +201,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic publish_down field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishDown($data)
@@ -215,7 +215,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic params field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticParams($data)

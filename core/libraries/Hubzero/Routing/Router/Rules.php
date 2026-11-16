@@ -20,14 +20,14 @@ class Rules implements Countable, Iterator
     /**
      * Container for data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
     /**
      * Constructor
      *
-     * @param   array  $data  Array of data
+     * @param   array<mixed>  $data  Array of data
      * @return  void
      */
     public function __construct(array $data = [])
@@ -200,7 +200,7 @@ class Rules implements Countable, Iterator
     /**
      * Get all of the rules
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {
@@ -244,7 +244,7 @@ class Rules implements Countable, Iterator
     /**
      * Merge a new array of rules into the bag.
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object
      */
     public function merge(array $data)

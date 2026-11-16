@@ -31,7 +31,7 @@ class TranslatorStub
      * Same for every other translator call
      *
      * @param   string  $name
-     * @param   array   $arguments
+     * @param   array<mixed>   $arguments
      * @return  string
      */
     public function __call($name, $arguments)

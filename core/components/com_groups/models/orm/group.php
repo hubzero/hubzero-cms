@@ -154,7 +154,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticCn($data)
@@ -761,7 +761,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Find groups
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  mixed
      */
     public static function find($filters = [])

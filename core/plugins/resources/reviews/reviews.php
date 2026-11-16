@@ -37,7 +37,7 @@ class Reviews extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -49,7 +49,7 @@ class Reviews extends Plugin
      * Return the alias and name for this category of content
      *
      * @param   object  $model  Current model
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onResourcesAreas($model)
     {
@@ -66,7 +66,7 @@ class Reviews extends Plugin
      * Rate a resource
      *
      * @param   string  $option  Name of the component
-     * @return  array
+     * @return  array<mixed>
      */
     public function onResourcesRateItem($option)
     {
@@ -96,7 +96,7 @@ class Reviews extends Plugin
      * @param   string  $option  Name of the component
      * @param   array|mixed   $areas   Active area(s)
      * @param   string  $rtrn    Data to be returned
-     * @return  array
+     * @return  array<mixed>
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {

@@ -22,7 +22,7 @@ class ObjectExpander extends Middleware
      * Array that normalizes all the different keys we use for
      * the different objects
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $acceptedKeys = [
         'profile' => [
@@ -123,8 +123,8 @@ class ObjectExpander extends Middleware
     /**
      * Normalize expand keys
      *
-     * @param   string|array  $expandKeys  Raw expand keys: a comma-separated list, or several (expand[]=...)
-     * @return  array  Normalized expand keys
+     * @param   string|array<mixed>  $expandKeys  Raw expand keys: a comma-separated list, or several (expand[]=...)
+     * @return  array<mixed>  Normalized expand keys
      */
     private function normalizeExpandKeys($expandKeys)
     {
@@ -150,7 +150,7 @@ class ObjectExpander extends Middleware
     /**
      * Convert keys in object
      *
-     * @param   array  $expandKeys
+     * @param   array<mixed>  $expandKeys
      * @param   mixed  $object
      * @return  mixed
      */

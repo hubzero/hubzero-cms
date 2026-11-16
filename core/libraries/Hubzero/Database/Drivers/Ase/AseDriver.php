@@ -74,7 +74,7 @@ class AseDriver extends BaseSqlDriver
      *
      * ASE uses square brackets for identifier quoting.
      *
-     * @var  string|array
+     * @var  string|array<mixed>
      */
     protected $nameQuote = ['[', ']'];
 
@@ -181,7 +181,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException
      */
@@ -429,7 +429,7 @@ class AseDriver extends BaseSqlDriver
      *
      * ASE uses + operator for string concatenation.
      *
-     * @param   array  $strings  Array of expressions to concatenate
+     * @param   array<mixed>  $strings  Array of expressions to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -442,7 +442,7 @@ class AseDriver extends BaseSqlDriver
      * Returns the SQL for concatenating strings with a separator
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of strings to concatenate
+     * @param   array<mixed>   $strings    Array of strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -521,7 +521,7 @@ class AseDriver extends BaseSqlDriver
      * Normalize a column type for ASE
      *
      * @param   string  $type       Column type
-     * @param   array   $modifiers  Column modifiers
+     * @param   array<mixed>   $modifiers  Column modifiers
      * @return  string
      */
     public function normalizeColumnType(
@@ -688,7 +688,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $table     The table name
      * @param   bool    $typeOnly  True to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -730,7 +730,7 @@ class AseDriver extends BaseSqlDriver
      * Retrieves key information about the given table
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -773,7 +773,7 @@ class AseDriver extends BaseSqlDriver
      * Gets foreign key information for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getForeignKeys($table)
     {
@@ -806,7 +806,7 @@ class AseDriver extends BaseSqlDriver
      * Gets index information for a table (normalized format)
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -860,7 +860,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getTableList()
     {
@@ -871,8 +871,8 @@ class AseDriver extends BaseSqlDriver
     /**
      * Shows the table CREATE statement
      *
-     * @param   string|array  $tables  A table name or list of names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or list of names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -949,7 +949,7 @@ class AseDriver extends BaseSqlDriver
      * Get column default values from ASE system tables
      *
      * @param   string  $table  The table name
-     * @return  array   Column name => default value expression
+     * @return  array<mixed>   Column name => default value expression
      */
     protected function getColumnDefaults(string $table): array
     {
@@ -1013,7 +1013,7 @@ class AseDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -1279,8 +1279,8 @@ class AseDriver extends BaseSqlDriver
      * because the ORM often returns IDs and counts as strings from previous
      * database queries.
      *
-     * @param   array  $bindings  Parameter bindings
-     * @param   array  $type      Optional explicit types
+     * @param   array<mixed>  $bindings  Parameter bindings
+     * @param   array<mixed>  $type      Optional explicit types
      * @return  $this
      */
     public function bind($bindings, $type = [])
@@ -1468,7 +1468,7 @@ class AseDriver extends BaseSqlDriver
      * SELECT from the temp table.
      *
      * @param   string  $sql       The subquery SQL (with TOP and ORDER BY)
-     * @param   array   $bindings  Parameter bindings for the subquery
+     * @param   array<mixed>   $bindings  Parameter bindings for the subquery
      * @param   int     $offset    Number of rows to skip
      * @param   int     $limit     Number of rows to return
      * @return  string  SQL referencing the temp table
@@ -1507,11 +1507,11 @@ class AseDriver extends BaseSqlDriver
     /**
      * Apply client-side offset and limit to a result array
      *
-     * @param   array     $result      The result array
+     * @param   array<mixed>     $result      The result array
      * @param   int       $offset      Rows to skip
      * @param   int|null  $limit       Max rows, or null
      * @param   bool      $preserveKeys  Whether to preserve array keys
-     * @return  array
+     * @return  array<mixed>
      */
     protected function applyClientPagination(array $result, int $offset, ?int $limit, bool $preserveKeys = false): array
     {
@@ -1529,7 +1529,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $key    Column to key results by
      * @param   string  $class  Class name for result objects
-     * @return  array
+     * @return  array<mixed>
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -1549,7 +1549,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string|null  $key     Column to key results by
      * @param   string|null  $column  Column to extract
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadAssocList($key = null, $column = null)
     {
@@ -1568,7 +1568,7 @@ class AseDriver extends BaseSqlDriver
      * Load a single column from result set
      *
      * @param   int  $offset  Column index (NOT row offset)
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadColumn($offset = 0)
     {
@@ -2058,7 +2058,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getServerInfo()
     {
@@ -2452,7 +2452,7 @@ class AseDriver extends BaseSqlDriver
     // =========================================================================
 
     /**
-     * @return  array  Always empty
+     * @return  array<mixed>  Always empty
      */
     public function getEnumValues($table, $column)
     {
@@ -2484,7 +2484,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name
      * @param   string  $selectSql  The SELECT statement
-     * @param   array   $options    Options (ignored on ASE)
+     * @param   array<mixed>   $options    Options (ignored on ASE)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -2544,7 +2544,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Returns a list of all views
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getViews(): array
     {
@@ -2558,7 +2558,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Returns a list of all database names
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getDatabaseNames(): array
     {
@@ -2609,7 +2609,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Returns a list of all emulated sequences
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      */
     public function getSequences(): array
     {
@@ -2635,7 +2635,7 @@ class AseDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (ignored)
+     * @param   array<mixed>   $options    Additional options (ignored)
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -2809,7 +2809,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Columns
+     * @param   string|array<mixed>  $columns  Columns
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2853,7 +2853,7 @@ class AseDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -3020,7 +3020,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $table    Table name
      * @param   string  $name     Index name
-     * @param   array   $columns  Column names
+     * @param   array<mixed>   $columns  Column names
      * @param   bool    $unique   Whether unique
      * @return  string
      */
@@ -3066,7 +3066,7 @@ class AseDriver extends BaseSqlDriver
      * Build a column definition for ALTER TABLE operations
      *
      * @param   string  $name        The column name
-     * @param   array   $definition  The column definition
+     * @param   array<mixed>   $definition  The column definition
      * @return  string
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -3189,7 +3189,7 @@ class AseDriver extends BaseSqlDriver
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -3221,7 +3221,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {

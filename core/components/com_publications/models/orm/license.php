@@ -69,7 +69,7 @@ class License extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -89,7 +89,7 @@ class License extends Relational
     /**
      * Generates automatic icon field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticIcon($data)
@@ -104,7 +104,7 @@ class License extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticTitle($data)
@@ -124,7 +124,7 @@ class License extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticName($data)

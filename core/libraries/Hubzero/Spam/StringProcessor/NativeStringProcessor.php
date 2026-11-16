@@ -32,7 +32,7 @@ class NativeStringProcessor implements StringProcessorInterface
     /**
      * Constructor
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])

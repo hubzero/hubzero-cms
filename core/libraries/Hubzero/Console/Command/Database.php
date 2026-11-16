@@ -484,7 +484,7 @@ class Database extends Base implements CommandInterface
      *
      * MariaDB's own names first; servers before 10.5 have only MySQL's.
      *
-     * @param   array   $names
+     * @param   array<mixed>   $names
      * @return  string
      **/
     private function client(array $names)

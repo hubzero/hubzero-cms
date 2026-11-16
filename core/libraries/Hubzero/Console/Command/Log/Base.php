@@ -16,7 +16,7 @@ class Base
     /**
      * Fields available in this log and their default visibility
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $fields = [];
 
@@ -163,7 +163,7 @@ class Base
      *
      * @param   string  $line      Log line
      * @param   object  $output    Output object
-     * @param   array   $settings  Settings to honor
+     * @param   array<mixed>   $settings  Settings to honor
      * @return  void
      **/
     public static function parse($line, $output, $settings)

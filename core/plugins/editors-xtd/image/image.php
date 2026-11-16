@@ -25,7 +25,7 @@ class Image extends Plugin
      * Constructor
      *
      * @param   object  $subject  The object to observe
-     * @param   array   $config   An array that holds the plugin configuration
+     * @param   array<mixed>   $config   An array that holds the plugin configuration
      * @since   1.5
      * @return  void
      */

@@ -202,7 +202,7 @@ class Publication extends Relational
     /**
      * Get tag cloud
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function tags()
     {

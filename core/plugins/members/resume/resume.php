@@ -35,7 +35,7 @@ class Resume extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -52,7 +52,7 @@ class Resume extends Plugin
      *
      * @param   object  $user    User
      * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @return  array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -141,7 +141,7 @@ class Resume extends Plugin
      * @param   object  $member  Profile
      * @param   string  $option  Component name
      * @param   array|mixed   $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -666,7 +666,7 @@ class Resume extends Plugin
      * Generate a select form
      *
      * @param   string  $name   Field name
-     * @param   array   $array  Data to populate select with
+     * @param   array<mixed>   $array  Data to populate select with
      * @param   mixed   $value  Value to select
      * @param   string  $class  Class to add
      * @return  string  HTML

@@ -136,7 +136,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -758,7 +758,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -770,7 +770,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModifiedBy($data)

@@ -196,8 +196,8 @@ class Tool extends Model
     /**
      * Get history
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<mixed>
      */
     public function history($filters = [])
     {
@@ -360,7 +360,7 @@ class Tool extends Model
      *   If string, it'll return either a list of IDs or names
      *
      * @param   string   $rtrn
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  mixed
      */

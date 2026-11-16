@@ -24,7 +24,7 @@ class Middleware extends Plugin
      * Constructor
      *
      * @param   object  $subject  The object to observe
-     * @param   array   $config   An optional associative array of configuration settings.
+     * @param   array<mixed>   $config   An optional associative array of configuration settings.
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -35,7 +35,7 @@ class Middleware extends Plugin
     /**
      * Utility method to act on a user after it has been saved.
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -183,7 +183,7 @@ class Middleware extends Plugin
      *
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user     Holds the user data
+     * @param   array<mixed>    $user     Holds the user data
      * @param   boolean  $success  True if user was succesfully stored in the database
      * @param   string   $msg      Message
      * @return  boolean

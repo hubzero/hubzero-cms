@@ -44,7 +44,7 @@ abstract class Base extends Model
      * Date keys coming from
      * #__courses_offering_section_dates
      *
-     * @var array
+     * @var array<mixed>
      */
     public static $sectionKeys = [
         //'section_id',

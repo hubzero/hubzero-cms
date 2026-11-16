@@ -28,14 +28,14 @@ class Attachments extends Obj
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $types = [];
 
     /**
      * Directories, where attachment types can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $path = [];
 
@@ -74,7 +74,7 @@ class Attachments extends Obj
      * @param   string   $name
      * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   array|null    $attachments
+     * @param   array<mixed>|null    $attachments
      * @return  object
      */
     public function getStatus($name, $element = null, $elementId = 0, $attachments = null)
@@ -206,7 +206,7 @@ class Attachments extends Obj
     /**
      * Draw list of element items
      *
-     * @param   array|null    $elements
+     * @param   array<mixed>|null    $elements
      * @param   object|null   $pub
      * @param   bool|string  $authorized
      * @param   string|null   $append
@@ -260,7 +260,7 @@ class Attachments extends Obj
      * @param   string|null   $name
      * @param   object|null   $pub
      * @param   object|null   $element
-     * @param   array|null    $elements
+     * @param   array<mixed>|null    $elements
      * @param   boolean  $authorized
      * @return  mixed    object or boolean
      */
@@ -285,7 +285,7 @@ class Attachments extends Obj
      * Draws attachment
      *
      * @param   string  $name
-     * @param   array|null   $data
+     * @param   array<mixed>|null   $data
      * @param   object|null  $typeParams
      * @param   object|null  $handler
      * @return  mixed   object or bool
@@ -408,11 +408,11 @@ class Attachments extends Obj
      * Get element attachments (ween out inapplicable attachments)
      *
      * @param   integer  $elementId
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   string   $type
      * @param   string   $role
      * @param   boolean  $includeUnattached
-     * @return  array
+     * @return  array<mixed>
      */
     public function getElementAttachments(
         $elementId = 0,
@@ -482,7 +482,7 @@ class Attachments extends Obj
      * Bundle elements
      *
      * @param   object|null  $zip
-     * @param   array   $elements
+     * @param   array<mixed>   $elements
      * @param   object|null  $pub
      * @param   string  $readme
      * @param   string  $bundleDir
@@ -536,7 +536,7 @@ class Attachments extends Obj
     /**
      * Show bundle elements
      *
-     * @param   array|null   $elements
+     * @param   array<mixed>|null   $elements
      * @param   object|null  $pub
      * @return  mixed   object or bool
      */

@@ -76,7 +76,7 @@ class Files extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -99,9 +99,9 @@ class Files extends Plugin
      * @param      integer $limit      Number of records to pull
      * @param      integer $limitstart Start of records to pull
      * @param      string  $action     Action to perform
-     * @param      array   $access     What can be accessed
-     * @param      array|null   $areas      Active area(s)
-     * @return     array
+     * @param      array<mixed>   $access     What can be accessed
+     * @param      array<mixed>|null   $areas      Active area(s)
+     * @return     array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -277,9 +277,9 @@ class Files extends Plugin
     /**
      * Build Folder tree based on path
      *
-     * @param   array    $folders
+     * @param   array<mixed>    $folders
      * @param   integer  $parent_id
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function buildFolderTree($folders, $parent_id = 0)
     {
@@ -299,7 +299,7 @@ class Files extends Plugin
     /**
      * Build Folder tree in html ul list form
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeHtml($tree)
@@ -340,7 +340,7 @@ class Files extends Plugin
     /**
      * Build Folder tree in select list form
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeSelect($tree)
@@ -358,7 +358,7 @@ class Files extends Plugin
     /**
      * Recursive function to create options for select list
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeSelectOptionList($tree)

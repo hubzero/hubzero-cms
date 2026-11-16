@@ -19,7 +19,7 @@ class Post extends Base
     /**
      * Fields available in this log and their default visibility
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected static $fields = [
         'timestamp' => true,

@@ -106,7 +106,7 @@ class Usage
      * Fetch data for a particular time range
      *
      * @param   string  $disp  Data time range ti display
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function fetch($disp)
     {
@@ -192,7 +192,7 @@ class Usage
     /**
      * Push database results to $this for internal use
      *
-     * @param   array    $results  Database records
+     * @param   array<mixed>    $results  Database records
      * @return  boolean  False if errors, true on success
      */
     public function process($results)

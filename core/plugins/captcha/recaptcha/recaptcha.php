@@ -140,7 +140,7 @@ class Recaptcha extends Plugin
      * Submits an HTTP GET to a reCAPTCHA server.
      *
      * @param   string  $url   url path to recaptcha server.
-     * @param   array   $data  array of parameters to be sent.
+     * @param   array<mixed>   $data  array of parameters to be sent.
      * @return  string|bool   response
      */
     private function submitHttpGet($url, $data)
@@ -151,7 +151,7 @@ class Recaptcha extends Plugin
     /**
      * Encodes the given data into a query string format
      *
-     * @param   array   $data  Array of string elements to be encoded
+     * @param   array<mixed>   $data  Array of string elements to be encoded
      * @return  string  Encoded request
      */
     private function encodeQs($data)

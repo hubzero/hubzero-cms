@@ -168,7 +168,7 @@ class Antispam extends Plugin
      * Log results of the check
      *
      * @param   string  $isSpam  Spam detection result
-     * @param   array   $data    Data being checked
+     * @param   array<mixed>   $data    Data being checked
      * @return  void
      */
     private function log($isSpam, $data)

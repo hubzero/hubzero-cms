@@ -207,7 +207,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic fulltext field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticFulltext($data)
@@ -222,7 +222,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic images field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticImages($data)
@@ -237,7 +237,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic urls field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticUrls($data)
@@ -376,7 +376,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * An article saved with no alias used to be stored with an empty one,
      * which the site router then matched against the bare index.php.
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -417,7 +417,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishUp($data)
@@ -438,7 +438,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic publish_down field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishDown($data)
@@ -452,7 +452,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -464,7 +464,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic modified by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModifiedBy($data)
@@ -476,7 +476,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -538,7 +538,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic attribs field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAttribs($data)
@@ -558,7 +558,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic metadata field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticMetadata($data)
@@ -843,7 +843,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Build a query based on common filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function allByFilters($filters = [])
@@ -1251,7 +1251,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Build a query based on common filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function oneByFilters($filters = [])

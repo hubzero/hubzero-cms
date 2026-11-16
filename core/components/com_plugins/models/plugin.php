@@ -102,7 +102,7 @@ class Plugin extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -133,7 +133,7 @@ class Plugin extends Relational
     /**
      * Get all records
      *
-     * @param   array|null  $columns
+     * @param   array<mixed>|null  $columns
      * @return  object
      */
     public static function all($columns = null)
@@ -328,8 +328,8 @@ class Plugin extends Relational
     /**
      * Saves the manually set order of records.
      *
-     * @param   array|null  $pks    An array of primary key ids.
-     * @param   array|null  $order  An array of order values.
+     * @param   array<mixed>|null  $pks    An array of primary key ids.
+     * @param   array<mixed>|null  $order  An array of order values.
      * @return  bool
      */
     public static function saveorder($pks = null, $order = null)

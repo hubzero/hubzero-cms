@@ -39,14 +39,14 @@ interface Schema
     /**
      * Output set data
      *
-     * @param  array  $set
+     * @param  array<mixed>  $set
      */
     public function set($set);
 
     /**
      * Output a lsit of records
      *
-     * @param  array    $iterator
+     * @param  array<mixed>    $iterator
      * @param  boolean  $metadata
      */
     public function records($iterator, $metadata = true);

@@ -28,7 +28,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
     /**
      * Track callback executions for assertions
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $callbackLog = [];
 

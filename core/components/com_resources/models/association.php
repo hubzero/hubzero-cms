@@ -87,7 +87,7 @@ class Association extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticOrdering($data)

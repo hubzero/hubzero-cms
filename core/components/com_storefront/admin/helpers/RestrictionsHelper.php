@@ -22,7 +22,7 @@ class RestrictionsHelper
     /**
      * Get a list or count of the permitted users for the SKU.
      *
-     * @param   array  $filters  Filters
+     * @param   array<mixed>  $filters  Filters
      * @param   int    $sId      SKU id
      * @return  mixed
      */
@@ -34,7 +34,7 @@ class RestrictionsHelper
     /**
      * Get a list or count of the whitelisted users for the SKU.
      *
-     * @param   array  $filters  Filters
+     * @param   array<mixed>  $filters  Filters
      * @param   int    $sId      SKU id
      * @return  mixed
      */
@@ -65,7 +65,7 @@ class RestrictionsHelper
      * Check if the user is whitelisted for the SKUs provided.
      *
      * @param   int    $uId      User ID
-     * @param   array    $sIds     SKUs IDs
+     * @param   array<mixed>    $sIds     SKUs IDs
      * @return  mixed
      */
     public static function checkWhitelistedSkusUser($uId, $sIds)
@@ -88,9 +88,9 @@ class RestrictionsHelper
     /**
      * Get a list or count of the permitted or whitelisted users for the SKU.
      *
-     * @param   array  $filters  Filters
+     * @param   array<mixed>  $filters  Filters
      * @param   int    $sId      SKU id
-     * @param   array  $options  Options
+     * @param   array<mixed>  $options  Options
      * @return  mixed
      */
     private static function getSkuUsers($filters, $sId, $options = [])
@@ -152,7 +152,7 @@ class RestrictionsHelper
     /**
      * Delete users
      *
-     * @param   array $ids  permissions IDs
+     * @param   array<mixed> $ids  permissions IDs
      * @return  void
      */
     public static function removeUsers($ids)

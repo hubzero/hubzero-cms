@@ -23,7 +23,7 @@ class Nested extends Relational
     /**
      * Scopes to limit the realm of the nested set functions
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $scopes = [];
 

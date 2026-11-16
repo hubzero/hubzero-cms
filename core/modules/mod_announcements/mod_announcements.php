@@ -25,7 +25,7 @@ class Announcements extends Module
     /**
      * Get a list of content pages
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function getList()
     {

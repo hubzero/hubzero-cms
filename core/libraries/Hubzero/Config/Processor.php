@@ -20,7 +20,7 @@ abstract class Processor
     /**
      * Registry instances container
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
@@ -66,7 +66,7 @@ abstract class Processor
     /**
      * Return a list of all available processors.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function all()
     {
@@ -90,7 +90,7 @@ abstract class Processor
     /**
      * Returns an array of allowed file extensions for this parser
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSupportedExtensions()
     {
@@ -101,7 +101,7 @@ abstract class Processor
      * Parses a file from `$path` and gets its contents as an array
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      */
     public function parse($path)
     {
@@ -152,7 +152,7 @@ abstract class Processor
      * Converts an object into a formatted string.
      *
      * @param   object  $object   Data Source Object.
-     * @param   array|null   $options  An array of options for the formatter.
+     * @param   array<mixed>|null   $options  An array of options for the formatter.
      * @return  string  Formatted string.
      */
     abstract public function objectToString($object, $options = null);
@@ -161,7 +161,7 @@ abstract class Processor
      * Converts a formatted string into an object.
      *
      * @param   string  $data     Formatted string
-     * @param   array|null   $options  An array of options for the formatter.
+     * @param   array<mixed>|null   $options  An array of options for the formatter.
      * @return  object  Data Object
      */
     abstract public function stringToObject($data, $options = null);

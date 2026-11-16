@@ -70,9 +70,9 @@ class UsersCategoriesv2r0 extends ApiController
     /**
      * Instantiate user's categories
      *
-     * @param   array    $categoriesIds
+     * @param   array<mixed>    $categoriesIds
      * @param   integer  $currentUserId
-     * @return  array
+     * @return  array<mixed>
      */
     protected function instantiateUsersCategories($categoriesIds, $currentUserId)
     {
@@ -91,8 +91,8 @@ class UsersCategoriesv2r0 extends ApiController
     /**
      * Save user's categories
      *
-     * @param   array  $usersCategories
-     * @return  array
+     * @param   array<mixed>  $usersCategories
+     * @return  array<mixed>
      */
     protected function saveUsersCategories($usersCategories)
     {
@@ -160,7 +160,7 @@ class UsersCategoriesv2r0 extends ApiController
      * Destroy user's categories
      *
      * @param   iterable  $usersCategories
-     * @return  array
+     * @return  array<mixed>
      */
     protected function destroyUsersCategories($usersCategories)
     {

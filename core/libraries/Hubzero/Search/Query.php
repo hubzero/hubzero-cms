@@ -40,7 +40,7 @@ class Query
      * Get MoreLikeThis
      *
      * @param   mixed  $terms
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMoreLikeThis($terms)
     {
@@ -51,7 +51,7 @@ class Query
      * Returns terms suggestions
      *
      * @param   mixed  $terms
-     * @return  array
+     * @return  array<mixed>
      */
     public function spellCheck($terms)
     {
@@ -62,7 +62,7 @@ class Query
      * Returns indexed terms
      *
      * @param   mixed  $terms
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSuggestions($terms)
     {
@@ -84,7 +84,7 @@ class Query
     /**
      * Sets the fields to be returned by the query.
      *
-     * @param   array  $fields
+     * @param   array<mixed>  $fields
      * @return  object
      */
     public function fields($fields)
@@ -97,7 +97,7 @@ class Query
      * Adds a filter to the query
      *
      * @param   mixed   $name
-     * @param   array   $query
+     * @param   array<mixed>   $query
      * @param   string  $tag
      * @return  object
      */
@@ -111,7 +111,7 @@ class Query
      * Adds a facet to the query object.
      *
      * @param   string  $name   Used to identify facet when result is returned.
-     * @param   array   $query  The query array with a indexes of name, operator, and value
+     * @param   array<mixed>   $query  The query array with a indexes of name, operator, and value
      * @return  object
      */
     public function addFacet($name, $query = [])
@@ -146,7 +146,7 @@ class Query
     /**
      * Executes the query and returns an array of results.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getResults()
     {

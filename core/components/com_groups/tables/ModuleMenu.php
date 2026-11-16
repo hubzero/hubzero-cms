@@ -29,7 +29,7 @@ class ModuleMenu extends Table
     /**
      * Get pages of module menu
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function getMenu($filters = [])
     {
@@ -46,7 +46,7 @@ class ModuleMenu extends Table
      * Create menus matching module ID
      *
      * @param   integer  $moduleid
-     * @param   array    $pages
+     * @param   array<mixed>    $pages
      * @return  boolean
      */
     public function createMenus($moduleid, $pages = [])

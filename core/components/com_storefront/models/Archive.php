@@ -48,7 +48,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of products
      *
      * @param   string   $rtrn     What data to return
-     * @param   array    $filters  Filters to apply to data retrieval
+     * @param   array<mixed>    $filters  Filters to apply to data retrieval
      * @param   boolean|mixed  $clear    Clear cached data?
      * @return  mixed
      */
@@ -103,7 +103,7 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Get product types
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getProductTypes()
     {
@@ -119,7 +119,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   string  $rtrn     What data to return
      * @param   int     $pId      products
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public function skus($rtrn, $pId, $filters = [])
@@ -165,7 +165,7 @@ class Archive extends \Hubzero\Base\Obj
      * Update SKU info
      *
      * @param   object $sku     SKU
-     * @param   array  $fields  New info
+     * @param   array<mixed>  $fields  New info
      * @return  object  the saved SKU
      */
     public function updateSku($sku, $fields)
@@ -231,7 +231,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   string  $rtrn     What data to return
      * @param   int     $ogId     Option group Id
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public function options($rtrn, $ogId, $filters = [])
@@ -279,7 +279,7 @@ class Archive extends \Hubzero\Base\Obj
      * Update option info
      *
      * @param   int    $oId     Option ID
-     * @param   array  $fields  New info
+     * @param   array<mixed>  $fields  New info
      * @return  object  the saved option
      */
     public function updateOption($oId, $fields)
@@ -307,7 +307,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of categories
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public function categories($rtrn = 'list', $filters = [])
@@ -342,7 +342,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of collections
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public function collections($rtrn = 'list', $filters = [])
@@ -391,7 +391,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of option groups
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public function optionGroups($rtrn = 'list', $filters = [])
@@ -431,7 +431,7 @@ class Archive extends \Hubzero\Base\Obj
      * Update option group info
      *
      * @param   int    $ogId    Option Group ID
-     * @param   array  $fields  New info
+     * @param   array<mixed>  $fields  New info
      * @return  \Components\Storefront\Models\OptionGroup exception
      */
     public function updateOptionGroup($ogId, $fields)
@@ -454,7 +454,7 @@ class Archive extends \Hubzero\Base\Obj
      * Update option group info
      *
      * @param   int    $pId  Option Group ID
-     * @return  array
+     * @return  array<mixed>
      */
     public function getProductOptions($pId)
     {

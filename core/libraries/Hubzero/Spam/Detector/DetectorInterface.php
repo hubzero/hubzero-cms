@@ -16,7 +16,7 @@ interface DetectorInterface
     /**
      * Run content through spam detection
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  bool
      */
     public function detect($data);

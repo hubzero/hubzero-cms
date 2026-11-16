@@ -245,7 +245,7 @@ class ForeignKeyBuilder
     /**
      * Get the foreign key definition as an array
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {
@@ -406,7 +406,7 @@ class ForeignKeyBuilder
      * Allow method chaining back to the table builder
      *
      * @param  string $method Method name
-     * @param  array  $args   Arguments
+     * @param  array<mixed>  $args   Arguments
      * @return mixed
      */
     public function __call(string $method, array $args)

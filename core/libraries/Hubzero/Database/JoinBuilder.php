@@ -31,7 +31,7 @@ class JoinBuilder
     protected $type;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     protected $conditions = [];
 
@@ -187,7 +187,7 @@ class JoinBuilder
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     protected function getConditions(): array
     {

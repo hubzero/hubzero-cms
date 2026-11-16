@@ -24,14 +24,14 @@ class Dumper
     /**
      * Messages
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $messages = [];
 
     /**
      * Map of characters to be replaced through strtr
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $nameReplacements = [
         '-'  => '',
@@ -145,7 +145,7 @@ class Dumper
     /**
      * Get a list of messages
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function messages()
     {
@@ -175,7 +175,7 @@ class Dumper
     /**
      * Get a count and list of messages
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function collect()
     {

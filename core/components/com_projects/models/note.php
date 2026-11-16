@@ -130,7 +130,7 @@ class Note extends \Components\Wiki\Models\Book
      * Get a list of parent project notes
      *
      * @param   string  $scope
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getParentNotes($scope = '')
     {
@@ -163,7 +163,7 @@ class Note extends \Components\Wiki\Models\Book
      *
      * @param   integer  $limit
      * @param   string   $orderby
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getNotes($limit = 0, $orderby = 'p.path ASC, p.title ASC, p.times_rated ASC, p.id')
     {

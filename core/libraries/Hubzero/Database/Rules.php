@@ -64,9 +64,9 @@ class Rules
     /**
      * Do validation checks on provided data
      *
-     * @param   array       $data   The fields to validate
-     * @param   array       $rules  The rules upon which to validate
-     * @return  array|bool  Array of ValidationError objects on failure, true on success
+     * @param   array<mixed>       $data   The fields to validate
+     * @param   array<mixed>       $rules  The rules upon which to validate
+     * @return  array<mixed>|bool  Array of ValidationError objects on failure, true on success
      */
     public static function validate($data, $rules)
     {
@@ -87,9 +87,9 @@ class Rules
      *
      * @param   string        $key    The field name
      * @param   mixed         $value  The field value
-     * @param   string|callable|array  $rules  The rules to apply
-     * @param   array         $data   The full data array
-     * @return  array  Array of ValidationError objects
+     * @param   string|callable|array<mixed>  $rules  The rules to apply
+     * @param   array<mixed>         $data   The full data array
+     * @return  array<int, mixed>  Array of ValidationError objects
      */
     protected static function validateField($key, $value, $rules, array $data): array
     {
@@ -177,7 +177,7 @@ class Rules
      * @param   string  $key        The field name
      * @param   mixed   $value      The field value
      * @param   string  $ruleString The rule string
-     * @param   array   $data       The full data array
+     * @param   array<mixed>   $data       The full data array
      * @return  ValidationError|null
      */
     protected static function parseAndApplyRule($key, $value, $ruleString, array $data): ?ValidationError
@@ -210,8 +210,8 @@ class Rules
      * @param   string  $key      The field name
      * @param   mixed   $value    The field value
      * @param   string  $ruleName The rule name
-     * @param   array   $params   Rule parameters
-     * @param   array   $data     The full data array
+     * @param   array<mixed>   $params   Rule parameters
+     * @param   array<mixed>   $data     The full data array
      * @return  ValidationError|null
      */
     protected static function applyRule($key, $value, $ruleName, array $params, array $data): ?ValidationError
@@ -246,7 +246,7 @@ class Rules
      * Parse parameter string into array
      *
      * @param   string  $paramString  Comma-separated parameters
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function parseParams(string $paramString): array
     {
@@ -268,7 +268,7 @@ class Rules
      * Interpolate message placeholders
      *
      * @param   string  $message  Message with {key} placeholders
-     * @param   array   $params   Parameters to substitute
+     * @param   array<mixed>   $params   Parameters to substitute
      * @return  string
      */
     protected static function interpolateMessage(string $message, array $params): string
@@ -394,8 +394,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => min, 1 => max] or ['min' => x, 'max' => y]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => min, 1 => max] or ['min' => x, 'max' => y]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleLength($key, $value, array $params, array $data): ?ValidationError
@@ -435,8 +435,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => min] or ['min' => x]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => min] or ['min' => x]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleMin($key, $value, array $params, array $data): ?ValidationError
@@ -463,8 +463,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => max] or ['max' => x]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => max] or ['max' => x]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleMax($key, $value, array $params, array $data): ?ValidationError
@@ -491,8 +491,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => min, 1 => max]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => min, 1 => max]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleBetween($key, $value, array $params, array $data): ?ValidationError
@@ -520,8 +520,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  The allowed values
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  The allowed values
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleIn($key, $value, array $params, array $data): ?ValidationError
@@ -549,8 +549,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  The disallowed values
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  The disallowed values
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleNotin($key, $value, array $params, array $data): ?ValidationError
@@ -578,8 +578,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  ['pattern' => '/regex/']
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  ['pattern' => '/regex/']
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleRegex($key, $value, array $params, array $data): ?ValidationError
@@ -610,8 +610,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleNumeric($key, $value, array $params, array $data): ?ValidationError
@@ -636,8 +636,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleInteger($key, $value, array $params, array $data): ?ValidationError
@@ -662,8 +662,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleBoolean($key, $value, array $params, array $data): ?ValidationError
@@ -690,8 +690,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleAlphanumeric($key, $value, array $params, array $data): ?ValidationError
@@ -716,8 +716,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleUrl($key, $value, array $params, array $data): ?ValidationError
@@ -742,8 +742,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => other field name]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => other field name]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleSame($key, $value, array $params, array $data): ?ValidationError
@@ -776,8 +776,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => other field name]
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => other field name]
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleDifferent($key, $value, array $params, array $data): ?ValidationError
@@ -810,8 +810,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleRequired($key, $value, array $params, array $data): ?ValidationError
@@ -836,8 +836,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  [0 => format] optional
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  [0 => format] optional
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleDate($key, $value, array $params, array $data): ?ValidationError
@@ -877,8 +877,8 @@ class Rules
      *
      * @param   string  $key     The field name
      * @param   mixed   $value   The field value
-     * @param   array   $params  Unused
-     * @param   array   $data    Full data array
+     * @param   array<mixed>   $params  Unused
+     * @param   array<mixed>   $data    Full data array
      * @return  ValidationError|null
      */
     protected static function ruleUuid($key, $value, array $params, array $data): ?ValidationError

@@ -17,7 +17,7 @@ abstract class EnGBLocalise
      * Returns the potential suffixes for a specific number of items
      *
      * @param   integer  $count  The number of items.
-     * @return  array    An array of potential suffixes.
+     * @return  array<mixed>    An array of potential suffixes.
      */
     public static function getPluralSuffixes($count)
     {
@@ -34,7 +34,7 @@ abstract class EnGBLocalise
     /**
      * Returns the ignored search words
      *
-     * @return  array  An array of ignored search words.
+     * @return  array<mixed>  An array of ignored search words.
      */
     public static function getIgnoredSearchWords()
     {

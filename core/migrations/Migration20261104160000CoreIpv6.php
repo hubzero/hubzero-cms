@@ -31,7 +31,7 @@ class Migration20261104160000CoreIpv6 extends Base
     /**
      * IP address columns, by table
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $columns = [
         '#__session'               => 'ip',

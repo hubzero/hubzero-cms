@@ -49,7 +49,7 @@ class Profiler
     /**
      * The buffer of profiling messages.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $marks = [];
 
@@ -185,7 +185,7 @@ class Profiler
     /**
      * Get all marks
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function marks()
     {
@@ -195,7 +195,7 @@ class Profiler
     /**
      * Returns a summary of all timer activity so far
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function summary()
     {

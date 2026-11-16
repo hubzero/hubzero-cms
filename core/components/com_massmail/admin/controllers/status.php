@@ -214,7 +214,7 @@ class Status extends AdminController
      *
      * @param   string  $fmt       MySQL DATE_FORMAT string
      * @param   string  $interval  e.g. '48 HOUR', '29 DAY'
-     * @return  array
+     * @return  array<mixed>
      */
     protected function sentMap($fmt, $interval)
     {
@@ -236,12 +236,12 @@ class Status extends AdminController
     /**
      * Build a gap-filled chart series ending now.
      *
-     * @param   array    $map       counts keyed by gmdate($keyFmt)
+     * @param   array<mixed>    $map       counts keyed by gmdate($keyFmt)
      * @param   integer  $count     number of buckets
      * @param   integer  $step      seconds per bucket
      * @param   string   $keyFmt    gmdate() format matching the map keys (UTC)
      * @param   string   $labelFmt  date() format for the (local) label
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function series($map, $count, $step, $keyFmt, $labelFmt)
     {
@@ -265,7 +265,7 @@ class Status extends AdminController
      * @param   integer  $step    seconds per bucket
      * @param   string   $sqlFmt  MySQL DATE_FORMAT for bucketing recorded
      * @param   string   $keyFmt  matching gmdate() format
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function queueLine($count, $step, $sqlFmt, $keyFmt)
     {

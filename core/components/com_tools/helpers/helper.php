@@ -22,7 +22,7 @@ class Helper
      * Turn a string into an array
      *
      * @param   string  $string
-     * @return  array
+     * @return  array<mixed>
      */
     public static function makeArray($string = '')
     {
@@ -38,8 +38,8 @@ class Helper
     /**
      * Clean array
      *
-     * @param   array  $array
-     * @return  array
+     * @param   array<mixed>  $array
+     * @return  array<mixed>
      */
     public static function cleanArray($array)
     {
@@ -71,7 +71,7 @@ class Helper
      * Get a list of licenses
      *
      * @param   object  $database
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getLicenses($database)
     {
@@ -82,10 +82,10 @@ class Helper
     /**
      * Transform an array
      *
-     * @param   array   $array
+     * @param   array<mixed>   $array
      * @param   string  $label
-     * @param   array   $newarray
-     * @return  array
+     * @param   array<mixed>   $newarray
+     * @return  array<mixed>
      */
     public static function transform($array, $label, $newarray = [])
     {
@@ -106,8 +106,8 @@ class Helper
      * Get usernames for a list of IDs
      *
      * @param   array|mixed  $uids
-     * @param   array  $logins
-     * @return  array
+     * @param   array<mixed>  $logins
+     * @return  array<mixed>
      */
     public static function getLogins($uids, $logins = [])
     {

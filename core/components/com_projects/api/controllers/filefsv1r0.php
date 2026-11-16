@@ -1082,8 +1082,8 @@ class Filefsv1r0 extends ApiController
     /**
      * Get file(s) metadata for Flysystem adapters
      *
-     * @param   array $files
-     * @return  array
+     * @param   array<mixed> $files
+     * @return  array<int, mixed>
      */
     protected function parseFlysystemListing($files)
     {
@@ -1103,8 +1103,8 @@ class Filefsv1r0 extends ApiController
     /**
      * Get file(s) metadata
      *
-     * @param   array $files
-     * @return  array
+     * @param   array<mixed> $files
+     * @return  array<int, mixed>
      */
     protected function parseResults($files)
     {
@@ -1124,9 +1124,9 @@ class Filefsv1r0 extends ApiController
     /**
      * Filter an array by another array of field names
      *
-     * @param   array $source
-     * @param   array $filter
-     * @return  array
+     * @param   array<mixed> $source
+     * @param   array<mixed> $filter
+     * @return  array<mixed>
      */
     protected function filter($source, $filter)
     {
@@ -1144,7 +1144,7 @@ class Filefsv1r0 extends ApiController
      * Zip the selected files for a multi-file download (the files plugin has
      * the same helper; this controller called it without having it)
      *
-     * @param   array  $items  [[type => path], ...] as _sortIncoming() returns them
+     * @param   array<mixed>  $items  [[type => path], ...] as _sortIncoming() returns them
      * @return  mixed  ['path' => zip path, 'name' => zip name] or false
      */
     protected function archiveFiles($items)
@@ -1232,8 +1232,8 @@ class Filefsv1r0 extends ApiController
     /**
      * Trims vars, unsetting if empty
      *
-     * @param   array  $vars  the variables to trim
-     * @return  array
+     * @param   array<mixed>  $vars  the variables to trim
+     * @return  array<mixed>
      **/
     private function prune($vars)
     {
@@ -1251,7 +1251,7 @@ class Filefsv1r0 extends ApiController
     /**
      * Sort incoming file/folder data
      *
-     * @return     array
+     * @return     array<int, mixed>
      */
     protected function sortIncoming()
     {
@@ -1287,7 +1287,7 @@ class Filefsv1r0 extends ApiController
      * Pack metadata from onMetadataGet into form usable by onMetadataSave
      *
      * @param      array|mixed  $metadata  incoming metadata
-     * @return     array
+     * @return     array<mixed>
      */
     protected function packMetadata($metadata)
     {

@@ -38,7 +38,7 @@ class Coupons
      * Get coupons info orderd by coupon type with item coupons first then ordered in the order of applied time
      *
      * @param  array|mixed        $cnIds coupon ids
-     * @return array        coupons info
+     * @return array<mixed>        coupons info
      */
     public function getCouponsInfo($cnIds)
     {

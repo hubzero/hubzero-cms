@@ -184,7 +184,7 @@ class CurrentCart extends Cart
     /**
      * Get any changes to cart items' inventory or pricing since last visit.
      * Works like a flash variable -- gets messages once and then resets the state
-     * @return array of change messages
+     * @return array<int, mixed> of change messages
      */
     private function getCartChanges()
     {
@@ -298,7 +298,7 @@ class CurrentCart extends Cart
     /**
      * Get all cart messages, both changes and set messages
      * Works like a flash variable -- gets messages once and then resets the state/messages
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function getMessages()
     {
@@ -974,7 +974,7 @@ class CurrentCart extends Cart
 
     /**
      * Get coupons applied to the cart
-     * @return  array       coupons
+     * @return  array<mixed>       coupons
      */
     public function getCoupons()
     {
@@ -1016,7 +1016,7 @@ class CurrentCart extends Cart
      * Do the maintenance of coupons -- make sure all coupons are valid and in order, remove unnecessary coupons...
      * Return all perks available for the cart
      *
-     * @return  array       perks
+     * @return  array<mixed>       perks
      */
     public function getCouponPerks()
     {
@@ -1338,7 +1338,7 @@ class CurrentCart extends Cart
     /**
      * Handle memberships
      *
-     * @return  array      membership info
+     * @return  array<mixed>      membership info
      */
     public function getMembershipInfo()
     {
@@ -1401,7 +1401,7 @@ class CurrentCart extends Cart
      * Get all items in the cart if cart exists, if cart doesn't exist reset session data and create a new cart
      * This is primarily for cases when session cart doesn't exist anymore. In most cases cart will be there.
      *
-     * @return array of items in the cart
+     * @return array<mixed> of items in the cart
      */
     private function getItems()
     {
@@ -1419,7 +1419,7 @@ class CurrentCart extends Cart
      * Update cart based on current availability (and pricing) and return all items in the cart, update cart's
      * 'lastUpdated' field
      *
-     * @return array of items in the cart
+     * @return array<mixed> of items in the cart
      */
     private function getUpdatedItems()
     {

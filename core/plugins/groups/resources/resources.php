@@ -36,7 +36,7 @@ class Resources extends Plugin
     /**
      * Resource areas
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $areas = null;
 
@@ -50,7 +50,7 @@ class Resources extends Plugin
     /**
      * Record count
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $total = null;
 
@@ -94,7 +94,7 @@ class Resources extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -117,9 +117,9 @@ class Resources extends Plugin
      * @param      integer $limit      Number of records to pull
      * @param      integer $limitstart Start of records to pull
      * @param      string  $action     Action to perform
-     * @param      array   $access     What can be accessed
-     * @param      array|null   $areas      Active area(s)
-     * @return     array
+     * @param      array<mixed>   $access     What can be accessed
+     * @param      array<mixed>|null   $areas      Active area(s)
+     * @return     array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -420,7 +420,7 @@ class Resources extends Plugin
      * Get a list of resource IDs associated with this group
      *
      * @param      string|null $gid Group alias
-     * @return     array
+     * @return     array<int, \stdClass>
      */
     private function getResourceIDs($gid = null)
     {
@@ -440,7 +440,7 @@ class Resources extends Plugin
     /**
      * Get a list of resource categories (types)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getResourcesAreas()
     {
@@ -676,7 +676,7 @@ class Resources extends Plugin
     /**
      * Include needed libraries and push scripts and CSS to the document
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function allWithFilters($filters = [])

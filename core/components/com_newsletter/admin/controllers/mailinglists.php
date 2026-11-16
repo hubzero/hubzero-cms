@@ -810,7 +810,7 @@ class Mailinglists extends AdminController
      *
      * @param   $emails     Email Content
      * @param   $separator  Email Address Separator
-     * @return  array
+     * @return  array<mixed>
      */
     private function parseEmails($emails)
     {

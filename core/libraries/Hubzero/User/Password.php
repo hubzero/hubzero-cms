@@ -65,7 +65,7 @@ class Password
     /**
      * Description for 'shadowMin'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $shadowMin = [];
 
@@ -107,7 +107,7 @@ class Password
     /**
      * Description for 'updatedKeys'
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $updatedKeys = [];
 

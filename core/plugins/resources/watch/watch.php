@@ -38,7 +38,7 @@ class Watch extends Plugin
      * Return the alias and name for this category of content
      *
      * @param   object  $publication  Current publication
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onResourcesSubAreas($publication)
     {
@@ -55,7 +55,7 @@ class Watch extends Plugin
      * @param   object   $resource  Current resource
      * @param   string   $option    Name of the component
      * @param   integer  $miniview  View style
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {

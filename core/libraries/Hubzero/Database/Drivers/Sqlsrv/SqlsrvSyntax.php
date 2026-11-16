@@ -176,9 +176,9 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the columns query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      **/
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -400,7 +400,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * SQL Server uses standard TRUNCATE TABLE syntax.
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {
@@ -413,7 +413,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * SQL Server 2012+ supports CONCAT() function with multiple arguments.
      * For older versions, use + operator (requires NULL handling).
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function buildConcat(array $parts)

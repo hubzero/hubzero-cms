@@ -72,7 +72,7 @@ class Tool extends Table
     /**
      * Build query
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @param   integer  $count
      * @return  string
@@ -201,7 +201,7 @@ class Tool extends Table
     /**
      * Get item count
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @param   integer  $count
      * @return  string|null
@@ -217,9 +217,9 @@ class Tool extends Table
     /**
      * Get records
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
-     * @return  array    list
+     * @return  array<int, \stdClass>    list
      */
     public function getRecords($filters = [], $admin = false)
     {

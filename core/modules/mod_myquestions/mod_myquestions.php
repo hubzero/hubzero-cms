@@ -94,8 +94,8 @@ class Myquestions extends Module
      * Retrieves a user's questions
      *
      * @param   string  $kind       The kind of results to retrieve
-     * @param   array|string   $interests  Array of tags
-     * @return  array   Database results
+     * @param   array<mixed>|string   $interests  Array of tags
+     * @return  array<mixed>   Database results
      */
     private function getQuestions($kind = 'open', $interests = [])
     {

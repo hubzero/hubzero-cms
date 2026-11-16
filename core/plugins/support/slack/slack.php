@@ -32,7 +32,7 @@ class Slack extends Plugin
     /**
      * Get endpoint configurations
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getEndpoints()
     {
@@ -68,7 +68,7 @@ class Slack extends Plugin
     /**
      * Check if the plugin was properly configured
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  bool
      */
     protected function isReady($options)
@@ -92,7 +92,7 @@ class Slack extends Plugin
      * Send notification
      *
      * @param   string  $channel
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  bool
      */
     protected function send($endpoint, $username, $channel, $data)

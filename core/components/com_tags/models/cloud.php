@@ -43,7 +43,7 @@ class Cloud extends \Hubzero\Base\Obj
     /**
      * Container for properties
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $cache = [
         'tags.one'    => null,
@@ -162,7 +162,7 @@ class Cloud extends \Hubzero\Base\Obj
      * Get a list of tags
      *
      * @param   string   $rtrn     Format of data to return
-     * @param   array    $filters  Filters to apply
+     * @param   array<mixed>    $filters  Filters to apply
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
@@ -424,9 +424,9 @@ class Cloud extends \Hubzero\Base\Obj
      * Render a tag cloud
      *
      * @param   string   $rtrn     Format to render
-     * @param   array    $filters  Filters to apply
+     * @param   array<mixed>    $filters  Filters to apply
      * @param   boolean  $clear    Clear cached data?
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function render($rtrn = 'html', $filters = [], $clear = false)
     {
@@ -473,7 +473,7 @@ class Cloud extends \Hubzero\Base\Obj
      *   1) add any new tags not in the old list
      *   2) remove any tags in the old list not found in the new list
      *
-     * @param   string|array   $tag_string  String of comma-separated tags
+     * @param   string|array<mixed>   $tag_string  String of comma-separated tags
      * @param   integer  $tagger_id   Tagger ID
      * @param   boolean|int $admin       Mark tags as admin?
      * @param   integer  $strength    Tag strength
@@ -544,7 +544,7 @@ class Cloud extends \Hubzero\Base\Obj
      *
      * @param   mixed    $tags  Array or Comma-separated string of tags
      * @param   integer  $keep  Use normalized tag as array key
-     * @return  array
+     * @return  array<mixed>
      */
     protected function splitTags($tags, $keep = 0)
     {

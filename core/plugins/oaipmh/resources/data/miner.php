@@ -45,7 +45,7 @@ class Miner extends Obj implements Provider
     /**
      * Data source aliases
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $provides = [
         'resources',
@@ -118,7 +118,7 @@ class Miner extends Obj implements Provider
     /**
      * Build query for retrieving records
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     public function records($filters = [])
@@ -193,8 +193,8 @@ class Miner extends Obj implements Provider
     /**
      * Process list of records
      *
-     * @param   array  $records
-     * @return  array
+     * @param   array<mixed>  $records
+     * @return  array<mixed>
      */
     public function postRecords($records)
     {

@@ -78,7 +78,7 @@ class MigrationFindTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function suffixes(): array
     {
@@ -146,8 +146,8 @@ class MigrationFindTest extends TestCase
      * Build a tree of migrations and find one extension's
      *
      * @param   string  $extension
-     * @param   array   $tree       Directory => migration file names
-     * @return  array   File names found
+     * @param   array<mixed>   $tree       Directory => migration file names
+     * @return  array<mixed>   File names found
      */
     private function find(string $extension, array $tree): array
     {

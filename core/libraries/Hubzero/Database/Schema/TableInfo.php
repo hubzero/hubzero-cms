@@ -113,14 +113,14 @@ class TableInfo
     /**
      * Primary key column name(s)
      *
-     * @var string|array|null
+     * @var string|array<mixed>|null
      */
     protected $primaryKey;
 
     /**
      * Create a new TableInfo instance
      *
-     * @param array $data Table data from introspection
+     * @param array<mixed> $data Table data from introspection
      */
     public function __construct(array $data = [])
     {
@@ -217,7 +217,7 @@ class TableInfo
     /**
      * Get the primary key column name(s)
      *
-     * @return string|array|null
+     * @return string|array<mixed>|null
      */
     public function getPrimaryKey()
     {
@@ -264,7 +264,7 @@ class TableInfo
     /**
      * Get column names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getColumnNames(): array
     {
@@ -420,7 +420,7 @@ class TableInfo
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

@@ -26,8 +26,8 @@ class D1 extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array  $user     holds the user data
-     * @param   array  $options  holding options (remember, autoregister, group)
+     * @param   array<mixed>  $user     holds the user data
+     * @param   array<mixed>  $options  holding options (remember, autoregister, group)
      * @return  bool
      */
     public function onUserLogin($user, $options = [])
@@ -92,7 +92,7 @@ class D1 extends Plugin
     /**
      * Method is called after user data is deleted from the database
      *
-     * @param   array   $user     holds the user data
+     * @param   array<mixed>   $user     holds the user data
      * @param   bool    $success  true if user was successfully stored in the database
      * @param   string  $msg      message
      *
@@ -110,7 +110,7 @@ class D1 extends Plugin
      * has not (the session still holds the guest, 0), this plugin is ordered
      * before user/hubzero: look the user up by name instead, and say so.
      *
-     * @param   array    $user  The user data passed to onUserLogin
+     * @param   array<mixed>    $user  The user data passed to onUserLogin
      * @return  integer  0 when the user cannot be found
      */
     private function userId($user)

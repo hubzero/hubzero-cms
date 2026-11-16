@@ -58,7 +58,7 @@ class Htmx
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -87,7 +87,7 @@ class Htmx
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -105,7 +105,7 @@ class Htmx
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function debugSnapshot(): array
     {
@@ -161,7 +161,7 @@ class Htmx
 
     /**
      * @param   string  $url
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  void
      */
     public static function location(string $url, array $options = []): void
@@ -231,7 +231,7 @@ class Htmx
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function requestDetails(): array
     {
@@ -248,7 +248,7 @@ class Htmx
 
     /**
      * @param   string  $url
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  string
      */
     public static function url(string $url, array $params = []): string
@@ -259,7 +259,7 @@ class Htmx
     /**
      * @param   string  $component
      * @param   string  $task
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  string
      */
     public static function actionUrl(string $component, string $task, array $params = []): string
@@ -294,7 +294,7 @@ class Htmx
 
     /**
      * @param   string  $html
-     * @param   array   $errors
+     * @param   array<mixed>   $errors
      * @return  void
      */
     public static function validation(string $html, array $errors = []): void
@@ -303,10 +303,10 @@ class Htmx
     }
 
     /**
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     public static function preserveDebugParam(array $params, string $name = 'htmx_debug', string $value = '1'): array
     {
@@ -324,8 +324,8 @@ class Htmx
     }
 
     /**
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     public static function renderDebugPanel(array $snapshot = [], array $options = []): string
@@ -352,7 +352,7 @@ class Htmx
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function profileSnapshot(): array
     {

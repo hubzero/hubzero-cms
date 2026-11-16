@@ -100,7 +100,7 @@ class Author extends Table
      * Get an author's DOIs
      *
      * @param   integer  $rid
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getAuthorsDOI($rid = 0)
     {
@@ -115,12 +115,12 @@ class Author extends Table
     /**
      * Get a list of the authors on a tool
      *
-     * @param   string|object|array   $version   Tool version, or a list holding one
+     * @param   string|object|array<mixed>   $version   Tool version, or a list holding one
      * @param   integer  $rid       Resource ID
      * @param   string   $toolname  Tool name
      * @param   string   $revision  Tool revision
-     * @param   array    $authors   Author list
-     * @return  array|null
+     * @param   array<mixed>    $authors   Author list
+     * @return  array<mixed>|null
      */
     public function getToolAuthors($version = '', $rid = 0, $toolname = '', $revision = '', $authors = [])
     {
@@ -168,7 +168,7 @@ class Author extends Table
     /**
      * Save a list of authors
      *
-     * @param   array    $authors   List of authors to add
+     * @param   array<mixed>    $authors   List of authors to add
      * @param   string   $version   Tool version
      * @param   integer  $rid       Resource ID
      * @param   integer  $revision  Revision number

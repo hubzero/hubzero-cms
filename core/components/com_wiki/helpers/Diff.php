@@ -34,7 +34,7 @@ class Diff
     /**
      * Description for 'edits'
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $edits;
 
@@ -42,8 +42,8 @@ class Diff
      * Constructor.
      * Computes diff between sequences of strings.
      *
-     * @param   array  $from_lines  An array of strings. (Typically these are lines from a file.)
-     * @param   array  $to_lines  An array of strings.
+     * @param   array<mixed>  $from_lines  An array of strings. (Typically these are lines from a file.)
+     * @param   array<mixed>  $to_lines  An array of strings.
      * @return  void
      */
     public function __construct($from_lines, $to_lines)
@@ -111,7 +111,7 @@ class Diff
      *
      * This reconstructs the $from_lines parameter passed to the constructor.
      *
-     * @return  array  The original sequence of strings.
+     * @return  array<mixed>  The original sequence of strings.
      */
     public function orig()
     {
@@ -130,7 +130,7 @@ class Diff
      *
      * This reconstructs the $to_lines parameter passed to the constructor.
      *
-     * @return  array  The sequence of strings.
+     * @return  array<mixed>  The sequence of strings.
      */
     public function closing()
     {

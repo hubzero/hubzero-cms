@@ -31,7 +31,7 @@ class CategoryEdit extends Select
      * either category assignment or parent category assignment in edit screens.
      * Use the parent element to indicate that the field will be used for assigning parent categories.
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

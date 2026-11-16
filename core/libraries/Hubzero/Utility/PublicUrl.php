@@ -34,8 +34,8 @@ class PublicUrl
      * Check a URL, and say how to fetch it
      *
      * @param   string  $url
-     * @param   array   $schemes  Schemes allowed
-     * @return  array|false  array(url, host, port, addresses, pins), or false when refused
+     * @param   array<mixed>   $schemes  Schemes allowed
+     * @return  array<mixed>|false  array(url, host, port, addresses, pins), or false when refused
      */
     public static function check($url, $schemes = ['http', 'https'])
     {
@@ -96,7 +96,7 @@ class PublicUrl
      * Point a curl handle at a checked URL, pinned to its checked addresses
      *
      * @param   resource|\CurlHandle  $ch
-     * @param   array                 $target  From check()
+     * @param   array<mixed>                 $target  From check()
      * @return  void
      */
     public static function apply($ch, $target)
@@ -112,7 +112,7 @@ class PublicUrl
      * Whether curl connected to one of the checked addresses
      *
      * @param   resource|\CurlHandle  $ch
-     * @param   array                 $target  From check()
+     * @param   array<mixed>                 $target  From check()
      * @return  bool
      */
     public static function fetchedFromChecked($ch, $target)
@@ -129,7 +129,7 @@ class PublicUrl
      *
      * @param   string   $host
      * @param   integer  $port
-     * @param   array    $addresses
+     * @param   array<mixed>    $addresses
      * @return  string
      */
     protected static function pin($host, $port, $addresses)

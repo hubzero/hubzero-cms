@@ -56,7 +56,7 @@ class Document extends Facade
      * @param   string       $url      URL to the linked style sheet
      * @param   string       $type     Mime encoding type
      * @param   string|null  $media    Media type that this stylesheet applies to
-     * @param   array        $attribs  Array of attributes
+     * @param   array<mixed>        $attribs  Array of attributes
      * @return  object       The document, to allow chaining
      */
     public static function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])

@@ -38,7 +38,7 @@ class DirectoryTree extends Base
      * @param   integer  $maxLevel  The maximum number of levels to recursively read, defaults to three.
      * @param   integer  $level     The current level, optional.
      * @param   integer  $parent    Unique identifier of the parent folder, if any.
-     * @return  array
+     * @return  array<mixed>
      */
     public function handle($path, $filter = '.', $maxLevel = 3, $level = 0, $parent = 0)
     {

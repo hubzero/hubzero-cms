@@ -376,7 +376,7 @@ class Log extends Base implements CommandInterface
      * Parse thresholds from user input to array
      *
      * @param   string  $thresholds  The threshold input string to parse
-     * @return  array
+     * @return  array<mixed>
      **/
     private function parseThresholds($thresholds)
     {

@@ -86,7 +86,7 @@ class Members extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -109,9 +109,9 @@ class Members extends Plugin
      * @param   integer  $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
-     * @param   array    $access      What can be accessed
-     * @param   array|null    $areas       Active area(s)
-     * @return  array
+     * @param   array<mixed>    $access      What can be accessed
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @return  array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -418,8 +418,8 @@ class Members extends Plugin
     /**
      * Sort member names alphabetically
      *
-     * @param   array  $userIds
-     * @return  array
+     * @param   array<mixed>  $userIds
+     * @return  array<mixed>
      */
     private function sortAlphabetically($userIds)
     {
@@ -1287,7 +1287,7 @@ class Members extends Plugin
     /**
      * Get the canned replies a group's managers have saved for denying membership
      *
-     * @return  array  List of arrays with 'title' and 'text' keys
+     * @return  array<int, mixed>  List of arrays with 'title' and 'text' keys
      */
     private function getDenyResponses()
     {
@@ -1312,7 +1312,7 @@ class Members extends Plugin
     /**
      * Display a form for managing the group's canned deny responses
      *
-     * @param   array|null  $responses  Responses to show instead of the saved ones,
+     * @param   array<mixed>|null  $responses  Responses to show instead of the saved ones,
      *                             so a failed save can hand back what was typed
      * @return  false|null
      */
@@ -1699,7 +1699,7 @@ class Members extends Plugin
     /**
      * Get the group's member roles in the order its managers have set
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function getRoles()
     {

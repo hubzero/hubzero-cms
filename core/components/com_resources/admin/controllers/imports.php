@@ -459,7 +459,7 @@ class Imports extends AdminController
      *
      * @param   string  $type    Hook we want
      * @param   object  $import  Resource Import Model
-     * @return  array
+     * @return  array<mixed>
      */
     private function hooks($type, $import)
     {

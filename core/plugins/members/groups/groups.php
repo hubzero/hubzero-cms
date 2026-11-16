@@ -32,7 +32,7 @@ class Groups extends Plugin
      *
      * @param  object $user   User
      * @param  object $member Profile
-     * @return array   Plugin name
+     * @return array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -56,8 +56,8 @@ class Groups extends Plugin
      * @param  object $user   User
      * @param  object $member Profile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -255,7 +255,7 @@ class Groups extends Plugin
      * @param  string $uid
      * @param  string $type
      * @param  int|string|null $cat
-     * @return array|false|null
+     * @return array<mixed>|false|null
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {

@@ -432,7 +432,7 @@ class GithubAdapter implements FilesystemAdapter
      * directory it is a numerically indexed list of entries.
      *
      * @param   string  $path
-     * @return  array|false
+     * @return  array<mixed>|false
      **/
     private function showMetadata($path)
     {
@@ -465,7 +465,7 @@ class GithubAdapter implements FilesystemAdapter
      *
      * @param   string  $path
      * @param   bool    $recursive
-     * @return  array
+     * @return  array<mixed>
      **/
     private function treeEntries($path, $recursive)
     {
@@ -489,10 +489,10 @@ class GithubAdapter implements FilesystemAdapter
     /**
      * Restrict a flat git tree to the entries that live under $path.
      *
-     * @param   array   $tree
+     * @param   array<mixed>   $tree
      * @param   string  $path
      * @param   bool    $recursive
-     * @return  array
+     * @return  array<mixed>
      **/
     private function filterTree(array $tree, $path, $recursive)
     {
@@ -526,7 +526,7 @@ class GithubAdapter implements FilesystemAdapter
     /**
      * Turn a git tree entry into Flysystem attributes
      *
-     * @param   array  $entry
+     * @param   array<mixed>  $entry
      * @return  FileAttributes|DirectoryAttributes
      **/
     private function attributes(array $entry)
@@ -547,7 +547,7 @@ class GithubAdapter implements FilesystemAdapter
     /**
      * Derive visibility from a tree entry's unix mode.
      *
-     * @param   array  $entry
+     * @param   array<mixed>  $entry
      * @return  string|null
      **/
     private function visibilityFromMode(array $entry)
@@ -563,7 +563,7 @@ class GithubAdapter implements FilesystemAdapter
      * List the commits touching a path (most recent first).
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      **/
     private function commitsForFile($path)
     {

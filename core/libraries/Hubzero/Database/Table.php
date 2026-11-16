@@ -70,7 +70,7 @@ abstract class Table extends \stdClass
     /**
      * Cached table field descriptions
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $fieldCache = null;
 
@@ -95,7 +95,7 @@ abstract class Table extends \stdClass
     /**
      * Reset static state for worker mode safety.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - clear_default_access (bool, default true)
      * @return  void
      */
@@ -109,7 +109,7 @@ abstract class Table extends \stdClass
     /**
      * An array of error messages or Exception objects.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $errors = [];
 
@@ -155,7 +155,7 @@ abstract class Table extends \stdClass
      * Returns an associative array of object properties.
      *
      * @param   boolean  $public  If true, returns only the public properties.
-     * @return  array
+     * @return  array<mixed>
      */
     public function getProperties($public = true)
     {
@@ -178,7 +178,7 @@ abstract class Table extends \stdClass
      * The properties of an object that code outside its class can reach
      *
      * @param   object  $object
-     * @return  array
+     * @return  array<mixed>
      */
     private static function publicVars($object)
     {
@@ -249,7 +249,7 @@ abstract class Table extends \stdClass
     /**
      * Return all errors, if any.
      *
-     * @return  array  Array of error messages
+     * @return  array<mixed>  Array of error messages
      */
     public function getErrors()
     {
@@ -276,7 +276,7 @@ abstract class Table extends \stdClass
     /**
      * Set the list of errors
      *
-     * @param   array   $errors  List of Error message.
+     * @param   array<mixed>   $errors  List of Error message.
      * @return  object
      */
     public function setErrors($errors)
@@ -352,7 +352,7 @@ abstract class Table extends \stdClass
      *
      * @param   string  $type    The type (name) of the Table class to get an instance of.
      * @param   string  $prefix  An optional prefix for the table class name.
-     * @param   array   $config  An optional array of configuration values for the Table object.
+     * @param   array<mixed>   $config  An optional array of configuration values for the Table object.
      * @return  mixed   A Table object if found or boolean false if one could not be found.
      */
     public static function getInstance($type, $prefix = 'Table', $config = [])
@@ -394,7 +394,7 @@ abstract class Table extends \stdClass
      * You may either pass a string or an array of paths.
      *
      * @param   mixed  $path  A filesystem path or array of filesystem paths to add.
-     * @return  array  An array of filesystem paths to find Table classes in.
+     * @return  array<mixed>  An array of filesystem paths to find Table classes in.
      */
     public static function addIncludePath($path = null)
     {
@@ -1354,7 +1354,7 @@ abstract class Table extends \stdClass
      *
      * @param   mixed  $pk     An optional primary key value check the row for.  If not
      *                         set the instance property value is used.
-     * @param   array|null  $joins  An optional array to compiles standard joins formatted like:
+     * @param   array<mixed>|null  $joins  An optional array to compiles standard joins formatted like:
      *                         [label => 'Label', name => 'table name' , idfield => 'field', joinfield => 'field']
      * @return  boolean  True on success.
      * @deprecated    2.1.12

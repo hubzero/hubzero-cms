@@ -23,7 +23,7 @@ class RenderTest extends TestCase
     /**
      * HTML in, HTML out
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function markup(): array
     {

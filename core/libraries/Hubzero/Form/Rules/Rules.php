@@ -52,7 +52,7 @@ class Rules extends Rule
      * Method to get the list of permission action names from the form field value.
      *
      * @param   mixed  $value  The form field value to validate.
-     * @return  array  A list of permission action names from the form field value.
+     * @return  array<int, mixed>  A list of permission action names from the form field value.
      */
     protected function getValueActions($value)
     {
@@ -71,7 +71,7 @@ class Rules extends Rule
      * Method to get the list of possible permission action names for the form field.
      *
      * @param   object  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
-     * @return  array   A list of permission action names from the form field element definition.
+     * @return  array<int, mixed>   A list of permission action names from the form field element definition.
      */
     protected function getFieldActions($element)
     {

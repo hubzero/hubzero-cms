@@ -28,21 +28,21 @@ class Toolbar extends Obj
     /**
      * Toolbar array
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $bar = [];
 
     /**
      * Loaded buttons
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $buttons = [];
 
     /**
      * Directories, where button types can be stored.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $buttonPath = [];
 
@@ -77,7 +77,7 @@ class Toolbar extends Obj
     /**
      * Get the list of toolbar links.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getItems()
     {

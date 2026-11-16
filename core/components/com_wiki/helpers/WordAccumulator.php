@@ -23,7 +23,7 @@ if (!defined('NBSP')) {
 class WordAccumulator
 {
     /**
-     * @var  array|string
+     * @var  array<mixed>|string
      */
     public $lines = '';
     /**
@@ -102,7 +102,7 @@ class WordAccumulator
      *
      * Long description (if any) ...
      *
-     * @param      array $words Parameter description (if any) ...
+     * @param      array<mixed> $words Parameter description (if any) ...
      * @param      string $tag Parameter description (if any) ...
      * @return     void
      */

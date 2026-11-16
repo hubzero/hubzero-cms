@@ -24,7 +24,7 @@ class Projects extends Obj
     /**
      * Return a sample for import header and content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function sample()
     {
@@ -166,7 +166,7 @@ class Projects extends Obj
      *
      * @param   mixed   $data   String or array of field values
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
-     * @return  array
+     * @return  array<mixed>
      */
     private function multiValueField($data, $delim = ',|;')
     {

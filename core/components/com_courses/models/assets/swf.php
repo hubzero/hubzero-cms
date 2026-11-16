@@ -19,7 +19,7 @@ class Swf extends File
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'As an Adobe Shockwave Flash file',
@@ -29,7 +29,7 @@ class Swf extends File
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<mixed> of assets created
      **/
     public function create($localPath = null)
     {

@@ -36,21 +36,21 @@ class Opensearch extends Base
      *
      * optional
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $images = [];
 
     /**
      * The url collection
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $urls = [];
 
     /**
      * Class constructor
      *
-     * @param   array  $options  Associative array of options
+     * @param   array<mixed>  $options  Associative array of options
      * @return  void
      */
     public function __construct($options = [])
@@ -96,7 +96,7 @@ class Opensearch extends Base
      * Render the document
      *
      * @param   boolean  $cache   If true, cache the output
-     * @param   array    $params  Associative array of attributes
+     * @param   array<mixed>    $params  Associative array of attributes
      * @return  string|bool rendered data
      */
     public function render($cache = false, $params = [])

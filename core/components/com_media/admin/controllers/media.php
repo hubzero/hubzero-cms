@@ -816,7 +816,7 @@ class Media extends AdminController
      * @param   string   $tmp_name
      * @param   string   $error
      * @param   integer  $size
-     * @return  array
+     * @return  array<mixed>
      */
     protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
     {

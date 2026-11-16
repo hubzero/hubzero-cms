@@ -45,7 +45,7 @@ class Tool
     /**
      * Description for 'version'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $version = [];
 
@@ -101,7 +101,7 @@ class Tool
     /**
      * Description for '_list_keys'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $listKeys = ['version'];
 
@@ -115,7 +115,7 @@ class Tool
     /**
      * Description for '_propertyattrmap'
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $propertyattrmap = [
         'toolname' => 'toolName',
@@ -126,7 +126,7 @@ class Tool
     /**
      * Description for '_updatedkeys'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $updatedkeys = [];
 
@@ -167,7 +167,7 @@ class Tool
     /**
      * Get the names of all tools
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getToolNames()
     {
@@ -814,7 +814,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     mixed $key Parameter description (if any) ...
-     * @param     array $value Parameter description (if any) ...
+     * @param     array<mixed> $value Parameter description (if any) ...
      * @return   void
      */
     public function add($key = null, $value = [])
@@ -828,7 +828,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     mixed $key Parameter description (if any) ...
-     * @param     array $value Parameter description (if any) ...
+     * @param     array<mixed> $value Parameter description (if any) ...
      * @return   void
      */
     public function remove($key = null, $value = [])
@@ -985,7 +985,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
@@ -1020,7 +1020,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
      * @return   mixed Return description (if any) ...
      */
@@ -1057,7 +1057,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
@@ -1108,7 +1108,7 @@ class Tool
     /**
      * Filter by state
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  string
      */
@@ -1130,7 +1130,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
@@ -1144,7 +1144,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
      * @return   object Return description (if any) ...
      */
@@ -1165,9 +1165,9 @@ class Tool
     /**
      * Get tool summaries
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
-     * @return  array
+     * @return  array<int, array<string, mixed>>
      */
     public static function getToolSummaries($filters = [], $admin = false)
     {
@@ -1192,9 +1192,9 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     array $filters Parameter description (if any) ...
+     * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
-     * @return    array
+     * @return    array<int, array<string, mixed>>
      */
     public function getToolVersionSummaries($filters = [], $admin = false)
     {
@@ -1283,8 +1283,8 @@ class Tool
     /**
      * Validate tool info
      *
-     * @param   array    &$tool
-     * @param   array    &$err
+     * @param   array<mixed>    &$tool
+     * @param   array<mixed>    &$err
      * @param   integer  $id
      * @return  boolean
      */
@@ -1489,7 +1489,7 @@ class Tool
     /**
      * Validate license
      *
-     * @param   array   $license
+     * @param   array<mixed>   $license
      * @param   string  $code
      * @param   string  &$err
      * @return  integer
@@ -1516,7 +1516,7 @@ class Tool
     /**
      * Get my tools
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getMyTools()
     {
@@ -1549,7 +1549,7 @@ class Tool
      * short by group_concat_max_len.
      *
      * @param   bool   $all  Include unpublished and private tools and every revision
-     * @return  array  Objects with alias, published, access and versions (comma-separated)
+     * @return  array<mixed>  Objects with alias, published, access and versions (comma-separated)
      */
     public static function getAllTools($all = false)
     {
@@ -1621,7 +1621,7 @@ class Tool
      * Get tool developers
      *
      * @param   integer  $toolid
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getToolDevelopers($toolid)
     {
@@ -1641,8 +1641,8 @@ class Tool
      * Get tool groups
      *
      * @param   int|string  $toolid
-     * @param   array   $groups
-     * @return  array
+     * @param   array<mixed>   $groups
+     * @return  array<int, \stdClass>
      */
     public static function getToolGroups($toolid, $groups = [])
     {
@@ -1673,7 +1673,7 @@ class Tool
      *
      * @param   string  $toolid    is the tool id
      * @param   string  $instance  is the tool version instance
-     * @return  array   Return list of groups
+     * @return  array<int, \stdClass>   Return list of groups
      */
     public static function getToolGroupsRestriction($toolid, $instance)
     {
@@ -1731,7 +1731,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  string
      */
@@ -1789,9 +1789,9 @@ class Tool
     /**
      * Get a list of tools
      *
-     * @param   array    $filters Filters to build query from
+     * @param   array<mixed>    $filters Filters to build query from
      * @param   boolean  $admin   Admin access?
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getTools($filters = [], $admin = false)
     {

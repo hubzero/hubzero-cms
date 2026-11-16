@@ -148,35 +148,35 @@ class Base extends Obj
     /**
      * Array of linked scripts
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $scripts = [];
 
     /**
      * Array of scripts placed in the header
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $script = [];
 
     /**
      * Array of linked style sheets
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $styleSheets = [];
 
     /**
      * Array of included style declarations
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $style = [];
 
     /**
      * Array of meta tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $metaTags = [];
 
@@ -204,7 +204,7 @@ class Base extends Obj
     /**
      * Class constructor.
      *
-     * @param   array  $options  Associative array of options
+     * @param   array<mixed>  $options  Associative array of options
      * @return  void
      */
     public function __construct($options = [])
@@ -254,7 +254,7 @@ class Base extends Obj
      * Set the contents of the document buffer
      *
      * @param   string  $content  The content to be set in the buffer.
-     * @param   array   $options  Array of optional elements.
+     * @param   array<mixed>   $options  Array of optional elements.
      * @return  object  Document instance of $this to allow chaining
      */
     public function setBuffer($content, $options = [])
@@ -369,7 +369,7 @@ class Base extends Obj
      * @param   string  $url      URL to the linked style sheet
      * @param   string  $type     Mime encoding type
      * @param   string|null  $media    Media type that this stylesheet applies to
-     * @param   array   $attribs  Array of attributes
+     * @param   array<mixed>   $attribs  Array of attributes
      * @return  object  Document instance of $this to allow chaining
      */
     public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])
@@ -782,7 +782,7 @@ class Base extends Obj
     /**
      * Parses the document and prepares the buffers
      *
-     * @param   array   $params  The array of parameters
+     * @param   array<mixed>   $params  The array of parameters
      * @return  object  Document instance of $this to allow chaining
      */
     public function parse($params = [])
@@ -794,7 +794,7 @@ class Base extends Obj
      * Outputs the document
      *
      * @param   boolean  $cache   If true, cache the output
-     * @param   array    $params  Associative array of attributes
+     * @param   array<mixed>    $params  Associative array of attributes
      * @return  void
      */
     public function render($cache = false, $params = [])

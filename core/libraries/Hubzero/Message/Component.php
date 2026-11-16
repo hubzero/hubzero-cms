@@ -105,7 +105,7 @@ class Component extends Relational
     /**
      * Count records matching the filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  integer
      */
     public function getCount($filters = [])
@@ -116,7 +116,7 @@ class Component extends Relational
     /**
      * The records query the list and its count share
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  object
      */
     private function recordsQuery($filters = [])

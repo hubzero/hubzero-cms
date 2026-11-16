@@ -28,7 +28,7 @@ class Stack
     /**
      * Layers to run though
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $layers;
 
@@ -67,7 +67,7 @@ class Stack
     /**
      * Set layers on stack
      *
-     * @param   array   $layers  Array of services
+     * @param   array<mixed>   $layers  Array of services
      * @return  object
      */
     public function through($layers)

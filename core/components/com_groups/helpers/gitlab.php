@@ -31,7 +31,7 @@ class Gitlab
     /**
      * Default Guzzle options/ headers
      *
-     * @var array
+     * @var array<mixed>
      */
     private $options;
 
@@ -114,7 +114,7 @@ class Gitlab
     /**
      * Search List of groups on Gitlab
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function groups($groupName)
     {
@@ -125,7 +125,7 @@ class Gitlab
      * Get a Group by name
      *
      * @param   string   $name
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function group($name)
     {
@@ -140,8 +140,8 @@ class Gitlab
     /**
      * Create group based on params
      *
-     * @param   array  $params  Group params
-     * @return  array
+     * @param   array<mixed>  $params  Group params
+     * @return  array<mixed>
      */
     public function createGroup($params = [])
     {
@@ -151,7 +151,7 @@ class Gitlab
     /**
      * Search list of projects on gitlab
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function projects($projectName)
     {
@@ -162,7 +162,7 @@ class Gitlab
      * Get Project by Name
      *
      * @param   string   $name
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function project($name)
     {
@@ -177,8 +177,8 @@ class Gitlab
     /**
      * Create project based on params
      *
-     * @param   array  $params  Project params
-     * @return  array
+     * @param   array<mixed>  $params  Project params
+     * @return  array<mixed>
      */
     public function createProject($params = [])
     {
@@ -188,7 +188,7 @@ class Gitlab
     /**
      * Protect Branch
      *
-     * @param  array  $params [description]
+     * @param  array<mixed>  $params [description]
      */
     public function protectBranch($params = [])
     {
@@ -216,7 +216,7 @@ class Gitlab
      * Generic Post request
      *
      * @param  mixed $resource
-     * @param  array  $params   [description]
+     * @param  array<mixed>  $params   [description]
      */
     private function postRequest($resource, $params = [])
     {
@@ -232,7 +232,7 @@ class Gitlab
      * Generic Put Request
      *
      * @param  mixed $resource
-     * @param  array  $params   [description]
+     * @param  array<mixed>  $params   [description]
      */
     public function putRequest($resource, $params = [])
     {

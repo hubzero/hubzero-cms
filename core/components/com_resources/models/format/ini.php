@@ -19,7 +19,7 @@ class INI extends Base
     /**
   * Cache container
   *
-  * @var  array
+  * @var  array<mixed>
   */
     protected static $cache = [];
 
@@ -30,7 +30,7 @@ class INI extends Base
      *      the object.
      *
      * @param   object  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  INI formatted string.
      */
     public function objectToString($object, $options = [])

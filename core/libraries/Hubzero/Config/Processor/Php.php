@@ -20,7 +20,7 @@ class Php extends Base
     /**
      * Returns an array of allowed file extensions for this parser
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getSupportedExtensions()
     {
@@ -31,7 +31,7 @@ class Php extends Base
      * Loads a PHP file and gets its' contents as an array
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      * @throws  ParseException              If the PHP file throws an exception
      * @throws  UnsupportedFormatException  If the PHP file does not return an array
      */
@@ -68,7 +68,7 @@ class Php extends Base
      * Converts an object into a php class or array string.
      *
      * @param   object|string  $object   Data Source Object
-     * @param   array   $options  Parameters used by the formatter
+     * @param   array<mixed>   $options  Parameters used by the formatter
      * @return  string  Config class formatted string
      */
     public function objectToString($object, $options = [])
@@ -145,7 +145,7 @@ class Php extends Base
      * Parse a PHP class formatted string and convert it into an object.
      *
      * @param   string  $data     PHP Class formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  object|bool  Data object.
      */
     public function stringToObject($data, $options = [])
@@ -156,7 +156,7 @@ class Php extends Base
     /**
      * Method to get an array as an exported string.
      *
-     * @param   array  $a  The array to get as a string.
+     * @param   array<mixed>  $a  The array to get as a string.
      * @return  string
      */
     protected function getArrayString($a)

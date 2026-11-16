@@ -115,7 +115,7 @@ class Asset extends Table
      * can be integer, object, or array
      *
      * @param   string  $what
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  mixed
      */
     public function find($what = '', $filters = [])
@@ -186,7 +186,7 @@ class Asset extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param   array   $filters  Filters to construct query from
+     * @param   array<mixed>   $filters  Filters to construct query from
      * @return  string  SQL
      */
     protected function buildQuery($filters = [])
@@ -229,7 +229,7 @@ class Asset extends Table
     /**
      * Get a record count
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  integer
      */
     public function getCount($filters = [])
@@ -240,8 +240,8 @@ class Asset extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<mixed>
      */
     public function getRecords($filters = [])
     {

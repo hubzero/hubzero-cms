@@ -72,7 +72,7 @@ class Pagedown extends Plugin
     /**
      * Generate paths to editor JS files
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getScriptPaths()
     {
@@ -93,7 +93,7 @@ class Pagedown extends Plugin
     /**
      * Generate paths to editor stylesheets
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getStylesheetPaths()
     {
@@ -109,9 +109,9 @@ class Pagedown extends Plugin
     /**
      * Generate paths to editor asset files
      *
-     * @param   array    $assetFileNames    Asset file names
+     * @param   array<mixed>    $assetFileNames    Asset file names
      * @param   string   $assetDirectory    Subdirectory within /assets
-     * @return  array
+     * @return  array<mixed>
      */
     protected function buildAssetPaths($assetFileNames, $assetDirectory)
     {
@@ -167,7 +167,7 @@ class Pagedown extends Plugin
     /**
      * Parse DOM element classes
      *
-     * @param   array   $params   Editor configuration data
+     * @param   array<mixed>   $params   Editor configuration data
      * @return  void
      */
     protected function parseClasses(&$params)
@@ -187,7 +187,7 @@ class Pagedown extends Plugin
     /**
      * Set a default height if needed
      *
-     * @param   array   $params   Editor configuration data
+     * @param   array<mixed>   $params   Editor configuration data
      * @param   int     $rows     Number of rows for the textarea
      * @return  void
      */

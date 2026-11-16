@@ -140,7 +140,7 @@ class Api extends SiteController
     /**
      * Get all active tokens for the current user
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function getUserTokens()
     {

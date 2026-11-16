@@ -38,7 +38,7 @@ class Questions extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
@@ -60,7 +60,7 @@ class Questions extends Plugin
      * @param   string   $rtrn         Data to be returned
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
-     * @return  array
+     * @return  array<mixed>
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {

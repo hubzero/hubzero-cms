@@ -69,7 +69,7 @@ class Archive extends Obj
      * Get a list of group modules
      *
      * @param   string  $rtrn    What data to return
-     * @param   array   $filters Filters to apply to data retrieval
+     * @param   array<mixed>   $filters Filters to apply to data retrieval
      * @param   boolean $clear Clear cached data?
      * @return  mixed
      */

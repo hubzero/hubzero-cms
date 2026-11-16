@@ -141,7 +141,7 @@ class Comment extends Table
      *
      * @param   integer|null  $itemid
      * @param   string   $tbl
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function collectActivities($itemid = null, $tbl = 'blog')
     {

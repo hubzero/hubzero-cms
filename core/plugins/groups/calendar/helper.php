@@ -46,7 +46,7 @@ class Helper
      * based on supplied offset (to UTC) value
      *
      * @param      string $timezone Timezone offset
-     * @return     array|null
+     * @return     array<mixed>|null
      */
     public static function getTimezoneNameAndAbbreviation($timezone)
     {

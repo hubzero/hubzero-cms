@@ -253,9 +253,9 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Normalize SHOW COLUMNS style rows into getTableColumns() output.
      *
-     * @param   array  $fields
+     * @param   array<mixed>  $fields
      * @param   bool   $typeOnly
-     * @return  array
+     * @return  array<mixed>
      */
     protected function mapShowColumnsResult(array $fields, bool $typeOnly = true): array
     {
@@ -279,7 +279,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $query
      * @param   bool    $typeOnly
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getTableColumnsFromShowQuery(string $query, bool $typeOnly = true): array
     {
@@ -365,7 +365,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * in deterministic index order.
      *
      * @param   mixed  $rows
-     * @return  array
+     * @return  array<mixed>
      */
     protected function extractPrimaryKeyColumnsFromTableKeyRows($rows): array
     {
@@ -417,7 +417,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Normalize SHOW KEYS style output into index objects.
      *
      * @param   mixed  $keys
-     * @return  array
+     * @return  array<mixed>
      */
     protected function normalizeIndexesFromTableKeys($keys): array
     {
@@ -445,7 +445,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Execute SHOW TABLES and return table names.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getTableListFromShowTables(): array
     {
@@ -458,10 +458,10 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Execute SHOW CREATE TABLE queries for one or more tables.
      *
-     * @param   string|array  $tables
+     * @param   string|array<mixed>  $tables
      * @param   bool          $escapeTable
      * @param   string        $createKeyword
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getTableCreateFromShowCreate(
         $tables,
@@ -489,7 +489,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string       $table
      * @param   string|null  $indexBy
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getTableKeysFromShowKeys(string $table, ?string $indexBy = null): array
     {
@@ -648,7 +648,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Build CONCAT(...) SQL.
      *
-     * @param   array  $strings
+     * @param   array<mixed>  $strings
      * @return  string
      */
     protected function buildConcatExpression(array $strings): string
@@ -660,7 +660,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Build CONCAT_WS(...) SQL.
      *
      * @param   string  $separator
-     * @param   array   $strings
+     * @param   array<mixed>   $strings
      * @return  string
      */
     protected function buildConcatWithSeparatorExpression(string $separator, array $strings): string
@@ -671,7 +671,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Parse table or column character set from SHOW CREATE TABLE output.
      *
-     * @param   array        $create
+     * @param   array<mixed>        $create
      * @param   string       $table
      * @param   string|null  $field
      * @return  string|bool
@@ -912,7 +912,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getTableColumns($table, $typeOnly = true);
 
@@ -920,7 +920,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Retrieves key information about the given table
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getTableKeys($table);
 
@@ -934,7 +934,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * - primary: Whether this is the primary key (optional)
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getIndexes($table);
 
@@ -950,7 +950,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * - on_delete: The ON DELETE action
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     abstract public function getForeignKeys($table);
 
@@ -964,9 +964,9 @@ abstract class BaseSqlDriver extends PdoDriver
      * foreign_column, on_update, on_delete.
      * Optional: group_key (defaults to constraint_name).
      *
-     * @param   array  $rows  Result rows from a foreign key metadata query
-     * @param   array  $map   Property mapping keyed by logical field name
-     * @return  array  Array of foreign key objects
+     * @param   array<mixed>  $rows  Result rows from a foreign key metadata query
+     * @param   array<mixed>  $map   Property mapping keyed by logical field name
+     * @return  array<mixed>  Array of foreign key objects
      */
     protected function groupForeignKeyRows(array $rows, array $map): array
     {
@@ -1017,15 +1017,15 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getTableList();
 
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     abstract public function getTableCreate($tables);
 
@@ -1107,7 +1107,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * getMajorVersion() and getFullVersion() read it, so every driver has one.
      *
-     * @return  array  At least 'version', the full version string, and
+     * @return  array<mixed>  At least 'version', the full version string, and
      *                 'driver_version', the version as x.y.z
      */
     abstract public function getServerInfo();
@@ -1298,7 +1298,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * PostgreSQL: Returns " ON CONFLICT (pk) DO UPDATE SET col = EXCLUDED.col, ..."
      *
      * @param   string  $pkColumn       The primary key column name for conflict detection
-     * @param   array   $updateColumns  Array of column names to update on conflict
+     * @param   array<mixed>   $updateColumns  Array of column names to update on conflict
      * @return  string
      */
     public function sqlReplaceSuffix(string $pkColumn, array $updateColumns): string
@@ -1474,7 +1474,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * - SQLite: str1 || str2 || ...
      * - PostgreSQL: CONCAT(str1, str2, ...)
      *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
+     * @param   array<mixed>  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -1490,7 +1490,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * - PostgreSQL: CONCAT_WS(separator, str1, str2, ...)
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings to concatenate
+     * @param   array<mixed>   $strings    Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -1724,7 +1724,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $indexName  The index name
      * @param   string  $tableName  The table name
-     * @param   array   $columns    The columns (may include prefix lengths for MySQL)
+     * @param   array<mixed>   $columns    The columns (may include prefix lengths for MySQL)
      * @param   bool    $unique     Whether this is a unique index
      * @return  string  The CREATE INDEX SQL
      * @deprecated Use schema grammar create-index compilation for new code.
@@ -1818,7 +1818,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $indexName  The index name
      * @param   string  $tableName  The table name
-     * @param   array   $columns    The column names to index
+     * @param   array<mixed>   $columns    The column names to index
      * @return  string|null  The CREATE INDEX SQL, or null if not applicable
      */
     public function buildCreateFulltextIndexSql(string $indexName, string $tableName, array $columns): ?string
@@ -1868,7 +1868,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Returns the $typeMap property, which each driver overrides
      * with its database-specific type mappings.
      *
-     * @return  array  Mapping of abstract type => SQL type
+     * @return  array<mixed>  Mapping of abstract type => SQL type
      */
     public function getAbstractTypeMap(): array
     {
@@ -1886,7 +1886,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * concrete MySQL-style types (e.g., 'BIGINT(20) UNSIGNED').
      *
      * @param   string  $type       The abstract or concrete type
-     * @param   array   $modifiers  Column modifiers (length, precision, scale)
+     * @param   array<mixed>   $modifiers  Column modifiers (length, precision, scale)
      * @return  string  The database-specific type definition
      */
     public function normalizeColumnType(
@@ -1920,7 +1920,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $abstractType  The original abstract type name
      * @param   string  $nativeType    The mapped database type
-     * @param   array   $modifiers     Column modifiers
+     * @param   array<mixed>   $modifiers     Column modifiers
      * @return  string  The type with modifiers applied
      */
     protected function applyColumnModifiers(
@@ -2079,7 +2079,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * Drivers can override this when constraint syntax differs from the default.
      *
-     * @param   array   $fk         Foreign key metadata
+     * @param   array<mixed>   $fk         Foreign key metadata
      * @param   string  $tableName  Table name (already prefix-replaced)
      * @return  string
      */
@@ -2107,7 +2107,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $table   Table name (already prefix-replaced)
      * @param   string  $column  Column name
-     * @return  array
+     * @return  array<mixed>
      */
     public function buildAutoIncrementStatements($table, $column = 'id'): array
     {
@@ -2625,7 +2625,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     abstract public function addFulltextIndex(string $table, string $name, $columns): bool;
@@ -2642,7 +2642,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name (with or without prefix)
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     abstract public function addPrimaryKey(string $table, $columns): bool;
@@ -2682,7 +2682,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
@@ -2726,7 +2726,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $table    Table name (already prefix-replaced)
      * @param   string  $name     Index name
-     * @param   array   $columns  Column names
+     * @param   array<mixed>   $columns  Column names
      * @param   bool    $unique   Whether to create a unique index
      * @return  string
      * @deprecated Use schema grammar (`compileAlterTable`/`compileCreateIndexStatement`) for new code.
@@ -2743,7 +2743,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addUniqueIndex(string $table, string $name, $columns): bool
@@ -2789,7 +2789,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Kept for backward compatibility — prefer using Grammar directly.
      *
      * @param   \Hubzero\Database\Schema\AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements to execute
+     * @return  array<mixed>  Array of SQL statements to execute
      */
     public function compileAlterTable(
         \Hubzero\Database\Schema\AlterTableBuilder $builder,
@@ -2821,7 +2821,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * This is an alias for getDatabaseList() to provide API consistency
      * with other database abstraction layers.
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      */
     public function getDatabaseNames()
     {
@@ -2983,7 +2983,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get connection information
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnectionInfo()
     {
@@ -2997,7 +2997,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get connection statistics
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnectionStats()
     {
@@ -3008,7 +3008,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get global status variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalStatus()
     {
@@ -3022,7 +3022,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables()
     {
@@ -3044,7 +3044,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get slow query count, or the queries themselves where a driver can list them
      *
-     * @return  int|array
+     * @return  int|array<mixed>
      */
     public function getSlowQueries()
     {
@@ -3055,7 +3055,7 @@ abstract class BaseSqlDriver extends PdoDriver
     /**
      * Get table I/O statistics
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableIoStats()
     {
@@ -3102,7 +3102,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getCheckConstraints(string $table): array
     {

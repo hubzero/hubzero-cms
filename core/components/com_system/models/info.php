@@ -20,17 +20,17 @@ use Hubzero\Facades\Component;
 class Info extends Obj
 {
     /**
-     * @var  array|null  some php settings
+     * @var  array<mixed>|null  some php settings
      */
     protected $php_settings = null;
 
     /**
-     * @var  array|null config values
+     * @var  array<mixed>|null config values
      */
     protected $config = null;
 
     /**
-     * @var  array|null  somme system values
+     * @var  array<mixed>|null  somme system values
      */
     protected $info = null;
 
@@ -40,7 +40,7 @@ class Info extends Obj
     protected $php_info = null;
 
     /**
-     * @var  array|null  informations about writable state of directories
+     * @var  array<mixed>|null  informations about writable state of directories
      */
     protected $directories = null;
 
@@ -52,7 +52,7 @@ class Info extends Obj
     /**
      * Method to get the ChangeLog
      *
-     * @return  array  some php settings
+     * @return  array<mixed>  some php settings
      */
     public function getPhpSettings()
     {
@@ -79,7 +79,7 @@ class Info extends Obj
     /**
      * Method to get the config
      *
-     * @return  array  Config values
+     * @return  array<mixed>  Config values
      */
     public function getConfig()
     {
@@ -123,7 +123,7 @@ class Info extends Obj
     /**
      * Method to get the system information
      *
-     * @return  array  System information values
+     * @return  array<mixed>  System information values
      */
     public function getInfo()
     {
@@ -183,7 +183,7 @@ class Info extends Obj
     /**
      * Method to get the directory states
      *
-     * @return  array  states of directories
+     * @return  array<mixed>  states of directories
      */
     public function getDirectory()
     {

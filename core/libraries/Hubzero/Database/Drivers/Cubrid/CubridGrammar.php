@@ -21,8 +21,8 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -37,7 +37,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
      * - Has native BIT type (like MySQL)
      * - Supports BLOB/CLOB (like MySQL's TEXT/BLOB)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types - CUBRID does not support display widths like TINYINT(1)
@@ -266,7 +266,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
      * Override to skip these options.
      *
      * @param  \Hubzero\Database\Schema\TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function compileCreate(\Hubzero\Database\Schema\TableDefinition $blueprint): array
     {
@@ -317,7 +317,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
     /**
      * Append compiled inline index SQL fragments to a CREATE TABLE parts list.
      *
-     * @param  array     &$parts
+     * @param  array<mixed>     &$parts
      * @param  iterable  $indexes
      * @param  callable  $compiler
      * @return void
@@ -359,7 +359,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
      * - FULLTEXT indexes (not supported, convert to regular indexes)
      *
      * @param  \Hubzero\Database\Schema\AlterTableBuilder  $builder
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function compileAlterTable(\Hubzero\Database\Schema\AlterTableBuilder $builder): array
     {

@@ -22,7 +22,7 @@ class Helper
     /**
      * Get a list of filter options for the application clients.
      *
-     * @return  array  An array of JHtmlOption elements.
+     * @return  array<int, mixed>  An array of JHtmlOption elements.
      */
     public static function getClientOptions()
     {

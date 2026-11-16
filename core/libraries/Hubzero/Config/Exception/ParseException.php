@@ -13,7 +13,7 @@ class ParseException extends \ErrorException
     /**
      * Constructor
      *
-     * @param   array  $error
+     * @param   array<mixed>  $error
      * @return  void
      */
     public function __construct(array $error)

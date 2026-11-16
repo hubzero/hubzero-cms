@@ -31,7 +31,7 @@ class Link extends Base
     /**
      * Unique attachment properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $connector  = ['path'];
 
@@ -86,7 +86,7 @@ class Link extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -135,7 +135,7 @@ class Link extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $elements
+     * @param   array<mixed>    $elements
      * @param   boolean  $authorized
      * @return  string   HTML
      */
@@ -221,7 +221,7 @@ class Link extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
      * @param   object   $newVersion
      * @return  void
@@ -291,7 +291,7 @@ class Link extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $toAttach
+     * @param   array<mixed>    $toAttach
      * @return  boolean
      */
     public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
@@ -522,7 +522,7 @@ class Link extends Base
      * Check completion status
      *
      * @param   object  $element
-     * @param   array   $attachments
+     * @param   array<mixed>   $attachments
      * @return  object
      */
     public function getStatus($element, $attachments)
@@ -563,8 +563,8 @@ class Link extends Base
     /**
      * Check for allowed formats
      *
-     * @param   array    $attachments
-     * @param   array    $formats
+     * @param   array<mixed>    $attachments
+     * @param   array<mixed>    $formats
      * @return  boolean
      */
     public function checkAllowed($attachments, $formats = [])
@@ -635,7 +635,7 @@ class Link extends Base
      * Add to zip bundle
      *
      * @param   object   $zip
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -652,7 +652,7 @@ class Link extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub

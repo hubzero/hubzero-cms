@@ -26,7 +26,7 @@ class Detector implements DetectorInterface
     /**
      * Constructor
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -41,7 +41,7 @@ class Detector implements DetectorInterface
     /**
      * Checks the text if it contains any word that is blacklisted.
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  bool
      */
     public function detect($data)

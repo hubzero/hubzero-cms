@@ -61,8 +61,8 @@ class Sitemap extends Plugin
     /**
      * Show administrative options
      *
-     * @param   array  $context
-     * @return  array
+     * @param   array<mixed>  $context
+     * @return  array<int, mixed>
      */
     public static function onSearchAdministrate($context)
     {
@@ -165,7 +165,7 @@ class Sitemap extends Plugin
      * Save an entry from POST data
      *
      * @param   boolean  $update
-     * @return  array
+     * @return  array<mixed>
      */
     private static function saveEntryFromPost($update = false)
     {
@@ -213,7 +213,7 @@ class Sitemap extends Plugin
     /**
      * Edit site map
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function onSearchTaskSiteMapEdit()
     {

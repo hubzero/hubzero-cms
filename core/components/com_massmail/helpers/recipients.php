@@ -174,8 +174,8 @@ class Recipients
     /**
      * Lower-cased, deduped, syntactically valid addresses from a raw list.
      *
-     * @param   array  $emails
-     * @return  array
+     * @param   array<mixed>  $emails
+     * @return  array<mixed>
      */
     protected static function validEmails($emails)
     {
@@ -193,7 +193,7 @@ class Recipients
      * Count active users who WOULD be reached, without queuing them.
      * Used to preview a mailing before launch.
      *
-     * @param   array    $spec
+     * @param   array<mixed>    $spec
      * @param   boolean  $ignoreOptout
      * @return  integer
      */
@@ -270,7 +270,7 @@ class Recipients
      * {all, groups, users, emails}, migrating the legacy single-"type" spec.
      *
      * @param   array|mixed  $spec
-     * @return  array
+     * @return  array<mixed>
      */
     public static function normalizeSpec($spec)
     {
@@ -301,8 +301,8 @@ class Recipients
      * Resolve a list of group tokens -- numeric group IDs and/or cn aliases --
      * to group IDs. Lets the picker accept human-friendly aliases.
      *
-     * @param   array  $tokens
-     * @return  array  group IDs
+     * @param   array<mixed>  $tokens
+     * @return  array<mixed>  group IDs
      */
     public static function resolveGroups($tokens)
     {
@@ -341,8 +341,8 @@ class Recipients
      * Resolve a list of user tokens -- numeric user IDs and/or usernames -- to
      * user IDs. Lets the picker accept usernames.
      *
-     * @param   array  $tokens
-     * @return  array  user IDs
+     * @param   array<mixed>  $tokens
+     * @return  array<mixed>  user IDs
      */
     public static function resolveUsers($tokens)
     {
@@ -382,8 +382,8 @@ class Recipients
      * chips: one entry per resolved group with a friendly label and its cn alias
      * as the token.
      *
-     * @param   array  $tokens
-     * @return  array  [['token' => cn, 'label' => 'Title'], ...]
+     * @param   array<mixed>  $tokens
+     * @return  array<int, mixed>  [['token' => cn, 'label' => 'Title'], ...]
      */
     public static function describeGroups($tokens)
     {
@@ -409,8 +409,8 @@ class Recipients
      * Describe a list of user tokens (IDs and/or usernames) for display as chips:
      * one entry per resolved user with a friendly label and its ID as the token.
      *
-     * @param   array  $tokens
-     * @return  array  [['token' => id, 'label' => 'Name (username)'], ...]
+     * @param   array<mixed>  $tokens
+     * @return  array<int, mixed>  [['token' => id, 'label' => 'Name (username)'], ...]
      */
     public static function describeUsers($tokens)
     {

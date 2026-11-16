@@ -293,7 +293,7 @@ class Rules extends Field
     /**
      * Get a list of the user groups.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getUserGroups()
     {

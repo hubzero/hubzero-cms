@@ -18,7 +18,7 @@ interface ToolSessionTokenInterface
     /**
      * Get tool data from request
      *
-     * @return  array  Result of test
+     * @return  array<mixed>  Result of test
      */
     public function getToolSessionDataFromRequest(RequestInterface $request);
 

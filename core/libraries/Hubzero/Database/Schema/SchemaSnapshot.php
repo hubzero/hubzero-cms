@@ -112,7 +112,7 @@ class SchemaSnapshot
      * @param  string         $name        Snapshot name (alphanumeric, dashes, underscores)
      * @param  string|null    $description Optional description
      * @param  callable|null  $filter      Optional table filter callback (receives table name, returns bool)
-     * @param  array          $metadata    Optional additional metadata
+     * @param  array<mixed>          $metadata    Optional additional metadata
      * @return string         Full path to the saved snapshot file
      * @throws \InvalidArgumentException If name is invalid
      * @throws \RuntimeException If directory is not writable
@@ -168,7 +168,7 @@ class SchemaSnapshot
      * Load raw snapshot data (including metadata)
      *
      * @param  string  $name
-     * @return array
+     * @return array<mixed>
      * @throws \InvalidArgumentException If snapshot doesn't exist
      */
     public function loadRaw(string $name): array
@@ -222,7 +222,7 @@ class SchemaSnapshot
      *
      * @param  string  $sortBy  Sort by: 'name', 'date', 'tables' (default: 'date')
      * @param  bool    $descending  Sort descending (default: true for date, false for name)
-     * @return array   Array of snapshot info arrays
+     * @return array<mixed>   Array of snapshot info arrays
      */
     public function list(string $sortBy = 'date', bool $descending = true): array
     {
@@ -332,7 +332,7 @@ class SchemaSnapshot
      *
      * @param  string         $snapshotName
      * @param  callable|null  $filter  Optional table filter callback for current database
-     * @return array   Summary with counts and lists of changes
+     * @return array<mixed>   Summary with counts and lists of changes
      */
     public function getDriftSummary(string $snapshotName, ?callable $filter = null): array
     {

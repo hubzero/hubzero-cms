@@ -163,7 +163,7 @@ class Application extends Relational
     /**
      * Generates automatic grant_types field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticGrantTypes($data)
@@ -183,7 +183,7 @@ class Application extends Relational
     /**
      * Generates automatic client_id field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticClientId($data)
@@ -198,7 +198,7 @@ class Application extends Relational
     /**
      * Generates automatic client_secret field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticClientSecret($data)

@@ -62,7 +62,7 @@ class Offering extends Base
     /**
      * Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $pages = null;
 
@@ -76,14 +76,14 @@ class Offering extends Base
     /**
      * Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $roles = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $members = null;
 
@@ -104,7 +104,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $managers = null;
 
@@ -300,7 +300,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array $filters  Filters; with 'count' set, the sections are counted
+     * @param      array<mixed> $filters  Filters; with 'count' set, the sections are counted
      * @param      bool  $clear    Fetch the list again
      * @return     ($filters is array{} ? Iterator : int|string|Iterator|null)  The sections, or how many there are
      */
@@ -456,7 +456,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -583,7 +583,7 @@ class Offering extends Base
      *
      * Accepts an array of filters to apply to the list of assets
      *
-     * @param      array $filters Filters to apply
+     * @param      array<mixed> $filters Filters to apply
      * @return     object \Components\Courses\Models\Iterator
      */
     public function assets($filters = [])
@@ -667,7 +667,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -724,7 +724,7 @@ class Offering extends Base
     /**
      * Get a list of memerships for a user
      *
-     * @param      array|int $user_id Filters to build query from
+     * @param      array<mixed>|int $user_id Filters to build query from
      * @return     mixed
      */
     public function membership($user_id = 0)
@@ -771,7 +771,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -834,7 +834,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @return     array|string|null
+     * @return     array<mixed>|string|null
      */
     public function pages($filters = [], $reload = false)
     {
@@ -875,7 +875,7 @@ class Offering extends Base
      * Get a list of announcements for an offering
      *   Accepts an array of filters to retrieve data by
      *
-     * @param      array $filters
+     * @param      array<mixed> $filters
      * @return     mixed
      */
     public function announcements($filters = [])

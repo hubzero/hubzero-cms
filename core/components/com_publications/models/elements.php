@@ -36,14 +36,14 @@ class Elements
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $elements = [];
 
     /**
      * Directories, where element types can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $elementPath = [];
 
@@ -211,7 +211,7 @@ class Elements
     /**
      * Load a associative array of values into the default namespace
      *
-     * @param   array  $array  Associative array of value to load
+     * @param   array<mixed>  $array  Associative array of value to load
      * @return  boolean  True on success
      */
     public function loadArray($array)
@@ -372,7 +372,7 @@ class Elements
     /**
      * Transforms a namespace to an array
      *
-     * @return  array  An associative array holding the namespace data
+     * @return  array<mixed>  An associative array holding the namespace data
      */
     public function toArray()
     {
@@ -453,7 +453,7 @@ class Elements
      * Method to recursively convert an object of data to an array.
      *
      * @param   object  $data  An object of data to return as an array.
-     * @return  array  Array representation of the input object.
+     * @return  array<mixed>  Array representation of the input object.
      */
     protected function asArray($data)
     {
@@ -540,7 +540,7 @@ class Elements
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function renderToArray($name = 'nbtag', $group = '_default')
     {
@@ -574,7 +574,8 @@ class Elements
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array|false  An array of all parameters, each as array of the label, the form element and the tooltip.
+     * @return  array<mixed>|false  An array of all parameters, each as array of the label, the form element and the
+     *                              tooltip.
      */
     public function getElements($name = 'nbtag', $group = '_default')
     {

@@ -29,7 +29,7 @@ class Hubzero extends Plugin
      * name/email on the registration-completion form, and downstream admin
      * notifications should be deferred until that form is submitted.
      *
-     * @param   array  $user  Joomla-style user array; only ['username'] is read
+     * @param   array<mixed>  $user  Joomla-style user array; only ['username'] is read
      * @return  bool
      */
     public static function isThirdPartyPlaceholder($user)
@@ -52,7 +52,7 @@ class Hubzero extends Plugin
      * Deferring to the update lets the admin see the user's real name,
      * chosen login, and confirmed email address.
      *
-     * @param   array  $user  Joomla-style user array. The email templates read
+     * @param   array<mixed>  $user  Joomla-style user array. The email templates read
      *                        ['id'], ['name'], ['email'], and ['username'];
      *                        all four must be present.
      * @return  void
@@ -110,7 +110,7 @@ class Hubzero extends Plugin
      *
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user    Holds the user data
+     * @param   array<mixed>    $user    Holds the user data
      * @param   boolean  $succes  True if user was succesfully stored in the database
      * @param   string   $msg     Message
      * @return  boolean
@@ -137,7 +137,7 @@ class Hubzero extends Plugin
      *
      * This method sends a registration email to new users created in the backend.
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -234,8 +234,8 @@ class Hubzero extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     Holds the user data
-     * @param   array    $options  Array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     Holds the user data
+     * @param   array<mixed>    $options  Array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onUserLogin($user, $options = [])
@@ -409,8 +409,8 @@ class Hubzero extends Plugin
     /**
      * This method should handle any logout logic and report back to the subject
      *
-     * @param   array    $user     Holds the user data.
-     * @param   array    $options  Array holding options (client, ...).
+     * @param   array<mixed>    $user     Holds the user data.
+     * @param   array<mixed>    $options  Array holding options (client, ...).
      * @return  boolean  True on success
      */
     public function onUserLogout($user, $options = [])
@@ -450,8 +450,8 @@ class Hubzero extends Plugin
      *
      * If options['autoregister'] is true, if the user doesn't exist yet he will be created
      *
-     * @param   array   $user     Holds the user data.
-     * @param   array   $options  Array holding options (remember, autoregister, group).
+     * @param   array<mixed>   $user     Holds the user data.
+     * @param   array<mixed>   $options  Array holding options (remember, autoregister, group).
      * @return  object  A User object
      */
     protected function getUser($user, $options = [])

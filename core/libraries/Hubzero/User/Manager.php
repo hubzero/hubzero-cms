@@ -23,7 +23,7 @@ class Manager
     /**
      * The array of created "drivers".
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $users = [];
 
@@ -133,7 +133,7 @@ class Manager
     /**
      * Get all of the created "users".
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getUsers()
     {
@@ -144,7 +144,7 @@ class Manager
      * Dynamically call the router instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

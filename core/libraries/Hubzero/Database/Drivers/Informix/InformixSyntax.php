@@ -52,7 +52,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Maps Informix-specific types to generic type names
      * that match what other drivers return.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeMappings = [
         // Integer types
@@ -224,7 +224,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * values so the SQL can be prepared without error.
      *
      * @param   string  $expression  SQL expression containing ? placeholders
-     * @param   array   $bindings    Values to substitute (consumed left-to-right)
+     * @param   array<mixed>   $bindings    Values to substitute (consumed left-to-right)
      * @return  string  Expression with placeholders replaced by literals
      */
     protected function inlineBindings(string $expression, array $bindings): string
@@ -266,9 +266,9 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the column query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -439,7 +439,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Informix uses TRUNCATE TABLE syntax
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {

@@ -45,7 +45,7 @@ class Service extends Obj
     /**
      * List of schemas
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $schemas = null;
 
@@ -59,7 +59,7 @@ class Service extends Obj
     /**
      * List of providers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $providers = [];
 
@@ -154,7 +154,7 @@ class Service extends Obj
     /**
      * Get schema list
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSchemas()
     {
@@ -259,7 +259,7 @@ class Service extends Obj
     /**
      * Get the list of providers
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getProviders()
     {
@@ -587,7 +587,7 @@ class Service extends Obj
      * Decode a resumption token
      *
      * @param   string  $resumption
-     * @return  array
+     * @return  array<mixed>
      */
     public function decodeToken($resumption)
     {

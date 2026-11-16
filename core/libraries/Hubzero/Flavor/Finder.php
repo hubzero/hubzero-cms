@@ -30,21 +30,21 @@ class Finder
     /**
      * The directories, most authoritative first
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $dirs;
 
     /**
      * Every flavor, resolved, by name - once all() has run
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $flavors;
 
     /**
      * Constructor
      *
-     * @param   array  $dirs  Directories to read, most authoritative first
+     * @param   array<mixed>  $dirs  Directories to read, most authoritative first
      */
     public function __construct(array $dirs)
     {
@@ -55,7 +55,7 @@ class Finder
      * The directories a hub's flavors come from
      *
      * @param   string|null  $extra  A directory to put ahead of the rest
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function dirs($extra = null)
     {
@@ -94,7 +94,7 @@ class Finder
     /**
      * The directories being read
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function directories()
     {
@@ -104,7 +104,7 @@ class Finder
     /**
      * Every flavor, resolved, by name
      *
-     * @return  array
+     * @return  array<mixed>
      * @throws  RuntimeException          When a file cannot be read as flavors
      * @throws  InvalidArgumentException  When a flavor is malformed or extends in a circle
      */
@@ -164,7 +164,7 @@ class Finder
      * The flavors in one file, JSON or YAML by its extension
      *
      * @param   string  $file
-     * @return  array   name => definition
+     * @return  array<mixed>   name => definition
      * @throws  RuntimeException
      */
     protected function read($file)
@@ -202,8 +202,8 @@ class Finder
      * A flavor cascaded onto everything it extends
      *
      * @param   string  $name
-     * @param   array   $defined  Every flavor as written
-     * @param   array   $trail    The names already being resolved, to catch a circle
+     * @param   array<mixed>   $defined  Every flavor as written
+     * @param   array<mixed>   $trail    The names already being resolved, to catch a circle
      * @return  Flavor
      * @throws  InvalidArgumentException
      */

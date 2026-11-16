@@ -59,7 +59,7 @@ class Detector implements DetectorInterface
     /**
      * Constructor
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -197,7 +197,7 @@ class Detector implements DetectorInterface
     /**
      * {@inheritDocs}
      *
-     * @param   array    $data
+     * @param   array<mixed>    $data
      * @return  boolean
      */
     public function detect($data)

@@ -65,8 +65,8 @@ class Filesystem extends Facade
      * @param   string   $filter     A filter for file names
      * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
      * @param   boolean  $full       True to return the full path to the file
-     * @param   array    $exclude    Names of files which should not be shown in the result
-     * @return  array
+     * @param   array<mixed>    $exclude    Names of files which should not be shown in the result
+     * @return  array<mixed>
      */
     public static function listContents(
         $path,
@@ -94,8 +94,8 @@ class Filesystem extends Facade
      * @param   string   $filter     A filter for file names
      * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
      * @param   boolean  $full       True to return the full path to the file
-     * @param   array    $exclude    Names of files which should not be shown in the result
-     * @return  array
+     * @param   array<mixed>    $exclude    Names of files which should not be shown in the result
+     * @return  array<mixed>
      */
     public static function files(
         $path,
@@ -123,8 +123,8 @@ class Filesystem extends Facade
      * @param   string   $filter     A filter for directory names
      * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
      * @param   boolean  $full       True to return the full path to the directory
-     * @param   array    $exclude    Names of directories which should not be shown in the result
-     * @return  array
+     * @param   array<mixed>    $exclude    Names of directories which should not be shown in the result
+     * @return  array<mixed>
      */
     public static function directories(
         $path,

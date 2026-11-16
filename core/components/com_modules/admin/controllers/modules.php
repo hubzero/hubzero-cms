@@ -1207,9 +1207,9 @@ class Modules extends AdminController
      * Batch copy modules to a new position or current.
      *
      * @param   integer|mixed  $value      The new value matching a module position.
-     * @param   array    $pks        An array of row IDs.
-     * @param   array    $contexts   An array of item contexts.
-     * @return  bool|array  True if successful, false otherwise and internal error is set.
+     * @param   array<mixed>    $pks        An array of row IDs.
+     * @param   array<mixed>    $contexts   An array of item contexts.
+     * @return  bool|array<mixed>  True if successful, false otherwise and internal error is set.
      */
     protected function batchCopy($value, $pks, $contexts)
     {
@@ -1293,8 +1293,8 @@ class Modules extends AdminController
      * Batch access level changes for a group of rows.
      *
      * @param   integer  $value     The new value matching an Asset Group ID.
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.
      */
     protected function batchAccess($value, $pks, $contexts)
@@ -1324,8 +1324,8 @@ class Modules extends AdminController
      * Batch language changes for a group of rows.
      *
      * @param   string   $value     The new value matching a language.
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.
      */
     protected function batchLanguage($value, $pks, $contexts)
@@ -1355,8 +1355,8 @@ class Modules extends AdminController
      * Batch move modules to a new position or current.
      *
      * @param   integer|mixed  $value     The new value matching a module position.
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.
      */
     protected function batchMove($value, $pks, $contexts)

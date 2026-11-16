@@ -85,7 +85,7 @@ class Author extends Table
     /**
      * Get array of author Ids ordered by ordering
      *
-     * @param   array|null    $uids  Ids of authors for publication
+     * @param   array<mixed>|null    $uids  Ids of authors for publication
      * @param   integer|null  $vid   Pub version ID
      * @return  mixed    False if error, Object on success
      */
@@ -335,10 +335,10 @@ class Author extends Table
      * skipped — list views don't read $author->picture, and resolvers
      * touch the filesystem.
      *
-     * @param   array    $vids          Publication version IDs
+     * @param   array<mixed>    $vids          Publication version IDs
      * @param   integer  $active        Only status=1 authors
      * @param   boolean  $incSubmitter  Include role='submitter' rows
-     * @return  array                   [vid => array of author rows]
+     * @return  array<mixed>                   [vid => array of author rows]
      */
     public function getAuthorsForVersions(array $vids, $active = 1, $incSubmitter = false)
     {

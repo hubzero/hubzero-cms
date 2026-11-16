@@ -90,11 +90,11 @@ class Grid
     /**
      * Returns an array of standard published state filter options.
      *
-     * @param   array   $config  An array of configuration options.
+     * @param   array<mixed>   $config  An array of configuration options.
      *                           This array can contain a list of key/value pairs where values are boolean
      *                           and keys can be taken from 'published', 'unpublished', 'archived', 'trash', 'all'.
      *                           These pairs determine which values are displayed.
-     * @return  array  The HTML code for the select tag
+     * @return  array<mixed>  The HTML code for the select tag
      */
     public static function publishedOptions($config = [])
     {
@@ -125,7 +125,7 @@ class Grid
     /**
      * Method to create an icon for saving a new ordering in a grid
      *
-     * @param   array   $rows  The array of rows of rows
+     * @param   array<mixed>   $rows  The array of rows of rows
      * @param   string  $cls   Classname to apply
      * @param   string  $task  The task to use, defaults to save order
      * @return  string
@@ -200,7 +200,7 @@ class Grid
      *
      * @param   integer       $value     The state value.
      * @param   integer       $i         The row index
-     * @param   string|array  $prefix    An optional task prefix or an array of options
+     * @param   string|array<mixed>  $prefix    An optional task prefix or an array of options
      * @param   boolean       $enabled   An optional setting for access control on the action.
      * @param   string        $checkbox  An optional prefix for checkboxes.
      * @return  string  The HTML code

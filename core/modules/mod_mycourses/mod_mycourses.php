@@ -27,7 +27,7 @@ class Mycourses extends Module
      *
      * @param   integer  $uid   User ID
      * @param   string   $type  Membership type to return courses for
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function getCourses($uid, $type = 'all')
     {

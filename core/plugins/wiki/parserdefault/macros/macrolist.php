@@ -44,7 +44,7 @@ class Macrolist extends WikiMacro
      * Macros that are not for page authors: the group macro base class
      * and the smoke-test macro
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $hidden = ['group', 'helloworld'];
 
@@ -110,7 +110,7 @@ class Macrolist extends WikiMacro
      * Find the macro files, keyed by macro name (Dir.Name for sub-directories)
      *
      * @param   string  $path  The macros directory
-     * @return  array
+     * @return  array<mixed>
      */
     protected function files($path)
     {

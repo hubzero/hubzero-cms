@@ -71,7 +71,7 @@ class Item extends Base
     /**
      * Container for properties
      *
-     * @var array
+     * @var array<mixed>
      */
     private $cache = [
         'comments.count'    => null,
@@ -216,7 +216,7 @@ class Item extends Base
      * Get a count or list of the comments on an item
      *
      * @param   string  $what    Data format to return
-     * @param   array   $filters Filters to apply to data fetch
+     * @param   array<mixed>   $filters Filters to apply to data fetch
      * @param   boolean $clear   Clear cached data?
      * @return  mixed
      */
@@ -266,7 +266,7 @@ class Item extends Base
     /**
      * Get a count or a list of the assets on this entry
      *
-     * @param   array    $filters  Filters to apply to data fetch
+     * @param   array<mixed>    $filters  Filters to apply to data fetch
      * @param   boolean  $reset    Reset internal cahce?
      * @return  mixed
      */
@@ -692,7 +692,7 @@ class Item extends Base
      * Get a counr or list of collections this item can be found in
      *
      * @param   string  $what    What to return?
-     * @param   array   $filters Filters to apply
+     * @param   array<mixed>   $filters Filters to apply
      * @param   boolean $clear   Clear cached results?
      * @return  mixed
      */

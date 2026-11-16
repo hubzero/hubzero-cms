@@ -88,7 +88,7 @@ class Vote extends Relational
     /**
      * Generates automatic item type value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticItemType($data)
@@ -103,7 +103,7 @@ class Vote extends Relational
     /**
      * Generates automatic vote value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticVote($data)

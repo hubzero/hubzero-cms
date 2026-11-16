@@ -25,7 +25,7 @@ class Repository extends Registry
     /**
      * Create a new configuration repository.
      *
-     * @param   string|array  $paths   Base path(s) containing a config/ directory
+     * @param   string|array<mixed>  $paths   Base path(s) containing a config/ directory
      * @param   string|null        $client  Client whose config/<client>/ overrides apply
      * @return  void
      */

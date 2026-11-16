@@ -72,7 +72,7 @@ class Rule extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -298,7 +298,7 @@ class Rule extends Relational
      * Analyze a password
      *
      * @param   string  $password
-     * @return  array
+     * @return  array<mixed>
      */
     public static function analyze($password)
     {
@@ -348,7 +348,7 @@ class Rule extends Relational
      * @param   mixed   $user
      * @param   string|null  $name
      * @param   bool    $isNew
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function verify($password, $rules, $user, $name = null, $isNew = true)
     {

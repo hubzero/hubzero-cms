@@ -120,7 +120,7 @@ class Facet extends Relational
     /**
      * Build HTML list of current item and its nested children
      *
-     * @param   array   $counts      prefetched solr array of counts of all facets
+     * @param   array<mixed>   $counts      prefetched solr array of counts of all facets
      * @param   int|null     $activeType  id of currently selected facet
      * @param   string|null  $terms       search terms currently applied ot the search
      * @param   string|null  $childTerms  any currently applied filters

@@ -16,7 +16,7 @@ class Category extends \Components\Categories\Helpers\Categories
     /**
      * Class constructor
      *
-     * @param   array  $options  Array of options
+     * @param   array<mixed>  $options  Array of options
      * @return  void
      */
     public function __construct($options = [])

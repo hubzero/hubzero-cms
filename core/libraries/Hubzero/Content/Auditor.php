@@ -20,14 +20,14 @@ class Auditor
     /**
      * Holds registered tests
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $tests = [];
 
     /**
      * Holds list of detectors and what they reported
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $report = null;
 
@@ -75,8 +75,8 @@ class Auditor
     /**
      * Process data against a series of tests
      *
-     * @param   string|array  $data
-     * @return  array
+     * @param   string|array<mixed>  $data
+     * @return  array<int, mixed>
      */
     public function check($data)
     {
@@ -101,8 +101,8 @@ class Auditor
     /**
      * Run the tests against a single data point
      *
-     * @param   array  $datum
-     * @return  array
+     * @param   array<mixed>  $datum
+     * @return  array<mixed>
      */
     public function process(array $datum)
     {
@@ -176,7 +176,7 @@ class Auditor
     /**
      * Gets a list of all spam detectors
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTests()
     {
@@ -186,7 +186,7 @@ class Auditor
     /**
      * Get summations
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getReport()
     {
@@ -239,8 +239,8 @@ class Auditor
      * Used to normalize string before passing
      * it to detectors
      *
-     * @param   array|string   $data
-     * @return  array
+     * @param   array<mixed>|string   $data
+     * @return  array<mixed>
      */
     protected function prepareData($data)
     {

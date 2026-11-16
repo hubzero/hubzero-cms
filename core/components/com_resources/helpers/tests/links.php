@@ -57,8 +57,8 @@ class Links implements Test
     /**
      * Checks if a string is spam or not
      *
-     * @param   array   $data     string|array
-     * @param   array   $options
+     * @param   array<mixed>   $data     string|array
+     * @param   array<mixed>   $options
      * @return  object
      */
     public function examine(array $data, array $options = [])

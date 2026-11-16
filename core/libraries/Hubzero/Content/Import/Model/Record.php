@@ -50,7 +50,7 @@ class Record extends Obj
     /**
      * List of options to be applied to record
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $options;
 
@@ -72,7 +72,7 @@ class Record extends Obj
      *  Constructor
      *
      * @param   mixed   $raw      Raw data
-     * @param   array   $options  Import options
+     * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */

@@ -185,7 +185,7 @@ class Feed extends Macro
     /**
      * Pull Feed url from args passed in
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getFeedUrl(&$args)
@@ -205,7 +205,7 @@ class Feed extends Macro
      * loopback, link-local or reserved address (SSRF guard).
      *
      * @param   string   $url
-     * @return  array|bool  How to fetch it (\Hubzero\Utility\PublicUrl::check()),
+     * @return  array<mixed>|bool  How to fetch it (\Hubzero\Utility\PublicUrl::check()),
      *                      true for the hub's own feeds, false when refused
      */
     private function isPublicHttpUrl($url)
@@ -265,7 +265,7 @@ class Feed extends Macro
     /**
      * Get feed item limit
      *
-     * @param   array    $args     Macro Arguments
+     * @param   array<mixed>    $args     Macro Arguments
      * @param   integer  $default  Default return value
      * @return  mixed
      */
@@ -286,7 +286,7 @@ class Feed extends Macro
     /**
      * Get feed class
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getFeedClass(&$args)

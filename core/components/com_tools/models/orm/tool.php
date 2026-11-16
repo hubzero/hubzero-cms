@@ -62,7 +62,7 @@ class Tool extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticToolname($data)
@@ -82,7 +82,7 @@ class Tool extends Relational
     /**
      * Generates automatic registered field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticRegistered($data)
@@ -93,7 +93,7 @@ class Tool extends Relational
     /**
      * Generates automatic registered by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticRegisteredBy($data)

@@ -46,7 +46,7 @@ class Economy extends Obj
     /**
      * Get questions
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getQuestions()
     {

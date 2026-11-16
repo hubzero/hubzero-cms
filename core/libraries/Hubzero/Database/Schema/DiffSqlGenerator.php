@@ -104,7 +104,7 @@ class DiffSqlGenerator
      *
      * @param  TableDiff  $diff
      * @param  int        $safeFlags  Bitmask of SAFE_* constants (0 = no restrictions)
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateUp(TableDiff $diff, int $safeFlags = 0): array
     {
@@ -117,7 +117,7 @@ class DiffSqlGenerator
      * Equivalent to generateUp($diff, self::SAFE_ALL)
      *
      * @param  TableDiff  $diff
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSafeUp(TableDiff $diff): array
     {
@@ -129,7 +129,7 @@ class DiffSqlGenerator
      *
      * @param  TableDiff  $diff
      * @param  int        $safeFlags  Bitmask of SAFE_* constants (0 = no restrictions)
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateDown(TableDiff $diff, int $safeFlags = 0): array
     {
@@ -142,7 +142,7 @@ class DiffSqlGenerator
      * Equivalent to generateDown($diff, self::SAFE_ALL)
      *
      * @param  TableDiff  $diff
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSafeDown(TableDiff $diff): array
     {
@@ -159,7 +159,7 @@ class DiffSqlGenerator
      *
      * @param  SchemaDiff  $diff
      * @param  int         $safeFlags  Bitmask of SAFE_* constants (0 = no restrictions)
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSchemaUp(SchemaDiff $diff, int $safeFlags = 0): array
     {
@@ -172,7 +172,7 @@ class DiffSqlGenerator
      * Equivalent to generateSchemaUp($diff, self::SAFE_ALL)
      *
      * @param  SchemaDiff  $diff
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSafeSchemaUp(SchemaDiff $diff): array
     {
@@ -184,7 +184,7 @@ class DiffSqlGenerator
      *
      * @param  SchemaDiff  $diff
      * @param  int         $safeFlags  Bitmask of SAFE_* constants (0 = no restrictions)
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSchemaDown(SchemaDiff $diff, int $safeFlags = 0): array
     {
@@ -197,7 +197,7 @@ class DiffSqlGenerator
      * Equivalent to generateSchemaDown($diff, self::SAFE_ALL)
      *
      * @param  SchemaDiff  $diff
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     public function generateSafeSchemaDown(SchemaDiff $diff): array
     {
@@ -222,7 +222,7 @@ class DiffSqlGenerator
      * @param  SchemaDiff  $diff
      * @param  bool        $reverse
      * @param  int         $safeFlags  Bitmask of SAFE_* constants
-     * @return array
+     * @return array<mixed>
      */
     protected function generateSchemaSql(SchemaDiff $diff, bool $reverse = false, int $safeFlags = 0): array
     {
@@ -408,7 +408,7 @@ class DiffSqlGenerator
      * @param  TableDiff  $diff
      * @param  bool       $reverse    Generate reverse (down) migration
      * @param  int        $safeFlags  Bitmask of SAFE_* constants
-     * @return array
+     * @return array<mixed>
      */
     protected function generateOrderedSql(TableDiff $diff, bool $reverse = false, int $safeFlags = 0): array
     {
@@ -429,7 +429,7 @@ class DiffSqlGenerator
      * @param  TableDiff  $diff
      * @param  bool       $reverse
      * @param  int        $safeFlags  Bitmask of SAFE_* constants
-     * @return array
+     * @return array<mixed>
      */
     protected function generateBuilderSql(TableDiff $diff, bool $reverse = false, int $safeFlags = 0): array
     {

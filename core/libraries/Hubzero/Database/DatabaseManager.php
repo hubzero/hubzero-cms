@@ -58,7 +58,7 @@ class DatabaseManager
      * Create a driver from a config array
      *
      * @param  string $name   Connection name
-     * @param  array  $config Connection config (must include 'driver' or 'url')
+     * @param  array<mixed>  $config Connection config (must include 'driver' or 'url')
      * @return Driver
      * @throws \RuntimeException If driver is unsupported
      */
@@ -115,8 +115,8 @@ class DatabaseManager
      * Supports: scheme://user:password@host:port/database?key=value
      * Explicit config keys take precedence over URL-derived values.
      *
-     * @param  array $config Config array with 'url' key
-     * @return array Config with URL parsed into individual keys
+     * @param  array<mixed> $config Config array with 'url' key
+     * @return array<mixed> Config with URL parsed into individual keys
      */
     protected function parseUrl(array $config): array
     {
@@ -168,7 +168,7 @@ class DatabaseManager
     /**
      * Get all available driver names (built-in + custom)
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAvailableDrivers(): array
     {

@@ -253,7 +253,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * so this should save us some time by storing the results
      * for future reference.
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $methods = [];
 
@@ -302,7 +302,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The relationships on this model
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $relationships = [];
 
@@ -312,7 +312,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * When a relationship with orphanRemoval enabled is loaded, we store
      * the original IDs here. On save, we compare current IDs to find orphans.
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $originalRelationshipIds = [];
 
@@ -326,21 +326,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The forwards for the model (i.e. other places to look for attributes)
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $forwards = [];
 
     /**
      * The includes set on the model for eager loading
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $includes = [];
 
     /**
      * The model data returned as the result of a query, or set for saving
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $attributes = [];
 
@@ -349,7 +349,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * Used for dirty tracking to determine which attributes have changed.
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $original = [];
 
@@ -358,7 +358,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * Populated after save() so event handlers can see what changed.
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $changes = [];
 
@@ -487,7 +487,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Automatic fields to populate every time a row is updated
      *
-     * @var array
+     * @var array<mixed>
      **/
     public $renew = [];
 
@@ -501,14 +501,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Cached list of class methods
      *
-     * @var array
+     * @var array<mixed>
      **/
     private static $classMethods = [];
 
     /**
      * Cached introspected relationship names per model class
      *
-     * @var array
+     * @var array<mixed>
      **/
     private static $introspectedRelationships = [];
 
@@ -518,21 +518,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Indexed by fully-qualified class name, then by scope name.
      * Each scope is either a Closure or an object with an apply() method.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $globalScopes = [];
 
     /**
      * Tracks which model classes have been booted
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $booted = [];
 
     /**
      * Global scopes that have been removed for this query instance
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $removedScopes = [];
 
@@ -564,7 +564,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Indexed by fully-qualified class name, then by event name.
      * Events: retrieved, creating, created, updating, updated, saving, saved, deleting, deleted
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $modelEvents = [];
 
@@ -584,7 +584,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ]);
      * ```
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $morphMap = [];
 
@@ -635,7 +635,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - timestamp: Parse to Unix timestamp integer
      * - Custom class: Any class implementing Casts\CastsAttributes interface
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $casts = [];
 
@@ -644,14 +644,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * Prevents repeated casting of the same attribute during a single request.
      *
-     * @var array
+     * @var array<mixed>
      */
     private $castCache = [];
 
     /**
      * Cache for custom cast class instances
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $customCasters = [];
 
@@ -703,7 +703,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * package free of external dependencies. Changes to these rules should
      * be kept in sync with Inflector::$plural_rules.
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $pluralRules = [
         '/^(ox)$/i'                 => '\1\2en',
@@ -730,7 +730,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Words that do not have a plural form
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $uncountable = [
         'equipment',
@@ -799,7 +799,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ```
      *
      * @param   string  $name       The method name being called
-     * @param   array   $arguments  The method arguments provided
+     * @param   array<mixed>   $arguments  The method arguments provided
      * @return  mixed
      * @throws  \Hubzero\Database\Exception\BadMethodCallException  If called method does not exist in
      *                                                           this class or the query class, or
@@ -885,7 +885,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - Entry::published()->recent()->rows() // Scope methods
      *
      * @param   string  $name       The method name being called
-     * @param   array   $arguments  The method arguments provided
+     * @param   array<mixed>   $arguments  The method arguments provided
      * @return  mixed
      **/
     public static function __callStatic($name, $arguments)
@@ -976,7 +976,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Sets attributes (i.e. fields) on the model
      *
-     * @param   array|string  $key    The key to set, or array of key/value pairs
+     * @param   array<mixed>|string  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
      * @return  static
      */
@@ -1016,7 +1016,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * Includes both current attributes and original values for dirty tracking.
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     #[\ReturnTypeWillChange]
     public function __serialize()
@@ -1047,7 +1047,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Handles both the new format (with 'attributes' and 'original' keys)
      * and the old format (flat attributes array) for backward compatibility.
      *
-     * @param   array|string  $data  The data to build from
+     * @param   array<mixed>|string  $data  The data to build from
      * @return  void
      **/
     #[\ReturnTypeWillChange]
@@ -1141,7 +1141,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string|object  $class     Class name or object
      * @param   bool           $autoload  Whether to autoload classes
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function classUsesRecursive($class, $autoload = true)
     {
@@ -1160,7 +1160,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $trait     Trait name
      * @param   bool    $autoload  Whether to autoload classes
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function traitUsesRecursive($trait, $autoload = true)
     {
@@ -1250,7 +1250,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get the global scopes for this model class
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public static function getGlobalScopes()
     {
@@ -1284,7 +1284,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Article::withoutGlobalScopes(['active', 'published'])->get();
      * ```
      *
-     * @param   array|null  $scopes  Array of scope names to remove, or null for all
+     * @param   array<mixed>|null  $scopes  Array of scope names to remove, or null for all
      * @return  $this
      **/
     public function withoutGlobalScopes(?array $scopes = null)
@@ -1325,7 +1325,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get the scopes that have been removed for this query
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getRemovedScopes()
     {
@@ -1695,7 +1695,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Get registered model event callbacks
      *
      * @param   string|null  $event  Specific event to get, or null for all
-     * @return  array
+     * @return  array<mixed>
      **/
     public static function getModelEvents($event = null)
     {
@@ -1864,7 +1864,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Defaults clear all static model runtime state. Pass explicit false values
      * to opt out of individual reset categories.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - clear_columns (bool, default true)
      *                           - clear_query_cache (bool, default true)
      *                           - clear_connection (bool, default true)
@@ -2090,7 +2090,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This must be used when setting data to be saved. Otherwise, the properties
      * will be attached directly to the model itself and not included in the save.
      *
-     * @param   array|string|object  $key    The key to set, or array of key/value pairs
+     * @param   array<mixed>|string|object  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
      * @return  static
      **/
@@ -2143,7 +2143,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This method creates a model instance from database results and fires the
      * "retrieved" event, allowing post-load processing.
      *
-     * @param   object|array  $results  The results to set on the new model
+     * @param   object|array<mixed>  $results  The results to set on the new model
      * @return  static
      **/
     public static function newFromResults($results)
@@ -2188,7 +2188,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Outputs attributes as array
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function toArray()
     {
@@ -2246,7 +2246,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Determine whether an attribute should be cast to a native type
      *
      * @param   string       $key   The attribute name
-     * @param   string|array|null   $types Optional array of types to check against
+     * @param   string|array<mixed>|null   $types Optional array of types to check against
      * @return  bool
      */
     public function hasCast($key, $types = null)
@@ -2265,7 +2265,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get the casts array
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getCasts()
     {
@@ -2512,7 +2512,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Cast a value to array (from JSON string)
      *
      * @param   mixed  $value  The value to cast
-     * @return  array
+     * @return  array<mixed>
      */
     protected function castToArray($value)
     {
@@ -2877,7 +2877,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Calls the requested helper, passing the given arguments
      *
      * @param   string  $name       The helper name to call
-     * @param   array   $arguments  Arguments to pass with the method call
+     * @param   array<mixed>   $arguments  Arguments to pass with the method call
      * @return  mixed
      **/
     public function callHelper($name, $arguments)
@@ -2900,7 +2900,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Calls the requested transformer, passing the given arguments
      *
      * @param   string  $name       The transformer name to call
-     * @param   array   $arguments  Arguments to pass with the method call
+     * @param   array<mixed>   $arguments  Arguments to pass with the method call
      * @return  mixed
      **/
     public function callTransformer($name, $arguments = [])
@@ -3036,7 +3036,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * // ['published']
      * ```
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getQueryBindings()
     {
@@ -3101,7 +3101,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * // ['sql' => '...', 'bindings' => [...], 'raw_sql' => '...']
      * ```
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getDebugInfo()
     {
@@ -3158,7 +3158,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Grabs all of the model attributes
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getAttributes()
     {
@@ -3171,7 +3171,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Compares current attributes against the original values loaded from the database.
      * For new models (not yet saved), always returns true if attributes are set.
      *
-     * @param   string|array|null  $attributes  Attribute name(s) to check, or null for any change
+     * @param   string|array<mixed>|null  $attributes  Attribute name(s) to check, or null for any change
      * @return  bool
      **/
     public function isDirty($attributes = null): bool
@@ -3202,7 +3202,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Returns an array of attribute names to their new values for all
      * attributes that differ from their original values.
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getDirty(): array
     {
@@ -3283,7 +3283,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This is different from isDirty() - wasChanged() checks what was actually
      * persisted in the last save operation, while isDirty() checks current unsaved changes.
      *
-     * @param   string|array|null  $attributes  Attribute name(s) to check, or null for any change
+     * @param   string|array<mixed>|null  $attributes  Attribute name(s) to check, or null for any change
      * @return  bool
      **/
     public function wasChanged($attributes = null): bool
@@ -3309,7 +3309,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Gets the attributes that were changed during the last save operation
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getChanges(): array
     {
@@ -3351,7 +3351,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * Useful for undoing unsaved modifications to a model.
      *
-     * @param   string|array|null  $attributes  Specific attribute(s) to revert, or null for all
+     * @param   string|array<mixed>|null  $attributes  Specific attribute(s) to revert, or null for all
      * @return  static
      **/
     public function discardChanges($attributes = null): self
@@ -3550,7 +3550,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - Array rules without 'on' key: Always included
      *
      * @param   bool  $raw  If true, return raw rules without scenario filtering
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getRules($raw = false)
     {
@@ -3564,8 +3564,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Filter rules array by the current scenario
      *
-     * @param   array  $rules  The rules to filter
-     * @return  array  Filtered rules ready for validation
+     * @param   array<mixed>  $rules  The rules to filter
+     * @return  array<mixed>  Filtered rules ready for validation
      */
     protected function filterRulesByScenario(array $rules): array
     {
@@ -3664,7 +3664,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * }
      * ```
      *
-     * @return  array  Scenario name => list of safe attributes
+     * @return  array<mixed>  Scenario name => list of safe attributes
      */
     public function scenarios(): array
     {
@@ -3678,7 +3678,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Get the list of attributes that are safe for mass assignment
      * in the current scenario
      *
-     * @return  array  List of safe attribute names, or ['*'] for all
+     * @return  array<mixed>  List of safe attribute names, or ['*'] for all
      */
     public function getSafeAttributes(): array
     {
@@ -4176,7 +4176,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Returns all rows (unless otherwise limited)
      *
-     * @param   string|array|null  $columns  The columns to select
+     * @param   string|array<mixed>|null  $columns  The columns to select
      * @return  static
      **/
     public static function all($columns = null)
@@ -4207,7 +4207,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * User::insertMany($thousandsOfRecords, chunkSize: 500);
      * ```
      *
-     * @param   array   $rows       Array of associative arrays (each row is column => value)
+     * @param   array<mixed>   $rows       Array of associative arrays (each row is column => value)
      * @param   bool    $ignore     Whether to use INSERT IGNORE (skip duplicates)
      * @param   int     $chunkSize  Rows per batch (0 = no chunking, default 1000)
      * @return  int     Number of rows inserted
@@ -4232,9 +4232,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * and automatic timestamps. Use for bulk data imports where
      * performance is critical.
      *
-     * @param   array       $rows            Array of associative arrays
-     * @param   array|null  $updateColumns   Columns to update on conflict
-     * @param   array|null  $conflictColumns Columns defining conflict
+     * @param   array<mixed>       $rows            Array of associative arrays
+     * @param   array<mixed>|null  $updateColumns   Columns to update on conflict
+     * @param   array<mixed>|null  $conflictColumns Columns defining conflict
      * @param   int         $chunkSize       Rows per batch (default 1000)
      * @return  int         Number of rows affected
      * @throws  \InvalidArgumentException  If rows have inconsistent structure
@@ -4271,8 +4271,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Uses application-level SELECT + INSERT so model events,
      * validation, and automatics work correctly.
      *
-     * @param   array  $attributes  Key-value pairs to search by
-     * @param   array  $values      Additional values for creation only
+     * @param   array<mixed>  $attributes  Key-value pairs to search by
+     * @param   array<mixed>  $values      Additional values for creation only
      * @return  static
      **/
     public static function firstOrCreate(
@@ -4311,8 +4311,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Uses application-level SELECT + UPDATE/INSERT so model events,
      * validation, and automatics work correctly.
      *
-     * @param   array  $attributes  Key-value pairs to search by
-     * @param   array  $values      Key-value pairs to update/set
+     * @param   array<mixed>  $attributes  Key-value pairs to search by
+     * @param   array<mixed>  $values      Key-value pairs to update/set
      * @return  static
      **/
     public static function updateOrCreate(
@@ -4629,7 +4629,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *   // With eager loading
      *   $freshWithRelations = $article->fresh(['comments', 'author']);
      *
-     * @param   array|string|null  $with  Relationships to eager load
+     * @param   array<mixed>|string|null  $with  Relationships to eager load
      * @return  static|false  New model instance, or false if not found
      **/
     public function fresh($with = null)
@@ -4670,7 +4670,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *   // Exclude additional attributes
      *   $copy = $original->replicate(['slug', 'published_at']);
      *
-     * @param   array|null  $except  Additional attributes to exclude from the copy
+     * @param   array<mixed>|null  $except  Additional attributes to exclude from the copy
      * @return  static  New unsaved model instance
      **/
     public function replicate(?array $except = null)
@@ -4710,7 +4710,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get database table columns
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getTableColumns()
     {
@@ -4757,7 +4757,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Filters out fields that are not actually a table column
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getTableColumnsOnly()
     {
@@ -5613,9 +5613,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ]);
      * ```
      *
-     * @param  array|null  $map   The mappings to register (null to just retrieve)
+     * @param  array<mixed>|null  $map   The mappings to register (null to just retrieve)
      * @param  bool        $merge Whether to merge with existing mappings
-     * @return array              The current morph map
+     * @return array<mixed>              The current morph map
      */
     public static function morphMap(?array $map = null, $merge = true)
     {
@@ -5633,7 +5633,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get the current morph map
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getMorphMap()
     {
@@ -5898,7 +5898,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * to pass the parent object back to a view in the event of a save error.
      *
      * @param   string        $relationship  The relationship to invoke
-     * @param   array|object  $models        The model or models to attach
+     * @param   array<mixed>|object  $models        The model or models to attach
      * @return  static
      **/
     public function attach($relationship, $models)
@@ -6302,7 +6302,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - ['comments' => ['conditions' => ['approved' => 1]]]
      *
      * @param   Rows   $rows      The rows collection
-     * @param   array  $includes  Associative array of relation => config
+     * @param   array<mixed>  $includes  Associative array of relation => config
      * @return  Rows
      **/
     private function loadAssociativeRelationOnRows(Rows $rows, $includes)
@@ -6585,7 +6585,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - ['comments' => ['conditions' => ['approved' => 1]], 'tags']
      *
      * @param   \Hubzero\Database\Rows  $rows     The rows to parse and augment
-     * @param   array                   $includes Associative array of relation => config pairs
+     * @param   array<mixed>                   $includes Associative array of relation => config pairs
      * @return  \Hubzero\Database\Rows
      **/
     private function parseAssociativeInclude($rows, $includes)
@@ -6660,7 +6660,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This method is public to allow Rows::load() to build constraints when
      * loading relationships on collections.
      *
-     * @param   array  $config  The constraint configuration
+     * @param   array<mixed>  $config  The constraint configuration
      * @return  Closure
      **/
     public function buildEagerConstraint($config)
@@ -6753,7 +6753,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Gets all relationships
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getRelationships()
     {
@@ -6926,7 +6926,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This method uses reflection to find all relationship methods on the model
      * and returns those that have cascadeOnDelete() configured.
      *
-     * @return  array  Array of relationship method names
+     * @return  array<mixed>  Array of relationship method names
      **/
     protected function getCascadeDeleteRelationships()
     {
@@ -6936,7 +6936,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get relationship names that have cascade save enabled
      *
-     * @return  array  Array of relationship method names
+     * @return  array<mixed>  Array of relationship method names
      **/
     protected function getCascadeSaveRelationships()
     {
@@ -6946,7 +6946,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Get relationship names that have orphan removal enabled
      *
-     * @return  array  Array of relationship method names
+     * @return  array<mixed>  Array of relationship method names
      **/
     protected function getOrphanRemovalRelationships()
     {
@@ -6957,7 +6957,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Get relationships matching a specific cascade check method
      *
      * @param   string  $checkMethod  The method to call on the relationship (e.g., 'shouldCascadeOnDelete')
-     * @return  array   Array of relationship method names
+     * @return  array<int, mixed>   Array of relationship method names
      **/
     protected function getCascadeRelationships($checkMethod)
     {
@@ -7132,7 +7132,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Identifies known relationships on the model
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public static function introspectRelationships()
     {
@@ -7224,7 +7224,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticCreated($data)
@@ -7238,7 +7238,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticCreatedBy($data)

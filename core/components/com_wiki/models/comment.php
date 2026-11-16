@@ -131,7 +131,7 @@ class Comment extends Relational
     /**
      * Get a list of responses
      *
-     * @param   array   $filters  Filters to apply to query
+     * @param   array<mixed>   $filters  Filters to apply to query
      * @return  object
      */
     public function replies($filters = [])

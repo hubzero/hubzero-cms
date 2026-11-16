@@ -82,7 +82,7 @@ class BibTex
      * Array with the BibTex Data
      *
      * @access public
-     * @var    array
+     * @var    array<mixed>
      */
     public $data;
 
@@ -98,7 +98,7 @@ class BibTex
      * Array with possible Delimiters for the entries
      *
      * @access private
-     * @var    array
+     * @var    array<mixed>
      */
     protected $delimiters;
 
@@ -106,7 +106,7 @@ class BibTex
      * Array to store warnings
      *
      * @access public
-     * @var    array
+     * @var    array<mixed>
      */
     public $warnings;
 
@@ -114,7 +114,7 @@ class BibTex
      * Run-time configuration options
      *
      * @access private
-     * @var    array
+     * @var    array<mixed>
      */
     protected $options;
 
@@ -138,7 +138,7 @@ class BibTex
      * Array with the "allowed" types
      *
      * @access public
-     * @var    array
+     * @var    array<mixed>
      */
     public $allowedTypes;
 
@@ -159,7 +159,7 @@ class BibTex
      * Constructor
      *
      * @access public
-     * @param  array  $options
+     * @param  array<mixed>  $options
      * @return void
      */
     public function __construct($options = [])
@@ -388,7 +388,7 @@ class BibTex
      *
      * @access private
      * @param  string  $entry The entry
-     * @return array   The representation of the entry or false if there is a problem
+     * @return array<mixed>   The representation of the entry or false if there is a problem
      */
     public function parseEntry($entry)
     {
@@ -663,7 +663,7 @@ class BibTex
      *
      * @access private
      * @param  string  $entry The entry with the authors
-     * @return array   the extracted authors
+     * @return array<mixed>   the extracted authors
      */
     public function extractAuthors($entry)
     {
@@ -924,7 +924,7 @@ class BibTex
      * @access private
      * @param  string  $type       The type of the warning
      * @param  string  $entry      The line of the entry where the warning occurred
-     * @param  string|array  $wholeentry OPTIONAL The whole entry where the warning occurred
+     * @param  string|array<mixed>  $wholeentry OPTIONAL The whole entry where the warning occurred
      *
      * @return  void
      */
@@ -980,7 +980,7 @@ class BibTex
      * The Author is formatted as setted in the authorstring
      *
      * @access private
-     * @param  array   $array Author array
+     * @param  array<mixed>   $array Author array
      * @return string  the formatted author string
      */
     public function formatAuthor($array)
@@ -1061,7 +1061,7 @@ class BibTex
      * Adds a new BibTex entry to the data
      *
      * @access public
-     * @param  array  $newentry The new data to add
+     * @param  array<mixed>  $newentry The new data to add
      * @return void
      */
     public function addEntry($newentry)
@@ -1076,7 +1076,7 @@ class BibTex
      * entry types and the values are the amount of these entries.
      *
      * @access public
-     * @return array  Hash Table with the data
+     * @return array<mixed>  Hash Table with the data
      */
     public function getStatistic()
     {

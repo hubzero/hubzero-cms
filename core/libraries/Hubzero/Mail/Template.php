@@ -23,7 +23,7 @@ class Template extends Html
      * [!] Overloaded to remove portion that sets headers.
      *
      * @param   boolean  $caching  If true, cache the output
-     * @param   array    $params   Associative array of attributes
+     * @param   array<mixed>    $params   Associative array of attributes
      * @return  string   The rendered data
      */
     public function render($caching = false, $params = [])

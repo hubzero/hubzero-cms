@@ -96,7 +96,7 @@ class Category extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -109,7 +109,7 @@ class Category extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -131,7 +131,7 @@ class Category extends Relational
     /**
      * Generates automatic scope field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticScope($data)
@@ -435,7 +435,7 @@ class Category extends Relational
     /**
      * Get a form
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object
      */
     public function getForm($data = [])

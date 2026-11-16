@@ -31,7 +31,7 @@ class Mycontributions extends Module
     /**
      * Get a list of contributions
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     private function getContributions()
     {

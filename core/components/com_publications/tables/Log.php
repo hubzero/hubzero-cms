@@ -166,7 +166,7 @@ class Log extends Table
      * (::ffff:192.0.2.1) belongs with the IPv4 entries, and is not used here.
      *
      * @param   string  $metrics_db
-     * @return  array   \Hubzero\Utility\Network objects
+     * @return  array<mixed>   \Hubzero\Utility\Network objects
      */
     protected function excludedNetworks6($metrics_db)
     {
@@ -407,7 +407,7 @@ class Log extends Table
      * @param   integer|null  $uid        User ID
      * @param   integer  $limit      Num of entries
      * @param   boolean  $lastmonth
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getAuthorStats($uid = null, $limit = 0, $lastmonth = true)
     {
@@ -585,9 +585,9 @@ class Log extends Table
      *
      * @param   string|null  $from     Date from
      * @param   string|null  $to       Date to
-     * @param   array   $exclude  Data to exclude
+     * @param   array<mixed>   $exclude  Data to exclude
      * @param   string|null  $filter   Tag name to match
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getCustomStats($from = null, $to = null, $exclude = [], $filter = null)
     {
@@ -674,7 +674,7 @@ class Log extends Table
      *
      * @param      integer|null  $projectid  Project ID
      * @param      integer  $pubid      Publication ID
-     * @return     array|false
+     * @return     array<mixed>|false
      */
     public function getPubStats($projectid = null, $pubid = 0)
     {

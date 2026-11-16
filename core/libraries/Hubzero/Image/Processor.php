@@ -42,14 +42,14 @@ class Processor extends Obj
     /**
      * EXIF image data
      *
-     * @var  array|false|null
+     * @var  array<mixed>|false|null
      */
     private $exif_data = null;
 
     /**
      * Configuration options
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $config = [];
 
@@ -57,7 +57,7 @@ class Processor extends Obj
      * Constructor
      *
      * @param   string|null  $image_source  Path to image
-     * @param   array   $config        Optional configurations
+     * @param   array<mixed>   $config        Optional configurations
      * @return  void
      */
     public function __construct($image_source = null, $config = [], $isRemoteImage = false)
@@ -429,7 +429,7 @@ class Processor extends Obj
     /**
      * Image Geo Location Data
      *
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function getGeoLocation()
     {
@@ -498,7 +498,7 @@ class Processor extends Obj
     /**
      * Convert fractions to decimals with formatting
      *
-     * @param   array   $fracs  Fractions to convert
+     * @param   array<mixed>   $fracs  Fractions to convert
      * @return  string
      */
     private function geoPrettyFracs2dec($fracs)
@@ -514,7 +514,7 @@ class Processor extends Obj
     /**
      * Convert fractions to decimals
      *
-     * @param   array    $fracs  Fractions to convert
+     * @param   array<mixed>    $fracs  Fractions to convert
      * @return  integer
      */
     private function geoSingleFracs2dec($fracs)

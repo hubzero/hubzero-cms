@@ -41,7 +41,7 @@ class Reviews extends Obj
     /**
      * Get all reviews for resources
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getReviews()
     {

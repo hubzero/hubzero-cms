@@ -39,7 +39,7 @@ class Category extends Relational
     /**
      * Returns all rows (unless otherwise limited)
      *
-     * @param   string|array|null  $columns  The columns to select
+     * @param   string|array<mixed>|null  $columns  The columns to select
      * @return  \Hubzero\Database\Relational|static
      */
     public static function all($columns = null)
@@ -50,7 +50,7 @@ class Category extends Relational
     /**
      * Get a list of responses
      *
-     * @param   array    $filters  Filters to apply to query
+     * @param   array<mixed>    $filters  Filters to apply to query
      * @return  object
      */
     public function children($filters = [])

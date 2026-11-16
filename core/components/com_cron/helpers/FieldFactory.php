@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class FieldFactory
 {
     /**
-     * @var array Cache of instantiated fields
+     * @var array<mixed> Cache of instantiated fields
      */
     private $fields = [];
 

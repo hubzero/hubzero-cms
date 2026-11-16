@@ -237,7 +237,7 @@ class Item extends Nested
     /**
      * Generates automatic alias field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -272,7 +272,7 @@ class Item extends Nested
     /**
      * Generates automatic alias field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticImg($data)
@@ -314,7 +314,7 @@ class Item extends Nested
     /**
      * Make sure params are a string
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticParams($data)
@@ -331,7 +331,7 @@ class Item extends Nested
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticLft($data)
@@ -345,7 +345,7 @@ class Item extends Nested
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRgt($data)
@@ -1008,8 +1008,8 @@ class Item extends Nested
      * One query rather than one per id, because a batch may be a whole page of
      * them.
      *
-     * @param   array  $pks  Menu item ids
-     * @return  array  The ids that are generated
+     * @param   array<mixed>  $pks  Menu item ids
+     * @return  array<int, mixed>  The ids that are generated
      */
     public function generatedIn($pks)
     {
@@ -1258,7 +1258,7 @@ class Item extends Nested
     /**
      * Method to change the home state of one or more items.
      *
-     * @param   array    $pks    A list of the primary keys to change.
+     * @param   array<mixed>    $pks    A list of the primary keys to change.
      * @param   int      $value  The value of the home state.
      * @return  boolean  True on success.
      */
@@ -1572,8 +1572,8 @@ class Item extends Nested
     /**
      * Saves the manually set order of records.
      *
-     * @param   array|null  $pks    An array of primary key ids.
-     * @param   array|null  $order  An array of order values.
+     * @param   array<mixed>|null  $pks    An array of primary key ids.
+     * @param   array<mixed>|null  $order  An array of order values.
      * @return  bool
      */
     public static function saveorder($pks = null, $order = null)
@@ -1641,9 +1641,9 @@ class Item extends Nested
     /**
      * Method to perform batch operations on an item or a set of items.
      *
-     * @param   array    $commands  An array of commands to perform.
-     * @param   array    $pks       An array of item ids.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $commands  An array of commands to perform.
+     * @param   array<mixed>    $pks       An array of item ids.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  Returns true on success, false on failure.
      */
     public function batchTask($commands, $pks, $contexts)
@@ -1757,7 +1757,7 @@ class Item extends Nested
      * current lft/rgt range.
      *
      * @param   object  $node
-     * @return  array
+     * @return  array<mixed>
      */
     protected function descendantIds($node)
     {
@@ -1781,8 +1781,8 @@ class Item extends Nested
      * setError(), getRoot() -- until 2026, so it fataled on its first call.)
      *
      * @param   string  $value     The new menu and parent as "{menutype}.{parent_id}".
-     * @param   array   $pks       An array of row IDs.
-     * @param   array   $contexts  An array of item contexts.
+     * @param   array<mixed>   $pks       An array of row IDs.
+     * @param   array<mixed>   $contexts  An array of item contexts.
      * @return  mixed   An array of new IDs on success, boolean false on failure.
      */
     protected function batchCopy($value, $pks, $contexts)
@@ -1896,8 +1896,8 @@ class Item extends Nested
      * only reassigned parent_id -- the lft/rgt tree positions never moved.)
      *
      * @param   string   $value     The new menu and parent as "{menutype}.{parent_id}".
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True on success.
      */
     protected function batchMove($value, $pks, $contexts)
@@ -1990,8 +1990,8 @@ class Item extends Nested
      * Batch access level changes for a group of rows.
      *
      * @param   integer  $value     The new value matching an Asset Group ID.
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.
      */
     protected function batchAccess($value, $pks, $contexts)
@@ -2019,8 +2019,8 @@ class Item extends Nested
      * Batch language changes for a group of rows.
      *
      * @param   string   $value     The new value matching a language.
-     * @param   array    $pks       An array of row IDs.
-     * @param   array    $contexts  An array of item contexts.
+     * @param   array<mixed>    $pks       An array of row IDs.
+     * @param   array<mixed>    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.
      */
     protected function batchLanguage($value, $pks, $contexts)
@@ -2047,7 +2047,7 @@ class Item extends Nested
     /**
      * Increment styles.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $incrementStyles = [
         'dash' => [
@@ -2066,7 +2066,7 @@ class Item extends Nested
      * @param   integer  $parent_id  The id of the category.
      * @param   string   $alias      The alias.
      * @param   string   $title      The title.
-     * @return  array    Contains the modified title and alias.
+     * @return  array<int, mixed>    Contains the modified title and alias.
      */
     protected function generateNewTitle($parent_id, $alias, $title)
     {

@@ -59,7 +59,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      *
      * Maps common type names to Firebird-native types.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeMappings = [
         // Integer types
@@ -110,7 +110,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Firebird reserved words that must be quoted when used as aliases
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $reservedWords = [
         'count',
@@ -725,7 +725,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      *
      * Firebird uses the || operator for string concatenation.
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function buildConcat(array $parts)
@@ -774,9 +774,9 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the column metadata query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -1314,7 +1314,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Note: This doesn't reset generators (sequences).
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {
@@ -1463,8 +1463,8 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Queries the Firebird system tables to get type information for the specified columns.
      *
      * @param   string  $table    The table name
-     * @param   array   $columns  The column names
-     * @return  array   Map of column name => CAST type string
+     * @param   array<mixed>   $columns  The column names
+     * @return  array<mixed>   Map of column name => CAST type string
      */
     protected function getColumnTypesForCast($table, $columns)
     {

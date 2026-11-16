@@ -43,7 +43,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * ASE reserved words that must be quoted when used as aliases
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $reservedWords = [
         'count',
@@ -394,9 +394,9 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the columns query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -451,7 +451,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Get the SQL statements to truncate a table
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {
@@ -464,7 +464,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * ASE supports the + operator for string concatenation.
      * ISNULL() wraps each part to handle NULLs.
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function buildConcat(array $parts)

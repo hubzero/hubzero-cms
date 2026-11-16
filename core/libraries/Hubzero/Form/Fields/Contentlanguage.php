@@ -25,7 +25,7 @@ class Contentlanguage extends Select
     /**
      * Method to get the field options for content languages.
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

@@ -19,7 +19,7 @@ class Local extends Plugin
      * Responds to events for saving file metadata
      *
      * @param   \Hubzero\Filesystem\File $file      The file to which the metadata pertains
-     * @param   array                    $metadata  The metadata itself
+     * @param   array<mixed>                    $metadata  The metadata itself
      * @return  bool|null
      **/
     public function onMetadataSave(\Hubzero\Filesystem\File $file, $metadata)
@@ -42,7 +42,7 @@ class Local extends Plugin
      *
      * @param   \Hubzero\Filesystem\File $file        The file to which the metadata pertains
      * @param   int                      $maxEntries  The maximum number of entries to return
-     * @return  array|false
+     * @return  array<mixed>|false
      **/
     public function onMetadataGet(\Hubzero\Filesystem\File $file, $maxEntries = 1)
     {

@@ -817,7 +817,7 @@ class Install extends Base implements CommandInterface
      *
      * @param   string  $url
      * @param   bool    $verify  Whether to require a certificate this server trusts
-     * @return  array   The status code, and curl's error if there was one
+     * @return  array<int, mixed>   The status code, and curl's error if there was one
      **/
     private function fetch($url, $verify = true)
     {
@@ -1208,8 +1208,8 @@ class Install extends Base implements CommandInterface
      * Show installation complete message and next steps
      *
      * @param   bool   $ansi           Whether to use ANSI colors
-     * @param   array  $settingsResult Site settings configuration
-     * @param   array  $adminResult    Admin user configuration
+     * @param   array<mixed>  $settingsResult Site settings configuration
+     * @param   array<mixed>  $adminResult    Admin user configuration
      * @return  void
      **/
     private function showInstallationComplete($ansi, $settingsResult, $adminResult)

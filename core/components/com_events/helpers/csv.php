@@ -18,7 +18,7 @@ class Csv
     /**
      * Description for 'field_ordering'
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $field_ordering = [
         'name' => 0,

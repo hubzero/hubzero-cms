@@ -351,7 +351,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Transforms a namespace to an array
      *
-     * @return  array  An associative array holding the namespace data
+     * @return  array<mixed>  An associative array holding the namespace data
      */
     public function toArray()
     {
@@ -383,7 +383,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Get the list of all available processors
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function processors()
     {
@@ -446,7 +446,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Method to recursively convert an object of data to an array.
      *
      * @param   object|mixed  $data  An object of data to return as an array.
-     * @return  array   Array representation of the input object.
+     * @return  array<mixed>   Array representation of the input object.
      */
     protected function asArray($data)
     {
@@ -488,7 +488,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Dump to one dimension array.
      *
      * @param   string|null  $separator  The key separator.
-     * @return  array   Dumped array.
+     * @return  array<mixed>   Dumped array.
      */
     public function flatten($separator = null)
     {
@@ -503,8 +503,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Method to recursively convert data to one dimension array.
      *
      * @param   string|null        $separator  The key separator.
-     * @param   array|object|null  $data       Data source of this scope.
-     * @param   array         &$array     The result array, it is pass by reference.
+     * @param   array<mixed>|object|null  $data       Data source of this scope.
+     * @param   array<mixed>         &$array     The result array, it is pass by reference.
      * @param   string        $prefix     Last level key prefix.
      * @return  void
      */

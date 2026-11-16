@@ -82,7 +82,7 @@ class MigrationSquasher
     /**
      * Tables to exclude from squashing
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $excludeTables = [];
 
@@ -152,7 +152,7 @@ class MigrationSquasher
     /**
      * Set tables to exclude from squashing
      *
-     * @param  array  $tables
+     * @param  array<mixed>  $tables
      * @return self
      */
     public function setExcludeTables(array $tables): self
@@ -748,7 +748,7 @@ class MigrationSquasher
      *
      * @param  string  $directory
      * @param  string  $pattern
-     * @return array
+     * @return array<mixed>
      */
     public function getExistingMigrations(string $directory, string $pattern = 'Migration*.php'): array
     {
@@ -760,7 +760,7 @@ class MigrationSquasher
      * Get statistics about tables that would be squashed
      *
      * @param  DatabaseInfo  $schema
-     * @return array
+     * @return array<mixed>
      */
     public function getSquashStats(DatabaseInfo $schema): array
     {

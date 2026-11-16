@@ -53,7 +53,7 @@ class Pagination
      * Attempts to forward calls to the paginator itself
      *
      * @param   string  $name       The method name being called
-     * @param   array   $arguments  The method arguments provided
+     * @param   array<mixed>   $arguments  The method arguments provided
      * @return  $this
      **/
     public function __call($name, $arguments)

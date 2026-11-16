@@ -205,7 +205,7 @@ class Importer extends Obj
      * Get a list of citations requiring attention
      *
      * @param   object  $data
-     * @return  array
+     * @return  array<mixed>
      */
     public function writeRequiresAttention($data)
     {
@@ -217,7 +217,7 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function readRequiresAttention()
     {
@@ -246,7 +246,7 @@ class Importer extends Obj
      * Get a list of citations requiring attention
      *
      * @param   object  $data
-     * @return  array
+     * @return  array<mixed>
      */
     public function writeRequiresNoAttention($data)
     {
@@ -258,7 +258,7 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function readRequiresNoAttention()
     {
@@ -276,9 +276,9 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @param   array  $action_attention
-     * @param   array  $action_no_attention
-     * @return  array
+     * @param   array<mixed>  $action_attention
+     * @param   array<mixed>  $action_no_attention
+     * @return  array<mixed>
      */
     public function process($action_attention = [], $action_no_attention = [])
     {

@@ -147,7 +147,7 @@ class Institutions extends Field
      * Results are cached to app/tmp to avoid re-parsing on every page load.
      *
      * @param   string  $xmlPath  Filesystem path to the federation metadata XML
-     * @return  array|string  Associative array on success, error string on failure
+     * @return  array<mixed>|string  Associative array on success, error string on failure
      */
     private static function loadFederationEntities($xmlPath)
     {

@@ -424,7 +424,7 @@ class Image extends Plugin
      * Converts HEX color to RGB
      *
      * @param   string  $hex  Hex value to convert
-     * @return  array
+     * @return  array<mixed>
      */
     private function hexToRgb($hex)
     {

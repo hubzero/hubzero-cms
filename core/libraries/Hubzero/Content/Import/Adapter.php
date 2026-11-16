@@ -33,7 +33,7 @@ interface Adapter
      * Process an import
      *
      * @param  \Hubzero\Content\Import\Model\Import $import
-     * @param  array    $callbacks
+     * @param  array<mixed>    $callbacks
      * @param  bool     $dryRun
      */
     public function process(Import $import, array $callbacks, $dryRun);

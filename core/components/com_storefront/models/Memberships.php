@@ -40,7 +40,7 @@ class Memberships
     /**
      * Get all product type IDs with membership model
      *
-     * @return  array  membership type IDs
+     * @return  array<mixed>  membership type IDs
      */
     public function getMembershipTypes()
     {
@@ -56,7 +56,7 @@ class Memberships
      *
      * @param   int    $crtId  cart ID
      * @param   int    $pId    membership product ID
-     * @return  array  membership info
+     * @return  array<string, mixed>  membership info
      */
     public function getMembershipInfo($crtId, $pId)
     {
@@ -99,8 +99,8 @@ class Memberships
     /**
      * Calculate and return new expiration date for a SKU
      *
-     * @param   array|false|null  $currentExpiration  Current subscription expiration (MySQL format)
-     * @param   array   $item               SKU/Cart info
+     * @param   array<mixed>|false|null  $currentExpiration  Current subscription expiration (MySQL format)
+     * @param   array<mixed>   $item               SKU/Cart info
      * @return  string  Calculated new expiration (MySQL format)
      */
     public static function calculateNewExpiration($currentExpiration, $item)
@@ -162,7 +162,7 @@ class Memberships
      *
      * @param   int    $uId  user ID
      * @param   int    $pId  membership product ID
-     * @return  array  membership info
+     * @return  array<mixed>  membership info
      */
     public static function getMembershipInfoByUser($uId, $pId)
     {

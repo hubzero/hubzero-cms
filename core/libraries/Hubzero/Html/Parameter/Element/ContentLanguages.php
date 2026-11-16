@@ -28,7 +28,7 @@ class ContentLanguages extends Select
      * Get the options for the element
      *
      * @param   object  &$node  XMLElement node object containing the settings for the element
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getOptions(&$node)
     {

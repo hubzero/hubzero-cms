@@ -62,7 +62,7 @@ class Element extends Obj
      * @param   \SimpleXMLElement  &$xmlElement   Name of the element
      * @param   string  $value         Value of the element
      * @param   string  $control_name  Name of the control
-     * @return  array   Attributes of an element
+     * @return  array<mixed>   Attributes of an element
      */
     public function render(&$xmlElement, $value, $control_name = 'params')
     {

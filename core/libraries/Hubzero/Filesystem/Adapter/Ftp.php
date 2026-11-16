@@ -27,7 +27,7 @@ class Ftp implements AdapterInterface
     /**
      * List of configurable items
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $configurable = [
         'host',
@@ -70,7 +70,7 @@ class Ftp implements AdapterInterface
     /**
      * Constructor.
      *
-     * @param   array  $config
+     * @param   array<mixed>  $config
      * @return  void
      */
     public function __construct(array $config)
@@ -81,7 +81,7 @@ class Ftp implements AdapterInterface
     /**
      * Set the config.
      *
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  object  $this
      */
     public function setConfig(array $config)
@@ -748,9 +748,9 @@ class Ftp implements AdapterInterface
     /**
      * Normalize a directory listing.
      *
-     * @param   array   $listing
+     * @param   array<mixed>   $listing
      * @param   string  $prefix
-     * @return  array   Directory listing
+     * @return  array<mixed>   Directory listing
      */
     protected function normalizeListing(
         array $listing,
@@ -790,8 +790,8 @@ class Ftp implements AdapterInterface
     /**
      * Sort a directory listing.
      *
-     * @param   array  $result
-     * @return  array  Sorted listing
+     * @param   array<mixed>  $result
+     * @return  array<mixed>  Sorted listing
      */
     protected function sortListing(array $result)
     {
@@ -809,7 +809,7 @@ class Ftp implements AdapterInterface
      *
      * @param   string  $item
      * @param   string  $base
-     * @return  array   Normalized file array
+     * @return  array<mixed>   Normalized file array
      */
     protected function normalizeObject($item, $base)
     {
@@ -876,8 +876,8 @@ class Ftp implements AdapterInterface
     /**
      * Filter out dot-directories.
      *
-     * @param   array  $list
-     * @return  array
+     * @param   array<mixed>  $list
+     * @return  array<mixed>
      */
     public function removeDotDirectories(array $list)
     {

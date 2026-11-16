@@ -53,7 +53,7 @@ class Detector implements DetectorInterface
     /**
      * Constructor
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -91,7 +91,7 @@ class Detector implements DetectorInterface
     /**
      *  Tests for spam.
      *
-     * @param   array  $data  Content to test
+     * @param   array<mixed>  $data  Content to test
      * @return  bool    True if the comment is spam, false if not
      */
     public function detect($data)
@@ -166,7 +166,7 @@ class Detector implements DetectorInterface
     /**
      * Get token probability
      *
-     * @param   array  $words
+     * @param   array<mixed>  $words
      * @return  \Hubzero\Database\Rows|null
      */
     protected function getTokensProb($words)

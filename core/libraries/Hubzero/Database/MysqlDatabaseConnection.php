@@ -47,7 +47,7 @@ class MysqlDatabaseConnection
     /**
      * Build a MySQL DSN string from configuration
      *
-     * @param   array  $config  Database configuration with keys:
+     * @param   array<mixed>  $config  Database configuration with keys:
      *                          - host: Server hostname (default: localhost)
      *                          - port: Server port (optional)
      *                          - socket: Unix socket path (optional, overrides host/port)
@@ -83,7 +83,7 @@ class MysqlDatabaseConnection
      * Get default PDO options for MySQL connections
      *
      * @param   int  $timeout  Connection timeout in seconds
-     * @return  array  PDO options array
+     * @return  array<mixed>  PDO options array
      */
     public static function getDefaultOptions(int $timeout = self::DEFAULT_TIMEOUT): array
     {
@@ -97,7 +97,7 @@ class MysqlDatabaseConnection
     /**
      * Connect to a MySQL database
      *
-     * @param   array  $config   Database configuration
+     * @param   array<mixed>  $config   Database configuration
      * @param   int    $timeout  Connection timeout in seconds
      * @return  PDO|null  PDO connection or null on failure
      */
@@ -124,7 +124,7 @@ class MysqlDatabaseConnection
     /**
      * Connect to a MySQL database, throwing exception on failure
      *
-     * @param   array  $config   Database configuration
+     * @param   array<mixed>  $config   Database configuration
      * @param   int    $timeout  Connection timeout in seconds
      * @return  PDO  PDO connection
      * @throws  PDOException  If connection fails
@@ -152,8 +152,8 @@ class MysqlDatabaseConnection
     /**
      * Test database connection and return result
      *
-     * @param   array  $config  Database configuration
-     * @return  array  Result array with keys 'success', 'message', and optionally 'pdo'
+     * @param   array<mixed>  $config  Database configuration
+     * @return  array<mixed>  Result array with keys 'success', 'message', and optionally 'pdo'
      */
     public static function test(array $config): array
     {

@@ -27,7 +27,7 @@ class Pec extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function onOfferingEdit()
     {

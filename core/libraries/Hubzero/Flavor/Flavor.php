@@ -67,7 +67,7 @@ class Flavor
     /**
      * The levers, as given (or as resolved, once cascaded)
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data;
 
@@ -75,7 +75,7 @@ class Flavor
      * Constructor
      *
      * @param   string       $name
-     * @param   array        $data
+     * @param   array<mixed>        $data
      * @param   string|null  $file
      * @throws  InvalidArgumentException  When a lever is not one there is
      */
@@ -156,7 +156,7 @@ class Flavor
     /**
      * Every lever, as an array
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray()
     {
@@ -182,9 +182,9 @@ class Flavor
     /**
      * A child's levers laid over a parent's
      *
-     * @param   array  $parent
-     * @param   array  $child
-     * @return  array
+     * @param   array<mixed>  $parent
+     * @param   array<mixed>  $child
+     * @return  array<mixed>
      */
     public static function merge(array $parent, array $child)
     {
@@ -241,9 +241,9 @@ class Flavor
      * A name the child enables leaves the inherited disable list, and the
      * other way round, so the child's word on each name is the last one.
      *
-     * @param   array  $parent
-     * @param   array  $child
-     * @return  array
+     * @param   array<mixed>  $parent
+     * @param   array<mixed>  $child
+     * @return  array<string, mixed>
      */
     protected static function mergeSwitches(array $parent, array $child)
     {
@@ -300,9 +300,9 @@ class Flavor
      * Not array_merge(): that renumbers integer keys, and a module id or an
      * all-digit alias is an integer key once YAML or JSON has read it.
      *
-     * @param   array  $child
-     * @param   array  $parent
-     * @return  array
+     * @param   array<mixed>  $child
+     * @param   array<mixed>  $parent
+     * @return  array<mixed>
      */
     protected static function over(array $child, array $parent)
     {

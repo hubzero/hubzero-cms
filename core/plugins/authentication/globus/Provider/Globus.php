@@ -37,7 +37,7 @@ class Globus extends AbstractProvider
     /**
      * Returns the base URL for requesting an access token.
      *
-     * @param array $params
+     * @param array<mixed> $params
      * @return string
      */
     public function getBaseAccessTokenUrl(array $params)
@@ -65,7 +65,7 @@ class Globus extends AbstractProvider
      *
      * Other available scopes include: email, profile
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getDefaultScopes()
     {
@@ -90,7 +90,7 @@ class Globus extends AbstractProvider
      *
      * @throws IdentityProviderException
      * @param  ResponseInterface $response
-     * @param  array|string $data Parsed response data
+     * @param  array<mixed>|string $data Parsed response data
      * @return void
      */
     protected function checkResponse(ResponseInterface $response, $data)
@@ -119,7 +119,7 @@ class Globus extends AbstractProvider
     /**
      * Generate a user object from a successful user details request.
      *
-     * @param array $response
+     * @param array<mixed> $response
      * @param AccessToken $token
      * @return GlobusResourceOwner
      */

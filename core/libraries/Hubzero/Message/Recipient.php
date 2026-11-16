@@ -107,7 +107,7 @@ class Recipient extends Relational
     /**
      * Builds a query string based on filters passed
      *
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  static  SQL
      */
     private function buildQuery($uid, $filters = [])
@@ -136,7 +136,7 @@ class Recipient extends Relational
      * Get records for a user based on filters passed
      *
      * @param   integer|null  $uid      User ID
-     * @param   array    $filters  Filters to build query from
+     * @param   array<mixed>    $filters  Filters to build query from
      * @return  mixed    False if errors, array on success
      */
     public function getMessages($uid = null, $filters = [])
@@ -165,7 +165,7 @@ class Recipient extends Relational
      * Get a record count for a user based on filters passed
      *
      * @param   integer  $uid      User ID
-     * @param   array    $filters  Filters to build query from
+     * @param   array<mixed>    $filters  Filters to build query from
      * @return  mixed    False if errors, integer on success
      */
     public function getMessagesCount($uid, $filters = [])
@@ -258,7 +258,7 @@ class Recipient extends Relational
      * Set the state of multiple messages
      *
      * @param   integer  $state  State to set
-     * @param   array    $ids    List of message IDs
+     * @param   array<mixed>    $ids    List of message IDs
      * @return  boolean  True on success
      */
     public function setStateOf($state = 0, $ids = [])

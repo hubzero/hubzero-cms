@@ -21,7 +21,7 @@ class Geocode
     /**
      * Get a list of countries and their country code
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $countries = [];
 
@@ -29,7 +29,7 @@ class Geocode
      * Get a list of countries and their coutnry code
      *
      * @param   string|mixed  $continent  Continent to filter by
-     * @return  array
+     * @return  array<mixed>
      */
     public static function countries($continent = 'all')
     {
@@ -215,7 +215,7 @@ class Geocode
     /**
      * Get the address (reverse locate)
      *
-     * @param   array  $coordinates  array(latitude, longitude)
+     * @param   array<mixed>  $coordinates  array(latitude, longitude)
      * @return  string|\Geocoder\Collection
      */
     public static function address($coordinates)
@@ -294,7 +294,7 @@ class Geocode
     /**
      * Get a list of countries and their coutnry code
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getcountries()
     {
@@ -326,7 +326,7 @@ class Geocode
      * Get a list of countries by continent
      *
      * @param   string  $continent
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getCountriesByContinent($continent = '')
     {
@@ -345,7 +345,7 @@ class Geocode
      * Get continent by the country
      *
      * @param   string  $country
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getContinentByCountry($country = '')
     {
@@ -363,8 +363,8 @@ class Geocode
     /**
      * Get a list of country codes by names
      *
-     * @param   array  $names  List of country names
-     * @return  array
+     * @param   array<mixed>  $names  List of country names
+     * @return  array<mixed>
      */
     public static function getCodesByNames($names = [])
     {
@@ -432,14 +432,14 @@ class Geocode
      * data changes monthly, and each kind is emptied past 1000 entries so a
      * run over many addresses does not grow without bound.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $cache = [];
 
     /**
      * Whether each IPv6 table is known unusable, as found in this request
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $unusable = [];
 
@@ -525,7 +525,7 @@ class Geocode
      * @param   object      $gdb    Geo database
      * @param   string      $ip     Address
      * @param   string      $table  ipcountry or iplocation
-     * @return  array|null  array(table, SQL value), or null when there is no lookup
+     * @return  array<mixed>|null  array(table, SQL value), or null when there is no lookup
      */
     protected static function ipLookup($gdb, $ip, $table)
     {
@@ -625,7 +625,7 @@ class Geocode
      * shared by is_d1nation() and is_e1nation()
      *
      * @param   string  $country  Country code
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function countryGroups($country)
     {

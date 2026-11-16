@@ -21,7 +21,7 @@ class Finder
      * @param   string  $period   Time period to return results for
      * @param   string  $category Category to filter by
      * @param   integer $limit    Limit number of results returned
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getBasedOnPeriodAndCategory($period = 'month', $category = '', $limit = 0)
     {

@@ -84,7 +84,7 @@ class Comment extends Relational
     /**
      * Cached data
      *
-     * @var array
+     * @var array<mixed>
      */
     private $cache = [
         'recipients.added'  => [],
@@ -229,7 +229,7 @@ class Comment extends Relational
     /**
      * Process an attachment macro and output a link to the file
      *
-     * @param   array   $matches  Macro info
+     * @param   array<mixed>   $matches  Macro info
      * @return  string
      */
     protected function getAttachment($matches)
@@ -367,7 +367,7 @@ class Comment extends Relational
      * Get the recipient list
      *
      * @param   string  $who
-     * @return  array
+     * @return  array<mixed>
      */
     public function to($who = '')
     {

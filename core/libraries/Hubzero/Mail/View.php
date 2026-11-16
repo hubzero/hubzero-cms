@@ -28,7 +28,7 @@ class View extends AbstractView
      *
      * [!] Override to create instance of mail template
      *
-     * @param   array  $config  A named configuration array for object construction.
+     * @param   array<mixed>  $config  A named configuration array for object construction.
      * @return  void
      */
     public function __construct($config = [])
@@ -133,7 +133,7 @@ class View extends AbstractView
      * Resolve the site's home template and its base directory (app or core),
      * mirroring how Hubzero\Mail\Template picks the email wrapper. Cached.
      *
-     * @return  array|null  ['template' => ..., 'directory' => ...] or null
+     * @return  array<mixed>|null  ['template' => ..., 'directory' => ...] or null
      */
     protected static function homeTemplate()
     {

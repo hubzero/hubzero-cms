@@ -86,7 +86,7 @@ class Todo extends Model
      *
      * @param   integer|null  $projectid
      * @param   mixed    $filters
-     * @return  array
+     * @return  array<mixed>
      */
     public function getListName($projectid = null, $filters = [])
     {
@@ -98,7 +98,7 @@ class Todo extends Model
      * Get lists
      *
      * @param   integer|null  $projectid
-     * @return  array
+     * @return  array<mixed>
      */
     public function getLists($projectid = null)
     {
@@ -129,7 +129,7 @@ class Todo extends Model
      *   If string, it'll return either a list of IDs or names
      *
      * @param   string  $rtrn
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  \Hubzero\Base\ItemList|int|null
      */
     public function entries($rtrn = 'list', $filters = [])

@@ -18,7 +18,7 @@ class Mimetypes
     /**
      * Define some private variables
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $mimeTypes = [
         '3dm'       => 'x-world/x-3dmf',

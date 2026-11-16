@@ -30,14 +30,14 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Array to hold config
      *
-     * @var array
+     * @var array<mixed>
      */
     private $config = [];
 
     /**
      * Array to hold client data
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $clientData;
 
@@ -45,7 +45,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
      * Constructor
      *
      * @param   \OAuth2\Storage\ClientCredentialsInterface $storage  Storage object
-     * @param   array   $config   Config array
+     * @param   array<mixed>   $config   Config array
      * @return  void
      */
     public function __construct(ClientCredentialsInterface $storage, array $config = [])
@@ -172,7 +172,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope
-     * @return  array  Access token
+     * @return  array<mixed>  Access token
      */
     public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
     {

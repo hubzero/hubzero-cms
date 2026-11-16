@@ -197,7 +197,7 @@ class Repo extends Obj
      * Make adapter call
      *
      * @param   string|null  $call   Method name
-     * @param   array   $params Method params
+     * @param   array<mixed>   $params Method params
      * @return  mixed
      */
     public function call($call = null, $params = [])
@@ -226,7 +226,7 @@ class Repo extends Obj
     /**
      * Get file count
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  integer
      */
     public function count($params = [])
@@ -237,8 +237,8 @@ class Repo extends Obj
     /**
      * Get file list (retrieve and sort)
      *
-     * @param      array    $params
-     * @return     array
+     * @param      array<mixed>    $params
+     * @return     array<mixed>
      */
     public function filelist($params = [])
     {
@@ -248,8 +248,8 @@ class Repo extends Obj
     /**
      * Get changes for sync
      *
-     * @param      array    $params
-     * @return     array
+     * @param      array<mixed>    $params
+     * @return     array<mixed>
      */
     public function getChanges($params)
     {
@@ -479,9 +479,9 @@ class Repo extends Obj
     /**
      * Get file history
      *
-     * @param   array  $params      Which file, and where
-     * @param   array  $versions    Filled in with the file's versions
-     * @param   array  $timestamps  Filled in with when each version was made
+     * @param   array<mixed>  $params      Which file, and where
+     * @param   array<mixed>  $versions    Filled in with the file's versions
+     * @param   array<mixed>  $timestamps  Filled in with when each version was made
      * @return  boolean
      */
     public function versions($params = [], &$versions = [], &$timestamps = [])
@@ -796,7 +796,7 @@ class Repo extends Obj
     /**
      * Update file in the repo
      *
-     * @param   array    $params
+     * @param   array<mixed>    $params
      * @return  boolean
      */
     public function update($params = [])
@@ -809,8 +809,8 @@ class Repo extends Obj
     /**
      * Insert file into the repo
      *
-     * @param   array    $params
-     * @return  bool|array
+     * @param   array<mixed>    $params
+     * @return  bool|array<mixed>
      */
     public function insert($params = [])
     {
@@ -1375,7 +1375,7 @@ class Repo extends Obj
     /**
      * Get files stats for all projects
      *
-     * @param   array   $aliases  Project aliases for which to compute stats
+     * @param   array<mixed>   $aliases  Project aliases for which to compute stats
      * @param   string  $get
      * @return  mixed
      */
@@ -1486,8 +1486,8 @@ class Repo extends Obj
     /**
      * Parse status for each file revision
      *
-     * @param   array  $versions  Array of file version data
-     * @return  array
+     * @param   array<mixed>  $versions  Array of file version data
+     * @return  array<mixed>
      */
     protected function getVersionStatus($versions = [])
     {
@@ -1577,8 +1577,8 @@ class Repo extends Obj
     /**
      * Get file content and write to specified location
      *
-     * @param   array  $params
-     * @return  array
+     * @param   array<mixed>  $params
+     * @return  array<mixed>
      */
     public function getFileContent($params = [])
     {

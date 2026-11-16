@@ -143,7 +143,7 @@ class NestedTest extends AbstractDriverTestCase
      * Checks the nested set columns (lft, rgt, parent_id, level) for each row.
      *
      * @param BaseSqlDriver $driver Database driver
-     * @param array $expectedRows Array of expected row data keyed by position
+     * @param array<mixed> $expectedRows Array of expected row data keyed by position
      * @param string $dbName Database name for error messages
      */
     private function assertNestedState(BaseSqlDriver $driver, array $expectedRows, string $dbName): void

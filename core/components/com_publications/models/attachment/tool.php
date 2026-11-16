@@ -33,7 +33,7 @@ class Tool extends Base
     /**
      * Unique attachment properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $connector  = ['object_name', 'object_instance'];
 
@@ -96,7 +96,7 @@ class Tool extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -142,7 +142,7 @@ class Tool extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $elements
+     * @param   array<mixed>    $elements
      * @param   boolean  $authorized
      * @return  string   HTML
      */
@@ -234,7 +234,7 @@ class Tool extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
      * @param   object   $newVersion
      * @return  bool
@@ -326,7 +326,7 @@ class Tool extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $toAttach
+     * @param   array<mixed>    $toAttach
      * @return  boolean
      */
     public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
@@ -456,7 +456,7 @@ class Tool extends Base
      * Check completion status
      *
      * @param   object  $element
-     * @param   array   $attachments
+     * @param   array<mixed>   $attachments
      * @return  object
      */
     public function getStatus($element, $attachments)
@@ -544,7 +544,7 @@ class Tool extends Base
      * Add to zip bundle
      *
      * @param   object   $zip
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -561,7 +561,7 @@ class Tool extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub

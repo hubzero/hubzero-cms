@@ -31,7 +31,7 @@ class Citations extends Plugin
     /**
      * Retrieve records for items tagged with specific tags
      *
-     * @param   array    $tags        Tags to match records against
+     * @param   array<mixed>    $tags        Tags to match records against
      * @param   mixed    $limit       SQL record limit
      * @param   integer  $limitstart  SQL record limit start
      * @param   string   $sort        The field to sort records by

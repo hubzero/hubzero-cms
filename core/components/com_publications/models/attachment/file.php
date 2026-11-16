@@ -47,7 +47,7 @@ class File extends Base
     /**
      * Unique attachment properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $connector = ['path', 'vcs_hash'];
 
@@ -170,7 +170,7 @@ class File extends Base
      * Add to zip bundle
      *
      * @param   object   $zip
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -370,7 +370,7 @@ class File extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -558,7 +558,7 @@ class File extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $elements
+     * @param   array<mixed>    $elements
      * @param   boolean  $authorized
      * @return  boolean
      */
@@ -775,7 +775,7 @@ class File extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
      * @param   object   $newVersion
      * @return  boolean
@@ -1041,7 +1041,7 @@ class File extends Base
     /**
      * Bundle files together
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object|null   $configs
      * @param   boolean  $overwrite
      * @return  mixed    False on error, string on success
@@ -1279,7 +1279,7 @@ class File extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   array    $toAttach
+     * @param   array<mixed>    $toAttach
      * @return  boolean
      */
     public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
@@ -1717,7 +1717,7 @@ class File extends Base
      * Check completion status
      *
      * @param   object  $element
-     * @param   array   $attachments
+     * @param   array<mixed>   $attachments
      * @return  object
      */
     public function getStatus($element, $attachments)
@@ -1776,8 +1776,8 @@ class File extends Base
     /**
      * Check for allowed formats
      *
-     * @param   array    $attachments
-     * @param   array    $formats
+     * @param   array<mixed>    $attachments
+     * @param   array<mixed>    $formats
      * @return  boolean
      */
     public function checkAllowed($attachments, $formats = [])
@@ -1805,8 +1805,8 @@ class File extends Base
     /**
      * Check for required formats
      *
-     * @param   array    $attachments
-     * @param   array    $formats
+     * @param   array<mixed>    $attachments
+     * @param   array<mixed>    $formats
      * @return  boolean
      */
     public function checkRequired($attachments, $formats = [])

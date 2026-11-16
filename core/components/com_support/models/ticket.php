@@ -89,7 +89,7 @@ class Ticket extends Relational
     /**
      * Generates automatic summary field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticSummary($data)
@@ -113,7 +113,7 @@ class Ticket extends Relational
     /**
      * Generates automatic owner field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticOwner($data)
@@ -135,7 +135,7 @@ class Ticket extends Relational
     /**
      * Generates automatic group_id field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticGroupId($data)
@@ -157,7 +157,7 @@ class Ticket extends Relational
     /**
      * Generates automatic target_date value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticTargetDate($data)
@@ -668,7 +668,7 @@ class Ticket extends Relational
      * Get a record count
      *
      * @param   object|string  $query  The saved query, or its SQL
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  integer
      */
     public static function countWithQuery($query, $filters = [])
@@ -735,8 +735,8 @@ class Ticket extends Relational
      * Get a record count
      *
      * @param   object|string  $query  The saved query, or its SQL
-     * @param   array    $filters
-     * @return  array
+     * @param   array<mixed>    $filters
+     * @return  array<mixed>
      */
     public static function allWithQuery($query, $filters = [])
     {
@@ -822,7 +822,7 @@ class Ticket extends Relational
      * Add tag and group filters previously supported in ticket system
      * (ex: when clicking a tag within the ticket system)
      *
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  string  SQL
      */
     public static function parseFind($filters)

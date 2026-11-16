@@ -56,7 +56,7 @@ class Admin
     /**
      * Get a list of filter options for the blocked state of a user.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<int, mixed>  An array of Option elements.
      */
     public static function getStateOptions()
     {
@@ -71,7 +71,7 @@ class Admin
     /**
      * Get a list of filter options for the activated state of a user.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<int, mixed>  An array of Option elements.
      */
     public static function getActiveOptions()
     {
@@ -86,7 +86,7 @@ class Admin
     /**
      * Get a list of filter options for the approved state of a user.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<int, mixed>  An array of Option elements.
      */
     public static function getApprovedOptions()
     {
@@ -102,7 +102,7 @@ class Admin
     /**
      * Get a list of the user groups for filtering.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<mixed>  An array of Option elements.
      */
     public static function getAccessGroups()
     {
@@ -148,7 +148,7 @@ class Admin
     /**
      * Creates a list of range options used in filter select list
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getRangeOptions()
     {

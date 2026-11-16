@@ -47,7 +47,7 @@ class Todo extends Plugin
      *
      * @param  object $user   User
      * @param  object $member Profile
-     * @return array   Plugin name
+     * @return array<mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -73,7 +73,7 @@ class Todo extends Plugin
      * @param  object $member Current member page
      * @param  string $option Start of records to pull
      * @param  array|mixed  $areas  Active area(s)
-     * @return array
+     * @return array<mixed>
      */
     public function onMembers($user, $member, $option, $areas)
     {

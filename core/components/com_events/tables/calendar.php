@@ -44,8 +44,8 @@ class Calendar extends Table
     /**
      * Find all calendars matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -59,7 +59,7 @@ class Calendar extends Table
     /**
      * Get count of calendars matching filters
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -74,7 +74,7 @@ class Calendar extends Table
     /**
      * Build query string for getting list or count of calendars
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])

@@ -86,7 +86,7 @@ class Link extends Relational
     /**
      * Generates automatic old_url field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOldUrl($data)
@@ -100,7 +100,7 @@ class Link extends Relational
     /**
      * Generates automatic new_url field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticNewUrl($data)
@@ -118,7 +118,7 @@ class Link extends Relational
     /**
      * Generates automatic status_code field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticStatusCode($data)
@@ -134,7 +134,7 @@ class Link extends Relational
     /**
      * Generates automatic created date field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticCreatedDate($data)
@@ -155,7 +155,7 @@ class Link extends Relational
     /**
      * Generates automatic modified date field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModifiedDate($data)

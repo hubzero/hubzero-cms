@@ -222,7 +222,7 @@ class ResourceMapGenerator
     /**
      * Inserts data information for each datatype.
      *
-     * @param   array   $aggregation  The aggregation that contains the data to be inserted
+     * @param   array<mixed>   $aggregation  The aggregation that contains the data to be inserted
      * @param   object  $xmlwriter    The XMLWriter object for writing to buffer
      * @return  void
      */

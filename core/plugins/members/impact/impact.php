@@ -36,7 +36,7 @@ class Impact extends Plugin
     /**
      * Publication stats
      *
-     * @var array|false|null
+     * @var array<mixed>|false|null
      */
     protected $stats = null;
 
@@ -44,7 +44,7 @@ class Impact extends Plugin
      * Constructor
      *
      * @param  object &$subject Event observer
-     * @param  array  $config   Optional config values
+     * @param  array<mixed>  $config   Optional config values
      * @return void
      */
     public function __construct(&$subject, $config)
@@ -59,7 +59,7 @@ class Impact extends Plugin
      *
      * @param  object $user   User
      * @param  object $member Profile
-     * @return array   Plugin name
+     * @return array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -92,8 +92,8 @@ class Impact extends Plugin
      * @param  object $user   User
      * @param  object $member Profile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -171,7 +171,7 @@ class Impact extends Plugin
     /**
      * Return a list of categories
      *
-     * @return array
+     * @return array<mixed>
      */
     public function &onMembersContributionsAreas()
     {
@@ -213,8 +213,8 @@ class Impact extends Plugin
      * @param  integer $limit      Number of record to return
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
-     * @param  array|null   $areas      Areas to return data for
-     * @return array|int|object
+     * @param  array<mixed>|null   $areas      Areas to return data for
+     * @return array<mixed>|int|object
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {

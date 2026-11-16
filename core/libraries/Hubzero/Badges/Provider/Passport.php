@@ -109,7 +109,7 @@ class Passport implements ProviderInterface
     /**
      * Create a new badge
      *
-     * @param   array    $data  badge info. Must have the following:
+     * @param   array<mixed>    $data  badge info. Must have the following:
      *                          $data['Name']          = 'Badge name';
      *                          $data['Description']   = 'Badge description';
      *                          $data['CriteriaUrl']   = 'Badge criteria URL';
@@ -269,7 +269,7 @@ class Passport implements ProviderInterface
      * Get assertions by email address
      *
      * @param   mixed  $emailAddresses  String (for single user) or array (for multiple users) of user email addresses
-     * @return  array
+     * @return  array<mixed>
      */
     public function getAssertionsByEmailAddress($emailAddresses)
     {

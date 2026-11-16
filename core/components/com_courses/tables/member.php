@@ -254,7 +254,7 @@ class Member extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -321,7 +321,7 @@ class Member extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string|null Return course units
      */
     public function count($filters = [])
@@ -336,8 +336,8 @@ class Member extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
-     * @return array|null Return course units
+     * @param  array<mixed> $filters
+     * @return array<int, \stdClass>|null Return course units
      */
     public function find($filters = [])
     {
@@ -381,7 +381,7 @@ class Member extends Table
     /**
      * Get a count of course offerings
      *
-     * @param  int|array $section_id
+     * @param  int|array<mixed> $section_id
      * @return object|bool Return course units
      */
     public function deleteBySection($section_id)

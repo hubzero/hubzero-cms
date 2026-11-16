@@ -209,7 +209,7 @@ class Node extends Obj
     /**
      * Array of  assets
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     public $assets = null;
 
@@ -223,14 +223,14 @@ class Node extends Obj
     /**
      * Array of Children
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $children = [];
 
     /**
      * Path from root to this category
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $path = [];
 
@@ -265,7 +265,7 @@ class Node extends Obj
     /**
      * Class constructor
      *
-     * @param   array|null    $category      The category data.
+     * @param   array<mixed>|null    $category      The category data.
      * @param   object|null   &$constructor  The tree constructor.
      * @return  bool
      */
@@ -349,7 +349,7 @@ class Node extends Obj
      * Get the children of this node
      *
      * @param   boolean  $recursive  False by default
-     * @return  array    The children
+     * @return  array<mixed>    The children
      */
     public function &getChildren($recursive = false)
     {
@@ -480,7 +480,7 @@ class Node extends Obj
     /**
      * Returns the category path to the root category
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPath()
     {

@@ -59,7 +59,7 @@ class Result extends Relational
     /**
      * Set processed timestamp
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticProcessed($data)

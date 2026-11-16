@@ -112,7 +112,7 @@ class Parents extends WikiMacro
      *
      * @param   integer  $depth  How far back to look for ancestors
      * @param   string   $scope  The URI path to traverse
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function fetchPointer($depth, $scope)
     {

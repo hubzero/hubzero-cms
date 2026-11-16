@@ -37,7 +37,7 @@ class Courses extends Plugin
      *
      * @param  object $user   User
      * @param  object $member MembersProfile
-     * @return array   Plugin name
+     * @return array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -58,8 +58,8 @@ class Courses extends Plugin
      * @param  object $user   User
      * @param  object $member MembersProfile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -181,8 +181,8 @@ class Courses extends Plugin
      *
      * @param  string $what
      * @param  string|null $who
-     * @param  array  $filters
-     * @return array|string|null  the rows, or how many there are
+     * @param  array<mixed>  $filters
+     * @return array<mixed>|string|null  the rows, or how many there are
      */
     private function getData($what = 'count', $who = null, $filters = [])
     {
@@ -371,7 +371,7 @@ class Courses extends Plugin
     /**
      * Return a list of categories
      *
-     * @return array
+     * @return array<mixed>
      */
     public function onMembersContributionsAreas()
     {
@@ -408,8 +408,8 @@ class Courses extends Plugin
      * @param  integer $limit      Number of record to return
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
-     * @param  array|null   $areas      Areas to return data for
-     * @return array
+     * @param  array<mixed>|null   $areas      Areas to return data for
+     * @return array<mixed>
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {

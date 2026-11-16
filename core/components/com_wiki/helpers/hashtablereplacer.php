@@ -16,7 +16,7 @@ class HashtableReplacer extends Replacer
     /**
      * Description for 'table'
      *
-     * @var array
+     * @var array<mixed>
      */
     public $table;
     public $index;
@@ -41,8 +41,8 @@ class HashtableReplacer extends Replacer
      *
      * Long description (if any) ...
      *
-     * @param      array $matches Parameter description (if any) ...
-     * @return     array Return description (if any) ...
+     * @param      array<mixed> $matches Parameter description (if any) ...
+     * @return     array<mixed> Return description (if any) ...
      */
     public function replace($matches)
     {

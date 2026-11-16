@@ -38,7 +38,7 @@ class Maps extends Plugin
     /**
      * Return the name of the area this plugin retrieves records for
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function onUsageAreas()
     {
@@ -51,7 +51,7 @@ class Maps extends Plugin
      * Get hosts data
      *
      * @param      object &$db      Database
-     * @param      array  $location Longitude/latitude
+     * @param      array<mixed>  $location Longitude/latitude
      * @return     string
      */
     private function getHosts(&$db, $location)
@@ -76,7 +76,7 @@ class Maps extends Plugin
      *
      * @param      object &$db      Database
      * @param      string $domain   Domain
-     * @param      array  $location Longitude/latitude
+     * @param      array<mixed>  $location Longitude/latitude
      * @return     string
      */
     private function getCount(&$db, $domain, $location)
@@ -130,7 +130,7 @@ class Maps extends Plugin
      * Check if the location is from a bot
      *
      * @param      object &$db      Database
-     * @param      array  $location Longitude/latitude
+     * @param      array<mixed>  $location Longitude/latitude
      * @return     integer
      */
     private function checkBot(&$db, $location)
@@ -268,8 +268,8 @@ class Maps extends Plugin
      * @param      string $option        Component name
      * @param      string $task          Component task
      * @param      object $db            Database
-     * @param      array  $months        Month names (Jan -> Dec)
-     * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
+     * @param      array<mixed>  $months        Month names (Jan -> Dec)
+     * @param      array<mixed>  $monthsReverse Month names in reverse (Dec -> Jan)
      * @param      string $enddate       Time period
      * @return     string HTML
      */

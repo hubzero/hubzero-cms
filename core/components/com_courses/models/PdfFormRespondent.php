@@ -185,7 +185,7 @@ class PdfFormRespondent
     /**
      * Get questions
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function getQuestions()
     {
@@ -210,7 +210,7 @@ class PdfFormRespondent
     /**
      * Get answers
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function getAnswers()
     {
@@ -299,7 +299,7 @@ class PdfFormRespondent
     /**
      * Get current progress in form
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function getProgress()
     {
@@ -344,7 +344,7 @@ class PdfFormRespondent
     /**
      * Get array of completed attempts
      *
-     * @return array
+     * @return array<int, mixed>
      **/
     public function getCompletedAttempts()
     {

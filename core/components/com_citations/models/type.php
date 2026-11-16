@@ -55,7 +55,7 @@ class Type extends Relational
     /**
      * Generates automatic type field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticType($data)
@@ -85,8 +85,8 @@ class Type extends Relational
     /**
      * Defines a one to Many relationship with citation
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<mixed>
      **/
     public static function getCitationsCountByType($filters = [])
     {

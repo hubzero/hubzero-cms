@@ -18,7 +18,7 @@ class Memory implements MessageStore
     /**
      * Message bag
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $messages = [];
 
@@ -35,7 +35,7 @@ class Memory implements MessageStore
     /**
      * Store a message
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @param   string  $domain
      * @return  void
      */
@@ -51,7 +51,7 @@ class Memory implements MessageStore
      * Return a list of messages
      *
      * @param   string  $domain
-     * @return  array
+     * @return  array<mixed>
      */
     public function retrieve($domain)
     {

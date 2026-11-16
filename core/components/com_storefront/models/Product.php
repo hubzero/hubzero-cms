@@ -165,7 +165,7 @@ class Product
      * Get product access groups
      *
      * @param   string  $type
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getAccessGroups($type = 'include')
     {
@@ -262,7 +262,7 @@ class Product
     /**
      * Get product collections
      *
-     * @return  array  collection IDs
+     * @return  array<mixed>  collection IDs
      */
     public function getCollections()
     {
@@ -284,7 +284,7 @@ class Product
     /**
      * Set product collections
      *
-     * @param   array  $collections  collection IDs
+     * @param   array<mixed>  $collections  collection IDs
      * @return  void
      */
     public function setCollections($collections)
@@ -311,7 +311,7 @@ class Product
     /**
      * Get product skus
      *
-     * @return  array  product SKUs
+     * @return  array<mixed>  product SKUs
      */
     public function getSkus()
     {
@@ -348,7 +348,7 @@ class Product
     /**
      * Removes all old SKUs sets given SKUs
      *
-     * @param   array  $skus
+     * @param   array<mixed>  $skus
      * @param   bool   $deleteOld
      * @return  void
      */
@@ -552,7 +552,7 @@ class Product
      * Get product images
      *
      * @param   bool   $forceReload
-     * @return  array  Product images
+     * @return  array<mixed>  Product images
      */
     public function getImages($forceReload = false)
     {
@@ -589,7 +589,7 @@ class Product
     /**
      * Set product images
      *
-     * @param   array  $img  Product images
+     * @param   array<mixed>  $img  Product images
      * @return  bool
      */
     public function setImages($img)
@@ -615,7 +615,7 @@ class Product
     /**
      * Add product images
      *
-     * @param   array  $img  Product images
+     * @param   array<mixed>  $img  Product images
      * @return  bool
      */
     public function addImages($img)
@@ -812,7 +812,7 @@ class Product
     /**
      * Get option groups
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOptionGroups()
     {
@@ -838,7 +838,7 @@ class Product
     /**
      * Set option groups
      *
-     * @param   array  $ogIds
+     * @param   array<mixed>  $ogIds
      * @return  bool
      */
     public function setOptionGroups($ogIds)
@@ -1166,7 +1166,7 @@ class Product
     /**
      * Set product meta
      *
-     * @param   array  $meta
+     * @param   array<mixed>  $meta
      * @return  void
      */
     public function setMeta($meta)

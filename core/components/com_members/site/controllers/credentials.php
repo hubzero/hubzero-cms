@@ -611,7 +611,7 @@ class Credentials extends SiteController
      * @param   object  $user    \Hubzero\User\User
      * @param   string  $layout  Layout name without _plain/_html
      * @param   string  $object  X-Component-Object header
-     * @param   array   $vars    Extra variables for the layouts
+     * @param   array<mixed>   $vars    Extra variables for the layouts
      * @return  bool    Whether the message was sent
      */
     private function sendResetMail($user, $layout, $object, $vars = [])

@@ -57,7 +57,7 @@ class Requirements implements StepInterface
     /**
      * Process the step
      *
-     * @param  array  $data  Submitted form data
+     * @param  array<mixed>  $data  Submitted form data
      * @return bool|string
      */
     public function process($data)

@@ -28,14 +28,14 @@ class Handlers extends Obj
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $types = [];
 
     /**
      * Directories, where handlers can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $path = [];
 
@@ -70,9 +70,9 @@ class Handlers extends Obj
      *
      * @param   object   $pub
      * @param   integer  $elementid
-     * @param   array    $handlers
+     * @param   array<mixed>    $handlers
      * @param   object|mixed   $handler
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   string|null   $props  Block element key (not used)
      * @return  string
      */
@@ -172,7 +172,7 @@ class Handlers extends Obj
      * Check if handler applies to selection
      *
      * @param   object   $handler
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @return  boolean
      */
     public function isRelevant($handler, $attachments)
@@ -206,7 +206,7 @@ class Handlers extends Obj
     /**
      * Check for allowed formats
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $params
      * @return  boolean
      */
@@ -251,7 +251,7 @@ class Handlers extends Obj
     /**
      * Check for required formats
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $params
      * @return  boolean
      */
@@ -358,9 +358,9 @@ class Handlers extends Obj
      * Get params for the handler
      *
      * @param   string  $name
-     * @param   array   $configs
-     * @param   array   $savedConfig
-     * @return  array
+     * @param   array<mixed>   $configs
+     * @param   array<mixed>   $savedConfig
+     * @return  array<mixed>
      */
     public function parseConfig($name, $configs = [], $savedConfig = [])
     {

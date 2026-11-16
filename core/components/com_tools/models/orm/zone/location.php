@@ -85,7 +85,7 @@ class Location extends Relational
      * ipFROM gives ipTO its end. The validation rule has already refused
      * anything that is not an address or network.
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticIpFrom($data)

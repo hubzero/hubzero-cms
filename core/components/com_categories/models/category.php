@@ -143,7 +143,7 @@ class Category extends Nested
     /**
      * Generates automatic created time field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticCreatedTime($data)
@@ -158,7 +158,7 @@ class Category extends Nested
     /**
      * Generates userId of person logged in if no user ID provided upon creation.
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticCreatedUserId($data)
@@ -173,7 +173,7 @@ class Category extends Nested
     /**
      * Generates userId of person logged in if no user ID provided upon creation.
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticModifiedUserId($data)
@@ -188,7 +188,7 @@ class Category extends Nested
     /**
      * Generates userId of person logged in if no user ID provided upon creation.
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string|null
      */
     public function automaticModifiedTime($data)
@@ -236,7 +236,7 @@ class Category extends Nested
     /**
      * Make sure params are a string
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticParams($data)
@@ -283,7 +283,7 @@ class Category extends Nested
     /**
      * Ensure metadata is a string
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticMetadata($data)
@@ -300,7 +300,7 @@ class Category extends Nested
     /**
      * Generates automatic alias field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -333,7 +333,7 @@ class Category extends Nested
     /**
      * Create path
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPath($data)
@@ -616,7 +616,7 @@ class Category extends Nested
      *
      * @param   integer  $parentId
      * @param   string   $method
-     * @param   array    $params
+     * @param   array<mixed>    $params
      * @return  boolean
      */
     public function moveOrCopyWithChildren($parentId, $method = 'c', $params = [])

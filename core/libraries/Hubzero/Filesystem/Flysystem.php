@@ -50,7 +50,7 @@ class Flysystem
      * Constructor
      *
      * @param   FilesystemAdapter  $adapter
-     * @param   array              $config
+     * @param   array<mixed>              $config
      * @return  void
      */
     public function __construct(FilesystemAdapter $adapter, array $config = [])
@@ -125,7 +125,7 @@ class Flysystem
      * Pass anything else straight through to the League filesystem
      *
      * @param   string  $method
-     * @param   array   $arguments
+     * @param   array<mixed>   $arguments
      * @return  mixed
      */
     public function __call($method, $arguments)
@@ -200,7 +200,7 @@ class Flysystem
      *
      * @param   string  $path
      * @param   string  $contents
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  bool
      */
     public function write($path, $contents, array $config = [])
@@ -217,7 +217,7 @@ class Flysystem
      *
      * @param   string    $path
      * @param   resource  $resource
-     * @param   array     $config
+     * @param   array<mixed>     $config
      * @return  bool
      */
     public function writeStream($path, $resource, array $config = [])
@@ -234,7 +234,7 @@ class Flysystem
      *
      * @param   string  $path
      * @param   string  $contents
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  bool
      */
     public function update($path, $contents, array $config = [])
@@ -251,7 +251,7 @@ class Flysystem
      *
      * @param   string    $path
      * @param   resource  $resource
-     * @param   array     $config
+     * @param   array<mixed>     $config
      * @return  bool
      */
     public function updateStream($path, $resource, array $config = [])
@@ -268,7 +268,7 @@ class Flysystem
      *
      * @param   string  $path
      * @param   string  $contents
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  bool
      */
     public function put($path, $contents, array $config = [])
@@ -286,7 +286,7 @@ class Flysystem
      *
      * @param   string    $path
      * @param   resource  $resource
-     * @param   array     $config
+     * @param   array<mixed>     $config
      * @return  bool
      */
     public function putStream($path, $resource, array $config = [])
@@ -369,7 +369,7 @@ class Flysystem
      * Create a directory
      *
      * @param   string  $dirname
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  bool
      */
     public function createDir($dirname, array $config = [])
@@ -463,7 +463,7 @@ class Flysystem
      * Get a file's or directory's metadata in the Flysystem 1 array shape
      *
      * @param   string  $path
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getMetadata($path)
     {
@@ -527,7 +527,7 @@ class Flysystem
      * Turn Flysystem 3 attributes into the Flysystem 1 metadata array
      *
      * @param   StorageAttributes  $attributes
-     * @return  array
+     * @return  array<mixed>
      */
     public function metadata(StorageAttributes $attributes)
     {

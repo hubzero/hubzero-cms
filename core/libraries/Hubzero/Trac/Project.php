@@ -39,14 +39,14 @@ class Project
     /**
      * List of updated keys
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $updatedKeys = [];
 
     /**
      * List keys
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $listKeys = [];
 
@@ -81,7 +81,7 @@ class Project
     /**
      * Output data as an array
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray()
     {
@@ -743,7 +743,7 @@ class Project
      * Get permissions for a user
      *
      * @param   string  $user
-     * @return  array
+     * @return  array<mixed>
      */
     public function getUserPermission($user)
     {
@@ -773,7 +773,7 @@ class Project
      * Get permissions for a group
      *
      * @param   string  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGroupPermission($group)
     {

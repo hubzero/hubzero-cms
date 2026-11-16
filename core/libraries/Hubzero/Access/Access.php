@@ -21,35 +21,35 @@ class Access
     /**
      * Array of view levels
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $viewLevels = [];
 
     /**
      * Array of rules for the asset
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $assetRules = [];
 
     /**
      * Array of user groups.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $userGroups = [];
 
     /**
      * Array of user group paths.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $userGroupPaths = [];
 
     /**
      * Array of cached groups by user.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $groupsByUser = [];
 
@@ -240,7 +240,7 @@ class Access
      * @param   boolean  $recursive  True to include inherited accessgroups.
      * @param   boolean  $titles     True to return array of accessgroup titles
      * @param   boolean  $all        True to return associative array containing both ids and titles
-     * @return  array    Array of accessgroups to which the user is mapped.
+     * @return  array<mixed>    Array of accessgroups to which the user is mapped.
      */
     public static function getGroupsByUser($userId, $recursive = true, $titles = false, $all = false)
     {
@@ -309,7 +309,7 @@ class Access
      *
      * @param   integer  $groupId    The group Id
      * @param   boolean  $recursive  Recursively include all child groups (optional)
-     * @return  array
+     * @return  array<mixed>
      * @todo    This method should move somewhere else
      */
     public static function getUsersByGroup($groupId, $recursive = false)
@@ -340,7 +340,7 @@ class Access
      * Method to return a list of view levels for which the user is authorised.
      *
      * @param   integer  $userId  Id of the user for which to get the list of authorised view levels.
-     * @return  array    List of view levels for which the user is authorised.
+     * @return  array<mixed>    List of view levels for which the user is authorised.
      */
     public static function getAuthorisedViewLevels($userId)
     {
@@ -383,7 +383,7 @@ class Access
      *
      * @param   string  $file   The path to the XML file.
      * @param   string  $xpath  An optional xpath to search for the fields.
-     * @return  boolean|array   False if case of error or the list of actions available.
+     * @return  boolean|array<mixed>   False if case of error or the list of actions available.
      */
     public static function getActionsFromFile($file, $xpath = "/access/section[@name='component']/")
     {
@@ -401,7 +401,7 @@ class Access
      *
      * @param   string|SimpleXMLElement|mixed  $data   The XML string or an XML element.
      * @param   string                   $xpath  An optional xpath to search for the fields.
-     * @return  boolean|array   False if case of error or the list of actions available.
+     * @return  boolean|array<mixed>   False if case of error or the list of actions available.
      */
     public static function getActionsFromData($data, $xpath = "/access/section[@name='component']/")
     {

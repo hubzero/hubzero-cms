@@ -33,7 +33,7 @@ class Contributions extends Plugin
      *
      * @param   object  $user    Current user
      * @param   object  $member  Current member page
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onMembersAreas($user, $member)
     {
@@ -52,8 +52,8 @@ class Contributions extends Plugin
      * @param   object  $user    User
      * @param   object  $member  MembersProfile
      * @param   string  $option  Component name
-     * @param   string|array  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param   string|array<mixed>  $areas   Plugins to return data
+     * @return  array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {

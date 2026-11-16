@@ -56,7 +56,7 @@ class WikiParser
     /**
      * Configuration options
      *
-     * @var array
+     * @var array<mixed>
      */
     private $config = [
         'option'    => null,
@@ -78,7 +78,7 @@ class WikiParser
     /**
      * Data store
      *
-     * @var array
+     * @var array<mixed>
      */
     private $data = [
         'input'  => null,
@@ -89,7 +89,7 @@ class WikiParser
     /**
      * Parsed content temp storage
      *
-     * @var array
+     * @var array<mixed>
      */
     private $tokens = [
         'pre'    => [],
@@ -102,7 +102,7 @@ class WikiParser
     /**
      * Useful patterns
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $patterns = [
         'url'  => "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ "
@@ -159,7 +159,7 @@ class WikiParser
     /**
      * Pages already included in the current chain (circular reference guard)
      *
-     * @var array
+     * @var array<mixed>
      */
     private $includeStack = [];
 
@@ -505,7 +505,7 @@ class WikiParser
     /**
      * Automatically links any strings matching a URL pattern
      *
-     * @param      array $matches Text matching link pattern
+     * @param      array<mixed> $matches Text matching link pattern
      * @return     string
      */
     public function linkAutourl($matches)
@@ -516,7 +516,7 @@ class WikiParser
     /**
      * Automatically links any strings matching an email pattern
      *
-     * @param      array $matches Text matching link pattern
+     * @param      array<mixed> $matches Text matching link pattern
      * @return     string
      */
     public function linkAutoemail($matches)
@@ -532,7 +532,7 @@ class WikiParser
      * This is to ensure links aren't parsed twice. We put the links back in place
      * towards the end of parsing.
      *
-     * @param      array $matches Text matching link pattern
+     * @param      array<mixed> $matches Text matching link pattern
      * @return     string
      */
     public function linkAuto($matches)
@@ -620,7 +620,7 @@ class WikiParser
      * This is to ensure links aren't parsed twice. We put the links back in place
      * towards the end of parsing.
      *
-     * @param      array $matches Text matching internal link pattern
+     * @param      array<mixed> $matches Text matching internal link pattern
      * @return     string Placeholder tag
      */
     public function linkInternal($matches)
@@ -830,7 +830,7 @@ class WikiParser
      * This is to ensure links aren't parsed twice. We put the links back in place
      * towards the end of parsing.
      *
-     * @param   array   $matches  Text matching internal link pattern
+     * @param   array<mixed>   $matches  Text matching internal link pattern
      * @return  string  Placeholder tag
      */
     public function linkExternal($matches)
@@ -869,7 +869,7 @@ class WikiParser
     /**
      * Generate a link to a wiki page based on page name
      *
-     * @param   array  $matches
+     * @param   array<mixed>  $matches
      * @return  string
      */
     public function linkWikiName($matches)
@@ -1027,7 +1027,7 @@ class WikiParser
      * Store an item in the shelf
      * Returns a unique ID as a placeholder for content retrieval later on
      *
-     * @param      array   $matches Content to store
+     * @param      array<mixed>   $matches Content to store
      * @return     string Unique ID
      */
     private function dataPush($matches)
@@ -1368,7 +1368,7 @@ class WikiParser
     /**
      * Convert the admonition content to HTML
      *
-     * @param   array   $matches  Content matching {admonition} ... {/admonition}
+     * @param   array<mixed>   $matches  Content matching {admonition} ... {/admonition}
      * @return  string  Parsed wiki content
      */
     private function getAdmonition($matches)
@@ -1396,7 +1396,7 @@ class WikiParser
     /**
      * Wrap an older math formula in $$ delimiters for MathJax to render
      *
-     * @param   array   $matches    Wiki markup matching a <math>formula</math>
+     * @param   array<mixed>   $matches    Wiki markup matching a <math>formula</math>
      * @return  string
      */
     private function stripMath($matches)
@@ -1413,7 +1413,7 @@ class WikiParser
      * Render a math forumla
      * Output depends on complexity of formula. HTML is tried first with image used for complex formulas
      *
-     * @param   array  $matches  Wiki markup matching a <math>formula</math>
+     * @param   array<mixed>  $matches  Wiki markup matching a <math>formula</math>
      * @return  string
      */
     private function getMath($matches)
@@ -1461,7 +1461,7 @@ class WikiParser
      * Retrieve an included page
      * This is recursive and should look for inclusions in any included page.
      *
-     * @param   array  $matches  Pattern matches from includes() method
+     * @param   array<mixed>  $matches  Pattern matches from includes() method
      * @return  string
      */
     private function getInclude($matches)
@@ -1535,7 +1535,7 @@ class WikiParser
     /**
      * Attempt to load a specific macro class and return its contents
      *
-     * @param   array  $matches  Result form [[Macro()]] pattern matching
+     * @param   array<mixed>  $matches  Result form [[Macro()]] pattern matching
      * @return  string
      */
     private function getMacro($matches)
@@ -1895,7 +1895,7 @@ class WikiParser
     /**
      * Convert wiki markup to HTML for common inline elements
      *
-     * @param   array  $m  Pattern matches
+     * @param   array<mixed>  $m  Pattern matches
      * @return  string
      */
     private function getSpan($m)
@@ -2220,7 +2220,7 @@ class WikiParser
     /**
      * Convert a string for wiki table syntax into a table
      *
-     * @param   array  $matches  Pattern matches for table syntax
+     * @param   array<mixed>  $matches  Pattern matches for table syntax
      * @return  string
      */
     private function getTable($matches)

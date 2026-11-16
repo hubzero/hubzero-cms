@@ -127,7 +127,7 @@ class Provider extends AbstractService
     /**
      * This prevents some potentially sensitive information from being sent accross the wire.
      *
-     * @var array
+     * @var array<mixed>
      */
     public $ignore = [
         'server' => [
@@ -224,7 +224,7 @@ class Provider extends AbstractService
      * @param     string $request
      * @param     string $host
      * @param     string $path
-     * @return    array  Response headers, then body
+     * @return    array<int, string>  Response headers, then body
      */
     private function sendRequest($request, $host, $path)
     {
@@ -277,7 +277,7 @@ class Provider extends AbstractService
      * Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted
      * comment is spam.  Returns a boolean value.
      *
-     * @param    array  $data  Content to test
+     * @param    array<mixed>  $data  Content to test
      * @return   bool   True if the comment is spam, false if not
      * @throws   Exception  If the API key passed to the constructor is invalid.
      */

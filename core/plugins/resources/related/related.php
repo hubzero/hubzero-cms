@@ -29,7 +29,7 @@ class Related extends Plugin
      * Return the alias and name for this category of content
      *
      * @param   object  $resource  Current resource
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onResourcesSubAreas($resource)
     {
@@ -45,7 +45,7 @@ class Related extends Plugin
      * @param   object   $resource  Current resource
      * @param   string   $option    Name of the component
      * @param   integer  $miniview  View style
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {

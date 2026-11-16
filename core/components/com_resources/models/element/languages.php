@@ -27,7 +27,7 @@ class Languages extends Base
     /**
      * Language list
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $codes = [
         "aa" => "Afar",

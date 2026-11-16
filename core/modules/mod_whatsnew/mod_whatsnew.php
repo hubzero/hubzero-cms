@@ -37,7 +37,7 @@ class Whatsnew extends Module
     /**
      * Get the categories for What's New
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function getAreas()
     {
@@ -65,7 +65,7 @@ class Whatsnew extends Module
     /**
      * Fromat tags for display
      *
-     * @param   array    $tags  Tags to format
+     * @param   array<mixed>    $tags  Tags to format
      * @param   integer  $num   Number of tags to display
      * @param   integer  $max   Max characters for a tag
      * @return  string   HTML

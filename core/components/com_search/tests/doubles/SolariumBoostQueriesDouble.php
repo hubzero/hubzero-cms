@@ -20,7 +20,7 @@ class SolariumBoostQueriesDouble
     /**
      * Factory call, stubbed by the tests
      *
-     * @param   array  $args
+     * @param   array<mixed>  $args
      * @return  mixed
      */
     public function one($args = [])

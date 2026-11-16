@@ -73,7 +73,7 @@ class InviteEmail extends Relational
      *
      * @param   integer  $gid         Group ID
      * @param   boolean  $email_only  Resturn only email addresses?
-     * @return  array
+     * @return  array<mixed>
      */
     public function getInviteEmails($gid, $email_only = false)
     {
@@ -99,8 +99,8 @@ class InviteEmail extends Relational
      * Add a list of emails to a group as invitees
      *
      * @param   integer  $gid     Group ID
-     * @param   array    $emails  Array of email addresses
-     * @return  array
+     * @param   array<mixed>    $emails  Array of email addresses
+     * @return  array<mixed>
      */
     public function addInvites($gid, $emails)
     {
@@ -139,7 +139,7 @@ class InviteEmail extends Relational
      * Remove Invite Emails
      *
      * @param   integer  $gid     Group ID
-     * @param   array    $emails  Array of email addresses
+     * @param   array<mixed>    $emails  Array of email addresses
      * @return  void
      */
     public function removeInvites($gid, $emails)

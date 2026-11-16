@@ -29,7 +29,7 @@ class Migration20260708130725ComEvents extends Base
      * Numeric offset => IANA zone, matching Hubzero\Utility\Date::$offsets so the
      * relabel round-trips exactly.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $map = [
         '-12' => 'Etc/GMT-12',

@@ -53,7 +53,7 @@ class Admin extends Table
      * Get a list of administrators
      *
      * @param   integer|null  $jid  Job ID
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getAdmins($jid)
     {

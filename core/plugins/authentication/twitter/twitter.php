@@ -48,7 +48,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      * Initialize the OAuth2 provider.
      *
      * @param   object  $subject
-     * @param   array   $config
+     * @param   array<mixed>   $config
      */
     public function __construct($subject, $config)
     {
@@ -142,8 +142,8 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -156,8 +156,8 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -281,7 +281,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     /**
      * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function link($options = [])

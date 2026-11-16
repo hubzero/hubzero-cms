@@ -66,7 +66,7 @@ class Utilities
     /**
      * Get a list of filter options for the application clients.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<int, mixed>  An array of Option elements.
      */
     public static function getClientOptions()
     {
@@ -82,7 +82,7 @@ class Utilities
      * Get a list of filter options for the templates with styles.
      *
      * @param   mixed  $clientId
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getTemplateOptions($clientId = '*')
     {

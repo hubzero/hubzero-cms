@@ -94,7 +94,7 @@ class Authors extends SiteController
      * have already checked themselves.
      *
      * @param   integer  $id          Resource ID (0 = read pid from the request)
-     * @param   array    $authorsNew  Authors to add
+     * @param   array<mixed>    $authorsNew  Authors to add
      * @param   integer  $show        Display author list when done?
      * @return  void
      */

@@ -18,12 +18,12 @@ class Menu
      *
      * @param   integer  $id         Parent item ID to start from
      * @param   string   $indent     Current indentation string
-     * @param   array    $list       Accumulator for flattened results
-     * @param   array    &$children  Map of parent_id => child items
+     * @param   array<mixed>    $list       Accumulator for flattened results
+     * @param   array<mixed>    &$children  Map of parent_id => child items
      * @param   integer  $maxlevel   Maximum recursion depth
      * @param   integer  $level      Current recursion level
      * @param   integer  $type       Display type: 1 = HTML tree prefix, 0 = text dashes
-     * @return  array
+     * @return  array<mixed>
      */
     public static function treerecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1)
     {

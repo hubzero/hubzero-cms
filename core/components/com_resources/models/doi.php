@@ -71,7 +71,7 @@ class Doi extends Relational
     /**
      * Generates automatic doi_shoulder
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticDoiShoulder($data)
@@ -134,9 +134,9 @@ class Doi extends Relational
     /**
      * Register a DOI
      *
-     * @param   array   $authors   Authors of a resource
+     * @param   array<mixed>   $authors   Authors of a resource
      * @param   object  $config    Registry
-     * @param   array   $metadata  Metadata
+     * @param   array<mixed>   $metadata  Metadata
      * @return  mixed   False if error, string on success
      */
     public function register($authors, $config, $metadata = [])

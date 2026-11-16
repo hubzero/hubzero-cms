@@ -57,7 +57,7 @@ class Citations extends Plugin
      *
      * @param   object  $user    Current user
      * @param   object  $member  Current member page
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onMembersAreas($user, $member)
     {
@@ -77,7 +77,7 @@ class Citations extends Plugin
      * @param   object  $member  Current member page
      * @param   string  $option  Start of records to pull
      * @param   array|mixed   $areas   Active area(s)
-     * @return  array
+     * @return  array<mixed>
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -1315,8 +1315,8 @@ class Citations extends Plugin
 
     /**
      * Applies filters to Citations model and returns applied filters
-     * @param array  $filters array of POST values
-     * @return  array sanitized and validated filter values
+     * @param array<mixed>  $filters array of POST values
+     * @return  array<string, mixed> sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {

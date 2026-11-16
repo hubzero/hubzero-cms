@@ -123,7 +123,7 @@ class UserEnvironment
     /**
      * Check if the system is supported for HUBzero
      *
-     * @return array  Result with 'supported' and 'message' keys
+     * @return array<mixed>  Result with 'supported' and 'message' keys
      */
     public function checkSupported(): array
     {
@@ -150,7 +150,7 @@ class UserEnvironment
     /**
      * Get current user information
      *
-     * @return array|null  User info from posix_getpwuid or null if unavailable
+     * @return array<mixed>|null  User info from posix_getpwuid or null if unavailable
      */
     public function getCurrentUser(): ?array
     {
@@ -177,7 +177,7 @@ class UserEnvironment
      * Get user information by username
      *
      * @param  string  $username  The username to look up
-     * @return array|null  User info or null if not found
+     * @return array<mixed>|null  User info or null if not found
      */
     public function getUserByName(string $username): ?array
     {

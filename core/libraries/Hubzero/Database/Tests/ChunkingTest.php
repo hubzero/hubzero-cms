@@ -33,7 +33,7 @@ class ChunkingTest extends AbstractDriverTestCase
     /**
      * Return table names created by this test for automatic cleanup
      *
-     * @return array Table names
+     * @return array<int, mixed> Table names
      */
     protected static function getTestTables(): array
     {

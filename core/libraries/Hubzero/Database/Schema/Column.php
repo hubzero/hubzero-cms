@@ -33,7 +33,7 @@ class Column
     /**
      * Type parameters (e.g., length for string, precision for decimal)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $parameters = [];
 
@@ -105,7 +105,7 @@ class Column
      *
      * @param  string  $name  Column name
      * @param  string  $type  Abstract column type
-     * @param  array   $parameters  Type parameters
+     * @param  array<mixed>   $parameters  Type parameters
      */
     public function __construct(string $name, string $type, array $parameters = [])
     {
@@ -137,7 +137,7 @@ class Column
     /**
      * Get type parameters
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getParameters(): array
     {

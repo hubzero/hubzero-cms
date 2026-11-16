@@ -66,7 +66,7 @@ class Vote extends Relational
     /**
      * Normalize a vote
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticVote($data)

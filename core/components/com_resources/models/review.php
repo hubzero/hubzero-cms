@@ -363,7 +363,7 @@ class Review extends Relational
      * Calculate the average rating for a resource
      *
      * @param   integer  $id
-     * @return  array
+     * @return  array<mixed>
      */
     public static function averageByResource($id)
     {

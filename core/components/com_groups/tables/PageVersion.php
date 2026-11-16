@@ -62,8 +62,8 @@ class PageVersion extends Table
     /**
      * Get a list of records
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -77,7 +77,7 @@ class PageVersion extends Table
     /**
      * Get a count of records
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -92,7 +92,7 @@ class PageVersion extends Table
     /**
      * Build search query
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  string
      */
     private function buildQuery($filters = [])

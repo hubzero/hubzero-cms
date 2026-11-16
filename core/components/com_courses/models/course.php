@@ -64,14 +64,14 @@ class Course extends Base
     /**
      * List of managers
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $managers = null;
 
     /**
      * List of students
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $students = null;
 
@@ -85,7 +85,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $pages = null;
 
@@ -106,7 +106,7 @@ class Course extends Base
     /**
      * Constructor
      *
-     * @param      int|string|object|array|null $oid Course ID, alias, or record
+     * @param      int|string|object|array<mixed>|null $oid Course ID, alias, or record
      * @return     void
      */
     public function __construct($oid)
@@ -220,7 +220,7 @@ class Course extends Base
      * Get a list of offerings for a course
      *   Accepts an array of filters to build query from
      *
-     * @param      array $filters Filters to build query from
+     * @param      array<mixed> $filters Filters to build query from
      * @return     mixed
      */
     public function offerings($filters = [], $clear = false)
@@ -302,7 +302,7 @@ class Course extends Base
      *   the entry int he array with the record that has
      *   the highest permission levels
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -355,7 +355,7 @@ class Course extends Base
     /**
      * Get a list of students for a course
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
@@ -392,7 +392,7 @@ class Course extends Base
     /**
      * Get a list of instructors for a course
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array<mixed>   $filters Filters to build query from
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
@@ -448,7 +448,7 @@ class Course extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array|null $data List of IDs or usernames
+     * @param     array<mixed>|null $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = null)
@@ -471,7 +471,7 @@ class Course extends Base
      * Return a list of user IDs for a list of usernames
      *
      * @param     array|mixed $users List of user IDs or usernames
-     * @return    array|false List of user IDs
+     * @return    array<mixed>|false List of user IDs
      */
     private function userIds($users)
     {
@@ -618,8 +618,8 @@ class Course extends Base
     /**
      * Get a list of pages for a course
      *
-     * @param      array $filters Filters to apply
-     * @return     array|string|null
+     * @param      array<mixed> $filters Filters to apply
+     * @return     array<mixed>|string|null
      */
     public function pages($filters = [])
     {
@@ -659,7 +659,7 @@ class Course extends Base
     /**
      * Check if the current user is enrolled
      *
-     * @return     array|string
+     * @return     array<mixed>|string
      */
     public function tags($as = 'cloud', $admin = 0)
     {

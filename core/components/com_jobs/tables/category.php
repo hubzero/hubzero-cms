@@ -32,7 +32,7 @@ class Category extends Table
      * @param   string   $sortby     Field to sort by
      * @param   string   $sortdir    Sort direction (ASC/DESC)
      * @param   integer  $getobject  Return records as objects?
-     * @return  array
+     * @return  array<mixed>
      */
     public function getCats($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
     {

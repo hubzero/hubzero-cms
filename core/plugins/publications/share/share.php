@@ -36,7 +36,7 @@ class Share extends Plugin
      * @param   object   $publication
      * @param   string   $version
      * @param   boolean  $extended
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
@@ -49,11 +49,11 @@ class Share extends Plugin
      *
      * @param   object   $publication
      * @param   string   $option
-     * @param   array    $areas
+     * @param   array<mixed>    $areas
      * @param   string   $rtrn
      * @param   string   $version
      * @param   boolean  $extended
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {

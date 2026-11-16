@@ -50,7 +50,7 @@ interface CastsAttributes
      * @param  Relational  $model       The model instance
      * @param  string      $key         The attribute key
      * @param  mixed       $value       The raw value from the database
-     * @param  array       $attributes  All model attributes
+     * @param  array<mixed>       $attributes  All model attributes
      * @return mixed                    The transformed value
      */
     public function get(Relational $model, string $key, $value, array $attributes);
@@ -63,7 +63,7 @@ interface CastsAttributes
      * @param  Relational  $model       The model instance
      * @param  string      $key         The attribute key
      * @param  mixed       $value       The value being set
-     * @param  array       $attributes  All model attributes
+     * @param  array<mixed>       $attributes  All model attributes
      * @return mixed                    The value to store (can be string or array for multiple columns)
      */
     public function set(Relational $model, string $key, $value, array $attributes);

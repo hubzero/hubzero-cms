@@ -82,7 +82,7 @@ class Subscription extends Relational
     /**
      * Generates automatic added field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticAdded($data)

@@ -19,21 +19,21 @@ class Database
     /**
      * The host address of the database.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $clients;
 
     /**
      * Hold server vars
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $servers;
 
     /**
      * Hold Client options
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $options;
 
@@ -57,7 +57,7 @@ class Database
     /**
      * Create a new aggregate client supporting sharding.
      *
-     * @return  array
+     * @return  array<string, mixed>
      */
     protected function createAggregateClient()
     {
@@ -72,7 +72,7 @@ class Database
     /**
      * Create an array of single connection clients.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function createSingleClients()
     {
@@ -102,7 +102,7 @@ class Database
      * Run a command against the Redis database.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function command($method, array $parameters = [])
@@ -114,7 +114,7 @@ class Database
      * Dynamically make a Redis command.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

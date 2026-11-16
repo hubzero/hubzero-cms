@@ -25,7 +25,7 @@ class Importer
     /**
      * Array of Resource Import Adapters
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $adapters;
 
@@ -159,9 +159,9 @@ class Importer
      * Process import data
      *
      * @param   \Components\Resources\Models\Import $import
-     * @param   array    $callbacks
+     * @param   array<mixed>    $callbacks
      * @param   integer  $dryRun
-     * @return  array
+     * @return  array<mixed>
      */
     public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun = 1)
     {

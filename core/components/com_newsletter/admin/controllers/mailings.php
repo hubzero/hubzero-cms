@@ -176,7 +176,7 @@ class Mailings extends AdminController
      * Get Opens and Return as JSON
      *
      * @param   integer|null  $mailingId
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOpensGeoTask($mailingId = null)
     {

@@ -47,42 +47,42 @@ class TableBuilder
     /**
      * Column definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $columns = [];
 
     /**
      * Primary key column(s)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $primaryKey = [];
 
     /**
      * Index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $indexes = [];
 
     /**
      * Unique index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $uniqueIndexes = [];
 
     /**
      * Fulltext index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $fulltextIndexes = [];
 
     /**
      * Foreign key definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $foreignKeys = [];
 
@@ -143,7 +143,8 @@ class TableBuilder
      *
      * @param  string      $name       Column name
      * @param  string      $type       Column type (e.g., 'INT(11)', 'VARCHAR(255)')
-     * @param  array       $modifiers  Column modifiers (nullable, default, unsigned, autoIncrement, after, comment)
+     * @param  array<mixed>       $modifiers  Column modifiers (nullable, default, unsigned, autoIncrement, after,
+     *                                        comment)
      * @return $this
      */
     public function column(string $name, string $type, array $modifiers = []): self
@@ -240,7 +241,7 @@ class TableBuilder
      * Add an integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array<mixed> $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function integer(string $name, $unsigned = false): self
@@ -252,7 +253,7 @@ class TableBuilder
      * Add a tiny integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array<mixed> $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function tinyInteger(string $name, $unsigned = false): self
@@ -264,7 +265,7 @@ class TableBuilder
      * Add a small integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array<mixed> $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function smallInteger(string $name, $unsigned = false): self
@@ -276,7 +277,7 @@ class TableBuilder
      * Add a medium integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array<mixed> $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function mediumInteger(string $name, $unsigned = false): self
@@ -288,7 +289,7 @@ class TableBuilder
      * Add a big integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array<mixed> $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function bigInteger(string $name, $unsigned = false): self
@@ -464,7 +465,7 @@ class TableBuilder
      * Add an unsigned integer column
      *
      * @param  string $name      Column name
-     * @param  array  $modifiers Modifiers to apply to the column
+     * @param  array<mixed>  $modifiers Modifiers to apply to the column
      * @return $this
      */
     public function unsignedInteger(string $name, array $modifiers = []): self
@@ -476,7 +477,7 @@ class TableBuilder
      * Add an unsigned big integer column
      *
      * @param  string $name      Column name
-     * @param  array  $modifiers Modifiers to apply to the column
+     * @param  array<mixed>  $modifiers Modifiers to apply to the column
      * @return $this
      */
     public function unsignedBigInteger(string $name, array $modifiers = []): self
@@ -488,7 +489,7 @@ class TableBuilder
      * Add an unsigned tiny integer column
      *
      * @param  string $name     Column name
-     * @param  array  $modifiers Modifiers to apply to the column
+     * @param  array<mixed>  $modifiers Modifiers to apply to the column
      * @return $this
      */
     public function unsignedTinyInteger(string $name, array $modifiers = []): self
@@ -500,7 +501,7 @@ class TableBuilder
      * Add an unsigned small integer column
      *
      * @param  string $name     Column name
-     * @param  array  $modifiers Modifiers to apply to the column
+     * @param  array<mixed>  $modifiers Modifiers to apply to the column
      * @return $this
      */
     public function unsignedSmallInteger(string $name, array $modifiers = []): self
@@ -512,7 +513,7 @@ class TableBuilder
      * Add an unsigned medium integer column
      *
      * @param  string $name     Column name
-     * @param  array  $modifiers Modifiers to apply to the column
+     * @param  array<mixed>  $modifiers Modifiers to apply to the column
      * @return $this
      */
     public function unsignedMediumInteger(string $name, array $modifiers = []): self
@@ -771,7 +772,7 @@ class TableBuilder
      * Add a SET column (MySQL only)
      *
      * @param  string $name   Column name
-     * @param  array  $values Allowed values
+     * @param  array<mixed>  $values Allowed values
      * @return $this
      */
     public function set(string $name, array $values): self
@@ -786,7 +787,7 @@ class TableBuilder
      * Add an enum column
      *
      * @param  string $name   Column name
-     * @param  array  $values Allowed values
+     * @param  array<mixed>  $values Allowed values
      * @return $this
      */
     public function enum(string $name, array $values): self
@@ -927,7 +928,7 @@ class TableBuilder
      * the column's modifiers instead reads the same way at the call site, and
      * migrations do, so both are understood here rather than at each of them.
      *
-     * @param   bool|int|array  $options  True if unsigned, or a map of modifiers
+     * @param   bool|int|array<mixed>  $options  True if unsigned, or a map of modifiers
      * @return  $this
      */
     private function applyOptions($options): self
@@ -1023,7 +1024,7 @@ class TableBuilder
     /**
      * Set the primary key
      *
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function primaryKey($columns): self
@@ -1042,7 +1043,7 @@ class TableBuilder
      * - Mixed: ->index('idx_name', ['col1', ['url', 75], 'col2'])
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s), optionally with prefix lengths
+     * @param  string|array<mixed> $columns Column name(s), optionally with prefix lengths
      * @return $this
      */
     public function index(string $name, $columns): self
@@ -1055,7 +1056,7 @@ class TableBuilder
      * Add a unique index
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function uniqueIndex(string $name, $columns): self
@@ -1068,7 +1069,7 @@ class TableBuilder
      * Add a fulltext index (MySQL only, ignored on SQLite)
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function fulltextIndex(string $name, $columns): self
@@ -1260,7 +1261,7 @@ class TableBuilder
      * toward grammar-driven compilation. It reflects the current builder state
      * without changing SQL generation behavior.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toCreateDefinition(): array
     {
@@ -1287,7 +1288,7 @@ class TableBuilder
      * Some databases require indexes to be created separately after the table,
      * so this may return multiple statements.
      *
-     * @return array Array of SQL statements
+     * @return array<mixed> Array of SQL statements
      */
     public function toSqlStatements(): array
     {
@@ -1306,7 +1307,7 @@ class TableBuilder
     /**
      * Determine whether grammar output is a concrete CREATE statement list.
      *
-     * @param  array $compiled
+     * @param  array<mixed> $compiled
      * @return bool
      */
     protected function isCompiledCreateStatementList(array $compiled): bool

@@ -66,7 +66,7 @@ class Archive extends Model
      * Get a list of event calendars
      *
      * @param      string  $rtrn    What data to return
-     * @param      array   $filters Filters to apply to data retrieval
+     * @param      array<mixed>   $filters Filters to apply to data retrieval
      * @param      boolean $clear Clear cached data?
      * @return     mixed
      */

@@ -34,7 +34,7 @@ class Period
     /**
      * Container for storing overloaded data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 

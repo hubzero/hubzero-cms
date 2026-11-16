@@ -122,7 +122,7 @@ class DetectorTest extends Basic
     /**
      * Map test data
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     private static function map()
     {

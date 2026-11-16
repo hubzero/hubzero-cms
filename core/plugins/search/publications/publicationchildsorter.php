@@ -17,14 +17,14 @@ class PublicationChildSorter
     /**
      * Description for 'order'
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $order;
 
     /**
      * Constructor
      *
-     * @param   array  $order
+     * @param   array<mixed>  $order
      * @return  void
      */
     public function __construct($order)

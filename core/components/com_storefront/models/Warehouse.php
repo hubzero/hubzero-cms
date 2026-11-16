@@ -35,7 +35,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
     // Access levels scope (what is allowed to display)
     /**
-     * @var  array|false
+     * @var  array<mixed>|false
      */
     public $accessLevelsScope = false;
 
@@ -50,7 +50,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
     // User whitelisted SKUS for a product
     /**
-     * @var  array|false
+     * @var  array<mixed>|false
      */
     public $userWhitelistedSkus = false;
 
@@ -103,7 +103,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add access level scope for entities having access property (currently products only)
      *
-     * @param  array $accessLevels Access levels IDs
+     * @param  array<mixed> $accessLevels Access levels IDs
      * @return void
      */
     public function addAccessLevels($accessLevels)
@@ -114,7 +114,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add access group scope for entities (currently products only)
      *
-     * @param   array $accessGroups  Access group IDs
+     * @param   array<mixed> $accessGroups  Access group IDs
      * @return  void
      */
     public function addAccessGroups($accessGroups)
@@ -191,8 +191,8 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all non-empty (those that have at least one active product) root (no parents) product 'category' collections
      *
      * @param   string $return  What to return (count or rows)
-     * @param   array|false $filters   Filters
-     * @return  array
+     * @param   array<mixed>|false $filters   Filters
+     * @return  array<mixed>
      */
     public function getRootCategories($return = 'rows', $filters = false)
     {
@@ -202,7 +202,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all root (no parents) product 'category' collections
      *
-     * @return array|int
+     * @return array<mixed>|int
      */
     public function getCategories($rtrn = 'list', $filters = [])
     {
@@ -482,7 +482,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get the products within the given scope
      *
-     * @return array|int
+     * @return array<mixed>|int
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -902,7 +902,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all options for the option group (for admin)
      *
      * @param   int         $ogId  option group ID
-     * @return  array       options IDs
+     * @return  array<mixed>       options IDs
      */
     public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -1019,7 +1019,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   array|object|mixed  $skus  SKU IDs
      * @param   bool        $showInactive  Flag whether to show inactive SKU and product info
-     * @return  array       info
+     * @return  array<mixed>       info
      */
     public function getSkusInfo($skus, $showInactive = false, $filters = false)
     {
@@ -1145,7 +1145,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all info for SKU provided, including options
      *
      * @param   int|string         $sId  SKU ID
-     * @return  array|false       info
+     * @return  array<mixed>|false       info
      */
     public function getSkuInfo($sId, $showInactive = true)
     {
@@ -1177,7 +1177,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product SKU IDs
      *
      * @param   int         $pId  product id
-     * @return  array       SKU IDs
+     * @return  array<mixed>       SKU IDs
      */
     public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -1244,7 +1244,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product types
      *
-     * @return  array               info
+     * @return  array<mixed>               info
      */
     public function getProductTypes()
     {
@@ -1259,7 +1259,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product type info
      *
      * @param   int $ptId                 product type ID
-     * @return  array               info
+     * @return  array<mixed>               info
      */
     public function getProductTypeInfo($ptId)
     {
@@ -1508,7 +1508,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all non-empty (those that have at least one active product) root (no parents) collections
      *
      * @param  $collectionType -- type of collection, category by default
-     * @return array
+     * @return array<mixed>
      */
     private function rootCollections($collectionType = 'category', $filters = false)
     {
@@ -1534,7 +1534,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * TODO: implement subcategories
      *
      * @param  $collectionType -- type of collection, category by default
-     * @return array|int
+     * @return array<mixed>|int
      */
     private function getAllCollections($return = 'list', $filters = [])
     {
@@ -1593,7 +1593,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product collections -- collections product is included in
      *
      * @param   int $pId         product id
-     * @return  array       collections
+     * @return  array<mixed>       collections
      */
     public function getProductCollections($pId)
     {

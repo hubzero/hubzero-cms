@@ -16,7 +16,7 @@ interface Test
     /**
      * Run content through test
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  object
      */
     public function examine(array $data, array $options = []);

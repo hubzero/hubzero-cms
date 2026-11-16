@@ -108,7 +108,7 @@ class Preferences extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  Database query
      */
     protected function buildQuery($filters = [])
@@ -153,8 +153,8 @@ class Preferences extends Table
      * Get a count of, single entry, or list of entries
      *
      * @param   string  $what     Data to return
-     * @param   array   $filters  Filters to apply to data retrieval
-     * @param   array   $select   List of fields to select
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $select   List of fields to select
      * @return  mixed
      */
     public function find($what = '', $filters = [], $select = [])

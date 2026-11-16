@@ -42,7 +42,7 @@ class Reader implements Iterator
     /**
      * Cached list of headers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $headers;
 
@@ -65,7 +65,7 @@ class Reader implements Iterator
     /**
      * Get the first row of headers
      *
-     * @return  array  Row as a stdClass
+     * @return  array<mixed>  Row as a stdClass
      */
     public function headers()
     {

@@ -15,7 +15,7 @@ namespace Components\Groups\Tests;
 class GitlabClient
 {
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     public $requests = [];
 

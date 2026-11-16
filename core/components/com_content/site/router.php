@@ -21,8 +21,8 @@ class Router extends Base
     /**
      * Post buld routine.
      *
-     * @param   array  $segments  The URL arguments to use to assemble the subsequent URL.
-     * @return  array
+     * @param   array<mixed>  $segments  The URL arguments to use to assemble the subsequent URL.
+     * @return  array<mixed>
      */
     protected function postBuild($segments)
     {

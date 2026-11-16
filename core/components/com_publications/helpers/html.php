@@ -97,7 +97,7 @@ class Html
     /**
      * Show contributors
      *
-     * @param   array|string $contributors
+     * @param   array<mixed>|string $contributors
      * @param   boolean  $showorgs
      * @param   boolean  $showaslist
      * @param   boolean  $incSubmitter
@@ -147,7 +147,7 @@ class Html
     /**
      * Display a list of skill levels
      *
-     * @param   array    $levels  List of levels
+     * @param   array<mixed>    $levels  List of levels
      * @param   integer|mixed  $sel     Selected level
      * @return  string   HTML
      */
@@ -212,8 +212,8 @@ class Html
     /**
      * Display resource sub view content
      *
-     * @param   array   $sections  Active plugins' content
-     * @param   array   $cats      Active plugins' names
+     * @param   array<mixed>   $sections  Active plugins' content
+     * @param   array<mixed>   $cats      Active plugins' names
      * @param   string  $active    Current plugin name
      * @param   string  $h         Hide class
      * @param   string  $c         Extra classes
@@ -248,7 +248,7 @@ class Html
      *
      * @param   string  $option   Component name
      * @param   string  $id       Publication ID
-     * @param   array   $cats     Active plugins' names
+     * @param   array<mixed>   $cats     Active plugins' names
      * @param   string  $active   Current plugin name
      * @param   string  $alias    Publication alias
      * @param   string  $version  Publication version
@@ -834,7 +834,7 @@ class Html
      * @param   string   $action    Link action
      * @param   boolean  $disabled  Is the button disable?
      * @param   string   $pop       Pop-up content
-     * @param   array    $options
+     * @param   array<mixed>    $options
      * @param   boolean  $showDoc   show download guide?
      * @param   string   $ftpDoc    Download guide doc
      * @return  string
@@ -1065,7 +1065,7 @@ class Html
     /**
      * Get disk space
      *
-     * @param   array    $rows  Publications objet array
+     * @param   array<mixed>    $rows  Publications objet array
      * @return  integer
      */
     public static function getDiskUsage($rows = [], $simple = false)
@@ -1129,7 +1129,7 @@ class Html
      * Send email
      *
      * @param   object   $publication  Models\Publication
-     * @param   array    $addressees
+     * @param   array<mixed>    $addressees
      * @param   string|null   $subject
      * @param   string|null   $message
      * @param   boolean  $hubMessage
@@ -1233,7 +1233,7 @@ class Html
      * @param   int  $publication_id
      * @param   int  $publication_version_id
      *
-     * @return  array|false or false
+     * @return  array<mixed>|false or false
      */
     public static function getdatabaseFiles($publication_id, $publication_version_id)
     {
@@ -1256,7 +1256,7 @@ class Html
      *
      * @param   string  $path
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getFileNames($path)
     {
@@ -1297,7 +1297,7 @@ class Html
      * @param   string  $secret publication secret
      * @param   array|mixed  $attachments  publication attachments
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getMimeTypes(
         $pubType,
@@ -1344,8 +1344,8 @@ class Html
      * Get the MIME types for primary file and support file
      *
      * @param   int  $role
-     * @param   array|false  $attachments  False when there are none
-     * @param   array  $mimeTypes
+     * @param   array<mixed>|false  $attachments  False when there are none
+     * @param   array<mixed>  $mimeTypes
      *
      * @return  null|false or false
      */
@@ -1395,7 +1395,7 @@ class Html
      *
      * @param   int  $publication_id    publication id
      * @param   int  $publication_version_id
-     * @param   array  $mimeTypes
+     * @param   array<mixed>  $mimeTypes
      *
      * @return  null|false or false
      */

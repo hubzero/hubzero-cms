@@ -27,7 +27,7 @@ class Palette
     /**
      * The colour the hub picked, as three channels
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $rgb;
 
@@ -73,7 +73,7 @@ class Palette
     /**
      * Relative luminance, per WCAG 2.2
      *
-     * @param   array  $rgb
+     * @param   array<mixed>  $rgb
      * @return  float
      */
     protected static function luminance($rgb)
@@ -93,8 +93,8 @@ class Palette
     /**
      * Contrast ratio between two colours
      *
-     * @param   array  $a
-     * @param   array  $b
+     * @param   array<mixed>  $a
+     * @param   array<mixed>  $b
      * @return  float
      */
     protected static function ratio($a, $b)
@@ -108,10 +108,10 @@ class Palette
     /**
      * One colour moved towards another
      *
-     * @param   array  $a       the colour to move
-     * @param   array  $b       where it is moving
+     * @param   array<mixed>  $a       the colour to move
+     * @param   array<mixed>  $b       where it is moving
      * @param   float  $amount  0 leaves it alone, 1 arrives
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function mix($a, $b, $amount)
     {
@@ -135,10 +135,10 @@ class Palette
      * accent checked only against white fails on its own wash - a green at
      * 4.53:1 on white came out at 4.18:1 on the band it paints.
      *
-     * @param   array  $rgb
-     * @param   array  $ground  what the text will sit on
+     * @param   array<mixed>  $rgb
+     * @param   array<mixed>  $ground  what the text will sit on
      * @param   float  $want    the ratio it has to reach against that ground
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function darkenTo($rgb, $ground, $want)
     {
@@ -158,7 +158,7 @@ class Palette
     /**
      * Hex for a colour
      *
-     * @param   array  $rgb
+     * @param   array<mixed>  $rgb
      * @return  string
      */
     protected static function hex($rgb)
@@ -169,7 +169,7 @@ class Palette
     /**
      * The custom properties the stylesheet reads, keyed by property name
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function properties()
     {

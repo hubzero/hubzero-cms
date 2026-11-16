@@ -466,7 +466,7 @@ class Wishlist extends Relational
      * @param   object|null   $admingroup  Admin Group
      * @param   integer  $native      Get groups assigned to this wishlist?
      * @param   integer  $wishid      Wish ID
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function getOwners($admingroup = null, $native = 0, $wishid = 0)
     {
@@ -552,7 +552,7 @@ class Wishlist extends Relational
      *
      * @param   string   $controlgroup  Control group name
      * @param   integer  $native        Get groups assigned to this wishlist?
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOwnergroups($controlgroup, $native = 0)
     {
@@ -591,7 +591,7 @@ class Wishlist extends Relational
      * Turn a comma or space deliniated string into an array
      *
      * @param   mixed  $data
-     * @return  array
+     * @return  array<mixed>
      */
     public function splitList($data = '')
     {

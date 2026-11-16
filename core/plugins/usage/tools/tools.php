@@ -34,7 +34,7 @@ class Tools extends Plugin
     /**
      * Return the name of the area this plugin retrieves records for
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onUsageAreas()
     {
@@ -713,8 +713,8 @@ class Tools extends Plugin
      * @param   string $option         Component name
      * @param   string $task           Component task
      * @param   object $db             Database
-     * @param   array  $months         Month names (Jan -> Dec)
-     * @param   array  $monthsReverse  Month names in reverse (Dec -> Jan)
+     * @param   array<mixed>  $months         Month names (Jan -> Dec)
+     * @param   array<mixed>  $monthsReverse  Month names in reverse (Dec -> Jan)
      * @param   string $enddate        Time period
      * @return  string HTML
      */

@@ -18,7 +18,7 @@ class None extends Store
     /**
      * Register the functions of this class with PHP's session handler
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  void
      */
     public function register($options = [])

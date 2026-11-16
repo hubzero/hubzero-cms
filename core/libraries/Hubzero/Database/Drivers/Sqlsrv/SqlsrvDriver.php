@@ -61,7 +61,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * SQL Server uses square brackets for identifier quoting
      *
-     * @var  string|array
+     * @var  string|array<mixed>
      */
     protected $nameQuote = ['[', ']'];
 
@@ -122,7 +122,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -353,7 +353,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Returns the SQL for concatenating strings
      *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
+     * @param   array<mixed>  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -366,7 +366,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Returns the SQL for concatenating strings with a separator
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of strings to concatenate
+     * @param   array<mixed>   $strings    Array of strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -418,7 +418,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * raw types (INT(11) UNSIGNED, MEDIUMINT, etc.) to SQL Server types.
      *
      * @param   string  $type       Column type (abstract or raw)
-     * @param   array   $modifiers  Column modifiers
+     * @param   array<mixed>   $modifiers  Column modifiers
      * @return  string  SQL Server column type
      */
     public function normalizeColumnType(
@@ -649,7 +649,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -683,7 +683,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Retrieves key information about the given table
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -750,7 +750,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Gets foreign key information for a table
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key objects
+     * @return  array<mixed>   Array of foreign key objects
      */
     public function getForeignKeys($table)
     {
@@ -809,7 +809,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Provides a consistent return format across all database drivers.
      *
      * @param   string  $table  The table name
-     * @return  array   Array of index objects with 'name', 'columns', 'unique' keys
+     * @return  array<mixed>   Array of index objects with 'name', 'columns', 'unique' keys
      */
     public function getIndexes($table)
     {
@@ -850,7 +850,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getTableList()
     {
@@ -864,8 +864,8 @@ class SqlsrvDriver extends BaseSqlDriver
      * SQL Server doesn't have SHOW CREATE TABLE, so this reconstructs the
      * CREATE TABLE statement from system catalog information.
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -1002,7 +1002,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column names in the primary key
+     * @return  array<mixed>   Array of column names in the primary key
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -1407,7 +1407,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Version number (x.y.z format)
      *                  - 'driver_version': Normalized version - STANDARD KEY
      *                  - 'sqlsrv_version': Alias for driver_version
@@ -1732,7 +1732,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Always empty (SQL Server doesn't have ENUM)
+     * @return  array<mixed>   Always empty (SQL Server doesn't have ENUM)
      */
     public function getEnumValues($table, $column)
     {
@@ -1792,7 +1792,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
-     * @param   array   $options    MySQL-specific options (ignored on SQL Server)
+     * @param   array<mixed>   $options    MySQL-specific options (ignored on SQL Server)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -1856,7 +1856,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      **/
     public function getViews(): array
     {
@@ -1872,7 +1872,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * Excludes system databases (master, tempdb, model, msdb).
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      **/
     public function getDatabaseNames(): array
     {
@@ -1888,7 +1888,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * SQL Server supports sequences since version 2012.
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<int, mixed>  Array of SequenceInfo objects
      **/
     public function getSequences(): array
     {
@@ -1937,7 +1937,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (min, max, cycle, cache, schema)
+     * @param   array<mixed>   $options    Additional options (min, max, cycle, cache, schema)
      * @return  bool
      **/
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -2094,7 +2094,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2189,7 +2189,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2320,7 +2320,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s) to index
+     * @param   array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  string
      */
@@ -2362,7 +2362,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Build a SQL Server column definition string
      *
      * @param   string  $name        Column name
-     * @param   array   $definition  Column definition
+     * @param   array<mixed>   $definition  Column definition
      * @return  string
      */
     protected function buildSqlsrvColumnDefinition(string $name, array $definition): string
@@ -2432,7 +2432,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * then applies modifiers (nullable, default, auto-increment).
      *
      * @param   string  $name        The column name
-     * @param   array   $definition  The column definition
+     * @param   array<mixed>   $definition  The column definition
      * @return  string  The SQL column definition string
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -2564,7 +2564,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -2634,7 +2634,7 @@ class SqlsrvDriver extends BaseSqlDriver
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {

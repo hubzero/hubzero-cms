@@ -30,7 +30,7 @@ class Supportingdocs extends Plugin
      *
      * @param   object   $model  Current model
      * @param   integer  $archive
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onResourcesAreas($model, $archive = 0)
     {
@@ -72,7 +72,7 @@ class Supportingdocs extends Plugin
      * @param   string  $option    Name of the component
      * @param   array|mixed   $areas     Active area(s)
      * @param   string  $rtrn      Data to be returned
-     * @return  array
+     * @return  array<mixed>
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {

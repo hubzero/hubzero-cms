@@ -20,7 +20,7 @@ class Migration20160513140417ComMembers extends Base
     /**
      * Profile fields to move to new profiles table
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $moveToProfile = [
         'orgtype',
@@ -38,7 +38,7 @@ class Migration20160513140417ComMembers extends Base
     /**
      * Multi-value Profile fields to move to new profiles table
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $moveToProfileMulti = [
         'disability',
@@ -51,7 +51,7 @@ class Migration20160513140417ComMembers extends Base
     /**
      * Profile fields to move to users table
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $moveToUser = [
         'mailPreferenceOption' => 'sendMail',

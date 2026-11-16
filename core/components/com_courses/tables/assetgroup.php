@@ -93,7 +93,7 @@ class AssetGroup extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -135,7 +135,7 @@ class AssetGroup extends Table
     /**
      * Get a record count
      *
-     * @param     array $filters Filters to build query from
+     * @param     array<mixed> $filters Filters to build query from
      * @return    string|null
      */
     public function count($filters = [])
@@ -150,8 +150,8 @@ class AssetGroup extends Table
     /**
      * Get a list of course asset groups
      *
-     * @param     array $filters Filters to build query from
-     * @return    array
+     * @param     array<mixed> $filters Filters to build query from
+     * @return    array<int, \stdClass>
      */
     public function find($filters = [])
     {

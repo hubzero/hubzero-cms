@@ -43,8 +43,8 @@ class AdminUser
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string|null  $appPath   Path to the app directory
-     * @param   array   $defaults  Default values (e.g., email from site settings)
-     * @return  array|null  User data array or null if cancelled
+     * @param   array<mixed>   $defaults  Default values (e.g., email from site settings)
+     * @return  array<mixed>|null  User data array or null if cancelled
      */
     public static function configure($ansi = true, $appPath = null, $defaults = [])
     {
@@ -165,8 +165,8 @@ class AdminUser
      * @param   \PDO    $pdo       PDO connection
      * @param   string  $prefix    Table prefix
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   array   $defaults  Values carried over from the site settings
-     * @return  array|null  User data array, or null if an answer was unusable
+     * @param   array<mixed>   $defaults  Values carried over from the site settings
+     * @return  array<mixed>|null  User data array, or null if an answer was unusable
      */
     private static function createUnattended($pdo, $prefix, $ansi, $defaults)
     {
@@ -217,7 +217,7 @@ class AdminUser
     /**
      * Connect to the database using configuration
      *
-     * @param   array  $config  Database configuration
+     * @param   array<mixed>  $config  Database configuration
      * @param   bool   $ansi    Whether to use ANSI colors
      * @return  \PDO|null  PDO connection or null on failure
      **/
@@ -261,7 +261,7 @@ class AdminUser
     /**
      * Connect using Hubzero standalone PDO connector and return native PDO
      *
-     * @param   array  $config  Database configuration
+     * @param   array<mixed>  $config  Database configuration
      * @return  \PDO
      * @throws  \PDOException
      */
@@ -310,7 +310,7 @@ class AdminUser
     /**
      * Resolve CLI installer driver/connection combo using test-suite naming conventions
      *
-     * @param   array   $config  Database configuration
+     * @param   array<mixed>   $config  Database configuration
      * @return  string  Normalized driver name
      * @throws  \PDOException
      */
@@ -337,7 +337,7 @@ class AdminUser
      *
      * @param   \PDO    $pdo     PDO connection
      * @param   string  $prefix  Table prefix
-     * @return  array|null  Existing admin user data or null
+     * @return  array<mixed>|null  Existing admin user data or null
      **/
     private static function getExistingAdmin($pdo, $prefix)
     {
@@ -538,7 +538,7 @@ class AdminUser
      *
      * @param   \PDO    $pdo       PDO connection
      * @param   string  $prefix    Table prefix
-     * @param   array   $userData  User data (name, username, email, password)
+     * @param   array<mixed>   $userData  User data (name, username, email, password)
      * @return  int|null  User ID or null on failure
      **/
     private static function createUser($pdo, $prefix, $userData)
@@ -658,7 +658,7 @@ class AdminUser
      * @param   \PDO    $pdo       PDO connection
      * @param   string  $prefix    Table prefix
      * @param   int     $userId    The account just created
-     * @param   array   $userData  What was asked for
+     * @param   array<mixed>   $userData  What was asked for
      * @return  void
      **/
     private static function createProfile($pdo, $prefix, $userId, $userData)
@@ -709,7 +709,7 @@ class AdminUser
      *
      * @param   \PDO    $pdo    PDO connection
      * @param   string  $table  The table to describe
-     * @return  array
+     * @return  array<mixed>
      **/
     private static function getColumns($pdo, $table)
     {

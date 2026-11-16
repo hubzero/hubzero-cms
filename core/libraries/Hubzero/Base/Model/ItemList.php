@@ -35,7 +35,7 @@ class ItemList extends \Hubzero\Base\ItemList
      *
      * @param   string  $key      Key to grab from item
      * @param   string|null  $default  Default value if key is empty
-     * @return  array   Array of keys
+     * @return  array<mixed>   Array of keys
      */
     public function lists($key, $default = null)
     {

@@ -30,7 +30,7 @@ class Recent extends Table
      * Get a list of recently used tools
      *
      * @param   integer|null  $uid  User ID
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getRecords($uid = null)
     {

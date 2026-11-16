@@ -18,7 +18,7 @@ class Local extends Plugin
     /**
      * Initializes the local filesystem connection
      *
-     * @param   array   $params  Any connection params needed
+     * @param   array<mixed>   $params  Any connection params needed
      * @return  object
      **/
     public static function init($params = [])

@@ -33,8 +33,8 @@ class ToolLog extends Table
      * @param   string|null   $parent_name
      * @param   integer|null  $parent_id
      * @param   integer|null  $instance_id
-     * @param   array    $filters
-     * @return  array|false|null   list
+     * @param   array<mixed>    $filters
+     * @return  array<mixed>|false|null   list
      */
     public function getHistory($parent_name = null, $parent_id = null, $instance_id = 0, $filters = [])
     {

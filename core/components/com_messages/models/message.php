@@ -64,7 +64,7 @@ class Message extends Relational
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      * @since   2.0.0
      **/

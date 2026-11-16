@@ -35,7 +35,7 @@ class RemoteFile extends Table
      * @param   string   $service
      * @param   string   $local_dirpath
      * @param   string|int   $converted
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getRemoteConnections($projectid = null, $service = '', $local_dirpath = '', $converted = 'na')
     {
@@ -115,7 +115,7 @@ class RemoteFile extends Table
      * @param   string   $service
      * @param   string   $subdir
      * @param   boolean  $remoteEdit
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getRemoteFiles($projectid = null, $service = '', $subdir = '', $remoteEdit = false)
     {
@@ -219,8 +219,8 @@ class RemoteFile extends Table
      * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google)
      * @param   integer  $uid
-     * @param   array    $item       Remote item information array
-     * @param   array    $connections
+     * @param   array<mixed>    $item       Remote item information array
+     * @param   array<mixed>    $connections
      * @return  mixed    False if error, Object on success
      */
     public function checkRemoteRecord(
@@ -297,8 +297,8 @@ class RemoteFile extends Table
      * @param   string   $type
      * @param   integer|null  $id
      * @param   string|null   $filename
-     * @param   array    $local
-     * @param   array    $remote
+     * @param   array<mixed>    $local
+     * @param   array<mixed>    $remote
      * @return  mixed    False if error, Object on success
      */
     public function updateSyncRecord(

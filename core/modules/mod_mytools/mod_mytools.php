@@ -39,8 +39,8 @@ class Mytools extends Module
     /**
      * Get a list of applications that the user might invoke.
      *
-     * @param   array|null  $lst  List of tools
-     * @return  array  List of tools
+     * @param   array<mixed>|null  $lst  List of tools
+     * @return  array<mixed>  List of tools
      */
     private function getToollist($lst = null)
     {
@@ -119,7 +119,7 @@ class Mytools extends Module
     /**
      * Build the HTML for a list of tools
      *
-     * @param   array   &$toollist  List of tools to format
+     * @param   array<mixed>   &$toollist  List of tools to format
      * @param   string  $type       Type of list being formatted
      * @return  string  HTML
      */

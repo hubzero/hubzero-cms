@@ -223,8 +223,8 @@ class Manage extends AdminController
      * Recursive array_map
      *
      * @param   string  $func  Function to map
-     * @param   array   $arr   Array to process
-     * @return  array
+     * @param   array<mixed>   $arr   Array to process
+     * @return  array<mixed>
      */
     protected function multiArrayMap($func, $arr)
     {

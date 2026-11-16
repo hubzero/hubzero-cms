@@ -40,7 +40,7 @@ class Blacklist extends Field
     /**
      * Form fields
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $formfields;
 

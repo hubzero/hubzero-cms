@@ -17,8 +17,8 @@ class PanelRenderer
      * Render debug panel wrapper and controls for Alpine-powered debug UI.
      *
      * @param   string  $protocol
-     * @param   array   $snapshot
-     * @param   array   $options
+     * @param   array<mixed>   $snapshot
+     * @param   array<mixed>   $options
      * @param   string  $defaultId
      * @param   string  $defaultTitle
      * @param   string  $defaultStoragePrefix

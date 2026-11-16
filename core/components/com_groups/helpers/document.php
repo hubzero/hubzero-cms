@@ -54,14 +54,14 @@ class Document extends Obj
     /**
      * Allowed tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $allowed_tags = ['module','modules','stylesheet','script'];
 
     /**
      * Tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $tags       = [];
 

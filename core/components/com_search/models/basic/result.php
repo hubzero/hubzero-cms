@@ -31,7 +31,7 @@ abstract class Result
     /**
      * Description for 'types'
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $types = [];
 
@@ -93,7 +93,7 @@ abstract class Result
      *
      * Long description (if any) ...
      *
-     * @param      array $section Parameter description (if any) ...
+     * @param      array<mixed> $section Parameter description (if any) ...
      * @param      mixed $plugin Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
@@ -266,7 +266,7 @@ abstract class Result
      *
      * Long description (if any) ...
      *
-     * @return     array Return description (if any) ...
+     * @return     array<mixed> Return description (if any) ...
      */
     public function getLinks()
     {

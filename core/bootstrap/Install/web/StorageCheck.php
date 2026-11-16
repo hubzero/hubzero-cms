@@ -63,7 +63,7 @@ class StorageCheck
      * WITHOUT throwing an exception. Use this to display a friendly error
      * if storage is not available.
      *
-     * @return array ['available' => bool, 'path' => string|null, 'tried' => array, 'docRoot' => string]
+     * @return array<mixed> ['available' => bool, 'path' => string|null, 'tried' => array, 'docRoot' => string]
      */
     public function check(): array
     {

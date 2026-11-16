@@ -35,7 +35,7 @@ class Container implements ArrayAccess
      *
      * Objects and parameters can be passed as argument to the constructor.
      *
-     * @param  array  $values  The parameters or objects.
+     * @param  array<mixed>  $values  The parameters or objects.
      */
     public function __construct(array $values = [])
     {
@@ -299,7 +299,7 @@ class Container implements ArrayAccess
     /**
      * Returns all defined value names.
      *
-     * @return  array  An array of value names
+     * @return  array<mixed>  An array of value names
      */
     public function keys()
     {
@@ -310,7 +310,7 @@ class Container implements ArrayAccess
      * Registers a service provider.
      *
      * @param   object  $provider  A ServiceProviderInterface instance
-     * @param   array   $options   An array of values that customizes the provider
+     * @param   array<mixed>   $options   An array of values that customizes the provider
      * @return  static
      */
     public function register($provider, $options = [])

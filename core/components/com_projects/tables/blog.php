@@ -53,7 +53,7 @@ class Blog extends Table
      * Get items
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   integer  $id
      * @return  mixed
      */
@@ -99,7 +99,7 @@ class Blog extends Table
      * Build query
      *
      * @param   integer  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   integer  $id
      * @return  string|false
      */
@@ -145,7 +145,7 @@ class Blog extends Table
      * Get item count
      *
      * @param   integer  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  string|false|null
      */
     public function getCount($projectid = 0, $filters = [])

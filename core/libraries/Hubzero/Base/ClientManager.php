@@ -16,7 +16,7 @@ class ClientManager
     /**
      * Client information array
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $clients = null;
 

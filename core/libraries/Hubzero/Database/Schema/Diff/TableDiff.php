@@ -76,7 +76,7 @@ class TableDiff
     /**
      * Columns that were renamed (old name => new name)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $renamedColumns = [];
 
@@ -292,7 +292,7 @@ class TableDiff
     /**
      * Get columns that were renamed
      *
-     * @return array  Old name => new name
+     * @return array<mixed>  Old name => new name
      */
     public function getRenamedColumns(): array
     {
@@ -621,7 +621,7 @@ class TableDiff
     /**
      * Get a summary of changes
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getSummary(): array
     {
@@ -675,7 +675,7 @@ class TableDiff
     /**
      * Get a list of destructive changes with warnings
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function getDestructiveWarnings(): array
     {
@@ -699,7 +699,7 @@ class TableDiff
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

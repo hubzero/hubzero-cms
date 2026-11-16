@@ -35,7 +35,7 @@ class ViewLevelGateTest extends Basic
     /**
      * What App::redirect() was called with, if anything
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $redirect;
 
@@ -43,7 +43,7 @@ class ViewLevelGateTest extends Basic
      * Swap in a container whose services answer what the gate asks
      *
      * @param   bool   $guest   Is the current user a guest
-     * @param   array  $levels  View levels the current user holds
+     * @param   array<mixed>  $levels  View levels the current user holds
      * @return  void
      */
     private function boot(bool $guest, array $levels): void
@@ -175,7 +175,7 @@ class ViewLevelGateTest extends Basic
      * Call a protected gate method
      *
      * @param   string  $name
-     * @param   array   $args
+     * @param   array<mixed>   $args
      * @return  mixed
      */
     private function call(string $name, array $args)

@@ -52,7 +52,7 @@ class Base extends SiteController
     /**
      * Get notifications
      *
-     * @return  array  Any messages
+     * @return  array<mixed>  Any messages
      */
     public function getNotifications()
     {

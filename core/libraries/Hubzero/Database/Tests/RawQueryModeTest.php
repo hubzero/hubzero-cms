@@ -24,7 +24,7 @@ use PHPUnit\Framework\Attributes\Test;
 class RawQueryModeTest extends AbstractDriverTestCase
 {
     /**
-     * @return array
+     * @return array<int, mixed>
      */
     protected static function getTestTables(): array
     {

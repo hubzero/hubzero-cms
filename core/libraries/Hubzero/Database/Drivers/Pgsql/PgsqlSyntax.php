@@ -39,7 +39,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Maps PostgreSQL-specific types to generic type names
      * that match what other drivers return.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeMappings = [
         // Integer types
@@ -206,9 +206,9 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the information_schema query
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -523,7 +523,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * PostgreSQL uses TRUNCATE TABLE with RESTART IDENTITY to reset sequences.
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {

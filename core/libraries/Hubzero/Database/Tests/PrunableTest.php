@@ -28,7 +28,7 @@ class PrunableTest extends AbstractDriverTestCase
     /**
      * Track pruning events for testing
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $eventLog = [];
 

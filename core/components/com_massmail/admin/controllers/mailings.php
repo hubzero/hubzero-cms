@@ -449,7 +449,7 @@ class Mailings extends AdminController
     /**
      * Build a recipient spec array from request input.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function recipientSpec()
     {
@@ -1035,7 +1035,7 @@ class Mailings extends AdminController
     /**
      * Shared state transition (edit.state gated)
      *
-     * @param   array   $from
+     * @param   array<mixed>   $from
      * @param   string  $to
      * @param   string  $msg
      * @return  void

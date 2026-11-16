@@ -36,7 +36,7 @@ class TransportDsnTest extends TestCase
     }
 
     /**
-     * @param   array  $settings
+     * @param   array<mixed>  $settings
      * @return  void
      */
     private function configure(array $settings): void

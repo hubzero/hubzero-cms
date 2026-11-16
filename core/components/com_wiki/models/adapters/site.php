@@ -16,7 +16,7 @@ class Site extends Base
     /**
      * URL segments
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $segments = [
         'option' => 'com_wiki',
@@ -99,7 +99,7 @@ class Site extends Base
      * Get an array of routing inputs
      *
      * @param   string  $task
-     * @return  array
+     * @return  array<mixed>
      */
     public function routing($task = 'save')
     {

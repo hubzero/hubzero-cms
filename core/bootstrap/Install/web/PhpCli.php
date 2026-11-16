@@ -72,7 +72,7 @@ class PhpCli
      * latter. So the PATH and a home Composer can write its cache to are
      * passed explicitly.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function environment(): array
     {

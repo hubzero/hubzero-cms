@@ -21,7 +21,7 @@ class Debug
     /**
      * Get a list of the components.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getComponents()
     {
@@ -62,7 +62,7 @@ class Debug
      * Get a list of the actions for the component or code actions.
      *
      * @param   string|null  $component  The name of the component.
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getActions($component = null)
     {
@@ -121,7 +121,7 @@ class Debug
     /**
      * Get a list of filter options for the levels.
      *
-     * @return  array  An array of Option elements.
+     * @return  array<int, mixed>  An array of Option elements.
      */
     public static function getLevelsOptions()
     {

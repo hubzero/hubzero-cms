@@ -161,7 +161,7 @@ class Handler
      * @param   string  $message
      * @param   string  $file
      * @param   int     $line
-     * @param   array   $context
+     * @param   array<mixed>   $context
      * @throws  \ErrorException
      * @return  bool
      */

@@ -147,7 +147,7 @@ class PostfixCollector
     /**
      * Run one collection pass.
      *
-     * @return  array  summary
+     * @return  array<mixed>  summary
      */
     public static function collect()
     {

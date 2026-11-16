@@ -24,7 +24,7 @@ class PdfFormDeployment
     /**
      * Array of result view types
      *
-     * @var array
+     * @var array<mixed>
      **/
     private static $resultViews = ['confirmation', 'score', 'details'];
 
@@ -108,14 +108,14 @@ class PdfFormDeployment
     /**
      * Array of errors
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $errors = [];
 
     /**
      * Process form
      *
-     * @return array
+     * @return array<mixed>
      **/
     public static function forForm($formId)
     {
@@ -188,7 +188,7 @@ class PdfFormDeployment
     /**
      * Get deployment results
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function getResults($key = null, $members = null)
     {
@@ -542,7 +542,7 @@ class PdfFormDeployment
     /**
      * Get errors
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function getErrors($field)
     {

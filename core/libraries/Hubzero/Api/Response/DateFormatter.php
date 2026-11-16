@@ -20,7 +20,7 @@ class DateFormatter extends Middleware
     /**
      * Keys we want to swap out for properly formatted dates
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $dateKeys = ['created', 'modified'];
 

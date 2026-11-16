@@ -46,7 +46,7 @@ class Breadcrumbs extends Module
     /**
      * Get the list of crumbs
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getList()
     {
@@ -100,7 +100,7 @@ class Breadcrumbs extends Module
      * com_groups puts the group's crumb after "Groups"; everything after
      * it is the active page or tab, then any plugin crumbs.
      *
-     * @param   array   $items  Pathway items
+     * @param   array<mixed>   $items  Pathway items
      * @param   object  $group  The supergroup being viewed
      * @return  mixed   The crumb's index, or null if it isn't in the trail
      */

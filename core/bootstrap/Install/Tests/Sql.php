@@ -26,28 +26,28 @@ class Sql
     /**
      * Column names per table, in order
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $columns = [];
 
     /**
      * Columns that may not be null, per table
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $required = [];
 
     /**
      * Column sets each table says are unique
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $uniques = [];
 
     /**
      * Rows per table
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $rows = [];
 
@@ -162,7 +162,7 @@ class Sql
      *
      * @param   string  $path   The file
      * @param   string  $first  The line it starts on
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function body($path, $first)
     {
@@ -236,7 +236,7 @@ class Sql
      * Drop any row a REPLACE would have written over
      *
      * @param   string  $table  Where
-     * @param   array   $row    What is arriving
+     * @param   array<mixed>   $row    What is arriving
      * @return  void
      */
     protected function displace($table, array $row)
@@ -275,7 +275,7 @@ class Sql
      * Split a VALUES payload, respecting quotes and escapes
      *
      * @param   string  $payload  What is between the brackets
-     * @return  array   Values, unquoted, with SQL NULL as PHP null
+     * @return  array<int, mixed>   Values, unquoted, with SQL NULL as PHP null
      */
     protected function values($payload)
     {
@@ -374,7 +374,7 @@ class Sql
     /**
      * Every table the schema creates
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function tables()
     {
@@ -396,7 +396,7 @@ class Sql
      * A table's columns, in order
      *
      * @param   string  $table  Its name
-     * @return  array
+     * @return  array<mixed>
      */
     public function columns($table)
     {
@@ -409,7 +409,7 @@ class Sql
      * A table's columns that may not be null
      *
      * @param   string  $table  Its name
-     * @return  array
+     * @return  array<mixed>
      */
     public function required($table)
     {
@@ -428,7 +428,7 @@ class Sql
      * The keys the schema declares unique for a table
      *
      * @param   string  $table  Which
-     * @return  array   One array of column names per key
+     * @return  array<mixed>   One array of column names per key
      */
     public function uniques($table)
     {
@@ -441,7 +441,7 @@ class Sql
      * Every row written to a table
      *
      * @param   string  $table  Which
-     * @return  array
+     * @return  array<mixed>
      */
     public function rows($table)
     {
@@ -454,8 +454,8 @@ class Sql
      * The rows of a table matching every given column
      *
      * @param   string  $table  Its name
-     * @param   array   $where  Column => value
-     * @return  array
+     * @param   array<mixed>   $where  Column => value
+     * @return  array<int, mixed>
      */
     public function where($table, array $where)
     {

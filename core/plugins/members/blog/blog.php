@@ -55,7 +55,7 @@ class Blog extends Plugin
      *
      * @param   object  $user
      * @param   object  $member
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onMembersAreas($user, $member)
     {
@@ -75,7 +75,7 @@ class Blog extends Plugin
      * @param   object  $member  Current member page
      * @param   string  $option  Start of records to pull
      * @param   array|mixed   $areas   Active area(s)
-     * @return  array
+     * @return  array<mixed>
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -221,7 +221,7 @@ class Blog extends Plugin
      * Parse an SEF URL into its component bits
      * stripping out the path leading up to the blog plugin
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function parseUrl()
     {
@@ -1031,7 +1031,7 @@ class Blog extends Plugin
      * This method marks blog posts as "trashed" if an account has
      * been disabled and/or marked as spam.
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -1081,7 +1081,7 @@ class Blog extends Plugin
      *
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user     Holds the user data
+     * @param   array<mixed>    $user     Holds the user data
      * @param   boolean  $success  True if user was succesfully stored in the database
      * @param   string   $msg      Message
      * @return  boolean

@@ -15,12 +15,12 @@ namespace Components\Tools\Tests;
 class RecordingDriver
 {
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     public $queries = [];
 
     /**
-     * @param   array  $columns
+     * @param   array<mixed>  $columns
      * @return  void
      */
     public function __construct(private array $columns) {}

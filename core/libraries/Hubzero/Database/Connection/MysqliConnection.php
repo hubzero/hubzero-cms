@@ -27,7 +27,7 @@ class MysqliConnection implements ConnectionInterface
     /**
      * Connection options
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $options;
 
@@ -76,7 +76,7 @@ class MysqliConnection implements ConnectionInterface
     /**
      * Constructor
      *
-     * @param   array  $options  Connection options
+     * @param   array<mixed>  $options  Connection options
      */
     public function __construct(array $options)
     {

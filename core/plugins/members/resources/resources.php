@@ -30,7 +30,7 @@ class Resources extends Plugin
     /**
      * Resource areas
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $areas = null;
 
@@ -44,7 +44,7 @@ class Resources extends Plugin
     /**
      * Record count
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $total = null;
 
@@ -52,7 +52,7 @@ class Resources extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -63,7 +63,7 @@ class Resources extends Plugin
     /**
      * Return a list of categories
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onMembersContributionsAreas()
     {
@@ -115,8 +115,8 @@ class Resources extends Plugin
      * @param   integer  $limit       Number of record to return
      * @param   integer  $limitstart  Record return start
      * @param   string   $sort        Field to sort records on
-     * @param   array|null    $areas       Areas to return data for
-     * @return  array
+     * @param   array<mixed>|null    $areas       Areas to return data for
+     * @return  array<mixed>
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -293,7 +293,7 @@ class Resources extends Plugin
     /**
      * Include needed libraries and push scripts and CSS to the document
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function allWithFilters($filters = [])

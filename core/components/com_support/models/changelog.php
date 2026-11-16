@@ -26,7 +26,7 @@ class Changelog extends Obj
     /**
      * ItemList
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $log = null;
 
@@ -160,7 +160,7 @@ class Changelog extends Obj
     /**
      * Get the whole log
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function lists()
     {

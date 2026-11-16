@@ -55,7 +55,7 @@ class Feed extends Plugin
     /**
      * Repository path
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $path = null;
 
@@ -63,7 +63,7 @@ class Feed extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param   string|null  $alias
-     * @return  array   Plugin name and title
+     * @return  array<mixed>   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -82,7 +82,7 @@ class Feed extends Plugin
      * Event call to return count of items
      *
      * @param   object  $model  Project
-     * @return  array   integer
+     * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
     {
@@ -97,8 +97,8 @@ class Feed extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
-     * @return  array|null   Return array of html
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
+     * @return  array<mixed>|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -650,9 +650,9 @@ class Feed extends Plugin
      *
      * @param   string   $area
      * @param   object   $model
-     * @param   array    $projects
+     * @param   array<mixed>    $projects
      * @param   integer  $uid
-     * @param   array    $filters  Query filters
+     * @param   array<mixed>    $filters  Query filters
      * @return  string
      */
     public function onShared($area, $model, $projects, $uid, $filters)

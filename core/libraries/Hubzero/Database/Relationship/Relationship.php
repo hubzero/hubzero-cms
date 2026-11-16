@@ -121,7 +121,7 @@ class Relationship
      * Each condition is stored as a closure that receives the query.
      * Applied automatically in constrain() and eager loading.
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $defaultConditions = [];
 
@@ -146,7 +146,7 @@ class Relationship
      * Handles calls to undefined methods, assuming they should be passed up to the model
      *
      * @param   string  $name       The method name being called
-     * @param   array   $arguments  The method arguments provided
+     * @param   array<mixed>   $arguments  The method arguments provided
      * @return  mixed
      **/
     public function __call($name, $arguments)
@@ -204,7 +204,7 @@ class Relationship
      * Gets keys based on a given constraint
      *
      * @param   \Closure  $constraint  The constraint function to apply
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -231,7 +231,7 @@ class Relationship
      *
      * @param   int     $count     The count to limit by
      * @param   string  $operator  The comparison operator used between the column and the count
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -262,7 +262,7 @@ class Relationship
      * Get related keys from a given row set
      *
      * @param   \Hubzero\Database\Rows  $rows  The rows from which to grab the related keys
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getRelatedKeysFromRows($rows)
     {
@@ -314,7 +314,7 @@ class Relationship
     /**
      * Saves a new related model with the given data
      *
-     * @param   array  $data  The data being saved on the new model
+     * @param   array<mixed>  $data  The data being saved on the new model
      * @return  bool
      **/
     public function save($data)
@@ -329,7 +329,7 @@ class Relationship
      * Loads the relationship content with the provided data
      *
      * @param   \Hubzero\Database\Rows   $rows  The rows that we'll be seeding
-     * @param   \Hubzero\Database\Rows|array  $data  The data to seed
+     * @param   \Hubzero\Database\Rows|array<mixed>  $data  The data to seed
      * @param   string  $name  The name of the relationship
      * @return  \Hubzero\Database\Rows
      **/
@@ -373,7 +373,7 @@ class Relationship
      * This method applies default conditions (via onCondition()) in addition
      * to any constraint closure provided during eager loading.
      *
-     * @param   array    $keys        The keys for which to fetch related items
+     * @param   array<mixed>    $keys        The keys for which to fetch related items
      * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/
@@ -394,7 +394,7 @@ class Relationship
      * Sorts the relations into arrays keyed by the related key
      *
      * @param   object  $relations  The relations to sort
-     * @return  array|\Hubzero\Database\Rows
+     * @return  array<mixed>|\Hubzero\Database\Rows
      **/
     protected function getResultsByRelatedKey($relations)
     {
@@ -405,7 +405,7 @@ class Relationship
      * Seeds the given rows with data
      *
      * @param   \Hubzero\Database\Rows  $rows  The rows to seed on to
-     * @param   \Hubzero\Database\Rows|array  $data  The data from which to seed
+     * @param   \Hubzero\Database\Rows|array<mixed>  $data  The data from which to seed
      * @param   string                  $name  The relationship name
      * @return  \Hubzero\Database\Rows
      **/
@@ -718,7 +718,7 @@ class Relationship
      * ```
      *
      * @param   string  $column  Column name
-     * @param   array   $values  Array of values
+     * @param   array<mixed>   $values  Array of values
      * @return  $this
      **/
     public function onConditionIn($column, array $values)
@@ -738,7 +738,7 @@ class Relationship
      * ```
      *
      * @param   string  $column  Column name
-     * @param   array   $values  Array of values
+     * @param   array<mixed>   $values  Array of values
      * @return  $this
      **/
     public function onConditionNotIn($column, array $values)

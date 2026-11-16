@@ -36,7 +36,7 @@ class Messages extends Plugin
      *
      * @param  object $user   User
      * @param  object $member Profile
-     * @return array   Plugin name
+     * @return array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -60,8 +60,8 @@ class Messages extends Plugin
      * @param  object $user   User
      * @param  object $member Profile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -1088,10 +1088,10 @@ class Messages extends Plugin
     /**
      * Build a select list of methods
      *
-     * @param  array  $notimethods Methods
+     * @param  array<mixed>  $notimethods Methods
      * @param  string $name        Field name
-     * @param  array  $values      Option values
-     * @param  array  $ids         Option IDs
+     * @param  array<mixed>  $values      Option values
+     * @param  array<mixed>  $ids         Option IDs
      * @return string
      */
     public static function selectMethod($notimethods, $name, $values = [], $ids = [])

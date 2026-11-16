@@ -449,7 +449,7 @@ class Media extends AdminController
      * Scans directory and builds multi-dimensional array of all files and sub-directories
      *
      * @param   string  $base  Directory to scan
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function recursiveListDir($base)
     {

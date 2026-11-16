@@ -28,7 +28,7 @@ class Filesystem
     /**
      * Macros list
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $macros = [];
 
@@ -375,8 +375,8 @@ class Filesystem
      * @param   mixed    $recursive  True to recursively search into sub-folders, or an integer to
      *                             specify the maximum depth.
      * @param   boolean  $full     True to return the full path to the file.
-     * @param   array    $exclude  Array with names of files which should not be shown in the result.
-     * @return  array
+     * @param   array<mixed>    $exclude  Array with names of files which should not be shown in the result.
+     * @return  array<mixed>
      */
     public function listContents(
         $path,
@@ -559,7 +559,7 @@ class Filesystem
      * Call a macro.
      *
      * @param   string  $method
-     * @param   array   $arguments
+     * @param   array<mixed>   $arguments
      * @return  mixed
      * @throws  \BadMethodCallException
      */

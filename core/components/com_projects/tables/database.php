@@ -51,7 +51,7 @@ class Database extends Table
      * Get items
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $skipPublished
      * @return  mixed    object, integer or null
      */

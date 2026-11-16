@@ -52,7 +52,7 @@ class Composer
     /**
      * Array of repositories not including the local repo
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private static $remoteRepositories = null;
 
@@ -317,7 +317,7 @@ class Composer
     /**
      * Update a package or list of packages
      *
-     * @param       array|null|string   $packageName   List of packages to be updated
+     * @param       array<mixed>|null|string   $packageName   List of packages to be updated
      * @return  boolean Indicates success or failure
      */
     private static function runUpdate($packageName)
@@ -406,7 +406,7 @@ class Composer
     /**
      * Get a list of packages that are installed
      *
-     * @return  array   Array of Composer\Package\PackageInterface representing locally installed packages
+     * @return  array<mixed>   Array of Composer\Package\PackageInterface representing locally installed packages
      */
     public static function getLocalPackages()
     {
@@ -417,7 +417,7 @@ class Composer
     /**
      * Get a list of remote packages
      *
-     * @return  array   Array of Composer\Package\PackageInterface representing packages from remote repositories
+     * @return  array<mixed>   Array of Composer\Package\PackageInterface representing packages from remote repositories
      */
     public static function getRemotePackages()
     {
@@ -440,7 +440,7 @@ class Composer
     /**
      * Get a list of available packages
      *
-     * @return  array   Array of packages that are available in remote repositories but have no
+     * @return  array<mixed>   Array of packages that are available in remote repositories but have no
      * locally installed version
      */
     public static function getAvailablePackages()
@@ -456,7 +456,7 @@ class Composer
     /**
      * Get list of remote repositories
      *
-     * @return  array   Array of Composer\Repository\PackageRepository that composer can use
+     * @return  array<mixed>   Array of Composer\Repository\PackageRepository that composer can use
      */
     public static function getRepositories()
     {
@@ -506,7 +506,7 @@ class Composer
     /**
      * Get repository configurations
      *
-     * @return  array   Array of configurations for repositories
+     * @return  array<mixed>   Array of configurations for repositories
      */
     public static function getRepositoryConfigs()
     {

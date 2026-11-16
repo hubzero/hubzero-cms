@@ -27,7 +27,7 @@ class Tags extends Cloud
      *
      * @param   string   $tag_string  Comma-separated string of tags
      * @param   integer  $keep        Use normalized tag as array key
-     * @return  array
+     * @return  array<mixed>
      */
     public function parse($tag_string, $keep = 0)
     {

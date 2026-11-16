@@ -29,14 +29,14 @@ class RefreshToken implements GrantTypeInterface
     /**
      * Array to hold config
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $config = [];
 
     /**
      * Array to hold token data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $refreshToken = [];
 
@@ -44,7 +44,7 @@ class RefreshToken implements GrantTypeInterface
      * Constructor
      *
      * @param   \OAuth2\Storage\RefreshTokenInterface $storage  Storage object
-     * @param   array   $config   Config array
+     * @param   array<mixed>   $config   Config array
      * @return  void
      */
     public function __construct(RefreshTokenInterface $storage, $config = [])
@@ -134,7 +134,7 @@ class RefreshToken implements GrantTypeInterface
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope
-     * @return  array  Access token
+     * @return  array<mixed>  Access token
      */
     public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
     {

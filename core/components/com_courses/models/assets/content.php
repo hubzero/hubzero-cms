@@ -25,7 +25,7 @@ class Content extends Handler
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'As textual content',
@@ -35,7 +35,7 @@ class Content extends Handler
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<string, mixed> of assets created
      **/
     public function create()
     {
@@ -140,7 +140,7 @@ class Content extends Handler
      * Save method for this handler
      * // @FIXME: reduce code duplication here
      *
-     * @return array of assets created
+     * @return array<string, mixed> of assets created
      **/
     public function save()
     {

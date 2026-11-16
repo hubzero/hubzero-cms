@@ -106,7 +106,7 @@ class Provider
     /**
      * Constructor
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  void
      */
     public function __construct($params = [])
@@ -127,7 +127,7 @@ class Provider
      *
      * @param   string|null   $uri
      * @param   string|null   $method
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function validateRequest($uri = null, $method = null)
     {

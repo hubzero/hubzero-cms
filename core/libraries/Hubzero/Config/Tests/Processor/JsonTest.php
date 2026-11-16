@@ -34,7 +34,7 @@ class JsonTest extends TestCase
     /**
      * Expected data as an array
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $arr = null;
 

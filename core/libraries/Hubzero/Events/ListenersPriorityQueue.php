@@ -196,7 +196,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
     /**
      * Get all listeners contained in this queue, sorted according to their priority.
      *
-     * @return  array  An array of listeners.
+     * @return  array<int, mixed>  An array of listeners.
      */
     public function getAll()
     {

@@ -216,8 +216,8 @@ class Storefront extends Plugin
     /**
      * Handles the actual sending of emails
      *
-     * @param  array    $skusInfo     SKUs about to be unpublished
-     * @param  array    $productsInfo Products about to be unpublished
+     * @param  array<mixed>    $skusInfo     SKUs about to be unpublished
+     * @param  array<mixed>    $productsInfo Products about to be unpublished
      * @return boolean|null
      **/
     private function sendNotifications($skusInfo, $productsInfo)
@@ -271,7 +271,7 @@ class Storefront extends Plugin
     /**
      * Summary
      *
-     * @param   array   $notificationsIndex
+     * @param   array<mixed>   $notificationsIndex
      * @param   string  $scope
      * @return  bool|null
      */

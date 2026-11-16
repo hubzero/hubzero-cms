@@ -423,7 +423,7 @@ class Latest extends Module
      * @param   string  $fieldName
      * @param   string  $article_grouping_direction
      * @param   string|null  $fieldNameToKeep
-     * @return  array
+     * @return  array<mixed>
      */
     public static function groupBy($list, $fieldName, $article_grouping_direction, $fieldNameToKeep = null)
     {
@@ -463,7 +463,7 @@ class Latest extends Module
      * @param   string  $type
      * @param   string  $article_grouping_direction
      * @param   string  $month_year_format
-     * @return  array
+     * @return  array<mixed>
      */
     public static function groupByDate($list, $type, $article_grouping_direction, $month_year_format = 'F Y')
     {

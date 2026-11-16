@@ -21,7 +21,7 @@ class Geshi extends Plugin
     /**
      * GeSHi language names to highlight.php equivalents
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $langMap = [
         'js'           => 'javascript',
@@ -67,7 +67,7 @@ class Geshi extends Plugin
     /**
      * Replaces the matched tags.
      *
-     * @param   array   $matches  An array of matches (see preg_match_all)
+     * @param   array<mixed>   $matches  An array of matches (see preg_match_all)
      * @return  string
      */
     protected function replace(&$matches)
@@ -125,7 +125,7 @@ class Geshi extends Plugin
      * Method to extract key/value pairs out of a string with XML style attributes
      *
      * @param   string  $string  String containing XML style attributes
-     * @return  array   Key/Value pairs for the attributes
+     * @return  array<mixed>   Key/Value pairs for the attributes
      */
     protected static function parseAttributes($string)
     {

@@ -21,7 +21,7 @@ class Categories
     /**
      * Array to hold the object instances
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $instances = [];
 
@@ -35,7 +35,7 @@ class Categories
     /**
      * Array of checked categories -- used to save values when _nodes are null
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $checkedCategories;
 
@@ -77,14 +77,14 @@ class Categories
     /**
      * Array of options
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $options = null;
 
     /**
      * Class constructor
      *
-     * @param   array  $options  Array of options
+     * @param   array<mixed>  $options  Array of options
      * @return  void
      */
     public function __construct($options)
@@ -105,7 +105,7 @@ class Categories
      * Returns a reference to a Categories object
      *
      * @param   string  $extension  Name of the categories extension
-     * @param   array   $options    An array of options
+     * @param   array<mixed>   $options    An array of options
      * @return  object|false  Categories object
      */
     public static function getInstance($extension, $options = [])

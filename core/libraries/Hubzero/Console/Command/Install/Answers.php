@@ -28,7 +28,7 @@ class Answers
     /**
      * The answers, as loaded
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $answers = [];
 
@@ -145,7 +145,7 @@ class Answers
     /**
      * Supply answers directly, without a file
      *
-     * @param   array  $answers  The answers
+     * @param   array<mixed>  $answers  The answers
      * @return  void
      **/
     public static function set(array $answers)
@@ -179,7 +179,7 @@ class Answers
      * All the answers for one step of the install
      *
      * @param   string  $section  One of site, database or admin
-     * @return  array
+     * @return  array<mixed>
      **/
     public static function section($section)
     {

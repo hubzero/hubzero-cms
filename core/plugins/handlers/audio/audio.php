@@ -25,7 +25,7 @@ class Audio extends Plugin
     /**
      * File extensions this handler takes
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $extensions = [
         'mp3',

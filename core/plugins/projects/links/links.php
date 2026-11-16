@@ -53,7 +53,7 @@ class Links extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param   string|null  $alias
-     * @return  array   Plugin name and title
+     * @return  array<mixed>   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -84,8 +84,8 @@ class Links extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
-     * @return  array|null|false   Return array of html
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
+     * @return  array<mixed>|null|false   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -361,7 +361,7 @@ class Links extends Plugin
      * @param   integer  $vid
      * @param   integer  $cid
      * @param   boolean  $returnStatus
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
     {
@@ -418,7 +418,7 @@ class Links extends Plugin
      * @param   string   $format
      * @param   integer  $actor
      * @param   boolean  $returnStatus
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function attachCitation($vid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
     {
@@ -1148,7 +1148,7 @@ class Links extends Plugin
      * Parse DOI metadata
      *
      * @param   object  $data
-     * @param   array  $metadata
+     * @param   array<mixed>  $metadata
      * @return  object
      */
     public function parseDoiData($data, $metadata)

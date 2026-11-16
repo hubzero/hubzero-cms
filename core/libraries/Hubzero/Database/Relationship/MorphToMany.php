@@ -247,7 +247,7 @@ class MorphToMany extends OneToManyThrough
     /**
      * Get the connection data for the pivot table
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getConnectionData()
     {
@@ -318,7 +318,7 @@ class MorphToMany extends OneToManyThrough
     /**
      * Get relations for eager loading
      *
-     * @param  array          $keys        The parent keys
+     * @param  array<mixed>          $keys        The parent keys
      * @param  \Closure|null  $constraint  Optional constraint
      * @return \Hubzero\Database\Relational
      */
@@ -369,7 +369,7 @@ class MorphToMany extends OneToManyThrough
      * Group results by the associative local key
      *
      * @param  iterable|object  $relations  The relations to group
-     * @return array
+     * @return array<mixed>
      */
     protected function getResultsByRelatedKey($relations)
     {
@@ -392,7 +392,7 @@ class MorphToMany extends OneToManyThrough
      * Seed rows with data
      *
      * @param  \Hubzero\Database\Rows  $rows  The rows to seed
-     * @param  array                   $data  The data indexed by key
+     * @param  array<mixed>                   $data  The data indexed by key
      * @param  string                  $name  The relationship name
      * @return \Hubzero\Database\Rows
      */

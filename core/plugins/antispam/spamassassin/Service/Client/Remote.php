@@ -33,7 +33,7 @@ class Remote
      * server     - mandatory only if using remote SpamAssassin server
      * verbose    - optional parameter
      *
-     * @param array $params SpamAssassin parameters
+     * @param array<mixed> $params SpamAssassin parameters
      */
     public function __construct(array $params)
     {

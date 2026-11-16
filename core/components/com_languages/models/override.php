@@ -21,7 +21,7 @@ class Override extends Obj
     /**
      * Cache
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $cache = [];
 
@@ -69,7 +69,7 @@ class Override extends Obj
      * Retrieves the overrides data
      *
      * @param   boolean  $all  True if all overrides shall be returned without considering pagination, defaults to false
-     * @return  array    Array of objects containing the overrides of the override.ini file
+     * @return  array<mixed>    Array of objects containing the overrides of the override.ini file
      */
     public function all($all = false)
     {
@@ -168,7 +168,7 @@ class Override extends Obj
     /**
      * Method to save the form data.
      *
-     * @param   array    $data             The form data.
+     * @param   array<mixed>    $data             The form data.
      * @param   boolean  $opposite_client  Indicates whether the override should not be created for the current client
      * @return  boolean  True on success, false otherwise.
      */
@@ -234,7 +234,7 @@ class Override extends Obj
     /**
      * Method to delete one or more overrides
      *
-     * @param   array    $cids  Array of keys to delete
+     * @param   array<mixed>    $cids  Array of keys to delete
      * @return  integer|false  Number of successfully deleted overrides, boolean false if an error occured
      */
     public function delete($cids)
@@ -271,7 +271,7 @@ class Override extends Obj
      * Method for parsing ini files
      *
      * @param   string  $filename  Path and name of the ini file to parse
-     * @return  array   Array of strings found in the file, the array indices will be the keys.
+     * @return  array<mixed>   Array of strings found in the file, the array indices will be the keys.
      *                  On failure an empty array will be returned
      */
     public static function parseFile($filename)
@@ -314,7 +314,7 @@ class Override extends Obj
      * The resulting array has entries of the following style:
      * <Language Tag>0|1 => <Language Name> - <Client Name>
      *
-     * @return  array  Sorted associative array of languages
+     * @return  array<mixed>  Sorted associative array of languages
      */
     public function languages()
     {

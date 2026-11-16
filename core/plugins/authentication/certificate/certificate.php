@@ -45,7 +45,7 @@ class Certificate extends Plugin
     /**
      * Check login status of current user with regards to their client certificate
      *
-     * @return  array  $status
+     * @return  array<string, mixed>  $status
      */
     public function status()
     {
@@ -61,8 +61,8 @@ class Certificate extends Plugin
     /**
      * Actions to perform when logging in a user session
      *
-     * @param   array  $credentials  login credentials
-     * @param   array  $options      login options
+     * @param   array<mixed>  $credentials  login credentials
+     * @param   array<mixed>  $options      login options
      * @return  void
      */
     public function login(&$credentials, &$options)
@@ -109,8 +109,8 @@ class Certificate extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array   $credentials  the user credentials
-     * @param   array   $options      any extra options
+     * @param   array<mixed>   $credentials  the user credentials
+     * @param   array<mixed>   $options      any extra options
      * @param   object  $response     authentication response object
      * @return  void
      * @deprecated  1.3.1
@@ -123,8 +123,8 @@ class Certificate extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array   $credentials  the user credentials
-     * @param   array   $options      any extra options
+     * @param   array<mixed>   $credentials  the user credentials
+     * @param   array<mixed>   $options      any extra options
      * @param   object  $response     authentication response object
      *
      * @return  void
@@ -200,7 +200,7 @@ class Certificate extends Plugin
     /**
      * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
      *
-     * @param   array  $options  additional options
+     * @param   array<mixed>  $options  additional options
      * @return  void
      */
     public function link($options = [])

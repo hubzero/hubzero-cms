@@ -53,7 +53,7 @@ abstract class AbstractCache extends Basic
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function dataProvider()
     {

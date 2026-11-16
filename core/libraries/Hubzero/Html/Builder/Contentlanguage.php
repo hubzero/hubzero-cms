@@ -21,7 +21,7 @@ class Contentlanguage
     /**
      * Cached array of the content language items.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $items = null;
 
@@ -30,7 +30,7 @@ class Contentlanguage
      *
      * @param   boolean  $all        True to include All (*)
      * @param   boolean  $translate  True to translate All
-     * @return  array
+     * @return  array<mixed>
      */
     public static function existing($all = false, $translate = false)
     {

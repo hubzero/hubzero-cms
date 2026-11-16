@@ -18,7 +18,7 @@ class Migration20190221000000ComWishlist extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__wishlist' => [

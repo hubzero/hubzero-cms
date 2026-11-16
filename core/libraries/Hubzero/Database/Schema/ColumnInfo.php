@@ -114,7 +114,7 @@ class ColumnInfo
     /**
      * ENUM/SET allowed values
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $enumValues;
 
@@ -128,7 +128,7 @@ class ColumnInfo
     /**
      * Create a new ColumnInfo instance
      *
-     * @param array $data Column data from database introspection
+     * @param array<mixed> $data Column data from database introspection
      */
     public function __construct(array $data = [])
     {
@@ -282,7 +282,7 @@ class ColumnInfo
     /**
      * Get ENUM/SET allowed values
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getEnumValues(): ?array
     {
@@ -433,7 +433,7 @@ class ColumnInfo
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

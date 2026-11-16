@@ -40,7 +40,7 @@ class Identicon
     private $hash;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     private $color;
 
@@ -55,7 +55,7 @@ class Identicon
     private $pixelRatio;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     private $arrayOfSquare = [];
 
@@ -155,7 +155,7 @@ class Identicon
     /**
      * Get arrayOfSquare
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getArrayOfSquare()
     {
@@ -232,7 +232,7 @@ class Identicon
     /**
      * Get the color
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getColor()
     {

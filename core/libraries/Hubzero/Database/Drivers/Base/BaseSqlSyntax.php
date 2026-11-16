@@ -48,7 +48,7 @@ abstract class BaseSqlSyntax
     /**
      * The prepared statement binding parameters
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $bindings = [];
 
@@ -61,7 +61,7 @@ abstract class BaseSqlSyntax
      */
     protected $distinct = false;
     /**
-     * @var  string|array
+     * @var  string|array<mixed>
      */
     protected $insert = '';
     /**
@@ -82,7 +82,7 @@ abstract class BaseSqlSyntax
     /**
      * Value tuples given as SQL rather than as data
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $rawValues = [];
     protected $from   = [];
@@ -107,7 +107,7 @@ abstract class BaseSqlSyntax
      * Each element is an array with 'query' (the SQL string),
      * 'bindings' (parameter bindings), and 'all' (boolean for UNION ALL).
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $union = [];
 
@@ -156,7 +156,7 @@ abstract class BaseSqlSyntax
     /**
      * The columns for INSERT ... SELECT
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $insertColumns = [];
 
@@ -170,7 +170,7 @@ abstract class BaseSqlSyntax
     /**
      * Bindings for the INSERT ... SELECT query
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $insertSelectBindings = [];
     protected $insertManyRows = [];
@@ -182,7 +182,7 @@ abstract class BaseSqlSyntax
     /**
      * Cached table columns for schema-aware resolution
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $tableColumnCache = [];
 
@@ -216,7 +216,7 @@ abstract class BaseSqlSyntax
     /**
      * Grabs the params bindings
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getBindings()
     {
@@ -553,7 +553,7 @@ abstract class BaseSqlSyntax
     /**
      * Expand FULL JOINs into UNION ALL branches
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function expandFullJoinBranches(): array
     {
@@ -625,8 +625,8 @@ abstract class BaseSqlSyntax
     /**
      * Get table references from the FROM clause (table name and alias).
      *
-     * @param   array  $from
-     * @return  array
+     * @param   array<mixed>  $from
+     * @return  array<int, mixed>
      */
     protected function getFromTableRefs(array $from): array
     {
@@ -665,7 +665,7 @@ abstract class BaseSqlSyntax
      *
      * @param   string       $table
      * @param   string|null  $alias
-     * @return  array
+     * @return  array<mixed>
      */
     protected function buildRefToTableMap(string $table, ?string $alias): array
     {
@@ -687,7 +687,7 @@ abstract class BaseSqlSyntax
      * Build a ref map from a table expression with optional alias.
      *
      * @param   string  $tableExpr
-     * @return  array
+     * @return  array<mixed>
      */
     protected function buildRefToTableMapFromTableExpr(string $tableExpr): array
     {
@@ -702,8 +702,8 @@ abstract class BaseSqlSyntax
     /**
      * Build table candidates with preferred refs for schema resolution.
      *
-     * @param   array  $refToTable
-     * @return  array
+     * @param   array<mixed>  $refToTable
+     * @return  array<int, mixed>
      */
     protected function buildTableCandidates(array $refToTable): array
     {
@@ -734,12 +734,12 @@ abstract class BaseSqlSyntax
      * Resolve a join column reference with optional schema lookup.
      *
      * @param   string  $expr
-     * @param   array   $availableMap
-     * @param   array   $joinMap
-     * @param   array   $availableCandidates
-     * @param   array   $joinCandidates
+     * @param   array<mixed>   $availableMap
+     * @param   array<mixed>   $joinMap
+     * @param   array<mixed>   $availableCandidates
+     * @param   array<mixed>   $joinCandidates
      * @param   string|null  $preferredGroup  Preferred group when ambiguous: 'available' or 'join'
-     * @return  array
+     * @return  array<mixed>
      */
     protected function resolveJoinColumn(
         string $expr,
@@ -835,11 +835,11 @@ abstract class BaseSqlSyntax
      * Resolve a join operand that may be a column or literal.
      *
      * @param   mixed  $operand
-     * @param   array  $availableMap
-     * @param   array  $joinMap
-     * @param   array  $availableCandidates
-     * @param   array  $joinCandidates
-     * @return  array
+     * @param   array<mixed>  $availableMap
+     * @param   array<mixed>  $joinMap
+     * @param   array<mixed>  $availableCandidates
+     * @param   array<mixed>  $joinCandidates
+     * @return  array<mixed>
      */
     protected function resolveJoinOperandInfo(
         $operand,
@@ -875,7 +875,7 @@ abstract class BaseSqlSyntax
      * Parse a column reference, optionally qualified with a table/alias.
      *
      * @param   string  $expr
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function parseColumnReference(string $expr): array
     {
@@ -965,10 +965,10 @@ abstract class BaseSqlSyntax
     /**
      * Allow dialects to transform branches for FULL JOIN emulation
      *
-     * @param   array   $branch     Branch definition
+     * @param   array<mixed>   $branch     Branch definition
      * @param   int     $joinIndex  Index of the FULL join being expanded
      * @param   string  $direction  left|right
-     * @return  array
+     * @return  array<mixed>
      */
     protected function transformFullJoinBranch(array $branch, int $joinIndex, string $direction): array
     {
@@ -979,7 +979,7 @@ abstract class BaseSqlSyntax
      * Append additional filters to a WHERE clause
      *
      * @param   string  $whereSql  Existing WHERE clause (may be empty)
-     * @param   array   $filters   Additional raw filters to AND
+     * @param   array<mixed>   $filters   Additional raw filters to AND
      * @return  string
      */
     protected function appendFiltersToWhere(string $whereSql, array $filters): string
@@ -1157,7 +1157,7 @@ abstract class BaseSqlSyntax
      * Sets a raw select element on the query (for subqueries and expressions)
      *
      * @param   string  $raw       The raw SQL expression
-     * @param   array   $bindings  Parameter bindings for the expression
+     * @param   array<mixed>   $bindings  Parameter bindings for the expression
      * @param   string|null  $as        What to call the return val
      * @return  void
      */
@@ -1198,7 +1198,7 @@ abstract class BaseSqlSyntax
      * Used with setInsertSelect() to specify which columns to insert into.
      * If not specified, the SELECT query determines the columns.
      *
-     * @param   array  $columns  The column names
+     * @param   array<mixed>  $columns  The column names
      * @return  void
      */
     public function setColumns(array $columns)
@@ -1212,7 +1212,7 @@ abstract class BaseSqlSyntax
      * Enables INSERT ... SELECT patterns.
      *
      * @param   string  $selectSql  The SELECT query SQL
-     * @param   array   $bindings   Parameter bindings for the SELECT query
+     * @param   array<mixed>   $bindings   Parameter bindings for the SELECT query
      * @return  void
      */
     public function setInsertSelect($selectSql, array $bindings = [])
@@ -1259,7 +1259,7 @@ abstract class BaseSqlSyntax
     /**
      * Get the INSERT SELECT bindings
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getInsertSelectBindings(): array
     {
@@ -1279,7 +1279,7 @@ abstract class BaseSqlSyntax
     /**
      * Get the columns for INSERT
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getInsertColumns(): array
     {
@@ -1387,7 +1387,7 @@ abstract class BaseSqlSyntax
      * Sets a raw from element on the query (for subqueries)
      *
      * @param   string  $raw       The raw SQL expression (subquery)
-     * @param   array   $bindings  Parameter bindings for the expression
+     * @param   array<mixed>   $bindings  Parameter bindings for the expression
      * @param   string|null  $as        Alias for the derived table (required for subqueries)
      * @return  void
      */
@@ -1443,7 +1443,7 @@ abstract class BaseSqlSyntax
      * - ['left' => 'a.id', 'operator' => '=', 'right' => 'b.a_id', 'boolean' => 'and']
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @param   string  $type
      * @return  void
      */
@@ -1491,8 +1491,8 @@ abstract class BaseSqlSyntax
     /**
      * Normalize join conditions into a consistent shape
      *
-     * @param   array  $conditions
-     * @return  array
+     * @param   array<mixed>  $conditions
+     * @return  array<int, mixed>
      */
     protected function normalizeJoinConditions(array $conditions): array
     {
@@ -1659,7 +1659,7 @@ abstract class BaseSqlSyntax
      * Sets a subquery join element on the query
      *
      * @param   string  $subquery   The subquery SQL
-     * @param   array   $bindings   Parameter bindings for the subquery
+     * @param   array<mixed>   $bindings   Parameter bindings for the subquery
      * @param   string  $as         Alias for the derived table
      * @param   string  $leftKey    The left side of the join condition
      * @param   string  $rightKey   The right side of the join condition
@@ -1685,7 +1685,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a set element on the query
      *
-     * @param   array  $data  The data to be modified
+     * @param   array<mixed>  $data  The data to be modified
      * @return  void
      */
     public function setSet($data)
@@ -1709,7 +1709,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a values element on the query
      *
-     * @param   array|string  $data  The data to be inserted
+     * @param   array<mixed>|string  $data  The data to be inserted
      * @return  void
      */
     public function setValues($data)
@@ -1785,7 +1785,7 @@ abstract class BaseSqlSyntax
      * Sets a raw having clause on the query
      *
      * @param   string  $raw       The raw having clause
-     * @param   array   $bindings  The clause bindings, if any
+     * @param   array<mixed>   $bindings  The clause bindings, if any
      * @param   string  $logical   The operator between multiple clauses (AND/OR)
      * @return  void
      */
@@ -1837,7 +1837,7 @@ abstract class BaseSqlSyntax
      * Sets a raw where element on the query
      *
      * @param   string  $raw       The raw where clause
-     * @param   array   $bindings  The clause bindings, if any
+     * @param   array<mixed>   $bindings  The clause bindings, if any
      * @param   string  $logical   The operator between multiple clauses
      * @param   int     $depth     The depth level of the clause, for sub clauses
      * @return  void
@@ -1948,7 +1948,7 @@ abstract class BaseSqlSyntax
      *
      * Each element is ['column' => string, 'dir' => string].
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOrderClauses(): array
     {
@@ -1973,7 +1973,7 @@ abstract class BaseSqlSyntax
      * Adds a UNION query
      *
      * @param   string  $query     The SQL query string to union
-     * @param   array   $bindings  Parameter bindings for the query
+     * @param   array<mixed>   $bindings  Parameter bindings for the query
      * @param   bool    $all       Whether to use UNION ALL (true) or UNION (false)
      * @return  void
      */
@@ -1994,9 +1994,9 @@ abstract class BaseSqlSyntax
      * Sets the upsert element on the query
      *
      * @param   string      $table            The table for the upsert
-     * @param   array       $values           Key-value pairs to insert
-     * @param   array|null  $updateColumns    Columns to update on conflict
-     * @param   array|null  $conflictColumns  Columns that define conflict
+     * @param   array<mixed>       $values           Key-value pairs to insert
+     * @param   array<mixed>|null  $updateColumns    Columns to update on conflict
+     * @param   array<mixed>|null  $conflictColumns  Columns that define conflict
      * @return  void
      */
     public function setUpsert(
@@ -2034,9 +2034,9 @@ abstract class BaseSqlSyntax
      * Sets the bulk upsert parameters
      *
      * @param   string      $table           The table for the upsert
-     * @param   array       $rows            Array of associative arrays
-     * @param   array|null  $updateColumns   Columns to update on conflict
-     * @param   array|null  $conflictColumns Columns that define conflict
+     * @param   array<mixed>       $rows            Array of associative arrays
+     * @param   array<mixed>|null  $updateColumns   Columns to update on conflict
+     * @param   array<mixed>|null  $conflictColumns Columns that define conflict
      * @return  void
      */
     public function setUpsertMany(
@@ -2089,7 +2089,7 @@ abstract class BaseSqlSyntax
      * Sets the bulk insert element on the query
      *
      * @param   string  $table   The table for the bulk insert
-     * @param   array   $rows    Array of rows, where each row is an associative array
+     * @param   array<mixed>   $rows    Array of rows, where each row is an associative array
      * @param   bool    $ignore  Whether to use INSERT IGNORE (database-specific)
      * @return  void
      */
@@ -2417,7 +2417,7 @@ abstract class BaseSqlSyntax
      * DATE()/TIME()/YEAR()/MONTH()/DAY() wrappers.
      *
      * @param   string  $part
-     * @param   array   $map
+     * @param   array<mixed>   $map
      * @param   string  $default
      * @return  string
      */
@@ -2469,7 +2469,7 @@ abstract class BaseSqlSyntax
      * Override in subclasses if different syntax is needed.
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<int, mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {
@@ -2721,7 +2721,7 @@ abstract class BaseSqlSyntax
     /**
      * Build ON clause for join conditions
      *
-     * @param   array  $conditions
+     * @param   array<mixed>  $conditions
      * @return  string
      */
     protected function buildJoinConditions(array $conditions): string
@@ -2808,7 +2808,7 @@ abstract class BaseSqlSyntax
     /**
      * Build a list for IN() predicates.
      *
-     * @param   array  $values
+     * @param   array<mixed>  $values
      * @return  string
      */
     protected function buildJoinInList(array $values): string
@@ -2828,7 +2828,7 @@ abstract class BaseSqlSyntax
     /**
      * Build a range for BETWEEN predicates.
      *
-     * @param   array  $values
+     * @param   array<mixed>  $values
      * @return  string
      */
     protected function buildJoinBetweenRange(array $values): string
@@ -3258,7 +3258,7 @@ abstract class BaseSqlSyntax
     /**
      * Builds the values statement for an insert of several rows
      *
-     * @param   array  $rows  The rows to insert, each keyed by field name
+     * @param   array<mixed>  $rows  The rows to insert, each keyed by field name
      * @return  string
      */
     protected function buildMultiRowValues(array $rows)
@@ -3535,9 +3535,9 @@ abstract class BaseSqlSyntax
      * Each database returns column metadata in a different format.
      * This method normalizes it to a consistent structure.
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function normalizeColumns($data, $typeOnly = true);
 
@@ -3790,7 +3790,7 @@ abstract class BaseSqlSyntax
      * Build a CASE expression
      *
      * @param   mixed       $column   The column to switch on
-     * @param   array       $cases    Key-value pairs of value => result
+     * @param   array<mixed>       $cases    Key-value pairs of value => result
      * @param   mixed|null  $default  Default value (ELSE clause)
      * @return  string
      */
@@ -3829,7 +3829,7 @@ abstract class BaseSqlSyntax
      * databases (PostgreSQL, SQLite, Firebird, Oracle, DB2, Informix).
      * MySQL and SQL Server override with CONCAT() function.
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function buildConcat(array $parts)
@@ -3840,7 +3840,7 @@ abstract class BaseSqlSyntax
     /**
      * Build CONCAT(...) function call for function-based concatenation dialects.
      *
-     * @param   array  $parts
+     * @param   array<mixed>  $parts
      * @return  string
      */
     protected function buildConcatFunction(array $parts)
@@ -3880,9 +3880,9 @@ abstract class BaseSqlSyntax
     /**
      * Normalize SHOW COLUMNS style metadata into framework column format.
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @param   bool   $typeOnly
-     * @return  array
+     * @return  array<mixed>
      */
     protected function normalizeShowColumnsMetadata(array $data, $typeOnly = true): array
     {

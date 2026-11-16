@@ -114,8 +114,8 @@ class GroupEvent extends WikiMacro
      * Query for group events
      *
      * @param       object  $group    The group
-     * @param       array  $filters  Array of filters
-     * @return      array
+     * @param       array<mixed>  $filters  Array of filters
+     * @return      array<int, \stdClass>
      */
     private function getGroupEvents($group, $filters = [])
     {
@@ -151,7 +151,7 @@ class GroupEvent extends WikiMacro
      * Render the events
      *
      * @param      object   $group  The group
-     * @param      array   $events Array of events
+     * @param      array<mixed>   $events Array of events
      * @return     string
      */
     private function renderEvents($group, $events)

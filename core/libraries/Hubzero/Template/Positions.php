@@ -32,7 +32,7 @@ class Positions
     /**
      * Declarations already read, keyed by template
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $cache = [];
 
@@ -40,7 +40,7 @@ class Positions
      * The positions a template declares, in the order it declares them
      *
      * @param   string  $template  The template element, e.g. lucent
-     * @return  array   Position names; empty when the template declares none
+     * @return  array<mixed>   Position names; empty when the template declares none
      */
     public static function declared($template)
     {
@@ -57,7 +57,7 @@ class Positions
      * belongs to whoever is doing the presenting.
      *
      * @param   string  $template  The template element, e.g. lucent
-     * @return  array   Position name => label, the label being '' when none was given
+     * @return  array<mixed>   Position name => label, the label being '' when none was given
      */
     public static function labelled($template)
     {

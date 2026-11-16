@@ -254,7 +254,7 @@ class SafePath
      * Split a relative path into components, refusing traversal
      *
      * @param   string|mixed  $relative
-     * @return  array|boolean  Components, or false if the path isn't safe
+     * @return  array<mixed>|boolean  Components, or false if the path isn't safe
      */
     protected static function components($relative)
     {

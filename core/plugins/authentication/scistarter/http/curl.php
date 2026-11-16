@@ -81,7 +81,7 @@ class Curl
     /**
      * Sets the post fields (and implicitly implies a post request)
      *
-     * @param   array  $fields  the post fields to set on the request
+     * @param   array<mixed>  $fields  the post fields to set on the request
      * @return  $this
      **/
     public function setPostFields($fields)
@@ -109,7 +109,7 @@ class Curl
     /**
      * Sets a header on the request
      *
-     * @param   string|array  $header  the header to set
+     * @param   string|array<mixed>  $header  the header to set
      * @return  $this
      **/
     public function setHeader($header)

@@ -22,8 +22,8 @@ class Geo extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param array $user    holds the user data
-     * @param array $options holding options (remember, autoregister, group)
+     * @param array<mixed> $user    holds the user data
+     * @param array<mixed> $options holding options (remember, autoregister, group)
      * @return void
      */
     public function onUserLogin($user, $options = [])
@@ -47,7 +47,7 @@ class Geo extends Plugin
     /**
      * Method is called after user data is deleted from the database
      *
-     * @param array  $user   holds the user data
+     * @param array<mixed>  $user   holds the user data
      * @param bool   $succes true if user was succesfully stored in the database
      * @param string $msg    message
      *

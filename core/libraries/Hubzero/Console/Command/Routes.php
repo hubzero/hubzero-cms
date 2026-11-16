@@ -130,7 +130,7 @@ class Routes extends Base implements CommandInterface
     /**
      * What is there against what should be
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function survey()
     {
@@ -261,7 +261,7 @@ class Routes extends Base implements CommandInterface
     /**
      * Print a survey
      *
-     * @param   array  $found  What survey() returned
+     * @param   array<mixed>  $found  What survey() returned
      * @return  void
      */
     protected function report($found)
@@ -357,7 +357,7 @@ class Routes extends Base implements CommandInterface
      *
      * @param   \Hubzero\Database\Driver  $db    The database
      * @param   string  $path  The address
-     * @return  array   id, published and whether it is a generated entry
+     * @return  array<int, mixed>   id, published and whether it is a generated entry
      */
     protected function at($db, $path)
     {
@@ -403,7 +403,7 @@ class Routes extends Base implements CommandInterface
      * is a page somebody made that nobody can reach.
      *
      * @param   \Hubzero\Database\Driver  $db  The database
-     * @return  array  path => items, the one that answers first
+     * @return  array<mixed>  path => items, the one that answers first
      */
     protected function shared($db)
     {

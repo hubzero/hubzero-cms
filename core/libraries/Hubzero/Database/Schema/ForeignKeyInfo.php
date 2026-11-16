@@ -36,7 +36,7 @@ class ForeignKeyInfo
     /**
      * Local column names
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $columns;
 
@@ -50,7 +50,7 @@ class ForeignKeyInfo
     /**
      * Referenced column names
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $foreignColumns;
 
@@ -71,7 +71,7 @@ class ForeignKeyInfo
     /**
      * Create a new ForeignKeyInfo instance
      *
-     * @param array|object $data Foreign key data from database introspection
+     * @param array<mixed>|object $data Foreign key data from database introspection
      */
     public function __construct($data = [])
     {
@@ -101,7 +101,7 @@ class ForeignKeyInfo
     /**
      * Get the local column names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getColumns(): array
     {
@@ -121,7 +121,7 @@ class ForeignKeyInfo
     /**
      * Get the referenced column names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getForeignColumns(): array
     {
@@ -192,7 +192,7 @@ class ForeignKeyInfo
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

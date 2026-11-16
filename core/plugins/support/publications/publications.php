@@ -25,7 +25,7 @@ class Publications extends Plugin
      * @param      integer $refid    Comment ID
      * @param      string  $category Item type (kb)
      * @param      integer $parent   Parent ID
-     * @return     array|null
+     * @return     array<mixed>|null
      */
     public function getReportedItem($refid, $category, $parent)
     {

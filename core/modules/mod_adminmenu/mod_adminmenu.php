@@ -51,7 +51,7 @@ class Adminmenu extends Module
     /**
      * Get a list of the available menus.
      *
-     * @return  array  An array of the available menus (from the menu types table).
+     * @return  array<int, \stdClass>  An array of the available menus (from the menu types table).
      */
     public static function getMenus()
     {
@@ -91,7 +91,7 @@ class Adminmenu extends Module
      *
      * @param   boolean|mixed  $authCheck  An optional switch to turn off the auth check
      *                               (to support custom layouts 'grey out' behaviour).
-     * @return  array    A nest array of component objects and submenus
+     * @return  array<mixed>    A nest array of component objects and submenus
      */
     public static function getComponents($authCheck = true)
     {

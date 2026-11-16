@@ -40,7 +40,7 @@ class UsersLatest extends Module
      * Get users sorted by activation date
      *
      * @param   object  $params  Registry
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getUsers($params)
     {

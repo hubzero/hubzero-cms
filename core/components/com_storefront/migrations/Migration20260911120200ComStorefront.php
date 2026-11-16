@@ -72,7 +72,7 @@ class Migration20260911120200ComStorefront extends Base
      * has arranged this menu deliberately, and it is theirs.
      *
      * @param   integer  $published  The state to look for on the alias itself
-     * @return  array    Menu item ids
+     * @return  array<int, mixed>    Menu item ids
      **/
     protected function deadStoreAliases($published)
     {
@@ -126,7 +126,7 @@ class Migration20260911120200ComStorefront extends Base
     /**
      * Set the published state of the given menu items
      *
-     * @param   array    $ids    Menu item ids
+     * @param   array<mixed>    $ids    Menu item ids
      * @param   integer  $state  The state to set
      * @return  void
      **/

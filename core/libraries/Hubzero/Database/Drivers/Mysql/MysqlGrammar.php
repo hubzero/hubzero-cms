@@ -21,8 +21,8 @@ class MysqlGrammar extends BaseSchemaGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -32,7 +32,7 @@ class MysqlGrammar extends BaseSchemaGrammar
     /**
      * Type mappings from abstract types to MySQL types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types
@@ -82,7 +82,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * statement with all indexes inline.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileCreate(TableDefinition $blueprint): array
     {
@@ -156,7 +156,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * MySQL can index the first so many characters of a column, which is
      * written here as the column name and that number together.
      *
-     * @param  array  $columns
+     * @param  array<mixed>  $columns
      * @return string
      */
     protected function columnize(array $columns): string
@@ -187,7 +187,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * MySQL supports inline UNIQUE KEY definitions.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineUniqueIndex(string $name, array $columns): ?string
@@ -202,7 +202,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * MySQL supports inline FULLTEXT KEY definitions.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineFulltextIndex(string $name, array $columns): ?string
@@ -215,7 +215,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * Compile an ALTER TABLE statement to add columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterAdd(TableDefinition $blueprint): array
     {
@@ -241,7 +241,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * MySQL uses MODIFY COLUMN for changing column definitions
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterModify(TableDefinition $blueprint): array
     {
@@ -279,7 +279,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * Override to support MySQL-specific index types
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileIndexes(TableDefinition $blueprint): array
     {
@@ -411,7 +411,7 @@ class MysqlGrammar extends BaseSchemaGrammar
      * collected in an AlterTableBuilder.
      *
      * @param   AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements to execute
+     * @return  array<int, mixed>  Array of SQL statements to execute
      */
     public function compileAlterTable(AlterTableBuilder $builder): array
     {

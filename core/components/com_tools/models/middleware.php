@@ -26,7 +26,7 @@ class Middleware extends Obj
     /**
      * \Hubzero\ItemList
      *
-     * @var array
+     * @var array<mixed>
      */
     private $cache = [
         'zones.count' => null,
@@ -120,7 +120,7 @@ class Middleware extends Obj
      * is pulled from the #__tool_version_zone table.
      *
      * @param      string|null $ip
-     * @param      array  $allowed List of zone IDs to check against
+     * @param      array<mixed>  $allowed List of zone IDs to check against
      * @return     object
      */
     public function zoning($ip = null, $allowed = [])
@@ -174,7 +174,7 @@ class Middleware extends Obj
      * Get a list of zones
      *
      * @param      string $rtrn    Data type to return [count, list]
-     * @param      array  $filters Filters to apply to query
+     * @param      array<mixed>  $filters Filters to apply to query
      * @return     mixed Returns an integer or array depending upon format chosen
      */
     public function zones($rtrn = 'list', $filters = [], $clear = false)

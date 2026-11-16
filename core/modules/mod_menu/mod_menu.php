@@ -59,7 +59,7 @@ class Menu extends Module
      * Get a list of the menu items.
      *
      * @param   object  $params  Registry The module options.
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getList(&$params)
     {

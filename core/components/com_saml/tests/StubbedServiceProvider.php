@@ -19,7 +19,7 @@ class StubbedServiceProvider extends ServiceProvider
     /**
      * cn => list of member user IDs
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $groups = [];
 
@@ -45,7 +45,7 @@ class StubbedServiceProvider extends ServiceProvider
     /**
      * Entry => the group's own cn; entries not listed are their own cn
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $canonical = [];
 
@@ -61,13 +61,13 @@ class StubbedServiceProvider extends ServiceProvider
     /**
      * cn's this stub reports as confirmed membership
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $confirmed = [];
 
     /**
      * @param   integer  $userId
-     * @return  array
+     * @return  array<mixed>
      */
     protected function confirmedGroups($userId)
     {

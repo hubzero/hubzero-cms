@@ -143,9 +143,9 @@ class MorphOne extends Relationship
     /**
      * Associate a related model with this parent
      *
-     * @param  \Hubzero\Database\Relational|array|\Hubzero\Database\Rows  $model     The related model
+     * @param  \Hubzero\Database\Relational|array<mixed>|\Hubzero\Database\Rows  $model     The related model
      * @param  \Closure|null|mixed                 $callback  Optional callback
-     * @return \Hubzero\Database\Relational|array|\Hubzero\Database\Rows
+     * @return \Hubzero\Database\Relational|array<mixed>|\Hubzero\Database\Rows
      */
     public function associate($model, $callback = null)
     {
@@ -162,7 +162,7 @@ class MorphOne extends Relationship
     /**
      * Save a new related model with the given data
      *
-     * @param  array  $data  The data for the new model
+     * @param  array<mixed>  $data  The data for the new model
      * @return bool
      */
     public function save($data)
@@ -176,7 +176,7 @@ class MorphOne extends Relationship
     /**
      * Create and save a new related model
      *
-     * @param  array  $attributes  The attributes for the new model
+     * @param  array<mixed>  $attributes  The attributes for the new model
      * @return \Hubzero\Database\Relational
      */
     public function create(array $attributes = [])
@@ -196,7 +196,7 @@ class MorphOne extends Relationship
     /**
      * Get the relations for eager loading
      *
-     * @param  array          $keys        The parent keys to fetch for
+     * @param  array<mixed>          $keys        The parent keys to fetch for
      * @param  \Closure|null  $constraint  Optional constraint
      * @return \Hubzero\Database\Relational
      */

@@ -21,7 +21,7 @@ class Textfieldfilter extends Filter
     /**
      * Render form fields on the filter list
      *
-     * @param   array   $counts  counts retrieved from solr search
+     * @param   array<mixed>   $counts  counts retrieved from solr search
      * @param   string   $textValue  list of options currently selected
      * @return  string
      */
@@ -39,7 +39,7 @@ class Textfieldfilter extends Filter
      * Add selected filters to solr query
      *
      * @param   object   $query  Solarium object that builds the solr query
-     * @param   array   $selectedFilters  list of options currently selected
+     * @param   array<mixed>   $selectedFilters  list of options currently selected
      * @return  string|bool
      */
     public function applyFilters($query, $selectedFilters)

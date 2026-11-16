@@ -93,7 +93,7 @@ class Job extends Relational
     /**
      * Split event into plugin name and event
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      **/
     public function automaticEvent($data)
@@ -109,7 +109,7 @@ class Job extends Relational
     /**
      * Set publish up value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      **/
     public function automaticPublishUp($data)
@@ -127,7 +127,7 @@ class Job extends Relational
     /**
      * Set publish down value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPublishDown($data)
@@ -358,7 +358,7 @@ class Job extends Relational
      * Returns an array of all marks created since the Profiler object
      * was instantiated.
      *
-     * @return  array  Array of profiler marks
+     * @return  array<mixed>  Array of profiler marks
      */
     public function profile()
     {
@@ -369,7 +369,7 @@ class Job extends Relational
      * Return data about this job, icluding profile info as an array
      *
      * @param   boolean  $verbose
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray($verbose = false)
     {

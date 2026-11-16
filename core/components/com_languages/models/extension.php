@@ -83,7 +83,7 @@ class Extension extends Relational
     /**
      * Language folders
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $folders = null;
 
@@ -111,7 +111,7 @@ class Extension extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -142,7 +142,7 @@ class Extension extends Relational
     /**
      * Get all records
      *
-     * @param   array|null  $columns
+     * @param   array<mixed>|null  $columns
      * @return  object
      */
     public static function all($columns = null)
@@ -195,7 +195,7 @@ class Extension extends Relational
      * Method to get the folders
      *
      * @param   integer  $client_id
-     * @return  array    Languages folders
+     * @return  array<mixed>    Languages folders
      */
     public function folders($client_id = 0)
     {

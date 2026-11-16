@@ -27,7 +27,7 @@ class Paypal extends Plugin
      *
      * @param   object  $cart
      * @param   object  $user
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function onRenderPaymentOptions($cart, $user)
     {
@@ -47,7 +47,7 @@ class Paypal extends Plugin
     /**
      * Return a list of filters that can be applied
      *
-     * @return  array|bool
+     * @return  array<mixed>|bool
      */
     public function onProcessPayment($transaction, $user)
     {

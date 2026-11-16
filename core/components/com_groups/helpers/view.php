@@ -32,14 +32,14 @@ class View
     /**
      * List of sections
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private static $sections = null;
 
     /**
      * List of section content
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private static $sections_content = null;
 
@@ -75,7 +75,7 @@ class View
     /**
      * Get group plugins
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getSections()
     {
@@ -104,7 +104,7 @@ class View
      * Get "Before" group content
      *
      * @param   object  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getBeforeSectionsContent($group)
     {
@@ -126,7 +126,7 @@ class View
      * Get group plugins sections
      *
      * @param   object  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getSectionsContent($group)
     {
@@ -259,7 +259,7 @@ class View
      * Output menu
      *
      * @param   object  $group
-     * @param   array   $pageArray
+     * @param   array<mixed>   $pageArray
      * @return  string
      */
     public static function buildRecursivePageMenu($group, $pageArray)
@@ -432,7 +432,7 @@ class View
      * Get group page templates
      *
      * @param   object  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getPageTemplates($group)
     {
@@ -482,7 +482,7 @@ class View
      * Get list of stylesheets for page
      *
      * @param   object  $group
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getPageCss($group)
     {
@@ -503,7 +503,7 @@ class View
      * Get Stylesheets for URL (with cURL)
      *
      * @param   string  $url
-     * @return  array
+     * @return  array<mixed>
      */
     private static function stylesheetsForUrl($url)
     {

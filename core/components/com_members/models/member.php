@@ -254,8 +254,8 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Save profile data
      *
-     * @param   array   $profile
-     * @param   array   $access
+     * @param   array<mixed>   $profile
+     * @param   array<mixed>   $access
      * @return  boolean
      */
     public function saveProfile($profile, $access = [])

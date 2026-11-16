@@ -2006,9 +2006,9 @@ class Schema extends Base implements CommandInterface
      *
      * Multiple patterns can be comma-separated: "user,!session"
      *
-     * @param  array   $tables   Array of table names
+     * @param  array<mixed>   $tables   Array of table names
      * @param  string  $filter   Filter pattern(s)
-     * @return array|false       Filtered array or false on invalid regex
+     * @return array<mixed>|false       Filtered array or false on invalid regex
      */
     protected function filterTables(array $tables, string $filter)
     {
@@ -2095,9 +2095,9 @@ class Schema extends Base implements CommandInterface
      * Write SQL statements to a file
      *
      * @param  string  $path     Output file path (can be directory or file)
-     * @param  array   $upSql    Array of UP migration SQL statements
-     * @param  array   $downSql  Array of DOWN migration SQL statements
-     * @param  array   $options  Options: description, safe_flags
+     * @param  array<mixed>   $upSql    Array of UP migration SQL statements
+     * @param  array<mixed>   $downSql  Array of DOWN migration SQL statements
+     * @param  array<mixed>   $options  Options: description, safe_flags
      * @return void
      */
     protected function writeSqlToFile(string $path, array $upSql, array $downSql, array $options = []): void

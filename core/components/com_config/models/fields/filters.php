@@ -128,7 +128,7 @@ class Filters extends Field
     /**
      * A helper to get the list of user groups.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getUserGroups()
     {

@@ -68,7 +68,7 @@ class Activity extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      * @since   2.0.0
      **/

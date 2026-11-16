@@ -30,7 +30,7 @@ class Usage extends Plugin
      *
      * @param  object $user   User
      * @param  object $member MembersProfile
-     * @return array   Plugin name
+     * @return array<mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -49,8 +49,8 @@ class Usage extends Plugin
      * @param  object $user   User
      * @param  object $member MembersProfile
      * @param  string $option Component name
-     * @param  string|array $areas  Plugins to return data
-     * @return array   Return array of html
+     * @param  string|array<mixed> $areas  Plugins to return data
+     * @return array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -161,7 +161,7 @@ class Usage extends Plugin
      * Get contributions
      *
      * @param  string $authorid User ID
-     * @return array
+     * @return array<string, mixed>
      */
     public function firstLastContribution($authorid)
     {
@@ -257,7 +257,7 @@ class Usage extends Plugin
      * Get classroom usage
      *
      * @param  mixed $authorid User ID
-     * @return array
+     * @return array<mixed>
      */
     public function getClassroomUsage($authorid)
     {
@@ -399,7 +399,7 @@ class Usage extends Plugin
      * Get the resource types that are just a
      * list of other standalone resources
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public static function getSerialResourceTypes()
     {
@@ -416,7 +416,7 @@ class Usage extends Plugin
      * Get the IDs of standalone child resources to this resource
      *
      * @param  integer $parent_id
-     * @return array
+     * @return array<int, mixed>
      */
     public static function getSerialResourceChildren($parent_id)
     {

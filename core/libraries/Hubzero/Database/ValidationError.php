@@ -56,7 +56,7 @@ class ValidationError implements \Stringable, \JsonSerializable
     /**
      * Parameters passed to the rule
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $params;
 
@@ -73,7 +73,7 @@ class ValidationError implements \Stringable, \JsonSerializable
      * @param  string  $field    The field name
      * @param  string  $rule     The rule name
      * @param  string  $message  The error message
-     * @param  array   $params   Rule parameters
+     * @param  array<mixed>   $params   Rule parameters
      * @param  mixed   $value    The value that failed
      */
     public function __construct(
@@ -123,7 +123,7 @@ class ValidationError implements \Stringable, \JsonSerializable
     /**
      * Get the rule parameters
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getParams(): array
     {
@@ -165,7 +165,7 @@ class ValidationError implements \Stringable, \JsonSerializable
     /**
      * Specify data for JSON serialization
      *
-     * @return array
+     * @return array<mixed>
      */
     public function jsonSerialize(): array
     {
@@ -180,7 +180,7 @@ class ValidationError implements \Stringable, \JsonSerializable
     /**
      * Convert to array
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

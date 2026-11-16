@@ -43,7 +43,7 @@ class Entriesv1r0 extends ApiController
      * @param   string   $scope      Requested scope
      * @param   integer  $scopeId    Requested scope id
      * @param   integer  $createdBy  Requested author
-     * @return  array    [scope, scope_id, created_by]
+     * @return  array<int, mixed>    [scope, scope_id, created_by]
      * @throws  Exception
      */
     protected function authorizedScope($scope, $scopeId, $createdBy)

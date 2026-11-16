@@ -56,7 +56,7 @@ abstract class Multilangstatus
     /**
      * Get content langs
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getContentlangs()
     {
@@ -73,7 +73,7 @@ abstract class Multilangstatus
     /**
      * Get site langs
      *
-     * @return  array
+     * @return  array<\stdClass>
      */
     public static function getSitelangs()
     {
@@ -91,7 +91,7 @@ abstract class Multilangstatus
     /**
      * Get home pages
      *
-     * @return  array
+     * @return  array<\stdClass>
      */
     public static function getHomepages()
     {
@@ -111,7 +111,7 @@ abstract class Multilangstatus
     /**
      * Get status
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getStatus()
     {

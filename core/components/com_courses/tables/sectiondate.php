@@ -123,7 +123,7 @@ class SectionDate extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  SQL
      */
     private function buildQuery($filters = [])
@@ -154,7 +154,7 @@ class SectionDate extends Table
     /**
      * Get a count of entries
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -169,8 +169,8 @@ class SectionDate extends Table
     /**
      * Get a list of entries
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {

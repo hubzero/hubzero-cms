@@ -37,7 +37,7 @@ class Provider extends AbstractService
     /**
      * Tests for spam.
      *
-     * @param   array  $data  Content to test
+     * @param   array<mixed>  $data  Content to test
      * @return  bool   True if the comment is spam, false if not
      * @throws  Exception
      */

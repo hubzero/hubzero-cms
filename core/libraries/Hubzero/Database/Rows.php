@@ -35,7 +35,7 @@ class Rows implements Iterator, Countable
     /**
      * Internal array of iterable data
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $rows = [];
 
@@ -133,7 +133,7 @@ class Rows implements Iterator, Countable
     /**
      * Transforms rows into a JSON array
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function toJson()
     {
@@ -143,7 +143,7 @@ class Rows implements Iterator, Countable
     /**
      * Transforms rows into an object array
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function toObject()
     {
@@ -153,7 +153,7 @@ class Rows implements Iterator, Countable
     /**
      * Transforms rows into an array of arrays
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function toArray()
     {
@@ -163,7 +163,7 @@ class Rows implements Iterator, Countable
     /**
      * Outputs rows as given type
      *
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function to($type = 'array')
     {
@@ -182,7 +182,7 @@ class Rows implements Iterator, Countable
     /**
      * Grabs the raw rows out of the iterator
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function raw()
     {
@@ -217,7 +217,7 @@ class Rows implements Iterator, Countable
      * Returns the result keys for the current dataset
      *
      * @param   string  $key  The key for which to pull all values
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function fieldsByKey($key)
     {
@@ -633,7 +633,7 @@ class Rows implements Iterator, Countable
      * Load associative relation definitions on this collection
      *
      * @param   Relational  $model     A model instance
-     * @param   array       $includes  Associative array of relation => config
+     * @param   array<mixed>       $includes  Associative array of relation => config
      * @return  void
      **/
     private function loadAssociativeRelation(Relational $model, array $includes)

@@ -160,7 +160,7 @@ class Section extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  Database query
      */
     private function buildQuery($filters = [])
@@ -239,7 +239,7 @@ class Section extends Table
     /**
      * Get a count of entries
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  string|null
      */
     public function count($filters = [])
@@ -254,8 +254,8 @@ class Section extends Table
     /**
      * Get a list of entries
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {

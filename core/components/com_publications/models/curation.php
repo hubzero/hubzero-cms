@@ -64,7 +64,7 @@ class Curation extends Obj
     /**
      * Blocks
      *
-     * @var  object|array
+     * @var  object|array<mixed>
      */
     public $blocks = [];
 
@@ -78,7 +78,7 @@ class Curation extends Obj
     /**
      * Current block
      *
-     * @var  object|array
+     * @var  object|array<mixed>
      */
     public $block = [];
 
@@ -1330,7 +1330,7 @@ class Curation extends Obj
      * Get status of curation item
      *
      * @param   string|null  $props  Pointer to block/element in question
-     * @param   array|null   $items  Status array
+     * @param   array<mixed>|null   $items  Status array
      * @return  object
      */
     public function getReviewItemStatus($props = null, $items = null)
@@ -1563,7 +1563,7 @@ class Curation extends Obj
     /**
      * Get history logs
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  mixed  Object or false
      */
     public function getHistory($filters = [])
@@ -2060,7 +2060,7 @@ class Curation extends Obj
      * array for publications with no local file attachments (Databases, Series),
      * for connection-sourced files, and when the repo path cannot be resolved.
      *
-     * @return  array  stale attachment rows (each carries path, title, element_id)
+     * @return  array<int, mixed>  stale attachment rows (each carries path, title, element_id)
      */
     public function movedSourceAttachments()
     {

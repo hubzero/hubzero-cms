@@ -24,14 +24,14 @@ class Checker
     /**
      * Holds registered spam detectors
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $detectors = [];
 
     /**
      * Holds list of detectors and what they reported
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $report = [];
 
@@ -79,7 +79,7 @@ class Checker
     /**
      * Checks if a string is spam or not
      *
-     * @param   string|array  $data
+     * @param   string|array<mixed>  $data
      * @return  object
      */
     public function check($data)
@@ -161,7 +161,7 @@ class Checker
     /**
      * Gets a list of all spam detectors
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getDetectors()
     {
@@ -171,7 +171,7 @@ class Checker
     /**
      * What each detector found in the last check
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getReport()
     {
@@ -182,8 +182,8 @@ class Checker
      * Used to normalize string before passing
      * it to detectors
      *
-     * @param   array   $data
-     * @return  array
+     * @param   array<mixed>   $data
+     * @return  array<mixed>
      */
     protected function prepareData(array $data)
     {

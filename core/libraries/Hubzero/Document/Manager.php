@@ -24,7 +24,7 @@ class Manager
     /**
      * The array of created "types".
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $types = [];
 
@@ -49,7 +49,7 @@ class Manager
      * Get a type instance.
      *
      * @param   string|null  $type
-     * @param   array   $options  Associative array of options
+     * @param   array<mixed>   $options  Associative array of options
      * @return  mixed
      */
     public function instance($type = null, $options = [])
@@ -78,7 +78,7 @@ class Manager
      * Create a new type instance.
      *
      * @param   string  $type
-     * @param   array   $options  Associative array of options
+     * @param   array<mixed>   $options  Associative array of options
      * @return  object
      * @throws  InvalidArgumentException
      */
@@ -120,7 +120,7 @@ class Manager
     /**
      * Get all of the created "types".
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTypes()
     {
@@ -131,7 +131,7 @@ class Manager
      * Dynamically call the default type instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

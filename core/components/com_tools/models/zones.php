@@ -19,7 +19,7 @@ class Zones extends Obj
     /**
      * Get execution zones list
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getExecutionZones()
     {

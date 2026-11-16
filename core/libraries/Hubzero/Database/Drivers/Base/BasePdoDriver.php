@@ -34,7 +34,7 @@ abstract class BasePdoDriver extends Driver
      * Creates a lazy PdoConnection from the provided options. The actual
      * database connection is not opened until first use.
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If PDO is not installed or DSN is not set
      */

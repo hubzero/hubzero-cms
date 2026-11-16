@@ -21,7 +21,7 @@ class RenderTest extends TestCase
     /**
      * Wiki markup, and the HTML it renders to
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function markup(): array
     {
@@ -220,7 +220,7 @@ end',
     }
 
     /**
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @param   string  $markup
      * @param   string  $html
      * @return  void

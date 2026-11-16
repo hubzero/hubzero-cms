@@ -34,7 +34,7 @@ class Sender
      * Run one tick.
      *
      * @param   boolean  $dryRun  mark recipients sent WITHOUT emitting mail (testing)
-     * @return  array
+     * @return  array<mixed>
      */
     public static function run($dryRun = false)
     {
@@ -271,7 +271,7 @@ class Sender
      * @param   Mailing  $mailing
      * @param   integer  $limit
      * @param   boolean  $dryRun
-     * @return  array    ['sent' => int, 'failed' => int]
+     * @return  array<string, mixed>    ['sent' => int, 'failed' => int]
      */
     public static function sendBatch(Mailing $mailing, $limit, $dryRun = false)
     {

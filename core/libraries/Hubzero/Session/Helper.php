@@ -73,8 +73,8 @@ class Helper
     /**
      * Get list of all sessions
      *
-     * @param   array  $filters  Filters to apply
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to apply
+     * @return  array<mixed>
      */
     public static function getAllSessions($filters = [])
     {

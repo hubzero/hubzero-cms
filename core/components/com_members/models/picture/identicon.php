@@ -60,7 +60,7 @@ class Identicon
     /**
      * Constructor
      *
-     * @param   array  $config
+     * @param   array<mixed>  $config
      * @return  void
      */
     public function __construct($config = [])

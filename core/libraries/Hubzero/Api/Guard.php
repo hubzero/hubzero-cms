@@ -25,7 +25,7 @@ class Guard
     /**
      * The oauth token data
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $token = null;
 
@@ -50,7 +50,7 @@ class Guard
     /**
      * Grabs and returns the oauth token data
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function token()
     {
@@ -94,9 +94,9 @@ class Guard
     /**
      * Validates incoming request
      *
-     * @param   array  $params   request parameters
-     * @param   array  $options  configuration options
-     * @return  array
+     * @param   array<mixed>  $params   request parameters
+     * @param   array<mixed>  $options  configuration options
+     * @return  array<string, mixed>
      */
     public function authenticate($params = [], $options = [])
     {

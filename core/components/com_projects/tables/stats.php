@@ -62,7 +62,7 @@ class Stats extends Table
      * @param   integer|null  $year
      * @param   integer|null  $month
      * @param   string   $week
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getLog($year = null, $month = null, $week = '')
     {
@@ -135,7 +135,7 @@ class Stats extends Table
      * @param   bool|int     $publishing
      * @param   string   $period
      * @param   integer  $limit
-     * @return  array
+     * @return  array<mixed>
      */
     public function getStats($model, $cron = false, $publishing = false, $period = 'alltime', $limit = 3)
     {

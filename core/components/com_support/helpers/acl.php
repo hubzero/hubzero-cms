@@ -37,14 +37,14 @@ class ACL extends Obj
     /**
      * Raw data from database
      *
-     * @var array
+     * @var array<mixed>
      */
     private $rawData;
 
     /**
      * User's groups
      *
-     * @var array
+     * @var array<mixed>
      */
     private $memberGroups;
 

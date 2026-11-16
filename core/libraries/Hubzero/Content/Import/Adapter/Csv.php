@@ -28,7 +28,7 @@ class Csv implements Adapter
     /**
      * Array to hold processed data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 
@@ -86,7 +86,7 @@ class Csv implements Adapter
      * Get a list of headers
      *
      * @param   \Hubzero\Content\Import\Model\Import $import
-     * @return  array
+     * @return  array<mixed>
      */
     public function headers(Import $import)
     {
@@ -100,9 +100,9 @@ class Csv implements Adapter
      * Process Import data
      *
      * @param   \Hubzero\Content\Import\Model\Import $import     Import record
-     * @param   array   $callbacks  Array of Callbacks
+     * @param   array<mixed>   $callbacks  Array of Callbacks
      * @param   bool    $dryRun     Dry Run mode?
-     * @return  array
+     * @return  array<mixed>
      */
     public function process(Import $import, array $callbacks, $dryRun)
     {
@@ -157,7 +157,7 @@ class Csv implements Adapter
      * Run Callbacks on Record
      *
      * @param   object  $record    Resource Record
-     * @param   array   $callbacks Array of Callbacks
+     * @param   array<mixed>   $callbacks Array of Callbacks
      * @param   bool    $dryRun    Dry Run mode?
      * @return  object  Record object
      */

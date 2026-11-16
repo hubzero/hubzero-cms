@@ -29,8 +29,8 @@ class Abstracts implements Test
     /**
      * Checks if a string is spam or not
      *
-     * @param   array  $data
-     * @param   array  $options
+     * @param   array<mixed>  $data
+     * @param   array<mixed>  $options
      * @return  object
      */
     public function examine(array $data, array $options = [])

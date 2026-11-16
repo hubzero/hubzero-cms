@@ -168,7 +168,7 @@ class Query
     /**
      * The elements of a basic select statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $select = [
         'select',
@@ -185,7 +185,7 @@ class Query
     /**
      * The elements of a basic insert statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $insert = [
         'insert',
@@ -195,7 +195,7 @@ class Query
     /**
      * The elements of a basic update statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $update = [
         'update',
@@ -206,7 +206,7 @@ class Query
     /**
      * The elements of a basic delete statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $delete = [
         'delete',
@@ -216,7 +216,7 @@ class Query
     /**
      * The elements of an upsert statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $upsert = [
         'upsert',
@@ -225,7 +225,7 @@ class Query
     /**
      * The elements of an insertMany (bulk insert) statement
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $insertMany = [
         'insertMany',
@@ -269,7 +269,7 @@ class Query
      * These are merged with inline bindings when building queries with
      * named placeholders (:name).
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $namedParameters = [];
 
@@ -336,7 +336,7 @@ class Query
      * By default, this only clears in-memory query cache and preserves the
      * configured persistent cache store.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - clear_memory_cache (bool, default true)
      *                           - clear_cache_store (bool, default false)
      *                           - clear_cache_namespace (bool, default true)
@@ -641,7 +641,7 @@ class Query
      *   setParameter('tax_rate', 1.08)->selectRaw('price * :tax_rate as with_tax')
      *
      * @param   string       $expression  The raw SQL expression
-     * @param   array        $bindings    Optional bindings (positional or named)
+     * @param   array<mixed>        $bindings    Optional bindings (positional or named)
      * @param   string|null  $as          Optional alias for the expression
      * @return  $this
      **/
@@ -712,7 +712,7 @@ class Query
      *       ->columns(['email', 'name'])
      *       ->fromSelect($selectQuery);
      *
-     * @param   array  $columns  The column names
+     * @param   array<mixed>  $columns  The column names
      * @return  $this
      **/
     public function columns(array $columns)
@@ -728,7 +728,7 @@ class Query
      *
      * @param   string         $table    The target table
      * @param   Query|callable $source   Query object or closure that builds the SELECT query
-     * @param   array          $columns  Optional list of target columns
+     * @param   array<mixed>          $columns  Optional list of target columns
      * @return  $this
      **/
     public function insertUsing(string $table, $source, array $columns = [])
@@ -814,7 +814,7 @@ class Query
      *       ->fromSelectRaw('SELECT uidNumber, userPassword FROM #__xprofiles WHERE active = ?', [1]);
      *
      * @param   string  $sql       The raw SELECT SQL
-     * @param   array   $bindings  Optional parameter bindings
+     * @param   array<mixed>   $bindings  Optional parameter bindings
      * @return  $this
      **/
     public function fromSelectRaw($sql, array $bindings = [])
@@ -943,7 +943,7 @@ class Query
      *   ])
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @param   string  $type
      * @return  $this
      */
@@ -989,7 +989,7 @@ class Query
      * Defines a table INNER join with multiple ON predicates
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @return  $this
      */
     public function innerJoinOn($table, array $conditions)
@@ -1027,7 +1027,7 @@ class Query
      * Note: FULL JOIN support requires a single equality predicate.
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @return  $this
      **/
     public function fullJoinOn($table, array $conditions)
@@ -1057,7 +1057,7 @@ class Query
      * Defines a table LEFT join with multiple ON predicates
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @return  $this
      **/
     public function leftJoinOn($table, array $conditions)
@@ -1087,7 +1087,7 @@ class Query
      * Defines a table RIGHT join with multiple ON predicates
      *
      * @param   string  $table
-     * @param   array   $conditions
+     * @param   array<mixed>   $conditions
      * @return  $this
      **/
     public function rightJoinOn($table, array $conditions)
@@ -1328,7 +1328,7 @@ class Query
      *   })
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1348,7 +1348,7 @@ class Query
      * Accepts either an array of values or a closure for subqueries.
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1373,7 +1373,7 @@ class Query
      *   })
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1393,7 +1393,7 @@ class Query
      * Accepts either an array of values or a closure for subqueries.
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1447,7 +1447,7 @@ class Query
      *   // Generates: WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'
      *
      * @param   string  $column  The column to filter
-     * @param   array   $values  Array with exactly 2 values [min, max]
+     * @param   array<mixed>   $values  Array with exactly 2 values [min, max]
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1460,7 +1460,7 @@ class Query
      * Add a WHERE BETWEEN clause with OR logic
      *
      * @param   string  $column  The column to filter
-     * @param   array   $values  Array with exactly 2 values [min, max]
+     * @param   array<mixed>   $values  Array with exactly 2 values [min, max]
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1479,7 +1479,7 @@ class Query
      *   // Generates: WHERE price NOT BETWEEN 10 AND 100
      *
      * @param   string  $column  The column to filter
-     * @param   array   $values  Array with exactly 2 values [min, max]
+     * @param   array<mixed>   $values  Array with exactly 2 values [min, max]
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1492,7 +1492,7 @@ class Query
      * Add a WHERE NOT BETWEEN clause with OR logic
      *
      * @param   string  $column  The column to filter
-     * @param   array   $values  Array with exactly 2 values [min, max]
+     * @param   array<mixed>   $values  Array with exactly 2 values [min, max]
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1505,7 +1505,7 @@ class Query
      * Internal helper for BETWEEN clauses
      *
      * @param   string  $column   The column to filter
-     * @param   array   $values   Array with exactly 2 values [min, max]
+     * @param   array<mixed>   $values   Array with exactly 2 values [min, max]
      * @param   string  $logical  The logical operator (and/or)
      * @param   bool    $not      Whether to use NOT BETWEEN
      * @param   int     $depth    The depth level of the clause
@@ -1542,7 +1542,7 @@ class Query
      *   // Generates: WHERE order_date BETWEEN project_start AND project_end
      *
      * @param   string  $column   The column to filter
-     * @param   array   $columns  Array with exactly 2 column names [min_column, max_column]
+     * @param   array<mixed>   $columns  Array with exactly 2 column names [min_column, max_column]
      * @param   int     $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1555,7 +1555,7 @@ class Query
      * Add a WHERE column BETWEEN two columns clause with OR logic
      *
      * @param   string  $column   The column to filter
-     * @param   array   $columns  Array with exactly 2 column names [min_column, max_column]
+     * @param   array<mixed>   $columns  Array with exactly 2 column names [min_column, max_column]
      * @param   int     $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1574,7 +1574,7 @@ class Query
      *   // Generates: WHERE price NOT BETWEEN min_price AND max_price
      *
      * @param   string  $column   The column to filter
-     * @param   array   $columns  Array with exactly 2 column names [min_column, max_column]
+     * @param   array<mixed>   $columns  Array with exactly 2 column names [min_column, max_column]
      * @param   int     $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1587,7 +1587,7 @@ class Query
      * Add a WHERE column NOT BETWEEN two columns clause with OR logic
      *
      * @param   string  $column   The column to filter
-     * @param   array   $columns  Array with exactly 2 column names [min_column, max_column]
+     * @param   array<mixed>   $columns  Array with exactly 2 column names [min_column, max_column]
      * @param   int     $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1600,7 +1600,7 @@ class Query
      * Internal helper for BETWEEN columns clauses
      *
      * @param   string  $column   The column to filter
-     * @param   array   $columns  Array with exactly 2 column names
+     * @param   array<mixed>   $columns  Array with exactly 2 column names
      * @param   string  $logical  The logical operator (and/or)
      * @param   bool    $not      Whether to use NOT BETWEEN
      * @param   int     $depth    The depth level of the clause
@@ -1881,9 +1881,9 @@ class Query
      *       - native: use driver-native fulltext where supported
      *       - auto: backend default strategy
      *
-     * @param   string|array  $columns  Column name(s) to search
+     * @param   string|array<mixed>  $columns  Column name(s) to search
      * @param   string        $value    The search term(s)
-     * @param   array         $options  Search options (mode, etc.)
+     * @param   array<mixed>         $options  Search options (mode, etc.)
      * @param   int           $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1895,9 +1895,9 @@ class Query
     /**
      * Add a full-text search WHERE clause with OR logic
      *
-     * @param   string|array  $columns  Column name(s) to search
+     * @param   string|array<mixed>  $columns  Column name(s) to search
      * @param   string        $value    The search term(s)
-     * @param   array         $options  Search options (mode, etc.)
+     * @param   array<mixed>         $options  Search options (mode, etc.)
      * @param   int           $depth    The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1909,9 +1909,9 @@ class Query
     /**
      * Internal helper for full-text search clauses
      *
-     * @param   string|array  $columns  Column name(s) to search
+     * @param   string|array<mixed>  $columns  Column name(s) to search
      * @param   string        $value    The search term(s)
-     * @param   array         $options  Search options
+     * @param   array<mixed>         $options  Search options
      * @param   string        $logical  The logical operator (and/or)
      * @param   int           $depth    The depth level of the clause
      * @return  $this
@@ -2028,7 +2028,7 @@ class Query
      * Legacy option:
      *   informix_mode: like|hybrid|bts
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  string
      */
     protected function resolveInformixFulltextMode(array $options): string
@@ -2138,7 +2138,7 @@ class Query
      *   setParameter('user', 42)->whereRaw('created_by = :user OR modified_by = :user')
      *
      * @param   string  $string    The raw where clause
-     * @param   array   $bindings  Bindings array (positional or named)
+     * @param   array<mixed>   $bindings  Bindings array (positional or named)
      * @param   int     $depth     The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -2166,7 +2166,7 @@ class Query
      * See whereRaw() for examples.
      *
      * @param   string  $string    The raw where clause
-     * @param   array   $bindings  Bindings array (positional or named)
+     * @param   array<mixed>   $bindings  Bindings array (positional or named)
      * @param   int     $depth     The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -2559,7 +2559,7 @@ class Query
      *       ->fetch();
      * ```
      *
-     * @param   array  $parameters  Associative array of name => value pairs
+     * @param   array<mixed>  $parameters  Associative array of name => value pairs
      * @return  $this
      **/
     public function setParameters(array $parameters)
@@ -2573,7 +2573,7 @@ class Query
     /**
      * Get all currently set named parameters
      *
-     * @return  array  Associative array of name => value pairs
+     * @return  array<mixed>  Associative array of name => value pairs
      **/
     public function getNamedParameters(): array
     {
@@ -2747,7 +2747,7 @@ class Query
     /**
      * Sets the values to be inserted into the database
      *
-     * @param   array|string  $data  The data to be inserted, or one row of values written as SQL
+     * @param   array<mixed>|string  $data  The data to be inserted, or one row of values written as SQL
      * @return  $this
      **/
     public function values($data)
@@ -2768,9 +2768,9 @@ class Query
      * - SQLite: PRIMARY KEY or UNIQUE constraint
      *
      * @param   string      $table          The table into which to upsert
-     * @param   array       $values         Key-value pairs of data to insert
-     * @param   array|null  $updateColumns  Columns to update on conflict (null = all columns)
-     * @param   array|null  $conflictColumns  Columns that define the conflict (for PostgreSQL)
+     * @param   array<mixed>       $values         Key-value pairs of data to insert
+     * @param   array<mixed>|null  $updateColumns  Columns to update on conflict (null = all columns)
+     * @param   array<mixed>|null  $conflictColumns  Columns that define the conflict (for PostgreSQL)
      * @return  $this
      **/
     public function upsert(string $table, array $values, ?array $updateColumns = null, ?array $conflictColumns = null)
@@ -2783,7 +2783,7 @@ class Query
     /**
      * Sets the values to be modified in the database
      *
-     * @param   array|string  $data   The data to set, or a single column name
+     * @param   array<mixed>|string  $data   The data to set, or a single column name
      * @param   mixed         $value  The value for that column
      * @return  $this
      **/
@@ -2847,7 +2847,7 @@ class Query
     /**
      * Generate a database-agnostic CONCAT expression
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function concat(array $parts)
@@ -2908,7 +2908,7 @@ class Query
      *
      * @param   string  $column  The column to increment
      * @param   int     $amount  The amount to increment by (default 1)
-     * @param   array   $extra   Additional columns to update
+     * @param   array<mixed>   $extra   Additional columns to update
      * @return  int     The number of affected rows
      **/
     public function increment(string $column, int $amount = 1, array $extra = []): int
@@ -2957,7 +2957,7 @@ class Query
      *
      * @param   string  $column  The column to decrement
      * @param   int     $amount  The amount to decrement by (default 1)
-     * @param   array   $extra   Additional columns to update
+     * @param   array<mixed>   $extra   Additional columns to update
      * @return  int     The number of affected rows
      **/
     public function decrement(string $column, int $amount = 1, array $extra = []): int
@@ -2991,7 +2991,7 @@ class Query
     /**
      * Sets the group by element on the query
      *
-     * @param   array|string  $column  The column, or columns, to group by
+     * @param   array<mixed>|string  $column  The column, or columns, to group by
      * @return  $this
      **/
     public function group($column)
@@ -3033,7 +3033,7 @@ class Query
      *   setParameter('min_count', 5)->havingRaw('COUNT(*) > :min_count')
      *
      * @param   string  $string    The raw having clause
-     * @param   array   $bindings  Bindings array (positional or named)
+     * @param   array<mixed>   $bindings  Bindings array (positional or named)
      * @param   string  $logical   The logical operator (and/or)
      * @return  $this
      **/
@@ -3052,7 +3052,7 @@ class Query
      * Applies a raw having clause with OR logic
      *
      * @param   string  $string    The raw having clause
-     * @param   array   $bindings  Bindings array (positional or named)
+     * @param   array<mixed>   $bindings  Bindings array (positional or named)
      * @return  $this
      **/
     public function orHavingRaw($string, $bindings = [])
@@ -3632,7 +3632,7 @@ class Query
      *         ->whereInIfNotEmpty('tag_id', $selectedTags);
      *
      * @param   string  $column  The column to which the clause will apply
-     * @param   array   $values  The array of values to check against
+     * @param   array<mixed>   $values  The array of values to check against
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -3649,7 +3649,7 @@ class Query
      * Applies a where IN clause with OR logic only if the values array is not empty
      *
      * @param   string  $column  The column to which the clause will apply
-     * @param   array   $values  The array of values to check against
+     * @param   array<mixed>   $values  The array of values to check against
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -3666,7 +3666,7 @@ class Query
      * Applies a where NOT IN clause only if the values array is not empty
      *
      * @param   string  $column  The column to which the clause will apply
-     * @param   array   $values  The array of values to exclude
+     * @param   array<mixed>   $values  The array of values to exclude
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -3683,7 +3683,7 @@ class Query
      * Applies a where NOT IN clause with OR logic only if the values array is not empty
      *
      * @param   string  $column  The column to which the clause will apply
-     * @param   array   $values  The array of values to exclude
+     * @param   array<mixed>   $values  The array of values to exclude
      * @param   int     $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -3923,8 +3923,8 @@ class Query
      *   $query->selectWhen($canViewPrivate, ['id', 'name', 'email', 'phone'], ['id', 'name']);
      *
      * @param   mixed  $condition  The condition to evaluate (truthy/falsy)
-     * @param   array  $columns    The columns to select when condition is truthy
-     * @param   array|null  $fallback   Optional columns to select when condition is falsy
+     * @param   array<mixed>  $columns    The columns to select when condition is truthy
+     * @param   array<mixed>|null  $fallback   Optional columns to select when condition is falsy
      * @return  $this
      **/
     public function selectWhen($condition, array $columns, ?array $fallback = null)
@@ -4000,7 +4000,7 @@ class Query
      *
      * @param   mixed   $condition  The condition to evaluate (truthy/falsy)
      * @param   string  $column     The column to constrain
-     * @param   array   $values     The array of values
+     * @param   array<mixed>   $values     The array of values
      * @param   int     $depth      The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -4018,7 +4018,7 @@ class Query
      *
      * @param   mixed   $condition  The condition to evaluate (truthy/falsy)
      * @param   string  $column     The column to constrain
-     * @param   array   $values     The array of values
+     * @param   array<mixed>   $values     The array of values
      * @param   int     $depth      The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -4036,7 +4036,7 @@ class Query
      *
      * @param   mixed   $condition  The condition to evaluate (truthy/falsy)
      * @param   string  $column     The column to constrain
-     * @param   array   $values     The array of values to exclude
+     * @param   array<mixed>   $values     The array of values to exclude
      * @param   int     $depth      The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -4054,7 +4054,7 @@ class Query
      *
      * @param   mixed   $condition  The condition to evaluate (truthy/falsy)
      * @param   string  $column     The column to constrain
-     * @param   array   $values     The array of values to exclude
+     * @param   array<mixed>   $values     The array of values to exclude
      * @param   int     $depth      The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -4294,7 +4294,7 @@ class Query
      * Inserts a new row using data provided into given table
      *
      * @param   string    $table   The table name into which the data should be inserted
-     * @param   array     $data    An associative array of data to insert
+     * @param   array<mixed>     $data    An associative array of data to insert
      * @param   bool      $ignore  Whether or not to perform an insert ignore
      * @return  bool|int
      **/
@@ -4320,10 +4320,10 @@ class Query
      * columns.
      *
      * @param   string      $table           The table name
-     * @param   array       $data            Key-value pairs to insert/update
-     * @param   array|null  $updateColumns   Columns to update on conflict
+     * @param   array<mixed>       $data            Key-value pairs to insert/update
+     * @param   array<mixed>|null  $updateColumns   Columns to update on conflict
      *                                       (null = all)
-     * @param   array|null  $conflictColumns Columns defining conflict
+     * @param   array<mixed>|null  $conflictColumns Columns defining conflict
      *                                       (for PG/SQLite/Firebird)
      * @return  bool|int
      **/
@@ -4406,7 +4406,7 @@ class Query
      * ```
      *
      * @param   string  $table      The table name into which to insert
-     * @param   array   $rows       Array of associative arrays (each row is a key-value pair)
+     * @param   array<mixed>   $rows       Array of associative arrays (each row is a key-value pair)
      * @param   bool    $ignore     Whether to use INSERT IGNORE (skip duplicates)
      * @param   int     $chunkSize  Rows per batch (0 = no chunking, default 1000)
      * @return  int     Number of rows inserted
@@ -4475,7 +4475,7 @@ class Query
      * Alias for insertMany() with ignore=true.
      *
      * @param   string  $table      The table name into which to insert
-     * @param   array   $rows       Array of associative arrays (each row is a key-value pair)
+     * @param   array<mixed>   $rows       Array of associative arrays (each row is a key-value pair)
      * @param   int     $chunkSize  Rows per batch (0 = no chunking, default 1000)
      * @return  int     Number of rows inserted
      **/
@@ -4493,10 +4493,10 @@ class Query
      * Informix), it falls back to individual upsert calls.
      *
      * @param   string      $table           The table name
-     * @param   array       $rows            Array of associative arrays
-     * @param   array|null  $updateColumns   Columns to update on
+     * @param   array<mixed>       $rows            Array of associative arrays
+     * @param   array<mixed>|null  $updateColumns   Columns to update on
      *                                       conflict (null = all)
-     * @param   array|null  $conflictColumns Columns defining conflict
+     * @param   array<mixed>|null  $conflictColumns Columns defining conflict
      * @param   int         $chunkSize       Rows per batch (default 1000)
      * @return  int         Number of rows affected
      * @throws  \InvalidArgumentException  If rows have inconsistent columns
@@ -4575,7 +4575,7 @@ class Query
      * @param   string  $table    The table to update
      * @param   string  $pkField  The table field serving as primary key
      * @param   mixed   $pkValue  The primary key value
-     * @param   array   $data     The data to update in the database
+     * @param   array<mixed>   $data     The data to update in the database
      * @return  bool
      **/
     public function alter($table, $pkField, $pkValue, $data)
@@ -4790,7 +4790,7 @@ class Query
      * Gets the first row of the result set from the database query
      * as an associative array of type: ['field_name' => 'row_value']
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadAssoc()
     {
@@ -4806,7 +4806,7 @@ class Query
      *
      * @param   string|null  $key     The name of a field on which to key the result array
      * @param   string|null  $column  Instead of the whole row, only this column value will be in the result array
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadAssocList($key = null, $column = null)
     {
@@ -4820,7 +4820,7 @@ class Query
      * Gets an array of values from the offset field in each row of the result set from the database query
      *
      * @param   int  $offset  The row offset to use to build the result array
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadColumn($offset = 0)
     {
@@ -4847,7 +4847,7 @@ class Query
     /**
      * Gets the next row in the result set from the database query as an array
      *
-     * @return  array|bool
+     * @return  array<mixed>|bool
      */
     public function loadNextRow()
     {
@@ -4876,7 +4876,7 @@ class Query
      *
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -4902,7 +4902,7 @@ class Query
     /**
      * Retrieve the first row from the query
      *
-     * @param   string|array|null  $columns  Optional columns to select
+     * @param   string|array<mixed>|null  $columns  Optional columns to select
      * @return  object|null
      **/
     public function first($columns = null)
@@ -4967,7 +4967,7 @@ class Query
      *
      * @param   string       $column  Column to return
      * @param   string|null  $key     Optional key column
-     * @return  array
+     * @return  array<mixed>
      **/
     public function pluck(string $column, ?string $key = null): array
     {
@@ -5013,7 +5013,7 @@ class Query
      * Retrieve rows keyed by a specific column
      *
      * @param   string  $column  Column to key results by
-     * @return  array
+     * @return  array<mixed>
      **/
     public function keyBy(string $column): array
     {
@@ -5044,7 +5044,7 @@ class Query
     /**
      * Gets the first row of the result set from the database query as an array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadRow()
     {
@@ -5058,7 +5058,7 @@ class Query
      * Gets an array of the result set rows from the database query where each row is an array.
      *
      * @param   string|null  $key  The name of a field on which to key the result array
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadRowList($key = null)
     {
@@ -5393,7 +5393,7 @@ class Query
      * - Stored: setParameter('x', 1)->whereRaw('x = :x')
      *
      * @param   string  $sql       The SQL string to check
-     * @param   array   $bindings  The bindings array passed to the method
+     * @param   array<mixed>   $bindings  The bindings array passed to the method
      * @return  bool
      **/
     private function shouldProcessNamedPlaceholders(string $sql, array $bindings): bool
@@ -5418,7 +5418,7 @@ class Query
      * An associative array indicates named placeholders (:name).
      * A sequential/numeric array indicates positional placeholders (?).
      *
-     * @param   array  $array  The array to check
+     * @param   array<mixed>  $array  The array to check
      * @return  bool   True if associative (string keys), false if sequential
      **/
     private function isAssociativeArray(array $array): bool
@@ -5461,8 +5461,8 @@ class Query
      *     ->whereRaw('status = :status AND type = :type', ['type' => 'article'])
      *
      * @param   string  $sql     SQL string with :named placeholders
-     * @param   array   $params  Associative array of placeholder => value (inline bindings)
-     * @return  array   [converted_sql, ordered_bindings]
+     * @param   array<mixed>   $params  Associative array of placeholder => value (inline bindings)
+     * @return  array<mixed>   [converted_sql, ordered_bindings]
      * @throws  \InvalidArgumentException  If a named placeholder is missing from both sources
      **/
     private function convertNamedToPositional(string $sql, array $params): array
@@ -5507,7 +5507,7 @@ class Query
      *   // Returns: ['SELECT id FROM users WHERE active = ?', [1]]
      *
      * @param   callable  $callback  Closure that receives a Query instance
-     * @return  array     [sql, bindings]
+     * @return  array<int, mixed>     [sql, bindings]
      **/
     protected function buildSubquery(callable $callback): array
     {
@@ -5578,7 +5578,7 @@ class Query
      * // ['published']
      * ```
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getBindings()
     {
@@ -5695,7 +5695,7 @@ class Query
      * ```
      *
      * @param   string  $type  The query type (select, insert, update, delete)
-     * @return  array
+     * @return  array<mixed>
      */
     public function getDebugInfo($type = 'select')
     {

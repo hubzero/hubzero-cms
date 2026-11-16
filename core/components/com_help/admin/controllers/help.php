@@ -84,7 +84,7 @@ class Help extends AdminController
      * Get array of components
      *
      * @param   boolean|mixed  $authCheck
-     * @return  array
+     * @return  array<mixed>
      * @since   1.3.2
      */
     public static function getComponents($authCheck = true)
@@ -168,7 +168,7 @@ class Help extends AdminController
     /**
      * Get array of help pages for component
      *
-     * @param   array   $componentAndPages  Component info and corresponding help pages
+     * @param   array<mixed>   $componentAndPages  Component info and corresponding help pages
      * @param   string  $headingLevel       Leading level for component separation
      * @return  string
      */

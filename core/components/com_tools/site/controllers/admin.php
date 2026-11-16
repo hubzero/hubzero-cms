@@ -69,7 +69,7 @@ class Admin extends SiteController
     /**
      * Return all messages, if any
      *
-     * @return     array Array of messages
+     * @return     array<mixed> Array of messages
      */
     public function getMessages()
     {

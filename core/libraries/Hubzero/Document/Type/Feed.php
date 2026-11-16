@@ -149,7 +149,7 @@ class Feed extends Base
     /**
      * The feed items collection
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $items = [];
 
@@ -212,7 +212,7 @@ class Feed extends Base
     /**
      * Class constructor
      *
-     * @param   array  $options  Associative array of options
+     * @param   array<mixed>  $options  Associative array of options
      * @return  void
      */
     public function __construct($options = [])
@@ -227,7 +227,7 @@ class Feed extends Base
      * Render the document
      *
      * @param   boolean  $cache   If true, cache the output
-     * @param   array    $params  Associative array of attributes
+     * @param   array<mixed>    $params  Associative array of attributes
      * @return  string rendered data
      */
     public function render($cache = false, $params = [])

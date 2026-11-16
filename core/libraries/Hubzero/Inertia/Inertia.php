@@ -45,8 +45,8 @@ class Inertia
 
     /**
      * @param   string  $component
-     * @param   array   $props
-     * @return  array|null
+     * @param   array<mixed>   $props
+     * @return  array<mixed>|null
      */
     public static function render(string $component, array $props = []): ?array
     {
@@ -55,8 +55,8 @@ class Inertia
 
     /**
      * @param   string  $component
-     * @param   array   $props
-     * @return  array
+     * @param   array<mixed>   $props
+     * @return  array<mixed>
      */
     public static function page(string $component, array $props = []): array
     {
@@ -65,7 +65,7 @@ class Inertia
 
     /**
      * @param   string  $component
-     * @param   array   $props
+     * @param   array<mixed>   $props
      * @param   string  $mountId
      * @return  string
      */
@@ -95,7 +95,7 @@ class Inertia
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -115,7 +115,7 @@ class Inertia
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -133,7 +133,7 @@ class Inertia
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function debugSnapshot(): array
     {
@@ -141,7 +141,7 @@ class Inertia
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function requestDetails(): array
     {
@@ -149,8 +149,8 @@ class Inertia
     }
 
     /**
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     public static function renderDebugPanel(array $snapshot = [], array $options = []): string
@@ -159,10 +159,10 @@ class Inertia
     }
 
     /**
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     public static function preserveDebugParam(array $params, string $name = 'inertia_debug', string $value = '1'): array
     {
@@ -206,7 +206,7 @@ class Inertia
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public static function profileSnapshot(): array
     {

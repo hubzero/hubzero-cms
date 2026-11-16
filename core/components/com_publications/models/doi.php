@@ -32,7 +32,7 @@ class Doi extends Obj
     /**
      * Container for properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 

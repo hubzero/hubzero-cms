@@ -20,7 +20,7 @@ class Group extends Base
     /**
      * URL segments
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $segments = [
         'option' => 'com_groups',

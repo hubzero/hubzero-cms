@@ -29,8 +29,8 @@ class Tools extends Plugin
     /**
      * Modify or append to query filters
      *
-     * @param   array  $filters
-     * @return  array|null
+     * @param   array<mixed>  $filters
+     * @return  array<mixed>|null
      */
     public function onQuestionsPrepareFilters($filters)
     {
@@ -59,7 +59,7 @@ class Tools extends Plugin
      * Return a list of users to be notified of changes
      *
      * @param   object  $row
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onQuestionNotify($row)
     {

@@ -74,7 +74,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The connection instances factory
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $instances = [];
 
@@ -172,7 +172,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The prepared statement bindings
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $bindings = [];
 
@@ -182,7 +182,7 @@ abstract class Driver implements LoggerAwareInterface
      * For prepared statements, we'll try to interpolate prepared statement into basic strings,
      * even though this isn't really an accurate representation of the query.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $log = [];
 
@@ -241,7 +241,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Original connection options used to construct this driver instance.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $connectionOptions = [];
 
@@ -333,7 +333,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Constructs a new object, setting some class properties
      *
-     * @param  array  $options  List of options used to configure the connection
+     * @param  array<mixed>  $options  List of options used to configure the connection
      */
     protected function __construct($options)
     {
@@ -353,7 +353,7 @@ abstract class Driver implements LoggerAwareInterface
      * Provides alias support for quote() and quoteName()
      *
      * @param       string  $method  The called method name
-     * @param       array   $args    The array of arguments passed to the method
+     * @param       array<mixed>   $args    The array of arguments passed to the method
      * @return      string|null
      * @deprecated  2.0.0
      * @throws      \Hubzero\Database\Exception\BadMethodCallException
@@ -403,7 +403,7 @@ abstract class Driver implements LoggerAwareInterface
      * Legacy alias support:
      *  * 'pdo' is normalized to 'mysql' for backward compatibility.
      *
-     * @param   array   $options   Parameters to construct the database driver requested
+     * @param   array<mixed>   $options   Parameters to construct the database driver requested
      * @return  static
      * @throws  \Hubzero\Database\Exception\RuntimeException
      */
@@ -712,7 +712,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Flush static runtime state for long-lived worker processes.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - clear_query_log (bool, default true)
      *                           - disable_query_logging (bool, default true)
      *                           - reset_instances (bool, default false)
@@ -786,7 +786,7 @@ abstract class Driver implements LoggerAwareInterface
      * - reset pooled driver instances
      * - soft-close pooled connections without removing pooled objects
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - flush_query_state (bool, default true)
      *                           - query_options (array, default [])
      *                           - flush_relational_state (bool, default true)
@@ -852,7 +852,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Reset this driver instance so it can be safely reused between requests.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - commit_open_transaction (bool, default false)
      *                           - rollback_open_transaction (bool, default true)
      *                           - soft_close (bool, default false)
@@ -962,7 +962,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * Concrete drivers may override this to clear transient flags/caches.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     protected function resetDriverState(array $options = []): void
@@ -976,7 +976,7 @@ abstract class Driver implements LoggerAwareInterface
      * Concrete drivers can override to reapply session defaults
      * (charset, timezone, SQL mode, etc.) between requests.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     protected function resetSessionState(array $options = []): void
@@ -1195,7 +1195,7 @@ abstract class Driver implements LoggerAwareInterface
      * Get cached table columns for table.
      *
      * @param   string  $table
-     * @return  array
+     * @return  array<mixed>
      */
     public function getCachedTableColumns(string $table): array
     {
@@ -1206,7 +1206,7 @@ abstract class Driver implements LoggerAwareInterface
      * Store cached table columns for table.
      *
      * @param   string  $table
-     * @param   array   $columns
+     * @param   array<mixed>   $columns
      * @return  void
      */
     public function setCachedTableColumns(string $table, array $columns): void
@@ -1491,7 +1491,7 @@ abstract class Driver implements LoggerAwareInterface
      * Gets the first row of the result set from the database query
      * as an associative array of type: ['field_name' => 'row_value']
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadAssoc()
     {
@@ -1522,7 +1522,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string|null  $key     The name of a field on which to key the result array
      * @param   string|null  $column  Instead of the whole row, only this column value will be in the result array
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadAssocList($key = null, $column = null)
     {
@@ -1552,7 +1552,7 @@ abstract class Driver implements LoggerAwareInterface
      * Gets an array of values from the offset field in each row of the result set from the database query
      *
      * @param   int  $offset  The row offset to use to build the result array
-     * @return  array|null
+     * @return  array<int, mixed>|null
      */
     public function loadColumn($offset = 0)
     {
@@ -1601,7 +1601,7 @@ abstract class Driver implements LoggerAwareInterface
      * You must call query() or execute() before calling this method, otherwise
      * you'll have nothing to load.
      *
-     * @return  array|bool
+     * @return  array<mixed>|bool
      */
     public function loadNextRow()
     {
@@ -1668,7 +1668,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the first row of the result set from the database query as an array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadRow()
     {
@@ -1697,7 +1697,7 @@ abstract class Driver implements LoggerAwareInterface
      * behavior and should be avoided.
      *
      * @param   string|null  $key  The name of a field on which to key the result array
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function loadRowList($key = null)
     {
@@ -1731,7 +1731,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
-     * @return  array
+     * @return  array<mixed>
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -1760,7 +1760,7 @@ abstract class Driver implements LoggerAwareInterface
      * the class exists and the static test method returns true.  This gives us the ability to have a multitude
      * of connector classes that are self-aware as to whether or not they are able to be used on a given system.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getConnectors()
     {
@@ -1820,7 +1820,7 @@ abstract class Driver implements LoggerAwareInterface
      * Splits a string of multiple queries into an array of individual queries
      *
      * @param   string  $sql  Input SQL string from which to split into individual queries
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function splitSql($sql)
     {
@@ -1933,7 +1933,7 @@ abstract class Driver implements LoggerAwareInterface
      * Builds a string version of the prepared statement
      *
      * @param   string  $query     The query string to use as the base
-     * @param   array   $bindings  The bindings to interpolate in
+     * @param   array<mixed>   $bindings  The bindings to interpolate in
      * @return  string
      **/
     private function interpolate($query, $bindings)
@@ -2334,7 +2334,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the database driver SQL statement log
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getLog()
     {
@@ -2388,7 +2388,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Detailed query log with timing information
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $queryLog = [];
 
@@ -2458,7 +2458,7 @@ abstract class Driver implements LoggerAwareInterface
      * // ]
      * ```
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getQueryLog()
     {
@@ -2502,7 +2502,7 @@ abstract class Driver implements LoggerAwareInterface
      * This is called internally during query execution when logging is enabled.
      *
      * @param   string  $sql       The SQL query
-     * @param   array   $bindings  The query bindings
+     * @param   array<mixed>   $bindings  The query bindings
      * @param   float   $time      Execution time in milliseconds
      * @return  void
      */
@@ -2613,7 +2613,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Fetches a row from the result set as an array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function fetchArray()
     {
@@ -2628,7 +2628,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Fetches a row from the result set as an associative array
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function fetchAssoc()
     {
@@ -2804,8 +2804,8 @@ abstract class Driver implements LoggerAwareInterface
      * If you're going to pass in types, they must be keyed
      * the same as the bindings.
      *
-     * @param   array  $bindings  The param bindings
-     * @param   array  $type      The param types
+     * @param   array<mixed>  $bindings  The param bindings
+     * @param   array<mixed>  $type      The param types
      * @return  $this
      **/
     public function bind($bindings, $type = [])
@@ -3306,30 +3306,30 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getTableColumns($table, $typeOnly = true);
 
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     abstract public function getTableCreate($tables);
 
     /**
      * Retrieves key information about the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     abstract public function getTableKeys($tables);
 
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     abstract public function getTableList();
 
@@ -3503,7 +3503,7 @@ abstract class Driver implements LoggerAwareInterface
      * Drivers with composite primary key support should override.
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -3523,7 +3523,7 @@ abstract class Driver implements LoggerAwareInterface
      * - on_delete: The ON DELETE action (CASCADE, SET NULL, RESTRICT, NO ACTION)
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     abstract public function getForeignKeys($table);
 
@@ -3617,7 +3617,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Array of allowed values, empty array if not an ENUM or on SQLite
+     * @return  array<mixed>   Array of allowed values, empty array if not an ENUM or on SQLite
      **/
     abstract public function getEnumValues($table, $column);
 
@@ -3668,7 +3668,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
-     * @param   array   $options    MySQL-specific view options (algorithm, definer, security)
+     * @param   array<mixed>   $options    MySQL-specific view options (algorithm, definer, security)
      * @return  bool
      **/
     abstract public function createOrReplaceView($name, $selectSql, array $options = []);
@@ -3693,7 +3693,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      **/
     abstract public function getViews();
 
@@ -3703,7 +3703,7 @@ abstract class Driver implements LoggerAwareInterface
      * Note: SQLite is file-based and does not support this concept,
      * so it returns an array containing only the current database name.
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      **/
     abstract public function getDatabaseNames();
 
@@ -3713,7 +3713,7 @@ abstract class Driver implements LoggerAwareInterface
      * Sequences are supported by PostgreSQL, Oracle, and SQL Server (2012+).
      * MySQL and SQLite do not support sequences and will return an empty array.
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      **/
     abstract public function getSequences();
 
@@ -3723,7 +3723,7 @@ abstract class Driver implements LoggerAwareInterface
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (min, max, cycle, cache)
+     * @param   array<mixed>   $options    Additional options (min, max, cycle, cache)
      * @return  bool
      * @throws  \RuntimeException  If sequences are not supported
      **/
@@ -3847,7 +3847,7 @@ abstract class Driver implements LoggerAwareInterface
      *   - 'first': bool - Place column first in table (MySQL-specific)
      *
      * @param   string  $name        The column name
-     * @param   array   $definition  The column definition
+     * @param   array<mixed>   $definition  The column definition
      * @return  string  The SQL column definition string
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -3903,7 +3903,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * Default implementation provides basic SQL-92 compatible types.
      *
-     * @return  array  Mapping of abstract type => SQL type
+     * @return  array<mixed>  Mapping of abstract type => SQL type
      */
     public function getAbstractTypeMap(): array
     {
@@ -4068,7 +4068,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $needle    The literal string to find
      * @param   string  $haystack  The SQL string to search
-     * @return  array   Array of integer positions where the needle was found
+     * @return  array<int, mixed>   Array of integer positions where the needle was found
      */
     private static function findLiteralInSql($needle, $haystack)
     {

@@ -34,7 +34,7 @@ class DatabaseStub
      * Any attempt to actually query fails as an unreachable connection
      *
      * @param   string  $name
-     * @param   array   $arguments
+     * @param   array<mixed>   $arguments
      * @return  void
      * @throws  ConnectionFailedException
      */

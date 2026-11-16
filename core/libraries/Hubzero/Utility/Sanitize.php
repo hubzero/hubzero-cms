@@ -22,9 +22,9 @@ class Sanitize
     /**
      * Removes any non-alphanumeric characters.
      *
-     * @param   string|int|array  $string   String to sanitize
-     * @param   array   $allowed  An array of additional characters that are not to be removed.
-     * @return  string|array  Sanitized string
+     * @param   string|int|array<mixed>  $string   String to sanitize
+     * @param   array<mixed>   $allowed  An array of additional characters that are not to be removed.
+     * @return  string|array<mixed>  Sanitized string
      */
     public static function paranoid($string, $allowed = [])
     {
@@ -311,7 +311,7 @@ class Sanitize
      * Run HTML through a purifier
      *
      * @param   string  $text     Text to clean
-     * @param   array   $options  Array of key => value pairs
+     * @param   array<mixed>   $options  Array of key => value pairs
      * @return  string
      */
     public static function html($text, $options = [])
@@ -330,7 +330,7 @@ class Sanitize
     /**
      * Builds HTML purification configuration
      *
-     * @param    array    $options   Custom purifier configuration options
+     * @param    array<mixed>    $options   Custom purifier configuration options
      * @return   object   $config    HTML purifier configuration
      */
     protected static function buildHtmlPurifierConfig($options)
@@ -364,7 +364,7 @@ class Sanitize
     /**
      * Finds or creates client serializer directory
      *
-     * @param    array   $purifierConfigSettings   HTML purifier configuration settings
+     * @param    array<mixed>   $purifierConfigSettings   HTML purifier configuration settings
      * @return   void
      */
     protected static function findOrCreateClientSerializerDirectory(&$purifierConfigSettings)

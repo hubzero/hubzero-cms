@@ -23,14 +23,14 @@ class Manager
     /**
      * List of paths to route rules
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $paths = [];
 
     /**
      * The array of created "drivers".
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $routers = [];
 
@@ -38,7 +38,7 @@ class Manager
      * Create a new manager instance.
      *
      * @param   object  $app
-     * @param   array   $paths
+     * @param   array<mixed>   $paths
      * @return  void
      */
     public function __construct($app, $paths = [])
@@ -110,7 +110,7 @@ class Manager
     /**
      * Get all of the created "routers".
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getRouters()
     {
@@ -121,7 +121,7 @@ class Manager
      * Dynamically call the router instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

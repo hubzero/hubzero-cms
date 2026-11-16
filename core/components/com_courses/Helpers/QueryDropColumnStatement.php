@@ -18,7 +18,7 @@ class QueryDropColumnStatement
     /**
      * Constructs QueryDropColumnStatement instance
      *
-     * @param    array   $args   Instantiation state
+     * @param    array<mixed>   $args   Instantiation state
      * @return   void
      */
     public function __construct($args = [])

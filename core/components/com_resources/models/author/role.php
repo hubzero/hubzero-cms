@@ -72,7 +72,7 @@ class Role extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -139,7 +139,7 @@ class Role extends Relational
     /**
      * Set a list of types for a role
      *
-     * @param   array  $current
+     * @param   array<mixed>  $current
      * @return  bool
      */
     public function setTypes($current)

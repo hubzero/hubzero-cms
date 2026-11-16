@@ -223,7 +223,7 @@ class Download extends ComponentController
     /**
      * Display a message
      *
-     * @param   array  $notifications
+     * @param   array<mixed>  $notifications
      * @return  void
      */
     public function messageTask($notifications)

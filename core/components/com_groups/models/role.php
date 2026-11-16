@@ -71,7 +71,7 @@ class Role extends Relational
      * group left out of the list keep their ordering.
      *
      * @param   int    $gidNumber
-     * @param   array  $ids        Role ids, first to last
+     * @param   array<mixed>  $ids        Role ids, first to last
      * @return  bool
      */
     public static function saveOrder($gidNumber, array $ids)

@@ -75,7 +75,7 @@ class Component extends Obj
     /**
      * Method to get a form object.
      *
-     * @param   array    $data      Data for the form.
+     * @param   array<mixed>    $data      Data for the form.
      * @return  mixed    A Form object on success, false on failure
      */
     public function getForm($data = [])
@@ -139,7 +139,7 @@ class Component extends Obj
      * Method to validate the form data.
      *
      * @param   object  $form   The form to validate against.
-     * @param   array   $data   The data to validate.
+     * @param   array<mixed>   $data   The data to validate.
      * @param   string|null  $group  The name of the field group to validate.
      * @return  mixed   Array of filtered data if valid, false otherwise.
      */
@@ -171,7 +171,7 @@ class Component extends Obj
     /**
      * Method to save the configuration data.
      *
-     * @param   array  $data  An array containing all global config data.
+     * @param   array<mixed>  $data  An array containing all global config data.
      * @return  bool   True on success, false on failure.
      */
     public function save($data)

@@ -238,9 +238,9 @@ class Media extends Base
     /**
      * Build Folder tree based on path
      *
-     * @param   array    $folders
+     * @param   array<mixed>    $folders
      * @param   integer  $parent_id
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function buildFolderTree($folders, $parent_id = 0)
     {
@@ -260,7 +260,7 @@ class Media extends Base
     /**
      * Build Folder tree in html <ul> list form
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeHtml($tree)
@@ -307,7 +307,7 @@ class Media extends Base
     /**
      * Build Folder tree in select list form
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeSelect($tree)
@@ -331,7 +331,7 @@ class Media extends Base
     /**
      * Recursive function to create options for select list
      *
-     * @param   array  $tree
+     * @param   array<mixed>  $tree
      * @return  string
      */
     private function buildFolderTreeSelectOptionList($tree)

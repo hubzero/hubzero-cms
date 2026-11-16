@@ -39,7 +39,7 @@ class DefaultHandler extends Plugin
      * @param   object   $file     the uploaded file
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
     {

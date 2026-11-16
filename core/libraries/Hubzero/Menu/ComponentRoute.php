@@ -46,7 +46,7 @@ class ComponentRoute
      * View/Spreadsheet.php, its own router and a tree of assets - written in a
      * namespaced layout rather than the old one.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $notPages = [
         'com_media',
@@ -280,7 +280,7 @@ class ComponentRoute
     /**
      * The components that should never be given an address
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function notPages()
     {

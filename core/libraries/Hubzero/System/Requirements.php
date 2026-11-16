@@ -42,7 +42,7 @@ class Requirements
     /**
      * Check if the current PHP version meets the minimum requirement
      *
-     * @return  array  Result with keys: passed, required, current
+     * @return  array<mixed>  Result with keys: passed, required, current
      */
     public static function checkPhpVersion(): array
     {
@@ -59,7 +59,7 @@ class Requirements
     /**
      * Check if all required PHP extensions are loaded
      *
-     * @return  array  Result with keys: passed, required, current, missing, installed
+     * @return  array<mixed>  Result with keys: passed, required, current, missing, installed
      */
     public static function checkExtensions(): array
     {
@@ -92,7 +92,7 @@ class Requirements
     /**
      * Check if the unzip command is available
      *
-     * @return  array  Result with keys: passed, required, current
+     * @return  array<mixed>  Result with keys: passed, required, current
      */
     public static function checkUnzip(): array
     {
@@ -111,7 +111,7 @@ class Requirements
     /**
      * Check if the operating system is supported
      *
-     * @return  array  Result with keys: passed, os, message
+     * @return  array<mixed>  Result with keys: passed, os, message
      */
     public static function checkOperatingSystem(): array
     {
@@ -132,7 +132,7 @@ class Requirements
      * Check if a directory is writable
      *
      * @param   string  $path  Path to check
-     * @return  array  Result with keys: passed, path, message
+     * @return  array<mixed>  Result with keys: passed, path, message
      */
     public static function checkWritable(string $path): array
     {
@@ -151,7 +151,7 @@ class Requirements
      * Check if Composer dependencies are installed
      *
      * @param   string  $corePath  Path to the core directory
-     * @return  array  Result with keys: passed, required, current
+     * @return  array<mixed>  Result with keys: passed, required, current
      */
     public static function checkVendor(string $corePath): array
     {
@@ -172,7 +172,7 @@ class Requirements
      *
      * @param   string|null  $corePath  Path to core directory (for vendor check)
      * @param   string|null  $appPath   Path to app directory (for writable check)
-     * @return  array  Array of check results, plus 'all_passed' key
+     * @return  array<mixed>  Array of check results, plus 'all_passed' key
      */
     public static function checkAll(?string $corePath = null, ?string $appPath = null): array
     {

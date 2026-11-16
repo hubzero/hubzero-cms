@@ -29,7 +29,7 @@ class RelationalTest extends AbstractDriverTestCase
     /**
      * Whether tables have been created per database
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $tablesCreated = [];
 

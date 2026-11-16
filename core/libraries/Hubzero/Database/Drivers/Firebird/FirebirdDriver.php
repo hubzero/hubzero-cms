@@ -250,7 +250,7 @@ class FirebirdDriver extends BaseSqlDriver
      * DDL changes. Reconnecting creates a fresh connection that sees all
      * committed changes.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $connectionOptions = [];
 
@@ -276,7 +276,7 @@ class FirebirdDriver extends BaseSqlDriver
      * When execute() fetches a RETURNING row to extract the ID, we cache it
      * here so subsequent loadResult()/loadObject() calls can access it.
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $cachedReturningRow = null;
 
@@ -311,7 +311,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -661,7 +661,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * Overrides parent to support cached RETURNING rows.
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function fetchArray()
     {
@@ -682,7 +682,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Normalizes column names to lowercase for ORM compatibility.
      * Supports cached RETURNING rows.
      *
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     protected function fetchAssoc()
     {
@@ -963,7 +963,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string   $table     The name of the database table
      * @param   boolean  $typeOnly  True to only return field types
-     * @return  array    An array of fields for the database table
+     * @return  array<mixed>    An array of fields for the database table
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -1107,7 +1107,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Retrieves key information about the given table
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -1189,7 +1189,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList()
     {
@@ -1214,8 +1214,8 @@ class FirebirdDriver extends BaseSqlDriver
      * Note: Firebird doesn't have a direct equivalent to SHOW CREATE TABLE.
      * This reconstructs the CREATE statement from metadata.
      *
-     * @param   string|array  $tables  A table name or list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -1555,7 +1555,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Always empty
+     * @return  array<mixed>   Always empty
      */
     public function getEnumValues($table, $column)
     {
@@ -1835,7 +1835,7 @@ class FirebirdDriver extends BaseSqlDriver
      * we commit any implicit transaction and start a fresh one before querying system tables.
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column definition objects
+     * @return  array<int, mixed>   Array of column definition objects
      */
     protected function getTableColumnDefinitions($table)
     {
@@ -2041,7 +2041,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column names in the primary key
+     * @return  array<int, mixed>   Array of column names in the primary key
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -2346,9 +2346,9 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Quote an identifier name
      *
-     * @param   string|array $name  The identifier name
+     * @param   string|array<mixed> $name  The identifier name
      * @param   string|null  $as    An optional alias
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function quoteName($name, $as = null)
     {
@@ -2627,7 +2627,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Gets list of all sequences (generators)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSequences(): array
     {
@@ -2651,7 +2651,7 @@ class FirebirdDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value
      * @param   int     $increment  Increment (ignored in Firebird)
-     * @param   array   $options    Additional options
+     * @param   array<mixed>   $options    Additional options
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -2720,7 +2720,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The auto-increment column name
-     * @return  array   Array of SQL statements to execute (empty for Firebird 3.0+)
+     * @return  array<mixed>   Array of SQL statements to execute (empty for Firebird 3.0+)
      */
     public function buildAutoIncrementStatements($table, $column = 'id'): array
     {
@@ -2780,7 +2780,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name
      * @param   string  $selectSql  The SELECT statement
-     * @param   array   $options    Options (ignored)
+     * @param   array<mixed>   $options    Options (ignored)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -2840,7 +2840,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Gets list of all views
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getViews(): array
     {
@@ -2860,7 +2860,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * Firebird is single-database per file.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getDatabaseNames(): array
     {
@@ -2948,7 +2948,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Returns the suffix for REPLACE (upsert) statements
      *
      * @param   string  $pkColumn       The primary key column name
-     * @param   array   $updateColumns  Columns to update on conflict
+     * @param   array<mixed>   $updateColumns  Columns to update on conflict
      * @return  string
      */
     public function sqlReplaceSuffix(string $pkColumn, array $updateColumns): string
@@ -3122,7 +3122,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * Firebird uses the || operator for concatenation
      *
-     * @param   array  $strings  Array of column names or quoted strings
+     * @param   array<mixed>  $strings  Array of column names or quoted strings
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -3138,7 +3138,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Returns the SQL for concatenating strings with a separator
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings
+     * @param   array<mixed>   $strings    Array of column names or quoted strings
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -3479,7 +3479,7 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -3524,7 +3524,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -3728,7 +3728,7 @@ END';
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s)
+     * @param   array<mixed>  $columns  Column name(s)
      * @param   bool          $unique   Whether to create a unique index
      * @return  string
      */
@@ -3774,7 +3774,7 @@ END';
      * Retrieves foreign key information for a table
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     public function getForeignKeys($table)
     {
@@ -3818,7 +3818,7 @@ END';
      * Gets index information for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -3869,7 +3869,7 @@ END';
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Version number
      *                  - 'driver_version': Normalized version - STANDARD KEY
      *                  - 'firebird_version': Alias for driver_version
@@ -3916,7 +3916,7 @@ END';
      * SET/ENUM fallthrough locally.
      *
      * @param   string  $type       The abstract or concrete type
-     * @param   array   $modifiers  Column modifiers (length, precision, etc.)
+     * @param   array<mixed>   $modifiers  Column modifiers (length, precision, etc.)
      * @return  string  The Firebird-specific type definition
      */
     public function normalizeColumnType(
@@ -3949,7 +3949,7 @@ END';
      *
      * @param   string  $abstractType  The original abstract type name
      * @param   string  $nativeType    The mapped Firebird type
-     * @param   array   $modifiers     Column modifiers
+     * @param   array<mixed>   $modifiers     Column modifiers
      * @return  string  The type with modifiers applied
      */
     protected function applyColumnModifiers(
@@ -3988,7 +3988,7 @@ END';
      * - Use GENERATED BY DEFAULT AS IDENTITY for auto-increment
      *
      * @param   string  $name        Column name
-     * @param   array   $definition  Column definition array with 'type' and 'modifiers'
+     * @param   array<mixed>   $definition  Column definition array with 'type' and 'modifiers'
      * @return  string  Column definition SQL
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -4058,7 +4058,7 @@ END';
      *
      * @param   string  $table    Table name (already prefixed)
      * @param   \Hubzero\Database\Schema\AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements
+     * @return  array<int, mixed>  Array of SQL statements
      */
     protected function buildFirebirdTableRebuild(
         string $table,
@@ -4267,7 +4267,7 @@ END';
      * Used by Grammar for table rebuild operations.
      *
      * @param   string  $table  Table name
-     * @return  array   Array of column info objects, ordered by field position
+     * @return  array<mixed>   Array of column info objects, ordered by field position
      */
     public function getTableStructureInfo(string $table): array
     {
@@ -4314,7 +4314,7 @@ END';
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -4381,7 +4381,7 @@ END';
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {

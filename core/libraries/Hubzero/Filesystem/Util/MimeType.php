@@ -55,7 +55,7 @@ class MimeType
     /**
      * Map of file extension to MIME Type
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getExtensionToMimeTypeMap()
     {

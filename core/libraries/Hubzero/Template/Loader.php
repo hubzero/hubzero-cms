@@ -30,7 +30,7 @@ class Loader
     /**
      * Base path for templates
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $paths = [
         'app'  => null,
@@ -55,7 +55,7 @@ class Loader
      * Constructor
      *
      * @param   \Hubzero\Container\Container $app
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  void
      */
     public function __construct(Container $app, $options = [])

@@ -16,7 +16,7 @@ interface ProviderInterface
     /**
      * Create a new badge
      *
-     * @param   array    $data  badge info. Must have the following:
+     * @param   array<mixed>    $data  badge info. Must have the following:
      *                          $data['Name']          = 'Badge name';
      *                          $data['Description']   = 'Badge description';
      *                          $data['CriteriaUrl']   = 'Badge criteria URL';

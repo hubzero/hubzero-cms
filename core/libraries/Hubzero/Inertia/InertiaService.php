@@ -20,7 +20,7 @@ class InertiaService
     /**
      * Shared props for all responses in the current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $sharedProps = [];
 
@@ -41,28 +41,28 @@ class InertiaService
     /**
      * Outbound Inertia headers emitted during this request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $sentHeaders = [];
 
     /**
      * Optional debug context entries for current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $debugContext = [];
 
     /**
      * Profile timing data for current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $profile = [];
 
     /**
      * Active profile timers keyed by label.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $profileTimers = [];
 
@@ -86,8 +86,8 @@ class InertiaService
 
     /**
      * @param   string  $component
-     * @param   array   $props
-     * @return  array|null
+     * @param   array<mixed>   $props
+     * @return  array<mixed>|null
      */
     public function render(string $component, array $props = []): ?array
     {
@@ -106,8 +106,8 @@ class InertiaService
 
     /**
      * @param   string  $component
-     * @param   array   $props
-     * @return  array
+     * @param   array<mixed>   $props
+     * @return  array<mixed>
      */
     public function page(string $component, array $props = []): array
     {
@@ -123,7 +123,7 @@ class InertiaService
      * Build a canonical mount node for initial HTML responses.
      *
      * @param   string  $component
-     * @param   array   $props
+     * @param   array<mixed>   $props
      * @param   string  $mountId
      * @return  string
      */
@@ -182,7 +182,7 @@ class InertiaService
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -301,7 +301,7 @@ class InertiaService
     }
 
     /**
-     * @param   array  $page
+     * @param   array<mixed>  $page
      * @return  void
      */
     protected function json(array $page): void
@@ -353,7 +353,7 @@ class InertiaService
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     protected function resolveSharedProps(): array
     {
@@ -374,8 +374,8 @@ class InertiaService
 
     /**
      * @param   string  $component
-     * @param   array   $props
-     * @return  array
+     * @param   array<mixed>   $props
+     * @return  array<mixed>
      */
     protected function resolveProps(string $component, array $props): array
     {
@@ -451,7 +451,7 @@ class InertiaService
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -493,7 +493,7 @@ class InertiaService
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public function debugSnapshot(): array
     {
@@ -516,7 +516,7 @@ class InertiaService
     /**
      * Return parsed Inertia request context details.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function requestDetails(): array
     {
@@ -534,8 +534,8 @@ class InertiaService
     /**
      * Render reusable Inertia debug panel.
      *
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     public function renderDebugPanel(array $snapshot = [], array $options = []): string
@@ -562,10 +562,10 @@ class InertiaService
     /**
      * Preserve Inertia debug mode in outbound parameters.
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     public function preserveDebugParam(array $params, string $name = 'inertia_debug', string $value = '1'): array
     {
@@ -633,7 +633,7 @@ class InertiaService
     /**
      * Return recorded profile timing data.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function profileSnapshot(): array
     {
@@ -691,7 +691,7 @@ class InertiaService
      * Centralized terminal response path for status/headers/body + exit.
      *
      * @param   int          $status
-     * @param   array        $headers
+     * @param   array<mixed>        $headers
      * @param   string|null  $body
      * @return  void
      */
@@ -745,7 +745,7 @@ class InertiaService
     }
 
     /**
-     * @return  array
+     * @return  array<string, mixed>
      */
     protected function requestContext(): array
     {
@@ -770,7 +770,7 @@ class InertiaService
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     protected function allIncomingHeaders(): array
     {

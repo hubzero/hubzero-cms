@@ -20,7 +20,7 @@ class Orders
      * Get a count or list of items ordered
      *
      * @param   string  $rtrn     What data to return
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
     public static function getItemsOrdered($rtrn = 'list', $filters = [])
@@ -160,7 +160,7 @@ class Orders
      * Log order changes
      *
      * @param   int     $tId
-     * @param   array   $orderChanges
+     * @param   array<mixed>   $orderChanges
      * @return  mixed
      */
     public static function logOrderChanges($tId, $orderChanges)

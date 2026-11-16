@@ -46,7 +46,7 @@ class ImageViewer extends Base
     /**
      * Get default params for the handler
      *
-     * @param   array  $savedConfig
+     * @param   array<mixed>  $savedConfig
      * @return  mixed
      */
     public function getConfig($savedConfig = [])
@@ -294,7 +294,7 @@ class ImageViewer extends Base
     /**
      * Draw list of included files
      *
-     * @param   array    $attachments
+     * @param   array<mixed>    $attachments
      * @param   object   $attConfigs
      * @param   object   $pub
      * @param   boolean|mixed  $authorized
@@ -552,7 +552,7 @@ class ImageViewer extends Base
     /**
      * Check against handler-specific requirements
      *
-     * @param   array  $attachments
+     * @param   array<mixed>  $attachments
      * @return  bool
      */
     public function checkRequired($attachments)

@@ -69,7 +69,7 @@ class Domain extends Relational
     /**
      * Generates automatic authenticator field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAuthenticator($data)
@@ -88,7 +88,7 @@ class Domain extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticType($data)

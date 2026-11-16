@@ -247,7 +247,7 @@ class Extension extends Base implements CommandInterface
      * @param   object  $migration  The migration base
      * @param   string  $type       Plural extension type, for the error message
      * @param   string  $method     Helper name
-     * @param   array   $args       Helper arguments
+     * @param   array<mixed>   $args       Helper arguments
      * @return  mixed
      **/
     private function callMigration($migration, $type, $method, array $args)

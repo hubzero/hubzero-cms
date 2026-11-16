@@ -69,7 +69,7 @@ class MarketHistory extends Relational
     /**
      * Generates automatic date value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticDate($data)

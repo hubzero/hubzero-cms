@@ -36,7 +36,7 @@ class BundleBuilder
     /**
      * Per-version cache of includeInPackage-excluded element ids.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $incExcludedCache = [];
 
@@ -44,7 +44,7 @@ class BundleBuilder
      * Extensions whose contents are already compressed — zip(1) stores these
      * (-n) instead of wasting CPU trying to deflate them.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function compressedExtList()
     {
@@ -105,8 +105,8 @@ class BundleBuilder
      * refreshDownloadLink().
      *
      * @param   integer   $versionId
-     * @param   array     $opts  force(bool), level(int|null), log(callable|null)
-     * @return  array     ok, file, size, source_hash, inner, error
+     * @param   array<mixed>     $opts  force(bool), level(int|null), log(callable|null)
+     * @return  array<mixed>     ok, file, size, source_hash, inner, error
      */
     public function build($versionId, $opts = [])
     {
@@ -150,8 +150,8 @@ class BundleBuilder
      * layout matches whatever the version already serves (see servedLayout).
      *
      * @param   integer   $versionId
-     * @param   array     $opts  force(bool), level(int|null), log(callable|null)
-     * @return  array     ok, file, size, source_hash, inner, error
+     * @param   array<mixed>     $opts  force(bool), level(int|null), log(callable|null)
+     * @return  array<mixed>     ok, file, size, source_hash, inner, error
      */
     protected function buildInternal($versionId, $opts = [])
     {
@@ -466,7 +466,7 @@ class BundleBuilder
      * served outer's name; this is the link name, which differs only for the
      * DOI-less case (the served name omits the version number).
      *
-     * @param   array   $version
+     * @param   array<mixed>   $version
      * @return  string
      */
     protected function downloadLinkName($version)
@@ -484,7 +484,7 @@ class BundleBuilder
      * Current source signature for a built version: a hash over the sorted
      * (name, size, mtime) of the primary files. Stat only, no reading.
      *
-     * @param   array   $files  abs => name
+     * @param   array<mixed>   $files  abs => name
      * @return  string
      */
     public function sourceHash($files)
@@ -558,7 +558,7 @@ class BundleBuilder
      *
      * @param   integer  $versionId
      * @param   boolean  $deep  also CRC-verify each present file against the bundle
-     * @return  array
+     * @return  array<mixed>
      */
     public function audit($versionId, $deep = false)
     {
@@ -811,12 +811,12 @@ class BundleBuilder
      * risk).
      *
      * @param   integer     $versionId
-     * @param   array       $version
+     * @param   array<mixed>       $version
      * @param   string      $base
      * @param   string      $content
      * @param   string      $name
      * @param   string      $outer
-     * @param   array       $r       audit result (by reference)
+     * @param   array<mixed>       $r       audit result (by reference)
      * @param   boolean     $deep
      * @return  void
      */
@@ -946,7 +946,7 @@ class BundleBuilder
      * today on PURR, where the flag is unused) means no files are dropped.
      *
      * @param   integer  $versionId
-     * @return  array  element_id => true
+     * @return  array<mixed>  element_id => true
      */
     protected function includeInPackageExcludedIds($versionId)
     {
@@ -1026,7 +1026,7 @@ class BundleBuilder
      * Load the version row fields we need.
      *
      * @param   integer  $versionId
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     protected function versionRow($versionId)
     {
@@ -1085,7 +1085,7 @@ class BundleBuilder
      *
      * @param   integer  $versionId
      * @param   string   $content   the version's secret content directory
-     * @return  array
+     * @return  array<mixed>
      */
     protected function primaryFiles($versionId, $content)
     {
@@ -1099,7 +1099,7 @@ class BundleBuilder
      *
      * @param   integer  $versionId
      * @param   string   $content
-     * @return  array
+     * @return  array<mixed>
      */
     protected function attachmentFiles($versionId, $content)
     {
@@ -1114,7 +1114,7 @@ class BundleBuilder
      * @param   integer       $versionId
      * @param   string        $content
      * @param   integer|null  $role   role to filter on, or null for all roles
-     * @return  array
+     * @return  array<mixed>
      */
     protected function resolveFiles($versionId, $content, $role = null)
     {
@@ -1247,8 +1247,8 @@ class BundleBuilder
      * fresh multi-file build, the multiZip norm).
      *
      * @param   string  $outerPath
-     * @param   array   $primary   abs => rel  (role-1 files)
-     * @param   array   $allFiles  abs => rel  (all file attachments)
+     * @param   array<mixed>   $primary   abs => rel  (role-1 files)
+     * @param   array<mixed>   $allFiles  abs => rel  (all file attachments)
      * @return  string  'flat' | 'nested'
      */
     protected function servedLayout($outerPath, $primary, $allFiles)
@@ -1346,7 +1346,7 @@ class BundleBuilder
      * file isn't a readable zip.
      *
      * @param   string  $path
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function zipMembers($path)
     {
@@ -1375,7 +1375,7 @@ class BundleBuilder
     /**
      * The served bundle base name, matching curation::getBundleName().
      *
-     * @param   array   $version
+     * @param   array<mixed>   $version
      * @return  string
      */
     protected function bundleName($version)
@@ -1413,11 +1413,11 @@ class BundleBuilder
      * Build bundle.zip with the system zip binary (ZIP64; stored for
      * already-compressed extensions). Atomic via a temp file + rename.
      *
-     * @param   array    $files    abs => name-relative-to-$content
+     * @param   array<mixed>    $files    abs => name-relative-to-$content
      * @param   string   $innerPath
      * @param   integer  $level
      * @param   string   $content  the content dir the names are relative to
-     * @return  array    ok, error
+     * @return  array<mixed>    ok, error
      */
     protected function buildInner($files, $innerPath, $level, $content)
     {
@@ -1503,9 +1503,9 @@ class BundleBuilder
      * @param   string  $innerPath
      * @param   string  $outerPath
      * @param   string  $name
-     * @param   array   $supporting  abs => name-relative-to-content (role >= 2)
-     * @param   array   $metadata    abs => array(kind, entry)  (readme/license/gallery)
-     * @return  array   ok, error
+     * @param   array<mixed>   $supporting  abs => name-relative-to-content (role >= 2)
+     * @param   array<mixed>   $metadata    abs => array(kind, entry)  (readme/license/gallery)
+     * @return  array<mixed>   ok, error
      */
     protected function buildOuter($innerPath, $outerPath, $name, $supporting = [], $metadata = [])
     {
@@ -1590,12 +1590,12 @@ class BundleBuilder
      * (README/LICENSE/gallery from $metadata), so a build that timed out before
      * package() wrote the outer can still be produced off-request.
      *
-     * @param   array   $files   abs => name-relative-to-content (all roles)
+     * @param   array<mixed>   $files   abs => name-relative-to-content (all roles)
      * @param   string  $outerPath
      * @param   string  $name
      * @param   boolean $preserveExtra
-     * @param   array   $metadata  abs => array(kind, entry)  (readme/license/gallery)
-     * @return  array   ok, error
+     * @param   array<mixed>   $metadata  abs => array(kind, entry)  (readme/license/gallery)
+     * @return  array<mixed>   ok, error
      */
     protected function buildOuterFlat($files, $outerPath, $name, $preserveExtra = false, $metadata = [])
     {
@@ -1712,7 +1712,7 @@ class BundleBuilder
      * for a file the outer didn't carry before. Matching on the full relpath
      * (not the basename) avoids collisions between same-named files.
      *
-     * @param   array   $existing  rel-without-prefix => full entry name
+     * @param   array<mixed>   $existing  rel-without-prefix => full entry name
      * @param   string  $name      the outer's "<DOI>" top dir
      * @param   string  $rel       the file's relative name
      * @return  string
@@ -1740,7 +1740,7 @@ class BundleBuilder
      *
      * @param   ZipArchive  $zip
      * @param   string      $name   the outer's "<DOI>" top dir
-     * @param   array       $files  abs => name-relative-to-content
+     * @param   array<mixed>       $files  abs => name-relative-to-content
      * @return  void
      */
     protected function ensureFiles($zip, $name, $files)
@@ -1768,7 +1768,7 @@ class BundleBuilder
      *
      * @param   ZipArchive  $zip
      * @param   string      $name      the outer's "<DOI>" top dir
-     * @param   array       $metadata  abs => array(kind, entry)
+     * @param   array<mixed>       $metadata  abs => array(kind, entry)
      * @return  void
      */
     protected function ensureMetadata($zip, $name, $metadata)
@@ -1834,10 +1834,10 @@ class BundleBuilder
      * <base>/gallery and is placed at <name>/gallery/<file>, as package() does.
      *
      * @param   integer  $versionId
-     * @param   array    $version
+     * @param   array<mixed>    $version
      * @param   string   $base   the version base dir
      * @param   string   $name   the outer's "<DOI>" top dir
-     * @return  array
+     * @return  array<mixed>
      */
     protected function outerMetadata($versionId, $version, $base, $name)
     {
@@ -1909,7 +1909,7 @@ class BundleBuilder
      * @param   integer  $versionId
      * @param   string   $base
      * @param   string   $name
-     * @return  array
+     * @return  array<mixed>
      */
     protected function galleryFiles($versionId, $base, $name)
     {
@@ -1949,7 +1949,7 @@ class BundleBuilder
      * grouped by their element's role label.
      *
      * @param   integer  $versionId
-     * @param   array    $version
+     * @param   array<mixed>    $version
      * @return  string
      */
     protected function generateReadme($versionId, $version)
@@ -2090,7 +2090,7 @@ class BundleBuilder
      * README's materials listing.
      *
      * @param   integer  $versionId
-     * @return  array
+     * @return  array<mixed>
      */
     protected function fileElementsByRole($versionId)
     {
@@ -2149,7 +2149,7 @@ class BundleBuilder
      * package() lists them.
      *
      * @param   integer  $versionId
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function versionAuthors($versionId)
     {
@@ -2199,7 +2199,7 @@ class BundleBuilder
      * publications.
      *
      * @param   integer  $versionId
-     * @return  array  objects with object_name, object_revision, title
+     * @return  array<int, \stdClass>  objects with object_name, object_revision, title
      */
     protected function dataAttachments($versionId)
     {
@@ -2241,7 +2241,7 @@ class BundleBuilder
      * the raw data.csv.
      *
      * @param   string  $dataDir
-     * @return  array
+     * @return  array<mixed>
      */
     protected function databaseDataFiles($dataDir)
     {
@@ -2288,13 +2288,13 @@ class BundleBuilder
      * is unavailable.
      *
      * @param   integer   $versionId
-     * @param   array     $version
+     * @param   array<mixed>     $version
      * @param   string    $base     version base dir
      * @param   string    $content  secret content dir
      * @param   boolean   $force
      * @param   integer   $level    zip compression level
      * @param   callable  $log
-     * @return  array
+     * @return  array<mixed>
      */
     protected function buildDatabase($versionId, $version, $base, $content, $force, $level, $log)
     {
@@ -2407,11 +2407,11 @@ class BundleBuilder
      * build path (where files come from several source dirs and one file may be
      * placed at two paths).
      *
-     * @param   array   $entries   list of array(abs, entry)
-     * @param   array   $metadata  abs => array(kind, entry)  (readme/license/gallery)
+     * @param   array<mixed>   $entries   list of array(abs, entry)
+     * @param   array<mixed>   $metadata  abs => array(kind, entry)  (readme/license/gallery)
      * @param   string  $outerPath
      * @param   string  $name
-     * @return  array   ok, error
+     * @return  array<mixed>   ok, error
      */
     protected function buildFlatFromEntries($entries, $metadata, $outerPath, $name)
     {
@@ -2481,12 +2481,12 @@ class BundleBuilder
      * entries, matching the packager. Falls back to the PHP ZipArchive assembler
      * when zip is unavailable. Atomic via a temp file + rename.
      *
-     * @param   array    $entries   list of array(abs, entry)
-     * @param   array    $metadata  abs => array(kind, entry)  (readme/license/gallery)
+     * @param   array<mixed>    $entries   list of array(abs, entry)
+     * @param   array<mixed>    $metadata  abs => array(kind, entry)  (readme/license/gallery)
      * @param   string   $outerPath
      * @param   string   $name
      * @param   integer  $level
-     * @return  array    ok, error
+     * @return  array<mixed>    ok, error
      */
     protected function buildOuterViaZip($entries, $metadata, $outerPath, $name, $level)
     {
@@ -2659,13 +2659,13 @@ class BundleBuilder
      * inner bundle. Usually just README (+ gallery for a Series).
      *
      * @param   integer   $versionId
-     * @param   array     $version
+     * @param   array<mixed>     $version
      * @param   string    $base
      * @param   string    $content  secret content dir (role>=2 files; may be absent)
      * @param   boolean   $force
      * @param   integer   $level
      * @param   callable  $log
-     * @return  array
+     * @return  array<mixed>
      */
     protected function buildMetadataOnly($versionId, $version, $base, $content, $force, $level, $log)
     {
@@ -2802,7 +2802,7 @@ class BundleBuilder
      * Run a command (argv array) quietly, returning its exit code. Optionally
      * in a given working directory and with a string fed to its stdin.
      *
-     * @param   array    $cmd
+     * @param   array<mixed>    $cmd
      * @param   string|null   $cwd    working directory, or null
      * @param   string|null   $stdin  data to write to the command's stdin, or null
      * @return  integer

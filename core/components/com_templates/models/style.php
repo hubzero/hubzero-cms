@@ -62,7 +62,7 @@ class Style extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticTemplate($data)

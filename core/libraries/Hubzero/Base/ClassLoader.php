@@ -26,14 +26,14 @@ class ClassLoader
     /**
      * Base directories to search (PATH_APP first for override priority)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static array $directories = [];
 
     /**
      * Namespace prefix mappings: prefix => config
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static array $prefixes = [];
 
@@ -128,7 +128,7 @@ class ClassLoader
      *
      * @param string $class  Fully qualified class name
      * @param string $prefix Matched namespace prefix
-     * @param array  $config Prefix configuration
+     * @param array<mixed>  $config Prefix configuration
      * @return bool
      */
     protected static function loadByPrefix(string $class, string $prefix, array $config): bool
@@ -347,7 +347,7 @@ class ClassLoader
     /**
      * Add directories to the class loader.
      *
-     * @param string|array $directories
+     * @param string|array<mixed> $directories
      */
     public static function addDirectories($directories): void
     {
@@ -357,7 +357,7 @@ class ClassLoader
     /**
      * Remove directories from the class loader.
      *
-     * @param string|array|null $directories
+     * @param string|array<mixed>|null $directories
      */
     public static function removeDirectories($directories = null): void
     {
@@ -371,7 +371,7 @@ class ClassLoader
     /**
      * Gets all the directories registered with the loader.
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getDirectories(): array
     {
@@ -381,7 +381,7 @@ class ClassLoader
     /**
      * Gets all registered prefixes.
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getPrefixes(): array
     {

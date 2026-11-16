@@ -52,7 +52,7 @@ class SessionClassGroup extends Table
     /**
      * Build query method
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string  Database query
      */
     protected function buildQuery($filters = [])
@@ -91,7 +91,7 @@ class SessionClassGroup extends Table
      * can be integer, object, or array
      *
      * @param   string  $what
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  mixed
      */
     public function find($what = '', $filters = [])

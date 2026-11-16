@@ -38,7 +38,7 @@ class Yaml extends Base
     /**
      * Returns an array of allowed file extensions for this parser
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getSupportedExtensions()
     {
@@ -49,7 +49,7 @@ class Yaml extends Base
      * Loads a YAML/YML file as an array
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      * @throws  ParseException If there is an error parsing the YAML file
      */
     public function parse($path)
@@ -112,7 +112,7 @@ class Yaml extends Base
      * Converts an object into a YAML formatted string.
      *
      * @param   object|string  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  YAML formatted string.
      */
     public function objectToString($object, $options = [])
@@ -132,7 +132,7 @@ class Yaml extends Base
      * Method to recursively convert an object of data to an array.
      *
      * @param   object  $data  An object of data to return as an array.
-     * @return  array   Array representation of the input object.
+     * @return  array<mixed>   Array representation of the input object.
      */
     protected function asArray($data)
     {
@@ -153,7 +153,7 @@ class Yaml extends Base
      * Parse a YAML formatted string and convert it into an object.
      *
      * @param   string|object  $data     YAML formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  object  Data object.
      */
     public function stringToObject($data, $options = [])
@@ -192,7 +192,7 @@ class Yaml extends Base
     /**
      * Convert an array to an object
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object  Data object.
      */
     protected function toObject($data)

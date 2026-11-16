@@ -78,7 +78,7 @@ class MorphMany extends MorphOne
      *
      * @param  array|\Hubzero\Database\Rows|mixed  $models    The models to associate
      * @param  \Closure|null                 $callback  Optional callback
-     * @return array|\Hubzero\Database\Rows
+     * @return array<mixed>|\Hubzero\Database\Rows
      */
     public function associate($models, $callback = null)
     {
@@ -125,7 +125,7 @@ class MorphMany extends MorphOne
     /**
      * Save all provided models
      *
-     * @param  array  $models  The models to associate and save
+     * @param  array<mixed>  $models  The models to associate and save
      * @return bool
      */
     public function saveAll($models)
@@ -142,7 +142,7 @@ class MorphMany extends MorphOne
     /**
      * Create and save a new related model
      *
-     * @param  array  $attributes  The attributes for the new model
+     * @param  array<mixed>  $attributes  The attributes for the new model
      * @return \Hubzero\Database\Relational
      */
     public function create(array $attributes = [])
@@ -162,8 +162,8 @@ class MorphMany extends MorphOne
     /**
      * Create many related models
      *
-     * @param  array  $records  Array of attribute arrays
-     * @return array
+     * @param  array<mixed>  $records  Array of attribute arrays
+     * @return array<int, mixed>
      */
     public function createMany(array $records)
     {
@@ -196,7 +196,7 @@ class MorphMany extends MorphOne
      * Get constrained keys for whereHas queries
      *
      * @param  \Closure  $constraint  The constraint function
-     * @return array
+     * @return array<mixed>
      */
     public function getConstrainedKeys($constraint)
     {
@@ -226,7 +226,7 @@ class MorphMany extends MorphOne
      *
      * @param  int     $count     The minimum count
      * @param  string  $operator  The comparison operator
-     * @return array
+     * @return array<mixed>
      */
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -310,7 +310,7 @@ class MorphMany extends MorphOne
      * Group results by related key
      *
      * @param  \Hubzero\Database\Rows  $relations  The relations to group
-     * @return array
+     * @return array<mixed>
      */
     protected function getResultsByRelatedKey($relations)
     {
@@ -333,7 +333,7 @@ class MorphMany extends MorphOne
      * Seed rows with data
      *
      * @param  \Hubzero\Database\Rows  $rows  The rows to seed
-     * @param  array                   $data  The data indexed by key
+     * @param  array<mixed>                   $data  The data indexed by key
      * @param  string                  $name  The relationship name
      * @return \Hubzero\Database\Rows
      */

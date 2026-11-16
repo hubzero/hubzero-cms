@@ -23,14 +23,14 @@ class Menutype extends Obj
     /**
      * A reverse lookup of the base link URL to Title
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $rlu = [];
 
     /**
      * Method to get the reverse lookup of the base link URL to Title
      *
-     * @return  array  Array of reverse lookup of the base link URL to Title
+     * @return  array<mixed>  Array of reverse lookup of the base link URL to Title
      */
     public function getReverseLookup()
     {
@@ -43,7 +43,7 @@ class Menutype extends Obj
     /**
      * Method to get the available menu item type options.
      *
-     * @return  array  Array of groups with menu item types.
+     * @return  array<mixed>  Array of groups with menu item types.
      */
     public function getTypeOptions()
     {
@@ -93,7 +93,7 @@ class Menutype extends Obj
      * Method to get type options by component
      *
      * @param   object  $component
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getTypeOptionsByComponent($component)
     {
@@ -118,7 +118,7 @@ class Menutype extends Obj
      *
      * @param   string  $file
      * @param   string  $component
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     protected function getTypeOptionsFromXML($file, $component)
     {
@@ -191,7 +191,7 @@ class Menutype extends Obj
      * Method to get type options from MVC
      *
      * @param   object  $component
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     protected function getTypeOptionsFromMVC($component)
     {
@@ -283,7 +283,7 @@ class Menutype extends Obj
      *
      * @param   object  $component
      * @param   string  $view
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getTypeOptionsFromLayouts($component, $view)
     {

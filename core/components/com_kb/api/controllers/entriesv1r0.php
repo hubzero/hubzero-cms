@@ -1134,7 +1134,7 @@ class Entriesv1r0 extends ApiController
      * Knowledge base categories, keyed by ID
      *
      * @param   boolean  $unpublished  Include unpublished categories
-     * @return  array
+     * @return  array<mixed>
      */
     private function categories($unpublished = false)
     {

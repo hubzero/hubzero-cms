@@ -31,8 +31,8 @@ class Files extends Base
      * @param   mixed    $recursive  True to recursively search into sub-folders, or an integer to
      *                             specify the maximum depth.
      * @param   boolean  $full     True to return the full path to the file.
-     * @param   array    $exclude  Array with names of files which should not be shown in the result.
-     * @return  array
+     * @param   array<mixed>    $exclude  Array with names of files which should not be shown in the result.
+     * @return  array<int, mixed>
      */
     public function handle(
         $path,

@@ -23,7 +23,7 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
     /**
      * Array to hold processed data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 
@@ -67,9 +67,9 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
      * Process Import data
      *
      * @param   \Components\Resources\Models\Import $import
-     * @param   array    $callbacks
+     * @param   array<mixed>    $callbacks
      * @param   integer  $dryRun
-     * @return  array
+     * @return  array<mixed>
      */
     public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun)
     {
@@ -117,7 +117,7 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
      * Run Callbacks on Record
      *
      * @param   object  $record     Resource Record
-     * @param   array   $callbacks  Array of Callbacks
+     * @param   array<mixed>   $callbacks  Array of Callbacks
      * @param   bool|int    $dryRun     Dry Run mode?
      * @return  object              Record object
      */

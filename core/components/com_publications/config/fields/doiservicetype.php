@@ -28,7 +28,7 @@ class DOIServicetype extends Select
     /**
      * Method to get the field options for DOI Service
      *
-     * @return  array  The field options.
+     * @return  array<int, mixed>  The field options.
      */
     protected function getOptions()
     {

@@ -42,7 +42,7 @@ class MacrosTest extends TestCase
     /**
      * Every macro file, as a class name
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function macroProvider(): array
     {

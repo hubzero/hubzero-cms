@@ -80,7 +80,7 @@ class Blog extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -103,9 +103,9 @@ class Blog extends Plugin
      * @param   integer  $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
-     * @param   array    $access      What can be accessed
-     * @param   array|null    $areas       Active area(s)
-     * @return  array
+     * @param   array<mixed>    $access      What can be accessed
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @return  array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -319,7 +319,7 @@ class Blog extends Plugin
      * Parse an SEF URL into its component bits
      * stripping out the path leading up to the blog plugin
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function parseUrl()
     {

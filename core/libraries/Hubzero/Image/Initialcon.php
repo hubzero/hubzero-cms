@@ -40,7 +40,7 @@ class Initialcon
     private $hash;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     private $color;
 
@@ -232,7 +232,7 @@ class Initialcon
     /**
      * Get the color
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getColor()
     {

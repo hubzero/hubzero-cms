@@ -69,7 +69,7 @@ class PdoConnection implements ConnectionInterface
     /**
      * Additional PDO connection options
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $options;
 
@@ -83,7 +83,7 @@ class PdoConnection implements ConnectionInterface
      * @param   string  $dsn       The Data Source Name
      * @param   string  $username  The database username
      * @param   string  $password  The database password
-     * @param   array   $options   Additional PDO options
+     * @param   array<mixed>   $options   Additional PDO options
      * @throws  ConnectionFailedException  If PDO extension is not installed
      */
     public function __construct(string $dsn, string $username = '', string $password = '', array $options = [])

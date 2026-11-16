@@ -20,7 +20,7 @@ class TouchTestItem extends Relational
 
     /**
      * Public column cache for testing
-     * @var array
+     * @var array<mixed>
      */
     public static $columns = [];
 }

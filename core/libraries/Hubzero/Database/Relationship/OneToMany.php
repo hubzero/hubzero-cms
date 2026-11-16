@@ -32,9 +32,9 @@ class OneToMany extends Relationship
      * or many items on the related side at a given time.  We must then be prepared
      * to loop over the items.
      *
-     * @param   object|array   $models    A single model or array of models to associate
+     * @param   object|array<mixed>   $models    A single model or array of models to associate
      * @param   \Closure|null        $callback  A callback to potentially append additional data
-     * @return  object|array
+     * @return  object|array<mixed>
      **/
     public function associate($models, $callback = null)
     {
@@ -81,8 +81,8 @@ class OneToMany extends Relationship
     /**
      * Saves all of the given models
      *
-     * @param   array  $models  An array of models being associated and saved
-     * @return  array|bool
+     * @param   array<mixed>  $models  An array of models being associated and saved
+     * @return  array<mixed>|bool
      **/
     public function saveAll($models)
     {
@@ -119,7 +119,7 @@ class OneToMany extends Relationship
      * Get keys based on given constraint
      *
      * @param   \Closure  $constraint  The constraint function to apply
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -133,7 +133,7 @@ class OneToMany extends Relationship
      * Loads the relationship content with the provided data
      *
      * @param   \Hubzero\Database\Rows   $rows  The rows that we'll be seeding
-     * @param   \Hubzero\Database\Rows|array  $data  The data to seed
+     * @param   \Hubzero\Database\Rows|array<mixed>  $data  The data to seed
      * @param   string  $name  The name of the relationship
      * @return  \Hubzero\Database\Rows
      **/
@@ -148,7 +148,7 @@ class OneToMany extends Relationship
      * Seeds the given rows with data
      *
      * @param   \Hubzero\Database\Rows   $rows  The rows to seed on to
-     * @param   array   $data  The data from which to seed
+     * @param   array<mixed>   $data  The data from which to seed
      * @param   string  $name  The relationship name
      * @return  \Hubzero\Database\Rows
      **/
@@ -170,7 +170,7 @@ class OneToMany extends Relationship
      * Sorts the relations into arrays keyed by the related key
      *
      * @param   iterable|object  $relations  The relations to sort
-     * @return  array
+     * @return  array<mixed>
      **/
     protected function getResultsByRelatedKey($relations)
     {

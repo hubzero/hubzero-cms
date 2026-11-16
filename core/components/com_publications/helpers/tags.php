@@ -75,7 +75,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param  integer|null  $tagger_id  Tagger ID (set this if you want to restrict tags only added by a specific user)
      * @param      integer $strength  Tag strength (set this if you want to restrict tags by strength)
      * @param      integer $admin     Has admin access?
-     * @return     array
+     * @return     array<mixed>
      */
     public function getTagsOnObject(
         $object_id,
@@ -124,7 +124,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $tagger_id Tagger ID
      * @param      integer $strength  Tag strength
      * @param      integer $admin     Admin flag
-     * @return     array
+     * @return     array<int, \stdClass>
      */
     public function getTags($id, $tagger_id = 0, $strength = 0, $admin = 0)
     {
@@ -155,7 +155,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      integer      $vid        Publication version ID
      *
-     * @return     array or false
+     * @return     array<int, \stdClass> or false
      */
     public function getAllUserTags($vid)
     {
@@ -171,7 +171,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $id   Publication ID
      * @param      integer $category  Publication category (optional)
      * @param      string  $tag  Parameter description (if any) ...
-     * @return     array
+     * @return     array<mixed>
      */
     public function getTagsWithObjects($id = 0, $category = 0, $tag = '')
     {
@@ -385,7 +385,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      string|mixed  $tag_string Comma-separated string of tags
      * @param      integer $keep       Use normalized tag as array key
-     * @return     array
+     * @return     array<mixed>
      */
     public function parseTags($tag_string, $keep = 0)
     {
@@ -425,8 +425,8 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Push group alias into array for easier searching
      *
-     * @param      array $groups User's gorups
-     * @return     array
+     * @param      array<mixed> $groups User's gorups
+     * @return     array<int, mixed>
      */
     public function getUsersGroups($groups)
     {
@@ -449,8 +449,8 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $category     Publication category
      * @param      string  $sortby   Sort data by
      * @param      string  $tag2     Secondary tag
-     * @param      array   $filterby Extra, optional filters
-     * @return     array
+     * @param      array<mixed>   $filterby Extra, optional filters
+     * @return     array<int, \stdClass>
      */
     public function getObjectsOnTag(
         $tag = '',
@@ -591,7 +591,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      string $tag  Tag to get data for
      * @param      string $rtrn Field to return
-     * @return     array
+     * @return     array<int, mixed>
      */
     public function getTagUsage($tag, $rtrn = 'id')
     {
@@ -630,9 +630,9 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Get picked tags
      *
-     * @param      array $tags
+     * @param      array<mixed> $tags
      *
-     * @return     array|null
+     * @return     array<mixed>|null
      */
     public function getPickedTags($tags = [])
     {
@@ -686,7 +686,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      string   $pubtitle
      * @param      string   $typealias
-     * @param      array    $attached_tags
+     * @param      array<mixed>    $attached_tags
      * @param      integer  $limit
      * @param      integer  $tcount
      *
@@ -787,7 +787,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Turn a string of tags to an array
      *
-     * @param      string|array $tag Tag string
+     * @param      string|array<mixed> $tag Tag string
      * @return     mixed
      */
     public function parseTopTags($tag, $remove = '')

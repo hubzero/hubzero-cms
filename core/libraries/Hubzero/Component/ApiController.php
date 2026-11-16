@@ -44,7 +44,7 @@ class ApiController implements ControllerInterface
     /**
      * A list of executable tasks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $taskMap = [
         '__default' => 'index',
@@ -118,35 +118,35 @@ class ApiController implements ControllerInterface
     /**
      * Methods needing Auth
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $authenticated = ['all'];
 
     /**
      * Methods skipping Auth
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $unauthenticated = [];
 
     /**
      * Methods needing rate limiting
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $rateLimited = [];
 
     /**
      * Methods skipping rate limiting
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $notRateLimited = ['all'];
 
     /**
      * Constructor
      *
-     * @param   array  $config  Optional configurations to be used
+     * @param   array<mixed>  $config  Optional configurations to be used
      * @return  void
      */
     public function __construct(Response $response, $config = [])
@@ -969,8 +969,8 @@ class ApiController implements ControllerInterface
     /**
      * Reduce field types to a couple generic types
      *
-     * @param   array  $properties
-     * @return  array
+     * @param   array<mixed>  $properties
+     * @return  array<mixed>
      */
     protected function normalizeProperties($properties)
     {

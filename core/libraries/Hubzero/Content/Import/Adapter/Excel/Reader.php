@@ -44,7 +44,7 @@ class Reader implements Iterator
      * Current row position
      * Starts at 1 as row 0
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $sheet = [];
 
@@ -59,7 +59,7 @@ class Reader implements Iterator
     /**
      * Container for column headers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $headers = [];
 
@@ -105,7 +105,7 @@ class Reader implements Iterator
     /**
      * Get the list of headers
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function headers()
     {

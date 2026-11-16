@@ -25,7 +25,7 @@ class QueryTest extends AbstractDriverTestCase
     /**
      * Return table names created by this test for automatic cleanup
      *
-     * @return array
+     * @return array<int, mixed>
      */
     protected static function getTestTables(): array
     {
@@ -173,7 +173,7 @@ class QueryTest extends AbstractDriverTestCase
      * Seed posts table for join tests.
      *
      * @param BaseSqlDriver $driver
-     * @param array  $rows
+     * @param array<mixed>  $rows
      */
     private function seedPosts(BaseSqlDriver $driver, array $rows): void
     {
@@ -185,7 +185,7 @@ class QueryTest extends AbstractDriverTestCase
      * Seed groups table for join tests.
      *
      * @param BaseSqlDriver $driver
-     * @param array  $rows
+     * @param array<mixed>  $rows
      */
     private function seedGroups(BaseSqlDriver $driver, array $rows): void
     {

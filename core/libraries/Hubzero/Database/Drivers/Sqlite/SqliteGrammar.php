@@ -29,8 +29,8 @@ class SqliteGrammar extends BaseSchemaGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -42,7 +42,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      *
      * SQLite uses type affinity, so most types map to INTEGER, TEXT, REAL, or BLOB.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types (all map to INTEGER in SQLite)
@@ -92,7 +92,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * Unique constraints can be inline, but regular indexes cannot.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileCreate(TableDefinition $blueprint): array
     {
@@ -151,7 +151,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * SQLite does not support inline regular indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineIndex(string $name, array $columns): ?string
@@ -165,7 +165,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * SQLite supports inline UNIQUE constraints.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineUniqueIndex(string $name, array $columns): ?string
@@ -180,7 +180,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * SQLite does not support inline fulltext indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineFulltextIndex(string $name, array $columns): ?string
@@ -195,7 +195,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * not modify or drop them (without recreating the table).
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterAdd(TableDefinition $blueprint): array
     {
@@ -281,7 +281,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * 4. Renaming the temporary table
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<mixed>
      * @throws \RuntimeException When column modification is attempted
      */
     public function compileAlterModify(TableDefinition $blueprint): array
@@ -304,7 +304,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * SQLite supports basic and unique indexes, but not FULLTEXT or SPATIAL.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileIndexes(TableDefinition $blueprint): array
     {
@@ -413,7 +413,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * we need to rebuild the table by creating a new one, copying data, and swapping.
      *
      * @param   AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements to execute
+     * @return  array<mixed>  Array of SQL statements to execute
      */
     public function compileAlterTable(AlterTableBuilder $builder): array
     {
@@ -478,7 +478,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      * that PRAGMA table_info returns, for use in table rebuild operations.
      *
      * @param   \Hubzero\Database\Schema\TableInfo  $tableInfo  Table information
-     * @return  array  Array of objects with PRAGMA table_info structure
+     * @return  array<int, mixed>  Array of objects with PRAGMA table_info structure
      */
     protected function convertTableInfoToColumnStructure(\Hubzero\Database\Schema\TableInfo $tableInfo): array
     {
@@ -510,7 +510,7 @@ class SqliteGrammar extends BaseSchemaGrammar
      *
      * @param   string  $table    Table name (already prefixed)
      * @param   AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements
+     * @return  array<int, mixed>  Array of SQL statements
      */
     protected function buildTableRebuild(string $table, AlterTableBuilder $builder): array
     {

@@ -46,7 +46,7 @@ class Renderer extends Obj
      * Renders a script and returns the results as a string
      *
      * @param   string|null  $name  The name of the element to render
-     * @param   array|null   $params   Array of values
+     * @param   array<mixed>|null   $params   Array of values
      * @param   string|null  $content  Override the output of the renderer
      * @return  string  The output of the script
      */

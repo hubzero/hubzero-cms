@@ -1914,7 +1914,7 @@ class Jobs extends SiteController
      * @param      integer $emp         Employer ID
      * @param      integer $checkstored Check internal property?
      * @param      integer $jobs        Are filters for jobs?
-     * @return     array
+     * @return     array<string, mixed>
      */
     protected function getFilters($admin = 0, $emp = 0, $checkstored = 1, $jobs = 0)
     {

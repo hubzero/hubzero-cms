@@ -29,7 +29,7 @@ class Address extends Field
     /**
      * The form field type.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $countries = null;
 
@@ -216,7 +216,7 @@ class Address extends Field
     /**
      * Method to get the field options.
      *
-     * @return  array  The field option objects.
+     * @return  array<int, mixed>  The field option objects.
      */
     protected function getOptions()
     {

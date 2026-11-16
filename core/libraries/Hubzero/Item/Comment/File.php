@@ -41,7 +41,7 @@ class File extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $dimensions = null;
 
@@ -93,7 +93,7 @@ class File extends Relational
     /**
      * Ensure no invalid characters
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticFilename($data)
@@ -119,7 +119,7 @@ class File extends Relational
      * renaming the incoming file if the name
      * already exists
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function uniqueFilename($data)
@@ -242,7 +242,7 @@ class File extends Relational
     /**
      * File width and height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function dimensions()
     {

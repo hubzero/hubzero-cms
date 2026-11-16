@@ -18,7 +18,7 @@ class Guard
     /**
      * An array of Observer objects to notify
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $observers = [];
 
@@ -32,7 +32,7 @@ class Guard
     /**
      * A multi dimensional array of [function][] = key for observers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $methods = [];
 
@@ -76,7 +76,7 @@ class Guard
      * [!] Based on Joomla's event dispatcher
      *     This is here purely for compatibility.
      *
-     * @param   object|array  $observer  An observer object to attach
+     * @param   object|array<mixed>  $observer  An observer object to attach
      * @return  void
      * @todo    Update plugins to not need this and remove method
      */
@@ -169,8 +169,8 @@ class Guard
      * Finds out if a set of login credentials are valid by asking all observing
      * objects to run their respective authentication routines.
      *
-     * @param   array   $credentials  Array holding the user credentials.
-     * @param   array   $options      Array holding user options.
+     * @param   array<mixed>   $credentials  Array holding the user credentials.
+     * @param   array<mixed>   $options      Array holding user options.
      * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
      */
     public function authenticate($credentials, $options = [])
@@ -253,8 +253,8 @@ class Guard
      * Authorises that a particular user should be able to login
      *
      * @param   object  $response  response including username of the user to authorise
-     * @param   array   $options   list of options
-     * @return  array   Results of authorisation
+     * @param   array<mixed>   $options   list of options
+     * @return  array<mixed>   Results of authorisation
      */
     public function authorise($response, $options = [])
     {

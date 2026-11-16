@@ -63,7 +63,7 @@ class ManyShiftsToMany extends ManyToMany
      *
      * @param   int     $count     The count to limit by
      * @param   string  $operator  The comparison operator used between the column and the count
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -90,7 +90,7 @@ class ManyShiftsToMany extends ManyToMany
     /**
      * Generates the connection data needed to create the associative entry
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     protected function getConnectionData()
     {
@@ -104,7 +104,7 @@ class ManyShiftsToMany extends ManyToMany
      * Removes the relationship between the two sides of the many to many
      * (not deleting either of the actual sides of the models themselves)
      *
-     * @param   array    $ids         The identifiers to remove from the associative table
+     * @param   array<mixed>    $ids         The identifiers to remove from the associative table
      * @param   \Closure|null  $constraint  Additional constraints to place on the query
      * @return  $this
      **/

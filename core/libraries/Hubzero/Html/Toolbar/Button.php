@@ -56,7 +56,7 @@ abstract class Button extends Obj
     /**
      * Get the HTML to render the button
      *
-     * @param   array  &$definition  Parameters to be passed
+     * @param   array<mixed>  &$definition  Parameters to be passed
      * @return  string
      */
     public function render(&$definition)

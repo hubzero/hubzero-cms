@@ -61,7 +61,7 @@ class Git extends Models\Adapter
     /**
      * Get file count
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  string|bool|null
      */
     public function count($params = [])
@@ -75,8 +75,8 @@ class Git extends Models\Adapter
     /**
      * Get file list (retrieve and sort)
      *
-     * @param   array  $params
-     * @return  array
+     * @param   array<mixed>  $params
+     * @return  array<mixed>
      */
     public function filelist($params = [])
     {
@@ -212,7 +212,7 @@ class Git extends Models\Adapter
     /**
      * Get file content and write to specified location
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function content($params = [])
@@ -227,10 +227,10 @@ class Git extends Models\Adapter
     /**
      * Get final list
      *
-     * @param   array  $items
-     * @param   array  $params
-     * @param   array  $folders
-     * @return  array
+     * @param   array<mixed>  $items
+     * @param   array<mixed>  $params
+     * @param   array<mixed>  $folders
+     * @return  array<int, mixed>
      */
     protected function list($items, $params, $folders = [])
     {
@@ -292,9 +292,9 @@ class Git extends Models\Adapter
     /**
      * Get file history
      *
-     * @param   array  $params
-     * @param   array  $versions
-     * @param   array  $timestamps
+     * @param   array<mixed>  $params
+     * @param   array<mixed>  $versions
+     * @param   array<mixed>  $timestamps
      * @return  bool
      */
     public function history($params, &$versions, &$timestamps)
@@ -329,8 +329,8 @@ class Git extends Models\Adapter
     /**
      * Get changes for sync
      *
-     * @param   array  $params
-     * @return  array
+     * @param   array<mixed>  $params
+     * @return  array<mixed>
      */
     public function getChanges($params = [])
     {
@@ -346,7 +346,7 @@ class Git extends Models\Adapter
     /**
      * Get last file revision
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  boolean
      */
     public function getLastRevision($params = [])
@@ -363,7 +363,7 @@ class Git extends Models\Adapter
     /**
      * Move item
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function move($params = [])
@@ -388,7 +388,7 @@ class Git extends Models\Adapter
     /**
      * Make dir
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function makeDirectory($params = [])
@@ -412,7 +412,7 @@ class Git extends Models\Adapter
     /**
      * Delete dir
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function deleteDirectory($params = [])
@@ -443,7 +443,7 @@ class Git extends Models\Adapter
     /**
      * Delete file
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function deleteFile($params = [])
@@ -475,7 +475,7 @@ class Git extends Models\Adapter
     /**
      * Checkin file change
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool|null
      */
     public function checkin($params = [])
@@ -509,7 +509,7 @@ class Git extends Models\Adapter
     /**
      * Discard file change
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function discard($params = [])
@@ -532,8 +532,8 @@ class Git extends Models\Adapter
     /**
      * Restore file revision
      *
-     * @param   array  $params
-     * @return  array|bool
+     * @param   array<mixed>  $params
+     * @return  array<mixed>|bool
      */
     public function restore($params = [])
     {
@@ -572,8 +572,8 @@ class Git extends Models\Adapter
     /**
      * Diff revisions
      *
-     * @param   array  $params
-     * @return  array|false
+     * @param   array<mixed>  $params
+     * @return  array<mixed>|false
      */
     public function diff($params = [])
     {
@@ -654,7 +654,7 @@ class Git extends Models\Adapter
      * @param   object  $file     Models\File
      * @param   string  $dirPath
      * @param   string|null  $property
-     * @return  array
+     * @return  array<mixed>
      */
     protected function file($file, $dirPath, $property = null)
     {
@@ -716,7 +716,7 @@ class Git extends Models\Adapter
     /**
      * Get used disk space in repo
      *
-     * @param   array    $params
+     * @param   array<mixed>    $params
      * @return  integer
      */
     public function getDiskUsage($params = [])
@@ -768,7 +768,7 @@ class Git extends Models\Adapter
     /**
      * Erase repository
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function erase($params = [])
@@ -791,7 +791,7 @@ class Git extends Models\Adapter
     /**
      * Optimize repository
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function optimize($params = [])

@@ -18,7 +18,7 @@ class Application implements \ArrayAccess
     /**
      * Attributes
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $attributes = [];
 

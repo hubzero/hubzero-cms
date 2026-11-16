@@ -74,7 +74,7 @@ class Log extends Relational
     /**
      * Generates automatic timestamp field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticTimestamp($data)
@@ -85,7 +85,7 @@ class Log extends Relational
     /**
      * Generates automatic user_id field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticUserId($data)
@@ -99,7 +99,7 @@ class Log extends Relational
     /**
      * Generates automatic actorid field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticActorid($data)

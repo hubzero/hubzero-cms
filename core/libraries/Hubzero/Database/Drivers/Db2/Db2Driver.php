@@ -108,7 +108,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -236,8 +236,8 @@ class Db2Driver extends BaseSqlDriver
      * causes "Unknown parameter type" error. Use PDO::PARAM_STR for
      * null values instead (which correctly inserts NULL).
      *
-     * @param   array  $bindings  The param bindings
-     * @param   array  $type      The param types (optional)
+     * @param   array<mixed>  $bindings  The param bindings
+     * @param   array<mixed>  $type      The param types (optional)
      * @return  $this
      */
     public function bind($bindings, $type = [])
@@ -460,8 +460,8 @@ class Db2Driver extends BaseSqlDriver
      *
      * DB2 doesn't have SHOW CREATE TABLE; we reconstruct it from metadata
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -525,7 +525,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string   $table     The name of the database table
      * @param   boolean  $typeOnly  True to only return field types
-     * @return  array    An array of fields for the database table
+     * @return  array<mixed>    An array of fields for the database table
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -583,7 +583,7 @@ class Db2Driver extends BaseSqlDriver
      * Get the details list of keys for a table
      *
      * @param   string  $table  The name of the table
-     * @return  array   An array of the column specification for the table
+     * @return  array<mixed>   An array of the column specification for the table
      */
     public function getTableKeys($table)
     {
@@ -633,7 +633,7 @@ class Db2Driver extends BaseSqlDriver
      * Gets all indexes for a table with their columns and properties
      *
      * @param   string  $table  The table name
-     * @return  array   Array of index objects
+     * @return  array<mixed>   Array of index objects
      */
     public function getIndexes($table)
     {
@@ -696,7 +696,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList()
     {
@@ -952,7 +952,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Always returns empty array
+     * @return  array<mixed>   Always returns empty array
      */
     public function getEnumValues($table, $column)
     {
@@ -994,7 +994,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view
-     * @param   array   $options    MySQL-specific options (ignored on DB2)
+     * @param   array<mixed>   $options    MySQL-specific options (ignored on DB2)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -1053,7 +1053,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current schema
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      */
     public function getViews(): array
     {
@@ -1064,7 +1064,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Returns a list of all database names (schemas) the user can access
      *
-     * @return  array  Array of schema names
+     * @return  array<mixed>  Array of schema names
      */
     public function getDatabaseNames(): array
     {
@@ -1075,7 +1075,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Returns a list of all sequences in the current schema
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<int, mixed>  Array of SequenceInfo objects
      */
     public function getSequences(): array
     {
@@ -1118,7 +1118,7 @@ class Db2Driver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (min, max, cycle, cache)
+     * @param   array<mixed>   $options    Additional options (min, max, cycle, cache)
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -1365,7 +1365,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys
+     * @return  array<mixed>  Array with standardized keys
      */
     public function getServerInfo()
     {
@@ -1723,7 +1723,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * DB2 uses || operator or CONCAT()
      *
-     * @param   array  $strings  Array of strings to concatenate
+     * @param   array<mixed>  $strings  Array of strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -1737,7 +1737,7 @@ class Db2Driver extends BaseSqlDriver
      * DB2 doesn't have CONCAT_WS; we build it manually
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of strings to concatenate
+     * @param   array<mixed>   $strings    Array of strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -2018,7 +2018,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s)
+     * @param   array<mixed>  $columns  Column name(s)
      * @param   bool          $unique   Whether this is a unique index
      * @return  string
      */
@@ -2062,7 +2062,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2107,7 +2107,7 @@ class Db2Driver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2289,7 +2289,7 @@ class Db2Driver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column names in the primary key
+     * @return  array<mixed>   Array of column names in the primary key
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -2314,7 +2314,7 @@ class Db2Driver extends BaseSqlDriver
      * Gets foreign key constraints for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getForeignKeys($table)
     {
@@ -2352,9 +2352,9 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string        $table          The table to add the FK to
      * @param   string        $constraint     The constraint name
-     * @param   string|array  $columns        The local column(s)
+     * @param   string|array<mixed>  $columns        The local column(s)
      * @param   string        $foreignTable   The referenced table
-     * @param   string|array  $foreignColumns The referenced column(s)
+     * @param   string|array<mixed>  $foreignColumns The referenced column(s)
      * @param   string        $onUpdate       ON UPDATE action (default NO ACTION)
      * @param   string        $onDelete       ON DELETE action (default NO ACTION)
      * @return  bool
@@ -2582,7 +2582,7 @@ class Db2Driver extends BaseSqlDriver
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -2648,7 +2648,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {
@@ -2705,7 +2705,7 @@ class Db2Driver extends BaseSqlDriver
      * DB2 only supports RESTRICT or NO ACTION for ON UPDATE.
      * This method converts CASCADE to NO ACTION for ON UPDATE.
      *
-     * @param   array   $fk          Foreign key definition
+     * @param   array<mixed>   $fk          Foreign key definition
      * @param   string  $tableName   Table name
      * @return  string  The constraint definition SQL
      */
@@ -2764,7 +2764,7 @@ class Db2Driver extends BaseSqlDriver
      * - Removes UNSIGNED keyword (not supported by DB2)
      *
      * @param   string  $type       The column type definition
-     * @param   array   $modifiers  Column modifiers (length, precision, scale, etc.)
+     * @param   array<mixed>   $modifiers  Column modifiers (length, precision, scale, etc.)
      * @return  string  The normalized DB2 type
      */
     public function normalizeColumnType(string $type, array $modifiers = []): string

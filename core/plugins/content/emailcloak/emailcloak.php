@@ -21,7 +21,7 @@ class Emailcloak extends Plugin
      *
      * @param   string   $context  The context of the content being passed to the plugin.
      * @param   mixed    $row      An object with a "text" property or the string to be cloaked.
-     * @param   array    $params   Additional parameters. See {@see plgEmailCloak()}.
+     * @param   array<mixed>    $params   Additional parameters. See {@see plgEmailCloak()}.
      * @param   integer  $page     Optional page number. Unused. Defaults to zero.
      * @return  boolean  True on success.
      */
@@ -78,7 +78,7 @@ class Emailcloak extends Plugin
      * Cloak all emails in text from spambots via Javascript.
      *
      * @param   string   $text    The string to be cloaked.
-     * @param   array    $params  Additional parameters. Parameter "mode" (integer, default 1)
+     * @param   array<mixed>    $params  Additional parameters. Parameter "mode" (integer, default 1)
      *                            replaces addresses with "mailto:" links if nonzero.
      * @return  boolean  True on success.
      */

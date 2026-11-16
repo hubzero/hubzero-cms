@@ -39,7 +39,7 @@ class Badges
     /**
      * Instantiate a Badges instance
      *
-     * @param   array   $args     Starting state
+     * @param   array<mixed>   $args     Starting state
      * @return  void
      */
     public function __construct($args = [])
@@ -85,7 +85,7 @@ class Badges
      * Convert string of raw_tag names into formatted array
      *
      * @param   string   $newBadgesString   Comma separated list of raw_tag names
-     * @return  array
+     * @return  array<mixed>
      */
     protected function parseBadgesString($newBadgesString)
     {
@@ -100,10 +100,10 @@ class Badges
     /**
      * Retrieve IDs based on tag names
      *
-     * @param   array    $rawTagNames   raw_tag attribute list for given tags
+     * @param   array<mixed>    $rawTagNames   raw_tag attribute list for given tags
      * @param   integer  $taggerId      ID of user who associated tag w/ record
      * @param   boolean  $admin         Mark tags as admin?
-     * @return  array
+     * @return  array<mixed>
      */
     protected function translateRawNamesToIds($rawTagNames, $taggerId, $admin)
     {
@@ -152,7 +152,7 @@ class Badges
     /**
      * Associate tags with a record as badges
      *
-     * @param   array    $tagIds      IDs of tags
+     * @param   array<mixed>    $tagIds      IDs of tags
      * @param   integer  $taggerId    ID of user who associated tag w/ record
      * @param   boolean  $admin       Mark tags as admin?
      * @param   integer  $strength    Association strength
@@ -194,7 +194,7 @@ class Badges
     /**
      * Disassociate badges (tags) from a record
      *
-     * @param   array    $tagIds      IDs of tags
+     * @param   array<mixed>    $tagIds      IDs of tags
      * @return  void
      */
     protected function removeBadges($tagIds)
@@ -226,7 +226,7 @@ class Badges
 
     /**
      * @param   string  $attribute   Name of attribute to map badges (tags) to
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function allBadgesAs($attribute)
     {
@@ -243,7 +243,7 @@ class Badges
     /**
      * Get all badges for given resource
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {

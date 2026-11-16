@@ -139,7 +139,7 @@ class IdP
     /**
      * User accessors an attribute map may name
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $attributeSources = [
         'email',
@@ -155,7 +155,7 @@ class IdP
      * Group-membership sources, which resolve to a list of group cn's
      * rather than to a single value
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $groupSources = ['groups', 'groups:allowed'];
 
@@ -394,7 +394,7 @@ class IdP
      * @param   object  $sp      ServiceProvider
      * @param   object  $user    \Hubzero\User\User
      * @param   string  $source
-     * @return  string|array|null
+     * @return  string|array<mixed>|null
      */
     protected function resolveAttributeSource($sp, $user, $source)
     {

@@ -75,7 +75,7 @@ class ServiceProvider extends Relational
     /**
      * Fields to be parsed automatically on each update
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $renew = [
         'modified',
@@ -85,7 +85,7 @@ class ServiceProvider extends Relational
     /**
      * Generates automatic modified field value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -96,7 +96,7 @@ class ServiceProvider extends Relational
     /**
      * Generates automatic modified by field value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  integer
      */
     public function automaticModifiedBy($data)
@@ -205,7 +205,7 @@ class ServiceProvider extends Relational
      * Null means "no details" — which is not the same as "invalid": callers
      * that validate must check canInspectCertificates() first.
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function certificateInfo()
     {
@@ -236,7 +236,7 @@ class ServiceProvider extends Relational
      *
      * Entries are {"name": ..., "friendly": ..., "source": ...} objects (§8 of DESIGN.md).
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function attributeMap()
     {
@@ -262,7 +262,7 @@ class ServiceProvider extends Relational
     /**
      * Group cn's allowed to use this SP, or null for no restriction
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function allowedGroups()
     {
@@ -320,7 +320,7 @@ class ServiceProvider extends Relational
     /**
      * Membership already looked up, by user ID and group cn
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $membership = [];
 
@@ -392,7 +392,7 @@ class ServiceProvider extends Relational
      *
      * @param   object|mixed  $user    \Hubzero\User\User
      * @param   string  $policy  'allowed' or 'all'
-     * @return  array
+     * @return  array<mixed>
      */
     public function releasedGroups($user, $policy = 'allowed')
     {
@@ -437,7 +437,7 @@ class ServiceProvider extends Relational
      * gate access through allowed_groups.
      *
      * @param   integer  $userId
-     * @return  array
+     * @return  array<mixed>
      */
     protected function confirmedGroups($userId)
     {

@@ -50,7 +50,7 @@ class Plugins
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function stateOptions()
     {
@@ -65,7 +65,7 @@ class Plugins
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function folderOptions()
     {

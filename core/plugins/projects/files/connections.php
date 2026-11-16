@@ -120,7 +120,7 @@ class Connections
      * Calls undefined functions, again, assuming to be coming from plugin
      *
      * @param   string  $name       the function name being called
-     * @param   array   $arguments  the arguments to be passed to the function
+     * @param   array<mixed>   $arguments  the arguments to be passed to the function
      * @return  mixed
      **/
     public function __call($name, $arguments)
@@ -931,7 +931,7 @@ class Connections
      * @param   int     $total_files  The total number of chunks for this file
      * @param   int     $expand       Whether to automatically expand zip,tar,gz files
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $expand)
     {
@@ -1701,8 +1701,8 @@ class Connections
     /**
      * Trims vars, unsetting if empty
      *
-     * @param   array  $vars  the variables to trim
-     * @return  array
+     * @param   array<mixed>  $vars  the variables to trim
+     * @return  array<mixed>
      **/
     private function prune($vars)
     {

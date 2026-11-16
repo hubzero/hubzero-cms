@@ -100,7 +100,7 @@ class Announcement extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -155,7 +155,7 @@ class Announcement extends Table
     /**
      * Get a count of records
      *
-     * @param     array $filters
+     * @param     array<mixed> $filters
      * @return    string|null
      */
     public function count($filters = [])
@@ -170,8 +170,8 @@ class Announcement extends Table
     /**
      * Get an object list of records
      *
-     * @param     array $filters
-     * @return    array
+     * @param     array<mixed> $filters
+     * @return    array<int, \stdClass>
      */
     public function find($filters = [])
     {

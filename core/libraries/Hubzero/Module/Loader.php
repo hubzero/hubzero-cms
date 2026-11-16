@@ -116,7 +116,7 @@ class Loader
      * Get modules by position
      *
      * @param   string  $position  The position of the module
-     * @return  array   An array of module objects
+     * @return  array<mixed>   An array of module objects
      */
     public function byPosition($position)
     {
@@ -161,7 +161,7 @@ class Loader
      * Render modules for a position
      *
      * @param   string  $position  Position to render modules for
-     * @param   string|array  $style     Module style (deprecated?)
+     * @param   string|array<mixed>  $style     Module style (deprecated?)
      * @return  string  HTML
      */
     public function position($position, $style = 'none')
@@ -182,7 +182,7 @@ class Loader
      * Render module by name
      *
      * @param   string  $name   Module name
-     * @param   string|array  $style  Module style (deprecated?)
+     * @param   string|array<mixed>  $style  Module style (deprecated?)
      * @return  string  HTML
      */
     public function name($name, $style = 'none')
@@ -218,7 +218,7 @@ class Loader
      * Render the module.
      *
      * @param   object  $module   A module object.
-     * @param   array   $attribs  An array of attributes for the module (probably from the XML).
+     * @param   array<mixed>   $attribs  An array of attributes for the module (probably from the XML).
      * @return  string  The HTML content of the module output.
      */
     public function render($module, $attribs = [])
@@ -394,7 +394,7 @@ class Loader
     /**
      * Load published modules.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {

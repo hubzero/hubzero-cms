@@ -29,7 +29,7 @@ class Xcache extends Store
     /**
      * Constructor
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  true
      */
     public function __construct($options = [])

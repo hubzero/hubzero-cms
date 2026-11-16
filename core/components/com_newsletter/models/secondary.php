@@ -82,7 +82,7 @@ class Secondary extends Relational
     /**
      * Generates automatic order field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrder($data)

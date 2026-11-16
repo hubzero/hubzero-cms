@@ -28,7 +28,7 @@ class Request extends BaseRequest
     /**
      * Array of filters
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $filters = [
         'int'   => '/-?[0-9]+/',
@@ -281,7 +281,7 @@ class Request extends BaseRequest
      * @param   string|null  $key      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  array   Request variable
+     * @return  array<mixed>   Request variable
      */
     public function getArray($key = null, $default = [], $hash = 'input')
     {
@@ -294,7 +294,7 @@ class Request extends BaseRequest
      * @param   string|null  $key      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  array   Request variable
+     * @return  array<mixed>   Request variable
      */
     public function getSimpleArray($key = null, $default = [], $hash = 'input')
     {
@@ -433,7 +433,7 @@ class Request extends BaseRequest
     /**
      * Get all of the segments for the request path.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function segments()
     {
@@ -812,7 +812,7 @@ class Request extends BaseRequest
      *
      * Use in conjunction with Html::input('token').
      *
-     * @param   string|array  $method  The request method, or methods, in which to look for the token key.
+     * @param   string|array<mixed>  $method  The request method, or methods, in which to look for the token key.
      * @return  boolean  True if found and valid, false otherwise.
      */
     public function checkToken($method = 'post')

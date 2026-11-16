@@ -48,7 +48,7 @@ class Orcid extends SiteController
     /**
      * A list of ORCID services that can be used
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $services = [
         'public'  => 'pub.orcid.org',
@@ -60,7 +60,7 @@ class Orcid extends SiteController
     /**
      * OAuth tokens
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $oauthToken = [
         'members' => 'https://orcid.org/oauth/token',
@@ -72,7 +72,7 @@ class Orcid extends SiteController
      *
      * @param   string  $token
      * @param   string  $orcid
-     * @return  array
+     * @return  array<mixed>
      */
     private function getUserName($orcid, $token)
     {
@@ -130,7 +130,7 @@ class Orcid extends SiteController
      * Parse an XML tree and pull results
      *
      * @param   \SimpleXMLElement  $root
-     * @return  array
+     * @return  array<mixed>
      */
     private function parseTree($root)
     {
@@ -256,7 +256,7 @@ class Orcid extends SiteController
     /**
      * Format ORCID search results
      *
-     * @param   array   $records
+     * @param   array<mixed>   $records
      * @param   string  $callbackPrefix
      * @return  string
      */
@@ -276,7 +276,7 @@ class Orcid extends SiteController
      * Parse response headers
      *
      * @param   string  $header
-     * @return  array
+     * @return  array<mixed>
      */
     private function httpParseHeaders($header)
     {

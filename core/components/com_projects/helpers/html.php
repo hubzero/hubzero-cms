@@ -318,7 +318,7 @@ class Html extends Obj
     /**
      * Get array of available emotion icons
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getEmoIcons()
     {
@@ -489,8 +489,8 @@ class Html extends Obj
     /**
      * Search for value in array
      *
-     * @param   array  $needle
-     * @param   array  $haystack
+     * @param   array<mixed>  $needle
+     * @param   array<mixed>  $haystack
      * @return  int|string|false
      */
     public static function myArraySearch($needle, $haystack)
@@ -520,7 +520,7 @@ class Html extends Obj
      * Covert param to array of values
      *
      * @param   string  $param
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getParamArray($param = '')
     {
@@ -534,8 +534,8 @@ class Html extends Obj
     /**
      * Covert param to array of values
      *
-     * @param   string|array $array
-     * @return  array
+     * @param   string|array<mixed> $array
+     * @return  array<mixed>
      */
     public static function getCountArray($array = [])
     {
@@ -869,8 +869,8 @@ class Html extends Obj
      *
      * @param   string  $email
      * @param   string  $subject
-     * @param   string|array  $body
-     * @param   array   $from
+     * @param   string|array<mixed>  $body
+     * @param   array<mixed>   $from
      * @return  bool
      */
     public static function email($email, $subject, $body, $from)
@@ -902,7 +902,7 @@ class Html extends Obj
     /**
      * Get suggestions for new project members
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getSuggestions($model)
     {
@@ -1022,7 +1022,7 @@ class Html extends Obj
      * Get group members
      *
      * @param   string  $groupname
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getGroupMembers($groupname)
     {
@@ -1043,7 +1043,7 @@ class Html extends Obj
     /**
      * Get tabs
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getPluginNames(&$plugins)
     {
@@ -1063,7 +1063,7 @@ class Html extends Obj
     /**
      * Get active tabs
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getTabs(&$plugins)
     {
@@ -1167,7 +1167,7 @@ class Html extends Obj
      *
      * @param   string  $option
      * @param   object  $project    Models\Project
-     * @param   array   $addressees
+     * @param   array<mixed>   $addressees
      * @param   string  $subject
      * @param   string  $component
      * @param   string  $layout

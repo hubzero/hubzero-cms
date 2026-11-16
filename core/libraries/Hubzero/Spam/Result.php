@@ -21,7 +21,7 @@ class Result
     protected $isSpam = false;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     protected $messages = [];
 
@@ -29,7 +29,7 @@ class Result
      * Constructor
      *
      * @param   bool   $isSpam    Result from spam detectors
-     * @param   array  $messages  Messages to pass along
+     * @param   array<mixed>  $messages  Messages to pass along
      * @return  void
      */
     public function __construct($isSpam, array $messages = [])
@@ -71,7 +71,7 @@ class Result
     /**
      * Get the list of messages
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMessages()
     {

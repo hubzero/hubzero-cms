@@ -21,7 +21,7 @@ class Input
      * @param   string  $type
      * @param   string  $name
      * @param   string|int|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function input($type, $name, $value = null, $options = [])
@@ -60,7 +60,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function text($name, $value = null, $options = [])
@@ -72,7 +72,7 @@ class Input
      * Create a password input field.
      *
      * @param   string  $name
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function password($name, $options = [])
@@ -85,7 +85,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function hidden($name, $value = null, $options = [])
@@ -98,7 +98,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function email($name, $value = null, $options = [])
@@ -111,7 +111,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function url($name, $value = null, $options = [])
@@ -123,7 +123,7 @@ class Input
      * Create a file input field.
      *
      * @param   string  $name
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string
      */
     public static function file($name, $options = [])
@@ -136,7 +136,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string  HTML markup for a calendar field
      */
     public static function calendar($name, $value = null, $options = [])
@@ -212,7 +212,7 @@ class Input
      *
      * @param   string  $name
      * @param   string|null  $value
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  string  HTML markup for a calendar field
      */
     public static function colorpicker($name, $value = null, $options = [])
@@ -266,7 +266,7 @@ class Input
      * Get the ID attribute for a field name.
      *
      * @param   string  $name
-     * @param   array   $attributes
+     * @param   array<mixed>   $attributes
      * @return  string
      */
     protected static function getIdAttribute($name, $attributes)
@@ -292,7 +292,7 @@ class Input
     /**
      * Build an HTML attribute string from an array.
      *
-     * @param   array  $attributes
+     * @param   array<mixed>  $attributes
      * @return  string
      */
     protected static function attributes($attributes)

@@ -45,8 +45,8 @@ class Log extends Table
     /**
      * Find all logs matching filters
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, \stdClass>
      */
     public function find($filters = [])
     {
@@ -60,7 +60,7 @@ class Log extends Table
     /**
      * Build query string for getting list or count of pages
      *
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  string
      */
     private function buildQuery($filters = [])

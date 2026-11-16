@@ -102,7 +102,7 @@ class Page extends Relational
     /**
      * List of adapter paths
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $paths = [];
 
@@ -169,7 +169,7 @@ class Page extends Relational
     /**
      * Generates automatic pagename field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticPagename($data)
@@ -183,7 +183,7 @@ class Page extends Relational
     /**
      * Generates automatic namespace field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      */
     public function automaticNamespace($data)
@@ -217,7 +217,7 @@ class Page extends Relational
     /**
      * Get all aprents
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function ancestors()
     {
@@ -551,7 +551,7 @@ class Page extends Relational
      * Add a directory where a scope adapter class can be found
      *
      * @param   string  $path
-     * @return  array   An array with directory elements
+     * @return  array<mixed>   An array with directory elements
      */
     public static function addAdapterPath($path)
     {

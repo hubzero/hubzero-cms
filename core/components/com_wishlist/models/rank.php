@@ -72,7 +72,7 @@ class Rank extends Relational
     /**
      * Generates automatic voted field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticVoted($data)
@@ -83,7 +83,7 @@ class Rank extends Relational
     /**
      * Generates automatic userid field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  int
      **/
     public function automaticUserid($data)

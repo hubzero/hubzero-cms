@@ -36,7 +36,7 @@ class DiscoveryHelper
     /**
      * Gets list of all components that currently exist
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getCompleteComponentList()
     {
@@ -57,8 +57,8 @@ class DiscoveryHelper
 
     /**
      * Gets all components that are searchable
-     * @param array $existingComponents Components that have already been discovered
-     * @return array
+     * @param array<mixed> $existingComponents Components that have already been discovered
+     * @return array<int, mixed>
      */
     public static function getSearchableComponents($existingComponents = [])
     {

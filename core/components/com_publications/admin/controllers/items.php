@@ -1418,7 +1418,7 @@ class Items extends AdminController
      *
      * @param   string  $subject
      * @param   string  $message
-     * @param   array   $authors
+     * @param   array<mixed>   $authors
      * @param   string  $action
      * @return  bool|null
      */

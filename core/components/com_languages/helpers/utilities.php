@@ -22,7 +22,7 @@ class Utilities
     /**
      * Returns an array of published state filter options.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function publishedOptions()
     {

@@ -21,7 +21,7 @@ class Component extends Renderer
      * Renders a component script and returns the results as a string
      *
      * @param   string|null  $component  The name of the component to render
-     * @param   array   $params     Associative array of values
+     * @param   array<mixed>   $params     Associative array of values
      * @param   string|null  $content    Content script
      * @return  string  The output of the script
      */

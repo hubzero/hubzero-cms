@@ -25,14 +25,14 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Message tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $tags = [];
 
     /**
      * Message transporters
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $transporters = [];
 
@@ -202,7 +202,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Get the list of failed email addresses
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function getFailures()
     {
@@ -312,7 +312,7 @@ class Message extends \Symfony\Component\Mime\Email
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
      *
-     * @param string|array $addresses
+     * @param string|array<mixed> $addresses
      * @param string|null       $name      optional
      *
      * @return $this
@@ -608,7 +608,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Sets tags on the message
      *
-     * @param   array  $tags  The tags to set
+     * @param   array<mixed>  $tags  The tags to set
      * @return  void
      */
     public function setTags($tags)
@@ -619,7 +619,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Grabs the message tags
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTags()
     {

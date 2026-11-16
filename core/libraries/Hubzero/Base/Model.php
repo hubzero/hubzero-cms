@@ -446,7 +446,7 @@ abstract class Model extends Obj
     /**
      * Import a set of plugins
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function trigger($event = '', $params = [])
     {
@@ -479,7 +479,7 @@ abstract class Model extends Obj
      * @param   object|mixed   $subject   Object to print_r
      * @param   array|mixed    $ignore    Property names to ignore
      * @param   integer  $depth     Recursion depth
-     * @param   array    $refChain  Reference chain
+     * @param   array<mixed>    $refChain  Reference chain
      * @return  string
      */
     private function printR($subject, $ignore = [], $depth = 1, $refChain = [])
@@ -541,7 +541,7 @@ abstract class Model extends Obj
      * Method to return model values in array format
      *
      * @param  boolean $verbose Include prefixed "__" vars in output
-     * @return array            Array of model values.
+     * @return array<mixed>            Array of model values.
      */
     public function toArray($verbose = false)
     {
@@ -562,7 +562,7 @@ abstract class Model extends Obj
      * Dynamically handle error additions.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

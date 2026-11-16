@@ -237,7 +237,7 @@ class Conditions extends Obj
     /**
      * Create an expression object
      *
-     * @param    array $operators List of operators
+     * @param    array<mixed> $operators List of operators
      * @param    mixed $values    Either a string or array
      * @return   object
      */

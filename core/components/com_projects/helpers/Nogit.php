@@ -71,7 +71,7 @@ class Nogit extends Obj
      * Make a call
      *
      * @param   string  $call
-     * @return  array|false   to be parsed
+     * @return  array<mixed>|false   to be parsed
      */
     public function call($call = '')
     {
@@ -90,7 +90,7 @@ class Nogit extends Obj
      * Exec call
      *
      * @param   string  $call
-     * @return  array|false   to be parsed
+     * @return  array<mixed>|false   to be parsed
      */
     protected function exec($call = '')
     {
@@ -125,7 +125,7 @@ class Nogit extends Obj
     /**
      * Parse response
      *
-     * @param   array   $out     Array of data to parse
+     * @param   array<mixed>   $out     Array of data to parse
      * @param   string  $return
      * @return  mixed
      */
@@ -138,7 +138,7 @@ class Nogit extends Obj
      * Lists files in the repository
      *
      * @param   string  $subdir  Local directory path
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getFiles($subdir = '', $recursive = false)
     {
@@ -154,7 +154,7 @@ class Nogit extends Obj
      * Lists the directories in the repository
      *
      * @param   string  $subdir  Local directory path
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getDirectories($subdir = '', $recursive = false)
     {
@@ -174,9 +174,9 @@ class Nogit extends Obj
      * @param   string  $localPath
      * @param   string  $synced
      * @param   string  $localDir
-     * @param   array   $localRenames
-     * @param   array   $connections
-     * @return  array
+     * @param   array<mixed>   $localRenames
+     * @param   array<mixed>   $connections
+     * @return  array<mixed>
      */
     public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
     {
@@ -207,7 +207,7 @@ class Nogit extends Obj
     /**
      * Filter ASCII
      *
-     * @param   array    $out
+     * @param   array<mixed>    $out
      * @param   boolean  $diff   Format as diff?
      * @param   boolean  $color  Color changes?
      * @param   int      $max    Max number of lines
@@ -327,7 +327,7 @@ class Nogit extends Obj
      * @param   string  $file   file path
      * @param   string  $rev
      * @param   string  $since
-     * @return  array
+     * @return  array<mixed>
      */
     public function getLocalFileHistory($file = '', $rev = '', $since = '')
     {

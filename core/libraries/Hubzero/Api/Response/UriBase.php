@@ -20,7 +20,7 @@ class UriBase extends Middleware
      * Array that normalizes all the different keys we use for
      * the different objects
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $keys = [
         'uri',

@@ -79,7 +79,7 @@ class Databases extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param   string|null  $alias
-     * @return  array   Plugin name and title
+     * @return  array<mixed>   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -118,7 +118,7 @@ class Databases extends Plugin
      * Event call to return count of items
      *
      * @param   object  $model   Project
-     * @return  array   integer
+     * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
     {
@@ -185,7 +185,7 @@ class Databases extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
      * @return  mixed   Return array of html
      */
     public function onProject($model, $action = 'view', $areas = null, $params = [])
@@ -294,7 +294,7 @@ class Databases extends Plugin
     /**
      * Browser within publications NEW
      *
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function select()
     {
@@ -393,7 +393,7 @@ class Databases extends Plugin
     /**
      * List project databases available for publishing
      *
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function browser()
     {
@@ -465,7 +465,7 @@ class Databases extends Plugin
     /**
      * List project databases
      *
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function actList()
     {
@@ -517,7 +517,7 @@ class Databases extends Plugin
     /**
      * Create database
      *
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function actCreate()
     {
@@ -1218,7 +1218,7 @@ class Databases extends Plugin
     /**
      * Delete database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function actDelete()
     {
@@ -1294,7 +1294,7 @@ class Databases extends Plugin
     /**
      * Update database
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function actUpdate()
     {

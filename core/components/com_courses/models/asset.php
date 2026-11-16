@@ -50,7 +50,7 @@ class Asset extends Base
     /**
      * Auxiliary keys for assets (links to other tables)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $auxTablekeys = [
         'progress_factors' => [
@@ -441,8 +441,8 @@ class Asset extends Base
     /**
      * Get a count or list of parents for this entry
      *
-     * @param   array $filters Filters to apply to results query
-     * @return  string|array|null
+     * @param   array<mixed> $filters Filters to apply to results query
+     * @return  string|array<mixed>|null
      */
     public function parents($filters = [])
     {
@@ -466,7 +466,7 @@ class Asset extends Base
     /**
      * Get the unit(s) to which this asset is attached
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function units()
     {
@@ -528,7 +528,7 @@ class Asset extends Base
      * Duplicate an asset and it's associated data
      *
      * @param  bool $courseId whether or not to duplicate forms as well
-     * @return bool|array
+     * @return bool|array<mixed>
      */
     public function duplicate($courseId)
     {

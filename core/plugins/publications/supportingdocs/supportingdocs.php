@@ -32,7 +32,7 @@ class Supportingdocs extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
@@ -55,7 +55,7 @@ class Supportingdocs extends Plugin
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
      * @param   boolean  $authorized   Whether or not authorized
-     * @return  array
+     * @return  array<mixed>
      */
     public function onPublication(
         $publication,

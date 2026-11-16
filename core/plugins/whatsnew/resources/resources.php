@@ -28,7 +28,7 @@ class Resources extends Plugin
     /**
      * Resource types and "all" category
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $areas = null;
 
@@ -42,7 +42,7 @@ class Resources extends Plugin
     /**
      * Results total
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $total = null;
 
@@ -50,7 +50,7 @@ class Resources extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -61,7 +61,7 @@ class Resources extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function onWhatsnewAreas()
     {
@@ -95,9 +95,9 @@ class Resources extends Plugin
      * @param   object|mixed   $period      Time period to pull results for
      * @param   mixed    $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
-     * @param   array|null    $areas       Active area(s)
-     * @param   array    $tagids      Array of tag IDs
-     * @return  array|\Hubzero\Database\Rows
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @param   array<mixed>    $tagids      Array of tag IDs
+     * @return  array<mixed>|\Hubzero\Database\Rows
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {

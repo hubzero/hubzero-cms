@@ -36,7 +36,7 @@ class Server
     /**
      * Config values
      *
-     * @var array
+     * @var array<mixed>
      */
     private $config = [];
 
@@ -44,7 +44,7 @@ class Server
      * Constructor to setup setup server
      *
      * @param   object  $storage
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  void
      */
     public function __construct($storage, $options = [])
@@ -110,7 +110,7 @@ class Server
     /**
      * Accessor for the server's config
      *
-     * @return  array          The server instances config
+     * @return  array<mixed>          The server instances config
      */
     public function getConfig()
     {

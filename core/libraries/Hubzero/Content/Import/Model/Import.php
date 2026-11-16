@@ -106,7 +106,7 @@ class Import extends Relational
      * model overrides it to hand back its own kind of record.
      *
      * @param   mixed   $raw      The entry as read
-     * @param   array   $options  Import options
+     * @param   array<mixed>   $options  Import options
      * @param   string  $mode     UPDATE or PATCH
      * @return  Record
      */

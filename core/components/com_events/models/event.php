@@ -113,7 +113,7 @@ class Event extends Model
     /**
      * Parses the Events Repeating Rule
      *
-     * @return array
+     * @return array<mixed>
      */
     public function parseRepeatingRule()
     {

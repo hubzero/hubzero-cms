@@ -16,7 +16,7 @@ class Rule
     /**
      * A named array
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
@@ -42,7 +42,7 @@ class Rule
     /**
      * Get the data for the action.
      *
-     * @return  array  A named array
+     * @return  array<mixed>  A named array
      */
     public function getData()
     {

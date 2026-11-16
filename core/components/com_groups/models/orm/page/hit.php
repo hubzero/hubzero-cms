@@ -62,7 +62,7 @@ class Hit extends Relational
     /**
      * Generates automatic Date field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticDate($data)
@@ -73,7 +73,7 @@ class Hit extends Relational
     /**
      * Generates automatic IP field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticIp($data)

@@ -124,8 +124,8 @@ class Doi extends Plugin
     /**
      * Update DOI metadata record with citation information
      *
-     * @param      array    $citation
-     * @param      array    $relationTypeArr
+     * @param      array<mixed>    $citation
+     * @param      array<mixed>    $relationTypeArr
      * @return     null
      */
     protected function updateDoiRecord($citation, $relationTypeArr)
@@ -156,8 +156,8 @@ class Doi extends Plugin
     /**
      * Get citation metadata from original citation
      *
-     * @param   array  $citation
-     * @return  array  $citationArr
+     * @param   array<mixed>  $citation
+     * @return  array<mixed>  $citationArr
      */
     protected function getCitationInfo($citation)
     {
@@ -254,7 +254,7 @@ class Doi extends Plugin
      * Check if the DOI metadata record already has the citation
      *
      * @param   string   $xml
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string   $relationType
      * @return  boolean
      */
@@ -290,7 +290,7 @@ class Doi extends Plugin
      * Check if the citation exists and relationType is set to the given relationType.
      *
      * @param   string   $xml
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string   $relationType
      * @return  boolean
      */
@@ -324,7 +324,7 @@ class Doi extends Plugin
      * Update citation record in DOI metadata xml on DataCite
      *
      * @param   string   $xml
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string   $relationType
      * @return  boolean
      */
@@ -365,7 +365,7 @@ class Doi extends Plugin
      * Include citation and update DOI metadata record on DataCite
      *
      * @param   string   $xml
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string   $relationType
      * @return  boolean
      */
@@ -434,7 +434,7 @@ class Doi extends Plugin
      * @param   string      &$xml
      * @param   object      $dom
      * @param   object      $relatedIdentifiersNodeList
-     * @param   array       $citation
+     * @param   array<mixed>       $citation
      * @param   string      $relationType
      * @return  void
      */
@@ -459,7 +459,7 @@ class Doi extends Plugin
      * @param   object      $dom
      * @param   object      $resourceNode
      * @param   object      $specNode
-     * @param   array       $citation
+     * @param   array<mixed>       $citation
      * @param   string      $relationType
      * @return  void
      */
@@ -532,8 +532,8 @@ class Doi extends Plugin
     /**
      * Get Identifier type and value from the Citation
      *
-     * @param   array  $citation
-     * @return  array|false or false
+     * @param   array<mixed>  $citation
+     * @return  array<mixed>|false or false
      */
     public function getIdentifier($citation)
     {

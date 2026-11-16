@@ -220,8 +220,8 @@ class Product extends \Hubzero\Component\SiteController
     /**
      * Generate JS needed for displaying a product page
      *
-     * @param   array   $ops
-     * @param   array   $skus
+     * @param   array<mixed>   $ops
+     * @param   array<mixed>   $skus
      * @param   string  $productIdentifier
      * @return  string
      */

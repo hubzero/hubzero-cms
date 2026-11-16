@@ -201,7 +201,7 @@ class Teller extends Obj
      * Get a history of transactions
      *
      * @param   integer  $limit  Number of records to return
-     * @return  array
+     * @return  array<mixed>
      */
     public function history($limit = 20)
     {

@@ -31,7 +31,7 @@ class Type extends Table
      *
      * @param   string  $sortby   Sort by field
      * @param   string  $sortdir  Sort direction ASC/DESC
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTypes($sortby = 'id', $sortdir = 'ASC')
     {

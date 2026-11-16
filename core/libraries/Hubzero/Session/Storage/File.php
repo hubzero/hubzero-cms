@@ -38,7 +38,7 @@ class File extends Store
     /**
      * Constructor
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  void
      */
     public function __construct($options = [])
@@ -152,8 +152,8 @@ class File extends Store
     /**
      * Get list of all sessions
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, mixed>
      */
     public function all($filters = [])
     {

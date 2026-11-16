@@ -159,42 +159,42 @@ class Group extends Obj
     /**
      * List of members
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $members = [];
 
     /**
      * List of managers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $managers = [];
 
     /**
      * List of applicants
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $applicants = [];
 
     /**
      * List of invitees
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $invitees = [];
 
     /**
      * Alternate table keys
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public static $listKeys = ['members', 'managers', 'applicants', 'invitees'];
 
     /**
      * List of updated keys
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $updatedKeys = [];
 
@@ -925,7 +925,7 @@ class Group extends Obj
      * Add users to a table
      *
      * @param   string|null  $key
-     * @param   array   $value
+     * @param   array<mixed>   $value
      * @return  void
      */
     public function add($key = null, $value = [])
@@ -939,7 +939,7 @@ class Group extends Obj
      * Remove users form a table
      *
      * @param   string|null  $key
-     * @param   array   $value
+     * @param   array<mixed>   $value
      * @return  void
      */
     public function remove($key = null, $value = [])
@@ -1029,7 +1029,7 @@ class Group extends Obj
     /**
      * Find groups
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  mixed
      */
     public static function find($filters = [])
@@ -1333,7 +1333,7 @@ class Group extends Obj
      * Get emails for users
      *
      * @param   string  $tbl
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getEmails($tbl = 'managers')
     {
@@ -1365,7 +1365,7 @@ class Group extends Obj
      *
      * @param   string  $tbl
      * @param   string  $q
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function search($tbl = '', $q = '')
     {

@@ -27,7 +27,7 @@ class Tool extends Content
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'Tool',
@@ -37,7 +37,7 @@ class Tool extends Content
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<mixed> of assets created
      **/
     public function create()
     {
@@ -277,7 +277,7 @@ class Tool extends Content
      * Edit method for this handler
      *
      * @param  object $asset - asset
-     * @return array  (string) type, (string) text
+     * @return array<string, mixed>  (string) type, (string) text
      */
     public function edit($asset)
     {
@@ -289,7 +289,7 @@ class Tool extends Content
      * List of files currently added to asset
      * @param object    $asset object of current asset
      *
-     * @return array list of files currently included in asset
+     * @return array<mixed> list of files currently included in asset
      */
     public function files($asset)
     {

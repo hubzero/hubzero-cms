@@ -22,7 +22,7 @@ class XML extends Base
      *   useful, XML or another format should be used.
      *
      * @param   object  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  XML formatted string.
      */
     public function objectToString($object, $options = [])
@@ -56,7 +56,7 @@ class XML extends Base
      * Parse a XML formatted string and convert it into an object.
      *
      * @param   string  $data     XML formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  object  Data object.
      */
     public function stringToObject($data, $options = [])

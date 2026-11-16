@@ -33,8 +33,8 @@ class AseGrammar extends BaseSchemaGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -56,7 +56,7 @@ class AseGrammar extends BaseSchemaGrammar
     /**
      * Type mappings from abstract types to ASE types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types
@@ -107,7 +107,7 @@ class AseGrammar extends BaseSchemaGrammar
      * ASE requires separate CREATE INDEX statements for indexes.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileCreate(TableDefinition $blueprint): array
     {
@@ -161,7 +161,7 @@ class AseGrammar extends BaseSchemaGrammar
      * ASE does not support inline indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineIndex(string $name, array $columns): ?string
@@ -175,7 +175,7 @@ class AseGrammar extends BaseSchemaGrammar
      * ASE does not support inline unique indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineUniqueIndex(string $name, array $columns): ?string
@@ -189,7 +189,7 @@ class AseGrammar extends BaseSchemaGrammar
      * ASE does not support fulltext indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineFulltextIndex(string $name, array $columns): ?string
@@ -201,7 +201,7 @@ class AseGrammar extends BaseSchemaGrammar
      * Compile an ALTER TABLE statement to add columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterAdd(TableDefinition $blueprint): array
     {
@@ -222,7 +222,7 @@ class AseGrammar extends BaseSchemaGrammar
      * ASE uses MODIFY instead of ALTER COLUMN.
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterModify(TableDefinition $blueprint): array
     {
@@ -287,7 +287,7 @@ class AseGrammar extends BaseSchemaGrammar
      * Compile ALTER TABLE operations into SQL statements
      *
      * @param   AlterTableBuilder  $builder  The table builder
-     * @return  array  Array of SQL statements to execute
+     * @return  array<mixed>  Array of SQL statements to execute
      */
     public function compileAlterTable(AlterTableBuilder $builder): array
     {
@@ -429,7 +429,7 @@ class AseGrammar extends BaseSchemaGrammar
      * NOT NULL and rejects inserts that omit columns without defaults.
      *
      * @param  string  $name        Column name
-     * @param  array   $definition  Column definition array
+     * @param  array<mixed>   $definition  Column definition array
      * @return string
      */
     protected function compileColumnFromDefinition(string $name, array $definition): string

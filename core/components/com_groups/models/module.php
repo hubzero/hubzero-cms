@@ -65,7 +65,7 @@ class Module extends Model
      * Get module menu
      *
      * @param     string  $rtrn    What do we want back
-     * @param     array   $filters Array of filters to use when getting menu
+     * @param     array<mixed>   $filters Array of filters to use when getting menu
      * @param     boolean $clear   Fetch an updated list
      * @return    object  \Hubzero\Base\ItemList
      */
@@ -99,7 +99,7 @@ class Module extends Model
     /**
      * Build module menu
      *
-     * @param   array   $modulesMenu
+     * @param   array<mixed>   $modulesMenu
      * @return  boolean
      */
     public function buildMenu($modulesMenu = [])

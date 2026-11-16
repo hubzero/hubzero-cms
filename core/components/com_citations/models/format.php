@@ -82,7 +82,7 @@ class Format extends Relational
     /**
      * Defines a one to one relationship with citation
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getTemplateKeys()
     {

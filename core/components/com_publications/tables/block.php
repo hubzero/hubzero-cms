@@ -63,7 +63,7 @@ class Block extends Table
      * @param   string  $select  Select query
      * @param   string  $where
      * @param   string  $order
-     * @return  array
+     * @return  array<mixed>
      */
     public function getBlocks($select = '*', $where = '', $order = '')
     {

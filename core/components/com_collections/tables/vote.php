@@ -70,7 +70,7 @@ class Vote extends Table
     /**
      * Get a total of all likes
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getLikes($filters = [])
@@ -103,7 +103,7 @@ class Vote extends Table
     /**
      * Get a total of all dislikes
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getDislikes($filters = [])

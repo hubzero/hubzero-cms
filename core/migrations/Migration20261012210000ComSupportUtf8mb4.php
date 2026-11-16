@@ -20,7 +20,7 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
     /**
      * Tables to convert
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $tables = [
         '#__support_tickets',

@@ -93,7 +93,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Temporary LOB stream resources kept alive until execution
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $lobStreams = [];
 
@@ -137,7 +137,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -225,8 +225,8 @@ class OciDriver extends BaseSqlDriver
      * directly in the SQL, replacing the corresponding ? placeholders.
      * String, null, and boolean values continue to use standard binding.
      *
-     * @param   array  $bindings  The param bindings
-     * @param   array  $type      The param types
+     * @param   array<mixed>  $bindings  The param bindings
+     * @param   array<mixed>  $type      The param types
      * @return  $this
      */
     public function bind($bindings, $type = [])
@@ -329,7 +329,7 @@ class OciDriver extends BaseSqlDriver
      * PDO_OCI cannot bind strings larger than 4000 bytes as regular
      * PARAM_STR — they must use PARAM_LOB to avoid ORA-01461.
      *
-     * @param   array  $bindings  The binding values (0-indexed)
+     * @param   array<mixed>  $bindings  The binding values (0-indexed)
      * @return  bool
      */
     protected function hasLobBindings(array $bindings): bool
@@ -348,8 +348,8 @@ class OciDriver extends BaseSqlDriver
      * Uses bindParam with php://memory streams for strings > 4000
      * bytes, which PDO_OCI requires for CLOB column inserts.
      *
-     * @param   array  $bindings  The binding values (0-indexed)
-     * @param   array  $type      Existing type hints (1-indexed)
+     * @param   array<mixed>  $bindings  The binding values (0-indexed)
+     * @param   array<mixed>  $type      Existing type hints (1-indexed)
      * @return  $this
      */
     protected function bindWithLobs(array $bindings, array $type = [])
@@ -395,9 +395,9 @@ class OciDriver extends BaseSqlDriver
      * default behavior and ensuring consistency with system catalog
      * queries (user_tables, user_tab_columns, etc.).
      *
-     * @param   string|array  $name  The identifier name
+     * @param   string|array<mixed>  $name  The identifier name
      * @param   string|null   $as    An optional alias
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function quoteName($name, $as = null)
     {
@@ -531,8 +531,8 @@ class OciDriver extends BaseSqlDriver
      *
      * Oracle doesn't have SHOW CREATE TABLE; we reconstruct it from metadata
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -596,7 +596,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string   $table     The name of the database table
      * @param   boolean  $typeOnly  True to only return field types
-     * @return  array    An array of fields for the database table
+     * @return  array<mixed>    An array of fields for the database table
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -659,7 +659,7 @@ class OciDriver extends BaseSqlDriver
      * Get the details list of keys for a table
      *
      * @param   string  $table  The name of the table
-     * @return  array   An array of the column specification for the table
+     * @return  array<mixed>   An array of the column specification for the table
      */
     public function getTableKeys($table)
     {
@@ -711,7 +711,7 @@ class OciDriver extends BaseSqlDriver
      * Gets all indexes for a table with their columns and properties
      *
      * @param   string  $table  The table name
-     * @return  array   Array of index objects
+     * @return  array<mixed>   Array of index objects
      */
     public function getIndexes($table)
     {
@@ -797,7 +797,7 @@ class OciDriver extends BaseSqlDriver
      *
      * Returns lowercase table names for cross-driver consistency.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableList()
     {
@@ -1070,7 +1070,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array   Always returns empty array
+     * @return  array<mixed>   Always returns empty array
      */
     public function getEnumValues($table, $column)
     {
@@ -1112,7 +1112,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view
-     * @param   array   $options    MySQL-specific options (ignored on Oracle)
+     * @param   array<mixed>   $options    MySQL-specific options (ignored on Oracle)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -1168,7 +1168,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current schema
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      */
     public function getViews(): array
     {
@@ -1179,7 +1179,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Returns a list of all database names (schemas) the user can access
      *
-     * @return  array  Array of schema names
+     * @return  array<mixed>  Array of schema names
      */
     public function getDatabaseNames(): array
     {
@@ -1190,7 +1190,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Returns a list of all sequences in the current schema
      *
-     * @return  array  Array of SequenceInfo objects
+     * @return  array<mixed>  Array of SequenceInfo objects
      */
     public function getSequences(): array
     {
@@ -1209,7 +1209,7 @@ class OciDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options (min, max, cycle, cache)
+     * @param   array<mixed>   $options    Additional options (min, max, cycle, cache)
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -1376,7 +1376,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys
+     * @return  array<mixed>  Array with standardized keys
      */
     public function getServerInfo()
     {
@@ -1786,7 +1786,7 @@ class OciDriver extends BaseSqlDriver
      *
      * Oracle uses || operator or CONCAT() (2 args only)
      *
-     * @param   array  $strings  Array of strings to concatenate
+     * @param   array<mixed>  $strings  Array of strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -1800,7 +1800,7 @@ class OciDriver extends BaseSqlDriver
      * Oracle doesn't have CONCAT_WS; we build it manually
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of strings to concatenate
+     * @param   array<mixed>   $strings    Array of strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -2072,7 +2072,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @param   bool          $unique   Whether this is a unique index
      * @return  bool
      */
@@ -2148,7 +2148,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2222,7 +2222,7 @@ class OciDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name
-     * @param   string|array  $columns  Column name(s)
+     * @param   string|array<mixed>  $columns  Column name(s)
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2391,7 +2391,7 @@ class OciDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column names in the primary key
+     * @return  array<mixed>   Array of column names in the primary key
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -2415,7 +2415,7 @@ class OciDriver extends BaseSqlDriver
      * Gets foreign key constraints for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getForeignKeys($table)
     {
@@ -2548,7 +2548,7 @@ class OciDriver extends BaseSqlDriver
      * SQL types and appends modifiers (DEFAULT, NOT NULL).
      *
      * @param   string  $name        Column name
-     * @param   array   $definition  ['type' => ..., 'modifiers' => [...]]
+     * @param   array<mixed>   $definition  ['type' => ..., 'modifiers' => [...]]
      * @return  string  SQL column definition
      */
     public function buildAlterColumnDefinition(
@@ -3044,7 +3044,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string  $abstractType  The original abstract type name
      * @param   string  $nativeType    The mapped database type
-     * @param   array   $modifiers     Column modifiers
+     * @param   array<mixed>   $modifiers     Column modifiers
      * @return  string  The type with modifiers applied
      */
     protected function applyColumnModifiers(
@@ -3085,7 +3085,7 @@ class OciDriver extends BaseSqlDriver
      * migrations (e.g., 'BIGINT(20) UNSIGNED').
      *
      * @param   string  $type       The abstract or concrete type name
-     * @param   array   $modifiers  Optional modifiers
+     * @param   array<mixed>   $modifiers  Optional modifiers
      * @return  string  The Oracle SQL type
      */
     public function normalizeColumnType(
@@ -3230,7 +3230,7 @@ class OciDriver extends BaseSqlDriver
      * Get CHECK constraints for table
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCheckConstraints(string $table): array
     {
@@ -3310,7 +3310,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Get global configuration variables
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables(): array
     {
@@ -3391,7 +3391,7 @@ class OciDriver extends BaseSqlDriver
      * Oracle does not support ON UPDATE in foreign key constraints.
      * Only ON DELETE actions are supported: CASCADE, SET NULL, NO ACTION.
      *
-     * @param   array   $fk         Foreign key definition array
+     * @param   array<mixed>   $fk         Foreign key definition array
      * @param   string  $tableName  The table being created
      * @return  string
      */

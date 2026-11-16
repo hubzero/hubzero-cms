@@ -34,14 +34,14 @@ class Blocks extends Obj
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $blocks = [];
 
     /**
      * Directories, where block types can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $blockPath = [];
 
@@ -119,7 +119,7 @@ class Blocks extends Obj
      * @param   string  $select
      * @param   string  $where
      * @param   string  $order
-     * @return  array   An array of all available blocks
+     * @return  array<mixed>   An array of all available blocks
      */
     public function getBlocks($select = '*', $where = '', $order = '')
     {
@@ -270,7 +270,7 @@ class Blocks extends Obj
      * Saves input in a block
      *
      * @param   string   $name    Name of block to save
-     * @param   array|object   $manifest
+     * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
      * @param   object|mixed   $pub
      * @param   integer  $actor
@@ -306,7 +306,7 @@ class Blocks extends Obj
      * Reorders items in block/element
      *
      * @param   string   $name    Name of block to save
-     * @param   array|object   $manifest
+     * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
      * @param   object|mixed   $pub
      * @param   integer  $actor
@@ -342,7 +342,7 @@ class Blocks extends Obj
      * Save block/element item
      *
      * @param   string   $name    Name of block to save
-     * @param   array|object   $manifest
+     * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
      * @param   object|mixed   $pub
      * @param   integer  $actor
@@ -378,7 +378,7 @@ class Blocks extends Obj
      * Save block/element item
      *
      * @param   string   $name    Name of block to save
-     * @param   array|object   $manifest
+     * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
      * @param   object|mixed   $pub
      * @param   integer  $actor
@@ -414,7 +414,7 @@ class Blocks extends Obj
      * Add item
      *
      * @param   string   $name      Name of block to save
-     * @param   array|object   $manifest
+     * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
      * @param   object|mixed   $pub
      * @param   integer  $actor

@@ -31,7 +31,7 @@ class GradeBook extends Table
      *
      * @param      int|string $member_id
      * @param      int|string $asset_id
-     * @return     array|bool
+     * @return     array<mixed>|bool
      */
     public function loadByUserAndAssetId($member_id, $asset_id)
     {
@@ -52,7 +52,7 @@ class GradeBook extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param      array $filters Filters to construct query from
+     * @param      array<mixed> $filters Filters to construct query from
      * @return     string SQL
      */
     protected function buildQuery($filters = [])
@@ -111,8 +111,8 @@ class GradeBook extends Table
     /**
      * Get grade records
      *
-     * @param      array $filters Filters to construct query from
-     * @return     array
+     * @param      array<mixed> $filters Filters to construct query from
+     * @return     array<\stdClass>
      */
     public function find($filters = [], $key = null)
     {
@@ -125,8 +125,8 @@ class GradeBook extends Table
     /**
      * Get passing info
      *
-     * @param      array $filters Filters to construct query from
-     * @return     array
+     * @param      array<mixed> $filters Filters to construct query from
+     * @return     array<\stdClass>
      */
     public function passing($filters = [], $key = null)
     {
@@ -348,7 +348,7 @@ class GradeBook extends Table
     /**
      * Query to save unit and course totals to gradebook
      *
-     * @param      array $data - values to compose update query
+     * @param      array<mixed> $data - values to compose update query
      * @param      int $course_id = course id
      * @return     void
      */

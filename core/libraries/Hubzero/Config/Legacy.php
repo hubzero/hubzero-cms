@@ -33,7 +33,7 @@ class Legacy extends Registry
     /**
      * The current client type (admin, site, api, etc).
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $map = [
         'app' => [

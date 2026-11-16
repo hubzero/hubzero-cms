@@ -29,7 +29,7 @@ class Session extends Base
     /**
      * \Hubzero\ItemList
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $cache = [
         'shared.count' => null,
@@ -124,7 +124,7 @@ class Session extends Base
      * Get a list of shared views
      *
      * @param   string   $rtrn     Data type to return [count, list]
-     * @param   array    $filters  Filters to apply to query
+     * @param   array<mixed>    $filters  Filters to apply to query
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed    Returns an integer or array depending upon format chosen
      */

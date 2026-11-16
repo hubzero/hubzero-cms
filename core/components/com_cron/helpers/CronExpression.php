@@ -30,7 +30,7 @@ class CronExpression
     public const YEAR    = 5;
 
     /**
-     * @var array CRON expression parts
+     * @var array<mixed> CRON expression parts
      */
     private $cronParts;
 
@@ -40,7 +40,7 @@ class CronExpression
     private $fieldFactory;
 
     /**
-     * @var array Order in which to test of cron parts
+     * @var array<mixed> Order in which to test of cron parts
      */
     private static $order = [
         self::YEAR,
@@ -190,7 +190,7 @@ class CronExpression
      * @param bool $allowCurrentDate (optional) Set to TRUE to return the
      *   current date if it matches the cron expression
      *
-     * @return array Returns an array of run dates
+     * @return array<int, mixed> Returns an array of run dates
      */
     public function getMultipleRunDates($total, $currentTime = 'now', $invert = false, $allowCurrentDate = false)
     {

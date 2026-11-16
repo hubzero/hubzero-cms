@@ -179,7 +179,7 @@ class Search extends Plugin
      *
      * @param   mixed    $item
      * @param   string   $action
-     * @param   array    $blacklist
+     * @param   array<mixed>    $blacklist
      * @access  private
      * @return  void
      */

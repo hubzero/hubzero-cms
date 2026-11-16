@@ -20,7 +20,7 @@ class Loader extends Base
      * Render the component.
      *
      * @param   string  $option  The component option.
-     * @param   array   $params  The component parameters
+     * @param   array<mixed>   $params  The component parameters
      * @return  string
      */
     public function render($option, $params = [])

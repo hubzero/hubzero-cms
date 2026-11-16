@@ -58,7 +58,7 @@ class Autolink extends AbstractHelper
     /**
      * Automatically links any strings matching a URL pattern
      *
-     * @param   array   $matches  Text matching link pattern
+     * @param   array<mixed>   $matches  Text matching link pattern
      * @return  string
      */
     public function linkUrl($matches)
@@ -69,7 +69,7 @@ class Autolink extends AbstractHelper
     /**
      * Automatically links any strings matching an email pattern
      *
-     * @param   array   $matches  Text matching link pattern
+     * @param   array<mixed>   $matches  Text matching link pattern
      * @return  string
      */
     public function linkEmail($matches)
@@ -86,7 +86,7 @@ class Autolink extends AbstractHelper
      * This is to ensure links aren't parsed twice. We put the links back in place
      * towards the end of parsing.
      *
-     * @param   array   $matches  Text matching link pattern
+     * @param   array<mixed>   $matches  Text matching link pattern
      * @return  string
      */
     public function anchor($matches)

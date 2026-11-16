@@ -93,7 +93,7 @@ class Service extends Relational
     /**
      * Generates automatic changed field value
      *
-     * @param   array   $data  The data being saved
+     * @param   array<mixed>   $data  The data being saved
      * @return  string
      **/
     public function automaticChanged($data)

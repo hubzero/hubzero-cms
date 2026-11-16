@@ -29,7 +29,7 @@ class Subtitle extends Handler
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'Add to HUBpresenter Video',
@@ -39,7 +39,7 @@ class Subtitle extends Handler
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<string, mixed> of assets created
      **/
     public function create()
     {

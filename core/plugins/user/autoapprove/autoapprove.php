@@ -24,7 +24,7 @@ class Autoapprove extends Plugin
      *
      * This method sends a registration email to new users created in the backend.
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -42,8 +42,8 @@ class Autoapprove extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onLoginUser($user, $options = [])
@@ -54,8 +54,8 @@ class Autoapprove extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onUserLogin($user, $options = [])
@@ -68,7 +68,7 @@ class Autoapprove extends Plugin
     /**
      * Set user access groups based on profile choice
      *
-     * @param   array    $user
+     * @param   array<mixed>    $user
      * @return  boolean  True on success
      */
     public function approveUser($user)

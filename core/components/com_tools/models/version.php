@@ -222,49 +222,49 @@ class Version
     /**
      * Description for 'alias'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $alias = [];          // alias [array]     #__tool_aliases
 
     /**
      * Description for 'middleware'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $middleware = [];    // middleware [array] #__tool_middleware
 
     /**
      * Description for 'hostreq'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $hostreq = [];      // vncHostReq [array]  #__tool_hostreq
 
     /**
      * Description for 'author'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $author = [];        // author [array]     #__tool_authors
 
     /**
      * Description for 'member'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $member = [];        // member [array]     #__tool_groups
 
     /**
      * Description for 'owner'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $owner = [];          // owner [array]     #__tool_groups
 
     /**
      * Description for '_list_keys'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $listKeys = ['alias', 'middleware', 'hostreq', 'author', 'member', 'owner'];
 
@@ -278,7 +278,7 @@ class Version
     /**
      * Description for '_propertyattrmap'
      *
-     * @var array
+     * @var array<mixed>
      */
     public static $propertyattrmap = [
         'title' => 'cn',
@@ -311,7 +311,7 @@ class Version
     /**
      * Description for '_updatedkeys'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $updatedkeys = [];
 
@@ -977,7 +977,7 @@ class Version
      * Long description (if any) ...
      *
      * @param     string|null $property Parameter description (if any) ...
-     * @param     array|null $value Parameter description (if any) ...
+     * @param     array<mixed>|null $value Parameter description (if any) ...
      */
     public function __set($property = null, $value = null)
     {
@@ -1115,7 +1115,7 @@ class Version
      * Long description (if any) ...
      *
      * @param     mixed $key Parameter description (if any) ...
-     * @param     array $value Parameter description (if any) ...
+     * @param     array<mixed> $value Parameter description (if any) ...
      * @return   void
      */
     public function add($key = null, $value = [])
@@ -1129,7 +1129,7 @@ class Version
      * Long description (if any) ...
      *
      * @param     mixed $key Parameter description (if any) ...
-     * @param     array $value Parameter description (if any) ...
+     * @param     array<mixed> $value Parameter description (if any) ...
      * @return   void
      */
     public function remove($key = null, $value = [])
@@ -1171,7 +1171,7 @@ class Version
      *
      * @param     string $id Parameter description (if any) ...
      * @param     string|null $version Parameter description (if any) ...
-     * @param     string|array|null $toolname Parameter description (if any) ...
+     * @param     string|array<mixed>|null $toolname Parameter description (if any) ...
      * @param     string|null $instance Parameter description (if any) ...
      * @return   object Return description (if any) ...
      */

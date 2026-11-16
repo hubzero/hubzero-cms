@@ -34,7 +34,7 @@ class Debug extends Plugin
      * Constructor.
      *
      * @param   object  &$subject  The object to observe
-     * @param   array   $config    An array that holds the plugin configuration
+     * @param   array<mixed>   $config    An array that holds the plugin configuration
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -354,7 +354,7 @@ class Debug extends Plugin
      * General display method.
      *
      * @param   string  $item    The item to display
-     * @param   array   $errors  Errors occured during execution
+     * @param   array<mixed>   $errors  Errors occured during execution
      * @return  string
      */
     protected function display($item, array $errors = [])
@@ -440,7 +440,7 @@ class Debug extends Plugin
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array  $arr
+     * @param   array<mixed>  $arr
      * @return  string
      */
     protected function arr($arr)

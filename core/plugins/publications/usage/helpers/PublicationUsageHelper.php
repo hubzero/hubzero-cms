@@ -50,7 +50,7 @@ class PublicationUsageHelper
     /**
      * Instantiates PublicationUsageHelper
      *
-     * @param    array   $args   Instantiation data
+     * @param    array<mixed>   $args   Instantiation data
      * @return   void
      */
     public function __construct($args = [])

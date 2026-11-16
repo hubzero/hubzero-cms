@@ -1204,7 +1204,7 @@ class Setup extends Base
     /**
      * Querying the grant agency name based on the input value
      *
-     * @return  bool|array|null
+     * @return  bool|array<mixed>|null
      */
     public function getGrantAgencyTask()
     {

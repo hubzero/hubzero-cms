@@ -71,7 +71,7 @@ class Campaign extends Relational
     /**
      * Generates automatic current date field value for campaign_date
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticCampaignDate($data)
@@ -82,7 +82,7 @@ class Campaign extends Relational
     /**
      * Generates automatic modified by field value
      *
-     * @param   array    $data  the data being saved
+     * @param   array<mixed>    $data  the data being saved
      * @return  integer
      */
     public function automaticModifiedBy($data)
@@ -93,7 +93,7 @@ class Campaign extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -104,7 +104,7 @@ class Campaign extends Relational
     /**
      * Generates automatic secret value on creation of new record
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticSecret($data)
@@ -115,7 +115,7 @@ class Campaign extends Relational
     /**
      * Generates new secret value
      *
-     * @param   array|null   $data  the data being saved
+     * @param   array<mixed>|null   $data  the data being saved
      * @return  string
      */
     public static function generateSecret($data)

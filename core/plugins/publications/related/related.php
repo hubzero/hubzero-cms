@@ -30,7 +30,7 @@ class Related extends Plugin
      * Return the alias and name for this category of content
      *
      * @param   object  $publication  Current publication
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onPublicationSubAreas($publication)
     {
@@ -49,7 +49,7 @@ class Related extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   integer  $miniview     View style
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {

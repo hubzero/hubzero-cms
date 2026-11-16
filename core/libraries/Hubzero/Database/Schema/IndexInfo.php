@@ -37,7 +37,7 @@ class IndexInfo
     /**
      * Column names in the index
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $columns;
 
@@ -72,7 +72,7 @@ class IndexInfo
     /**
      * Create a new IndexInfo instance
      *
-     * @param array $data Index data from database introspection
+     * @param array<mixed> $data Index data from database introspection
      */
     public function __construct(array $data = [])
     {
@@ -97,7 +97,7 @@ class IndexInfo
     /**
      * Get the column names in this index
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getColumns(): array
     {
@@ -198,7 +198,7 @@ class IndexInfo
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

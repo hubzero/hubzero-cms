@@ -73,7 +73,7 @@ class Installer
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function locationOptions()
     {
@@ -88,7 +88,7 @@ class Installer
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function statusOptions()
     {
@@ -104,7 +104,7 @@ class Installer
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function typeOptions()
     {
@@ -130,7 +130,7 @@ class Installer
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function groupOptions()
     {
@@ -157,7 +157,7 @@ class Installer
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function versionOptions()
     {

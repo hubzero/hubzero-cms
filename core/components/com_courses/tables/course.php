@@ -180,7 +180,7 @@ class Course extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param   array   $filters  Filters to construct query from
+     * @param   array<mixed>   $filters  Filters to construct query from
      * @return  string  SQL
      */
     protected function buildQuery($filters = [])
@@ -263,7 +263,7 @@ class Course extends Table
     /**
      * Get a record count
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -281,8 +281,8 @@ class Course extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {
@@ -312,7 +312,7 @@ class Course extends Table
      * @param   string   $type   Status in course
      * @param   integer|null  $limit  Number of records
      * @param   integer|null  $start  Where to start in record paging
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getUserCourses($uid, $type = 'all', $limit = null, $start = 0)
     {

@@ -31,7 +31,7 @@ class Tags extends Cloud
      *
      * @param      array|mixed   $ids       Bulletin ids
      * @param      integer $admin     Admin flag
-     * @return     array|false
+     * @return     array<mixed>|false
      */
     public function getTagsForIds($ids = [], $admin = 0)
     {

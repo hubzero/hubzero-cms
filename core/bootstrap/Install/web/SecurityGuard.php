@@ -100,7 +100,7 @@ class SecurityGuard
      *
      * Delegates to StorageCheck class (shared with bootstrap installer).
      *
-     * @return array ['available' => bool, 'path' => string|null, 'tried' => array, 'docRoot' => string]
+     * @return array<mixed> ['available' => bool, 'path' => string|null, 'tried' => array, 'docRoot' => string]
      */
     public function checkStorageAvailability(): array
     {
@@ -450,7 +450,7 @@ class SecurityGuard
     /**
      * Load server-side challenge data
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     private function loadChallengeData(): ?array
     {
@@ -488,7 +488,7 @@ class SecurityGuard
     /**
      * Save server-side challenge data
      *
-     * @param  array  $data
+     * @param  array<mixed>  $data
      * @return bool
      */
     private function saveChallengeData(array $data): bool
@@ -671,7 +671,7 @@ class SecurityGuard
     /**
      * Read the per client address attempt record
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     private function loadIpAttemptData(): ?array
     {
@@ -703,7 +703,7 @@ class SecurityGuard
     /**
      * Write the per client address attempt record
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  bool
      */
     private function saveIpAttemptData(array $data): bool
@@ -739,7 +739,7 @@ class SecurityGuard
     /**
      * Verify the ownership file exists and is valid
      *
-     * @return array  ['valid' => bool, 'error' => string|null]
+     * @return array<mixed>  ['valid' => bool, 'error' => string|null]
      */
     public function verifyOwnershipFile(): array
     {
@@ -914,7 +914,7 @@ class SecurityGuard
      *
      * All verification state is checked SERVER-SIDE.
      *
-     * @return array  ['valid' => bool, 'error' => string|null]
+     * @return array<mixed>  ['valid' => bool, 'error' => string|null]
      */
     public function validateClient(): array
     {
@@ -1247,7 +1247,7 @@ class SecurityGuard
      *
      * @param  string  $action      The action being performed
      * @param  bool    $requirePost Whether the request must be POST
-     * @return array ['valid' => bool, 'error' => string|null]
+     * @return array<string, mixed> ['valid' => bool, 'error' => string|null]
      */
     public function validateAjaxRequest(string $action, bool $requirePost = false): array
     {

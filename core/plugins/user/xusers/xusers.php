@@ -33,7 +33,7 @@ class Xusers extends Plugin
      * Constructor
      *
      * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
+     * @param   array<mixed>   $config    Optional config values
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -46,8 +46,8 @@ class Xusers extends Plugin
     /**
      * This method is an alias for onLoginUser
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onUserLogin($user, $options = [])
@@ -58,8 +58,8 @@ class Xusers extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onLoginUser($user, $options = [])
@@ -271,7 +271,7 @@ class Xusers extends Plugin
     /**
      * This method is an alias for onAfterStoreUser
      *
-     * @param   array    $user     holds the new user data
+     * @param   array<mixed>    $user     holds the new user data
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
@@ -285,7 +285,7 @@ class Xusers extends Plugin
     /**
      * Method is called after user data is stored in the database
      *
-     * @param   array    $user     holds the new user data
+     * @param   array<mixed>    $user     holds the new user data
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
@@ -527,7 +527,7 @@ class Xusers extends Plugin
     /**
      * This method is an alias for onAfterDeleteUser
      *
-     * @param   array    $user     holds the user data
+     * @param   array<mixed>    $user     holds the user data
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
      * @return  boolean  True on success
@@ -540,7 +540,7 @@ class Xusers extends Plugin
     /**
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user     holds the user data
+     * @param   array<mixed>    $user     holds the user data
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
      * @return  boolean  True on success
@@ -578,8 +578,8 @@ class Xusers extends Plugin
     /**
      * This method is an alias for onLogoutUser
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onUserLogout($user, $options = [])
@@ -590,8 +590,8 @@ class Xusers extends Plugin
     /**
      * This method should handle any logout logic and report back to the subject
      *
-     * @param   array    $user     holds the user data
-     * @param   array    $options  array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     holds the user data
+     * @param   array<mixed>    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
     public function onLogoutUser($user, $options = [])
@@ -621,7 +621,7 @@ class Xusers extends Plugin
     /**
      * Hook for login failure
      *
-     * @param   array    $response
+     * @param   array<mixed>    $response
      * @return  boolean
      */
     public function onUserLoginFailure($response)

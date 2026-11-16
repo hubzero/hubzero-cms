@@ -803,7 +803,7 @@ class Newsletters extends AdminController
      * @param   object   $newsletter
      * @param   string   $newsletterHtmlContent
      * @param   string   $newsletterPlainContent
-     * @param   array    $newsletterContacts
+     * @param   array<mixed>    $newsletterContacts
      * @param   object|mixed   $newsletterMailinglist
      * @param   boolean  $sendingTest
      * @return  object|bool|null
@@ -997,7 +997,7 @@ class Newsletters extends AdminController
      * Create newsletter mailing recipients
      *
      * @param   object  $mailing
-     * @param   array   $emails
+     * @param   array<mixed>   $emails
      * @return  void
      */
     private function sendTo($mailing, $emails)

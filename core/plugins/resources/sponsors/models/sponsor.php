@@ -74,7 +74,7 @@ class Sponsor extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticTitle($data)
@@ -87,7 +87,7 @@ class Sponsor extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -103,7 +103,7 @@ class Sponsor extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticModified($data)
@@ -117,7 +117,7 @@ class Sponsor extends Relational
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  int
      */
     public function automaticModifiedBy($data)

@@ -21,7 +21,7 @@ class PdfForm
     /**
      * PDF forms errors
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $errors = [];
 
@@ -128,7 +128,7 @@ class PdfForm
     /**
      * Get the list of active form questions
      *
-     * @return  array  Array of active questions
+     * @return  array<int, array<string, mixed>>  Array of active questions
      **/
     public static function getActiveList()
     {
@@ -190,7 +190,7 @@ class PdfForm
     /**
      * Get errors
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getErrors()
     {
@@ -504,7 +504,7 @@ class PdfForm
     /**
      * Save page layout
      *
-     * @param   array  $pages
+     * @param   array<mixed>  $pages
      * @return  object
      **/
     public function setPageLayout($pages)
@@ -563,7 +563,7 @@ class PdfForm
      * Get page layout (i.e. qustion locations)
      *
      * @param   integer|null  $version
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getPageLayout($version = null)
     {
@@ -613,9 +613,9 @@ class PdfForm
     /**
      * Get question to answers map
      *
-     * @param   array  $answers
+     * @param   array<mixed>  $answers
      * @param   bool   $ended
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function getQuestionAnswerMap($answers, $ended = false)
     {

@@ -23,7 +23,7 @@ class AddTemplateEntry extends Macro
      * @param   int     $client     Admin or site client
      * @param   int     $enabled    Whether or not the template should be enabled
      * @param   int     $home       Whether or not this should become the enabled template
-     * @param   array|null   $styles     Template styles
+     * @param   array<mixed>|null   $styles     Template styles
      * @param   int     $protected  Whether or not the template is a core one or not
      * @return  bool
      **/

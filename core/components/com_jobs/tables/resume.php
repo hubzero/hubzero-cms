@@ -103,7 +103,7 @@ class Resume extends Table
      * @param   string   $pile   shortlisted or applied
      * @param   integer  $uid    User ID
      * @param   integer  $admin  Admin access?
-     * @return  array
+     * @return  array<mixed>
      */
     public function getResumeFiles($pile = 'all', $uid = 0, $admin = 0)
     {

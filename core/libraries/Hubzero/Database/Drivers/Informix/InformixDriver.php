@@ -186,7 +186,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Constructs a new Informix database object
      *
-     * @param   array  $options  The database connection options
+     * @param   array<mixed>  $options  The database connection options
      * @return  void
      * @throws  ConnectionFailedException
      */
@@ -224,7 +224,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Builds a DSN string for Informix connection
      *
-     * @param   array  $options  Connection options
+     * @param   array<mixed>  $options  Connection options
      * @return  string
      */
     protected function buildDsn(array $options)
@@ -458,7 +458,7 @@ class InformixDriver extends BaseSqlDriver
      * Interpolate positional bindings into SQL using driver quoting.
      *
      * @param string $sql
-     * @param array $bindings
+     * @param array<mixed> $bindings
      * @return string
      */
     protected function interpolateBindingsIntoSql(string $sql, array $bindings): string
@@ -516,8 +516,8 @@ class InformixDriver extends BaseSqlDriver
      * corrupts the parameter count, causing "Wrong number of parameters"
      * (-11012) on execute(). Use PDO::PARAM_STR for null values instead.
      *
-     * @param   array  $bindings  The param bindings
-     * @param   array  $type      The param types
+     * @param   array<mixed>  $bindings  The param bindings
+     * @param   array<mixed>  $type      The param types
      * @return  $this
      */
     public function bind($bindings, $type = [])
@@ -872,9 +872,9 @@ class InformixDriver extends BaseSqlDriver
      *
      * Informix uses single quotes for string literals
      *
-     * @param   string|int|float|bool|null|array  $text   The string to quote
+     * @param   string|int|float|bool|null|array<mixed>  $text   The string to quote
      * @param   bool    $escape Whether to escape special characters
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function quote($text, $escape = true)
     {
@@ -900,7 +900,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   mixed  $name  The identifier name
      * @param   mixed  $as    The alias (optional)
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function quoteName($name, $as = null)
     {
@@ -935,7 +935,7 @@ class InformixDriver extends BaseSqlDriver
      * Get the details list of keys for a table
      *
      * @param   string  $table  The name of the table
-     * @return  array|false   An array of the key specification for the table
+     * @return  array<mixed>|false   An array of the key specification for the table
      */
     public function getTableKeys($table)
     {
@@ -1019,7 +1019,7 @@ class InformixDriver extends BaseSqlDriver
      * Get the indexes for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -1029,8 +1029,8 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -1153,7 +1153,7 @@ class InformixDriver extends BaseSqlDriver
      * statement plus CREATE INDEX statements for unique and regular indexes.
      *
      * @param   string  $table  Table name (without quotes)
-     * @return  array|null  Array of SQL statements [CREATE TABLE, CREATE INDEX...] or null on failure
+     * @return  array<mixed>|null  Array of SQL statements [CREATE TABLE, CREATE INDEX...] or null on failure
      */
     protected function getTableDdl(string $table): ?array
     {
@@ -1480,7 +1480,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string        $table    The table name
      * @param   string        $name     The index name
-     * @param   string|array  $columns  The columns to index
+     * @param   string|array<mixed>  $columns  The columns to index
      * @param   bool          $unique   Whether the index is unique
      * @return  bool
      */
@@ -1621,7 +1621,7 @@ class InformixDriver extends BaseSqlDriver
      * Build column definition for ALTER TABLE
      *
      * @param   string  $name        Column name
-     * @param   array   $definition  Column definition array
+     * @param   array<mixed>   $definition  Column definition array
      * @return  string  Column definition SQL fragment
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -1779,7 +1779,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getServerInfo()
     {
@@ -1964,7 +1964,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get list of all databases
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getDatabaseList()
     {
@@ -2043,7 +2043,7 @@ class InformixDriver extends BaseSqlDriver
      * Gets foreign key constraints for a table
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<int, mixed>   Array of foreign key constraint objects
      */
     public function getForeignKeys($table)
     {
@@ -2123,7 +2123,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   int     $tabid    Table ID
      * @param   string  $idxname  Index name
-     * @return  array   Column names
+     * @return  array<int, mixed>   Column names
      */
     protected function getIndexColumns(int $tabid, string $idxname): array
     {
@@ -2178,9 +2178,9 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table           The table name
      * @param   string  $constraint      The constraint name
-     * @param   array|string   $columns         Local columns
+     * @param   array<mixed>|string   $columns         Local columns
      * @param   string  $foreignTable    Referenced table
-     * @param   array|string   $foreignColumns  Referenced columns
+     * @param   array<mixed>|string   $foreignColumns  Referenced columns
      * @param   string  $onUpdate        ON UPDATE action
      * @param   string  $onDelete        ON DELETE action
      * @return  bool
@@ -2257,7 +2257,7 @@ class InformixDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array   Array of column names in the primary key
+     * @return  array<int, mixed>   Array of column names in the primary key
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -2356,7 +2356,7 @@ class InformixDriver extends BaseSqlDriver
      * Add a primary key constraint
      *
      * @param   string        $table    The table name
-     * @param   string|array  $columns  The columns for the primary key
+     * @param   string|array<mixed>  $columns  The columns for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2426,7 +2426,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name
      * @param   string  $selectSql  The SELECT statement
-     * @param   array   $options    Additional options (unused in Informix)
+     * @param   array<mixed>   $options    Additional options (unused in Informix)
      * @return  bool
      */
     public function createOrReplaceView($name, $selectSql, array $options = [])
@@ -2501,7 +2501,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      */
     public function getViews()
     {
@@ -2528,7 +2528,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Returns a list of all sequences in the current database
      *
-     * @return  array  Array of sequence names
+     * @return  array<mixed>  Array of sequence names
      */
     public function getSequences()
     {
@@ -2553,7 +2553,7 @@ class InformixDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value
      * @param   int     $increment  Increment value
-     * @param   array   $options    Additional options
+     * @param   array<mixed>   $options    Additional options
      * @return  bool
      */
     public function createSequence($name, $start = 1, $increment = 1, array $options = [])
@@ -2678,7 +2678,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get server status variables (limited support)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getServerStatus()
     {
@@ -2693,7 +2693,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get server variables (limited support)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getServerVariables()
     {
@@ -2715,7 +2715,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * Informix uses the || operator for string concatenation.
      *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
+     * @param   array<mixed>  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -2729,7 +2729,7 @@ class InformixDriver extends BaseSqlDriver
      * Informix doesn't have CONCAT_WS, so we manually insert separators.
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings to concatenate
+     * @param   array<mixed>   $strings    Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -3012,7 +3012,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get global status variables (limited)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalStatus()
     {
@@ -3022,7 +3022,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get global configuration variables (limited)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables()
     {
@@ -3032,7 +3032,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get connection information
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnectionInfo()
     {
@@ -3046,7 +3046,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get connection statistics (not supported)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getConnectionStats()
     {
@@ -3056,7 +3056,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get table I/O statistics (not supported)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableIoStats()
     {
@@ -3089,7 +3089,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $abstractType  The original abstract type name
      * @param   string  $nativeType    The mapped database type
-     * @param   array   $modifiers     Column modifiers
+     * @param   array<mixed>   $modifiers     Column modifiers
      * @return  string  The type with modifiers applied
      */
     protected function applyColumnModifiers(
@@ -3124,7 +3124,7 @@ class InformixDriver extends BaseSqlDriver
      * type fallthrough for migration compatibility.
      *
      * @param   string  $type       Abstract type name (e.g. 'string', 'integer')
-     * @param   array   $modifiers  Column modifiers (length, precision, scale)
+     * @param   array<mixed>   $modifiers  Column modifiers (length, precision, scale)
      * @return  string  Informix SQL type
      */
     public function normalizeColumnType(string $type, array $modifiers = []): string
@@ -3265,7 +3265,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * Informix places the constraint name at the end of the definition.
      *
-     * @param   array   $fk           Foreign key definition array
+     * @param   array<mixed>   $fk           Foreign key definition array
      * @param   string  $tableName    The table being created
      * @return  string
      */
@@ -3512,7 +3512,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column(s)
+     * @param   string|array<mixed>  $columns  Column(s)
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -3536,8 +3536,8 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table    Table name
      * @param   string  $name     Index name
-     * @param   array   $columns  Indexed columns
-     * @return  array
+     * @param   array<mixed>   $columns  Indexed columns
+     * @return  array<int, mixed>
      */
     public function buildDeferredFulltextIndexStatements(string $table, string $name, array $columns): array
     {
@@ -3702,7 +3702,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table   Table name
      * @param   string  $column  Column name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getEnumValues($table, $column)
     {
@@ -3729,7 +3729,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table   Table name
      * @param   string  $column  Column name
-     * @param   array   $values  ENUM values
+     * @param   array<mixed>   $values  ENUM values
      * @return  bool
      */
     public function setEnum($table, $column, $values)

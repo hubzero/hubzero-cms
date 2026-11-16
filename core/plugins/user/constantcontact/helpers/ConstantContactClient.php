@@ -202,8 +202,8 @@ class ConstantContactClient
      *
      * @param  string $method   HTTP method
      * @param  string $uri      Relative URI path
-     * @param  array  $options  Guzzle request options
-     * @return array            Decoded JSON response body
+     * @param  array<mixed>  $options  Guzzle request options
+     * @return array<mixed>            Decoded JSON response body
      * @throws \RuntimeException
      */
     protected function request(string $method, string $uri, array $options = []): array
@@ -242,7 +242,7 @@ class ConstantContactClient
     /**
      * Retrieve all contact lists
      *
-     * @return array  Array of list objects
+     * @return array<mixed>  Array of list objects
      * @throws \RuntimeException
      */
     public function getLists(): array
@@ -256,7 +256,7 @@ class ConstantContactClient
      * Search for a contact by email address
      *
      * @param  string $email
-     * @return array|null  Contact data or null if not found
+     * @return array<mixed>|null  Contact data or null if not found
      * @throws \RuntimeException
      */
     public function searchContactByEmail(string $email): ?array
@@ -279,7 +279,7 @@ class ConstantContactClient
      *
      * @param  string $email
      * @param  string $listId  Contact list UUID
-     * @return array           Created contact data
+     * @return array<mixed>           Created contact data
      * @throws \RuntimeException
      */
     public function createContact(string $email, string $listId): array
@@ -300,8 +300,8 @@ class ConstantContactClient
      * Update an existing contact
      *
      * @param  string $contactId
-     * @param  array  $data       Fields to update
-     * @return array              Updated contact data
+     * @param  array<mixed>  $data       Fields to update
+     * @return array<mixed>              Updated contact data
      * @throws \RuntimeException
      */
     public function updateContact(string $contactId, array $data): array

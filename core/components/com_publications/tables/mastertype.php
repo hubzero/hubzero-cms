@@ -102,7 +102,7 @@ class MasterType extends Table
     /**
      * Get curator groups
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getCuratorGroups()
     {
@@ -128,7 +128,7 @@ class MasterType extends Table
     /**
      * Get types for which user is authorized (curation)
      *
-     * @param   array  $usergroups
+     * @param   array<mixed>  $usergroups
      * @param   bool|mixed   $authorized
      * @return  mixed  array or False
      */
@@ -176,7 +176,7 @@ class MasterType extends Table
      * @param   integer  $supporting     Supporting?
      * @param   string   $orderby        Order by
      * @param   string   $config
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTypes($select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '')
     {
@@ -206,8 +206,8 @@ class MasterType extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to build query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to build query from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {
@@ -234,7 +234,7 @@ class MasterType extends Table
     /**
      * Get record counts
      *
-     * @param   array  $filters  Filters to build query from
+     * @param   array<mixed>  $filters  Filters to build query from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -250,7 +250,7 @@ class MasterType extends Table
     /**
      * Build a query from filters
      *
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  string  SQL
      */
     protected function buildQuery($filters = [])

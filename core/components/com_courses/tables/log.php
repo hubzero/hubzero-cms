@@ -61,7 +61,7 @@ class Log extends Table
      * @param      integer|null $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @param      integer $limit       Number of records to return
-     * @return     array|null
+     * @return     array<mixed>|null
      */
     public function getLogs($scope_id = null, $scope = 'course', $limit = 5)
     {

@@ -131,7 +131,7 @@ class Assetgroup extends Base
      *
      * @param   mixed   $idx
      * @param   boolean $populate
-     * @param   array   $filters
+     * @param   array<mixed>   $filters
      * @return  mixed
      */
     public function children($idx = null, $populate = false, $filters = [])
@@ -222,7 +222,7 @@ class Assetgroup extends Base
      * Get a list of assets
      *   Accepts an array of filters to apply to the list of assets
      *
-     * @param   array  $filters Filters to apply
+     * @param   array<mixed>  $filters Filters to apply
      * @return  object \Components\Courses\Models\Iterator
      */
     public function assets($filters = [])

@@ -117,7 +117,7 @@ class Andmore extends Base
     /**
      * Push database results to $this for internal use
      *
-     * @param      array &$result Database results
+     * @param      array<mixed> &$result Database results
      * @return     bool
      */
     public function process($result)

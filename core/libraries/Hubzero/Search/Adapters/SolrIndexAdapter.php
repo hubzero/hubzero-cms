@@ -79,7 +79,7 @@ class SolrIndexAdapter implements IndexInterface
      * getLogs - Returns an array of search engine query log entries
      *
      * @access public
-     * @return array
+     * @return array<mixed>
      */
     public function getLogs()
     {
@@ -213,7 +213,7 @@ class SolrIndexAdapter implements IndexInterface
     /**
      * deleteById - Removes a single document from the search index
      *
-     * @param string|array $query
+     * @param string|array<mixed> $query
      * @access public
      * @return mixed string if error caught
      */

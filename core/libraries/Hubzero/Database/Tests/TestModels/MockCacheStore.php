@@ -19,7 +19,7 @@ class MockCacheStore
     /**
      * Storage for cached items
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $storage = [];
 

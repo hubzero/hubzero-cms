@@ -223,7 +223,7 @@ class Archive extends Obj
     /**
      * Get a count or list of collections
      *
-     * @param   array  $filters  Filters to apply to the query that retrieves records
+     * @param   array<mixed>  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or object
      */
     public function collections($filters = [])
@@ -263,7 +263,7 @@ class Archive extends Obj
     /**
      * Get a count or list of followers
      *
-     * @param   array  $filters  Filters to apply to the query that retrieves records
+     * @param   array<mixed>  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or object
      */
     public function followers($filters = [])
@@ -295,7 +295,7 @@ class Archive extends Obj
     /**
      * Get a count or list of following
      *
-     * @param   array   $filters  Filters to apply to the query that retrieves records
+     * @param   array<mixed>   $filters  Filters to apply to the query that retrieves records
      * @param   string  $what     Following what? A collection or a member, etc.
      * @return  mixed   Integer or object
      */
@@ -376,7 +376,7 @@ class Archive extends Obj
     /**
      * Get a count or list of posts
      *
-     * @param   array  $filters  Filters to apply to the query that retrieves records
+     * @param   array<mixed>  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or array
      */
     public function posts($filters = [])
@@ -446,7 +446,7 @@ class Archive extends Obj
      *   the user is a member of.
      *
      * @param   string $type What type ot get collections for [group, member]
-     * @return  array
+     * @return  array<mixed>
      */
     public function mine($type = '')
     {

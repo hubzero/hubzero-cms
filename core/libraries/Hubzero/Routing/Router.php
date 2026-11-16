@@ -28,14 +28,14 @@ class Router
     /**
      * An array of variables
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $vars = [];
 
     /**
      * An array of rules
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $rules = [
         'build' => null,
@@ -153,7 +153,7 @@ class Router
      * Function to convert a route to an internal URI
      *
      * @param   string  $uri  The request URL
-     * @return  array
+     * @return  array<mixed>
      */
     public function parse($uri)
     {
@@ -212,7 +212,7 @@ class Router
     /**
      * Set the router variable array
      *
-     * @param   array    $vars   An associative array with variables
+     * @param   array<mixed>    $vars   An associative array with variables
      * @param   boolean  $merge  If True, the array will be merged instead of overwritten
      * @return  object
      */
@@ -262,7 +262,7 @@ class Router
     /**
      * Get the router variable array
      *
-     * @return  array  An associative array of router variables
+     * @return  array<mixed>  An associative array of router variables
      */
     public function vars()
     {

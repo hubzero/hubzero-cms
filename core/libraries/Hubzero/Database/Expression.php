@@ -87,7 +87,7 @@ final class Expression
     /**
      * The expression arguments
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $arguments = [];
 
@@ -101,7 +101,7 @@ final class Expression
     /**
      * Parameter bindings for this expression
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $bindings = [];
 
@@ -110,7 +110,7 @@ final class Expression
      *
      * @param string      $type       The expression type
      * @param string|null $function   The function name (for function expressions)
-     * @param array       $arguments  The expression arguments
+     * @param array<mixed>       $arguments  The expression arguments
      */
     protected function __construct(string $type, ?string $function = null, array $arguments = [])
     {
@@ -433,7 +433,7 @@ final class Expression
      * Example: Expr::caseWhen('status', ['active' => 'Active', 'inactive' => 'Inactive'], 'Unknown')
      *
      * @param string|Expression $column   The column to switch on
-     * @param array             $cases    Key-value pairs of value => result
+     * @param array<mixed>             $cases    Key-value pairs of value => result
      * @param mixed             $default  Default value (ELSE clause)
      * @return static
      */
@@ -813,7 +813,7 @@ final class Expression
     /**
      * Get parameter bindings for this expression
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getBindings(): array
     {
@@ -852,7 +852,7 @@ final class Expression
     /**
      * Get the expression arguments
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getArguments(): array
     {

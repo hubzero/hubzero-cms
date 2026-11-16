@@ -140,7 +140,7 @@ class Quote extends Relational
     /**
      * Get a list of files for this entry
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function files()
     {

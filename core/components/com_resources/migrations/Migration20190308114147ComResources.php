@@ -18,7 +18,7 @@ class Migration20190308114147ComResources extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__author_roles' => [

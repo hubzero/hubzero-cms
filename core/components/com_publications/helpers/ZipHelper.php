@@ -17,7 +17,7 @@ class ZipHelper
      * Builds a hierarchical array of archive contents
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getArchiveContents($path)
     {
@@ -49,7 +49,7 @@ class ZipHelper
      * Builds a hierarchical array of archive contents
      *
      * @param   object  $archive  \ZipArchive
-     * @return  array
+     * @return  array<mixed>
      */
     protected static function parseArchiveContents($archive)
     {
@@ -67,7 +67,7 @@ class ZipHelper
      * Reads contents of a ZipArchive
      *
      * @param   object  $archive  \ZipArchive
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected static function readArchive($archive)
     {
@@ -85,8 +85,8 @@ class ZipHelper
     /**
      * Adds an entry to representational array
      *
-     * @param   array  $entry
-     * @param   array  $contents
+     * @param   array<mixed>  $entry
+     * @param   array<mixed>  $contents
      * @return  bool|null
      */
     protected static function addEntryToContents($entry, &$contents)
@@ -115,7 +115,7 @@ class ZipHelper
     /**
      * Gets archive entry's directory
      *
-     * @param   array   $entry
+     * @param   array<mixed>   $entry
      * @return  string
      */
     protected static function getEntryDirectory($entry)

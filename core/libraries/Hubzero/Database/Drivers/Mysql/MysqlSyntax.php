@@ -198,7 +198,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * MySQL uses the CONCAT() function instead of the SQL standard
      * || operator.
      *
-     * @param   array  $parts  Array of column names or quoted strings
+     * @param   array<mixed>  $parts  Array of column names or quoted strings
      * @return  string
      */
     public function buildConcat(array $parts)
@@ -575,9 +575,9 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      *
      * Parses MySQL's SHOW COLUMNS output format.
      *
-     * @param   array  $data      The raw column data
+     * @param   array<mixed>  $data      The raw column data
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {

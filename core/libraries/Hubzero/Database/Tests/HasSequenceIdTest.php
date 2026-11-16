@@ -34,7 +34,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     /**
      * Return table names created by this test for automatic cleanup
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected static function getTestTables(): array
     {

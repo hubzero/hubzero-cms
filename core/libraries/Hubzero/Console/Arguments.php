@@ -42,14 +42,14 @@ class Arguments
     /**
      * Array of additional options being passed to the command
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      **/
     private $opts = null;
 
     /**
      * Registered list of namespaces in which to search for commands
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private static $commandNamespaces = [];
 
@@ -99,7 +99,7 @@ class Arguments
     /**
      * Get all opts
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getOpts()
     {
@@ -192,7 +192,7 @@ class Arguments
      * Registers a location to look for commands
      *
      * @param   string  $namespace  The namespace location to use
-     * @param   array   $paths      Optional paths to load from
+     * @param   array<mixed>   $paths      Optional paths to load from
      * @return  void
      **/
     public static function registerNamespace($namespace, $paths = [])

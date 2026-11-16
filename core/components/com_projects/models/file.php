@@ -24,7 +24,7 @@ class File extends Obj
     /**
      * Container for properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 
@@ -101,7 +101,7 @@ class File extends Obj
     /**
      * Return all properties
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getData()
     {

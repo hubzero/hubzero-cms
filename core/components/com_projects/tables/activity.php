@@ -85,10 +85,10 @@ class Activity extends Table
      * Get items
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean|int $count
      * @param   integer  $uid
-     * @param   array    $projects
+     * @param   array<mixed>    $projects
      * @return  mixed    object or integer or false
      */
     public function getActivities($projectid = null, $filters = [], $count = 0, $uid = 0, $projects = [])
@@ -381,10 +381,10 @@ class Activity extends Table
     /**
      * Get top active projects
      *
-     * @param   array    $exclude
+     * @param   array<mixed>    $exclude
      * @param   integer  $limit
      * @param   boolean  $publicOnly
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getTopActiveProjects($exclude = [], $limit = 3, $publicOnly = false)
     {
@@ -418,7 +418,7 @@ class Activity extends Table
     /**
      * Get activity stats
      *
-     * @param   array   $validProjects
+     * @param   array<mixed>   $validProjects
      * @param   string  $get
      * @return  mixed
      */

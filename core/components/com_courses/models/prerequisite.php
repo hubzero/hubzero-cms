@@ -40,28 +40,28 @@ class Prerequisite extends Base
     /**
      * Store the prereqs themselves
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected $prerequisites = [];
 
     /**
      * Unit progress
      *
-     * @var array|null
+     * @var array<mixed>|null
      **/
     protected $progress = null;
 
     /**
      * Asset views
      *
-     * @var array|null
+     * @var array<mixed>|null
      **/
     protected $views = null;
 
     /**
      * Grades
      *
-     * @var array|null
+     * @var array<mixed>|null
      **/
     protected $grades = null;
 
@@ -111,7 +111,7 @@ class Prerequisite extends Base
     /**
      * Get prerequisites
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function get($scope, $scope_id = null)
     {

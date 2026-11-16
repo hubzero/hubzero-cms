@@ -37,56 +37,56 @@ class HtmxService
     /**
      * Shared HTMX/Alpine state for current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $state = [];
 
     /**
      * Accumulated HX-Trigger payload.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $triggers = [];
 
     /**
      * Accumulated HX-Trigger-After-Settle payload.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $triggersAfterSettle = [];
 
     /**
      * Accumulated HX-Trigger-After-Swap payload.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $triggersAfterSwap = [];
 
     /**
      * Outbound HTMX headers emitted during this request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $sentHeaders = [];
 
     /**
      * Optional debug context entries for current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $debugContext = [];
 
     /**
      * Profile timing data for current request.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $profile = [];
 
     /**
      * Active profile timers keyed by label.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $profileTimers = [];
 
@@ -157,7 +157,7 @@ class HtmxService
     }
 
     /**
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -271,7 +271,7 @@ class HtmxService
 
     /**
      * @param   string  $url
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  void
      */
     public function location(string $url, array $options = []): void
@@ -412,7 +412,7 @@ class HtmxService
     /**
      * Return parsed HTMX request context details.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function requestDetails(): array
     {
@@ -490,7 +490,7 @@ class HtmxService
 
     /**
      * @param   string  $url
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  string
      */
     public function url(string $url, array $params = []): string
@@ -506,7 +506,7 @@ class HtmxService
     /**
      * @param   string  $component
      * @param   string  $task
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  string
      */
     public function actionUrl(string $component, string $task, array $params = []): string
@@ -577,7 +577,7 @@ class HtmxService
      * Emit a 422 validation response with fragment HTML payload.
      *
      * @param   string  $html
-     * @param   array   $errors
+     * @param   array<mixed>   $errors
      * @return  void
      */
     public function validation(string $html, array $errors = []): void
@@ -645,7 +645,7 @@ class HtmxService
     /**
      * Return recorded profile timing data.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function profileSnapshot(): array
     {
@@ -655,7 +655,7 @@ class HtmxService
     /**
      * Set debug context data (dev/debug mode only consumption).
      *
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -696,8 +696,8 @@ class HtmxService
      * Check request header/server keys for a true-ish value.
      *
      * @param   object  $request
-     * @param   array   $headerKeys
-     * @param   array   $serverKeys
+     * @param   array<mixed>   $headerKeys
+     * @param   array<mixed>   $serverKeys
      * @return  bool
      */
     protected function isTruthyHeader($request, array $headerKeys, array $serverKeys): bool
@@ -757,7 +757,7 @@ class HtmxService
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     protected function allIncomingHeaders(): array
     {
@@ -803,7 +803,7 @@ class HtmxService
     }
 
     /**
-     * @return  array
+     * @return  array<mixed>
      */
     public function debugSnapshot(): array
     {
@@ -825,10 +825,10 @@ class HtmxService
     /**
      * Preserve HTMX debug mode in outbound parameters.
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     public function preserveDebugParam(array $params, string $name = 'htmx_debug', string $value = '1'): array
     {
@@ -850,8 +850,8 @@ class HtmxService
     /**
      * Render reusable HTMX debug panel.
      *
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     public function renderDebugPanel(array $snapshot = [], array $options = []): string
@@ -928,7 +928,7 @@ class HtmxService
     }
 
     /**
-     * @return  array
+     * @return  array<string, mixed>
      */
     protected function requestContext(): array
     {
@@ -986,7 +986,7 @@ class HtmxService
     /**
      * Parse HX-Triggering-Event JSON header payload.
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function parseTriggeringEvent(): ?array
     {
@@ -1006,7 +1006,7 @@ class HtmxService
     /**
      * Resolve current request origin (scheme, host, port).
      *
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     protected function requestOrigin(): ?array
     {

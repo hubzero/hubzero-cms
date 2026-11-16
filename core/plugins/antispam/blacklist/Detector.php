@@ -35,7 +35,7 @@ class Detector implements DetectorInterface
     /**
      * Holds blacklisted words
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $blackLists = [];
 
@@ -56,7 +56,7 @@ class Detector implements DetectorInterface
     /**
      * Constructor
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -79,7 +79,7 @@ class Detector implements DetectorInterface
      * Set the second argument to true to treat
      * the added word as a regular expression.
      *
-     * @param   string|array  $vars   List of blacklisted words
+     * @param   string|array<mixed>  $vars   List of blacklisted words
      * @param   bool    $regex  Flags word as regex pattern
      * @return  object
      */
@@ -140,7 +140,7 @@ class Detector implements DetectorInterface
     /**
      * Checks the text if it contains any word that is blacklisted.
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  bool
      */
     public function detect($data)

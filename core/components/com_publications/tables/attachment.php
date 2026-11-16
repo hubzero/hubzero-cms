@@ -228,8 +228,8 @@ class Attachment extends Table
      * Get connections
      *
      * @param   integer|null  $vid   pub version id
-     * @param   array    $find
-     * @return  array|false|null
+     * @param   array<mixed>    $find
+     * @return  array<mixed>|false|null
      */
     public function getConnections($vid = null, $find = [])
     {
@@ -256,8 +256,8 @@ class Attachment extends Table
      * Get attachments
      *
      * @param   integer|null  $versionid  pub version id
-     * @param   array    $filters
-     * @return  array|string|false|null
+     * @param   array<mixed>    $filters
+     * @return  array<mixed>|string|false|null
      */
     public function getAttachments($versionid, $filters = [])
     {
@@ -361,7 +361,7 @@ class Attachment extends Table
      * Delete element attachment
      *
      * @param   integer|null  $vid
-     * @param   array    $find
+     * @param   array<mixed>    $find
      * @param   integer  $elementId
      * @param   string   $type
      * @param   string   $role
@@ -400,7 +400,7 @@ class Attachment extends Table
      * Load element attachment
      *
      * @param   integer|null  $vid
-     * @param   array    $find
+     * @param   array<mixed>    $find
      * @param   integer  $elementId
      * @param   string   $type
      * @param   string   $role

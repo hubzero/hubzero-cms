@@ -119,7 +119,7 @@ class Syncgroup extends Base implements CommandInterface
      *
      * @param   object  $db
      * @param   string  $cn
-     * @return  array
+     * @return  array<int, mixed>
      **/
     protected function groupMembers($db, $cn)
     {

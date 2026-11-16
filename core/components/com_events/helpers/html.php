@@ -38,7 +38,7 @@ class Html
      * Auto-link strings matching URL patterns
      * @deprectated
      *
-     * @param      array $matches Strings matching URL pattern
+     * @param      array<mixed> $matches Strings matching URL pattern
      * @return     string
      */
     public static function autolink($matches)
@@ -94,7 +94,7 @@ class Html
      *
      * Long description (if any) ...
      *
-     * @param      array $arr Parameter description (if any) ...
+     * @param      array<mixed> $arr Parameter description (if any) ...
      * @param      string $tag_name Parameter description (if any) ...
      * @param      string $tag_attribs Parameter description (if any) ...
      * @param      mixed $key Parameter description (if any) ...
@@ -302,7 +302,7 @@ class Html
      * Build a select for categories
      *
      * @param      integer $catid  Category ID
-     * @param      array|string   $args   Arguments to add to select element
+     * @param      array<mixed>|string   $args   Arguments to add to select element
      * @param      integer $gid    Group ID
      * @param      string  $option Component name
      * @return     string

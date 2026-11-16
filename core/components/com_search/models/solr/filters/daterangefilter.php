@@ -22,8 +22,8 @@ class Daterangefilter extends Filter
     /**
      * Render form fields on the filter list
      *
-     * @param   array   $counts  counts retrieved from solr search
-     * @param   array   $dateValues  list of options currently selected
+     * @param   array<mixed>   $counts  counts retrieved from solr search
+     * @param   array<mixed>   $dateValues  list of options currently selected
      * @return  string
      */
     public function renderHtml($counts, $dateValues)
@@ -65,7 +65,7 @@ class Daterangefilter extends Filter
      * Add selected filters to solr query
      *
      * @param   object   $query  Solarium object that builds the solr query
-     * @param   array   $selectedFilters  list of options currently selected
+     * @param   array<mixed>   $selectedFilters  list of options currently selected
      * @return  string|bool
      */
     public function applyFilters($query, $selectedFilters)

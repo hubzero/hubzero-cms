@@ -98,7 +98,7 @@ class Forum extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -121,9 +121,9 @@ class Forum extends Plugin
      * @param   integer  $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
-     * @param   array    $access      What can be accessed
-     * @param   array|null    $areas       Active area(s)
-     * @return  array
+     * @param   array<mixed>    $access      What can be accessed
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @return  array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -367,7 +367,7 @@ class Forum extends Plugin
      * Parse an SEF URL into its component bits
      * stripping out the path leading up to the blog plugin
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function parseUrl()
     {
@@ -2069,11 +2069,11 @@ class Forum extends Plugin
      * Get email recipient IDs
      *
      * @param   object  $category       Category the post belongs to
-     * @param   array   $accessLevels   View levels the content is gated behind
+     * @param   array<mixed>   $accessLevels   View levels the content is gated behind
      *                                  (section/category/thread/post access).
      *                                  A recipient is only notified if they are
      *                                  authorised to view every one of them.
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getEmailRecipientIds($category, $accessLevels = [])
     {
@@ -2142,8 +2142,8 @@ class Forum extends Plugin
      *
      * Note: filters out blocked and unapproved accounts
      *
-     * @param   array  $userIds
-     * @return  array
+     * @param   array<mixed>  $userIds
+     * @return  array<mixed>
      */
     protected function loadExistingUsers($userIds)
     {

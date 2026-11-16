@@ -678,7 +678,7 @@ class Batchcreate extends AdminController
     /**
      * Process file data
      *
-     * @param   array   $fileRecord
+     * @param   array<mixed>   $fileRecord
      * @param   object  $pub
      * @param   object  $version
      * @return  bool|null
@@ -793,7 +793,7 @@ class Batchcreate extends AdminController
      * @param   object   $author
      * @param   integer  $ordering
      * @param   \SimpleXMLElement|string|int|null  $uid  The author's uid attribute
-     * @param   array    $item
+     * @param   array<mixed>    $item
      *
      * @return  void
      */

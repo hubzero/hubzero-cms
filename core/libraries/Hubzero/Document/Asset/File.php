@@ -65,7 +65,7 @@ class File extends Obj
     /**
      * Asset paths
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $paths = [
         'source'   => null,

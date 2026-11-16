@@ -24,7 +24,7 @@ class Import extends Base
     /**
      * Import column to field mapping
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     private $fields = null;
 
@@ -38,7 +38,7 @@ class Import extends Base
     /**
      * Mapping key
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $fieldMap = [
         'cn' => [
@@ -176,7 +176,7 @@ class Import extends Base
      * Get the generated record from the raw data
      *
      * @param   mixed   $raw      Raw data
-     * @param   array   $options  Import options
+     * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  object
      */
@@ -278,8 +278,8 @@ class Import extends Base
     /**
      * Map headers to fields
      *
-     * @param   array   $headers  List of columns from import file
-     * @return  array
+     * @param   array<mixed>   $headers  List of columns from import file
+     * @return  array<mixed>
      */
     public function autoDetectFields(array $headers)
     {
@@ -310,7 +310,7 @@ class Import extends Base
     /**
      * Map custom fields
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function fieldMap()
     {

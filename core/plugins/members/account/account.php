@@ -46,7 +46,7 @@ class Account extends Plugin
      *
      * @param   object  $user    User
      * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @return  array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -70,8 +70,8 @@ class Account extends Plugin
      * @param   object  $user    User
      * @param   object  $member  Profile
      * @param   string  $option  Component name
-     * @param   string|array  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param   string|array<mixed>  $areas   Plugins to return data
+     * @return  array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -668,7 +668,7 @@ class Account extends Plugin
     /**
      * Get information about the password expiration
      *
-     * @return  array|false  password expiration information
+     * @return  array<mixed>|false  password expiration information
      */
     private function getPassInfo()
     {

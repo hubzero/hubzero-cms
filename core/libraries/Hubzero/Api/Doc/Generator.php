@@ -27,14 +27,14 @@ class Generator
     /**
      * Var to hold sections
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $sections = [];
 
     /**
      * Var to hold output
      *
-     * @var  array|string|false
+     * @var  array<mixed>|string|false
      */
     private $output = [];
 
@@ -65,7 +65,7 @@ class Generator
      *
      * @param   string  $format  Output format: 'array', 'php' (serialized) or 'json'
      * @param   bool    $force   Force new version
-     * @return  array|string  The documentation array for 'array', else a string
+     * @return  array<mixed>|string  The documentation array for 'array', else a string
      */
     public function output($format = 'json', $force = false)
     {
@@ -190,8 +190,8 @@ class Generator
     /**
      * Process sections
      *
-     * @param   array  $sections  All the component api controllers grouped by component
-     * @return  array
+     * @param   array<mixed>  $sections  All the component api controllers grouped by component
+     * @return  array<mixed>
      */
     private function processComponentSections($sections)
     {
@@ -222,7 +222,7 @@ class Generator
      * Process an individual file
      *
      * @param   string  $file  File path
-     * @return  array   Processed endpoints
+     * @return  array<mixed>   Processed endpoints
      */
     private function processFile($file)
     {

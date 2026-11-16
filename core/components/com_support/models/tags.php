@@ -30,7 +30,7 @@ class Tags extends Cloud
      * Render a tag cloud
      *
      * @param   string   $rtrn     Format to render
-     * @param   array    $filters  Filters to apply
+     * @param   array<mixed>    $filters  Filters to apply
      * @param   boolean  $clear    Clear cached data?
      * @return  string
      */
@@ -55,11 +55,11 @@ class Tags extends Cloud
     /**
      * Check tag existence for tickets
      *
-     * @param   integer|array  $id         Resource ID
+     * @param   integer|array<mixed>  $id         Resource ID
      * @param   integer  $tagger_id  Tagger ID
      * @param   integer  $strength   Tag strength
      * @param   integer  $admin      Admin flag
-     * @return  array
+     * @return  array<mixed>
      */
     public function checkTags($id, $tagger_id = 0, $strength = 0, $admin = 0)
     {

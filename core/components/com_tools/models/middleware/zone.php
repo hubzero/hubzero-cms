@@ -28,7 +28,7 @@ class Zone extends Base
     /**
      * \Hubzero\ItemList
      *
-     * @var array
+     * @var array<mixed>
      */
     private $cache = [
         'locations.count' => null,
@@ -61,7 +61,7 @@ class Zone extends Base
      * Get a list of locations
      *
      * @param      string $rtrn    Data type to return [count, list]
-     * @param      array  $filters Filters to apply to query
+     * @param      array<mixed>  $filters Filters to apply to query
      * @return     mixed Returns an integer or array depending upon format chosen
      */
     public function locations($rtrn = 'list', $filters = [], $clear = false)

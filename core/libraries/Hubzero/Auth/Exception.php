@@ -55,7 +55,7 @@ class Exception extends \Exception
      * Arguments recieved by the method the error occurred in
      * [Available if backtrace is enabled]
      *
-     * @var  array|false
+     * @var  array<mixed>|false
      */
     protected $args = [];
 

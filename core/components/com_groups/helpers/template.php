@@ -30,7 +30,7 @@ class Template extends Document
      * Array of group include tags allowed
      * (all tags)
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $allowed_tags = [
         'module',

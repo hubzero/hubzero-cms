@@ -103,7 +103,7 @@ class AssetAssociation extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -132,7 +132,7 @@ class AssetAssociation extends Table
     /**
      * Get a count of records
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string|null
      */
     public function count($filters = [])
@@ -147,8 +147,8 @@ class AssetAssociation extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
-     * @return array|null Return course units
+     * @param  array<mixed> $filters
+     * @return array<int, \stdClass>|null Return course units
      */
     public function find($filters = [])
     {

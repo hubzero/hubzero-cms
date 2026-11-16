@@ -16,7 +16,7 @@ class Site extends Base
     /**
      * URL segments
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $segments = [
         'option' => 'com_forum',

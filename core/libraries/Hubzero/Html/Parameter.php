@@ -35,14 +35,14 @@ class Parameter extends Registry
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $elements = [];
 
     /**
      * Directories, where element types can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $elementPath = [];
 
@@ -155,7 +155,7 @@ class Parameter extends Registry
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function renderToArray($name = 'params', $group = '_default')
     {
@@ -191,7 +191,7 @@ class Parameter extends Registry
     /**
      * Get the number of params in each group.
      *
-     * @return  array|false  Array of all group names as key and parameters count as value.
+     * @return  array<mixed>|false  Array of all group names as key and parameters count as value.
      */
     public function getGroups()
     {
@@ -212,7 +212,8 @@ class Parameter extends Registry
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array|false   An array of all parameters, each as array of the label, the form element and the tooltip.
+     * @return  array<mixed>|false   An array of all parameters, each as array of the label, the form element and the
+     *                               tooltip.
      */
     public function getParams($name = 'params', $group = '_default')
     {
@@ -235,7 +236,7 @@ class Parameter extends Registry
      * @param   string  $control_name  An optional name of the HTML form control. The default is
      *                                 'params' if not supplied.
      * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-     * @return  array   Any array of the label, the form element and the tooltip.
+     * @return  array<mixed>   Any array of the label, the form element and the tooltip.
      */
     public function getParam(&$node, $control_name = 'params', $group = '_default')
     {

@@ -37,7 +37,7 @@ class Files extends Plugin
      * Public, as are $model and $subdir: the connections controller reads
      * them through its __get().
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $area;
 
@@ -103,7 +103,7 @@ class Files extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @return  array  Plugin name and title
+     * @return  array<mixed>  Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -166,7 +166,7 @@ class Files extends Plugin
      * Event call to return count of items
      *
      * @param   object  $model   Project
-     * @return  array   integer
+     * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
     {
@@ -181,8 +181,8 @@ class Files extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
-     * @return  array|null   Return array of html
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
+     * @return  array<mixed>|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null, $params = [])
     {
@@ -762,10 +762,10 @@ class Files extends Plugin
     /**
      * Display list of files
      *
-     * @param   array  $params      parameters on how the file list should be displayed
-     * @param   array  $allowed     list of file types permitted to be included
-     * @param   array  $selected    list of files already included in current area
-     * @param   array  $used        list of files already included in other areas
+     * @param   array<mixed>  $params      parameters on how the file list should be displayed
+     * @param   array<mixed>  $allowed     list of file types permitted to be included
+     * @param   array<mixed>  $selected    list of files already included in current area
+     * @param   array<mixed>  $used        list of files already included in other areas
      *
      * @return  string  Filelist template
      */
@@ -2991,7 +2991,7 @@ class Files extends Plugin
     /**
      * Archive files
      *
-     * @param   array  $items
+     * @param   array<mixed>  $items
      * @return  mixed  array or false
      */
     private function archiveFiles($items)
@@ -3076,7 +3076,7 @@ class Files extends Plugin
      * Get stored remote connections
      *
      * @param   bool   $remoteEdit
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getRemoteConnections($remoteEdit = true)
     {
@@ -3122,7 +3122,7 @@ class Files extends Plugin
      * Get member files (provisioned project)
      *
      * @param   boolean  $recurse
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getMemberFiles($recurse = true)
     {
@@ -3183,7 +3183,7 @@ class Files extends Plugin
      * Event call after file update
      *
      * @param   object|null  $model
-     * @param   array   $changes
+     * @param   array<mixed>   $changes
      * @return  bool|null
      */
     public function onAfterUpdate($model = null, $changes = [])
@@ -3396,7 +3396,7 @@ class Files extends Plugin
     /**
      * Sort incoming file/folder data
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function sortIncoming()
     {

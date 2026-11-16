@@ -40,7 +40,7 @@ class Bibtex extends Plugin
      * @param   object   $file     the uploaded file
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
     {
@@ -107,7 +107,7 @@ class Bibtex extends Plugin
     /**
      * Check if a citation is a duplicate
      *
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
      * @return  integer

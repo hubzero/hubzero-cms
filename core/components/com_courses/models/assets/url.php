@@ -21,7 +21,7 @@ class Url extends Content
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'As a standard link',
@@ -31,7 +31,7 @@ class Url extends Content
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<mixed> of assets created
      **/
     public function create()
     {
@@ -89,7 +89,7 @@ class Url extends Content
      * Preview method for this handler
      *
      * @param  object $asset - asset
-     * @return array  (string) type, (string) text
+     * @return array<string, mixed>  (string) type, (string) text
      **/
     public function preview($asset)
     {

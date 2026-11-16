@@ -83,7 +83,7 @@ class SchemaDiff
     /**
      * Tables that were renamed (old name => new name)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $renamedTables = [];
 
@@ -148,7 +148,7 @@ class SchemaDiff
     /**
      * Get added table names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAddedTableNames(): array
     {
@@ -195,7 +195,7 @@ class SchemaDiff
     /**
      * Get removed table names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getRemovedTableNames(): array
     {
@@ -242,7 +242,7 @@ class SchemaDiff
     /**
      * Get changed table names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getChangedTableNames(): array
     {
@@ -291,7 +291,7 @@ class SchemaDiff
     /**
      * Get renamed tables
      *
-     * @return array  Old name => new name
+     * @return array<mixed>  Old name => new name
      */
     public function getRenamedTables(): array
     {
@@ -328,7 +328,7 @@ class SchemaDiff
     /**
      * Get a summary of changes
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getSummary(): array
     {
@@ -387,7 +387,7 @@ class SchemaDiff
     /**
      * Get a list of all destructive changes with warnings
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function getDestructiveWarnings(): array
     {
@@ -512,7 +512,7 @@ class SchemaDiff
     /**
      * Convert to array representation
      *
-     * @return array
+     * @return array<mixed>
      */
     public function toArray(): array
     {

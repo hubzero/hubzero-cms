@@ -28,21 +28,21 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Profile
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $profile = [];
 
     /**
      * Handlers instances container
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $handlers = [];
 
     /**
      * Cached map of profile field name => default access level
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $fieldAccess = null;
 
@@ -50,7 +50,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *  Constructor
      *
      * @param   mixed   $raw      Raw data
-     * @param   array   $options  Import options
+     * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
@@ -354,7 +354,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @param   mixed   $data   String or array of field values
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
-     * @return  array
+     * @return  array<mixed>
      */
     private function multiValueField($data, $delim = ',|;')
     {
@@ -373,7 +373,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      * imported accounts get each field's configured access level instead of
      * falling back to the model's Private (5) default (ticket 370).
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function profileFieldAccess()
     {
@@ -619,7 +619,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Return a list of all available processors.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function handlers()
     {

@@ -187,7 +187,7 @@ class Table
      * Get column information for this table
      *
      * @param  bool  $typeOnly  True (default) to only return field types
-     * @return array
+     * @return array<mixed>
      */
     public function getColumns(bool $typeOnly = true): array
     {
@@ -197,7 +197,7 @@ class Table
     /**
      * Get the column names for this table
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getColumnNames(): array
     {
@@ -207,7 +207,7 @@ class Table
     /**
      * Get key/index information for this table
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getKeys(): array
     {
@@ -217,7 +217,7 @@ class Table
     /**
      * Get index/key names for this table
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getIndexNames(): array
     {
@@ -254,7 +254,7 @@ class Table
     /**
      * Get primary key column names for this table
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getPrimaryKeyColumns(): array
     {
@@ -283,7 +283,7 @@ class Table
      * - on_update: Update action (CASCADE, SET NULL, RESTRICT, NO ACTION)
      * - on_delete: Delete action (CASCADE, SET NULL, RESTRICT, NO ACTION)
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getForeignKeys(): array
     {

@@ -30,7 +30,7 @@ class Prerequisites extends Table
      * Get all prereqs for a given section
      *
      * @param  int   $section_id
-     * @return array $results
+     * @return array<mixed> $results
      **/
     public function loadAllBySectionId($section_id)
     {
@@ -48,7 +48,7 @@ class Prerequisites extends Table
      * @param  string $scope
      * @param  int    $scope_id
      * @param  int    $section_id
-     * @return array  $results
+     * @return array<mixed>  $results
      **/
     public function loadAllByScope($scope, $scope_id, $section_id)
     {

@@ -36,14 +36,14 @@ class SchemaConverter
     /**
      * Supported source database types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $supportedFrom = ['mysql'];
 
     /**
      * Supported target database types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $supportedTo = ['sqlite'];
 

@@ -29,7 +29,7 @@ class Filelist extends Select
      * Attributes allow an exclude mask and stripping of extensions from file name.
      * Default attribute may optionally be set to null (no file) or -1 (use a default).
      *
-     * @return  array  The field option objects.
+     * @return  array<mixed>  The field option objects.
      */
     protected function getOptions()
     {

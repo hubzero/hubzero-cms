@@ -36,7 +36,7 @@ class Attachment extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $dimensions = null;
 
@@ -222,7 +222,7 @@ class Attachment extends Relational
     /**
      * File width and height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function dimensions()
     {

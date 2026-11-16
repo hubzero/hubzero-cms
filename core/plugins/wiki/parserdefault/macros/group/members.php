@@ -92,8 +92,8 @@ class Members extends GroupMacro
      * Get a list of events for a group
      *
      * @param      object $group
-     * @param      array  $filters
-     * @return     array
+     * @param      array<mixed>  $filters
+     * @return     array<mixed>
      */
     private function getGroupMembers($group, $filters = [])
     {
@@ -133,7 +133,7 @@ class Members extends GroupMacro
      * Render the events
      *
      * @param      \Hubzero\User\Group  $group   The group
-     * @param      array  $members Array of members
+     * @param      array<mixed>  $members Array of members
      * @return     string
      */
     private function renderMembers($group, $members)

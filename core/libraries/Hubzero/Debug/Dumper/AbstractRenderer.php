@@ -18,14 +18,14 @@ class AbstractRenderer implements Renderable
     /**
      * Messages
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $messages = [];
 
     /**
      * Constructor
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  void
      */
     public function __construct($messages = null)
@@ -48,7 +48,7 @@ class AbstractRenderer implements Renderable
     /**
      * Get the list of messages
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMessages()
     {
@@ -78,7 +78,7 @@ class AbstractRenderer implements Renderable
     /**
      * Render a list of messages
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  string
      */
     public function render($messages = null)
@@ -100,8 +100,8 @@ class AbstractRenderer implements Renderable
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array|string  $arr
-     * @return  array|string|null
+     * @param   array<mixed>|string  $arr
+     * @return  array<mixed>|string|null
      */
     protected function deflate($arr)
     {

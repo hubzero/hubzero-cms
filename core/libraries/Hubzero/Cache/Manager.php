@@ -33,14 +33,14 @@ class Manager
     /**
      * The array of resolved cache stores.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $stores = [];
 
     /**
      * The array of custom creators
      *
-     * @var  array
+     * @var  array<mixed>
      *
      */
     public $customCreators = [];
@@ -112,7 +112,7 @@ class Manager
     /**
      * Call a custom driver creator.
      *
-     * @param  array  $config
+     * @param  array<mixed>  $config
      * @return mixed
      */
     protected function callCustomCreator($config)
@@ -208,7 +208,7 @@ class Manager
      * Dynamically call the default driver instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)
@@ -219,7 +219,7 @@ class Manager
     /**
      * Get a list of available cache stores.
      *
-     * @return  array
+     * @return  array<mixed>
      * @since   2.1.12
      */
     public static function getStores()

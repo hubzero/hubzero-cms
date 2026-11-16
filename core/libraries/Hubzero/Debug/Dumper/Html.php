@@ -26,7 +26,7 @@ class Html extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  string
      */
     public function render($messages = null)
@@ -49,7 +49,7 @@ class Html extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array  $item
+     * @param   array<mixed>  $item
      * @return  string
      */
     public function line(array $item)
@@ -62,7 +62,7 @@ class Html extends AbstractRenderer
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array|string  $arr
+     * @param   array<mixed>|string  $arr
      * @return  string
      */
     protected function deflate($arr)

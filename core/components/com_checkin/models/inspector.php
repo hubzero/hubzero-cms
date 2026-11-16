@@ -50,14 +50,14 @@ class Inspector extends Obj
     /**
      * List of tables
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $tables;
 
     /**
      * Constructor
      *
-     * @param   array  $config  An array of configuration options
+     * @param   array<mixed>  $config  An array of configuration options
      * @return  void
      */
     public function __construct($config = [])
@@ -215,7 +215,7 @@ class Inspector extends Obj
     /**
      * Get tables
      *
-     * @return  array  Checked in table names as keys and checked in item count as values
+     * @return  array<mixed>  Checked in table names as keys and checked in item count as values
      */
     public function items()
     {

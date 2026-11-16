@@ -38,14 +38,14 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Container for data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
     /**
      * Constructor
      *
-     * @param      array|null $data Array of data
+     * @param      array<mixed>|null $data Array of data
      * @return     void
      */
     public function __construct($data = null)
@@ -316,7 +316,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * Run a map over each of the items
      *
      * @param   Closure  $callback
-     * @return  array
+     * @return  array<mixed>
      */
     public function map(Closure $callback)
     {

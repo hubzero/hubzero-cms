@@ -81,7 +81,7 @@ class Google extends Obj
      * Clear permission for user
      *
      * @param   object|null   $apiService  Drive API service instance
-     * @param   array    $shared
+     * @param   array<mixed>    $shared
      * @param   string|int   $itemId
      * @return  boolean
      */
@@ -125,7 +125,7 @@ class Google extends Obj
      * @param   string  $id          Remote id
      * @param   string  $title       File title
      * @param   string  $parentId    Parent id
-     * @param   array   &$metadata   Collector array
+     * @param   array<mixed>   &$metadata   Collector array
      * @return  mixed   (id) or false
      */
     public static function patchFile($apiService, $id, $title, $parentId, &$metadata)
@@ -163,7 +163,7 @@ class Google extends Obj
      * @param   string   $title       File title
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
-     * @param   array    &$metadata   Collector array
+     * @param   array<mixed>    &$metadata   Collector array
      * @param   boolean  $convert     Convert for remote editing?
      * @return  string|false   (id) or false
      */
@@ -280,7 +280,7 @@ class Google extends Obj
      * @param   string   $title       File title
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
-     * @param   array    &$metadata   Collector array
+     * @param   array<mixed>    &$metadata   Collector array
      * @param   boolean  $convert     Convert for remote editing?
      * @return  mixed  string (id) or false
      */
@@ -499,7 +499,7 @@ class Google extends Obj
      * @param   object|null  $apiService  Drive API service instance
      * @param   string  $title       Folder name
      * @param   string|mixed  $parentId    Parent id
-     * @param   array   &$metadata   Collector array
+     * @param   array<mixed>   &$metadata   Collector array
      * @return  mixed   string (new folder id) or false
      */
     public static function createFolder($apiService, $title, $parentId, &$metadata)
@@ -535,11 +535,11 @@ class Google extends Obj
      *
      * @param   object|null  $apiService     Drive API service instance
      * @param   string  $folderID       Folder ID
-     * @param   array   &$remotes       Collector array for active items
-     * @param   array   &$deletes       Collector array for deleted items
+     * @param   array<mixed>   &$remotes       Collector array for active items
+     * @param   array<mixed>   &$deletes       Collector array for deleted items
      * @param   string  $path           Path
      * @param   string|null  $startChangeId  Last Change ID
-     * @param   array   $connections    Array of local-remote connections
+     * @param   array<mixed>   $connections    Array of local-remote connections
      * @return  mixed   int (new change ID) or false
      */
     public static function collectChanges(
@@ -586,13 +586,13 @@ class Google extends Obj
     /**
      * Get remote folder changes
      *
-     * @param   array   $items        Remote items
+     * @param   array<mixed>   $items        Remote items
      * @param   string  $folderID     Folder ID
-     * @param   array   &$remotes     Collector array for active items
-     * @param   array   &$deletes     Collector array for deleted items
+     * @param   array<mixed>   &$remotes     Collector array for active items
+     * @param   array<mixed>   &$deletes     Collector array for deleted items
      * @param   string  $path         Path
-     * @param   array   $connections  Array of local-remote connections
-     * @param   array   &$duplicates  Collector array for duplicates
+     * @param   array<mixed>   $connections  Array of local-remote connections
+     * @param   array<mixed>   &$duplicates  Collector array for duplicates
      * @return  void
      */
     public static function getFolderChange($items, $folderID, &$remotes, &$deletes, $path, $connections, &$duplicates)
@@ -732,7 +732,7 @@ class Google extends Obj
     /**
      * Get download URL
      *
-     * @param   array   $resource  Remote resource
+     * @param   array<mixed>   $resource  Remote resource
      * @param   string  $ext       Export ext
      * @return  string|false
      */
@@ -763,9 +763,9 @@ class Google extends Obj
      * @param   string  $id           Remote ID
      * @param   string  $fpath        File path
      * @param   string  $format       mime type
-     * @param   array   $connections  Array of local-remote connections
-     * @param   array   &$remotes     Collector array for active items
-     * @param   array   &$duplicates  Collector array for duplicates
+     * @param   array<mixed>   $connections  Array of local-remote connections
+     * @param   array<mixed>   &$remotes     Collector array for active items
+     * @param   array<mixed>   &$duplicates  Collector array for duplicates
      * @return  string
      */
     public static function buildDuplicatePath($id, $fpath, $format, $connections, &$remotes, &$duplicates)
@@ -808,7 +808,7 @@ class Google extends Obj
      *
      * @param   object|null  $apiService      Drive API service instance
      * @param   string  $folderID        Folder ID
-     * @param   array   &$remoteFolders  Collector array for remote folders
+     * @param   array<mixed>   &$remoteFolders  Collector array for remote folders
      * @param   string  $path            Path
      * @return  mixed
      */
@@ -895,7 +895,7 @@ class Google extends Obj
     /**
      * Get remote folder content
      *
-     * @param   array  $parents
+     * @param   array<mixed>  $parents
      * @return  mixed  string or false
      */
     public static function getParentID($parents = [])
@@ -916,10 +916,10 @@ class Google extends Obj
      *
      * @param   object|null  $apiService   Drive API service instance
      * @param   string  $folderID     Folder ID
-     * @param   array   $remotes      Array of remote items
+     * @param   array<mixed>   $remotes      Array of remote items
      * @param   string  $path         Path
-     * @param   array   $connections  Array of local-remote connections
-     * @param   array   &$duplicates  Collector array for duplicates
+     * @param   array<mixed>   $connections  Array of local-remote connections
+     * @param   array<mixed>   &$duplicates  Collector array for duplicates
      * @return  mixed
      */
     public static function getFolderContent($apiService, $folderID, $remotes, $path, $since, $connections, &$duplicates)
@@ -1309,7 +1309,7 @@ class Google extends Obj
     /**
      * Get file name for import
      *
-     * @param   array|string $name
+     * @param   array<mixed>|string $name
      * @param   string  $importExt
      * @return  string
      */
@@ -1364,7 +1364,7 @@ class Google extends Obj
     /**
      * Get all formats that Google can work with and convert
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getGoogleConversionExts()
     {
@@ -1397,7 +1397,7 @@ class Google extends Obj
     /**
      * Get Google native formats
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getGoogleNativeExts()
     {

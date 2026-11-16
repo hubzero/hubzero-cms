@@ -20,7 +20,7 @@ class JSON extends Base
      * Converts an object into a JSON formatted string.
      *
      * @param   object  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  JSON formatted string.
      */
     public function objectToString($object, $options = [])

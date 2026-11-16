@@ -16,7 +16,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Container for items
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $items = [];
 
@@ -52,7 +52,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Create and return an array of the crumb names.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function names()
     {
@@ -68,7 +68,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Return the list of crumbs
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function items()
     {

@@ -16,7 +16,7 @@ class Manager
     /**
      * The array of created "menus".
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $menus = [];
 
@@ -81,7 +81,7 @@ class Manager
     /**
      * Get all of the created "menus".
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMenus()
     {
@@ -92,7 +92,7 @@ class Manager
      * Dynamically call the default menu instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

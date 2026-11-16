@@ -327,8 +327,8 @@ class CharacterClassTest extends Basic
     /**
      * Helper method to extract class names from match results
      *
-     * @param   array  $results  Match results
-     * @return  array  Class names
+     * @param   array<mixed>  $results  Match results
+     * @return  array<mixed>  Class names
      */
     private function extractClassNames(array $results): array
     {

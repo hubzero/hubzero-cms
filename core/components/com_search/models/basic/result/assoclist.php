@@ -20,7 +20,7 @@ class AssocList extends Assoc implements Iterator, Countable
     /**
      * Description for 'rows'
      *
-     * @var array
+     * @var array<mixed>
      */
     private $rows = [];
 
@@ -106,7 +106,7 @@ class AssocList extends Assoc implements Iterator, Countable
     /**
      * Get items
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getItems()
     {

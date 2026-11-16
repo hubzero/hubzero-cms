@@ -20,7 +20,7 @@ class Behavior
     /**
      * Array containing information for loaded files
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $loaded = [];
 
@@ -485,7 +485,7 @@ class Behavior
      * Uses the core Tips class in MooTools.
      *
      * @param   string  $selector  The class selector for the tooltip.
-     * @param   array   $params    An array of options for the tooltip.
+     * @param   array<mixed>   $params    An array of options for the tooltip.
      *                             Options for the tooltip can be:
      *                             - maxTitleChars  integer   The maximum number of characters in the tooltip title
      *                                                        (defaults to 50).
@@ -568,7 +568,7 @@ class Behavior
      * Add unobtrusive javascript support for modal links.
      *
      * @param   string  $selector  The selector for which a modal behaviour is to be applied.
-     * @param   array   $params    An array of parameters for the modal behaviour.
+     * @param   array<mixed>   $params    An array of parameters for the modal behaviour.
      *                             Options for the modal behaviour can be:
      *                            - ajaxOptions
      *                            - size
@@ -722,8 +722,8 @@ class Behavior
      * Add unobtrusive javascript support for a collapsible tree.
      *
      * @param   string  $id      An index
-     * @param   array   $params  An array of options.
-     * @param   array   $root    The root node
+     * @param   array<mixed>   $params  An array of options.
+     * @param   array<mixed>   $root    The root node
      * @return  void
      */
     public static function tree($id, $params = [], $root = [])
@@ -887,7 +887,7 @@ class Behavior
     /**
      * Highlight some words via Javascript.
      *
-     * @param   array   $terms      Array of words that should be highlighted.
+     * @param   array<mixed>   $terms      Array of words that should be highlighted.
      * @param   string  $start      ID of the element that marks the begin of the section in which words
      *                              should be highlighted. Note this element will be removed from the DOM.
      * @param   string  $end        ID of the element that end this section.
@@ -970,7 +970,7 @@ class Behavior
     /**
      * Internal method to get a JavaScript object notation string from an array
      *
-     * @param   array   $array  The array to convert to JavaScript object notation
+     * @param   array<mixed>   $array  The array to convert to JavaScript object notation
      * @return  string  JavaScript object notation representation of the array
      */
     protected static function getJSObject($array = [])

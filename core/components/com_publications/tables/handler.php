@@ -53,8 +53,8 @@ class Handler extends Table
      * Get connections
      *
      * @param   integer|null  $vid  pub version id
-     * @param   array|int $elementid
-     * @return  array|null
+     * @param   array<mixed>|int $elementid
+     * @return  array<int, \stdClass>|null
      */
     public function getHandlers($vid = null, $elementid = 0)
     {

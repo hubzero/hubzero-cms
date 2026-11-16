@@ -59,70 +59,70 @@ class AlterTableBuilder
     /**
      * Columns to add
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $addColumns = [];
 
     /**
      * Columns to modify
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $modifyColumns = [];
 
     /**
      * Columns to drop
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $dropColumns = [];
 
     /**
      * Columns to rename
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $renameColumns = [];
 
     /**
      * Indexes to add
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $addIndexes = [];
 
     /**
      * Indexes to drop
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $dropIndexes = [];
 
     /**
      * Fulltext indexes to add (MySQL only)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $addFulltextIndexes = [];
 
     /**
      * Foreign keys to add
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $addForeignKeys = [];
 
     /**
      * Foreign keys to drop
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $dropForeignKeys = [];
 
     /**
      * Primary key to add
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     protected $addPrimaryKey = null;
 
@@ -203,7 +203,7 @@ class AlterTableBuilder
      *
      * @param  string $name      Column name
      * @param  string|null $type      Column type
-     * @param  array  $modifiers Column modifiers
+     * @param  array<mixed>  $modifiers Column modifiers
      * @return $this
      */
     public function addColumn(string $name, $type = null, array $modifiers = []): self
@@ -480,7 +480,7 @@ class AlterTableBuilder
      *
      * @param  string $name      Column name
      * @param  mixed  $type      Column type, or a closure describing the column
-     * @param  array  $modifiers Column modifiers
+     * @param  array<mixed>  $modifiers Column modifiers
      * @return $this
      */
     public function addColumnIfNotExists(string $name, $type = null, array $modifiers = []): self
@@ -873,7 +873,7 @@ class AlterTableBuilder
     /**
      * Set the current column to one of a set of values
      *
-     * @param  array $values The values it may take
+     * @param  array<mixed> $values The values it may take
      * @return $this
      */
     public function enum(array $values): self
@@ -884,7 +884,7 @@ class AlterTableBuilder
     /**
      * Set the current column to any number of a set of values
      *
-     * @param  array $values The values it may take
+     * @param  array<mixed> $values The values it may take
      * @return $this
      */
     public function set(array $values): self
@@ -1084,7 +1084,7 @@ class AlterTableBuilder
      *
      * @param  string $name      Column name
      * @param  string|\Closure|null $type  Column type, or a closure that describes the column
-     * @param  array  $modifiers Column modifiers
+     * @param  array<mixed>  $modifiers Column modifiers
      * @return $this
      */
     public function modifyColumn(string $name, $type = null, array $modifiers = []): self
@@ -1135,7 +1135,7 @@ class AlterTableBuilder
      *
      * @param  string $name      Column name
      * @param  mixed  $type      Column type, or a closure describing the column
-     * @param  array  $modifiers Column modifiers
+     * @param  array<mixed>  $modifiers Column modifiers
      * @return $this
      */
     public function modifyColumnIfExists(string $name, $type = null, array $modifiers = []): self
@@ -1267,7 +1267,7 @@ class AlterTableBuilder
      * Add an index
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function addIndex(string $name, $columns): self
@@ -1287,7 +1287,7 @@ class AlterTableBuilder
      * Add a unique index
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function addUniqueIndex(string $name, $columns): self
@@ -1307,7 +1307,7 @@ class AlterTableBuilder
      * Add a fulltext index (MySQL only, no-op on SQLite)
      *
      * @param  string       $name    Index name
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function addFulltextIndex(string $name, $columns): self
@@ -1323,7 +1323,7 @@ class AlterTableBuilder
     /**
      * Add a primary key
      *
-     * @param  string|array $columns Column name(s)
+     * @param  string|array<mixed> $columns Column name(s)
      * @return $this
      */
     public function addPrimaryKey($columns): self
@@ -1386,7 +1386,7 @@ class AlterTableBuilder
     /**
      * Whether every column an index would be over is there to index
      *
-     * @param  string|array $columns The columns, each a name or a name and a length
+     * @param  string|array<mixed> $columns The columns, each a name or a name and a length
      * @return bool
      */
     public function indexable($columns): bool
@@ -1610,7 +1610,7 @@ class AlterTableBuilder
     /**
      * Generate the SQL statements for this table alteration
      *
-     * @return array Array of SQL statements
+     * @return array<mixed> Array of SQL statements
      */
     public function toSql(): array
     {
@@ -1641,7 +1641,7 @@ class AlterTableBuilder
     /**
      * Get columns to drop
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getDropColumns(): array
     {
@@ -1651,7 +1651,7 @@ class AlterTableBuilder
     /**
      * Get columns to modify
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getModifyColumns(): array
     {
@@ -1661,7 +1661,7 @@ class AlterTableBuilder
     /**
      * Get columns to rename
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getRenameColumns(): array
     {
@@ -1671,7 +1671,7 @@ class AlterTableBuilder
     /**
      * Get columns to add
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAddColumns(): array
     {
@@ -1681,7 +1681,7 @@ class AlterTableBuilder
     /**
      * Get indexes to add
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAddIndexes(): array
     {
@@ -1691,7 +1691,7 @@ class AlterTableBuilder
     /**
      * Get indexes to drop
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getDropIndexes(): array
     {
@@ -1711,7 +1711,7 @@ class AlterTableBuilder
     /**
      * Get add primary key columns
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getAddPrimaryKey()
     {
@@ -1726,7 +1726,7 @@ class AlterTableBuilder
     /**
      * Get fulltext indexes to add
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAddFulltextIndexes(): array
     {
@@ -1736,7 +1736,7 @@ class AlterTableBuilder
     /**
      * Get foreign keys to add
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getAddForeignKeys(): array
     {
@@ -1746,7 +1746,7 @@ class AlterTableBuilder
     /**
      * Get foreign keys to drop
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getDropForeignKeys(): array
     {
@@ -1759,7 +1759,7 @@ class AlterTableBuilder
      * Intended for grammar-specific preprocessing when a dialect needs to
      * emit rename operations separately from the main ALTER TABLE statement.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function consumeRenameColumns(): array
     {
@@ -1771,7 +1771,7 @@ class AlterTableBuilder
     /**
      * Restore rename-column operations after temporary consumption.
      *
-     * @param  array  $operations
+     * @param  array<mixed>  $operations
      * @return void
      */
     public function restoreRenameColumns(array $operations): void
@@ -1782,7 +1782,7 @@ class AlterTableBuilder
     /**
      * Consume and clear pending fulltext-index additions.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function consumeAddFulltextIndexes(): array
     {
@@ -1794,7 +1794,7 @@ class AlterTableBuilder
     /**
      * Restore fulltext-index additions after temporary consumption.
      *
-     * @param  array  $operations
+     * @param  array<mixed>  $operations
      * @return void
      */
     public function restoreAddFulltextIndexes(array $operations): void
@@ -1805,7 +1805,7 @@ class AlterTableBuilder
     /**
      * Merge index additions into the current add-index operation set.
      *
-     * @param  array  $indexes
+     * @param  array<mixed>  $indexes
      * @return void
      */
     public function mergeAddIndexes(array $indexes): void

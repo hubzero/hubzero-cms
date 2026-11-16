@@ -26,7 +26,7 @@ class Criterion extends Relational
     /**
      * Execute a condition and return results
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getViolations()
     {

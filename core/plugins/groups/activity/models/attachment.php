@@ -30,7 +30,7 @@ class Attachment extends Obj
     /**
      * Dimensions for file (must be an image)
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $dimensions = null;
 
@@ -74,7 +74,7 @@ class Attachment extends Obj
     /**
      * Ensure no invalid characters
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticFilename($data)
@@ -100,7 +100,7 @@ class Attachment extends Obj
      * renaming the incoming file if the name
      * already exists
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function uniqueFilename($data)
@@ -274,7 +274,7 @@ class Attachment extends Obj
     /**
      * File width and height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function dimensions()
     {
@@ -316,7 +316,7 @@ class Attachment extends Obj
     /**
      * File height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray()
     {

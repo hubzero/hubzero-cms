@@ -31,7 +31,7 @@ class Permissions extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $managers = null;
 
@@ -45,7 +45,7 @@ class Permissions extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private $students = null;
 
@@ -208,7 +208,7 @@ class Permissions extends Obj
     /**
      * Get a list of managers
      *
-     * @param   array   $filters Filters to build query from
+     * @param   array<mixed>   $filters Filters to build query from
      * @param   boolean|mixed $clear   Force a new dataset?
      * @return  mixed
      */
@@ -327,7 +327,7 @@ class Permissions extends Obj
     /**
      * Get a list of students
      *
-     * @param   array   $filters Filters to build query from
+     * @param   array<mixed>   $filters Filters to build query from
      * @param   boolean|mixed $clear   Force a new dataset?
      * @return  mixed
      */

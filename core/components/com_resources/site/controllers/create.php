@@ -41,7 +41,7 @@ class Create extends SiteController
     /**
      * Container for steps
      *
-     * @var array
+     * @var array<mixed>
      */
     public $steps = ['Type', 'Compose', 'Attach', 'Authors', 'Tags', 'Review'];
 
@@ -436,10 +436,10 @@ class Create extends SiteController
      * Recursive method for loading hierarchical focus areas (tags)
      *
      * @param   string   $type
-     * @param   array|null    $labels
+     * @param   array<mixed>|null    $labels
      * @param   integer|null  $parent_id     Tag ID
      * @param   string|null   $parent_label  Tag
-     * @return  array
+     * @return  array<mixed>
      */
     private function loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
     {
@@ -496,7 +496,7 @@ class Create extends SiteController
     /**
      * Show form for adding tags to an entry
      *
-     * @param   array  $existing
+     * @param   array<mixed>  $existing
      *
      * @return  void
      */
@@ -623,8 +623,8 @@ class Create extends SiteController
     /**
      * Generate an array of just group aliases
      *
-     * @param   array  $groups  Array of group objects
-     * @return  array
+     * @param   array<mixed>  $groups  Array of group objects
+     * @return  array<int, mixed>
      */
     private function getUsersGroups($groups)
     {

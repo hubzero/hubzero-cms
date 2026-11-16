@@ -36,7 +36,7 @@ class Asset extends Base
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $dimensions = null;
 
@@ -178,7 +178,7 @@ class Asset extends Base
     /**
      * File width and height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function dimensions()
     {

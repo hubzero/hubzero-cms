@@ -77,7 +77,7 @@ class Archive extends Obj
     /**
      * Get a count of, model for, or list of entries
      *
-     * @param   array   $filters  Filters to apply to data retrieval
+     * @param   array<mixed>   $filters  Filters to apply to data retrieval
      * @return  object
      */
     public function entries($filters = [])
@@ -173,8 +173,8 @@ class Archive extends Obj
      * The magic call method is used to call object methods using the adapter.
      *
      * @param   string  $method     The name of the method called.
-     * @param   array   $arguments  The arguments of the method called.
-     * @return  array   An array of values returned by the methods called on the objects in the data set.
+     * @param   array<mixed>   $arguments  The arguments of the method called.
+     * @return  array<mixed>   An array of values returned by the methods called on the objects in the data set.
      * @since   1.3.1
      */
     public function __call($method, $arguments = [])

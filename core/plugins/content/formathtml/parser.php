@@ -25,7 +25,7 @@ class Parser
     /**
      * Configuration options
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $config = [
         'option'    => null,
@@ -40,7 +40,7 @@ class Parser
     /**
      * Data store
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [
         'input'  => null,
@@ -51,7 +51,7 @@ class Parser
     /**
      * Parsed content temp storage
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $tokens = [
         'pre'    => [],
@@ -62,14 +62,14 @@ class Parser
     /**
      * Configuration options
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $macroPaths = [];
 
     /**
      * List of used macros
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $macros = [];
 
@@ -156,7 +156,7 @@ class Parser
     /**
      * Get macro paths
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMacroPaths()
     {
@@ -292,7 +292,7 @@ class Parser
      * Store an item in the shelf
      * Returns a unique ID as a placeholder for content retrieval later on
      *
-     * @param   array    $matches
+     * @param   array<mixed>    $matches
      * @return  string  Unique ID
      */
     private function dataPush($matches)
@@ -395,7 +395,7 @@ class Parser
     /**
      * Attempt to load a specific macro class and return its contents
      *
-     * @param   array  $matches  Result form [[Macro()]] pattern matching
+     * @param   array<mixed>  $matches  Result form [[Macro()]] pattern matching
      * @return  string
      */
     private function getMacro($matches)

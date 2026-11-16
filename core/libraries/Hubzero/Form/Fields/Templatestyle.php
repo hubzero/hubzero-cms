@@ -30,7 +30,7 @@ class Templatestyle extends Groupedlist
      * Use the client attribute to specify a specific client.
      * Use the template attribute to specify a specific template
      *
-     * @return  array  The field option objects as a nested array in groups.
+     * @return  array<mixed>  The field option objects as a nested array in groups.
      */
     protected function getGroups()
     {

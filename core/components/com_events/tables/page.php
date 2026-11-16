@@ -94,7 +94,7 @@ class Page extends Table
      * Get all pages for an event
      *
      * @param   integer|null  $event_id  Event ID
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function loadPages($event_id = null)
     {
@@ -162,7 +162,7 @@ class Page extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param   array   $filters  Filters to construct query from
+     * @param   array<mixed>   $filters  Filters to construct query from
      * @return  string  SQL
      */
     public function buildQuery($filters)
@@ -194,7 +194,7 @@ class Page extends Table
     /**
      * Get a record count
      *
-     * @param   array   $filters  Filters to construct query from
+     * @param   array<mixed>   $filters  Filters to construct query from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -208,8 +208,8 @@ class Page extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {

@@ -37,7 +37,7 @@ class InstallSqlTest extends Basic
     /**
      * The install files, read
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $read = [];
 
@@ -91,7 +91,7 @@ class InstallSqlTest extends Basic
     /**
      * Both ways a hub can be installed
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function installs()
     {

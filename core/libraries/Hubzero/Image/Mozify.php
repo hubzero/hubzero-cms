@@ -67,7 +67,7 @@ class Mozify extends Obj
     /**
      * Image Mozifyier Constructor
      *
-     * @param   array  $config  Array of config values
+     * @param   array<mixed>  $config  Array of config values
      * @return  void
      */
     public function __construct($config = [])
@@ -370,7 +370,7 @@ class Mozify extends Obj
     /**
      * Cinvert an RGB value to hex
      *
-     * @param   array   $rgb
+     * @param   array<mixed>   $rgb
      * @return  string
      */
     private function rgb2hex(array $rgb)

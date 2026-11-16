@@ -24,7 +24,7 @@ class Dispatcher implements DispatcherInterface
      * An array of ListenersPriorityQueue indexed
      * by the event names.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $listeners = [];
 
@@ -32,14 +32,14 @@ class Dispatcher implements DispatcherInterface
      * An array of ListenersPriorityQueue indexed
      * by the event names.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $loaders = [];
 
     /**
      * Names of the listener groups that have already been loaded.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $loadedGroups = [];
 
@@ -81,7 +81,7 @@ class Dispatcher implements DispatcherInterface
     /**
      * Remove a listener laoder from this dispatcher.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getListenerLoaders()
     {
@@ -92,8 +92,8 @@ class Dispatcher implements DispatcherInterface
      * Add multiple listeners to this dispatcher. If a string is passed, it will loop
      * through the list of listener loaders.
      *
-     * @param   array|string  $listeners  The listener
-     * @param   array         $events     An associative array of event names as keys
+     * @param   array<mixed>|string  $listeners  The listener
+     * @param   array<mixed>         $events     An associative array of event names as keys
      *                                    and the corresponding listener priority as values.
      * @return  Dispatcher    This method is chainable.
      */
@@ -135,7 +135,7 @@ class Dispatcher implements DispatcherInterface
      * In the case of a closure, you must specify at least one event name.
      *
      * @param   object|Closure|mixed  $listener  The listener
-     * @param   array|string           $events    An associative array of event names as keys
+     * @param   array<mixed>|string           $events    An associative array of event names as keys
      *                                     and the corresponding listener priority as values.
      * @return  Dispatcher  This method is chainable.
      * @throws  InvalidArgumentException
@@ -198,7 +198,7 @@ class Dispatcher implements DispatcherInterface
      * Thsi is an alias for addListener()
      *
      * @param   mixed  $listener
-     * @param   array|string  $events  Event names as keys, or one event name
+     * @param   array<mixed>|string  $events  Event names as keys, or one event name
      * @throws  InvalidArgumentException
      */
     public function listen($listener, $events = [])
@@ -239,7 +239,7 @@ class Dispatcher implements DispatcherInterface
      * Get the listeners registered to the given event.
      *
      * @param   mixed  $event  The event object or name.
-     * @return  array  An array of registered listeners sorted according to their priorities.
+     * @return  array<mixed>  An array of registered listeners sorted according to their priorities.
      */
     public function getListeners($event = null)
     {
@@ -358,7 +358,7 @@ class Dispatcher implements DispatcherInterface
      * Trigger an event.
      *
      * @param   mixed  $event  The event object or name.
-     * @return  array  The event after being passed through all listeners.
+     * @return  array<mixed>  The event after being passed through all listeners.
      */
     public function trigger($event, $args = [])
     {

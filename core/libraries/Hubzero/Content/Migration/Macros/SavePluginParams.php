@@ -17,7 +17,7 @@ class SavePluginParams extends SaveParams
      * Save plugin params
      *
      * @param   string  $element  Plugin element
-     * @param   array|null   $params   Plugin params (if already known)
+     * @param   array<mixed>|null   $params   Plugin params (if already known)
      * @return  bool
      **/
     public function __invoke($element, $params = null)

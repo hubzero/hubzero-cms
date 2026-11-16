@@ -83,14 +83,14 @@ class Asset extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $dimensions = null;
 
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticOrdering($data)
@@ -111,7 +111,7 @@ class Asset extends Relational
     /**
      * Generates automatic type field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticType($data)
@@ -287,7 +287,7 @@ class Asset extends Relational
     /**
      * File width and height
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function dimensions()
     {

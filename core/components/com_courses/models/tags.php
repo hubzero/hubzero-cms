@@ -26,7 +26,7 @@ class Tags extends Cloud
     /**
      * Turn a string of tags to an array
      *
-     * @param   string|array $tag Tag string
+     * @param   string|array<mixed> $tag Tag string
      * @param   string $remove
      * @return  mixed
      */
@@ -57,7 +57,7 @@ class Tags extends Cloud
      * Render a tag cloud
      *
      * @param   string  $rtrn    Format to render
-     * @param   array   $filters Filters to apply
+     * @param   array<mixed>   $filters Filters to apply
      * @param   boolean $clear   Clear cached data?
      * @return  string
      */

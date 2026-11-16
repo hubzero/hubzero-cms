@@ -97,7 +97,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Full version string from server
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'percona_version': Version comment (deprecated, use driver_version)
@@ -155,7 +155,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
     /**
      * Get Percona XtraDB cluster status (if running in cluster mode)
      *
-     * @return  array|null  Cluster status or null if not in cluster mode
+     * @return  array<mixed>|null  Cluster status or null if not in cluster mode
      */
     public function getClusterStatus()
     {
@@ -211,7 +211,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      *
      * Requires the QUERY_RESPONSE_TIME plugin to be installed.
      *
-     * @return  array|null  Response time statistics or null if not available
+     * @return  array<mixed>|null  Response time statistics or null if not available
      */
     public function getQueryResponseTimeStats()
     {

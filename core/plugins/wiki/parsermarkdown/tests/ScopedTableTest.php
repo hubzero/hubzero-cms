@@ -31,7 +31,7 @@ class ScopedTableTest extends TestCase
     /**
      * Parsers under test
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function parsers(): array
     {

@@ -35,7 +35,7 @@ class Warnings extends AdminController
     /**
      * Load the data.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getItems()
     {

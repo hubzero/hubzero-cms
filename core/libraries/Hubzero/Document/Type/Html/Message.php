@@ -22,7 +22,7 @@ class Message extends Renderer
      * Renders the error stack and returns the results as a string
      *
      * @param   string  $name     Not used.
-     * @param   array   $params   Associative array of values
+     * @param   array<mixed>   $params   Associative array of values
      * @param   string|null  $content  Not used.
      * @return  string  The output of the script
      */

@@ -124,35 +124,35 @@ abstract class Factory
     /**
      * State modifications to apply
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $states = [];
 
     /**
      * Relationships to create with the model
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $has = [];
 
     /**
      * Parent model to associate with
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $for = [];
 
     /**
      * Callbacks to run after creating
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $afterCreating = [];
 
     /**
      * Callbacks to run after making
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $afterMaking = [];
 
@@ -166,7 +166,7 @@ abstract class Factory
     /**
      * Lorem ipsum words for text generation
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $loremWords = [
         'lorem',
@@ -252,7 +252,7 @@ abstract class Factory
      *
      * Override this method to provide default attribute values.
      *
-     * @return array
+     * @return array<mixed>
      */
     abstract public function definition();
 
@@ -289,7 +289,7 @@ abstract class Factory
      * to your factories. Each state is an array of attributes that will be
      * merged with the definition.
      *
-     * @param   array|callable  $state  Attributes to merge or callable returning attributes
+     * @param   array<mixed>|callable  $state  Attributes to merge or callable returning attributes
      * @return  $this
      */
     public function state($state)
@@ -361,7 +361,7 @@ abstract class Factory
     /**
      * Create model instance(s) without persisting to database
      *
-     * @param   array  $attributes  Additional attributes to set
+     * @param   array<mixed>  $attributes  Additional attributes to set
      * @return  Relational|Rows  Single model or collection
      */
     public function make(array $attributes = [])
@@ -386,7 +386,7 @@ abstract class Factory
     /**
      * Create and persist model instance(s) to database
      *
-     * @param   array  $attributes  Additional attributes to set
+     * @param   array<mixed>  $attributes  Additional attributes to set
      * @return  Relational|Rows  Single model or collection
      */
     public function create(array $attributes = [])
@@ -422,7 +422,7 @@ abstract class Factory
     /**
      * Create a single model instance
      *
-     * @param   array  $attributes  Additional attributes
+     * @param   array<mixed>  $attributes  Additional attributes
      * @return  Relational
      */
     protected function makeInstance(array $attributes = [])
@@ -515,7 +515,7 @@ abstract class Factory
     /**
      * Flush static factory runtime state.
      *
-     * @param   array  $options  Supported keys:
+     * @param   array<mixed>  $options  Supported keys:
      *                           - reset_sequence_to (int, default 1)
      * @return  void
      */
@@ -568,7 +568,7 @@ abstract class Factory
     /**
      * Get a random element from an array
      *
-     * @param   array  $array
+     * @param   array<mixed>  $array
      * @return  mixed
      */
     public static function randomElement(array $array)
@@ -626,7 +626,7 @@ abstract class Factory
      *
      * @param   int   $count
      * @param   bool  $asArray  Return as array or string
-     * @return  array|string
+     * @return  array<mixed>|string
      */
     public static function words(int $count = 3, bool $asArray = false)
     {
@@ -670,7 +670,7 @@ abstract class Factory
      *
      * @param   int   $count
      * @param   bool  $asArray
-     * @return  array|string
+     * @return  array<mixed>|string
      */
     public static function paragraphs(int $count = 3, bool $asArray = false)
     {

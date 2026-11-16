@@ -20,7 +20,7 @@ class Xml extends Base
     /**
      * Returns an array of allowed file extensions for this parser
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getSupportedExtensions()
     {
@@ -31,7 +31,7 @@ class Xml extends Base
      * Parses an XML file as an array
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      * @throws  ParseException  If there is an error parsing the XML file
      */
     public function parse($path)
@@ -85,7 +85,7 @@ class Xml extends Base
      * Converts an object into an XML formatted string.
      *
      * @param   object|string  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  XML formatted string.
      */
     public function objectToString($object, $options = [])
@@ -111,7 +111,7 @@ class Xml extends Base
      * Parse a XML formatted string and convert it into an object.
      *
      * @param   string|object  $data     XML formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  object  Data object.
      */
     public function stringToObject($data, $options = [])

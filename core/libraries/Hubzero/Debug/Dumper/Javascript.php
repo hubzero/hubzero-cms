@@ -26,7 +26,7 @@ class Javascript extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  string
      */
     public function render($messages = null)

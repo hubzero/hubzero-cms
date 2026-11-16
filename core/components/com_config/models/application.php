@@ -29,7 +29,7 @@ class Application extends Obj
     /**
      * Method to get a form object.
      *
-     * @param   array   $data  Data for the form.
+     * @param   array<mixed>   $data  Data for the form.
      * @return  object
      */
     public function getForm($data = [])
@@ -59,7 +59,7 @@ class Application extends Obj
      * Config. If configuration data has been saved in the session, that
      * data will be merged into the original data, overwriting it.
      *
-     * @return  array  An array containing all global config data.
+     * @return  array<mixed>  An array containing all global config data.
      */
     public function getData()
     {
@@ -103,7 +103,7 @@ class Application extends Obj
      * Method to validate the form data.
      *
      * @param   object  $form   The form to validate against.
-     * @param   array   $data   The data to validate.
+     * @param   array<mixed>   $data   The data to validate.
      * @param   string|null  $group  The name of the field group to validate.
      * @return  mixed   Array of filtered data if valid, false otherwise.
      */
@@ -135,8 +135,8 @@ class Application extends Obj
     /**
      * Method to save the configuration data.
      *
-     * @param   array $data  An array containing all global config data.
-     * @return  bool|array   True on success, false on failure.
+     * @param   array<mixed> $data  An array containing all global config data.
+     * @return  bool|array<mixed>   True on success, false on failure.
      */
     public function save($data)
     {
@@ -336,7 +336,7 @@ class Application extends Obj
     /**
      * Method to write the configuration to a file.
      *
-     * @param   array|\Hubzero\Config\Repository|\Hubzero\Config\Registry  $data  The global configuration:
+     * @param   array<mixed>|\Hubzero\Config\Repository|\Hubzero\Config\Registry  $data  The global configuration:
      *                                                                      groups of values
      * @return  bool    True on success, false on failure.
      * @since   2.5.4

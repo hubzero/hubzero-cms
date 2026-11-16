@@ -36,7 +36,7 @@ interface Cipher
     /**
      * Method to generate a new encryption key[/pair] object.
      *
-     * @param   array   $options  Key generation options.
+     * @param   array<mixed>   $options  Key generation options.
      * @return  object
      */
     public function generateKey(array $options = []);

@@ -25,7 +25,7 @@ class Separator extends Button
     /**
      * Get the HTML for a separator in the toolbar
      *
-     * @param   array  &$definition  Class name and custom width
+     * @param   array<mixed>  &$definition  Class name and custom width
      * @return  string HTML for the separator
      */
     public function render(&$definition)

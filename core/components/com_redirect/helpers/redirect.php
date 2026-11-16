@@ -53,7 +53,7 @@ class Redirect
     /**
      * Returns an array of standard published state filter options.
      *
-     * @return  array  The HTML code for the select tag
+     * @return  array<int, mixed>  The HTML code for the select tag
      */
     public static function publishedOptions()
     {

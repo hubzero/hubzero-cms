@@ -33,8 +33,8 @@ class Hubzero extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -47,8 +47,8 @@ class Hubzero extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      * @return  boolean
      */

@@ -90,7 +90,7 @@ class Asset extends Nested
     /**
      * Generates automatic parent_id field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticParentId($data)
@@ -112,7 +112,7 @@ class Asset extends Nested
     /**
      * Generates automatic rules field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRules($data)

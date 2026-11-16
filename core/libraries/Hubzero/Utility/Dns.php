@@ -28,7 +28,7 @@ class Dns
     /**
      * Get array of domains of FQDN
      *
-     * @return array
+     * @return array<int, string>
      */
     private static function getConfigArray()
     {
@@ -91,7 +91,7 @@ class Dns
     /**
      * Get subdomains *excluding* the hostname and TLD
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function subdomains()
     {

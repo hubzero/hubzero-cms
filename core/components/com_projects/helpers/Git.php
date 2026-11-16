@@ -104,7 +104,7 @@ class Git extends Obj
      * Make Git call
      *
      * @param   string  $call
-     * @return  array|false   to be parsed
+     * @return  array<mixed>|false   to be parsed
      */
     public function callGit($call = '')
     {
@@ -123,7 +123,7 @@ class Git extends Obj
      * Exec call
      *
      * @param   string  $call
-     * @return  array|false   to be parsed
+     * @return  array<mixed>|false   to be parsed
      */
     protected function exec($call = '')
     {
@@ -352,8 +352,8 @@ class Git extends Obj
     /**
      * Diff revisions
      *
-     * @param   array   $old
-     * @param   array   $new
+     * @param   array<mixed>   $old
+     * @param   array<mixed>   $new
      * @return  mixed
      */
     public function gitDiff($old = [], $new = [])
@@ -667,7 +667,7 @@ class Git extends Obj
      * Lists files in the repository
      *
      * @param   string  $subdir  Local directory path
-     * @return  array
+     * @return  array<mixed>
      */
     public function getFiles($subdir = '', $showAll = false)
     {
@@ -684,7 +684,7 @@ class Git extends Obj
      * Lists the directories in the repository
      *
      * @param   string  $subdir  Local directory path
-     * @return  array
+     * @return  array<mixed>
      */
     public function getDirectories($subdir = '', $recursive = false)
     {
@@ -701,7 +701,7 @@ class Git extends Obj
      * Lists the untracked files from the repository
      *
      * @param   string  $subdir  The local/relative directory path to explore
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function getUntrackedFiles($subdir = '')
     {
@@ -722,7 +722,7 @@ class Git extends Obj
      * Lists the untracked directories from the repository (which really isn't a thing in git)
      *
      * @param   string  $subdir  The local/relative directory path to explore
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function getUntrackedDirectories($subdir = '')
     {
@@ -742,7 +742,7 @@ class Git extends Obj
     /**
      * List deleted files
      *
-     * @return  array|false  to be parsed
+     * @return  array<mixed>|false  to be parsed
      */
     public function listDeleted()
     {
@@ -812,9 +812,9 @@ class Git extends Obj
      * @param   string  $localPath
      * @param   string  $synced
      * @param   string  $localDir
-     * @param   array   $localRenames
-     * @param   array   $connections
-     * @return  array
+     * @param   array<mixed>   $localRenames
+     * @param   array<mixed>   $connections
+     * @return  array<mixed>
      */
     public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
     {
@@ -1048,7 +1048,7 @@ class Git extends Obj
      * @param   string  $file
      * @param   string  $rev
      * @param   string  $since
-     * @return  array   array of hashes
+     * @return  array<int, mixed>   array of hashes
      */
     public function getLocalFileHistory($file = '', $rev = '', $since = '')
     {
@@ -1082,8 +1082,8 @@ class Git extends Obj
      * Get details on file history
      *
      * @param   string   $local_path   file path
-     * @param   array    &$versions    Versions collector array
-     * @param   array    &$timestamps  Collector array
+     * @param   array<mixed>    &$versions    Versions collector array
+     * @param   array<mixed>    &$timestamps  Collector array
      * @param   integer  $original     Source file?
      * @return  void
      */
@@ -1179,7 +1179,7 @@ class Git extends Obj
     /**
      * Filter ASCII
      *
-     * @param   array    $out
+     * @param   array<mixed>    $out
      * @param   boolean  $diff   Format as diff?
      * @param   boolean  $color  Color changes?
      * @param   int      $max    Max number of lines
@@ -1298,8 +1298,8 @@ class Git extends Obj
     /**
      * Parse status for each file revision
      *
-     * @param   array  $versions  Array of file version data
-     * @return  array
+     * @param   array<mixed>  $versions  Array of file version data
+     * @return  array<mixed>
      */
     public function getVersionStatus($versions = [])
     {

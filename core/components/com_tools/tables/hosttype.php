@@ -163,7 +163,7 @@ class Hosttype extends Table
     /**
      * Construct an SQL statement based on the array of filters passed
      *
-     * @param   array   $filters  Filters to build SQL from
+     * @param   array<mixed>   $filters  Filters to build SQL from
      * @return  string  SQL
      */
     private function buildQuery($filters = [])
@@ -189,7 +189,7 @@ class Hosttype extends Table
     /**
      * Get a record count
      *
-     * @param   array   $filters  Filters to build SQL from
+     * @param   array<mixed>   $filters  Filters to build SQL from
      * @return  string|null
      */
     public function getCount($filters = [])
@@ -205,8 +205,8 @@ class Hosttype extends Table
     /**
      * Get a list of records
      *
-     * @param   array  $filters  Filters to build SQL from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to build SQL from
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [])
     {

@@ -21,7 +21,7 @@ class Json extends Base
     /**
      * Returns an array of allowed file extensions for this parser
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getSupportedExtensions()
     {
@@ -32,7 +32,7 @@ class Json extends Base
      * Loads a JSON file as an array
      *
      * @param   string  $path
-     * @return  array
+     * @return  array<mixed>
      * @throws  ParseException  If there is an error parsing the JSON file
      */
     public function parse($path)
@@ -86,7 +86,7 @@ class Json extends Base
      * Converts an object into a JSON formatted string.
      *
      * @param   object|string  $object   Data source object.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  string  JSON formatted string.
      */
     public function objectToString($object, $options = [])

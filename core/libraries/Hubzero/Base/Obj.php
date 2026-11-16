@@ -78,7 +78,7 @@ class Obj
      * Returns an associative array of object properties.
      *
      * @param   boolean  $public  If true, returns only the public properties.
-     * @return  array
+     * @return  array<mixed>
      */
     public function getProperties($public = true)
     {

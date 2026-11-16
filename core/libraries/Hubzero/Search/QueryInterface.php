@@ -35,7 +35,7 @@ interface QueryInterface
     /**
      * fields - Sets the fields to be returned by the query.
      *
-     * @param  array $fields
+     * @param  array<mixed> $fields
      * @access public
      * @return void
      */
@@ -45,7 +45,7 @@ interface QueryInterface
      * addFilter - Adds a filter to the query
      *
      * @param mixed $name
-     * @param array $query
+     * @param array<mixed> $query
      * @access public
      * @return void
      */
@@ -55,7 +55,7 @@ interface QueryInterface
      * addFacet - Adds a facet to the query object.
      *
      * @param string $name - Used to identify facet when result is returned.
-     * @param array $query - The query array with a indexes of name, operator, and value
+     * @param array<mixed> $query - The query array with a indexes of name, operator, and value
      * @access public
      * @return void
      */

@@ -55,7 +55,7 @@ class Resources extends SiteController
     /**
      * Constructor
      *
-     * @param   array  $config  Optional configurations
+     * @param   array<mixed>  $config  Optional configurations
      * @return  void
      */
     public function __construct($config = [])
@@ -803,7 +803,7 @@ class Resources extends SiteController
     /**
      * Perform a some setup needed for presenter()
      *
-     * @return  array
+     * @return  array<string, mixed>
      */
     protected function preWatch()
     {

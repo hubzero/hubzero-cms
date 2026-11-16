@@ -33,7 +33,7 @@ class Reviews extends Plugin
      * @param   object   $model     Current publication
      * @param   string   $version   Version name
      * @param   boolean  $extended  Whether or not to show panel
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function &onPublicationAreas($model, $version = 'default', $extended = true)
     {
@@ -50,7 +50,7 @@ class Reviews extends Plugin
      * Rate item (AJAX)
      *
      * @param   string  $option
-     * @return  array
+     * @return  array<mixed>
      */
     public function onPublicationRateItem($option)
     {
@@ -76,7 +76,7 @@ class Reviews extends Plugin
      * @param   string   $rtrn      Data to be returned
      * @param   string   $version   Version name
      * @param   boolean  $extended  Whether or not to show panel
-     * @return  array
+     * @return  array<mixed>
      */
     public function onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {

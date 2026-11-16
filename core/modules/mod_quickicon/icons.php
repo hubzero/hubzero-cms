@@ -19,7 +19,7 @@ class Icons
     /**
      * Method to generate html code for a list of buttons
      *
-     * @param   array   $buttons  Array of buttons
+     * @param   array<mixed>   $buttons  Array of buttons
      * @return  string
      */
     public static function buttons($buttons)
@@ -34,7 +34,7 @@ class Icons
     /**
      * Method to generate html code for a list of buttons
      *
-     * @param   array|object   $button  Button properties
+     * @param   array<mixed>|object   $button  Button properties
      * @return  string
      */
     public static function button($button)

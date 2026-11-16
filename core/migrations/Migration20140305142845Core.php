@@ -140,7 +140,7 @@ class Migration20140305142845Core extends Base
     /**
      * Get list of tables and columns to update
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getMigrationTargets()
     {

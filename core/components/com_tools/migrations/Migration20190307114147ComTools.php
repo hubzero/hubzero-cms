@@ -18,7 +18,7 @@ class Migration20190307114147ComTools extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__recent_tools' => [

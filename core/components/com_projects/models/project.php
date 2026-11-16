@@ -119,7 +119,7 @@ class Project extends Model
     /**
      * Get params as an array
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getParsedParams()
     {
@@ -978,9 +978,9 @@ class Project extends Model
     /**
      * Get group property
      *
-     * @param   array|false  $groups
+     * @param   array<mixed>|false  $groups
      * @param   string       $get
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getGroupProperty($groups, $get = 'cn')
     {
@@ -1043,9 +1043,9 @@ class Project extends Model
     /**
      * Get project team
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $refresh
-     * @return  array    The owners' rows, empty when there are none
+     * @return  array<mixed>    The owners' rows, empty when there are none
      */
     public function team($filters = [], $refresh = false)
     {
@@ -1111,7 +1111,7 @@ class Project extends Model
      * Get a count of, model for, or list of entries
      *
      * @param   string   $rtrn     Data to return
-     * @param   array    $filters  Filters to apply to data retrieval
+     * @param   array<mixed>    $filters  Filters to apply to data retrieval
      * @param   boolean  $admin    Admin?
      * @return  mixed
      */

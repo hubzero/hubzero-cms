@@ -84,7 +84,7 @@ class Parser extends Obj
     /**
      * Initialize the parser
      *
-     * @param   array    $config
+     * @param   array<mixed>    $config
      * @param   boolean  $getnew
      * @return  void
      */
@@ -109,7 +109,7 @@ class Parser extends Obj
      * Build a standalone table of contents for already-parsed page HTML
      *
      * @param   string   $text    The parsed page HTML to extract headings from
-     * @param   array    $config  Params for the parser (scope, domain, url, etc.)
+     * @param   array<mixed>    $config  Params for the parser (scope, domain, url, etc.)
      * @param   integer  $depth   Limit the TOC to this many heading levels (0 = no limit)
      * @return  string   Rendered table-of-contents markup
      */
@@ -129,7 +129,7 @@ class Parser extends Obj
      * Last value of each type wins. Unrecognized tokens are ignored.
      *
      * @param   string|null  $args  Raw argument string (contents of the parentheses)
-     * @return  array   array('mode' => string, 'depth' => int)
+     * @return  array<string, mixed>   array('mode' => string, 'depth' => int)
      */
     public static function parseTocArgs($args)
     {
@@ -158,7 +158,7 @@ class Parser extends Obj
      * return its resolved mode/depth, or null when the page has no such macro.
      *
      * @param   string|null  $pagetext  Raw wiki markup
-     * @return  array|null  array('mode' => string, 'depth' => int) or null
+     * @return  array<mixed>|null  array('mode' => string, 'depth' => int) or null
      */
     public static function tocDirective($pagetext)
     {
@@ -182,7 +182,7 @@ class Parser extends Obj
      *
      * @param   string|null   $domain     Scope type (e.g. 'group')
      * @param   integer|null  $domain_id  Scope id (e.g. group gidNumber)
-     * @return  array    array('mode' => inline|sidebar|off, 'threshold' => int)
+     * @return  array<string, mixed>    array('mode' => inline|sidebar|off, 'threshold' => int)
      */
     public static function tocSettings($domain = null, $domain_id = null)
     {
@@ -200,10 +200,10 @@ class Parser extends Obj
      * Parse the text
      *
      * @param   string  $text       The content to be parsed
-     * @param   array   $config     Params for the parser
+     * @param   array<mixed>   $config     Params for the parser
      * @param   bool    $fullparse  Do a full parse or not
      * @param   bool    $getnew     Use the existing parser or get new
-     * @param   array   $params     Params for the plugin
+     * @param   array<mixed>   $params     Params for the plugin
      * @return  string|null
      */
     public function parse($text, $config, $fullparse = true, $getnew = false, $params = [])
@@ -235,8 +235,8 @@ class Parser extends Obj
     /**
      * Load the parser
      *
-     * @param   array  $config   Associative array of parser plugin config parameters
-     * @param   array  $pconfig  Associative array of parser config parameters
+     * @param   array<mixed>  $config   Associative array of parser plugin config parameters
+     * @param   array<mixed>  $pconfig  Associative array of parser config parameters
      * @param   bool|mixed   $getnew   Tells initialise() to create new parser or not
      * @return  void
      */

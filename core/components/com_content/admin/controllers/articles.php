@@ -298,7 +298,7 @@ class Articles extends AdminController
     /**
      * The authors the article list can be filtered by: everyone who has written one
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     private function authorOptions()
     {
@@ -319,7 +319,7 @@ class Articles extends AdminController
     /**
      * The category depths the article list can be limited to
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function levelOptions()
     {

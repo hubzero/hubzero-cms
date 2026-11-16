@@ -185,8 +185,8 @@ class Sections extends AdminController
     /**
      * Function to convert local timestamps to UTC timestamp
      *
-     * @param  array $dt
-     * @return array
+     * @param  array<mixed> $dt
+     * @return array<mixed>
      */
     private function datesToUTC($dt)
     {

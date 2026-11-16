@@ -25,7 +25,7 @@ class DispatchTest extends TestCase
      * The values the settings form offers for a field
      *
      * @param   string  $field
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function options(string $field): array
     {

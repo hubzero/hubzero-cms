@@ -33,7 +33,7 @@ class Migration20260708160000ComEvents extends Base
      * and that we deny at the component level to reproduce the old behavior.
      * Looked up by name so a hub with non-default group ids still matches.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $actions = [
         'core.create'     => 'Author',
@@ -84,7 +84,7 @@ class Migration20260708160000ComEvents extends Base
      * Persist decoded rules back to the com_events asset.
      *
      * @param   integer  $id
-     * @param   array    $rules
+     * @param   array<mixed>    $rules
      * @return  void
      */
     protected function saveRules($id, $rules)

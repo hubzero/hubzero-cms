@@ -195,7 +195,7 @@ class EntryTest extends Basic
     /**
      * A module written the way the core caching modules are
      *
-     * @param   array  $params
+     * @param   array<mixed>  $params
      * @return  Module&object{runs: int}  A module that counts how often it ran
      */
     private function cachingModule(array $params)

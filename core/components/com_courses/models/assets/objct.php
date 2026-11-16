@@ -23,7 +23,7 @@ class Objct extends Content
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'As a HTML embed object',
@@ -33,7 +33,7 @@ class Objct extends Content
     /**
      * Create method for this handler
      *
-     * @return array of assets created
+     * @return array<mixed> of assets created
      **/
     public function create()
     {

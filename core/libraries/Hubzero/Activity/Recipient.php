@@ -172,7 +172,7 @@ class Recipient extends Relational
     /**
      * Get all entries for a scope
      *
-     * @param   string|array   $scope
+     * @param   string|array<mixed>   $scope
      * @param   integer  $scope_id
      * @return  static
      */

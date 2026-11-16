@@ -195,7 +195,7 @@ class Session extends Table
      * @param   string|null  $username    Username to look for
      * @param   string|null  $appname     App to look for
      * @param   string|false|null  $authorized  Admin authorization?
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getRecords($username = null, $appname = null, $authorized = null)
     {
@@ -262,7 +262,7 @@ class Session extends Table
     /**
      * Build a query from filters
      *
-     * @param   array   $filters  Filters to determien hwo to build query
+     * @param   array<mixed>   $filters  Filters to determien hwo to build query
      * @return  string  SQL
      */
     public function buildQuery($filters)
@@ -326,7 +326,7 @@ class Session extends Table
     /**
      * Get a record count
      *
-     * @param   array   $filters  Filters to determien hwo to build query
+     * @param   array<mixed>   $filters  Filters to determien hwo to build query
      * @return  string|null
      */
     public function getAllCount($filters = [])
@@ -342,8 +342,8 @@ class Session extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to determien hwo to build query
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to determien hwo to build query
+     * @return  array<int, \stdClass>
      */
     public function getAllRecords($filters = [])
     {
@@ -354,7 +354,7 @@ class Session extends Table
     /**
      * Get a list of unique appnames
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getAppnames()
     {
@@ -369,7 +369,7 @@ class Session extends Table
     /**
      * Get a list of unique exechosts
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getExechosts()
     {
@@ -384,7 +384,7 @@ class Session extends Table
     /**
      * Get a list of unique usernames
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getUsernames()
     {

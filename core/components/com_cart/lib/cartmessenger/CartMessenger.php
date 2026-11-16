@@ -46,7 +46,7 @@ class CartMessenger
     /**
      * Post information
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $postback;
 
@@ -69,7 +69,7 @@ class CartMessenger
     /**
      * Set postback
      *
-     * @param   array  $postback
+     * @param   array<mixed>  $postback
      * @return  void
      */
     public function setPostback($postback)

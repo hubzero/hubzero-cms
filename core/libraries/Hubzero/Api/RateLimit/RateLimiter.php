@@ -27,7 +27,7 @@ class RateLimiter
     /**
      * Configuration
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $config;
 
@@ -35,7 +35,7 @@ class RateLimiter
      * New rate limiter instance
      *
      * @param   \Hubzero\Api\RateLimit\Storage\StorageInterface $storage  Storage object
-     * @param   array   $config   Options
+     * @param   array<mixed>   $config   Options
      * @return  void
      */
     public function __construct(StorageInterface $storage, $config = [])
@@ -58,7 +58,7 @@ class RateLimiter
      *
      * @param   int    $applicationId  Application identifier
      * @param   int    $userId         User identifier
-     * @return  array  Array of rate limit data
+     * @return  array<mixed>  Array of rate limit data
      */
     public function rateLimit($applicationId, $userId)
     {
@@ -104,7 +104,7 @@ class RateLimiter
      *
      * @param   int    $applicationId  Application identifier
      * @param   int    $userId         User identifier
-     * @return  array  Array of rate limit data
+     * @return  array<mixed>  Array of rate limit data
      */
     private function createRateLimitData($applicationId, $userId)
     {

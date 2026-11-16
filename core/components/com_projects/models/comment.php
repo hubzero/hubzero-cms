@@ -182,7 +182,7 @@ class Comment extends Model
      * Get a list or count of comments
      *
      * @param   string   $rtrn     Data format to return
-     * @param   array    $filters  Filters to apply to data fetch
+     * @param   array<mixed>    $filters  Filters to apply to data fetch
      * @param   boolean|mixed  $clear    Clear cached data?
      * @return  mixed
      */

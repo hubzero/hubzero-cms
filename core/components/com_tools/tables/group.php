@@ -78,7 +78,7 @@ class Group extends Table
      *
      * @param   string   $toolid    Tool ID
      * @param   string   $devgroup  Group name
-     * @param   array    $members   List of members
+     * @param   array<mixed>    $members   List of members
      * @param   boolean  $exist     Group exists?
      * @return  boolean  True if no errors
      */
@@ -125,9 +125,9 @@ class Group extends Table
      * Save member groups
      *
      * @param   string  $toolid
-     * @param   array   $newgroups
+     * @param   array<mixed>   $newgroups
      * @param   string  $editversion
-     * @param   array   $membergroups
+     * @param   array<mixed>   $membergroups
      * @return  boolean
      */
     public function saveMemberGroups($toolid, $newgroups, $editversion = 'dev', $membergroups = [])
@@ -172,7 +172,7 @@ class Group extends Table
      * @param   int|string  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message
-     * @return  array
+     * @return  array<mixed>
      */
     public function writeMemberGroups($new, $id, $database, &$err = '')
     {
@@ -212,7 +212,7 @@ class Group extends Table
      * @param   int|string  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message
-     * @return  array
+     * @return  array<mixed>
      */
     public function writeTeam($new, $id, $database, &$err = '')
     {

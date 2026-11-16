@@ -428,7 +428,7 @@ class Results extends SiteController
     /**
      * Get a list of active plugins
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function getAreas()
     {

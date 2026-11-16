@@ -76,7 +76,7 @@ class Connection extends Relational
     /**
      * Generates the filesystem adapter for the given provider
      *
-     * @param   array   $options  extra params to include with defaults
+     * @param   array<mixed>   $options  extra params to include with defaults
      * @return  object
      **/
     public function adapter($options = [])

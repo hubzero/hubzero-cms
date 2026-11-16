@@ -26,7 +26,7 @@ class Console extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  string  Nothing: the messages are written out directly
      */
     public function render($messages = null)
@@ -49,7 +49,7 @@ class Console extends AbstractRenderer
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array  $arr
+     * @param   array<mixed>  $arr
      * @return  string
      */
     protected function deflate($arr)

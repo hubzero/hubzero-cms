@@ -37,7 +37,7 @@ class Mysql implements
      * Get Access token data
      *
      * @param   string  $access_token  Access token
-     * @return  array|false   Access token data
+     * @return  array<mixed>|false   Access token data
      */
     public function getAccessToken($access_token)
     {
@@ -98,7 +98,7 @@ class Mysql implements
      * Get client details by client id
      *
      * @param   string|int  $clientId  Load client details via client id.
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getClientDetails($clientId)
     {
@@ -123,7 +123,7 @@ class Mysql implements
      * Get client details by id
      *
      * @param   int   $id  Client mysql row auto-incrementing id
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function getClientDetailsById($id)
     {
@@ -209,7 +209,7 @@ class Mysql implements
      * Get authorization code details by code
      *
      * @param   string  $code  Authorization code
-     * @return  array|false   Code details
+     * @return  array<mixed>|false   Code details
      */
     public function getAuthorizationCode($code)
     {
@@ -305,7 +305,7 @@ class Mysql implements
      * Get user information
      *
      * @param   string  $username  User's username
-     * @return  array|false   User info
+     * @return  array<mixed>|false   User info
      */
     public function getUserDetails($username)
     {
@@ -348,7 +348,7 @@ class Mysql implements
      * Load refresh token details by token
      *
      * @param   string  $refresh_token  Refresh token
-     * @return  array|false   Refresh token details
+     * @return  array<mixed>|false   Refresh token details
      */
     public function getRefreshToken($refresh_token)
     {
@@ -487,7 +487,7 @@ class Mysql implements
     /**
      * Get tool data from request
      *
-     * @return  array  Result of test
+     * @return  array<mixed>  Result of test
      */
     public function getToolSessionDataFromRequest(RequestInterface $request)
     {
@@ -557,7 +557,7 @@ class Mysql implements
      *
      * In separate function so we can call it multiple times.
      *
-     * @return  array|false  Client detials
+     * @return  array<mixed>|false  Client detials
      */
     private function findInternalClient()
     {

@@ -18,7 +18,7 @@ class Event
     /**
      * The registered events
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private static $events = [];
 

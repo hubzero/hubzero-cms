@@ -19,7 +19,7 @@ class ClientManagerTest extends Basic
     /**
      * Sample data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [
         'one'   => 'for the money',

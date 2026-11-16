@@ -32,7 +32,7 @@ class Handler extends Plugin
      * Marks action items as completed
      *
      * @param   string   $type       Item type
-     * @param   array    $uids       User IDs
+     * @param   array<mixed>    $uids       User IDs
      * @param   string   $component  Item component
      * @param   integer|null  $element
      * @return  boolean  True if no errors
@@ -79,9 +79,9 @@ class Handler extends Plugin
      *
      * @param   string   $type               Message type (maps to #__xmessage_component table)
      * @param   string   $subject            Message subject
-     * @param   string|array   $message            Message to send
-     * @param   array    $from               Message 'from' data (e.g., name, address)
-     * @param   array    $to         List of user IDs
+     * @param   string|array<mixed>   $message            Message to send
+     * @param   array<mixed>    $from               Message 'from' data (e.g., name, address)
+     * @param   array<mixed>    $to         List of user IDs
      * @param   string   $component          Component name
      * @param   integer|null  $element            ID of object that needs an action item
      * @param   string   $description        Action item description

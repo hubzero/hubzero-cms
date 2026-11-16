@@ -228,7 +228,7 @@ class Router extends Base
      * them and setting the original key to what the GroupsParseRoute method generates. Then
      * the supergroup system plugin rewrites them back after we made it through to the group component.
      *
-     * @param   array  $vars  Query values
+     * @param   array<mixed>  $vars  Query values
      * @return  void
      */
     public function handleGroupComponents($vars)

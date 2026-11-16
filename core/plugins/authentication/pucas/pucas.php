@@ -73,7 +73,7 @@ class Pucas extends Plugin
     /**
      * Check login status of current user with regards to Purdue CAS
      *
-     * @return  array  $status
+     * @return  array<string, mixed>  $status
      */
     public function status()
     {
@@ -92,7 +92,7 @@ class Pucas extends Plugin
      * Actions to perform when logging in a user session
      *
      * @param   object  &$credentials
-     * @param   array   &$options
+     * @param   array<mixed>   &$options
      * @return  void
      */
     public function login(&$credentials, &$options)
@@ -135,8 +135,8 @@ class Pucas extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -149,8 +149,8 @@ class Pucas extends Plugin
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      *
      * @return  void
@@ -286,7 +286,7 @@ class Pucas extends Plugin
     /**
      * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function link($options = [])

@@ -24,9 +24,9 @@ class Utilities
      * @param   string   $email              Address to send to
      * @param   string   $subject            Message subject
      * @param   mixed    $contents           Message to send
-     * @param   array    $from               Who the message is from
-     * @param   array|string $replyto            Reply to information
-     * @param   array|null    $additionalHeaders  More headers to apply
+     * @param   array<mixed>    $from               Who the message is from
+     * @param   array<mixed>|string $replyto            Reply to information
+     * @param   array<mixed>|null    $additionalHeaders  More headers to apply
      * @return  boolean
      */
     public static function sendEmail($email, $subject, $contents, $from, $replyto = '', $additionalHeaders = null)
@@ -126,7 +126,7 @@ class Utilities
      * Generate an array of severities
      *
      * @param   string|null  $severities  Comma-separated list
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getSeverities($severities = null)
     {
@@ -144,7 +144,7 @@ class Utilities
     /**
      * Retrieve and parse incoming filters
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getFilters()
     {
@@ -254,7 +254,7 @@ class Utilities
      * Calculate the average life of a ticket
      *
      * @param   array|null|mixed  $data  A list of ticket's opened and closed dates
-     * @return  array  [days, hours, minutes]
+     * @return  array<mixed>  [days, hours, minutes]
      */
     public static function calculateAverageLife($data = null)
     {

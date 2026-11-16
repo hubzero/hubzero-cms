@@ -60,7 +60,7 @@ class Link extends Relational
     /**
      * Generates automatic owned by field value
      *
-     * @param   array  $data  The data being saved
+     * @param   array<mixed>  $data  The data being saved
      * @return  string
      */
     public function automaticTimestamp($data)
@@ -110,7 +110,7 @@ class Link extends Relational
     /**
      * Delete all entries for a specific page
      *
-     * @param   array    $links
+     * @param   array<mixed>    $links
      * @return  boolean  True on success
      */
     public function addLinks($links = [])
@@ -147,7 +147,7 @@ class Link extends Relational
      * Update entries
      *
      * @param   integer  $page_id  Page ID
-     * @param   array    $data
+     * @param   array<mixed>    $data
      * @return  boolean  True on success
      */
     public function updateLinks($page_id, $data = [])

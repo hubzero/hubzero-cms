@@ -103,7 +103,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Full version string from server
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'mariadb_version': Alias for driver_version (deprecated, use driver_version)
@@ -176,7 +176,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      *
      * MariaDB Galera Cluster provides synchronous multi-master replication.
      *
-     * @return  array|null  Cluster status or null if not in cluster mode
+     * @return  array<mixed>|null  Cluster status or null if not in cluster mode
      */
     public function getGaleraStatus()
     {
@@ -246,7 +246,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      * in INFORMATION_SCHEMA.TABLES. Falls back to emulated
      * sequences from parent Mysql for older versions.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getSequences(): array
     {
@@ -274,7 +274,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      * @param   string  $name       Sequence name
      * @param   int     $start      Starting value (default: 1)
      * @param   int     $increment  Increment value (default: 1)
-     * @param   array   $options    Additional options:
+     * @param   array<mixed>   $options    Additional options:
      *                              - minValue: Minimum value (default: 1)
      *                              - maxValue: Maximum value (default: 9223372036854775806)
      *                              - cycle: Whether to cycle when max is reached (default: false)
@@ -553,7 +553,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      * Get all CHECK constraints for a table
      *
      * @param   string  $table  Table name
-     * @return  array  Array of constraint objects with 'name' and 'expression' properties
+     * @return  array<mixed>  Array of constraint objects with 'name' and 'expression' properties
      */
     public function getCheckConstraints(string $table): array
     {
@@ -676,7 +676,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
      *
      * @param   string  $jsonColumn  Column containing JSON data
      * @param   string  $path        JSON path expression
-     * @param   array   $columns     Column definitions for output
+     * @param   array<mixed>   $columns     Column definitions for output
      * @return  string  SQL for JSON_TABLE
      */
     public function sqlJsonTable(string $jsonColumn, string $path, array $columns): string
@@ -696,7 +696,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
     /**
      * Get list of installed plugins
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getPlugins(): array
     {

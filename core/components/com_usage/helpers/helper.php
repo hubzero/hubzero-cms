@@ -255,8 +255,8 @@ class Helper
     /**
      * Create New Array, Dropping All Duplicates and Reindexing All Elements
      *
-     * @param      array $somearray
-     * @return     array
+     * @param      array<mixed> $somearray
+     * @return     array<mixed>
      */
     public static function arrayUniqueReindex($somearray)
     {
@@ -410,7 +410,7 @@ class Helper
     /**
      * Retrieve value from an array for specified date
      *
-     * @param   array   $valarray
+     * @param   array<mixed>   $valarray
      * @param   string  $seldate
      * @param   string  $valkey
      * @return  integer
@@ -600,9 +600,9 @@ class Helper
      *
      * Long description (if any) ...
      *
-     * @param   array    &$arr  Parameter description (if any) ...
+     * @param   array<mixed>    &$arr  Parameter description (if any) ...
      * @param   mixed  $date  Parameter description (if any) ...
-     * @return  array    Return description (if any) ...
+     * @return  array<mixed>    Return description (if any) ...
      */
     public static function seldateValuedescsortkey(&$arr, $date)
     {
@@ -710,7 +710,7 @@ class Helper
      * @param   object   $db             Database
      * @param   string   $enddate        Parameter description (if any) ...
      * @param   int|string  $thisyear       Current year
-     * @param   array    $monthsReverse  List of months (Dec -> Jan)
+     * @param   array<mixed>    $monthsReverse  List of months (Dec -> Jan)
      * @param   string   $func           Function to perform
      * @return  string   HTML
      */

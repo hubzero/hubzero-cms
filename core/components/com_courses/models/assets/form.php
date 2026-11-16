@@ -22,7 +22,7 @@ class Form extends Content
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => 'Create a quiz/exam',
@@ -32,7 +32,7 @@ class Form extends Content
     /**
      * Create method for this handler
      *
-     * @return array - javascript to be run
+     * @return array<mixed> - javascript to be run
      **/
     public function create()
     {
@@ -163,7 +163,7 @@ class Form extends Content
      * Preview method for this handler
      *
      * @param  object $asset - asset
-     * @return array  (string) type, (string) text
+     * @return array<mixed>  (string) type, (string) text
      **/
     public function preview($asset)
     {

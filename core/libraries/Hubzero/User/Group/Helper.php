@@ -37,7 +37,7 @@ class Helper
      * Get popular groups
      *
      * @param   integer  $limit
-     * @return  array|null
+     * @return  array<int, \stdClass>|null
      */
     public static function getPopularGroups($limit = 0)
     {
@@ -72,7 +72,7 @@ class Helper
      * Gets featured groups
      *
      * @param   string  $groupList
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public static function getFeaturedGroups($groupList)
     {
@@ -109,7 +109,7 @@ class Helper
      * Gets groups matching tag string
      *
      * @param   string  $usertags
-     * @param   string|array  $usergroups
+     * @param   string|array<mixed>  $usergroups
      * @return  string
      */
     public static function getGroupsMatchingTagString($usertags, $usergroups)
@@ -238,7 +238,7 @@ class Helper
      *
      * @param   object  $group
      * @param   string  $role
-     * @return  array|null|false
+     * @return  array<mixed>|null|false
      */
     public static function searchRoles($group, $role = '')
     {
@@ -351,7 +351,7 @@ class Helper
      *
      * Always returns the same instance whenever this method is called
      *
-     * @param   array   $config  Array of database options
+     * @param   array<mixed>   $config  Array of database options
      * @param   string  $cname
      * @return  object  Database Object
      */

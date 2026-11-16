@@ -70,7 +70,7 @@ class Option extends Relational
     /**
      * Generates automatic value field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticValue($data)
@@ -85,7 +85,7 @@ class Option extends Relational
     /**
      * Generates automatic checked field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  int
      */
     public function automaticChecked($data)
@@ -100,7 +100,7 @@ class Option extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)

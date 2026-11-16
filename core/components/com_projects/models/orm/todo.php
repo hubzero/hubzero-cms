@@ -89,7 +89,7 @@ class Todo extends Relational
     /**
      * Generates automatic content field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticContent($data)
@@ -111,7 +111,7 @@ class Todo extends Relational
     /**
      * Generates automatic priority field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPriority($data)

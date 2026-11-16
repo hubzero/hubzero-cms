@@ -78,7 +78,7 @@ class Objct extends Relational
     /**
      * Generates automatic taggedon field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticTaggedon($data)
@@ -92,7 +92,7 @@ class Objct extends Relational
     /**
      * Generates automatic taggerid field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  integer
      */
     public function automaticTaggerid($data)
@@ -222,7 +222,7 @@ class Objct extends Relational
     /**
      * Checks if a particular objct has a tag
      *
-     * @param   array  $tagAssocData  ID of tag to check
+     * @param   array<mixed>  $tagAssocData  ID of tag to check
      * @return  boolean  True if Objct has tag
      */
     public static function associationExists($tagAssocData)

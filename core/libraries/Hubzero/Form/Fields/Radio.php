@@ -207,7 +207,7 @@ class Radio extends Field
     /**
      * Method to get the field options for radio buttons.
      *
-     * @return  array  The field option objects.
+     * @return  array<int, mixed>  The field option objects.
      */
     protected function getOptions()
     {

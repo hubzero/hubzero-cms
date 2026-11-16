@@ -53,7 +53,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * stores EXISTS/NOT EXISTS predicates that were removed from JOIN conditions
      * so they can be added to the WHERE clause instead.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $deferredExistsPredicates = [];
 
@@ -65,7 +65,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * during SQL building, so we need to track which EXISTS predicates we've
      * already injected derived tables for.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $processedExistsPredicates = [];
 
@@ -107,7 +107,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Mark predicate as deferred to WHERE if not already processed.
      *
      * @param   string  $predicateHash
-     * @param   array   $condition
+     * @param   array<mixed>   $condition
      * @return  void
      */
     protected function deferExistsPredicateIfUnprocessed($predicateHash, array $condition)
@@ -121,7 +121,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Extract subquery SQL from an EXISTS/NOT EXISTS condition payload.
      *
-     * @param   array  $condition
+     * @param   array<mixed>  $condition
      * @return  string|null
      */
     protected function extractConditionSubquery(array $condition)
@@ -132,7 +132,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Process one EXISTS/NOT EXISTS condition from a JOIN clause.
      *
-     * @param   array  $condition
+     * @param   array<mixed>  $condition
      * @param   bool   $injectOnCorrelation  True to inject derived JOIN when correlated
      * @return  bool   True when condition was EXISTS/NOT EXISTS and handled
      */
@@ -328,7 +328,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Build CONCAT expression.
      *
-     * @param   array  $parts
+     * @param   array<mixed>  $parts
      * @return  string
      */
     public function buildConcat(array $parts)
@@ -513,7 +513,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * arguments like "col1, CONCAT(a, ',', b), col2"
      *
      * @param   string  $str  The string to split
-     * @return  array   Array of parts
+     * @return  array<int, mixed>   Array of parts
      */
     protected function splitOnCommasOutsideParens($str)
     {
@@ -580,7 +580,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * buildJoin() pre-processes JOIN predicates before parent JOIN compilation,
      * and this method ensures EXISTS predicates are not emitted into ON clause SQL.
      *
-     * @param   array  $conditions
+     * @param   array<mixed>  $conditions
      * @return  string
      */
     protected function buildJoinConditions(array $conditions): string
@@ -771,9 +771,9 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes column metadata output.
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @param   bool   $typeOnly
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -803,7 +803,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Handles backtick-quoted identifiers from toSql() output.
      *
      * @param   string  $subquerySql  The subquery SQL string
-     * @return  array|null  Correlation info or null if not correlated
+     * @return  array<mixed>|null  Correlation info or null if not correlated
      */
     protected function parseCorrelation($subquerySql)
     {
@@ -916,7 +916,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * The derived table SELECT DISTINCT ensures we don't multiply rows in the
      * main query result.
      *
-     * @param   array  $correlation  Correlation info from parseCorrelation()
+     * @param   array<mixed>  $correlation  Correlation info from parseCorrelation()
      * @param   bool   $notExists    True for NOT EXISTS (use LEFT JOIN + IS NULL)
      * @return  void
      */
@@ -1058,7 +1058,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Build SQL snippets for deferred EXISTS/NOT EXISTS predicates.
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function buildDeferredExistsClauses(): array
     {

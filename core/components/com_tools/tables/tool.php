@@ -71,7 +71,7 @@ class Tool extends Table
     /**
      * Build a SQL statement from passed filters
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  string
      */
@@ -125,7 +125,7 @@ class Tool extends Table
     /**
      * Get a count of tools
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
      * @return  string|null
      */
@@ -140,7 +140,7 @@ class Tool extends Table
     /**
      * Get my tools
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getMyTools()
     {
@@ -161,9 +161,9 @@ class Tool extends Table
     /**
      * Get a list of tools
      *
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   boolean  $admin
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getTools($filters = [], $admin = false)
     {
@@ -181,7 +181,7 @@ class Tool extends Table
     /**
      * Get all tools
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getToolsOldScheme()
     {
@@ -357,7 +357,7 @@ class Tool extends Table
      *
      * @param   integer  $toolid
      * @param   string   $toolname
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getToolInfo($toolid, $toolname = '')
     {
@@ -407,7 +407,7 @@ class Tool extends Table
      * Get tool developers
      *
      * @param   int|string  $toolid
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public static function getToolDevelopers($toolid)
     {
@@ -426,8 +426,8 @@ class Tool extends Table
      * Get tool groups
      *
      * @param   integer  $toolid
-     * @param   array    $groups
-     * @return  array
+     * @param   array<mixed>    $groups
+     * @return  array<int, \stdClass>
      */
     public function getToolGroups($toolid, $groups = [])
     {
@@ -445,7 +445,7 @@ class Tool extends Table
      *
      * @param   int|string  $toolid
      * @param   string   $option
-     * @param   array    &$status
+     * @param   array<mixed>    &$status
      * @param   string   $version
      * @return  void
      */
@@ -468,13 +468,13 @@ class Tool extends Table
     /**
      * Build tool status
      *
-     * @param   array   $toolinfo
-     * @param   array   $developers
-     * @param   array   $authors
-     * @param   array   $version
-     * @param   array   &$status
+     * @param   array<mixed>   $toolinfo
+     * @param   array<mixed>   $developers
+     * @param   array<mixed>   $authors
+     * @param   array<mixed>   $version
+     * @param   array<mixed>   &$status
      * @param   string  $option
-     * @return  array
+     * @return  array<mixed>
      */
     public function buildToolStatus($toolinfo, $developers, $authors, $version, &$status, $option)
     {

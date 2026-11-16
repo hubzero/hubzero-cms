@@ -58,7 +58,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      *
      * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @param   string  $name    Table name
-     * @param   array   $extraColumns  Extra columns to add: ['colname' => 'type', ...]
+     * @param   array<mixed>   $extraColumns  Extra columns to add: ['colname' => 'type', ...]
      * @return  void
      */
     protected function createTestTable(BaseSqlDriver $driver, string $name, array $extraColumns = []): void

@@ -27,14 +27,14 @@ class Country extends Select
     /**
      * The form field type.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $countries = null;
 
     /**
      * Method to get the field options.
      *
-     * @return  array  The field option objects.
+     * @return  array<int, mixed>  The field option objects.
      */
     protected function getOptions()
     {

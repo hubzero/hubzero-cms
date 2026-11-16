@@ -276,7 +276,7 @@ class Ip
      * without the brackets of a URL, resolves to itself.
      *
      * @param   string  $host
-     * @return  array   Normalized addresses; empty when it does not resolve
+     * @return  array<mixed>   Normalized addresses; empty when it does not resolve
      */
     public static function resolve($host)
     {

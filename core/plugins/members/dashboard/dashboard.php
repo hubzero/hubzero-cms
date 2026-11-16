@@ -38,7 +38,7 @@ class Dashboard extends Plugin
     /**
      * List of actions
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $actionMap = [];
 
@@ -46,7 +46,7 @@ class Dashboard extends Plugin
      * Constructor
      *
      * @param   object  $subject  Event dispatcher
-     * @param   array   $config   Optional configurations to be used
+     * @param   array<mixed>   $config   Optional configurations to be used
      * @return  void
      */
     public function __construct($subject, $config)
@@ -70,7 +70,7 @@ class Dashboard extends Plugin
      *
      * @param   object  $user    User
      * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @return  array<string, mixed>   Plugin name
      */
     public function onMembersAreas($user, $member)
     {
@@ -94,8 +94,8 @@ class Dashboard extends Plugin
      * @param   object  $user    User
      * @param   object  $member  Profile
      * @param   string  $option  Component name
-     * @param   string|array  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param   string|array<mixed>  $areas   Plugins to return data
+     * @return  array<mixed>   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -634,7 +634,7 @@ class Dashboard extends Plugin
      * Load Modules for position
      *
      * @param   string  $position  Position to look for
-     * @return  array   Array of modules
+     * @return  array<mixed>   Array of modules
      */
     private function loadModules($position = '')
     {
@@ -657,7 +657,7 @@ class Dashboard extends Plugin
      * Will load defaults if not intentionally set to empty & no preferences we found
      *
      * @param   integer|null  $uidNumber  Profile ID number
-     * @return  array    Array of preferences
+     * @return  array<mixed>    Array of preferences
      */
     private function loadPreferences($uidNumber = null)
     {

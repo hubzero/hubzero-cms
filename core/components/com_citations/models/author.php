@@ -56,7 +56,7 @@ class Author extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -105,7 +105,7 @@ class Author extends Relational
     /**
      * Filter by geolocation
      *
-     * @param   array    $geoCodes
+     * @param   array<mixed>    $geoCodes
      * @param   integer  $totalOptions
      * @return  object
      **/
@@ -137,7 +137,7 @@ class Author extends Relational
     /**
      * Filter by affiliation
      *
-     * @param   array    $types
+     * @param   array<mixed>    $types
      * @param   integer  $totalOptions
      * @return  object
      **/

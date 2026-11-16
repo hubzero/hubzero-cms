@@ -33,7 +33,7 @@ class Notices extends Module
      * @param   int|string  $day     Day
      * @param   int|string  $hour    Hour
      * @param   integer  $minute  Minute
-     * @return  array
+     * @return  array<mixed>
      */
     private function countdown($year, $month, $day, $hour, $minute)
     {
@@ -83,7 +83,7 @@ class Notices extends Module
      * Break a timestamp into its parts
      *
      * @param   integer  $stime  Timestamp
-     * @return  array
+     * @return  array<string, mixed>
      */
     private function convert($stime)
     {
@@ -100,7 +100,7 @@ class Notices extends Module
     /**
      * Show the amount of time left
      *
-     * @param   array   $stime  Timestamp
+     * @param   array<mixed>   $stime  Timestamp
      * @return  string
      */
     private function timeto($stime)

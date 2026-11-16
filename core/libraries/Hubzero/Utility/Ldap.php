@@ -17,7 +17,7 @@ class Ldap
     /**
      * Error messages
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $errors = [
         'errors'   => true,
@@ -28,7 +28,7 @@ class Ldap
     /**
      * Success messages
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private static $success = [
         'success'   => true,
@@ -41,7 +41,7 @@ class Ldap
     /**
      * Get the list of errors
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getErrors()
     {
@@ -51,7 +51,7 @@ class Ldap
     /**
      * Get the list of success
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function getSuccess()
     {
@@ -619,7 +619,7 @@ class Ldap
      * Add members to a group
      *
      * @param   mixed   $group
-     * @param   array   $members
+     * @param   array<mixed>   $members
      * @return  void
      */
     public static function addGroupMemberships($group, $members)
@@ -631,7 +631,7 @@ class Ldap
      * Remove members from a group
      *
      * @param   mixed   $group
-     * @param   array   $members
+     * @param   array<mixed>   $members
      * @return  void
      */
     public static function removeGroupMemberships($group, $members)
@@ -756,7 +756,7 @@ class Ldap
     /**
      * Sync all groups
      *
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public static function syncAllGroups()
     {
@@ -793,7 +793,7 @@ class Ldap
     /**
      * Sync all users
      *
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public static function syncAllUsers()
     {
@@ -830,7 +830,7 @@ class Ldap
     /**
      * Remove all groups
      *
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public static function deleteAllGroups()
     {
@@ -957,7 +957,7 @@ class Ldap
     /**
      * Remove all users
      *
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public static function deleteAllUsers()
     {

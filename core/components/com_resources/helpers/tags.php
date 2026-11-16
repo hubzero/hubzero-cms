@@ -30,7 +30,7 @@ class Tags extends Cloud
      *
      * @param   mixed    $tags  Array or Comma-separated string of tags
      * @param   integer  $keep  Use normalized tag as array key
-     * @return  array
+     * @return  array<mixed>
      */
     public function parse($tags, $keep = 0)
     {
@@ -43,7 +43,7 @@ class Tags extends Cloud
      * @param   integer  $id    Resource ID
      * @param   integer  $type  Resource type (optional)
      * @param   string   $tag
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTagsWithObjects($id = 0, $type = 0, $tag = '')
     {
@@ -133,8 +133,8 @@ class Tags extends Cloud
     /**
      * Push group alias into array for easier searching
      *
-     * @param      array $groups User's gorups
-     * @return     array
+     * @param      array<mixed> $groups User's gorups
+     * @return     array<int, mixed>
      */
     public static function getUsersGroups($groups)
     {
@@ -159,8 +159,8 @@ class Tags extends Cloud
      * @param   integer  $type      Resource type
      * @param   string   $sortby    Sort data by
      * @param   string   $tag2      Secondary tag
-     * @param   array    $filterby  Extra, optional filters
-     * @return  array
+     * @param   array<mixed>    $filterby  Extra, optional filters
+     * @return  array<int, \stdClass>
      */
     public function getObjectsOnTag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = [])
     {
@@ -370,7 +370,7 @@ class Tags extends Cloud
      *
      * @param   string  $tag   Tag to get data for
      * @param   string  $rtrn  Field to return
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getTagUsage($tag, $rtrn = 'id')
     {
@@ -450,7 +450,7 @@ class Tags extends Cloud
      *
      * @param   string  $tag_string  Comma-separated string of tags
      * @param   integer  $keep        Use normalized tag as array key
-     * @return  array
+     * @return  array<mixed>
      */
     public function parseTags($tag_string, $keep = 0)
     {

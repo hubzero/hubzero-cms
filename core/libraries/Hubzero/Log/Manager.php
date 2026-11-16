@@ -19,21 +19,21 @@ class Manager
     /**
      * The registered log configs
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $setup = [];
 
     /**
      * The array of created "loggers".
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $loggers = [];
 
     /**
      * The default config values
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $defaults = [
         'path'        => '',
@@ -142,7 +142,7 @@ class Manager
      * Register a custom logger.
      *
      * @param   string  $name
-     * @param   array   $settings
+     * @param   array<mixed>   $settings
      * @return  $this
      */
     public function register($name, $settings)
@@ -155,7 +155,7 @@ class Manager
     /**
      * Get all of the created "loggers".
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getLoggers()
     {
@@ -166,7 +166,7 @@ class Manager
      * Dynamically call the default log instance.
      *
      * @param   string  $method
-     * @param   array   $parameters
+     * @param   array<mixed>   $parameters
      * @return  mixed
      */
     public function __call($method, $parameters)

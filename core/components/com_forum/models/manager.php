@@ -25,7 +25,7 @@ class Manager extends Obj
     /**
      * Cached data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $cache = [];
 
@@ -112,7 +112,7 @@ class Manager extends Obj
     /**
      * Get a list of sections for a forum
      *
-     * @param   array    $filters  Filters to apply to data fetch
+     * @param   array<mixed>    $filters  Filters to apply to data fetch
      * @return  object
      */
     public function sections($filters = [])
@@ -156,7 +156,7 @@ class Manager extends Obj
     /**
      * Get categories for this forum
      *
-     * @param   array    $filters  Filters to apply to the query
+     * @param   array<mixed>    $filters  Filters to apply to the query
      * @return  object
      */
     public function categories($filters = [])
@@ -196,7 +196,7 @@ class Manager extends Obj
     /**
      * Get posts for a forum
      *
-     * @param   array    $filters  Filters to apply to the query
+     * @param   array<mixed>    $filters  Filters to apply to the query
      * @return  object
      */
     public function posts($filters = [])
@@ -277,7 +277,7 @@ class Manager extends Obj
      * Return a count for the type of data specified
      *
      * @param   string   $what     What to count
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  integer
      */
     public function count($what = 'threads', $filters = [])
@@ -389,7 +389,7 @@ class Manager extends Obj
     /**
      * Get all available scopes
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function scopes()
     {

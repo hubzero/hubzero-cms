@@ -119,7 +119,7 @@ class Review extends Table
      * @param   integer|null  $pid        Pub ID
      * @param   integer|null  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
-     * @return  array|false  The matching reviews, or false without a publication ID
+     * @return  array<mixed>|false  The matching reviews, or false without a publication ID
      */
     public function getRatings($pid = null, $uid = null, $versionid = '')
     {
@@ -186,7 +186,7 @@ class Review extends Table
      * @param   integer|null  $pid        Pub ID
      * @param   integer|null  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
-     * @return  array|false  The matching reviews, or false without a publication ID
+     * @return  array<mixed>|false  The matching reviews, or false without a publication ID
      */
     public function getRating($pid = null, $uid = null, $versionid = '')
     {

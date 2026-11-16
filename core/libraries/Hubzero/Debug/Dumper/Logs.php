@@ -23,7 +23,7 @@ class Logs extends AbstractRenderer
     /**
      * Constructor
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  void
      */
     public function __construct($messages = null)
@@ -46,7 +46,7 @@ class Logs extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array|null  $messages
+     * @param   array<mixed>|null  $messages
      * @return  string  Nothing: the messages go to the log
      */
     public function render($messages = null)
@@ -67,7 +67,7 @@ class Logs extends AbstractRenderer
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array  $arr
+     * @param   array<mixed>  $arr
      * @return  string
      */
     protected function deflate($arr)

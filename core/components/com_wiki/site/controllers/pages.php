@@ -56,7 +56,7 @@ class Pages extends SiteController
     /**
      * Constructor
      *
-     * @param   array  $config  Optional configurations
+     * @param   array<mixed>  $config  Optional configurations
      * @return  void
      */
     public function __construct($config = [])

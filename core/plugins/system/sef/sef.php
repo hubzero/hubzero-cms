@@ -113,7 +113,7 @@ class Sef extends Plugin
     /**
      * Replaces the matched tags
      *
-     * @param   array   $matches  An array of matches (see preg_match_all)
+     * @param   array<mixed>   $matches  An array of matches (see preg_match_all)
      * @return  string
      */
     protected static function route($matches)

@@ -40,7 +40,7 @@ class Endnote extends Plugin
      * @param   object   $file     the uploaded file
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
-     * @return  array|null
+     * @return  array<mixed>|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
     {
@@ -65,8 +65,8 @@ class Endnote extends Plugin
     /**
      * SProcess EndNote on import
      *
-     * @param   array  $raw_citations_text
-     * @return  array|null
+     * @param   array<mixed>  $raw_citations_text
+     * @return  array<mixed>|null
      */
     protected function onImportProcessEndnote($raw_citations_text)
     {
@@ -217,7 +217,7 @@ class Endnote extends Plugin
     /**
      * Get citation fields as an array
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getCitationVars()
     {
@@ -233,7 +233,7 @@ class Endnote extends Plugin
     /**
      * Get EndNote tags
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getEndnoteTags()
     {
@@ -290,7 +290,7 @@ class Endnote extends Plugin
     /**
      * Check if a citation is a duplicate
      *
-     * @param   array    $citation
+     * @param   array<mixed>    $citation
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
      * @return  integer

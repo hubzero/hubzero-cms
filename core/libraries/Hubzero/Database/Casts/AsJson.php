@@ -28,8 +28,8 @@ class AsJson implements CastsAttributes
      * @param  Relational  $model
      * @param  string      $key
      * @param  mixed       $value
-     * @param  array       $attributes
-     * @return array|null
+     * @param  array<mixed>       $attributes
+     * @return array<mixed>|null
      */
     public function get(Relational $model, string $key, $value, array $attributes)
     {
@@ -46,7 +46,7 @@ class AsJson implements CastsAttributes
      * @param  Relational  $model
      * @param  string      $key
      * @param  mixed       $value
-     * @param  array       $attributes
+     * @param  array<mixed>       $attributes
      * @return string|null
      */
     public function set(Relational $model, string $key, $value, array $attributes)

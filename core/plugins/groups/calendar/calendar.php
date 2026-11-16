@@ -90,7 +90,7 @@ class Calendar extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function &onGroupAreas()
     {
@@ -113,9 +113,9 @@ class Calendar extends Plugin
      * @param   integer  $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
-     * @param   array    $access      What can be accessed
-     * @param   array|null    $areas       Active area(s)
-     * @return  array
+     * @param   array<mixed>    $access      What can be accessed
+     * @param   array<mixed>|null    $areas       Active area(s)
+     * @return  array<mixed>
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
@@ -2227,7 +2227,7 @@ class Calendar extends Plugin
      * Send an email
      *
      * @param   string   $to
-     * @param   array    $from
+     * @param   array<mixed>    $from
      * @param   string   $subject
      * @param   string   $body
      * @return  boolean

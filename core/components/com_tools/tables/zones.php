@@ -86,7 +86,7 @@ class Zones extends Table
     /**
      * Construct an SQL statement based on the array of filters passed
      *
-     * @param   array   $filters  Filters to build SQL from
+     * @param   array<mixed>   $filters  Filters to build SQL from
      * @return  string  SQL
      */
     private function buildQuery($filters = [])
@@ -196,7 +196,7 @@ class Zones extends Table
      * Get a list of records
      *
      * @param   string  $what     Data to return
-     * @param   array   $filters  Filters to build SQL from
+     * @param   array<mixed>   $filters  Filters to build SQL from
      * @return  mixed
      */
     public function find($what = 'list', $filters = [])

@@ -70,7 +70,7 @@ class Date extends DateTime
      * options from prior CMS versions.
      *
      * @deprecated    12.1
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $offsets = [
         '-12' => 'Etc/GMT-12',

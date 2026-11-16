@@ -21,7 +21,7 @@ class PHP extends Base
      *  - NOTE: Only one depth level is supported.
      *
      * @param   object  $object  Data Source Object
-     * @param   array   $params  Parameters used by the formatter
+     * @param   array<mixed>   $params  Parameters used by the formatter
      * @return  string  Config class formatted string
      */
     public function objectToString($object, $params = [])
@@ -52,7 +52,7 @@ class PHP extends Base
      * Parse a PHP class formatted string and convert it into an object.
      *
      * @param   string  $data     PHP Class formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array<mixed>   $options  Options used by the formatter.
      * @return  object|bool   Data object.
      */
     public function stringToObject($data, $options = [])
@@ -63,7 +63,7 @@ class PHP extends Base
     /**
      * Method to get an array as an exported string.
      *
-     * @param   array  $a  The array to get as a string.
+     * @param   array<mixed>  $a  The array to get as a string.
      * @return  string
      */
     protected function getArrayString($a)

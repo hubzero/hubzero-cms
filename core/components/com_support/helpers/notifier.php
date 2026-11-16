@@ -46,8 +46,8 @@ class Notifier
      * @param   Ticket   $ticket   The ticket as saved
      * @param   Comment  $comment  The saved comment carrying the changelog
      * @param   Ticket   $before   The ticket as it was before this update
-     * @param   array    $options
-     * @return  array    Error messages, empty when everything went out
+     * @param   array<mixed>    $options
+     * @return  array<int, mixed>    Error messages, empty when everything went out
      */
     public static function ticketUpdated(Ticket $ticket, Comment $comment, Ticket $before, array $options = [])
     {

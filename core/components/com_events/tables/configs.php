@@ -35,7 +35,7 @@ class Configs
     /**
      * Properties container
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 

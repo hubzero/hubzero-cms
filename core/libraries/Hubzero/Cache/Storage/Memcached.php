@@ -26,7 +26,7 @@ class Memcached extends None
     /**
      * Create a new file cache store instance.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -73,7 +73,7 @@ class Memcached extends None
     /**
      * Create a new Memcached connection.
      *
-     * @param   array   $servers
+     * @param   array<mixed>   $servers
      * @return  object  \Memcached
      * @throws  \RuntimeException
      */
@@ -214,7 +214,7 @@ class Memcached extends None
     /**
      * Get all cached data
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {

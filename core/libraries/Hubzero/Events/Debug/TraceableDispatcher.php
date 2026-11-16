@@ -38,7 +38,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * An array of triggered events.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $called;
 
@@ -216,7 +216,7 @@ class TraceableDispatcher implements DispatcherInterface
      * Proxies all method calls to the original event dispatcher.
      *
      * @param   string  $method     The method name
-     * @param   array   $arguments  The method arguments
+     * @param   array<mixed>   $arguments  The method arguments
      * @return  mixed
      */
     public function __call($method, $arguments)
@@ -331,7 +331,7 @@ class TraceableDispatcher implements DispatcherInterface
      *
      * @param   object|string|array|mixed  $listener   The listener
      * @param   string  $event  The event name
-     * @return  array   Information about the listener
+     * @return  array<mixed>   Information about the listener
      */
     private function getListenerInfo($listener, $event)
     {

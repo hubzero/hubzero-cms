@@ -45,7 +45,7 @@ class Media
     /**
      * Checks if the file can be uploaded
      *
-     * @param   array    $file  File information
+     * @param   array<mixed>    $file  File information
      * @param   string   $err   An error message to be returned
      * @return  boolean
      */
@@ -122,7 +122,7 @@ class Media
      * Count files in a directory
      *
      * @param   string   $dir
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function countFiles($dir)
     {

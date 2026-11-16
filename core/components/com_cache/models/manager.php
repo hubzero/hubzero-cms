@@ -42,7 +42,7 @@ class Manager extends Obj
     /**
      * An array of Cache Items indexed by cache group ID
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
@@ -63,7 +63,7 @@ class Manager extends Obj
     /**
      * Constructor
      *
-     * @param   array  $config  An array of configuration options
+     * @param   array<mixed>  $config  An array of configuration options
      * @return  void
      */
     public function __construct($config = [])
@@ -163,7 +163,7 @@ class Manager extends Obj
     /**
      * Method to get cache data
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function data()
     {
@@ -289,7 +289,7 @@ class Manager extends Obj
     /**
      * Clean an array
      *
-     * @param   array  $array
+     * @param   array<mixed>  $array
      * @return  boolean
      */
     public function cleanlist($array)

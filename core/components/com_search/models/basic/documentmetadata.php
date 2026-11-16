@@ -16,7 +16,7 @@ abstract class DocumentMetadata
     /**
      * List of stop words
      *
-     * @var array
+     * @var array<mixed>
      */
     private static $stop_words = [
         '1' => 1,

@@ -29,7 +29,7 @@ class Forum extends Plugin
      * Get the group IDs for all the groups of a specific user
      *
      * @param   integer  $uid  User ID
-     * @return  array
+     * @return  array<int, mixed>
      */
     private function getGroupIds($uid = 0)
     {
@@ -43,7 +43,7 @@ class Forum extends Plugin
     /**
      * Retrieve records for items tagged with specific tags
      *
-     * @param   array    $tags        Tags to match records against
+     * @param   array<mixed>    $tags        Tags to match records against
      * @param   mixed    $limit       SQL record limit
      * @param   integer  $limitstart  SQL record limit start
      * @param   string   $sort        The field to sort records by

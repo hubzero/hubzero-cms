@@ -24,14 +24,14 @@ class Html extends Base
     /**
      * Array of Header <link> tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $links = [];
 
     /**
      * Array of custom tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $custom = [];
 
@@ -73,7 +73,7 @@ class Html extends Base
     /**
      * Array of parsed template tags
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $templateTags = [];
 
@@ -87,7 +87,7 @@ class Html extends Base
     /**
      * Class constructor
      *
-     * @param   array  $options  Associative array of options
+     * @param   array<mixed>  $options  Associative array of options
      * @return  void
      */
     public function __construct($options = [])
@@ -104,7 +104,7 @@ class Html extends Base
     /**
      * Get the HTML document head data
      *
-     * @return  array  The document head data in array form
+     * @return  array<string, mixed>  The document head data in array form
      */
     public function getHeadData()
     {
@@ -229,7 +229,7 @@ class Html extends Base
      * @param   string  $href      The link that is being related.
      * @param   string  $relation  Relation of link.
      * @param   string  $relType   Relation type attribute.  Either rel or rev (default: 'rel').
-     * @param   array   $attribs   Associative array of remaining attributes.
+     * @param   array<mixed>   $attribs   Associative array of remaining attributes.
      * @return  object  instance of $this to allow chaining
      */
     public function addHeadLink($href, $relation, $relType = 'rel', $attribs = [])
@@ -279,7 +279,7 @@ class Html extends Base
      *
      * @param   string|null  $type     The type of renderer
      * @param   string|null  $name     The name of the element to render
-     * @param   array   $attribs  Associative array of remaining attributes.
+     * @param   array<mixed>   $attribs  Associative array of remaining attributes.
      * @return  mixed  output of the renderer, or null
      */
     public function getBuffer($type = null, $name = null, $attribs = [])
@@ -305,7 +305,7 @@ class Html extends Base
      * Set the contents a document includes
      *
      * @param   string  $content  The content to be set in the buffer.
-     * @param   array   $options  Array of optional elements.
+     * @param   array<mixed>   $options  Array of optional elements.
      * @return  object  instance of $this to allow chaining
      */
     public function setBuffer($content, $options = [])
@@ -327,7 +327,7 @@ class Html extends Base
     /**
      * Parses the template and populates the buffer
      *
-     * @param   array   $params  Parameters for fetching the template
+     * @param   array<mixed>   $params  Parameters for fetching the template
      * @return  object  instance of $this to allow chaining
      */
     public function parse($params = [])
@@ -339,7 +339,7 @@ class Html extends Base
      * Outputs the template to the browser.
      *
      * @param   boolean  $caching  If true, cache the output
-     * @param   array    $params   Associative array of attributes
+     * @param   array<mixed>    $params   Associative array of attributes
      * @return  string   The rendered data
      */
     public function render($caching = false, $params = [])
@@ -528,7 +528,7 @@ class Html extends Base
     /**
      * Fetch the template, and initialise the params
      *
-     * @param   array   $params  Parameters to determine the template
+     * @param   array<mixed>   $params  Parameters to determine the template
      * @return  object  instance of $this to allow chaining
      */
     protected function fetchTemplate($params = [])
@@ -632,7 +632,7 @@ class Html extends Base
      * Method to extract key/value pairs out of a string with XML style attributes
      *
      * @param   string  $string  String containing XML style attributes
-     * @return  array   Key/Value pairs for the attributes
+     * @return  array<mixed>   Key/Value pairs for the attributes
      */
     private function parseAttributes($string)
     {

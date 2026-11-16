@@ -50,7 +50,7 @@ class Detector
     protected $accept = '';
 
     /**
-     * @var array  Parsed HTTP_ACCEPT string
+     * @var array<mixed>  Parsed HTTP_ACCEPT string
      */
     protected $acceptParsed = [];
 
@@ -70,7 +70,7 @@ class Detector
     protected $device = '';
 
     /**
-     * @var array  Known robots.
+     * @var array<mixed>  Known robots.
      */
     protected $robots = [
         'Googlebot\/',
@@ -485,7 +485,7 @@ class Detector
      * List of viewable image MIME subtypes.
      * This list of viewable images works for IE and Netscape/Mozilla.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $images = [
         'jpeg',
@@ -499,7 +499,7 @@ class Detector
     /**
      * List of browser regex
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $regexes = [
         [
@@ -747,7 +747,7 @@ class Detector
     /**
      * Browser instances container.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $instances = [];
 

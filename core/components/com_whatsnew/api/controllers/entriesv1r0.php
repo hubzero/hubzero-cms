@@ -158,8 +158,8 @@ class Entriesv1r0 extends ApiController
     /**
      * Sort items
      *
-     * @param   array    $a
-     * @param   array    $b
+     * @param   array<mixed>    $a
+     * @param   array<mixed>    $b
      * @return  integer
      */
     public function sorter($a, $b)
@@ -170,8 +170,8 @@ class Entriesv1r0 extends ApiController
     /**
      * Sort items desc
      *
-     * @param   array    $a
-     * @param   array    $b
+     * @param   array<mixed>    $a
+     * @param   array<mixed>    $b
      * @return  integer
      */
     public function sorterAsc($a, $b)

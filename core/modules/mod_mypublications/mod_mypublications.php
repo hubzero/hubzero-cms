@@ -78,7 +78,7 @@ class Mypublications extends Module
     /**
      * Include needed libraries and push scripts and CSS to the document
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public static function allWithFilters($filters = [])

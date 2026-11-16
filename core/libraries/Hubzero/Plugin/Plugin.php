@@ -75,7 +75,7 @@ class Plugin
      * Constructor
      *
      * @param   object|null  $subject  Event dispatcher (null when the plugin is built on its own)
-     * @param   array   $config   Optional configurations to be used
+     * @param   array<mixed>   $config   Optional configurations to be used
      * @return  void
      */
     public function __construct($subject, $config)

@@ -43,7 +43,7 @@ abstract class BaseSchemaGrammar
      * PostgreSQL requires separate CREATE INDEX statements).
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     abstract public function compileCreate(TableDefinition $blueprint): array;
 
@@ -53,8 +53,8 @@ abstract class BaseSchemaGrammar
      * Default implementation compiles statements using the shared generic path.
      * Dialects can override this for backend-specific create-table behavior.
      *
-     * @param  array $definition Normalized table definition
-     * @return array
+     * @param  array<mixed> $definition Normalized table definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -64,8 +64,8 @@ abstract class BaseSchemaGrammar
     /**
      * Shared CREATE TABLE compilation from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<int, mixed>
      */
     protected function compileCreateTableFromDefinitionGeneric(array $definition): array
     {
@@ -196,7 +196,7 @@ abstract class BaseSchemaGrammar
      * Dialects may override for custom behavior.
      *
      * @param  string $name
-     * @param  array  $definition
+     * @param  array<mixed>  $definition
      * @return string
      */
     protected function compileColumnFromDefinition(string $name, array $definition): string
@@ -211,7 +211,7 @@ abstract class BaseSchemaGrammar
      * or null if the database requires separate CREATE INDEX statements.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null  SQL fragment or null
      */
     abstract public function compileInlineIndex(string $name, array $columns): ?string;
@@ -224,7 +224,7 @@ abstract class BaseSchemaGrammar
      * requires separate CREATE UNIQUE INDEX statements.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null  SQL fragment or null
      */
     abstract public function compileInlineUniqueIndex(string $name, array $columns): ?string;
@@ -238,7 +238,7 @@ abstract class BaseSchemaGrammar
      * fulltext indexes.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null  SQL fragment or null
      */
     abstract public function compileInlineFulltextIndex(string $name, array $columns): ?string;
@@ -247,7 +247,7 @@ abstract class BaseSchemaGrammar
      * Compile an ALTER TABLE statement to add columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     abstract public function compileAlterAdd(TableDefinition $blueprint): array;
 
@@ -258,7 +258,7 @@ abstract class BaseSchemaGrammar
      * to use DROP without the COLUMN keyword.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileAlterDrop(TableDefinition $blueprint): array
     {
@@ -280,7 +280,7 @@ abstract class BaseSchemaGrammar
      * return an empty array. Use AlterTableBuilder for complex SQLite operations.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     abstract public function compileAlterModify(TableDefinition $blueprint): array;
 
@@ -291,7 +291,7 @@ abstract class BaseSchemaGrammar
      * modifying, and renaming columns, indexes, foreign keys, etc.
      *
      * @param  AlterTableBuilder  $builder
-     * @return array  Array of SQL statements
+     * @return array<mixed>  Array of SQL statements
      */
     abstract public function compileAlterTable(
         AlterTableBuilder $builder,
@@ -354,7 +354,7 @@ abstract class BaseSchemaGrammar
      * Compile CREATE INDEX statements
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileIndexes(TableDefinition $blueprint): array
     {
@@ -408,7 +408,7 @@ abstract class BaseSchemaGrammar
      *
      * @param  string  $indexName
      * @param  string  $tableName
-     * @param  array   $columns
+     * @param  array<mixed>   $columns
      * @param  bool    $unique
      * @return string
      */
@@ -482,7 +482,7 @@ abstract class BaseSchemaGrammar
      * This is shared by create-definition delegation paths across grammars.
      *
      * @param  string $name
-     * @param  array  $definition
+     * @param  array<mixed>  $definition
      * @return string
      */
     protected function compileColumnFromDefinitionGeneric(string $name, array $definition): string
@@ -655,7 +655,7 @@ abstract class BaseSchemaGrammar
      * Only some dialects can index a prefix; here the length is dropped and
      * the whole column is named.
      *
-     * @param  array  $columns
+     * @param  array<mixed>  $columns
      * @return string
      */
     protected function columnize(array $columns): string

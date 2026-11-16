@@ -21,14 +21,14 @@ class Base extends Obj
     /**
      * Array to hold the menu items
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $items = [];
 
     /**
      * Identifiers of the default menu items, by language
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $defaultItem = [];
 
@@ -70,14 +70,14 @@ class Base extends Obj
     /**
      * Menu instances container.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
     /**
      * Class constructor
      *
-     * @param   array  $options  An array of configuration options.
+     * @param   array<mixed>  $options  An array of configuration options.
      * @return  void
      */
     public function __construct($options = [])
@@ -218,7 +218,7 @@ class Base extends Obj
      * @param   mixed    $values      The value(s) of the field. If an array, need to match field names
      *                                each attribute may have multiple values to lookup for.
      * @param   boolean  $firstonly   If true, only returns the first item found
-     * @return  array|object
+     * @return  array<mixed>|object
      */
     public function getItems($attributes, $values, $firstonly = false)
     {
@@ -277,7 +277,7 @@ class Base extends Obj
     /**
      * Getter for the menu array
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getMenu()
     {

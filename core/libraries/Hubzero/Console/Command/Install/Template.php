@@ -56,7 +56,7 @@ class Template
     /**
      * The site template the answers ask for
      *
-     * @param   array  $answers  The site section of the answer file
+     * @param   array<mixed>  $answers  The site section of the answer file
      * @return  string|null
      */
     public static function asked(array $answers)

@@ -21,7 +21,7 @@ class Handler
     /**
      * Array to hold our handler objects
      *
-     * @var array
+     * @var array<mixed>
      **/
     private $handlers = [];
 
@@ -35,7 +35,7 @@ class Handler
     /**
      * Array to hold the asset
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected $asset = [
         'title'        => '',
@@ -53,7 +53,7 @@ class Handler
     /**
      * Array to hold the asset association
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected $assoc = [
         'asset_id' => '',
@@ -67,7 +67,7 @@ class Handler
      * Action message - what the user will see if presented with multiple handlers for this extension
      * Responds to    - what extensions this handler responds to
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected static $info = [
         'action_message' => '',
@@ -166,7 +166,7 @@ class Handler
     /**
      * API for getting extensions
      *
-     * @return array of extensions
+     * @return array<mixed> of extensions
      **/
     public static function getExtensions()
     {
@@ -186,7 +186,8 @@ class Handler
     /**
      * Get handlers
      *
-     * @return array - classname for handler and message (message that user will see when choosing a handler)
+     * @return array<int, mixed> - classname for handler and message (message that user will see when choosing a
+     *                    handler)
      **/
     public function getHandlers()
     {
@@ -202,7 +203,7 @@ class Handler
     /**
      * Create a new asset
      *
-     * @return array - message and status code from individual handlers
+     * @return array<mixed> - message and status code from individual handlers
      **/
     public function doCreate($class = null)
     {
@@ -237,7 +238,7 @@ class Handler
     /**
      * Edit an asset
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function doEdit($id)
     {
@@ -265,7 +266,7 @@ class Handler
     /**
      * Preview an asset
      *
-     * @return array
+     * @return array<mixed>
      **/
     public function preview($id)
     {

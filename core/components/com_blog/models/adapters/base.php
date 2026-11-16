@@ -32,7 +32,7 @@ abstract class Base extends Obj
     /**
      * URL segments
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $segments = [];
 
@@ -77,7 +77,7 @@ abstract class Base extends Obj
     /**
      * Flatten array of segments into querystring
      *
-     * @param   array   $segments  An associative array of querystring bits
+     * @param   array<mixed>   $segments  An associative array of querystring bits
      * @return  string
      */
     protected function toQueryString(array $segments)

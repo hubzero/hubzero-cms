@@ -29,7 +29,7 @@ class IcalParser
     /**
      * Normalize windows timezones
      *
-     * @var array
+     * @var array<mixed>
      */
     public $windows_timezones =  [
         'Dateline Standard Time'          => 'Etc/GMT+12',
@@ -347,7 +347,7 @@ class IcalParser
     /**
      * Get list of events
      *
-     * @return array  List of events
+     * @return array<mixed>  List of events
      */
     public function getEvents()
     {
@@ -357,7 +357,7 @@ class IcalParser
     /**
      * Get list of alarms
      *
-     * @return  array  List of alarms
+     * @return  array<mixed>  List of alarms
      */
     public function getAlarms()
     {
@@ -367,7 +367,7 @@ class IcalParser
     /**
      * Get list of timezones
      *
-     * @return  array  List of timezones
+     * @return  array<mixed>  List of timezones
      */
     public function getTimezones()
     {
@@ -377,7 +377,7 @@ class IcalParser
     /**
      * Get First Event
      *
-     * @return  array  Event Details
+     * @return  array<mixed>  Event Details
      */
     public function getFirstEvent()
     {
@@ -388,7 +388,7 @@ class IcalParser
     /**
      * Return sorted eventlist as array or false if calenar is empty
      *
-     * @return array|boolean
+     * @return array<mixed>|boolean
      */
     public function getSortedEvents()
     {
@@ -404,7 +404,7 @@ class IcalParser
     /**
      * Return reverse sorted eventlist as array or false if calenar is empty
      *
-     * @return array|boolean
+     * @return array<mixed>|boolean
      */
     public function getReverseSortedEvents()
     {

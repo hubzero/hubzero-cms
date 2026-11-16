@@ -37,7 +37,7 @@ class Archive
     /**
      * Get a count or list of categories
      *
-     * @param      array   $filters Filters to apply to data retrieval
+     * @param      array<mixed>   $filters Filters to apply to data retrieval
      * @return     mixed
      */
     public function categories($filters = [])

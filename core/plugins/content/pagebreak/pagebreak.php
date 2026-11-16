@@ -206,7 +206,7 @@ class Pagebreak extends Plugin
      * Create Table Of Contents
      *
      * @param   object   $row
-     * @param   array    $matches
+     * @param   array<mixed>    $matches
      * @param   integer  $page
      * @return  void
      */
@@ -331,7 +331,7 @@ class Pagebreak extends Plugin
      * Method to extract key/value pairs out of a string with XML style attributes
      *
      * @param   string  $string  String containing XML style attributes
-     * @return  array   Key/Value pairs for the attributes
+     * @return  array<mixed>   Key/Value pairs for the attributes
      */
     protected static function parseAttributes($string)
     {

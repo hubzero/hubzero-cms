@@ -35,7 +35,7 @@ class Registration
     public const PASS_SCORE_STRONG   = 68;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     public $registration;
 
@@ -45,7 +45,7 @@ class Registration
     public $encoded;
 
     /**
-     * @var  array
+     * @var  array<mixed>
      */
     public $missing;
 
@@ -792,7 +792,7 @@ class Registration
      * Checks if username already exists
      *
      * @param   string  $username  Username to check
-     * @return  array   Status & message
+     * @return  array<mixed>   Status & message
      */
     public function checkusername($username)
     {

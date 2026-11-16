@@ -139,8 +139,8 @@ class Toolsv1r0 extends ApiController
     /**
      * Sort by ID DESC
      *
-     * @param   array $a
-     * @param   array $b
+     * @param   array<mixed> $a
+     * @param   array<mixed> $b
      * @return  int
      */
     private function idSortDesc($a, $b)
@@ -151,8 +151,8 @@ class Toolsv1r0 extends ApiController
     /**
      * Sort by started date DESC
      *
-     * @param   array $a
-     * @param   array $b
+     * @param   array<mixed> $a
+     * @param   array<mixed> $b
      * @return  int
      */
     private function startedDateSortDesc($a, $b)
@@ -163,8 +163,8 @@ class Toolsv1r0 extends ApiController
     /**
      * Sort by accessed date ASC
      *
-     * @param   array $a
-     * @param   array $b
+     * @param   array<mixed> $a
+     * @param   array<mixed> $b
      * @return  int
      */
     private function accessedDateSortAsc($a, $b)
@@ -175,8 +175,8 @@ class Toolsv1r0 extends ApiController
     /**
      * Sort by accessed date DESC
      *
-     * @param   array $a
-     * @param   array $b
+     * @param   array<mixed> $a
+     * @param   array<mixed> $b
      * @return  int
      */
     private function accessedDateSortDesc($a, $b)

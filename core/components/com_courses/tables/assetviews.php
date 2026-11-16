@@ -30,7 +30,7 @@ class AssetViews extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param      array $filters Filters to construct query from
+     * @param      array<mixed> $filters Filters to construct query from
      * @return     string SQL
      */
     protected function buildQuery($filters = [])
@@ -99,8 +99,8 @@ class AssetViews extends Table
     /**
      * Get asset view records
      *
-     * @param      array $filters Filters to construct query from
-     * @return     array
+     * @param      array<mixed> $filters Filters to construct query from
+     * @return     array<\stdClass>
      */
     public function find($filters = [], $key = null)
     {

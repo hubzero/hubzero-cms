@@ -35,7 +35,7 @@ class Queue
     /**
      * Inspect the queue.
      *
-     * @return  array  ['available' => bool, 'size' => int]
+     * @return  array<string, mixed>  ['available' => bool, 'size' => int]
      */
     public static function status()
     {
@@ -98,7 +98,7 @@ class Queue
     /**
      * Is Postfix installed and configured on this host?
      *
-     * @return  array  ['configured' => bool, 'version' => string]
+     * @return  array<string, mixed>  ['configured' => bool, 'version' => string]
      */
     public static function config()
     {

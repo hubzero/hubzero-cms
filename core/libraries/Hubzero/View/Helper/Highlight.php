@@ -19,8 +19,8 @@ class Highlight extends AbstractHelper
      * Highlight some text
      *
      * @param   string|null   $text     Text to find phrases in
-     * @param   string|array|null  $phrase   Phrase to highlight
-     * @param   array    $options  Options for highlighting
+     * @param   string|array<mixed>|null  $phrase   Phrase to highlight
+     * @param   array<mixed>    $options  Options for highlighting
      * @return  string
      * @throws  \InvalidArgumentException If no text was passed
      */

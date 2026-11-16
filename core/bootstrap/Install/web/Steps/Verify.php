@@ -65,7 +65,7 @@ class Verify implements StepInterface
     /**
      * Process form submission
      *
-     * @param  array  $data  POST data
+     * @param  array<mixed>  $data  POST data
      * @return bool|string
      */
     public function process($data)

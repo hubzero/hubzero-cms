@@ -28,14 +28,14 @@ class Set extends Obj implements Iterator
     /**
      * Weights by plugin, once loaded
      *
-     * @var array|null
+     * @var array<mixed>|null
      */
     private static $plugin_weights;
 
     /**
      * Tags matching the terms
      *
-     * @var AssocList|array
+     * @var AssocList|array<mixed>
      */
     private $tags = [];
 
@@ -56,7 +56,7 @@ class Set extends Obj implements Iterator
     /**
      * Widgets
      *
-     * @var array
+     * @var array<mixed>
      */
     private $widgets;
 
@@ -91,21 +91,21 @@ class Set extends Obj implements Iterator
     /**
      * Results
      *
-     * @var array
+     * @var array<mixed>
      */
     private $results = [];
 
     /**
      * Custom
      *
-     * @var array
+     * @var array<mixed>
      */
     private $custom = [];
 
     /**
      * Processed results
      *
-     * @var array
+     * @var array<mixed>
      */
     private $processed_results = [];
 
@@ -133,21 +133,21 @@ class Set extends Obj implements Iterator
     /**
      * Results counts
      *
-     * @var array
+     * @var array<mixed>
      */
     private $result_counts = [];
 
     /**
      * Shown results
      *
-     * @var array
+     * @var array<mixed>
      */
     private $shown_results = [];
 
     /**
      * Sorters
      *
-     * @var array
+     * @var array<mixed>
      */
     private $sorters = [];
 
@@ -242,7 +242,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function getWidgets()
     {
@@ -254,7 +254,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function getShownResults()
     {
@@ -278,7 +278,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function getResultCounts()
     {
@@ -626,7 +626,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @param      object|array $res Parameter description (if any) ...
+     * @param      object|array<mixed> $res Parameter description (if any) ...
      * @return     void
      */
     public function add($res)
@@ -737,7 +737,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array
+     * @return     array<mixed>
      */
     public function getShown()
     {

@@ -951,7 +951,7 @@ class Curation extends SiteController
     /**
      * Check user access
      *
-     * @param   array    $curatorgroups
+     * @param   array<mixed>    $curatorgroups
      * @param   integer  $curator
      * @return  mixed    False if no access, string if has access
      */

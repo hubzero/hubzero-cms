@@ -19,7 +19,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         'hg_update_queue',

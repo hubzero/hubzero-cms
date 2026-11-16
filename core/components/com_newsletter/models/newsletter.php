@@ -74,7 +74,7 @@ class Newsletter extends Relational
     /**
      * Generates automatic alias value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -117,7 +117,7 @@ class Newsletter extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -128,7 +128,7 @@ class Newsletter extends Relational
     /**
      * Generates automatic modified by field value
      *
-     * @param   array    $data  the data being saved
+     * @param   array<mixed>    $data  the data being saved
      * @return  integer
      */
     public function automaticModifiedBy($data)
@@ -139,7 +139,7 @@ class Newsletter extends Relational
     /**
      * Generates automatic plain_content value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticPlainContent($data)

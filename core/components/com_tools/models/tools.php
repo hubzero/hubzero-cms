@@ -30,7 +30,7 @@ class Tools extends Obj
      * development version) for title and source access, picked here so the
      * values are deterministic.
      *
-     * @return  array  Objects with id, instance, toolname, title, toolaccess,
+     * @return  array<mixed>  Objects with id, instance, toolname, title, toolaccess,
      *                 codeaccess, revision, state, tool_state and live
      */
     public function getApplicationTools()
@@ -55,8 +55,8 @@ class Tools extends Obj
     /**
      * The listable tools among the given forge directory names
      *
-     * @param   array  $dirs  Tool names that have a forge directory
-     * @return  array  See getApplicationTools()
+     * @param   array<mixed>  $dirs  Tool names that have a forge directory
+     * @return  array<mixed>  See getApplicationTools()
      */
     public function forgeTools(array $dirs)
     {

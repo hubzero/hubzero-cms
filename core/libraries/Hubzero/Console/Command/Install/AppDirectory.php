@@ -114,7 +114,7 @@ class AppDirectory
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
-     * @param   array   $config    Database configuration array
+     * @param   array<mixed>   $config    Database configuration array
      * @return  bool    True on success, false on failure
      */
     public static function writeDatabaseConfig($ansi, $appPath, array $config)
@@ -163,7 +163,7 @@ class AppDirectory
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
-     * @param   array   $config    Application configuration array
+     * @param   array<mixed>   $config    Application configuration array
      * @return  bool    True on success, false on failure
      */
     public static function writeAppConfig($ansi, $appPath, array $config)
@@ -222,7 +222,7 @@ class AppDirectory
      *
      * @param   bool    $ansi     Whether to use ANSI color output
      * @param   string  $appPath  Path to the app directory
-     * @param   array   $config   Configuration values to use
+     * @param   array<mixed>   $config   Configuration values to use
      * @return  bool    True on success, false on failure
      */
     public static function writeDefaultConfigs($ansi, $appPath, array $config = [])
@@ -366,7 +366,7 @@ class AppDirectory
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
      * @param   string  $filename  Config filename
-     * @param   array   $config    Configuration array
+     * @param   array<mixed>   $config    Configuration array
      * @return  bool    True on success, false on failure
      */
     private static function writeConfigFile($ansi, $appPath, $filename, array $config)
@@ -398,7 +398,7 @@ class AppDirectory
     /**
      * Export array to PHP code string
      *
-     * @param   array  $array   Array to export
+     * @param   array<mixed>  $array   Array to export
      * @param   int    $indent  Indentation level
      * @return  string
      */

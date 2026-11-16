@@ -74,7 +74,7 @@ class Query extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -95,7 +95,7 @@ class Query extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticSort($data)
@@ -109,7 +109,7 @@ class Query extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticSortDir($data)

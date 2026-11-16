@@ -65,7 +65,7 @@ class Sync extends \Hubzero\Base\Obj
     /**
      * Get status srray
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getStatus()
     {

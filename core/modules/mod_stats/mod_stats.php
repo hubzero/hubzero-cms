@@ -42,7 +42,7 @@ class Stats extends Module
      * Get a list of stats
      *
      * @param   object  $params  Registry
-     * @return  array
+     * @return  array<mixed>
      */
     public static function &getList(&$params)
     {

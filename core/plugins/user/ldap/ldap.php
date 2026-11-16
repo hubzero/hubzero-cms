@@ -20,7 +20,7 @@ class Ldap extends Plugin
     /**
      * This method is an alias for onAfterStoreUser
      *
-     * @param   array    $user     holds the new user data
+     * @param   array<mixed>    $user     holds the new user data
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
@@ -34,7 +34,7 @@ class Ldap extends Plugin
     /**
      * Method is called after user data is stored in the database
      *
-     * @param   array    $user     holds the new user data
+     * @param   array<mixed>    $user     holds the new user data
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
@@ -49,7 +49,7 @@ class Ldap extends Plugin
     /**
      * This method is an alias for onAfterDeleteUser
      *
-     * @param   array    $user     holds the user data
+     * @param   array<mixed>    $user     holds the user data
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
      * @return  boolean  True on success
@@ -62,7 +62,7 @@ class Ldap extends Plugin
     /**
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user     holds the user data
+     * @param   array<mixed>    $user     holds the user data
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
      * @return  boolean  True on success

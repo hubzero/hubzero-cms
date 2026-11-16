@@ -23,7 +23,7 @@ class Quickicon extends Module
     /**
      * Stack to hold buttons
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $buttons = [];
 
@@ -50,7 +50,7 @@ class Quickicon extends Module
      * used to add custom buttons or remove default ones.
      *
      * @param   object  $params  Registry
-     * @return  array   An array of buttons
+     * @return  array<mixed>   An array of buttons
      */
     public static function &getButtons($params)
     {

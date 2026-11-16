@@ -456,7 +456,7 @@ class Citations extends SiteController
      * OCLC discontinued the worldcatlibraries.org registry lookup API
      * (deadline: November 2025). Commented out until a replacement is found.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     private function openUrl()
     {

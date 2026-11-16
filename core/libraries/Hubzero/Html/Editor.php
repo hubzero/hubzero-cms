@@ -60,7 +60,7 @@ class Editor extends Obj
     /**
      * Editor instances container.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
@@ -181,7 +181,7 @@ class Editor extends Obj
      * @param  string|null  $id  An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
      * @param   string|null   $asset    The object asset
      * @param   object|null   $author   The author.
-     * @param   array    $params   Associative array of editor parameters.
+     * @param   array<mixed>    $params   Associative array of editor parameters.
      * @return  string|null
      */
     public function display(
@@ -316,7 +316,7 @@ class Editor extends Obj
      * @param   string  $editor   The name of the editor.
      * @param   mixed   $buttons  Can be boolean or array, if boolean defines if the buttons are
      *                            displayed, if array defines a list of buttons not to show.
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getButtons($editor, $buttons = true)
     {
@@ -353,7 +353,7 @@ class Editor extends Obj
     /**
      * Load the editor
      *
-     * @param   array  $config  Associative array of editor config paramaters
+     * @param   array<mixed>  $config  Associative array of editor config paramaters
      * @return  mixed
      */
     protected function load($config = [])

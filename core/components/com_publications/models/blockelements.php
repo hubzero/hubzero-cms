@@ -27,14 +27,14 @@ class BlockElements extends Obj
     /**
      * Loaded elements
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $elements = [];
 
     /**
      * Directories, where block elements can be stored
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $path = [];
 
@@ -109,9 +109,9 @@ class BlockElements extends Obj
     /**
      * Get active element
      *
-     * @param   array   $elements
+     * @param   array<mixed>   $elements
      * @param   object|mixed  $review
-     * @return  array
+     * @return  array<string, mixed>
      */
     public function getActiveElement($elements, $review)
     {

@@ -63,7 +63,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Container for storing overloaded data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $attributes = [];
 
@@ -77,7 +77,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * A list of executable tasks
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $taskMap = [
         '__default' => 'display',
@@ -138,7 +138,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Constructor
      *
-     * @param   array  $config  Optional configurations to be used
+     * @param   array<mixed>  $config  Optional configurations to be used
      * @return  void
      */
     public function __construct($config = [])
@@ -556,8 +556,8 @@ class SiteController extends Obj implements ControllerInterface
      * Inertia helper: render component payload/response.
      *
      * @param   string  $component
-     * @param   array   $props
-     * @return  array|null
+     * @param   array<mixed>   $props
+     * @return  array<mixed>|null
      */
     protected function inertiaRender(string $component, array $props = []): ?array
     {
@@ -568,7 +568,7 @@ class SiteController extends Obj implements ControllerInterface
      * Inertia helper: render a canonical root mount node for HTML response templates.
      *
      * @param   string  $component
-     * @param   array   $props
+     * @param   array<mixed>   $props
      * @param   string  $mountId
      * @return  string
      */
@@ -580,7 +580,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: share global props for request.
      *
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -614,7 +614,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: attach debug context metadata.
      *
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -636,7 +636,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: retrieve current debug snapshot.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function inertiaDebugSnapshot(): array
     {
@@ -646,7 +646,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: access parsed request details.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function inertiaRequestDetails(): array
     {
@@ -656,8 +656,8 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: render reusable debug panel markup.
      *
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     protected function inertiaDebugPanel(array $snapshot = [], array $options = []): string
@@ -700,7 +700,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: retrieve profile timing snapshot.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function inertiaProfileSnapshot(): array
     {
@@ -720,10 +720,10 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Inertia helper: preserve debug mode in outbound request params.
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     protected function inertiaDebugParams(array $params, string $name = 'inertia_debug', string $value = '1'): array
     {
@@ -823,7 +823,7 @@ class SiteController extends Obj implements ControllerInterface
      * HTMX helper: set HX-Location response header.
      *
      * @param   string  $url
-     * @param   array   $options
+     * @param   array<mixed>   $options
      * @return  void
      */
     protected function htmxLocation(string $url, array $options = []): void
@@ -909,7 +909,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: access parsed request details.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxRequestDetails(): array
     {
@@ -961,7 +961,7 @@ class SiteController extends Obj implements ControllerInterface
      * HTMX helper: emit 422 validation response with fragment body.
      *
      * @param   string  $html
-     * @param   array   $errors
+     * @param   array<mixed>   $errors
      * @return  void
      */
     protected function htmxValidation(string $html, array $errors = []): void
@@ -972,7 +972,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: share state for HTMX + Alpine usage.
      *
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -984,7 +984,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: attach debug context metadata.
      *
-     * @param   string|array  $key
+     * @param   string|array<mixed>  $key
      * @param   mixed         $value
      * @return  void
      */
@@ -1006,7 +1006,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: retrieve current debug snapshot.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxDebugSnapshot(): array
     {
@@ -1048,7 +1048,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: retrieve profile timing snapshot.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxProfileSnapshot(): array
     {
@@ -1068,10 +1068,10 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: preserve debug mode in outbound request params.
      *
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxDebugParams(array $params, string $name = 'htmx_debug', string $value = '1'): array
     {
@@ -1093,8 +1093,8 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * HTMX helper: render reusable debug panel markup.
      *
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     protected function htmxDebugPanel(array $snapshot = [], array $options = []): string

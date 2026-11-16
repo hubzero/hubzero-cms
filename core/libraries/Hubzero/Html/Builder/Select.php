@@ -21,7 +21,7 @@ class Select
     /**
      * Default values for options. Organized by option group.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $optionDefaults = [
         'option' => [
@@ -41,7 +41,7 @@ class Select
      * Generates a yes/no radio list.
      *
      * @param   string  $name      The value of the HTML name attribute
-     * @param   array|null   $attribs   Additional HTML attributes for the <select> tag
+     * @param   array<mixed>|null   $attribs   Additional HTML attributes for the <select> tag
      * @param   string|null  $selected  The key that is selected
      * @param   string  $yes       Language key for Yes
      * @param   string  $no        Language key for no
@@ -66,7 +66,7 @@ class Select
     /**
      * Generates an HTML selection list.
      *
-     * @param   array    $data       An array of objects, arrays, or scalars.
+     * @param   array<mixed>    $data       An array of objects, arrays, or scalars.
      * @param   string   $name       The value of the HTML name attribute.
      * @param   mixed    $attribs    Additional HTML attributes for the <select> tag. This
      *                               can be an array of attributes, or an array of options. Treated as options
@@ -138,9 +138,9 @@ class Select
     /**
      * Generates a grouped HTML selection list from nested arrays.
      *
-     * @param   array   $data     An array of groups, each of which is an array of options.
+     * @param   array<mixed>   $data     An array of groups, each of which is an array of options.
      * @param   string|null  $name     The value of the HTML name attribute
-     * @param   array   $options  Options, an array of key/value pairs. Valid options are:
+     * @param   array<mixed>   $options  Options, an array of key/value pairs. Valid options are:
      *                            Selection options.
      *                            group.id: The property in each group to use as the group id
      *                            attribute. Defaults to none.
@@ -408,7 +408,7 @@ class Select
      * Generates the option tags for an HTML select list (with no select tag
      * surrounding the options).
      *
-     * @param   array    $arr        An array of objects, arrays, or values.
+     * @param   array<mixed>    $arr        An array of objects, arrays, or values.
      * @param   mixed    $optKey     If a string, this is the name of the object variable for
      *                               the option value. If null, the index of the array of objects is used. If
      *                               an array, this is a set of options, as key/value pairs. Valid options are:
@@ -599,12 +599,12 @@ class Select
     /**
      * Generates an HTML radio list.
      *
-     * @param   array    $data       An array of objects
+     * @param   array<mixed>    $data       An array of objects
      * @param   string   $name       The value of the HTML name attribute
-     * @param   string|array|null   $attribs    Additional HTML attributes for the <select> tag
+     * @param   string|array<mixed>|null   $attribs    Additional HTML attributes for the <select> tag
      * @param   mixed    $optKey     The key that is selected
      * @param   string   $optText    The name of the object variable for the option value
-     * @param   string|int|array|null   $selected   The selected value, or a list of them
+     * @param   string|int|array<mixed>|null   $selected   The selected value, or a list of them
      * @param   string|false  $idtag      Value of the field id, or false to use the name
      * @param   boolean  $translate  True if options will be translated
      * @return  string   HTML for the select list

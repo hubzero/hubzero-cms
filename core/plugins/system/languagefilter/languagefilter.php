@@ -41,21 +41,21 @@ class Languagefilter extends Plugin
     /**
      * SEFs
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $sefs;
 
     /**
      * Language codes
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $lang_codes;
 
     /**
      * Homes
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $homes;
 
@@ -91,7 +91,7 @@ class Languagefilter extends Plugin
      * Constructor
      *
      * @param   object  $subject
-     * @param   array   $config
+     * @param   array<mixed>   $config
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -391,9 +391,9 @@ class Languagefilter extends Plugin
      *
      * Method is called before user data is stored in the database
      *
-     * @param   array    $user   Holds the old user data.
+     * @param   array<mixed>    $user   Holds the old user data.
      * @param   boolean  $isnew  True if a new user is stored.
-     * @param   array    $new    Holds the new user data.
+     * @param   array<mixed>    $new    Holds the new user data.
      * @return  void
      */
     public function onUserBeforeSave($user, $isnew, $new)
@@ -414,7 +414,7 @@ class Languagefilter extends Plugin
      *
      * Method is called after user data is stored in the database
      *
-     * @param   array    $user     Holds the new user data.
+     * @param   array<mixed>    $user     Holds the new user data.
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
@@ -460,8 +460,8 @@ class Languagefilter extends Plugin
     /**
      * This method should handle any login logic and report back to the subject
      *
-     * @param   array    $user     Holds the user data
-     * @param   array    $options  Array holding options (remember, autoregister, group)
+     * @param   array<mixed>    $user     Holds the user data
+     * @param   array<mixed>    $options  Array holding options (remember, autoregister, group)
      * @return  void
      */
     public function onUserLogin($user, $options = [])

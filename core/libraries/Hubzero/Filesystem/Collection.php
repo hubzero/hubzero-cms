@@ -23,14 +23,14 @@ class Collection extends ItemList
     /**
      * A flat list of all data and nested files
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      **/
     private $flatData = null;
 
     /**
      * A flat list of all file extensions
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      **/
     private $flatExtentions = null;
 
@@ -120,7 +120,7 @@ class Collection extends ItemList
     /**
      * Checks to see whether or not the required extensions are in the current collection
      *
-     * @param   array  $requirements  The extension requirements to locate
+     * @param   array<mixed>  $requirements  The extension requirements to locate
      * @return  bool
      **/
     public function hasExtensions($requirements)
@@ -162,8 +162,8 @@ class Collection extends ItemList
     /**
      * Finds all items with the given extension
      *
-     * @param   string|array  $extensions  The extension(s) to look for
-     * @return  array
+     * @param   string|array<mixed>  $extensions  The extension(s) to look for
+     * @return  array<int, mixed>
      **/
     public function findAllWithExtension($extensions)
     {
@@ -186,7 +186,7 @@ class Collection extends ItemList
     /**
      * Builds a flat list of files by diving down recursively
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getFlatListOfFiles()
     {
@@ -213,7 +213,7 @@ class Collection extends ItemList
     /**
      * Builds a flat list of extensions based on files list
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getFlatListOfExtensions()
     {

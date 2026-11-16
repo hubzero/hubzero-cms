@@ -27,7 +27,7 @@ class Node extends Obj
     /**
      * Array of Children
      *
-     * @var    array
+     * @var    array<mixed>
      * @since  2.1.13
      */
     protected $children = [];
@@ -146,7 +146,7 @@ class Node extends Obj
     /**
      * Get the children of this node
      *
-     * @return  array    The children
+     * @return  array<mixed>    The children
      * @since   2.1.13
      */
     public function &getChildren()

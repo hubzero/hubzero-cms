@@ -60,7 +60,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Constructs a new database object based on the given params
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      * @throws  ConnectionFailedException  If the DSN is invalid or connection fails
      */
@@ -96,7 +96,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Configure PostgreSQL-specific connection settings
      *
-     * @param   array  $options  The database connection params
+     * @param   array<mixed>  $options  The database connection params
      * @return  void
      */
     protected function configurePostgres($options)
@@ -142,7 +142,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string   $table     The name of the database table.
      * @param   boolean  $typeOnly  True to only return field types.
-     * @return  array    An array of fields for the database table.
+     * @return  array<mixed>    An array of fields for the database table.
      */
     public function getTableColumns($table, $typeOnly = true)
     {
@@ -247,7 +247,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Returns both primary keys and indexes
      *
      * @param   string  $table  A table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getTableKeys($table)
     {
@@ -299,7 +299,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Gets an array of all tables in the database
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getTableList()
     {
@@ -313,8 +313,8 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Shows the table CREATE statement that creates the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
-     * @return  array
+     * @param   string|array<mixed>  $tables  A table name or a list of table names
+     * @return  array<mixed>
      */
     public function getTableCreate($tables)
     {
@@ -423,7 +423,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Get primary key column names
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getPrimaryKeyColumns($table): array
     {
@@ -495,7 +495,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string  $table   The table name
      * @param   string  $column  The column name
-     * @return  array
+     * @return  array<int, mixed>
      **/
     public function getEnumValues($table, $column)
     {
@@ -648,7 +648,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string  $name       The view name (with or without prefix)
      * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
-     * @param   array   $options    MySQL-specific options
+     * @param   array<mixed>   $options    MySQL-specific options
      * @return  bool
      **/
     public function createOrReplaceView($name, $selectSql, array $options = []): bool
@@ -701,7 +701,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all views in the current database
      *
-     * @return  array  Array of view names
+     * @return  array<mixed>  Array of view names
      **/
     public function getViews(): array
     {
@@ -715,7 +715,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all database names
      *
-     * @return  array  Array of database names
+     * @return  array<mixed>  Array of database names
      **/
     public function getDatabaseNames(): array
     {
@@ -728,7 +728,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Returns a list of all sequences in the current database
      *
-     * @return  array  Array of sequence names
+     * @return  array<mixed>  Array of sequence names
      **/
     public function getSequences(): array
     {
@@ -742,7 +742,7 @@ class PgsqlDriver extends BaseSqlDriver
      * @param   string  $name       The sequence name
      * @param   int     $start      Starting value
      * @param   int     $increment  Increment value
-     * @param   array   $options    Additional options
+     * @param   array<mixed>   $options    Additional options
      * @return  bool
      **/
     public function createSequence($name, $start = 1, $increment = 1, array $options = []): bool
@@ -1080,7 +1080,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets index information for a table
      *
      * @param   string  $table  The table name
-     * @return  array
+     * @return  array<mixed>
      */
     public function getIndexes($table)
     {
@@ -1127,7 +1127,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets foreign key constraints for a table
      *
      * @param   string  $table  The table name
-     * @return  array   Array of foreign key constraint objects
+     * @return  array<mixed>   Array of foreign key constraint objects
      */
     public function getForeignKeys($table)
     {
@@ -1228,7 +1228,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Get database server version information
      *
-     * @return  array  Array with standardized keys:
+     * @return  array<mixed>  Array with standardized keys:
      *                  - 'version': Full version string from server
      *                  - 'driver_version': Normalized version (x.y.z format) - STANDARD KEY
      *                  - 'postgres_version': Alias for driver_version (deprecated, use driver_version)
@@ -1264,7 +1264,7 @@ class PgsqlDriver extends BaseSqlDriver
      * applyColumnModifiers()), then handles concrete MySQL-style type fallthrough.
      *
      * @param   string  $type       The abstract or concrete type
-     * @param   array   $modifiers  Column modifiers (length, precision, etc.)
+     * @param   array<mixed>   $modifiers  Column modifiers (length, precision, etc.)
      * @return  string  The PostgreSQL-specific type definition
      */
     public function normalizeColumnType(string $type, array $modifiers = []): string
@@ -1344,7 +1344,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Handles SERIAL for auto-increment, BOOLEAN for booleans, etc.
      *
      * @param   string  $name        The column name
-     * @param   array   $definition  The column definition
+     * @param   array<mixed>   $definition  The column definition
      * @return  string  The SQL column definition string
      */
     public function buildAlterColumnDefinition(string $name, array $definition): string
@@ -1536,7 +1536,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Returns the suffix for REPLACE (upsert)
      *
      * @param   string  $key      The primary key or unique index to check collision on
-     * @param   array   $columns  The columns to update on conflict
+     * @param   array<mixed>   $columns  The columns to update on conflict
      * @return  string
      */
     public function sqlReplaceSuffix(string $key = 'id', array $columns = []): string
@@ -1759,7 +1759,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * PostgreSQL uses CONCAT function or || operator
      *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
+     * @param   array<mixed>  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcat(array $strings): string
@@ -1777,7 +1777,7 @@ class PgsqlDriver extends BaseSqlDriver
      * PostgreSQL uses CONCAT_WS(separator, ...)
      *
      * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings to concatenate
+     * @param   array<mixed>   $strings    Array of column names or quoted strings to concatenate
      * @return  string
      */
     public function sqlConcatWs(string $separator, array $strings): string
@@ -1985,7 +1985,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   string|array<mixed>  $columns  Column name(s) to index
      * @return  bool
      */
     public function addFulltextIndex(string $table, string $name, $columns): bool
@@ -2036,7 +2036,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Add a primary key to a table
      *
      * @param   string        $table    Table name (with or without prefix)
-     * @param   string|array  $columns  Column name(s) for the primary key
+     * @param   string|array<mixed>  $columns  Column name(s) for the primary key
      * @return  bool
      */
     public function addPrimaryKey(string $table, $columns): bool
@@ -2141,7 +2141,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name (with or without prefix)
      * @param   string        $name     Index name
-     * @param   array  $columns  Column name(s) to index
+     * @param   array<mixed>  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  string
      */
@@ -2266,7 +2266,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Get global configuration variables (PostgreSQL-specific implementation)
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getGlobalVariables()
     {
@@ -2301,7 +2301,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Get table I/O statistics (PostgreSQL-specific implementation)
      *
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getTableIoStats()
     {
@@ -2317,7 +2317,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Get CHECK constraints for table (PostgreSQL-specific implementation)
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<int, \stdClass>
      */
     public function getCheckConstraints(string $table): array
     {

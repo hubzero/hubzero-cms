@@ -64,7 +64,7 @@ class Message extends Relational
     /**
      * Get a record count based on filters passed
      *
-     * @param   array    $filters  Filters to build query from
+     * @param   array<mixed>    $filters  Filters to build query from
      * @return  integer
      */
     public function getCount($filters = [])
@@ -76,7 +76,7 @@ class Message extends Relational
     /**
      * Get records based on filters passed
      *
-     * @param   array  $filters  Filters to build query from
+     * @param   array<mixed>  $filters  Filters to build query from
      * @return  \Hubzero\Database\Rows
      */
     public function getRecords($filters = [])
@@ -88,7 +88,7 @@ class Message extends Relational
     /**
      * Builds a query string based on filters passed
      *
-     * @param   array   $filters  Filters to build query from
+     * @param   array<mixed>   $filters  Filters to build query from
      * @return  static  SQL
      */
     private function buildQuery($filters = [])
@@ -131,7 +131,7 @@ class Message extends Relational
     /**
      * Get sent messages
      *
-     * @param   array    $filters  Filters to build query from
+     * @param   array<mixed>    $filters  Filters to build query from
      * @return  \Hubzero\Database\Rows
      */
     public function getSentMessages($filters = [])
@@ -151,7 +151,7 @@ class Message extends Relational
     /**
      * Get a record count of messages sent
      *
-     * @param   array    $filters  Filters to build query from
+     * @param   array<mixed>    $filters  Filters to build query from
      * @return  integer
      */
     public function getSentMessagesCount($filters = [])
@@ -186,7 +186,7 @@ class Message extends Relational
     /**
      * Auto-link mailto, ftp, and http strings in text
      *
-     * @param   array  $matches  Text to autolink
+     * @param   array<mixed>  $matches  Text to autolink
      * @return  string
      */
     protected function autolink($matches)

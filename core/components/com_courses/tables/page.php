@@ -78,7 +78,7 @@ class Page extends Table
     /**
      * Build query method
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string  Database query
      */
     private function buildQuery($filters = [])
@@ -136,7 +136,7 @@ class Page extends Table
     /**
      * Get an object list of course units
      *
-     * @param  array $filters
+     * @param  array<mixed> $filters
      * @return string|null Return course units
      */
     public function count($filters = [])
@@ -151,7 +151,7 @@ class Page extends Table
     /**
      * Get pages for a course
      *
-     * @return     array
+     * @return     array<int, \stdClass>
      */
     public function find($filters = [])
     {

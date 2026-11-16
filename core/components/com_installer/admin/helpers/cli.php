@@ -191,8 +191,8 @@ class Cli
      *
      * @param   string  $cmd   the command to run
      * @param   string  $task  the muse task to run (only repository and migration will work)
-     * @param   array   $args  the command arguments
-     * @return  array   array('output' => string, 'status' => int exit code)
+     * @param   array<mixed>   $args  the command arguments
+     * @return  array<mixed>   array('output' => string, 'status' => int exit code)
      **/
     public static function callWithStatus($cmd, $task = 'repository', $args = [])
     {
@@ -212,7 +212,7 @@ class Cli
      *
      * @param   string  $cmd   the command to run
      * @param   string  $task  the muse task to run (only repository and migration will work)
-     * @param   array   $args  the command arguments
+     * @param   array<mixed>   $args  the command arguments
      * @return  string
      **/
     public static function call($cmd, $task = 'repository', $args = [])
@@ -225,7 +225,7 @@ class Cli
      *
      * @param   string  $cmd   the command to run
      * @param   string  $task  the muse task to run
-     * @param   array   $args  the command arguments
+     * @param   array<mixed>   $args  the command arguments
      * @return  string
      **/
     private static function command($cmd, $task, $args)

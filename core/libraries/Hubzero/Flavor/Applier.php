@@ -48,7 +48,7 @@ class Applier
      * wrong state, there is no state - but worth knowing, since a mistyped
      * path looks exactly like this.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $notes = [];
 
@@ -103,7 +103,7 @@ class Applier
      * Every way the hub differs from the flavor; nothing when it matches
      *
      * @param   Flavor  $flavor
-     * @return  array   Sentences
+     * @return  array<mixed>   Sentences
      */
     public function check(Flavor $flavor)
     {
@@ -150,7 +150,7 @@ class Applier
     /**
      * The rows the last check() found the flavor naming but the hub lacking
      *
-     * @return  array  Sentences
+     * @return  array<mixed>  Sentences
      */
     public function notes()
     {
@@ -163,7 +163,7 @@ class Applier
      * Enable, disable and set parameters on one kind of extension
      *
      * @param   string  $type    component, module or plugin
-     * @param   array   $lever   enable, disable and params lists
+     * @param   array<mixed>   $lever   enable, disable and params lists
      * @return  void
      */
     protected function applySwitches($type, array $lever)
@@ -196,9 +196,9 @@ class Applier
     /**
      * Compare one kind of extension with the flavor
      *
-     * @param   array   &$found
+     * @param   array<mixed>   &$found
      * @param   string  $type
-     * @param   array   $lever
+     * @param   array<mixed>   $lever
      * @return  void
      */
     protected function checkSwitches(array &$found, $type, array $lever)
@@ -261,7 +261,7 @@ class Applier
      *
      * @param   string  $type
      * @param   string  $name
-     * @return  array
+     * @return  array<mixed>
      */
     protected function currentParams($type, $name)
     {
@@ -302,7 +302,7 @@ class Applier
      *
      * @param   string  $type
      * @param   string  $name
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @return  void
      */
     protected function setParams($type, $name, array $params)
@@ -374,7 +374,7 @@ class Applier
      * A plugin's folder and element from folder/element
      *
      * @param   string  $name
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function pluginParts($name)
     {
@@ -392,7 +392,7 @@ class Applier
      * instance with it, since the shipped data places the same module in
      * more than one template's positions under one title.
      *
-     * @param   array  $items  id-or-title => state
+     * @param   array<mixed>  $items  id-or-title => state
      * @return  void
      */
     protected function applyModuleItems(array $items)
@@ -426,8 +426,8 @@ class Applier
     /**
      * Compare module instances with the flavor's
      *
-     * @param   array  &$found
-     * @param   array  $items
+     * @param   array<mixed>  &$found
+     * @param   array<mixed>  $items
      * @return  void
      */
     protected function checkModuleItems(array &$found, array $items)
@@ -488,7 +488,7 @@ class Applier
     /**
      * Compare the default template with the flavor's
      *
-     * @param   array        &$found
+     * @param   array<mixed>        &$found
      * @param   string|null  $template
      * @return  void
      */
@@ -512,7 +512,7 @@ class Applier
     /**
      * Set the member dashboard's default tiles
      *
-     * @param   array|null  $tiles  Each with a module and a col
+     * @param   array<mixed>|null  $tiles  Each with a module and a col
      * @return  void
      */
     protected function applyTiles($tiles)
@@ -528,8 +528,8 @@ class Applier
     /**
      * Compare the dashboard's default tiles with the flavor's
      *
-     * @param   array       &$found
-     * @param   array|null  $tiles
+     * @param   array<mixed>       &$found
+     * @param   array<mixed>|null  $tiles
      * @return  void
      */
     protected function checkTiles(array &$found, $tiles)
@@ -557,8 +557,8 @@ class Applier
      * Give each tile its row: two rows high, stacked in its column in the
      * order given, then listed column by column as the shipped data is
      *
-     * @param   array  $tiles  Each with a module and a col
-     * @return  array  Each with row, size_x and size_y as well
+     * @param   array<mixed>  $tiles  Each with a module and a col
+     * @return  array<mixed>  Each with row, size_x and size_y as well
      */
     public static function layout(array $tiles)
     {
@@ -589,8 +589,8 @@ class Applier
     /**
      * Tiles reduced to what places them, for comparing
      *
-     * @param   array  $tiles
-     * @return  array
+     * @param   array<mixed>  $tiles
+     * @return  array<int, mixed>
      */
     protected function tileKeys(array $tiles)
     {
@@ -617,7 +617,7 @@ class Applier
      *
      * @param   string  $table
      * @param   string  $column
-     * @param   array   $states  key => state
+     * @param   array<mixed>   $states  key => state
      * @param   string  $also    An extra condition, or ''
      * @param   string  $what    For messages
      * @param   string  $key     The column the keys name
@@ -654,10 +654,10 @@ class Applier
     /**
      * Compare state columns with the flavor's
      *
-     * @param   array   &$found
+     * @param   array<mixed>   &$found
      * @param   string  $table
      * @param   string  $column
-     * @param   array   $states
+     * @param   array<mixed>   $states
      * @param   string  $also
      * @param   string  $what
      * @param   string  $key
@@ -693,7 +693,7 @@ class Applier
     /**
      * Set columns on resource types picked by alias
      *
-     * @param   array  $types  alias => (column => value)
+     * @param   array<mixed>  $types  alias => (column => value)
      * @return  void
      */
     protected function applyResourceTypes(array $types)
@@ -733,8 +733,8 @@ class Applier
     /**
      * Compare resource type columns with the flavor's
      *
-     * @param   array  &$found
-     * @param   array  $types
+     * @param   array<mixed>  &$found
+     * @param   array<mixed>  $types
      * @return  void
      */
     protected function checkResourceTypes(array &$found, array $types)
@@ -769,7 +769,7 @@ class Applier
      * Parameters as an array, from whatever form they were stored in
      *
      * @param   mixed  $params
-     * @return  array
+     * @return  array<mixed>
      */
     protected function decode($params)
     {

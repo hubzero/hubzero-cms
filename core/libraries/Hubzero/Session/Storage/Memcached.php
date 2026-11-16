@@ -41,14 +41,14 @@ class Memcached extends Store
     /**
      * List of servers
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $servers = [];
 
     /**
      * Constructor
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  void
      */
     public function __construct($options = [])
@@ -214,8 +214,8 @@ class Memcached extends Store
     /**
      * Get list of all sessions
      *
-     * @param   array  $filters
-     * @return  array
+     * @param   array<mixed>  $filters
+     * @return  array<int, mixed>
      */
     public function all($filters = [])
     {

@@ -33,21 +33,21 @@ class TableDefinition
     /**
      * Index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $indexes = [];
 
     /**
      * Foreign key definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $foreignKeys = [];
 
     /**
      * Primary key columns (for composite keys)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $primaryKeys = [];
 
@@ -82,7 +82,7 @@ class TableDefinition
     /**
      * Columns to drop
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $dropColumns = [];
 
@@ -96,14 +96,14 @@ class TableDefinition
     /**
      * Unique index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $uniqueIndexes = [];
 
     /**
      * Fulltext index definitions
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $fulltextIndexes = [];
 
@@ -149,7 +149,7 @@ class TableDefinition
     /**
      * Get index definitions
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getIndexes(): array
     {
@@ -159,7 +159,7 @@ class TableDefinition
     /**
      * Get foreign key definitions
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getForeignKeys(): array
     {
@@ -169,7 +169,7 @@ class TableDefinition
     /**
      * Get primary key columns
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getPrimaryKeys(): array
     {
@@ -179,7 +179,7 @@ class TableDefinition
     /**
      * Get columns to drop
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getDropColumns(): array
     {
@@ -263,7 +263,7 @@ class TableDefinition
     /**
      * Get unique index definitions
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getUniqueIndexes(): array
     {
@@ -273,7 +273,7 @@ class TableDefinition
     /**
      * Get fulltext index definitions
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getFulltextIndexes(): array
     {
@@ -884,7 +884,7 @@ class TableDefinition
     /**
      * Add a primary key constraint
      *
-     * @param  string|array  $columns
+     * @param  string|array<mixed>  $columns
      * @param  string|null   $name
      * @return $this
      */
@@ -898,7 +898,7 @@ class TableDefinition
     /**
      * Add a unique index
      *
-     * @param  string|array  $columns
+     * @param  string|array<mixed>  $columns
      * @param  string|null   $name
      * @return $this
      */
@@ -917,7 +917,7 @@ class TableDefinition
     /**
      * Add a regular index
      *
-     * @param  string|array  $columns
+     * @param  string|array<mixed>  $columns
      * @param  string|null   $name
      * @return $this
      */
@@ -936,7 +936,7 @@ class TableDefinition
     /**
      * Add a fulltext index
      *
-     * @param  string|array  $columns   Columns to index
+     * @param  string|array<mixed>  $columns   Columns to index
      * @param  string|null   $name      Index name
      * @param  string        $language  Text search language (for PostgreSQL: 'english', 'simple', etc.)
      * @return $this
@@ -957,7 +957,7 @@ class TableDefinition
     /**
      * Add a spatial index (for geometry/geography columns)
      *
-     * @param  string|array  $columns
+     * @param  string|array<mixed>  $columns
      * @param  string|null   $name
      * @return $this
      */
@@ -1018,7 +1018,7 @@ class TableDefinition
      *
      * @param  string  $name  Column name
      * @param  string  $type  New column type
-     * @param  array   $parameters  Type parameters (length, precision, etc.)
+     * @param  array<mixed>   $parameters  Type parameters (length, precision, etc.)
      * @return Column
      */
     public function modifyColumn(string $name, string $type, array $parameters = []): Column

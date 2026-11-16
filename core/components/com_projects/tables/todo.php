@@ -56,7 +56,7 @@ class Todo extends Table
      * Get records
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @param   integer  $id
      * @return  mixed    integer or null
      */
@@ -155,7 +155,7 @@ class Todo extends Table
      * Get lists
      *
      * @param   integer|null  $projectid
-     * @param   array    $filters
+     * @param   array<mixed>    $filters
      * @return  mixed    object or null
      */
     public function getTodoLists($projectid = null, $filters = [])

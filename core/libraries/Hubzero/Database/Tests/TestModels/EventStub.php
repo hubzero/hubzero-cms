@@ -18,8 +18,8 @@ class EventStub
      * Trigger an event (no-op for testing)
      *
      * @param  string $event Event name
-     * @param  array  $args  Event arguments
-     * @return array
+     * @param  array<mixed>  $args  Event arguments
+     * @return array<mixed>
      */
     public static function trigger($event, $args = [])
     {

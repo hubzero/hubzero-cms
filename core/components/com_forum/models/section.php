@@ -91,7 +91,7 @@ class Section extends Relational
     /**
      * Generates automatic alias field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
@@ -104,7 +104,7 @@ class Section extends Relational
     /**
      * Generates automatic scope value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticScope($data)
@@ -118,7 +118,7 @@ class Section extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -360,7 +360,7 @@ class Section extends Relational
     /**
      * Get a form
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object
      */
     public function getForm($data = [])

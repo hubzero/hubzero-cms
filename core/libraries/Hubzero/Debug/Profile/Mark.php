@@ -130,7 +130,7 @@ class Mark
     /**
      * Get array output
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function toArray()
     {

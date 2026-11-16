@@ -18,7 +18,7 @@ class Migration20190305000000ComCollections extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__collections_votes' => [

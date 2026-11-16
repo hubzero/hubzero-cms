@@ -20,7 +20,7 @@ class HandlerTest extends Basic
     /**
      * Test data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [
         [

@@ -49,7 +49,7 @@ class RelatedItems extends Module
      * Get a list of articles
      *
      * @param   object  $params  Registry
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function getList($params)
     {

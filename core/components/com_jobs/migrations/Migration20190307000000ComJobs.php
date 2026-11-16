@@ -18,7 +18,7 @@ class Migration20190307000000ComJobs extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public static $tables = [
         '#__jobs_applications' => [

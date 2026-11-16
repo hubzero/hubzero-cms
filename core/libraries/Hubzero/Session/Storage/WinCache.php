@@ -29,7 +29,7 @@ class WinCache extends Store
     /**
      * Constructor
      *
-     * @param   array  $options  Optional parameters.
+     * @param   array<mixed>  $options  Optional parameters.
      * @return  void
      */
     public function __construct($options = [])

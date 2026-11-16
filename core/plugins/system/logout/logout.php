@@ -24,7 +24,7 @@ class Logout extends Plugin
      * Object Constructor.
      *
      * @param   object  $subject  The object to observe -- event dispatcher.
-     * @param   array  $config   The configuration object for the plugin.
+     * @param   array<mixed>  $config   The configuration object for the plugin.
      * @return  void
      */
     public function __construct(&$subject, $config)
@@ -49,8 +49,8 @@ class Logout extends Plugin
     /**
      * This method should handle any logout logic and report back to the subject
      *
-     * @param   array  $user     Holds the user data.
-     * @param   array  $options  Array holding options (client, ...).
+     * @param   array<mixed>  $user     Holds the user data.
+     * @param   array<mixed>  $options  Array holding options (client, ...).
      * @return  bool
      */
     public function onUserLogout($user, $options = [])

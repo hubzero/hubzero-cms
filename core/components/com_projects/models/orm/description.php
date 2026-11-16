@@ -70,7 +70,7 @@ class Description extends Relational
     /**
      * Generates automatic ordering field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticOrdering($data)
@@ -107,7 +107,7 @@ class Description extends Relational
      * Helper method to collect multi-value fields
      *
      * @param   iterable  $data
-     * @return  array
+     * @return  array<mixed>
      */
     public static function collect($data)
     {

@@ -118,7 +118,7 @@ class Publication extends Obj
     /**
      * Container for properties
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $data = [];
 
@@ -132,7 +132,7 @@ class Publication extends Obj
     /**
      * ORCID service URLs
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $orcidServices = [
         'public'  => 'pub.orcid.org',
@@ -834,7 +834,7 @@ class Publication extends Obj
      * Get unlinked contributors
      *
      * @param   boolean  $incSubmitter
-     * @return  string|array
+     * @return  string|array<mixed>
      */
     public function getUnlinkedContributors($incSubmitter = false)
     {
@@ -957,9 +957,9 @@ class Publication extends Obj
     /**
      * Get group property
      *
-     * @param   array|false  $groups
+     * @param   array<mixed>|false  $groups
      * @param   string       $get
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function getGroupProperty($groups, $get = 'cn')
     {
@@ -998,7 +998,7 @@ class Publication extends Obj
     /**
      * Get publication attachments count
      *
-     * @return  int|array
+     * @return  int|array<mixed>
      */
     public function attachmentsCount()
     {
@@ -1727,7 +1727,7 @@ class Publication extends Obj
      * @param   int     $tagger_id
      * @param   int     $strength
      * @param   int     $admin
-     * @return  bool|array  HTML
+     * @return  bool|array<mixed>  HTML
      */
     public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
     {
@@ -2148,7 +2148,7 @@ class Publication extends Obj
      * Get a count of, model for, or list of entries
      *
      * @param   string   $rtrn     Data to return
-     * @param   array    $filters  Filters to apply to data retrieval
+     * @param   array<mixed>    $filters  Filters to apply to data retrieval
      * @param   boolean  $admin    Admin?
      * @return  mixed
      */
@@ -2363,7 +2363,7 @@ class Publication extends Obj
     /**
      * Get tags that belongs to the publication
      *
-     * @return  array|false or false
+     * @return  array<mixed>|false or false
      */
     public function getTagsOfPublication()
     {

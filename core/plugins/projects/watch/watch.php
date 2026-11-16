@@ -43,7 +43,7 @@ class Watch extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param   string|null  $alias
-     * @return  array   Plugin name and title
+     * @return  array<mixed>   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
     {
@@ -62,8 +62,8 @@ class Watch extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array|null  $areas   Plugins to return data
-     * @return  array|null   Return array of html
+     * @param   string|array<mixed>|null  $areas   Plugins to return data
+     * @return  array<mixed>|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -260,9 +260,9 @@ class Watch extends Plugin
      *
      * @param   object   $project     Project model
      * @param   string   $area        Project area of activity
-     * @param   array    $activities  Project activities (array of IDs)
+     * @param   array<mixed>    $activities  Project activities (array of IDs)
      * @param   integer  $actor       Uid of team member posting the activity (to exclude from subscribers)
-     * @return  array|false|null
+     * @return  array<mixed>|false|null
      */
     public function onWatch($project, $area = '', $activities = [], $actor = 0)
     {
@@ -368,7 +368,7 @@ class Watch extends Plugin
      *
      * @param   object  $project
      * @param   object  $subscriber
-     * @param   array|\Hubzero\Database\Rows   $activities
+     * @param   array<mixed>|\Hubzero\Database\Rows   $activities
      * @param   string  $subject
      * @return  bool
      */

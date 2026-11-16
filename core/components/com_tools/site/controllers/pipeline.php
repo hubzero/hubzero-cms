@@ -704,7 +704,7 @@ class Pipeline extends SiteController
     /**
      * Show an edit form
      *
-     * @param   object|array|null  $tool
+     * @param   object|array<mixed>|null  $tool
      * @return  void
      */
     public function editTask($tool = null)
@@ -1181,8 +1181,8 @@ class Pipeline extends SiteController
     /**
      * Add repo
      *
-     * @param   array    &$output   Messages to be returned
-     * @param   array    $toolinfo  Tool information
+     * @param   array<mixed>    &$output   Messages to be returned
+     * @param   array<mixed>    $toolinfo  Tool information
      * @return  boolean  False if errors, True on success
      */
     protected function addRepo(&$output, $toolinfo = [])
@@ -1613,7 +1613,7 @@ class Pipeline extends SiteController
      * @param   string  $comment   Message
      * @param   int|string  $access
      * @param   int|string  $action
-     * @param   array   $toolinfo  Array of tool information
+     * @param   array<mixed>   $toolinfo  Array of tool information
      * @return  void
      */
     protected function email($toolid, $summary, $comment, $access, $action, $toolinfo = [])
@@ -1745,8 +1745,8 @@ class Pipeline extends SiteController
      *
      * @param   integer  $toolid    Tool ID
      * @param   integer  $ticketid  Ticket ID
-     * @param   array    $oldstuff  Information before any changes
-     * @param   array    $newstuff  Information after changes
+     * @param   array<mixed>    $oldstuff  Information before any changes
+     * @param   array<mixed>    $newstuff  Information after changes
      * @param   string   $comment   Comments to add
      * @param   integer  $access
      * @param   integer  $email
@@ -1977,8 +1977,8 @@ class Pipeline extends SiteController
      * Update a support ticket
      *
      * @param   integer  $toolid    Tool ID
-     * @param   array    $oldstuff  Information before any changes
-     * @param   array    $newstuff  Information after changes
+     * @param   array<mixed>    $oldstuff  Information before any changes
+     * @param   array<mixed>    $newstuff  Information after changes
      * @param   string   $comment   Comments to add
      * @param   integer  $access
      * @param   integer  $email
@@ -2180,7 +2180,7 @@ class Pipeline extends SiteController
      * Creates a support ticket for a tool
      *
      * @param   integer  $toolid  Tool ID
-     * @param   array    $tool    Array of tool info
+     * @param   array<mixed>    $tool    Array of tool info
      * @return  mixed    False if errors, integer on success
      */
     private function createTicket($toolid, $tool)
@@ -2292,7 +2292,7 @@ class Pipeline extends SiteController
      *
      * @param   string   $command     Command to execute
      * @param   string   $successmsg  Message to set upon success
-     * @param   array    &$output     Output data
+     * @param   array<mixed>    &$output     Output data
      * @param   integer  $success     Was the exec successful?
      * @return  boolean  True if no errors
      */

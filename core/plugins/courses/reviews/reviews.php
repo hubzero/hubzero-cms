@@ -43,7 +43,7 @@ class Reviews extends Plugin
      *
      * @param   object  $course
      * @param   string|null  $active
-     * @return  array
+     * @return  array<mixed>
      */
     public function onCourseView($course, $active = null)
     {

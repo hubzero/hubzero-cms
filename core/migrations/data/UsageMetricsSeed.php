@@ -2666,7 +2666,7 @@ class UsageMetricsSeed
     /**
      * The tables, in the order the migrations create them
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public static function tables(): array
     {
@@ -2688,7 +2688,7 @@ class UsageMetricsSeed
      * A table's seed rows, each keyed by column name
      *
      * @param   string  $table  Table name
-     * @return  array
+     * @return  array<mixed>
      */
     public static function rows(string $table): array
     {

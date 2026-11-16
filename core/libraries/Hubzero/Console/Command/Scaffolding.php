@@ -22,14 +22,14 @@ class Scaffolding extends Base implements CommandInterface
     /**
      * Array of vars to replace in template
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $replacements = [];
 
     /**
      * Array of template files to parse
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $templateFiles = [];
 

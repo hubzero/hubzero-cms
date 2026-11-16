@@ -39,7 +39,7 @@ class Migration20261104160100ComUsage extends Base
      * IP address columns, by table, with the character set to store each in
      * (null to keep its own)
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     protected $columns = [
         'sessionlog_metrics' => ['ip', null],

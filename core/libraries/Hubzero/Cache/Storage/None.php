@@ -16,14 +16,14 @@ class None implements StorageInterface
     /**
      * The file cache directory
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $options = [];
 
     /**
      * Create a new file cache store instance.
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function __construct(array $options = [])
@@ -144,7 +144,7 @@ class None implements StorageInterface
     /**
      * Get all cached data
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function all()
     {

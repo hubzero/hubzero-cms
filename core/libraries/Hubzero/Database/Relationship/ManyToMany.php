@@ -136,7 +136,7 @@ class ManyToMany extends OneToManyThrough
     /**
      * Generates the connection data needed to create the associative entry
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     protected function getConnectionData()
     {

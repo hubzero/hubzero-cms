@@ -85,7 +85,7 @@ class Database
      * Load existing database configuration from config file
      *
      * @param   string  $appPath  Path to the app directory
-     * @return  array   Existing configuration values (empty array if none)
+     * @return  array<string, mixed>   Existing configuration values (empty array if none)
      */
     public static function loadExistingConfig($appPath)
     {
@@ -130,7 +130,7 @@ class Database
      * database step ask here instead, so they see what it just wrote.
      *
      * @param   string  $appPath  Path to the app directory
-     * @return  array|null  The configuration, or null if there is none to read
+     * @return  array<mixed>|null  The configuration, or null if there is none to read
      */
     public static function readConfig($appPath)
     {
@@ -148,7 +148,7 @@ class Database
     /**
      * Test existing database configuration
      *
-     * @param   array  $existing  Existing configuration
+     * @param   array<mixed>  $existing  Existing configuration
      * @param   bool   $ansi      Whether to use ANSI colors
      * @return  bool   True if connection works
      */
@@ -188,7 +188,7 @@ class Database
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string|null  $appPath   Path to the app directory
-     * @param   array|null   $existing  Existing configuration to use as defaults
+     * @param   array<mixed>|null   $existing  Existing configuration to use as defaults
      * @return  bool|null  True on success, false on failure, null if user exited
      */
     public static function configure($ansi = true, $appPath = null, $existing = null)
@@ -312,7 +312,7 @@ class Database
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
-     * @param   array   $existing  Existing configuration to fall back on
+     * @param   array<mixed>   $existing  Existing configuration to fall back on
      * @return  bool
      */
     private static function configureUnattended($ansi, $appPath, array $existing)
@@ -412,8 +412,8 @@ class Database
      * Select MySQL connection type
      *
      * @param   bool   $ansi      Whether to use ANSI colors
-     * @param   array  $existing  Existing configuration to use as defaults
-     * @return  array|null|false  Connection configuration, null if user exited, false on failure
+     * @param   array<mixed>  $existing  Existing configuration to use as defaults
+     * @return  array<mixed>|null|false  Connection configuration, null if user exited, false on failure
      **/
     private static function selectMySqlConnection($ansi, $existing = [])
     {
@@ -635,7 +635,7 @@ class Database
      * Prompt for custom connection details
      *
      * @param   bool  $ansi  Whether to use ANSI colors
-     * @return  array|null|false  Connection config, null to go back, false to exit
+     * @return  array<mixed>|null|false  Connection config, null to go back, false to exit
      **/
     private static function promptCustomConnection($ansi)
     {
@@ -684,7 +684,7 @@ class Database
      * Prompt for hostname-based connection details
      *
      * @param   bool  $ansi  Whether to use ANSI colors
-     * @return  array  Connection configuration
+     * @return  array<mixed>  Connection configuration
      **/
     private static function promptHostnameConnection($ansi)
     {
@@ -719,7 +719,7 @@ class Database
      * Prompt for socket-based connection details
      *
      * @param   bool  $ansi  Whether to use ANSI colors
-     * @return  array  Connection configuration
+     * @return  array<mixed>  Connection configuration
      **/
     private static function promptSocketConnection($ansi)
     {
@@ -748,10 +748,10 @@ class Database
      * If that works and has admin privileges, offers to create a dedicated database user.
      * Otherwise, offers a menu to either enter admin credentials or use existing credentials.
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function authenticateConnection($connection, $ansi, $existing = [])
     {
@@ -775,10 +775,10 @@ class Database
     /**
      * Offer options for database credentials when no automatic admin access
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function promptCredentialOptions($connection, $ansi, $existing = [])
     {
@@ -821,10 +821,10 @@ class Database
     /**
      * Prompt for MySQL admin credentials to create a new user
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function promptAdminCredentials($connection, $ansi, $existing = [])
     {
@@ -986,10 +986,10 @@ class Database
      * Attempts to connect without credentials and checks if the connected user
      * has privileges to CREATE USER, GRANT, and CREATE DATABASE.
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null if should prompt instead, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null if should prompt instead, false to exit
      **/
     private static function tryAdminConnection($connection, $ansi, $existing = [])
     {
@@ -1393,11 +1393,11 @@ class Database
     /**
      * Offer to create a new database user or use existing credentials
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   \PDO   $adminPdo    Admin PDO connection
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function offerUserCreation($connection, $adminPdo, $ansi, $existing = [])
     {
@@ -1441,11 +1441,11 @@ class Database
     /**
      * Create a new database and credentials for this site
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   \PDO   $adminPdo    Admin PDO connection
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function createDatabaseUser($connection, $adminPdo, $ansi, $existing = [])
     {
@@ -1565,13 +1565,13 @@ class Database
     /**
      * Handle the case when user already exists
      *
-     * @param   array   $connection  Connection configuration
+     * @param   array<mixed>   $connection  Connection configuration
      * @param   \PDO    $adminPdo    Admin PDO connection
      * @param   string  $database    Database name
      * @param   string  $username    Username
      * @param   string  $userHost    User host
      * @param   bool    $ansi        Whether to use ANSI colors
-     * @return  array|null|false     Connection with credentials, null to go back, false to exit
+     * @return  array<mixed>|null|false     Connection with credentials, null to go back, false to exit
      **/
     private static function handleExistingUser($connection, $adminPdo, $database, $username, $userHost, $ansi)
     {
@@ -1764,14 +1764,14 @@ class Database
     /**
      * Execute the actual user and database creation
      *
-     * @param   array   $connection  Connection configuration
+     * @param   array<mixed>   $connection  Connection configuration
      * @param   \PDO    $adminPdo    Admin PDO connection
      * @param   string  $database    Database name
      * @param   string  $username    Username
      * @param   string  $password    Password
      * @param   string  $userHost    User host
      * @param   bool    $ansi        Whether to use ANSI colors
-     * @return  array|null|false     Connection with credentials, null to go back, false to exit
+     * @return  array<mixed>|null|false     Connection with credentials, null to go back, false to exit
      **/
     private static function executeUserCreation(
         $connection,
@@ -1925,11 +1925,11 @@ class Database
     /**
      * Test credentials and return connection config
      *
-     * @param   array   $connection  Connection configuration
+     * @param   array<mixed>   $connection  Connection configuration
      * @param   string  $username    Username to test
      * @param   string  $password    Password to test
      * @param   bool    $ansi        Whether to use ANSI colors
-     * @return  array|null           Connection with credentials, or null on failure
+     * @return  array<mixed>|null           Connection with credentials, or null on failure
      **/
     private static function testAndReturnCredentials($connection, $username, $password, $ansi)
     {
@@ -1980,10 +1980,10 @@ class Database
     /**
      * Prompt for database credentials
      *
-     * @param   array  $connection  Connection configuration
+     * @param   array<mixed>  $connection  Connection configuration
      * @param   bool   $ansi        Whether to use ANSI colors
-     * @param   array  $existing    Existing configuration to use as defaults
-     * @return  array|null|false    Connection with credentials, null to go back, false to exit
+     * @param   array<mixed>  $existing    Existing configuration to use as defaults
+     * @return  array<mixed>|null|false    Connection with credentials, null to go back, false to exit
      **/
     private static function promptCredentials($connection, $ansi, $existing = [])
     {
@@ -2168,7 +2168,7 @@ class Database
      *
      * Falls back to numbered input if interactive mode is unavailable.
      *
-     * @param   array   $options        Array of option labels (0-indexed)
+     * @param   array<mixed>   $options        Array of option labels (0-indexed)
      * @param   int     $default        Default selected index (0-indexed)
      * @param   bool    $ansi           Whether to use ANSI colors
      * @param   bool    $showBackspace  Whether to show backspace hint (for submenus)
@@ -2188,7 +2188,7 @@ class Database
     /**
      * Run the interactive arrow-key menu
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $default        Default selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  int    Selected index, or -1 if backspace (go back) was pressed
@@ -2238,7 +2238,7 @@ class Database
     /**
      * Draw the menu options
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $selected       Currently selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  void
@@ -2264,7 +2264,7 @@ class Database
     /**
      * Redraw the menu (move cursor up and redraw)
      *
-     * @param   array  $options        Array of option labels
+     * @param   array<mixed>  $options        Array of option labels
      * @param   int    $selected       Currently selected index
      * @param   bool   $showBackspace  Whether to show backspace hint
      * @return  void
@@ -2288,7 +2288,7 @@ class Database
     /**
      * Run the numbered fallback menu
      *
-     * @param   array  $options  Array of option labels
+     * @param   array<mixed>  $options  Array of option labels
      * @param   int    $default  Default selected index
      * @param   bool   $ansi     Whether to use ANSI colors
      * @return  int    Selected index
@@ -2548,7 +2548,7 @@ class Database
      * Settings can include: user, password, host, port, socket
      *
      * @param   string  $path  Path to the .my.cnf file
-     * @return  array|null     Parsed settings or null if file doesn't exist/is unreadable
+     * @return  array<mixed>|null     Parsed settings or null if file doesn't exist/is unreadable
      **/
     private static function parseMyCnf($path)
     {
@@ -2683,7 +2683,7 @@ class Database
     /**
      * Build a PDO DSN string from .my.cnf settings
      *
-     * @param   array   $myCnf  Parsed .my.cnf settings
+     * @param   array<mixed>   $myCnf  Parsed .my.cnf settings
      * @return  string  PDO DSN string
      **/
     private static function buildDsnFromMyCnf(array $myCnf)
@@ -2711,7 +2711,7 @@ class Database
      * @param   string  $dsn       PDO DSN
      * @param   string  $username  Database username
      * @param   string  $password  Database password
-     * @param   array   $options   PDO options
+     * @param   array<mixed>   $options   PDO options
      * @return  \PDO
      * @throws  \PDOException
      */

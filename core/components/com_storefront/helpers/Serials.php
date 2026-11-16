@@ -55,7 +55,7 @@ class Serials
      *
      * @param   integer  $sId    SKU ID
      * @param   integer $qty  Number of serials to mark
-     * @return  array|bool
+     * @return  array<mixed>|bool
      */
     public static function releaseSerials($sId, $qty = 1)
     {
@@ -74,7 +74,7 @@ class Serials
      *
      * @param   integer  $sId    SKU ID
      * @param   integer $qty  Number of serials to get
-     * @return  array
+     * @return  array<int, mixed>
      */
     public static function issueSerials($sId, $qty = 1)
     {
@@ -108,9 +108,9 @@ class Serials
     /**
      * Get a list or count of the serials for the SKU.
      *
-     * @param   array $filters   Filters
+     * @param   array<mixed> $filters   Filters
      * @param   int $sId  SKU id
-     * @return  array|int  the serials, or how many there are
+     * @return  array<mixed>|int  the serials, or how many there are
      */
     public static function getSkuSerials($filters, $sId)
     {

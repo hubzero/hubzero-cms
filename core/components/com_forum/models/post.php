@@ -177,7 +177,7 @@ class Post extends Relational
      * be created at all; a lenient one quietly coerces it to zero, which is what
      * these columns already mean by absent.
      *
-     * @param   array   $data   the data being saved
+     * @param   array<mixed>   $data   the data being saved
      * @param   string  $field  the column to read
      * @return  int
      */
@@ -189,7 +189,7 @@ class Post extends Relational
     /**
      * Generates automatic parent value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticParent($data)
@@ -203,7 +203,7 @@ class Post extends Relational
      * A new thread has none until it has been saved and can take its own id;
      * that happens after the insert, and zero reads as absent until then.
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticThread($data)
@@ -214,7 +214,7 @@ class Post extends Relational
     /**
      * Generates automatic scope_sub_id value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticScopeSubId($data)
@@ -225,7 +225,7 @@ class Post extends Relational
     /**
      * Generates automatic object_id value
      *
-     * @param   array  $data  the data being saved
+     * @param   array<mixed>  $data  the data being saved
      * @return  int
      */
     public function automaticObjectId($data)
@@ -236,7 +236,7 @@ class Post extends Relational
     /**
      * Generates automatic scope value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticTitle($data)
@@ -253,7 +253,7 @@ class Post extends Relational
     /**
      * Generates automatic scope value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticScope($data)
@@ -267,7 +267,7 @@ class Post extends Relational
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticLft($data)
@@ -282,7 +282,7 @@ class Post extends Relational
     /**
      * Generates automatic lft value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticRgt($data)
@@ -299,7 +299,7 @@ class Post extends Relational
     /**
      * Generates automatic created field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array<mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticModified($data)
@@ -310,7 +310,7 @@ class Post extends Relational
     /**
      * Generates automatic created by field value
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -592,7 +592,7 @@ class Post extends Relational
     /**
      * Get the most recent post made in the thread
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public function lastActivity($filters = [])
@@ -922,7 +922,7 @@ class Post extends Relational
      * Turn a list of rows into a tree
      *
      * @param   object  $rows
-     * @return  array
+     * @return  array<mixed>
      */
     public function toTree($rows)
     {
@@ -951,11 +951,11 @@ class Post extends Relational
     /**
      * Recursive function to build tree
      *
-     * @param   array    $children  Container for parent/children mapping
-     * @param   array    $list      List of records
+     * @param   array<mixed>    $children  Container for parent/children mapping
+     * @param   array<mixed>    $list      List of records
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
-     * @return  array
+     * @return  array<mixed>
      */
     protected function treeRecurse($children, $list, $maxlevel = 9999, $level = 0)
     {
@@ -976,7 +976,7 @@ class Post extends Relational
     /**
      * Get a form
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object
      */
     public function getForm($data = [])

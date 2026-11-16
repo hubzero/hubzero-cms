@@ -250,7 +250,7 @@ class Screenshot extends Table
      * Get array of screenshots
      *
      * @param   integer|null  $versionid  Pub version ID
-     * @return  bool|array
+     * @return  bool|array<mixed>
      */
     public function getScreenshotArray($versionid = null)
     {
@@ -276,7 +276,7 @@ class Screenshot extends Table
      * @param   integer|null  $versionid  Pub version ID
      * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version name or number
-     * @return  array|false|null
+     * @return  array<mixed>|false|null
      */
     public function getScreenshots($versionid = null, $pid = null, $version = 'default')
     {
@@ -314,7 +314,7 @@ class Screenshot extends Table
      * @param   integer|null  $versionid  Pub version ID
      * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version name or number
-     * @return  array|false
+     * @return  array<mixed>|false
      */
     public function getFiles($versionid = null, $pid = null, $version = 'default')
     {

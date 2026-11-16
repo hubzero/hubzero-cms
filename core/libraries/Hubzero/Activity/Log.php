@@ -83,7 +83,7 @@ class Log extends Relational
     /**
      * Generate a UUID
      *
-     * @param   array  $data
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticUuid($data)
@@ -104,7 +104,7 @@ class Log extends Relational
     /**
      * Generates automatic scope field value
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  string
      */
     public function automaticScope($data)
@@ -232,7 +232,7 @@ class Log extends Relational
     /**
      * Send an activity to recipients
      *
-     * @param   array  $recipients
+     * @param   array<mixed>  $recipients
      * @return  bool
      */
     public function broadcast($recipients = [])
@@ -316,7 +316,7 @@ class Log extends Relational
      * Create an activity log entry and broadcast it.
      *
      * @param   mixed    $data
-     * @param   array    $recipients
+     * @param   array<mixed>    $recipients
      * @return  boolean
      */
     public static function log($data = [], $recipients = [])
@@ -370,7 +370,7 @@ class Log extends Relational
     /**
      * Get all logs for a recipient
      *
-     * @param   string|array   $scope
+     * @param   string|array<mixed>   $scope
      * @param   integer  $scope_id
      * @return  static
      */

@@ -77,7 +77,7 @@ class FileLoader
      * Load the given configuration group.
      *
      * @param   string|null  $client
-     * @return  array
+     * @return  array<mixed>
      */
     public function load($client = null)
     {
@@ -188,7 +188,7 @@ class FileLoader
      * Checks `$path` to see if it is either an array, a directory, or a file
      *
      * @param   mixed  $path
-     * @return  array
+     * @return  array<mixed>
      */
     protected function getPaths($path)
     {

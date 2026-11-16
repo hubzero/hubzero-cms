@@ -42,9 +42,9 @@ class OneShiftsToMany extends OneToMany
      *
      * We use this time to also set a callback where we define our shifter.
      *
-     * @param   object|array  $models    A single model or array of models to associate
+     * @param   object|array<mixed>  $models    A single model or array of models to associate
      * @param   \Closure|null       $callback  A callback to potentially append additional data
-     * @return  object|array
+     * @return  object|array<mixed>
      **/
     public function associate($models, $callback = null)
     {
@@ -76,7 +76,7 @@ class OneShiftsToMany extends OneToMany
     /**
      * Gets the relations that will be seeded on to the provided rows
      *
-     * @param   array    $keys        The keys for which to fetch related items
+     * @param   array<mixed>    $keys        The keys for which to fetch related items
      * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/

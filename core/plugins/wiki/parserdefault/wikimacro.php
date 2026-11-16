@@ -40,7 +40,7 @@ class WikiMacro
     /**
      * Container for internal data
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $data = [];
 
@@ -54,14 +54,14 @@ class WikiMacro
     /**
      * Container for errors
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $error = null;
 
     /**
      * Container for errors
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected $arguments = null;
 
@@ -75,21 +75,21 @@ class WikiMacro
     /**
      * Allow macro in partial parsing?
      *
-     * @var  array
+     * @var  array<mixed>
      */
     public $linkLog = [];
 
     /**
      * Macro instances, keyed by class name
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $instances = [];
 
     /**
      * Constructor
      *
-     * @param   array  $config  Configuration options
+     * @param   array<mixed>  $config  Configuration options
      * @return  void
      */
     public function __construct($config = [])
@@ -150,7 +150,7 @@ class WikiMacro
     /**
      * Get an instance of this macro, creating it if not found
      *
-     * @param   array   $config  Configuration parameters
+     * @param   array<mixed>   $config  Configuration parameters
      * @return  object
      */
     public static function getInstance($config = [])
@@ -202,7 +202,7 @@ class WikiMacro
     /**
      * Get macro argumentss
      *
-     * @return  array  List of arguments
+     * @return  array<mixed>  List of arguments
      */
     protected function getArguments()
     {
@@ -240,7 +240,7 @@ class WikiMacro
     /**
      * Set all macro argument values
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @return  object
      */
     protected function setArguments($data)

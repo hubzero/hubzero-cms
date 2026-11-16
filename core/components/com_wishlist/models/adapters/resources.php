@@ -21,7 +21,7 @@ class Resources extends Base
     /**
      * URL segments
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $segments = [
         'option' => 'com_wishlist',
@@ -59,7 +59,7 @@ class Resources extends Base
     /**
      * Get owners
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function owners()
     {
@@ -85,7 +85,7 @@ class Resources extends Base
     /**
      * Get groups
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function groups()
     {

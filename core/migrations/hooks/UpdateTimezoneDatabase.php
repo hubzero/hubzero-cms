@@ -19,14 +19,14 @@ class UpdateTimezoneDatabase extends Base
     /**
      * Hook options
      *
-     * @var array
+     * @var array<mixed>
      **/
     protected $options = ['timing' => 'onBeforeMigrate'];
 
     /**
      * Execute hook
      *
-     * @return bool|array|null
+     * @return bool|array<mixed>|null
      **/
     public function fire()
     {

@@ -33,7 +33,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
     /**
      * Return table names created by this test for automatic cleanup
      *
-     * @return array Table names
+     * @return array<int, mixed> Table names
      */
     protected static function getTestTables(): array
     {
@@ -118,7 +118,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
      * Helper to insert a test record
      *
      * @param BaseSqlDriver $driver Database driver
-     * @param array $data Record data
+     * @param array<mixed> $data Record data
      * @return int Insert ID
      */
     protected function insertTestRecord(BaseSqlDriver $driver, array $data = []): int

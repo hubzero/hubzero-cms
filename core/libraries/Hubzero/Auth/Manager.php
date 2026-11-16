@@ -49,8 +49,8 @@ class Manager
      * validation.  Successful validation will update the current session with
      * the user details.
      *
-     * @param   array    $credentials  Array('username' => string, 'password' => string)
-     * @param   array    $options      Array('remember' => boolean)
+     * @param   array<mixed>    $credentials  Array('username' => string, 'password' => string)
+     * @param   array<mixed>    $options      Array('remember' => boolean)
      * @return  bool|\Exception  True on success.
      */
     public function login($credentials, $options = [])
@@ -153,7 +153,7 @@ class Manager
      * Logout a user
      *
      * @param   integer|null  $userid
-     * @param   array    $options
+     * @param   array<mixed>    $options
      * @return  boolean
      */
     public function logout($userid = null, $options = [])

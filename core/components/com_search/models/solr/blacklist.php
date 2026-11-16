@@ -60,7 +60,7 @@ class Blacklist extends Relational
     /**
      * Get all doc_ids that are prefixed by $scope
      * @param   string  $scope  name of prefix to filter doc_ids on
-     * @return  array   collection of doc_ids
+     * @return  array<mixed>   collection of doc_ids
      **/
     public static function getDocIdsByScope($scope)
     {

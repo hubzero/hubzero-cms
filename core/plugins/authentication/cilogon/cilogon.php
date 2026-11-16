@@ -65,7 +65,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      * separated values. An empty setting means any identity provider is
      * accepted (the plugin's default behaviour).
      *
-     * @return  array  List of allowed IdP entityIDs (may be empty)
+     * @return  array<mixed>  List of allowed IdP entityIDs (may be empty)
      */
     protected function allowedIdps()
     {
@@ -169,8 +169,8 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     /**
      * This method should handle any authentication and report back to the subject
      *
-     * @param   array    $credentials  Array holding the user credentials
-     * @param   array    $options      Array of extra options
+     * @param   array<mixed>    $credentials  Array holding the user credentials
+     * @param   array<mixed>    $options      Array of extra options
      * @param   object   $response     Authentication response object
      * @return  void
      */
@@ -298,7 +298,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     /**
      * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
      *
-     * @param   array  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function link($options = [])

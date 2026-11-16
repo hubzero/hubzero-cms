@@ -49,7 +49,7 @@ class IdPBindingTest extends Basic
     /**
      * The globals each test replaces, put back afterwards
      *
-     * @var  array
+     * @var  array<mixed>
      */
     private $globals;
 
@@ -358,7 +358,7 @@ class IdPBindingTest extends Basic
      *
      * @param   string  $method
      * @param   string  $url
-     * @param   array   $post
+     * @param   array<mixed>   $post
      * @return  \Psr\Http\Message\ServerRequestInterface
      */
     private function arrive($method, $url, array $post = [])

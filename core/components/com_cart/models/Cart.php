@@ -137,7 +137,7 @@ abstract class Cart
     /**
      * Gets transactions for a cart
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @param   bool   $completedOnly
      * @return  mixed
      */
@@ -150,7 +150,7 @@ abstract class Cart
     /**
      * Get all transactions
      *
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @param   bool   $completedOnly
      * @return  mixed
      */
@@ -809,7 +809,7 @@ abstract class Cart
      * Set a single transaction item info
      *
      * @param   int    $tId   Transaction ID
-     * @param   array  $item
+     * @param   array<mixed>  $item
      * @return  bool
      */
     public static function updateTransactionItem($tId, $item)
@@ -976,7 +976,7 @@ abstract class Cart
      * Update transaction info
      *
      * @param   int     $tId     Transaction ID
-     * @param   array   $tInfo      Transaction info
+     * @param   array<mixed>   $tInfo      Transaction info
      * @param   bool   $returnChanges flag whether the changes should be recorded and returned
      * @return  mixed  bool if $returnChanges is set to false, array if $returnChanges is set to true
      */
@@ -1052,7 +1052,7 @@ abstract class Cart
     /**
      * Save transaction payment info
      *
-     * @param   array  $paymentInfo
+     * @param   array<mixed>  $paymentInfo
      * @param   int     $tId     Transaction ID
      * @return  bool    Success or failure
      */

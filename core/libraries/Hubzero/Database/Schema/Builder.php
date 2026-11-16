@@ -200,7 +200,7 @@ class Builder
      * Get the column listing for a table
      *
      * @param  string  $table  Table name
-     * @return array
+     * @return array<mixed>
      */
     public function getColumnListing(string $table): array
     {
@@ -222,7 +222,7 @@ class Builder
     /**
      * Execute a SQL statement or array of statements
      *
-     * @param  string|array  $sql  Single SQL statement or array of statements
+     * @param  string|array<mixed>  $sql  Single SQL statement or array of statements
      * @return void
      */
     protected function execute($sql): void
@@ -242,7 +242,7 @@ class Builder
      *
      * @param  string   $table     Table name
      * @param  Closure  $callback  Callback that receives TableDefinition
-     * @return array    Array of SQL statements
+     * @return array<mixed>    Array of SQL statements
      */
     public function getCreateSql(string $table, Closure $callback): array
     {
@@ -259,7 +259,7 @@ class Builder
      *
      * @param  string   $table     Table name
      * @param  Closure  $callback  Callback that receives TableDefinition
-     * @return array    Array of SQL statements
+     * @return array<int, mixed>    Array of SQL statements
      */
     public function getAlterSql(string $table, Closure $callback): array
     {

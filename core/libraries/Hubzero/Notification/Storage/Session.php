@@ -36,7 +36,7 @@ class Session implements MessageStore
     /**
      * Store a message
      *
-     * @param   array   $data
+     * @param   array<mixed>   $data
      * @param   string  $domain
      * @return  void
      */
@@ -52,7 +52,7 @@ class Session implements MessageStore
      * Return a list of messages
      *
      * @param   string  $domain
-     * @return  array
+     * @return  array<mixed>
      */
     public function retrieve($domain)
     {

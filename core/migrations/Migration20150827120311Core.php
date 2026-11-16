@@ -20,7 +20,7 @@ class Migration20150827120311Core extends Base
     /**
      * List of files that were renamed
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     public $files = [
         'Migration201508281131531Core.php'           => 'Migration20150828113153Core.php',

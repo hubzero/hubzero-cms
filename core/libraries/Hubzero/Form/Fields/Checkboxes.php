@@ -217,7 +217,7 @@ class Checkboxes extends Field
     /**
      * Method to get the field options.
      *
-     * @return  array  The field option objects.
+     * @return  array<int, mixed>  The field option objects.
      */
     protected function getOptions()
     {

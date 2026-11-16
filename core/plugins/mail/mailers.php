@@ -28,7 +28,7 @@ class Mailers extends Select
     /**
      * Method to get the field options for category
      *
-     * @return  array
+     * @return  array<int, mixed>
      */
     protected function getOptions()
     {

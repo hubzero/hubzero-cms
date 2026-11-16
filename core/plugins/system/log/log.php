@@ -20,7 +20,7 @@ class Log extends Plugin
     /**
      * Method to log login failures
      *
-     * @param   array  $response
+     * @param   array<mixed>  $response
      * @return  void
      */
     public function onUserLoginFailure($response)

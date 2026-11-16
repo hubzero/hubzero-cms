@@ -28,7 +28,7 @@ class Loader implements LoaderInterface
     /**
      * A persistent cache of the loaded plugins.
      *
-     * @var  array|null
+     * @var  array<mixed>|null
      */
     protected static $plugins = null;
 
@@ -263,7 +263,7 @@ class Loader implements LoaderInterface
     /**
      * Loads the published plugins.
      *
-     * @return  array  An array of published plugins
+     * @return  array<mixed>  An array of published plugins
      */
     public function all()
     {

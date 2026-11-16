@@ -22,7 +22,7 @@ class Project extends Base
     /**
      * URL segments
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $segments = [
         'option' => 'com_projects',
@@ -122,7 +122,7 @@ class Project extends Base
      * Get an array of routing inputs
      *
      * @param   string  $task
-     * @return  array
+     * @return  array<mixed>
      */
     public function routing($task = 'save')
     {

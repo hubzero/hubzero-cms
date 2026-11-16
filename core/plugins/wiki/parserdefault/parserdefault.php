@@ -33,7 +33,7 @@ class Parserdefault extends Plugin
     /**
      * Get the wiki parser, creating a new one if not already existing or $getnew is set
      *
-     * @param   array    $config  Options for initializing a parser
+     * @param   array<mixed>    $config  Options for initializing a parser
      * @param   boolean|mixed  $getnew  Init a new parser?
      * @return  object
      */
@@ -59,7 +59,7 @@ class Parserdefault extends Plugin
      * Turns wiki markup to HTML
      *
      * @param   string   $text       Text to convert
-     * @param   array    $config     Options for initializing a parser
+     * @param   array<mixed>    $config     Options for initializing a parser
      * @param   boolean  $fullparse  Do a full parse or ignore some things like macros?
      * @param   boolean  $getnew     Init a new parser?
      * @return  string

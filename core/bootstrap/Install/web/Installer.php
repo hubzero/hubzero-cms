@@ -33,7 +33,7 @@ class Installer
     /**
      * Available steps in order
      *
-     * @var array
+     * @var array<mixed>
      */
     private $steps = [
         'verify'       => Verify::class,
@@ -49,7 +49,7 @@ class Installer
     /**
      * Step display names
      *
-     * @var array
+     * @var array<mixed>
      */
     private $stepNames = [
         'verify'       => 'Verify',
@@ -86,7 +86,7 @@ class Installer
     /**
      * Flash messages
      *
-     * @var array
+     * @var array<mixed>
      */
     private $messages = [];
 
@@ -280,7 +280,7 @@ class Installer
      *
      * @param  string  $action       The action being performed
      * @param  bool    $requirePost  Whether POST method is required
-     * @return array ['valid' => bool, 'error' => string|null]
+     * @return array<mixed> ['valid' => bool, 'error' => string|null]
      */
     private function validateAjaxSecurity(string $action, bool $requirePost = false): array
     {
@@ -638,7 +638,7 @@ class Installer
     /**
      * Get all messages
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getMessages(): array
     {
@@ -672,7 +672,7 @@ class Installer
     /**
      * Get all steps with display names
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getSteps(): array
     {
@@ -720,7 +720,7 @@ class Installer
     /**
      * Connect to database
      *
-     * @param  array  $config  Database configuration
+     * @param  array<mixed>  $config  Database configuration
      * @return ConnectionInterface|null
      */
     public function connectToDatabase(array $config): ?ConnectionInterface
@@ -735,7 +735,7 @@ class Installer
     /**
      * Connect to database and throw on failure
      *
-     * @param  array  $config   Database configuration
+     * @param  array<mixed>  $config   Database configuration
      * @param  int    $timeout  Connection timeout
      * @return ConnectionInterface
      * @throws PDOException
@@ -748,7 +748,7 @@ class Installer
     /**
      * Resolve installer driver/connection combo using test-suite naming conventions
      *
-     * @param  array   $config  Database configuration
+     * @param  array<mixed>   $config  Database configuration
      * @return string  Normalized driver name
      * @throws PDOException
      */
@@ -774,7 +774,7 @@ class Installer
     /**
      * Build MySQL DSN from installer config
      *
-     * @param  array  $config  Database configuration
+     * @param  array<mixed>  $config  Database configuration
      * @return string
      */
     private function buildMysqlDsn(array $config): string
@@ -802,7 +802,7 @@ class Installer
     /**
      * Connect using Hubzero standalone PDO connector and return native PDO
      *
-     * @param  array  $config   Database configuration
+     * @param  array<mixed>  $config   Database configuration
      * @param  int    $timeout  Connection timeout
      * @return ConnectionInterface
      * @throws PDOException
@@ -841,7 +841,7 @@ class Installer
     /**
      * Test database connection (AJAX)
      *
-     * @return array
+     * @return array<string, mixed>
      */
     private function testDatabaseAjax(): array
     {
@@ -869,7 +869,7 @@ class Installer
     /**
      * Test server availability (AJAX) - checks if MySQL is reachable without credentials
      *
-     * @return array
+     * @return array<string, mixed>
      */
     private function testServerAjax(): array
     {
@@ -927,7 +927,7 @@ class Installer
     /**
      * Test admin credentials (AJAX) - checks if admin can connect with privileges
      *
-     * @return array
+     * @return array<mixed>
      */
     private function testAdminAjax(): array
     {
@@ -992,7 +992,7 @@ class Installer
     /**
      * Create database and user (AJAX)
      *
-     * @return array
+     * @return array<mixed>
      */
     private function createDatabaseAjax(): array
     {
@@ -1097,7 +1097,7 @@ class Installer
     /**
      * Save database configuration file
      *
-     * @param  array  $config  Database configuration
+     * @param  array<mixed>  $config  Database configuration
      * @return bool
      */
     private function saveDatabaseConfig(array $config): bool
@@ -1138,7 +1138,7 @@ class Installer
     /**
      * Get schema loading progress
      *
-     * @return array
+     * @return array<mixed>
      */
     private function getSchemaProgress(): array
     {
@@ -1152,7 +1152,7 @@ class Installer
     /**
      * Load schema via AJAX
      *
-     * @return array
+     * @return array<mixed>
      */
     private function loadSchemaAjax(): array
     {
@@ -1327,7 +1327,7 @@ class Installer
      *
      * Displays a friendly error when secure storage cannot be created.
      *
-     * @param  array  $storageCheck  Result from SecurityGuard::checkStorageAvailability()
+     * @param  array<mixed>  $storageCheck  Result from SecurityGuard::checkStorageAvailability()
      * @return void
      */
     private function renderStorageError(array $storageCheck): void
@@ -1369,7 +1369,7 @@ class Installer
     /**
      * Validate CSRF token from form submission
      *
-     * @param  array  $data  POST data containing csrf_token
+     * @param  array<mixed>  $data  POST data containing csrf_token
      * @return bool
      */
     public function validateCsrf(array $data): bool

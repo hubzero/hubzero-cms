@@ -30,7 +30,7 @@ class About extends Plugin
      * Return the alias and name for this category of content
      *
      * @param      object  $model  Current model
-     * @return     array
+     * @return     array<string, mixed>
      */
     public function &onResourcesAreas($model)
     {
@@ -53,7 +53,7 @@ class About extends Plugin
      * @param      string  $option  Name of the component
      * @param      array|mixed   $areas   Active area(s)
      * @param      string  $rtrn    Data to be returned
-     * @return     array
+     * @return     array<mixed>
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {

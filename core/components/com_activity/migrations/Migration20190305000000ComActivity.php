@@ -19,7 +19,7 @@ class Migration20190305000000ComActivity extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var array
+     * @var array<mixed>
      **/
     public static $tables = [
         '#__activity_recipients' => [

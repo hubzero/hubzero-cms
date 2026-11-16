@@ -38,7 +38,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * SQLite uses type affinity rather than strict types.
      * This maps common type names to their affinity.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected static $typeAffinities = [
         // INTEGER affinity
@@ -241,10 +241,10 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * SQLite emulates RIGHT JOIN by swapping the FROM table and JOIN target.
      *
-     * @param   array   $branch
+     * @param   array<mixed>   $branch
      * @param   int     $joinIndex
      * @param   string  $direction
-     * @return  array
+     * @return  array<mixed>
      */
     protected function transformFullJoinBranch(array $branch, int $joinIndex, string $direction): array
     {
@@ -304,9 +304,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      *
      * This is needed for SQLite when emulating RIGHT/FULL joins via swaps.
      *
-     * @param   array  $joins
-     * @param   array  $from
-     * @return  array
+     * @param   array<mixed>  $joins
+     * @param   array<mixed>  $from
+     * @return  array<mixed>
      */
     protected function reorderJoinsForSqlite(array $joins, array $from): array
     {
@@ -604,9 +604,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Normalizes the results of the PRAGMA table_info query
      *
-     * @param   array  $data      The raw column data from PRAGMA table_info
+     * @param   array<mixed>  $data      The raw column data from PRAGMA table_info
      * @param   bool   $typeOnly  True (default) to only return field types
-     * @return  array
+     * @return  array<mixed>
      */
     public function normalizeColumns($data, $typeOnly = true)
     {
@@ -928,7 +928,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * optionally reset the sqlite_sequence for auto-increment.
      *
      * @param   string  $table  The table to truncate
-     * @return  array   Array of SQL statements to execute
+     * @return  array<mixed>   Array of SQL statements to execute
      */
     public function getTruncateStatements($table)
     {

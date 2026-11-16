@@ -23,8 +23,8 @@ class InformixGrammar extends BaseSchemaGrammar
     /**
      * Compile CREATE TABLE statements from normalized definition data.
      *
-     * @param  array $definition
-     * @return array
+     * @param  array<mixed> $definition
+     * @return array<mixed>
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
@@ -34,7 +34,7 @@ class InformixGrammar extends BaseSchemaGrammar
     /**
      * Type mappings from abstract types to Informix types
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeMap = [
         // Integer types
@@ -89,7 +89,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * elements are CREATE INDEX statements.
      *
      * @param  TableDefinition  $blueprint
-     * @return array  Array of SQL statements
+     * @return array<int, mixed>  Array of SQL statements
      */
     public function compileCreate(TableDefinition $blueprint): array
     {
@@ -146,7 +146,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Informix does not support inline indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineIndex(string $name, array $columns): ?string
@@ -160,7 +160,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Informix does not support inline unique indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineUniqueIndex(string $name, array $columns): ?string
@@ -174,7 +174,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Informix does not support inline fulltext indexes - returns null.
      *
      * @param  string  $name     Index name
-     * @param  array   $columns  Column names
+     * @param  array<mixed>   $columns  Column names
      * @return string|null
      */
     public function compileInlineFulltextIndex(string $name, array $columns): ?string
@@ -186,7 +186,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Compile an ALTER TABLE statement to add columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterAdd(TableDefinition $blueprint): array
     {
@@ -204,7 +204,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Compile an ALTER TABLE statement to drop columns
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterDrop(TableDefinition $blueprint): array
     {
@@ -224,7 +224,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Informix uses ALTER TABLE ... MODIFY ...
      *
      * @param  TableDefinition  $blueprint
-     * @return array
+     * @return array<int, mixed>
      */
     public function compileAlterModify(TableDefinition $blueprint): array
     {
@@ -393,7 +393,7 @@ class InformixGrammar extends BaseSchemaGrammar
      * Unlike MySQL which can combine operations with commas.
      *
      * @param   AlterTableBuilder  $builder
-     * @return  array  Array of SQL statements
+     * @return  array<int, mixed>  Array of SQL statements
      */
     public function compileAlterTable(AlterTableBuilder $builder): array
     {

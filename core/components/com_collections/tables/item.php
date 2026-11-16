@@ -124,7 +124,7 @@ class Item extends Table
      * can be integer, object, or array
      *
      * @param   string $what
-     * @param   array  $filters
+     * @param   array<mixed>  $filters
      * @return  mixed
      */
     public function find($what = '', $filters = [])
@@ -210,7 +210,7 @@ class Item extends Table
     /**
      * Build a query based off of filters passed
      *
-     * @param   array   $filters  Filters to construct query from
+     * @param   array<mixed>   $filters  Filters to construct query from
      * @return  string  SQL
      */
     protected function buildQuery($filters = [])
@@ -276,7 +276,7 @@ class Item extends Table
     /**
      * Get a record count
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  integer
      */
     public function getCount($filters = [])
@@ -287,8 +287,8 @@ class Item extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<mixed>
      */
     public function getRecords($filters = [])
     {
@@ -329,7 +329,7 @@ class Item extends Table
     /**
      * Get a record count
      *
-     * @param   array|null    $id  Filters to construct query from
+     * @param   array<mixed>|null    $id  Filters to construct query from
      * @return  string|false|null
      */
     public function getVote($id = null)
@@ -353,7 +353,7 @@ class Item extends Table
     /**
      * Get a total of all likes
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getLikes($filters = [])
@@ -374,7 +374,7 @@ class Item extends Table
     /**
      * Get a total of all dislikes
      *
-     * @param   array    $filters  Filters to construct query from
+     * @param   array<mixed>    $filters  Filters to construct query from
      * @return  string|null
      */
     public function getDislikes($filters = [])
@@ -395,8 +395,8 @@ class Item extends Table
     /**
      * Get records
      *
-     * @param   array  $filters  Filters to construct query from
-     * @return  array
+     * @param   array<mixed>  $filters  Filters to construct query from
+     * @return  array<int, \stdClass>
      */
     public function getTrending($filters = [])
     {

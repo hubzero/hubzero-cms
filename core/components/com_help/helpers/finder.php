@@ -90,7 +90,7 @@ class Finder
      * Get array of help pages for component
      *
      * @param   string  $component  Component to get pages for
-     * @return  array
+     * @return  array<mixed>
      */
     public static function pages($component)
     {

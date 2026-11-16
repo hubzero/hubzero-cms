@@ -1214,8 +1214,8 @@ class Filesv1r0 extends ApiController
     /**
      * Get file(s) metadata for Flysystem adapters
      *
-     * @param   array $files
-     * @return  array
+     * @param   array<mixed> $files
+     * @return  array<int, mixed>
      */
     protected function parseFlysystemListing($files)
     {
@@ -1235,8 +1235,8 @@ class Filesv1r0 extends ApiController
     /**
      * Get file(s) metadata
      *
-     * @param   array $files
-     * @return  array
+     * @param   array<mixed> $files
+     * @return  array<int, mixed>
      */
     protected function parseResults($files)
     {
@@ -1256,9 +1256,9 @@ class Filesv1r0 extends ApiController
     /**
      * Filter an array by another array of field names
      *
-     * @param   array $source
-     * @param   array $filter
-     * @return  array
+     * @param   array<mixed> $source
+     * @param   array<mixed> $filter
+     * @return  array<mixed>
      */
     protected function filter($source, $filter)
     {
@@ -1300,8 +1300,8 @@ class Filesv1r0 extends ApiController
     /**
      * Trims vars, unsetting if empty
      *
-     * @param   array  $vars  the variables to trim
-     * @return  array
+     * @param   array<mixed>  $vars  the variables to trim
+     * @return  array<mixed>
      **/
     private function prune($vars)
     {
@@ -1319,7 +1319,7 @@ class Filesv1r0 extends ApiController
     /**
      * Sort incoming file/folder data
      *
-     * @return     array
+     * @return     array<int, mixed>
      */
     protected function sortIncoming()
     {
@@ -1355,7 +1355,7 @@ class Filesv1r0 extends ApiController
      * Pack metadata from onMetadataGet into form usable by onMetadataSave
      *
      * @param      array|mixed  $metadata  incoming metadata
-     * @return     array
+     * @return     array<mixed>
      */
     protected function packMetadata($metadata)
     {
@@ -1413,7 +1413,7 @@ class Filesv1r0 extends ApiController
      * @param   string  $totalSize    Original file size (in bytes)
      * @param   int|string     $total_files  The total number of chunks for this file
      * @param   string  $subdir       Folder within the project's files to save into
-     * @return  array|bool
+     * @return  array<mixed>|bool
      */
     protected function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $subdir)
     {

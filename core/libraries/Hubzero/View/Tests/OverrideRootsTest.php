@@ -60,7 +60,7 @@ class OverrideRootsTest extends Basic
      * The view's template search stack, top (first searched) first
      *
      * @param   View  $view
-     * @return  array
+     * @return  array<mixed>
      */
     private function templatePaths(View $view): array
     {
@@ -75,7 +75,7 @@ class OverrideRootsTest extends Basic
      *
      * @param   string  $extension
      * @param   string  $name
-     * @return  array
+     * @return  array<mixed>
      */
     private function expectedOverrides(string $extension, string $name): array
     {

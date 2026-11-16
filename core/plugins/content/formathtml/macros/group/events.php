@@ -141,8 +141,8 @@ class Events extends GroupMacro
      * Get a list of events for a group
      *
      * @param   object  $group
-     * @param   array   $filters
-     * @return  array
+     * @param   array<mixed>   $filters
+     * @return  array<mixed>
      */
     private function getGroupEvents($group, $filters = [])
     {
@@ -272,7 +272,7 @@ class Events extends GroupMacro
      * Render the events
      *
      * @param  object  $group   Array of groups
-     * @param  array  $events  Array of group events
+     * @param  array<mixed>  $events  Array of group events
      * @return string
      */
     private function renderEvents($group, $events)
@@ -356,7 +356,7 @@ class Events extends GroupMacro
     /**
      * Get for argument
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getFor(&$args)
@@ -387,7 +387,7 @@ class Events extends GroupMacro
     /**
      * Get from argument
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getFrom(&$args)
@@ -428,7 +428,7 @@ class Events extends GroupMacro
     /**
      * Get to argument
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getTo(&$args)
@@ -465,7 +465,7 @@ class Events extends GroupMacro
     /**
      * Get order argument
      *
-     * @param   array  $args  Macro Arguments
+     * @param   array<mixed>  $args  Macro Arguments
      * @return  mixed
      */
     private function getOrder(&$args)
