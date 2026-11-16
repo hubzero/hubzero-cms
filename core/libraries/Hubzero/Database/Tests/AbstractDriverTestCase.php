@@ -66,7 +66,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * Teardown drops tables but does NOT disconnect, since
      * connections are shared across classes.
      *
-     * @var array<string, array<string, Driver>>
+     * @var array<string, array<string, BaseSqlDriver>>
      */
     protected static $drivers = [];
 
@@ -77,7 +77,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * Without pooling, each class creates its own connection, which
      * can exhaust database thread limits (e.g. Informix).
      *
-     * @var array<string, Driver>
+     * @var array<string, BaseSqlDriver>
      */
     protected static $sharedPool = [];
 
@@ -145,7 +145,7 @@ abstract class AbstractDriverTestCase extends TestCase
     /**
      * Get driver instances for the current test class
      *
-     * @return array<string, Driver>
+     * @return array<string, BaseSqlDriver>
      */
     protected static function getClassDrivers(): array
     {

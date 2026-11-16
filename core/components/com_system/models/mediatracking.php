@@ -44,7 +44,7 @@ class Mediatracking extends Relational
     /**
      * Get tracking info for a specific user/object combination
      *
-     * @param   string  $object_id    Object ID
+     * @param   int|string  $object_id    Object ID
      * @param   string  $object_type  Object type
      * @param   string|int $user_id      User ID
      * @return  object

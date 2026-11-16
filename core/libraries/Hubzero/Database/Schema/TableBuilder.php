@@ -240,7 +240,7 @@ class TableBuilder
      * Add an integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function integer(string $name, $unsigned = false): self
@@ -252,7 +252,7 @@ class TableBuilder
      * Add a tiny integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function tinyInteger(string $name, $unsigned = false): self
@@ -264,7 +264,7 @@ class TableBuilder
      * Add a small integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function smallInteger(string $name, $unsigned = false): self
@@ -276,7 +276,7 @@ class TableBuilder
      * Add a medium integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function mediumInteger(string $name, $unsigned = false): self
@@ -288,7 +288,7 @@ class TableBuilder
      * Add a big integer column
      *
      * @param  string     $name     Column name
-     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
+     * @param  bool|int|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
     public function bigInteger(string $name, $unsigned = false): self
@@ -927,7 +927,7 @@ class TableBuilder
      * the column's modifiers instead reads the same way at the call site, and
      * migrations do, so both are understood here rather than at each of them.
      *
-     * @param   bool|array  $options  True if unsigned, or a map of modifiers
+     * @param   bool|int|array  $options  True if unsigned, or a map of modifiers
      * @return  $this
      */
     private function applyOptions($options): self

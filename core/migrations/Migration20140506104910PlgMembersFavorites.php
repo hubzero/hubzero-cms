@@ -85,7 +85,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
                                 // Get some resource data
                                 $query = $this->db
-                                    ->getQuery(true)
+                                    ->getQuery()
                                     ->select(['id', 'title', 'introtext'])
                                     ->from('#__resources')
                                     ->where('id', '=', $result->oid);

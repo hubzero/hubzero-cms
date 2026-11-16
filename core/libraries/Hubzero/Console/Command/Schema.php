@@ -1805,7 +1805,7 @@ class Schema extends Base implements CommandInterface
      * Output SQL for a table diff
      *
      * @param  \Hubzero\Database\Schema\Diff\TableDiff  $diff
-     * @param  \Hubzero\Database\Driver  $db
+     * @param  \Hubzero\Database\Drivers\Base\BaseSqlDriver  $db
      * @return void
      */
     protected function outputDiffSql($diff, $db): void

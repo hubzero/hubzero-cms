@@ -1093,7 +1093,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a new bind value
      *
-     * @param   string  $value  The value to bind
+     * @param   mixed  $value  The value to bind
      * @param   string|null  $type   The value type
      * @return  $this
      */

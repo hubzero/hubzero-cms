@@ -56,7 +56,7 @@ class CategoriesHelper
                     Lang::load($component, $langPath, null, false, true);
 
                     $suffix = isset($section) ? '.' . $section : '';
-                    call_user_func([$cName, 'addSubmenu'], 'categories' . $suffix);
+                    $cName::addSubmenu('categories' . $suffix);
                 }
             }
         }

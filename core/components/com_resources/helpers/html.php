@@ -756,7 +756,7 @@ class Html
      * @param   string   $option  Component name
      * @param   object   $item    Child resource
      * @param   integer  $pid     Parent resource ID
-     * @param   integer  $action  Action
+     * @param   int|string  $action  Action
      * @return  string
      */
     public static function processPath($option, $item, $pid = 0, $action = 0)

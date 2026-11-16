@@ -1226,7 +1226,7 @@ class Pages extends SiteController
         $pdf->setCreator(Config::get('sitename'));
 
         $pdf->setDocModificationTimeStamp($this->page->modified());
-        $pdf->setHeaderData(null, 0, strtoupper($this->page->title), '', [84, 94, 124], [146, 152, 169]);
+        $pdf->setHeaderData('', 0, strtoupper($this->page->title), '', [84, 94, 124], [146, 152, 169]);
         $pdf->setFooterData([255, 255, 255], [255, 255, 255]);
 
         $pdf->AddPage();

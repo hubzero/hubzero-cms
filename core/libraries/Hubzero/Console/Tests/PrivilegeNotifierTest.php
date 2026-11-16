@@ -80,6 +80,7 @@ class PrivilegeNotifierTest extends Basic
      */
     private function notifier(bool $sudo, bool $root, ?bool $dropResult = null): PrivilegeNotifier
     {
+        /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);
         $privileges->shouldReceive('isSudo')->andReturn($sudo);
         $privileges->shouldReceive('isRoot')->andReturn($root);
@@ -180,6 +181,7 @@ class PrivilegeNotifierTest extends Basic
      */
     public function testRootOnAnotherAccountsHubSwitchesToItsOwner()
     {
+        /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);
         $privileges->shouldReceive('isSudo')->andReturn(true);
         $privileges->shouldReceive('isRoot')->andReturn(true);
@@ -207,6 +209,7 @@ class PrivilegeNotifierTest extends Basic
     {
         $me = posix_getpwuid(fileowner(__DIR__))['name'];
 
+        /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);
         $privileges->shouldReceive('isSudo')->andReturn(true);
         $privileges->shouldReceive('isRoot')->andReturn(true);
@@ -227,6 +230,7 @@ class PrivilegeNotifierTest extends Basic
      */
     public function testRegularUserNeverSwitches()
     {
+        /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);
         $privileges->shouldReceive('isSudo')->andReturn(false);
         $privileges->shouldReceive('isRoot')->andReturn(false);

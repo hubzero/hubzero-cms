@@ -828,7 +828,7 @@ class Articles extends SiteController
             $intro_items[$i] = &$items[$i];
         }
 
-        $columns = max(1, $params->def('num_columns', 1));
+        $columns = max(1, (int) $params->def('num_columns', 1));
         $order = $params->def('multi_column_order', 1);
 
         if ($order == 0 && $columns > 1) {
@@ -1348,7 +1348,7 @@ class Articles extends SiteController
                 $intro_items[$i] = &$items[$i];
             }
 
-            $columns = max(1, $params->def('num_columns', 1));
+            $columns = max(1, (int) $params->def('num_columns', 1));
             $order = $params->def('multi_column_order', 1);
 
             if ($order == 0 && $columns > 1) {

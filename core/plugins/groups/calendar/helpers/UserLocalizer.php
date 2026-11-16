@@ -66,7 +66,7 @@ class UserLocalizer
      */
     protected function getUserTimezone()
     {
-        $userParams = json_decode(User::get('params', '[]'), 1);
+        $userParams = json_decode(User::get('params', '[]'), true);
 
         return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
     }

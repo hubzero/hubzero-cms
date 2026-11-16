@@ -477,7 +477,7 @@ class Base
      * @param   string   $name            Component name
      * @param   string|null   $option          com_xyz
      * @param   integer  $enabled         Whether or not the component should be enabled
-     * @param   string   $params          Component params (if already known)
+     * @param   string|array  $params     Component params (if already known), as JSON or an array
      * @param   boolean  $createMenuItem  Create an admin menu item for this component
      * @param   boolean|null  $createRoute     Create the site route for this component
      * @return  boolean

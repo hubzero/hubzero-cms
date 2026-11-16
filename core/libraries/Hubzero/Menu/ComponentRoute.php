@@ -99,7 +99,7 @@ class ComponentRoute
 
         if ($typed) {
             $found = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('menutype')
                 ->from('#__menu_types')
                 ->whereEquals('type', 'component')
@@ -111,7 +111,7 @@ class ComponentRoute
         }
 
         $found = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('menutype')
             ->from('#__menu_types')
             ->whereEquals('menutype', 'components')
@@ -191,7 +191,7 @@ class ComponentRoute
     {
         $menutype = $this->db->tableHasField('#__menu_types', 'type')
             ? $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('menutype')
                 ->from('#__menu_types')
                 ->whereEquals('type', 'component')
@@ -224,7 +224,7 @@ class ComponentRoute
     public function root()
     {
         $root = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu')
             ->whereEquals('parent_id', 0)
@@ -248,7 +248,7 @@ class ComponentRoute
     public function exists($option)
     {
         $found = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu')
             ->whereEquals('client_id', 0)
@@ -366,7 +366,7 @@ class ComponentRoute
     public function extension($option)
     {
         $rows = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->select('enabled')
             ->from('#__extensions')
@@ -397,7 +397,7 @@ class ComponentRoute
         }
 
         $columns = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->select('alias');
 

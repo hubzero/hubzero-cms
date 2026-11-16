@@ -89,7 +89,7 @@ class Migration20150520110000ComPublications extends Base
 
                         if ($stq->store()) {
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->update('#__publication_versions')
                                 ->set(['curation_version_id' => $stq->id])
                                 ->where('curation', '=', $result->curation)

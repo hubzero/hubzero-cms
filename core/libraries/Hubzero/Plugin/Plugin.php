@@ -74,7 +74,7 @@ class Plugin
     /**
      * Constructor
      *
-     * @param   object  $subject  Event dispatcher
+     * @param   object|null  $subject  Event dispatcher (null when the plugin is built on its own)
      * @param   array   $config   Optional configurations to be used
      * @return  void
      */

@@ -159,7 +159,7 @@ class UsersCategoriesv2r0 extends ApiController
     /**
      * Destroy user's categories
      *
-     * @param   array  $usersCategories
+     * @param   iterable  $usersCategories
      * @return  array
      */
     protected function destroyUsersCategories($usersCategories)

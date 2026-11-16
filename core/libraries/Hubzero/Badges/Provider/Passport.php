@@ -270,7 +270,7 @@ class Passport implements ProviderInterface
         if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
             $this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
             try {
-                $this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, ['Content-Type' => 'application/json']);
+                $this->request->fetch($url, [], OAUTH_HTTP_METHOD_GET, ['Content-Type' => 'application/json']);
             } catch (Exception $e) {
                 throw new Exception('Assertations by email request failed.');
             }

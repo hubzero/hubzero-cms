@@ -225,7 +225,7 @@ final class Expression
     /**
      * Create a COUNT() expression
      *
-     * @param string|Expression $column The column to count (default: '*')
+     * @param string|int|Expression $column The column to count (default: '*'), or a constant such as 1
      * @return static
      */
     public static function count($column = '*'): static

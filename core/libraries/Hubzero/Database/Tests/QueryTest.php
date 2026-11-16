@@ -332,7 +332,7 @@ class QueryTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $result = $query->remove('users', null, null);
+        $result = $query->remove('users', 'id', null);
         $this->assertFalse($result);
 
         // Try to remove an existing row

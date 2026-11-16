@@ -2246,7 +2246,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Determine whether an attribute should be cast to a native type
      *
      * @param   string       $key   The attribute name
-     * @param   array|null   $types Optional array of types to check against
+     * @param   string|array|null   $types Optional array of types to check against
      * @return  bool
      */
     public function hasCast($key, $types = null)

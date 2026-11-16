@@ -677,7 +677,7 @@ class Elements
     /**
      * Render a parameter type.
      *
-     * @param   string  $name
+     * @param   string|int  $name
      * @param   object  $node          A parameter XML element.
      * @param   string  $control_name  An optional name of the HTML form control.
      *                                 The default is 'params' if not supplied.

@@ -140,7 +140,7 @@ class Routes extends Base implements CommandInterface
         $installed  = [];
 
         $rows = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
@@ -176,7 +176,7 @@ class Routes extends Base implements CommandInterface
         $routed = [];
 
         $entries = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('alias')
             ->select('link')
             ->from('#__menu')
@@ -355,7 +355,7 @@ class Routes extends Base implements CommandInterface
     /**
      * The menu items sitting at an address
      *
-     * @param   object  $db    The database
+     * @param   \Hubzero\Database\Driver  $db    The database
      * @param   string  $path  The address
      * @return  array   id, published and whether it is a generated entry
      */
@@ -364,7 +364,7 @@ class Routes extends Base implements CommandInterface
         $ranked = $db->tableHasField('#__menu_types', 'type');
 
         $query = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.id')
             ->select('m.published')
             ->select('m.menutype')
@@ -402,7 +402,7 @@ class Routes extends Base implements CommandInterface
      * order, but it is still worth being able to see, because the losing item
      * is a page somebody made that nobody can reach.
      *
-     * @param   object  $db  The database
+     * @param   \Hubzero\Database\Driver  $db  The database
      * @return  array  path => items, the one that answers first
      */
     protected function shared($db)
@@ -410,7 +410,7 @@ class Routes extends Base implements CommandInterface
         $ranked = $db->tableHasField('#__menu_types', 'type');
 
         $query = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.id')
             ->select('m.path')
             ->select('m.menutype')
@@ -432,12 +432,14 @@ class Routes extends Base implements CommandInterface
         $byPath = [];
 
         foreach ($query->fetch() as $row) {
-            $path = is_object($row) ? $row->path : $row['path'];
-            $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
+            // Rows come back as objects or arrays; read them one way
+            $row  = (array) $row;
+            $path = $row['path'];
+            $kind = $ranked ? $row['kind'] : 'display';
 
             $byPath[$path][] = [
-                'id'       => (int) (is_object($row) ? $row->id : $row['id']),
-                'menutype' => is_object($row) ? $row->menutype : $row['menutype'],
+                'id'       => (int) $row['id'],
+                'menutype' => $row['menutype'],
                 'kind'     => $kind ? $kind : 'display',
                 'rank'     => $this->rank($kind),
             ];
@@ -452,7 +454,7 @@ class Routes extends Base implements CommandInterface
 
             // Same order the router settles it in
             usort($items, function ($a, $b) {
-                return $a['rank'] == $b['rank'] ? 0 : ($a['rank'] < $b['rank'] ? -1 : 1);
+                return $a['rank'] <=> $b['rank'];
             });
 
             $shared[$path] = $items;
@@ -475,7 +477,7 @@ class Routes extends Base implements CommandInterface
     /**
      * The menu the component routes live in
      *
-     * @param   object  $db  The database
+     * @param   \Hubzero\Database\Driver  $db  The database
      * @return  string
      */
     protected function menutype($db)

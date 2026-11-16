@@ -204,7 +204,7 @@ class Stats extends AdminController
                         $user->closed[$k] = [];
                     }
 
-                    if ($i <= "9" & preg_match("#(^[1-9]{1})#", $i)) {
+                    if ($i <= "9" & preg_match("#(^[1-9]{1})#", (string) $i)) {
                         $filters['month'] = "0$i";
                     }
                     if ($k == $filters['year'] && $i > $filters['month']) {

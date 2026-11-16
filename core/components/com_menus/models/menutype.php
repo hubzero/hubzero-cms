@@ -103,7 +103,7 @@ class Menutype extends Obj
         $mainXML = Component::path($component->option) . '/site/metadata.xml';
 
         if (is_file($mainXML)) {
-            $options = $this->getTypeOptionsFromXML($mainXML, $component);
+            $options = $this->getTypeOptionsFromXML($mainXML, $component->option);
         }
 
         if (empty($options)) {

@@ -73,7 +73,7 @@ class Handlers extends Obj
      * @param   array    $handlers
      * @param   object|mixed   $handler
      * @param   array    $attachments
-     * @param   object|null   $props
+     * @param   string|null   $props  Block element key (not used)
      * @return  string
      */
     public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = null)

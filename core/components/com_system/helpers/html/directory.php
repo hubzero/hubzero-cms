@@ -34,7 +34,7 @@ class Directory
      * Method to generate a message for a directory
      *
      * @param   string   $dir      the directory
-     * @param   boolean  $message  the message
+     * @param   string|false|null  $message  the message
      * @param   boolean  $visible  is the $dir visible?
      * @return  string   html code
      */

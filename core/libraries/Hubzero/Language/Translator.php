@@ -570,7 +570,7 @@ class Translator extends Obj
      *
      * This is a simple, quick check for the directory that should contain language files for the given user.
      *
-     * @param   string   $lang      Language to check.
+     * @param   string|null   $lang      Language to check.
      * @param   string   $basePath  Optional path to check.
      * @return  boolean  True if the language exists.
      */

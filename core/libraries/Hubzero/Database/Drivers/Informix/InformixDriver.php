@@ -2178,9 +2178,9 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table           The table name
      * @param   string  $constraint      The constraint name
-     * @param   array   $columns         Local columns
+     * @param   array|string   $columns         Local columns
      * @param   string  $foreignTable    Referenced table
-     * @param   array   $foreignColumns  Referenced columns
+     * @param   array|string   $foreignColumns  Referenced columns
      * @param   string  $onUpdate        ON UPDATE action
      * @param   string  $onDelete        ON DELETE action
      * @return  bool

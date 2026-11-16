@@ -114,7 +114,7 @@ class Ordering extends Field
     /**
      * Build the select list for Ordering derived from a query
      *
-     * @param   int      $name      The scalar value
+     * @param   string   $name      The name of the select list
      * @param   string   $query     The query
      * @param   string|null   $attribs   HTML tag attributes
      * @param   string|null   $selected  The selected item

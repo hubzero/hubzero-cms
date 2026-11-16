@@ -3250,6 +3250,11 @@ abstract class Driver implements LoggerAwareInterface
     public function schema(): SchemaManager
     {
         if ($this->schema === null) {
+            // Schema management speaks SQL; every driver hub code can get is an SQL driver
+            if (!($this instanceof Drivers\Base\BaseSqlDriver)) {
+                throw new \LogicException('Schema management needs an SQL driver.');
+            }
+
             $this->schema = new SchemaManager($this);
         }
 

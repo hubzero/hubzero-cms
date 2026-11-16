@@ -735,7 +735,7 @@ class Item extends Nested
         $db = App::get('db');
 
         $query = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.id')
             ->from('#__menu', 'm')
             ->whereEquals('m.client_id', (int) $this->get('client_id', 0))
@@ -787,7 +787,7 @@ class Item extends Nested
         }
 
         $kind = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('type')
             ->from('#__menu_types')
             ->whereEquals('menutype', $this->get('menutype'))
@@ -1026,7 +1026,7 @@ class Item extends Nested
         }
 
         $rows = $db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.id')
             ->from('#__menu', 'm')
             ->join('#__menu_types AS t', 't.menutype', 'm.menutype')

@@ -271,7 +271,7 @@ class Conditions extends Obj
     /**
      * Create a value object
      *
-     * @param    string  $val   Operator value
+     * @param    string|int  $val   Operator value
      * @param    string  $label Operator label
      * @param    boolean $sel   Operator selected?
      * @return   object

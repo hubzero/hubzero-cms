@@ -43,7 +43,7 @@ class Quotes extends Module
             $sq->whereEquals('id', $this->filters['id']);
         }
 
-        $this->quotes = $sq->limit($this->filters['limit'])->rows();
+        $this->quotes = $sq->limit((int) $this->filters['limit'])->rows();
 
         require $this->getLayoutPath($this->module->module);
     }

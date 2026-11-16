@@ -99,7 +99,7 @@ class Validate
      * $check can be passed as an array:
      * array('check' => 'valueToCheck');
      *
-     * @param   string|array  $check  Value to check
+     * @param   string|array|int|null  $check  Value to check
      * @return  boolean  Success
      */
     public static function blank($check)
@@ -204,7 +204,7 @@ class Validate
     /**
      * Is value a negative integer?
      *
-     * @param   integer  $x  Value to check
+     * @param   mixed  $x  Value to check
      * @return  boolean  True if valid, false if invalid
      */
     public static function negativeInteger($x)

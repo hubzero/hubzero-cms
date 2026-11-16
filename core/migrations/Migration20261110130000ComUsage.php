@@ -91,7 +91,7 @@ class Migration20261110130000ComUsage extends Base
             }
 
             $query = $statsDb
-                ->getQuery(true)
+                ->getQuery()
                 ->select($column)
                 ->from($table)
                 ->where($column, '=', $wrote);
@@ -104,7 +104,7 @@ class Migration20261110130000ComUsage extends Base
             }
 
             $update = $statsDb
-                ->getQuery(true)
+                ->getQuery()
                 ->update($table)
                 ->set([$column => $should])
                 ->where($column, '=', $wrote);
@@ -122,7 +122,7 @@ class Migration20261110130000ComUsage extends Base
             }
 
             $statsDb
-                ->getQuery(true)
+                ->getQuery()
                 ->insertMany($table, UsageMetricsSeed::rows($table), true);
 
             $this->log("Seeded the missing rows of {$table}");
@@ -140,7 +140,7 @@ class Migration20261110130000ComUsage extends Base
     private function seededBroken($statsDb, $table)
     {
         $rows = $statsDb
-            ->getQuery(true)
+            ->getQuery()
             ->select('*')
             ->from($table)
             ->limit(2)

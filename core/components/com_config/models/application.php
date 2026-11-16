@@ -336,7 +336,8 @@ class Application extends Obj
     /**
      * Method to write the configuration to a file.
      *
-     * @param   array|\Hubzero\Config\Repository  $data  A Registry object containing all global config data.
+     * @param   array|\Hubzero\Config\Repository|\Hubzero\Config\Registry  $data  The global configuration:
+     *                                                                      groups of values
      * @return  bool    True on success, false on failure.
      * @since   2.5.4
      */

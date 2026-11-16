@@ -31,7 +31,7 @@ class File extends Obj
      * Constructor
      *
      * @param   string   $name
-     * @param   integer  $extension_id
+     * @param   int|string  $extension_id
      * @return  void
      */
     public function __construct($name, $extension_id = 0)

@@ -2433,7 +2433,7 @@ class Tickets extends SiteController
      * Generates a select list of Super Administrator names
      *
      * @param   string   $name        Select element 'name' attribute
-     * @param   integer  $active      Selected option
+     * @param   int|string  $active      Selected option
      * @param   integer  $nouser      Flag to set first option to 'No user'
      * @param   string|null   $javascript  Any inline JS to attach to the element
      * @param   string   $order       The sort order for items in the list

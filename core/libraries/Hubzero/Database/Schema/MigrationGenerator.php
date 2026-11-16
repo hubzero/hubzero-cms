@@ -39,7 +39,7 @@ class MigrationGenerator
     /**
      * Database driver
      *
-     * @var Driver
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected $driver;
 
@@ -88,7 +88,7 @@ class MigrationGenerator
     /**
      * Create a new MigrationGenerator
      *
-     * @param Driver $driver
+     * @param \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Every SQL driver is one
      */
     public function __construct(Driver $driver)
     {

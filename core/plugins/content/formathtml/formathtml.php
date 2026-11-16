@@ -80,7 +80,7 @@ class Formathtml extends Plugin
      *
      * @param  string  $context  The context of the content being passed to the plugin.
      * @param  object  $article  The article object.  Note $article->text is also available
-     * @param  object  $params   The article params
+     * @param  array|object  $params   The article params, or the parser configuration
      * @param  int     $page     The 'page' number
      *
      * @return  void

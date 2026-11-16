@@ -703,7 +703,7 @@ class Captcha extends Plugin
     private function createImagePlain()
     {
         // Let's generate a totally random string using MD5
-        $md5_hash = md5(rand(0, 999));
+        $md5_hash = bin2hex(random_bytes(16));
 
         // We don't need a 32 character long string so we trim it down to 5
         $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));

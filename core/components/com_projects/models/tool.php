@@ -80,7 +80,7 @@ class Tool extends Model
      *
      * @param   mixed    $oid
      * @param   integer|null  $projectid
-     * @param   object|null   $instance
+     * @param   integer|null  $instance
      * @return  object
      */
     public static function &getInstance($oid = null, $projectid = null, $instance = null)

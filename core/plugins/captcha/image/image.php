@@ -248,7 +248,7 @@ class Image extends Plugin
                     $img,
                     $font,
                     $x - $shift,
-                    round($y),
+                    (int) round($y),
                     $m['start'],
                     1,
                     $m['end'] - $m['start'],
@@ -329,9 +329,9 @@ class Image extends Plugin
                     $newblue  = $newcolor0 * $foreground_color[2] + $newcolor * $background_color[2];
                 }
 
-                $newred   = round($newred);
-                $newgreen = round($newgreen);
-                $newblue  = round($newblue);
+                $newred   = (int) round($newred);
+                $newgreen = (int) round($newgreen);
+                $newblue  = (int) round($newblue);
 
                 imagesetpixel($img2, $x, $y, imagecolorallocate($img2, $newred, $newgreen, $newblue));
             }
@@ -372,7 +372,7 @@ class Image extends Plugin
     private function createImagePlain()
     {
         // Let's generate a totally random string using md5
-        $md5_hash = md5(rand(0, 999));
+        $md5_hash = bin2hex(random_bytes(16));
 
         // We don't need a 32 character long string so we trim it down to 5
         $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));

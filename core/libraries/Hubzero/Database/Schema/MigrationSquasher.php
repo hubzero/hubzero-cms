@@ -47,7 +47,7 @@ class MigrationSquasher
     /**
      * Database driver
      *
-     * @var Driver
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected $driver;
 
@@ -103,7 +103,7 @@ class MigrationSquasher
     /**
      * Create a new MigrationSquasher
      *
-     * @param Driver $driver
+     * @param \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Every SQL driver is one
      */
     public function __construct(Driver $driver)
     {
@@ -592,8 +592,7 @@ class MigrationSquasher
     protected function driverSupportsEngine(): bool
     {
         // The driver says so itself; it has no getName()
-        return $this->driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
-            && $this->driver->supportsEngine();
+        return $this->driver->supportsEngine();
     }
 
     /**
@@ -603,8 +602,7 @@ class MigrationSquasher
      */
     protected function driverSupportsCharset(): bool
     {
-        return $this->driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
-            && $this->driver->supportsTableCharset();
+        return $this->driver->supportsTableCharset();
     }
 
     /**

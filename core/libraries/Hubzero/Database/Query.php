@@ -753,7 +753,7 @@ class Query
      * 2. Closure - Build query inline
      *
      * Example with Query object (recommended):
-     *   $selectQuery = $db->getQuery(true)
+     *   $selectQuery = $db->getQuery()
      *       ->select('uidNumber')
      *       ->select('userPassword')
      *       ->from('#__xprofiles');
@@ -2629,7 +2629,7 @@ class Query
     /**
      * Sets query offset to start at a certain position
      *
-     * @param   int    $start  Position to start from
+     * @param   int|string    $start  Position to start from
      * @return  $this
      **/
     public function start($start)
@@ -2641,7 +2641,7 @@ class Query
     /**
      * Limits query results returned to a certain number
      *
-     * @param   int    $limit  Number of results to return on next query
+     * @param   int|string    $limit  Number of results to return on next query
      * @return  $this
      **/
     public function limit($limit)

@@ -62,7 +62,7 @@ class Migration20141120215253ComHubgraph extends Base
                 /*$object = unserialize($params);
                 $params = $object->settings();
 
-                $this->db->getQuery(true)
+                $this->db->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => json_encode($params)])
                     ->where('element', '=', 'com_hubgraph')
