@@ -112,7 +112,12 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function serviceProviderRegistersHtmxService(): void
         {
-            $container = new ContainerStub();
+            $container = new class extends \Hubzero\Base\Application {
+                /**
+                 * The application's destructor flushes every output buffer, PHPUnit's included
+                 */
+                public function __destruct() {}
+            };
             $provider = new HtmxServiceProvider($container);
             $provider->register();
 

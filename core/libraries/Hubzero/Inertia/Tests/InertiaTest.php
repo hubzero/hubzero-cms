@@ -388,7 +388,12 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceProviderRegistersSingletonLikeInertiaService(): void
         {
-            $app = new ContainerStub();
+            $app = new class extends \Hubzero\Base\Application {
+                /**
+                 * The application's destructor flushes every output buffer, PHPUnit's included
+                 */
+                public function __destruct() {}
+            };
             $provider = new InertiaServiceProvider($app);
 
             $provider->register();

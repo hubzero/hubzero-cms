@@ -9,9 +9,10 @@
 namespace Hubzero\Database\Tests;
 
 /**
- * @implements \ArrayAccess<mixed, mixed>
+ * An application (what service providers are given) that only stores and
+ * resolves services: none of the real one's set-up runs
  */
-class TestContainer implements \ArrayAccess
+class TestContainer extends \Hubzero\Base\Application
 {
     /**
      * @var  array<string, mixed>
@@ -21,6 +22,17 @@ class TestContainer implements \ArrayAccess
      * @var  array<string, mixed>
      */
     private array $frozen = [];
+
+    /**
+     * Nothing to set up
+     */
+    public function __construct() {}
+
+    /**
+     * Nothing to tear down: the application's destructor flushes every
+     * output buffer, PHPUnit's included
+     */
+    public function __destruct() {}
 
     public function offsetExists(mixed $offset): bool
     {

@@ -19,14 +19,14 @@ abstract class ServiceProvider
     /**
      * The application instance.
      *
-     * @var  object
+     * @var  \Hubzero\Base\Application
      */
     protected $app;
 
     /**
      * Create a new service provider instance.
      *
-     * @param   object  $app
+     * @param   \Hubzero\Base\Application  $app
      * @return  void
      */
     public function __construct($app)

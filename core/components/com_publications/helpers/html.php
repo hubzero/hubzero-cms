@@ -173,7 +173,7 @@ class Html
     /**
      * Show license information for a publication
      *
-     * @param   object  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @param   string  $class        CSS class for the license hyperlink
      * @return  string|false  HTML
      */
@@ -360,7 +360,7 @@ class Html
     /**
      * Show version info
      *
-     * @param   object  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @return  string  HTML
      */
     public static function showVersionInfo($publication)
@@ -400,13 +400,6 @@ class Html
                 $text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_SUBMITTED') . ' ';
                 $text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
                     . $publication->submitted('date') . '</span>';
-                if ($publication->isEmbargoed()) {
-                    $text .= '<span class="block">';
-                    $text .= Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
-                        . ' ' . Lang::txt('COM_PUBLICATIONS_ON') . ' '
-                        . $publication->published('date');
-                    $text .= '</span>';
-                }
                 $class = 'pending';
             } elseif ($publication->isUnpublished() || $publication->isDown()) {
                 $text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ')';
@@ -461,7 +454,7 @@ class Html
     /**
      * Show access message
      *
-     * @param   object  $publication  Publication object
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @return  string|false  HTML
      */
     public static function showAccessMessage($publication)
@@ -608,7 +601,7 @@ class Html
     /**
      * Show supplementary info
      *
-     * @param   object  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @return  string  HTML
      */
     public static function showSubInfo($publication)
@@ -633,7 +626,7 @@ class Html
     /**
      * Show title
      *
-     * @param   object  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @return  string  HTML
      */
     public static function title($publication)
@@ -657,7 +650,7 @@ class Html
     /**
      * Show pre-defined publication footer (curated)
      *
-     * @param   object  $publication  Publication object
+     * @param   \Components\Publications\Models\Publication  $publication  The publication
      * @param   string  $html
      * @return  string  HTML
      */
