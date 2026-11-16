@@ -112,17 +112,11 @@ class Images extends AdminController
         $file = $path . DS . $filename . '.' . $ext;
 
         if ($stream) {
-            //read the php input stream to upload file
-            $input = fopen("php://input", "r");
-            $temp = tmpfile();
-            $realSize = stream_copy_to_stream($input, $temp);
-            fclose($input);
-
-            //move from temp location to target location which is user folder
-            $target = fopen($file, "w");
-            fseek($temp, 0, SEEK_SET);
-            stream_copy_to_stream($temp, $target);
-            fclose($target);
+            // Save the request body, the upload's contents, to the file
+            if (!\Hubzero\Filesystem\Util::saveRequestBody($file)) {
+                echo json_encode(['error' => Lang::txt('Unable to save the uploaded file.')]);
+                return;
+            }
         } else {
             move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
         }

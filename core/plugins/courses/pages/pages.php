@@ -507,17 +507,11 @@ class Pages extends Plugin
         }
 
         if ($stream) {
-            //read the php input stream to upload file
-            $input = fopen("php://input", "r");
-            $temp = tmpfile();
-            $realSize = stream_copy_to_stream($input, $temp);
-            fclose($input);
-
-            //move from temp location to target location which is user folder
-            $target = fopen($file, "w");
-            fseek($temp, 0, SEEK_SET);
-            stream_copy_to_stream($temp, $target);
-            fclose($target);
+            // Save the request body, the upload's contents, to the file
+            if (!\Hubzero\Filesystem\Util::saveRequestBody($file)) {
+                echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')]);
+                exit();
+            }
         } else {
             move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
         }

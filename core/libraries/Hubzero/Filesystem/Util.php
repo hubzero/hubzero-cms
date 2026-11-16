@@ -157,6 +157,49 @@ class Util
     }
 
     /**
+     * Save the raw request body to a file
+     *
+     * The AJAX uploaders send a file as the request body; each controller
+     * had its own copy of this, none of which checked that the streams
+     * opened.
+     *
+     * @param   string  $file  Where to write it
+     * @return  bool    False when the body, a temporary file or the target
+     *                  could not be opened, or a copy failed
+     */
+    public static function saveRequestBody($file)
+    {
+        $input = fopen('php://input', 'r');
+        $temp  = tmpfile();
+
+        if ($input === false || $temp === false) {
+            if ($input !== false) {
+                fclose($input);
+            }
+            if ($temp !== false) {
+                fclose($temp);
+            }
+            return false;
+        }
+
+        $copied = stream_copy_to_stream($input, $temp);
+        fclose($input);
+
+        $target = $copied === false ? false : fopen($file, 'w');
+        if ($target === false) {
+            fclose($temp);
+            return false;
+        }
+
+        fseek($temp, 0, SEEK_SET);
+        $written = stream_copy_to_stream($temp, $target);
+        fclose($target);
+        fclose($temp);
+
+        return $written !== false;
+    }
+
+    /**
      * Get content size.
      *
      * @param   string   $contents

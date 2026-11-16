@@ -127,22 +127,17 @@ class Media extends Base
 
         if ($stream) {
             //read the php input stream to upload file
-            $input = fopen("php://input", "r");
-            $temp = tmpfile();
-            $realSize = stream_copy_to_stream($input, $temp);
-            fclose($input);
-
-            // Scan the copy by its path; the scanner reads files, not handles
-            if (Helpers\Html::virusCheck(stream_get_meta_data($temp)['uri'])) {
-                echo json_encode(['error' => Lang::txt('Virus detected, refusing to upload')]);
+            // Save the request body, the upload's contents, to the file
+            if (!\Hubzero\Filesystem\Util::saveRequestBody($path . DS . $file)) {
+                echo json_encode(['error' => Lang::txt('Unable to save the uploaded file.')]);
                 return null;
             }
 
-            //move from temp location to target location which is user folder
-            $target = fopen($path . DS . $file, "w");
-            fseek($temp, 0, SEEK_SET);
-            stream_copy_to_stream($temp, $target);
-            fclose($target);
+            // Scan it where it landed; virusCheck() deletes an infected file
+            if (Helpers\Html::virusCheck($path . DS . $file)) {
+                echo json_encode(['error' => Lang::txt('Virus detected, refusing to upload')]);
+                return null;
+            }
         } else {
             move_uploaded_file($_FILES['qqfile']['tmp_name'], $path . DS . $file);
         }
