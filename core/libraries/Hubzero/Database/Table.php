@@ -226,15 +226,19 @@ abstract class Table extends \stdClass
      *
      * @param   integer|null  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
-     * @return  string|false   Error message
+     * @return  string|\Exception  The error, or an empty string when there is none
      * @phpstan-impure
      */
     public function getError($i = null, $toString = true)
     {
         if ($i === null) {
             $error = end($this->errors);
+            if ($error === false) {
+                // No errors: an empty string, as Database\Traits\ErrorBag gives
+                return '';
+            }
         } elseif (!array_key_exists($i, $this->errors)) {
-            return false;
+            return '';
         } else {
             $error = $this->errors[$i];
         }

@@ -699,7 +699,7 @@ class SiteSettings
 
         while (true) {
             self::output("Select option [{$defaultNum}]: ", $ansi);
-            $input = trim(fgets(STDIN));
+            $input = trim((string) fgets(STDIN));
 
             if ($input === '') {
                 return $default;

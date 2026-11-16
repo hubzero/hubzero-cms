@@ -1159,7 +1159,7 @@ class Install extends Base implements CommandInterface
     {
         while (true) {
             $this->say("{$prompt} [Y/n] ");
-            $response = strtolower(trim(fgets(STDIN)));
+            $response = strtolower(trim((string) fgets(STDIN)));
 
             if ($response === '' || $response === 'y' || $response === 'yes') {
                 return true;
@@ -1186,7 +1186,7 @@ class Install extends Base implements CommandInterface
 
         while (true) {
             $this->say("{$prompt} {$hint} ");
-            $response = strtolower(trim(fgets(STDIN)));
+            $response = strtolower(trim((string) fgets(STDIN)));
 
             if ($response === '') {
                 return $default;

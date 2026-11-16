@@ -230,7 +230,7 @@ class Database
 
                 // Ask if they want to keep existing config
                 self::output("Keep existing database configuration? [Y/n] ", $ansi);
-                $response = strtolower(trim(fgets(STDIN)));
+                $response = strtolower(trim((string) fgets(STDIN)));
                 if ($response === '' || $response === 'y' || $response === 'yes') {
                     self::output("\n", $ansi);
                     self::output("\e[32mUsing existing database configuration.\e[39m\n", $ansi);
@@ -690,14 +690,14 @@ class Database
     {
         // Host
         self::output("Hostname [localhost]: ", $ansi);
-        $host = trim(fgets(STDIN));
+        $host = trim((string) fgets(STDIN));
         if ($host === '') {
             $host = 'localhost';
         }
 
         // Port
         self::output("Port [3306]: ", $ansi);
-        $portInput = trim(fgets(STDIN));
+        $portInput = trim((string) fgets(STDIN));
         $port = ($portInput === '') ? 3306 : (int) $portInput;
 
         // Build DSN
@@ -724,7 +724,7 @@ class Database
     private static function promptSocketConnection($ansi)
     {
         self::output("Socket path [/var/run/mysqld/mysqld.sock]: ", $ansi);
-        $socket = trim(fgets(STDIN));
+        $socket = trim((string) fgets(STDIN));
         if ($socket === '') {
             $socket = '/var/run/mysqld/mysqld.sock';
         }
@@ -836,7 +836,7 @@ class Database
 
         // Prompt for admin username
         self::output("Admin username [root]: ", $ansi);
-        $adminUser = trim(fgets(STDIN));
+        $adminUser = trim((string) fgets(STDIN));
         if ($adminUser === '') {
             $adminUser = 'root';
         }
@@ -906,7 +906,7 @@ class Database
                     self::output("\n", $ansi);
 
                     self::output("Admin username [{$adminUser}]: ", $ansi);
-                    $newUser = trim(fgets(STDIN));
+                    $newUser = trim((string) fgets(STDIN));
                     if ($newUser !== '') {
                         $adminUser = $newUser;
                     }
@@ -967,7 +967,7 @@ class Database
                 self::output("\n", $ansi);
 
                 self::output("Admin username [{$adminUser}]: ", $ansi);
-                $newUser = trim(fgets(STDIN));
+                $newUser = trim((string) fgets(STDIN));
                 if ($newUser !== '') {
                     $adminUser = $newUser;
                 }
@@ -1997,14 +1997,14 @@ class Database
 
         // Prompt for database name
         self::output("Database name [{$defaultDb}]: ", $ansi);
-        $database = trim(fgets(STDIN));
+        $database = trim((string) fgets(STDIN));
         if ($database === '') {
             $database = $defaultDb;
         }
 
         // Prompt for username
         self::output("Username [{$defaultUser}]: ", $ansi);
-        $username = trim(fgets(STDIN));
+        $username = trim((string) fgets(STDIN));
         if ($username === '') {
             $username = $defaultUser;
         }
@@ -2118,13 +2118,13 @@ class Database
                 self::output("\n", $ansi);
 
                 self::output("Database name [{$database}]: ", $ansi);
-                $newDatabase = trim(fgets(STDIN));
+                $newDatabase = trim((string) fgets(STDIN));
                 if ($newDatabase !== '') {
                     $database = $newDatabase;
                 }
 
                 self::output("Username [{$username}]: ", $ansi);
-                $newUsername = trim(fgets(STDIN));
+                $newUsername = trim((string) fgets(STDIN));
                 if ($newUsername !== '') {
                     $username = $newUsername;
                 }
@@ -2152,12 +2152,12 @@ class Database
         if (PHP_OS_FAMILY !== 'Windows' && posix_isatty(STDIN)) {
             // Unix - use stty to disable echo
             system('stty -echo');
-            $password = trim(fgets(STDIN));
+            $password = trim((string) fgets(STDIN));
             system('stty echo');
             self::output("\n", $ansi);
         } else {
             // Windows or non-TTY - just read normally
-            $password = trim(fgets(STDIN));
+            $password = trim((string) fgets(STDIN));
         }
 
         return $password;
@@ -2307,7 +2307,7 @@ class Database
 
         while (true) {
             self::output("Select option [{$defaultNum}]: ", $ansi);
-            $input = trim(fgets(STDIN));
+            $input = trim((string) fgets(STDIN));
 
             // Default selection
             if ($input === '') {
@@ -2531,11 +2531,11 @@ class Database
 
         if ($isPassword && function_exists('shell_exec') && PHP_OS_FAMILY !== 'Windows') {
             system('stty -echo');
-            $input = trim(fgets(STDIN));
+            $input = trim((string) fgets(STDIN));
             system('stty echo');
             echo "\n";
         } else {
-            $input = trim(fgets(STDIN));
+            $input = trim((string) fgets(STDIN));
         }
 
         return $input !== '' ? $input : $default;

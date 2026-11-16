@@ -68,7 +68,7 @@ class ErrorBagTraitTest extends Basic
         $this->assertCount(3, $errors);
         $this->assertEquals($this->obj->getError(), 'Nulla sed consectetur.');
         $this->assertTrue(is_string($this->obj->getError(1)));
-        $this->assertFalse($this->obj->getError(5));
+        $this->assertSame('', $this->obj->getError(5));
         $this->assertInstanceOf('Exception', $this->obj->getError(1, false));
 
         // Test overwriting an existing entry

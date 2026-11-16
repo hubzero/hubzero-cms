@@ -324,7 +324,7 @@ class Output
         $prompt = trim($prompt);
         $this->addString("{$prompt} ");
 
-        $response = fgets(STDIN);
+        $response = (string) fgets(STDIN);
         $response = trim($response);
 
         return $response;
