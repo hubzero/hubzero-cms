@@ -432,8 +432,8 @@ class Doi extends Plugin
      * create relatedIdentifier node
      *
      * @param   string      &$xml
-     * @param   object      $dom
-     * @param   object      $relatedIdentifiersNodeList
+     * @param   \DomDocument      $dom
+     * @param   \DOMNodeList<\DOMNode>      $relatedIdentifiersNodeList
      * @param   array<mixed>       $citation
      * @param   string      $relationType
      * @return  void
@@ -448,7 +448,7 @@ class Doi extends Plugin
             $relatedIdentifierNode->setAttribute("relatedIdentifierType", key($identifier));
             $relatedIdentifierNode->setAttribute("relationType", $relationType);
             $relatedIdentifierNode->setAttribute("resourceTypeGeneral", $citation[self::KEY_RESOURCETYPEGENERAL]);
-            $xml = $dom->saveXML();
+            $xml = (string) $dom->saveXML();
         }
     }
 
@@ -456,9 +456,9 @@ class Doi extends Plugin
      * Insert relatedIdentifiers node before specific node and create child node relatedIdentifier
      *
      * @param   string      &$xml
-     * @param   object      $dom
-     * @param   object      $resourceNode
-     * @param   object      $specNode
+     * @param   \DomDocument      $dom
+     * @param   \DOMNodeList<\DOMNode>      $resourceNode
+     * @param   \DOMNodeList<\DOMNode>      $specNode
      * @param   array<mixed>       $citation
      * @param   string      $relationType
      * @return  void
@@ -477,7 +477,7 @@ class Doi extends Plugin
             $relatedIdentifierNode->setAttribute("relatedIdentifierType", key($identifier));
             $relatedIdentifierNode->setAttribute("relationType", $relationType);
             $relatedIdentifierNode->setAttribute("resourceTypeGeneral", $citation[self::KEY_RESOURCETYPEGENERAL]);
-            $xml = $dom->saveXML();
+            $xml = (string) $dom->saveXML();
         }
     }
 

@@ -72,7 +72,7 @@ class Categories extends AdminController
     /**
      * Display a form for adding/editing a record
      *
-     * @param   object|null  $row
+     * @param   \Components\Support\Models\Category|null  $row
      *
      * @return  void
      */

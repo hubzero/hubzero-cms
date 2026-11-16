@@ -81,7 +81,7 @@ class Create extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object  $row
+     * @param   \Components\Resources\Models\Entry  $row
      * @return  void
      */
     public function buildPathway($row)
@@ -123,7 +123,7 @@ class Create extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object  $row
+     * @param   \Components\Resources\Models\Entry  $row
      * @return  void
      */
     public function buildTitle($row)
@@ -296,7 +296,7 @@ class Create extends SiteController
     /**
      * Display a form for composing the title, abstract, etc.
      *
-     * @param   object|null  $row  Resource
+     * @param   \Components\Resources\Models\Entry|null  $row  Resource
      *
      * @return  void
      */

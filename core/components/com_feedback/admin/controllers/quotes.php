@@ -85,7 +85,7 @@ class Quotes extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Feedback\Models\Quote|null  $row
      *
      * @return  void
      */

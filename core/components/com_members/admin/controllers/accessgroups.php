@@ -91,7 +91,7 @@ class Accessgroups extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Hubzero\Access\Group|null  $row
      *
      * @return  void
      */

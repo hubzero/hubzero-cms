@@ -1522,8 +1522,8 @@ class Form
      * @param   string|mixed  $element  The XML element object representation of the form field.
      * @param   string|null  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
-     * @param   object|null  $input    An optional Registry object with the entire data set to validate
-     *                            against the entire form.
+     * @param   \Hubzero\Config\Registry|null  $input    An optional Registry object with the entire data set to
+     *                                                   validate against the entire form.
      * @return  mixed   Boolean true if field value is valid, Exception on failure.
      */
     protected function validateField($element, $group = null, $value = null, $input = null)

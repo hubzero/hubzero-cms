@@ -52,10 +52,8 @@ class Events extends AdminController
 			  `race` varchar(255) default null,
 			  `tribal_affiliation` varchar(255) default null
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-            if (!$this->database->query()) {
-                echo $this->database->getErrorMsg();
-                return false;
-            }
+            // A failed query throws; the driver has no error message to echo
+            $this->database->query();
         }
 
         /**

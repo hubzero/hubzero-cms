@@ -297,7 +297,7 @@ class Html
     /**
      * Generate a citation for a publication
      *
-     * @param   object|mixed  $cite       Citation data
+     * @param   \stdClass|mixed|null  $cite       Citation data
      * @param   object  $pub        Publication model
      * @param   string  $citations  Citations to prepend
      * @return  string  HTML

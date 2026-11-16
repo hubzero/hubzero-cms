@@ -129,7 +129,7 @@ class Notes extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Members\Models\Note|null  $row
      *
      * @return  void
      */

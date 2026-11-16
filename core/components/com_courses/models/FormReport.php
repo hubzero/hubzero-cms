@@ -25,7 +25,7 @@ class FormReport extends Model
      * the page. This is a significant shortfall, especially given that questions
      * or responses may at some point read horizontally, rather than vertically.
      *
-     * @param  object $db - database object
+     * @param  \Hubzero\Database\Driver|null $db - database object
      * @param  int|mixed $asset_id    - asset id
      * @param  bool $include_headers   - whether or not to include header values
      * @param  int|null $section_id    - limit to only a certain section
@@ -58,7 +58,7 @@ class FormReport extends Model
         $question_vs  = [];
         $questions    = [];
         $answers      = [];
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 $question_ids[] = $r->id;
 
@@ -78,7 +78,7 @@ class FormReport extends Model
                 $db->setQuery($query);
                 $ans = $db->loadObjectList();
 
-                if ($ans && count($ans) > 0) {
+                if ($ans) {
                     $letter = null;
 
                     foreach ($ans as $a) {
@@ -99,7 +99,7 @@ class FormReport extends Model
         $results = $db->loadObjectList();
         $output  = [];
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             if ($include_headers) {
                 $fields = [];
 
@@ -166,7 +166,7 @@ class FormReport extends Model
     /**
      * Get assessment details data
      *
-     * @param  object $db   - database connection object
+     * @param  \Hubzero\Database\Driver|null $db   - database connection object
      * @param  int|mixed $asset_id   - asset id for which to retrieve letter counts
      * @param  int|null $section_id   - section id
      * @return array<mixed>|false - counts of letter responses
@@ -198,7 +198,7 @@ class FormReport extends Model
         $questions    = [];
         $question_ids = [];
         $high_letter  = 97;
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 if ($version_id == $r->version) {
                     $questions[$r->id] = $question_id;
@@ -218,7 +218,7 @@ class FormReport extends Model
                 $db->setQuery($query);
                 $ans = $db->loadObjectList();
 
-                if ($ans && count($ans) > 0) {
+                if ($ans) {
                     $letter = null;
 
                     foreach ($ans as $a) {
@@ -242,7 +242,7 @@ class FormReport extends Model
         $db->setQuery($query);
         $results = $db->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             $counts = [];
 
             foreach ($results as $response) {

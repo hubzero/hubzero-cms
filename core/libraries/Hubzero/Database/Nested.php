@@ -117,7 +117,7 @@ class Nested extends Relational
     /**
      * Applies the scopes of the given model to the current pending query
      *
-     * @param   object      $parent  The parent from which to inherit
+     * @param   \Hubzero\Database\Nested      $parent  The parent from which to inherit
      * @return  $this
      **/
     private function applyScopesWhere($parent)

@@ -400,7 +400,7 @@ class Publication extends Base
      * @param   integer  $id
      * @param   string   $title
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
      * @param   object   $element

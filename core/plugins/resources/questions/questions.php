@@ -256,7 +256,7 @@ class Questions extends Plugin
     /**
      * Display a form for adding a question
      *
-     * @param   object|null  $row
+     * @param   \Components\Answers\Models\Question|null  $row
      * @return  string
      */
     private function new($row = null)

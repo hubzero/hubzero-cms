@@ -75,7 +75,7 @@ class Session extends Table
      * Unless the middleware gave the session one already. Does nothing until
      * the session table has the column.
      *
-     * @param   object  $version  The tool version, as a table or model
+     * @param   \Components\Tools\Tables\Version  $version  The tool version, as a table or model
      * @return  void
      */
     public function inheritHardTimeout($version)

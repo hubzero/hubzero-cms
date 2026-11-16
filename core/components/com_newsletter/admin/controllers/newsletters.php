@@ -165,7 +165,7 @@ class Newsletters extends AdminController
     /**
      * Edit newsletter task
      *
-     * @param   object|null  $row
+     * @param   \Components\Newsletter\Models\Newsletter|null  $row
      *
      * @return  void
      */
@@ -800,7 +800,7 @@ class Newsletters extends AdminController
     /**
      * Send Newsletter
      *
-     * @param   object   $newsletter
+     * @param   \Components\Newsletter\Models\Newsletter   $newsletter
      * @param   string   $newsletterHtmlContent
      * @param   string   $newsletterPlainContent
      * @param   array<mixed>    $newsletterContacts

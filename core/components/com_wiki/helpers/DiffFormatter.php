@@ -51,7 +51,7 @@ class DiffFormatter
     /**
      * Format a diff.
      *
-     * @param   object  $diff  A Diff object.
+     * @param   \Components\Wiki\Helpers\Diff  $diff  A Diff object.
      * @return  string  The formatted output.
      */
     public function format($diff, ?\Closure $formatContextOutput = null)

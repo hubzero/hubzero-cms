@@ -91,7 +91,7 @@ class Members extends GroupMacro
     /**
      * Get a list of events for a group
      *
-     * @param      object $group
+     * @param      \Hubzero\User\Group $group
      * @param      array<mixed>  $filters
      * @return     array<mixed>
      */

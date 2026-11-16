@@ -259,7 +259,7 @@ class ResourceMapGenerator
      * Inserts data information for each datatype.
      *
      * @param   array<mixed>   $aggregation  The aggregation that contains the data to be inserted
-     * @param   object  $xmlwriter    The XMLWriter object for writing to buffer
+     * @param   \XMLWriter  $xmlwriter    The XMLWriter object for writing to buffer
      * @return  void
      */
     private function dataTypeDescriptor($aggregation, $xmlwriter)
@@ -286,8 +286,8 @@ class ResourceMapGenerator
                 }
 
                 $imageData = getimagesize(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
-                $xmlwriter->writeElement('exif:width', $imageData[0]);
-                $xmlwriter->writeElement('exif:height', $imageData[1]);
+                $xmlwriter->writeElement('exif:width', (string) $imageData[0]);
+                $xmlwriter->writeElement('exif:height', (string) $imageData[1]);
                 break;
             default:
         }

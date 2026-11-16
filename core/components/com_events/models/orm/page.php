@@ -18,6 +18,8 @@ use Hubzero\Facades\Date;
  * @uses \Hubzero\Database\Relational
  *
  * @property  int|string|null  $ordering
+ *
+ * @property-read  mixed  $event  What event() gives
  */
 class Page extends Relational
 {

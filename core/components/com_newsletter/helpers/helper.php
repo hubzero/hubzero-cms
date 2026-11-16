@@ -208,7 +208,7 @@ class Helper
      * Send confirmation Email to user
      *
      * @param   string  $emailAddress         Confirmation Email Address
-     * @param   object   $mailinglistObject   Mailing list we just subscribed to
+     * @param   \Components\Newsletter\Models\Mailinglist   $mailinglistObject   Mailing list we just subscribed to
      * @param   bool    $addedByAdmin  Did we sign up or we were added by admin?
      * @return  bool
      */

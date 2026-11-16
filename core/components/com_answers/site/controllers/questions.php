@@ -651,7 +651,7 @@ class Questions extends SiteController
     /**
      * Create a new question
      *
-     * @param   object|null  $question
+     * @param   \Components\Answers\Models\Question|null  $question
      *
      * @return  void
      */

@@ -1223,7 +1223,7 @@ class Resources extends SiteController
      * Named explicitly rather than taken as "the first .json in the directory" -
      * an unrelated sidecar would otherwise be loaded as the manifest.
      *
-     * @param   object  $resource  HUB Resource
+     * @param   \Components\Resources\Models\Entry  $resource  HUB Resource
      * @return  string
      */
     private function getVideoManifestForResource($resource)
@@ -1234,7 +1234,7 @@ class Resources extends SiteController
     /**
      * Build a video manifest for a resource from the files in its filespace
      *
-     * @param   object  $resource  HUB Resource
+     * @param   \Components\Resources\Models\Entry  $resource  HUB Resource
      * @return  \stdClass
      */
     private function buildVideoManifestForResource($resource)
@@ -2821,7 +2821,7 @@ class Resources extends SiteController
      * Uses current user session if no user object is supplied
      *
      * @param   object   $resource  Resource
-     * @param   object|null   $user      User (optional)
+     * @param   \Hubzero\User\User|null   $user      User (optional)
      * @return  boolean  True if user has access to a group-owned resource
      */
     private function checkGroupAccess($resource, $user = null)

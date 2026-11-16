@@ -130,7 +130,7 @@ class ServiceAccountsMigrationTest extends Basic
     /**
      * Access groups by id
      *
-     * @param   object  $pdo
+     * @param   \PDO  $pdo
      * @return  array<mixed>
      */
     private static function tree($pdo)

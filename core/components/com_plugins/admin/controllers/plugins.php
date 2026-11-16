@@ -183,7 +183,7 @@ class Plugins extends AdminController
     /**
      * Method to edit an existing record.
      *
-     * @param   object|null  $model
+     * @param   \Components\Plugins\Models\Plugin|null  $model
      *
      * @return  void
      */

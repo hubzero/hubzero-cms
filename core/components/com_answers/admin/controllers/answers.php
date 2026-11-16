@@ -120,7 +120,7 @@ class Answers extends AdminController
     /**
      * Displays a question response for editing
      *
-     * @param   object|null  $row
+     * @param   \Components\Answers\Models\Response|null  $row
      *
      * @return  void
      */

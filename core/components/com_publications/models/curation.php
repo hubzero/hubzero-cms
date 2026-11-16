@@ -519,16 +519,12 @@ class Curation extends Obj
     /**
      * Set association with publication and load curation
      *
-     * @param   object|null   $pub          Models\Publication
+     * @param   \Components\Publications\Models\Publication|null   $pub          Models\Publication
      * @param   boolean  $setProgress
      * @return  void
      */
     public function setPubAssoc($pub = null, $setProgress = true)
     {
-        // Set version alias (e.f. 'dev' or 'default')
-        if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version)) {
-            $pub->versionAlias = $pub->version;
-        }
         $this->pub = $pub;
 
         // Set progress
@@ -1229,7 +1225,7 @@ class Curation extends Obj
      *
      * @param   string   $name       Block name
      * @param   integer  $elementId  Element ID in question
-     * @param   object|mixed   $pub        Publication object
+     * @param   \Components\Publications\Models\Publication|mixed   $pub        Publication object
      * @param   integer  $blockId    Numeric block ID
      * @return  object|false
      */
@@ -1759,7 +1755,7 @@ class Curation extends Obj
     /**
      * Save update
      *
-     * @param   object|null   $data       Data to save
+     * @param   \stdClass|null   $data       Data to save
      * @param   integer  $elementId  Element ID
      * @param   string   $name       Block name
      * @param   object|mixed   $pub        Publication object
@@ -1800,7 +1796,7 @@ class Curation extends Obj
         }
 
         // Insert incoming data
-        foreach ($data as $field => $value) {
+        foreach (get_object_vars($data) as $field => $value) {
             $field = trim((string) $field);
             $this->tbl->$field = trim((string) $value);
         }
@@ -2283,7 +2279,7 @@ class Curation extends Obj
     /**
      * Conversion for publications created in a non-curated flow
      *
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null   $pub
      * @return  boolean
      */
     public function convertToCuration($pub = null)
@@ -2450,8 +2446,8 @@ class Curation extends Obj
      * Transfer content from one version to another
      *
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $old  Transfer from version record
-     * @param   object   $new  Transfer to version record
+     * @param   \Components\Publications\Tables\Version   $old  Transfer from version record
+     * @param   \Components\Publications\Tables\Version   $new  Transfer to version record
      * @return  boolean
      */
     public function transfer($pub, $old, $new)

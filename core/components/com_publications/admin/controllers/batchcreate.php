@@ -610,7 +610,7 @@ class Batchcreate extends AdminController
     /**
      * Collect file data
      *
-     * @param   object   $file
+     * @param   \SimpleXMLElement   $file
      * @param   int|string   $role
      * @param   integer  $ordering
      * @param   object   $item
@@ -680,7 +680,7 @@ class Batchcreate extends AdminController
      *
      * @param   array<mixed>   $fileRecord
      * @param   object  $pub
-     * @param   object  $version
+     * @param   \stdClass  $version
      * @return  bool|null
      */
     public function processFileData($fileRecord, $pub, $version)
@@ -790,7 +790,7 @@ class Batchcreate extends AdminController
     /**
      * Collect author data
      *
-     * @param   object   $author
+     * @param   \SimpleXMLElement   $author
      * @param   integer  $ordering
      * @param   \SimpleXMLElement|string|int|null  $uid  The author's uid attribute
      * @param   array<mixed>    $item
@@ -859,7 +859,7 @@ class Batchcreate extends AdminController
     /**
      * Show parsing errors
      *
-     * @param   object  $error
+     * @param   \LibXMLError  $error
      * @param   string  $xml
      * @return  string
      */

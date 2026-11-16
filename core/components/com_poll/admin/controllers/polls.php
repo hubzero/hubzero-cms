@@ -151,7 +151,7 @@ class Polls extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $poll  Poll object
+     * @param   \Components\Poll\Models\Poll|null  $poll  Poll object
      *
      * @return  void
      */
@@ -176,7 +176,7 @@ class Polls extends AdminController
         }
 
         // Fail if checked out not by 'me'
-        if ($poll->isCheckedOut(User::get('id'))) {
+        if ($poll->isCheckedOut()) {
             Notify::warning(Lang::txt('DESCBEINGEDITTED', Lang::txt('The poll'), $poll->get('title')));
 
             $this->cancelTask();

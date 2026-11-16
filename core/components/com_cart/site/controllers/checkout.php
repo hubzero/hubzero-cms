@@ -409,7 +409,7 @@ class Checkout extends ComponentController
      * Select saved shipping address
      *
      * @param   int     $saId
-     * @param   object  $cart
+     * @param   \Components\Cart\Models\CurrentCart  $cart
      * @return  void
      */
     private function selectSavedShippingAddress($saId, $cart)

@@ -663,7 +663,7 @@ class Git extends Models\Adapter
     /**
      * Get file data from Git and map to file object
      *
-     * @param   object  $file     Models\File
+     * @param   \Components\Projects\Models\File  $file     Models\File
      * @param   string  $dirPath
      * @param   string|null  $property
      * @return  array<mixed>

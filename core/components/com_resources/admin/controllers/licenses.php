@@ -86,7 +86,7 @@ class Licenses extends AdminController
     /**
      * Edit a record
      *
-     * @param   object|null  $row
+     * @param   \Components\Resources\Models\License|null  $row
      *
      * @return  void
      */

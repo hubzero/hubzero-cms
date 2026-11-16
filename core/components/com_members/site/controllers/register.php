@@ -1014,7 +1014,7 @@ class Register extends SiteController
     /**
      * Display the form for registering an account
      *
-     * @param   object|null  &$xregistration
+     * @param   \Components\Members\Models\Registration|null  &$xregistration
      * @param-out object  $xregistration
      * @param   string  $task
      *

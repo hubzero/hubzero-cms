@@ -432,7 +432,7 @@ class View
     /**
      * Get group page templates
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  array<mixed>
      */
     public static function getPageTemplates($group)

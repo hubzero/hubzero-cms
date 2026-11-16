@@ -95,7 +95,7 @@ class Messages extends AdminController
     /**
      * Edit a record
      *
-     * @param   object|null  $row  Database row
+     * @param   \Hubzero\Message\Component|null  $row  Database row
      *
      * @return  void
      */

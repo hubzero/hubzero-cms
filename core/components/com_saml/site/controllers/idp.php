@@ -108,7 +108,7 @@ class Idp extends SiteController
      * Anything untrusted is rejected with a plain 400 and a log line — an
      * untrusted issuer never receives signed XML (DESIGN.md §7.2).
      *
-     * @param   object  $request  \Psr\Http\Message\ServerRequestInterface
+     * @param   \Psr\Http\Message\ServerRequestInterface  $request  \Psr\Http\Message\ServerRequestInterface
      * @return  array<int, mixed>   [AuthnRequest, ServiceProvider]
      */
     protected function validateAuthnRequest($request)

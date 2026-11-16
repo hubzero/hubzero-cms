@@ -17,6 +17,9 @@ use Hubzero\Database\Relational;
  * @property-read  mixed  $emails  What emails() gives
  * @property  string|null  $name
  * @property  int|string|null  $private
+ *
+ * @property  string|null  $description
+ * @property  int|string|null  $id
  */
 class Mailinglist extends Relational
 {

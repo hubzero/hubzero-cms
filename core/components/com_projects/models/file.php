@@ -161,7 +161,7 @@ class File extends Obj
     /**
      * Get preview image
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project|null  $model
      * @param   string  $hash
      * @param   string  $get
      * @param   string  $render

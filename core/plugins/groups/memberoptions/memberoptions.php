@@ -129,7 +129,7 @@ class Memberoptions extends Plugin
      * Save settings
      *
      * @param   object   $group
-     * @param   object   $user
+     * @param   \Hubzero\User\User   $user
      * @param   integer  $recvEmailOptionID
      * @param   integer  $recvEmailOptionValue
      * @return   string|null

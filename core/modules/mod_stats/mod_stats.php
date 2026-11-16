@@ -41,7 +41,7 @@ class Stats extends Module
     /**
      * Get a list of stats
      *
-     * @param   object  $params  Registry
+     * @param   \Hubzero\Config\Registry|null  $params  Registry
      * @return  array<mixed>
      */
     public static function &getList(&$params)

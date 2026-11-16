@@ -422,8 +422,8 @@ class Changelog extends Obj
     /**
      * Log changes from one version of the ticket to the next
      *
-     * @param   object  $before
-     * @param   object  $after
+     * @param   \Components\Support\Models\Ticket  $before
+     * @param   \Components\Support\Models\Ticket  $after
      * @return  $this
      */
     public function diff($before, $after)

@@ -620,7 +620,7 @@ class Media extends SiteController
     /**
      * Is the current user allowed to delete this asset?
      *
-     * @param   object  $asset
+     * @param   \Components\Collections\Models\Asset  $asset
      * @return  bool
      */
     protected function userOwnsAsset($asset)

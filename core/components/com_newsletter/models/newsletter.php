@@ -24,6 +24,14 @@ use Hubzero\Facades\Event;
  * @property  int|string|null  $published
  *
  * @property  int|string|null  $issue
+ *
+ * @property  string|null  $html_content
+ * @property  int|string|null  $id
+ * @property  string|null  $plain_content
+ * @property-read  mixed  $primary  What primary() gives
+ * @property-read  mixed  $secondary  What secondary() gives
+ * @property-read  mixed  $template  What template() gives (hubs renamed the old column to template_id)
+ * @property  int|string|null  $tracking
  */
 class Newsletter extends Relational
 {
@@ -314,7 +322,7 @@ class Newsletter extends Relational
     /**
      * Build Newsletter Content
      *
-     * @param   object   $campaign              Campaign Object
+     * @param   \Components\Newsletter\Models\Newsletter   $campaign              Campaign Object
      * @param   boolean  $stripHtmlAndBodyTags  Strip out <html> & <body> tags?
      * @return  string   Campaign HTML
      */
@@ -518,7 +526,7 @@ class Newsletter extends Relational
     /**
      * Build Newsletter Content, Plain Text Part
      *
-     * @param   object  $campaign  Campaign Object
+     * @param   \Components\Newsletter\Models\Newsletter  $campaign  Campaign Object
      * @return  string  Campaign text
      */
     public function buildNewsletterPlainTextPart($campaign)

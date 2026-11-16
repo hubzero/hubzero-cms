@@ -66,7 +66,7 @@ class Tickets extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object|null  $ticket
+     * @param   \Components\Support\Models\Ticket|null  $ticket
      * @return  void
      */
     protected function buildPathway($ticket = null)
@@ -107,7 +107,7 @@ class Tickets extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object|null  $ticket
+     * @param   \Components\Support\Models\Ticket|null  $ticket
      * @return  void
      */
     protected function buildTitle($ticket = null)

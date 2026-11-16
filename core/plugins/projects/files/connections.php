@@ -76,7 +76,7 @@ class Connections
     /**
      * Constructs a new connections object
      *
-     * @param   object  $plugin      the plugin that spawned this object
+     * @param   \Plugins\Projects\Files\Files  $plugin      the plugin that spawned this object
      * @param   string  $option      the option being used
      * @param   int|null     $connection  the connection id
      * @return  void
@@ -477,7 +477,7 @@ class Connections
      * clearing one's stored credential breaks it for the whole project, and
      * only a manager can run authorize() to restore it.
      *
-     * @param   object|mixed  $connection  The connection being acted on
+     * @param   \Components\Projects\Models\Orm\Connection|mixed|null  $connection  The connection being acted on
      * @return  bool
      */
     private function connectionOwnedOrManageableByUser($connection)

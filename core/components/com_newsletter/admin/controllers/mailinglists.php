@@ -100,7 +100,7 @@ class Mailinglists extends AdminController
     /**
      * Edit Mailing List Task
      *
-     * @param   object|null  $row
+     * @param   \Components\Newsletter\Models\Mailinglist|\Components\Newsletter\Models\Mailinglist\Email|null  $row
      *
      * @return  void
      */
@@ -506,7 +506,7 @@ class Mailinglists extends AdminController
     /**
      * Edit Email On Mailing List Task
      *
-     * @param   object|null  $row
+     * @param   \Components\Newsletter\Models\Mailinglist\Email|null  $row
      *
      * @return  void
      */

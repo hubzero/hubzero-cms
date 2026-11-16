@@ -250,7 +250,7 @@ class Form extends SiteController
     /**
      * Deploy form view
      *
-     * @param   object|null  $dep
+     * @param   \Components\Courses\Models\PdfFormDeployment|null  $dep
      * @return  void
      */
     public function deployTask($dep = null)
@@ -361,7 +361,7 @@ class Form extends SiteController
     /**
      * Show deployment
      *
-     * @param   object|null  $dep
+     * @param   \Components\Courses\Models\PdfFormDeployment|null  $dep
      * @return  void
      */
     public function showDeploymentTask($dep = null)

@@ -864,7 +864,7 @@ abstract class Cart
      * rest of the info.
      *
      * @param   int    $tId  transaction ID
-     * @param   object  $tiInfo  transaction items info
+     * @param   \stdClass  $tiInfo  transaction items info
      * @param   bool   $returnChanges flag whether the changes should be recorded and returned
      * @return  mixed  bool if $returnChanges is set to false, array if $returnChanges is set to true
      */
@@ -882,7 +882,7 @@ abstract class Cart
         // We can check what changes have been made here and return them
         $transactionItemsChanges = [];
 
-        foreach ($tiInfo as $sId => $sInfo) {
+        foreach (get_object_vars($tiInfo) as $sId => $sInfo) {
             // Only items that belong to this transaction
             if (empty($transactionItems[$sId])) {
                 continue;

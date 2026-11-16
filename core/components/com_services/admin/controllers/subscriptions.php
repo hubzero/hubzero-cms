@@ -105,7 +105,7 @@ class Subscriptions extends AdminController
     /**
      * Edit Subscription
      *
-     * @param   object|null  $subscription
+     * @param   \Components\Services\Models\Subscription|null  $subscription
      *
      * @return  void
      */

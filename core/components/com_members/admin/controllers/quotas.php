@@ -355,7 +355,7 @@ class Quotas extends AdminController
     /**
      * Edit a quota class
      *
-     * @param   object|null  $row
+     * @param   \Components\Members\Models\Quota\Category|null  $row
      *
      * @return  void
      */

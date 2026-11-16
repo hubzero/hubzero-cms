@@ -42,7 +42,7 @@ class Stack
     /**
      * Create stack with first layer as core
      *
-     * @param   object  $core  Core service
+     * @param   \Hubzero\Base\Application  $core  Core service
      * @return  void
      */
     public function __construct($core)

@@ -147,7 +147,7 @@ class Comments extends SiteController
     /**
      * Display comments for a wiki page
      *
-     * @param   object|null  $mycomment
+     * @param   \Components\Wiki\Models\Comment|null  $mycomment
      *
      * @return  void
      */

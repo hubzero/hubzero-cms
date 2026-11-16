@@ -45,7 +45,7 @@ class Syndicate extends Module
     /**
      * Get a link
      *
-     * @param   object  $params  Registry
+     * @param   \Hubzero\Config\Registry|null  $params  Registry
      * @return  string
      */
     public static function getLink(&$params)

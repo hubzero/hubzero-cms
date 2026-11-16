@@ -1400,7 +1400,7 @@ class Profiles extends SiteController
     /**
      * Show a form for editing a profile
      *
-     * @param   object|null  $profile  Profile
+     * @param   \Components\Members\Models\Member|null  $profile  Profile
      *
      * @return  void
      */

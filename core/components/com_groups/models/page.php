@@ -150,7 +150,7 @@ class Page extends Model
     /**
      * Check to see if group owns page
      *
-     * @param   object  $group  \Hubzero\User\Group
+     * @param   \Hubzero\User\Group  $group  \Hubzero\User\Group
      * @return  boolean
      */
     public function belongsToGroup($group)
@@ -341,7 +341,7 @@ class Page extends Model
     /**
      * Get Parents Recursively
      *
-     * @param   object  $page
+     * @param   \Components\Groups\Models\Page  $page
      * @param   string  $sort
      * @return  \Hubzero\Base\Model\ItemList
      */

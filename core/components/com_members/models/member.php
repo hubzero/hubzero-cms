@@ -22,6 +22,8 @@ use Hubzero\Facades\Route;
  *
  * @property  int                     $id        The ID column
  * @property  \Hubzero\Database\Rows  $profiles  The profile fields, through profiles()
+ *
+ * @property-read  mixed  $hosts  What hosts() gives
  */
 class Member extends User implements \Hubzero\Search\Searchable
 {

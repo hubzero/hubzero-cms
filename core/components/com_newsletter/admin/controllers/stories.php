@@ -43,7 +43,7 @@ class Stories extends AdminController
     /**
      * Edit Newsletter Story Task
      *
-     * @param   object|null  $story
+     * @param   \Components\Newsletter\Models\Primary|\Components\Newsletter\Models\Secondary|null  $story
      *
      * @return  void
      */

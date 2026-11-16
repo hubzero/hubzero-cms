@@ -799,7 +799,7 @@ class Feed extends Plugin
      * The log's own scope_id is the to-do/note/publication id, so the project
      * linkage has to be read from the recipient rows.
      *
-     * @param   object  $entry
+     * @param   \Hubzero\Activity\Log  $entry
      * @return  boolean
      */
     protected function entryBelongsToProject($entry)

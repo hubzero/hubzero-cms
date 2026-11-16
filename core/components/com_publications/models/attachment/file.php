@@ -1043,7 +1043,7 @@ class File extends Base
      * Bundle files together
      *
      * @param   array<mixed>    $attachments
-     * @param   object|null   $configs
+     * @param   \stdClass|null   $configs
      * @param   boolean  $overwrite
      * @return  mixed    False on error, string on success
      */
@@ -1505,7 +1505,7 @@ class File extends Base
      *
      * @param   string   $filePath
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
      * @param   object   $element
@@ -1622,7 +1622,7 @@ class File extends Base
     /**
      * Publish file attachment
      *
-     * @param   object   $objPA
+     * @param   \Components\Publications\Tables\Attachment   $objPA
      * @param   object   $pub
      * @param   object   $configs
      * @param   integer  $update   force update of file
@@ -1683,7 +1683,7 @@ class File extends Base
      *
      * @param   object   $row
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @return  boolean
      */
     public function unpublishAttachment($row, $pub, $configs)

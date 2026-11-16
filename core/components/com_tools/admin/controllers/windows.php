@@ -83,7 +83,7 @@ class Windows extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Resources\Models\Entry|null  $row
      *
      * @return  void
      */

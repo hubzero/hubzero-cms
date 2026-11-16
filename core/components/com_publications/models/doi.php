@@ -85,7 +85,7 @@ class Doi extends Obj
     /**
      * Constructor
      *
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @return  void
      */
     public function __construct($pub = null)

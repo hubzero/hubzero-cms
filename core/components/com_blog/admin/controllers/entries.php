@@ -127,7 +127,7 @@ class Entries extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Blog\Models\Entry|null  $row
      *
      * @return  void
      */

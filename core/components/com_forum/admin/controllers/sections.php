@@ -136,7 +136,7 @@ class Sections extends AdminController
     /**
      * Displays a form for editing or creating entries
      *
-     * @param   object|null  $row
+     * @param   \Components\Forum\Models\Section|null  $row
      *
      * @return  void
      */

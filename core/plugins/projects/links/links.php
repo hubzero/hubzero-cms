@@ -1165,14 +1165,14 @@ class Links extends Plugin
     /**
      * Parse DOI metadata
      *
-     * @param   object  $data
+     * @param   \Components\Publications\Models\Metadata  $data
      * @param   array<mixed>  $metadata
      * @return  object
      */
     public function parseDoiData($data, $metadata)
     {
         // Pull applicable data
-        foreach ($data as $key => $value) {
+        foreach (get_object_vars($data) as $key => $value) {
             $altKey = strtoupper($key);
             if (isset($metadata[$key]) || isset($metadata[$altKey])) {
                 $which = isset($metadata[$key]) ? $key : $altKey;
@@ -1199,7 +1199,7 @@ class Links extends Plugin
             // Parse date
             if ($key == 'issued') {
                 if (isset($metadata['issued']) && isset($metadata['issued']['date-parts'])) {
-                    $data->year = $metadata['issued']['date-parts'][0][0];
+                    $data->set('year', $metadata['issued']['date-parts'][0][0]);
                 }
             }
 

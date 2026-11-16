@@ -64,7 +64,7 @@ class Css extends AbstractHelper
     /**
      * Modify paths if in a super group
      *
-     * @param   object  $asset  Asset
+     * @param   \Hubzero\Document\Asset\Stylesheet  $asset  Asset
      * @return  object
      */
     protected function isSuperGroupAsset($asset)

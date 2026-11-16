@@ -122,7 +122,7 @@ class Lists extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Wishlist\Models\Wishlist|null  $row
      *
      * @return  void
      */

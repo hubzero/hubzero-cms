@@ -137,7 +137,7 @@ class Doi extends Relational
      * Register a DOI
      *
      * @param   array<mixed>   $authors   Authors of a resource
-     * @param   object  $config    Registry
+     * @param   \Hubzero\Config\Registry  $config    Registry
      * @param   array<mixed>   $metadata  Metadata
      * @return  mixed   False if error, string on success
      */

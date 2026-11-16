@@ -230,7 +230,7 @@ class Registration
     /**
      * Load data from user account
      *
-     * @param   object|null  $user
+     * @param   \Hubzero\User\User|null  $user
      * @return  void
      */
     public function loadAccount($user = null)

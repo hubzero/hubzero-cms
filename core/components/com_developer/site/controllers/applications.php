@@ -156,7 +156,8 @@ class Applications extends SiteController
     /**
      * Edit an existing developer application
      *
-     * @param   object|null  $application  Optional application model returned from save
+     * @param   \Components\Developer\Models\Application|null  $application  Optional application model returned from
+     *                                                                       save
      *
      * @return  void
      */

@@ -996,7 +996,7 @@ class Publications extends Plugin
     /**
      * Actions after publication draft is saved
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  bool|null
      */
     public function onAfterSave($pub)
@@ -1041,7 +1041,7 @@ class Publications extends Plugin
     /**
      * Actions after publication draft is started
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  void
      */
     public function onAfterCreate($pub)
@@ -2263,7 +2263,7 @@ class Publications extends Plugin
     /**
      * On after change status
      *
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication   $pub
      * @param   integer  $originalStatus
      * @return  string|null
      */

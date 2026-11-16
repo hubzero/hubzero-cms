@@ -2099,7 +2099,7 @@ class Jobs extends SiteController
     /**
      * Check job ad quota depending on subscription
      *
-     * @param   object   $job Job
+     * @param   \Components\Jobs\Tables\Job   $job Job
      * @return  integer
      */
     protected function checkQuota($job)

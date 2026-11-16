@@ -91,7 +91,7 @@ class Parameter extends Registry
     /**
      * Sets the XML object from custom XML files.
      *
-     * @param   object|mixed  &$xml  An XML object.
+     * @param   \SimpleXMLElement|mixed  &$xml  An XML object.
      * @return  void
      */
     public function setXML(&$xml)
@@ -232,7 +232,7 @@ class Parameter extends Registry
     /**
      * Render a parameter type.
      *
-     * @param   object  &$node         A parameter XML element.
+     * @param   \SimpleXMLElement  &$node         A parameter XML element.
      * @param   string  $control_name  An optional name of the HTML form control. The default is
      *                                 'params' if not supplied.
      * @param   string  $group         An optional group to render.  The default group is used if not supplied.

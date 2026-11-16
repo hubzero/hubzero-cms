@@ -101,7 +101,7 @@ class Breadcrumbs extends Module
      * it is the active page or tab, then any plugin crumbs.
      *
      * @param   array<mixed>   $items  Pathway items
-     * @param   object  $group  The supergroup being viewed
+     * @param   \Hubzero\User\Group  $group  The supergroup being viewed
      * @return  mixed   The crumb's index, or null if it isn't in the trail
      */
     protected function findGroupCrumb($items, $group)

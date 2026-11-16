@@ -96,7 +96,7 @@ class SamlSession extends Relational
      * offset setter that paginated() calls, and shadowing it breaks every
      * paginated listing of this model.
      *
-     * @param   object  $user       \Hubzero\User\User
+     * @param   \Hubzero\User\User  $user       \Hubzero\User\User
      * @param   object  $sp         ServiceProvider
      * @param   string  $requestId  The AuthnRequest this answers
      * @return  static  SamlSession

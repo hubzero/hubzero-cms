@@ -159,7 +159,7 @@ class Set extends Obj implements Iterator
     /**
      * Constructor
      *
-     * @param   object  $terms
+     * @param   \Components\Search\Models\Basic\Terms  $terms
      * @return  void
      */
     public function __construct($terms)

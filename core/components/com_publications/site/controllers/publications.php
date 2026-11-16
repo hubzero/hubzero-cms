@@ -1033,7 +1033,7 @@ class Publications extends SiteController
      * grandfathered (trusted, never auto-rebuilt); otherwise compare against
      * the version's current source signature.
      *
-     * @param   object   $bq
+     * @param   \Components\Publications\Models\BundleQueue   $bq
      * @param   integer  $versionId
      * @return  boolean
      */

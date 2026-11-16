@@ -673,7 +673,7 @@ class Blog extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object|null  $entry
+     * @param   \Components\Blog\Models\Entry|null  $entry
      * @return  string
      */
     private function edit($entry = null)

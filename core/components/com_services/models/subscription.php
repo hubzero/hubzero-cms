@@ -32,6 +32,8 @@ use Hubzero\Facades\Date;
  * @property  int|string|null  $uid
  * @property  int|string|null  $units
  * @property  string|null  $updated
+ *
+ * @property-read  mixed  $user  What user() gives
  */
 class Subscription extends Relational
 {

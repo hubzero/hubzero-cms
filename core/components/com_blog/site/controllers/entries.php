@@ -176,7 +176,7 @@ class Entries extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $entry
+     * @param   \Components\Blog\Models\Entry|null  $entry
      *
      * @return  void
      */

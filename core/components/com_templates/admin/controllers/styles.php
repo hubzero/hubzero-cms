@@ -165,7 +165,7 @@ class Styles extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $style
+     * @param   \Components\Templates\Models\Style|null  $style
      *
      * @return  void
      */

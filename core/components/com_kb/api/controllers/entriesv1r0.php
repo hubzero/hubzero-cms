@@ -956,7 +956,7 @@ class Entriesv1r0 extends ApiController
     /**
      * Validate and save an article, and apply any tags that came with it
      *
-     * @param   object  $article
+     * @param   \Components\Kb\Models\Article  $article
      * @return  void
      * @throws  Exception
      */
@@ -1058,7 +1058,7 @@ class Entriesv1r0 extends ApiController
      * knowledge base, so two of them sharing one leave the second
      * unreachable; a category of another extension never collides.
      *
-     * @param   object  $node  The category being saved
+     * @param   \Components\Categories\Models\Category  $node  The category being saved
      * @return  void
      * @throws  Exception
      */

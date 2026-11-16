@@ -133,7 +133,7 @@ class Migration20261110130000ComUsage extends Base
      * Whether a table holds what the broken migrations left: nothing, or only
      * the last of its seed rows
      *
-     * @param   object  $statsDb  Metrics database
+     * @param   \Hubzero\Database\Driver  $statsDb  Metrics database
      * @param   string  $table    Table name
      * @return  bool
      */

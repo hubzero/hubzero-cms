@@ -173,7 +173,7 @@ class Attachments extends Obj
      * @param   string|null   $name
      * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null   $pub
      * @param   object|null   $params
      * @param   integer|null  $itemId
      * @return  mixed    string or boolean
@@ -332,7 +332,7 @@ class Attachments extends Obj
      * Update attachment record
      *
      * @param   string   $name
-     * @param   object|mixed   $row
+     * @param   \Components\Publications\Tables\Attachment|mixed   $row
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
@@ -370,7 +370,7 @@ class Attachments extends Obj
      * Remove attachment
      *
      * @param   string   $name
-     * @param   object|mixed   $row
+     * @param   \Components\Publications\Tables\Attachment|mixed   $row
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
@@ -481,7 +481,7 @@ class Attachments extends Obj
     /**
      * Bundle elements
      *
-     * @param   object|null  $zip
+     * @param   \ZipArchive|null  $zip
      * @param   array<mixed>   $elements
      * @param   object|null  $pub
      * @param   string  $readme

@@ -97,7 +97,7 @@ class Imports extends AdminController
     /**
      * Edit an Import
      *
-     * @param   object|null  $import
+     * @param   \Components\Resources\Models\Import|null  $import
      *
      * @return  void
      */
@@ -458,7 +458,7 @@ class Imports extends AdminController
      * Return Hook for Post Parsing or Post Convert
      *
      * @param   string  $type    Hook we want
-     * @param   object  $import  Resource Import Model
+     * @param   \Components\Resources\Models\Import  $import  Resource Import Model
      * @return  array<mixed>
      */
     private function hooks($type, $import)

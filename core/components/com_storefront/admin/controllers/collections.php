@@ -91,7 +91,7 @@ class Collections extends AdminController
     /**
      * Edit a category
      *
-     * @param   object|null  $row
+     * @param   \Components\Storefront\Models\Collection|null  $row
      * @return  void
      */
     public function editTask($row = null)
@@ -385,7 +385,7 @@ class Collections extends AdminController
     /**
      * Cancel a task (redirects to default task)
      *
-     * @param   object  $collection
+     * @param   \Components\Storefront\Models\Collection  $collection
      * @return  bool
      */
     private function checkIntegrity($collection)

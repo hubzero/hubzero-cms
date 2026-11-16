@@ -465,7 +465,7 @@ class Data extends Base
      *
      * @param   mixed  $database_name
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
      * @param   object   $element
@@ -898,7 +898,7 @@ class Data extends Base
     /**
      * Publish supporting database files
      *
-     * @param   object   $objPD
+     * @param   \Components\Projects\Tables\Database   $objPD
      * @param   object   $configs
      * @return  boolean  or error
      */

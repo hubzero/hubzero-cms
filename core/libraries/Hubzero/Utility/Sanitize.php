@@ -387,7 +387,7 @@ class Sanitize
     /**
      * Adds elements to HTML purifier whitelist
      *
-     * @param    object   $htmlPurifierWhitelist HTML purifier whitelist
+     * @param    \HTMLPurifier_HTMLDefinition|null   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
     protected static function addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist)
@@ -510,7 +510,7 @@ class Sanitize
     /**
      * Adds attributes to HTML purifier whitelist
      *
-     * @param    object   $htmlPurifierWhitelist HTML purifier whitelist
+     * @param    \HTMLPurifier_HTMLDefinition|null   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
     protected static function addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)

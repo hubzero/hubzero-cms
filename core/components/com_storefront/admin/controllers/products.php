@@ -146,7 +146,7 @@ class Products extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Storefront\Models\Product|null  $row
      * @return  void
      */
     public function editTask($row = null)

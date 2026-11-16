@@ -665,7 +665,7 @@ class Html
      * Generate a citation for a resource
      *
      * @param   string   $option     Component name
-     * @param   object|mixed   $cite       Citation data
+     * @param   \stdClass|mixed|null   $cite       Citation data
      * @param   string   $id         Resource ID
      * @param   string   $citations  Citations to prepend
      * @param   integer  $type       Resource type

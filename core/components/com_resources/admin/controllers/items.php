@@ -1146,7 +1146,7 @@ class Items extends AdminController
     /**
      * Sends a message to all contributors on a resource
      *
-     * @param   object  $row  Resource
+     * @param   \Components\Resources\Models\Entry  $row  Resource
      * @return  bool
      */
     private function emailContributors($row)

@@ -87,7 +87,7 @@ class Accesslevels extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Hubzero\Access\Viewlevel|null  $row
      *
      * @return  void
      */

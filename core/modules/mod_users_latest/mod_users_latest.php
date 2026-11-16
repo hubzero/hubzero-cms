@@ -39,7 +39,7 @@ class UsersLatest extends Module
     /**
      * Get users sorted by activation date
      *
-     * @param   object  $params  Registry
+     * @param   \Hubzero\Config\Registry|null  $params  Registry
      * @return  array<mixed>
      */
     public static function getUsers($params)

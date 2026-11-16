@@ -97,7 +97,7 @@ class Tagged extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Tags\Models\Objct|null  $row
      *
      * @return  void
      */

@@ -164,7 +164,7 @@ class Pages extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Wiki\Models\Page|null  $row
      *
      * @return  void
      */

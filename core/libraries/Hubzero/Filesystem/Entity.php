@@ -88,7 +88,8 @@ class Entity extends Obj
      * or file at the time of creation.
      *
      * @param   array<mixed>   $properties  The properties to use to build a new entity from
-     * @param   object|null  $adapter     The filesystem adapter to use for interaction with the entity
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter     The filesystem adapter to use for interaction with the
+     *                                                           entity
      * @return  object
      **/
     public static function fromMetadata($properties, $adapter = null)

@@ -95,7 +95,7 @@ class Pages extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Events\Models\Orm\Page|null  $row
      *
      * @return  void
      */

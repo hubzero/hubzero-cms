@@ -88,7 +88,7 @@ class PasswordRules extends AdminController
     /**
      * Edit a password rule
      *
-     * @param   object|null  $row
+     * @param   \Hubzero\Password\Rule|null  $row
      *
      * @return  void
      */

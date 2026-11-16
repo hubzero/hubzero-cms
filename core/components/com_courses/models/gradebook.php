@@ -46,7 +46,7 @@ class GradeBook extends Base
      * Constructor
      *
      * @param      integer|null $oid  Resource ID or alias
-     * @param      object|null  $course
+     * @param      \Components\Courses\Models\Course|null  $course
      * @return     void
      */
     public function __construct($oid = null, $course = null)

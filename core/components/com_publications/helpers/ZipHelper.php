@@ -48,7 +48,7 @@ class ZipHelper
     /**
      * Builds a hierarchical array of archive contents
      *
-     * @param   object  $archive  \ZipArchive
+     * @param   \ZipArchive  $archive  \ZipArchive
      * @return  array<mixed>
      */
     protected static function parseArchiveContents($archive)

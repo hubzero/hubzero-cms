@@ -129,7 +129,7 @@ class Imports extends AdminController
     /**
      * Edit an Import
      *
-     * @param   object|null  $import
+     * @param   \Components\Members\Models\Import|null  $import
      *
      * @return  void
      */
@@ -476,7 +476,7 @@ class Imports extends AdminController
      * Return Hook for Post Parsing or Post Convert
      *
      * @param   string  $event   Hook we want
-     * @param   object  $import  Import Model
+     * @param   \Components\Members\Models\Import  $import  Import Model
      * @return  array<mixed>  Closure
      */
     private function hooks($event, $import)

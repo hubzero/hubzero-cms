@@ -73,7 +73,7 @@ class PasswordBlacklist extends AdminController
     /**
      * Edit a blacklisted password
      *
-     * @param   object|null  $row
+     * @param   \Hubzero\Password\Blacklist|null  $row
      *
      * @return  void
      */

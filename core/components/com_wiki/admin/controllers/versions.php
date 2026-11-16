@@ -99,7 +99,7 @@ class Versions extends AdminController
     /**
      * Edit a revision
      *
-     * @param   object|null  $row  Record
+     * @param   \Components\Wiki\Models\Version|null  $row  Record
      *
      * @return  void
      */

@@ -159,7 +159,7 @@ class Download
     /**
      * Set formatter for specified format
      *
-     * @param   object  $formatter
+     * @param   \Components\Citations\Download\Downloadable  $formatter
      * @param   string  $format
      * @return  void
      */

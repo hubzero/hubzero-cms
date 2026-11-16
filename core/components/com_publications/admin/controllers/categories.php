@@ -105,7 +105,7 @@ class Categories extends AdminController
     /**
      * Edit a type
      *
-     * @param   object|null  $row
+     * @param   \Components\Publications\Models\Orm\Category|null  $row
      *
      * @return  void
      */

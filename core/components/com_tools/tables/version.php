@@ -428,7 +428,7 @@ class Version extends Table
      * @param   mixed    $curtool
      * @param   mixed    $resource
      * @param   string   $revision
-     * @param   object   $config
+     * @param   \Hubzero\Config\Registry   $config
      * @return  boolean
      */
     public function compileResource($thistool, $curtool, $resource, $revision, $config)

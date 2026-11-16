@@ -103,7 +103,7 @@ class ImportHooks extends AdminController
     /**
      * Edit a record
      *
-     * @param   object|null  $row  \Hubzero\Content\Import\Model\Hook
+     * @param   \Hubzero\Content\Import\Model\Hook|null  $row  \Hubzero\Content\Import\Model\Hook
      *
      * @return  void
      */

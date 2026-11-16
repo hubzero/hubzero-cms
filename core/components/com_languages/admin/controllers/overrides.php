@@ -139,7 +139,7 @@ class Overrides extends AdminController
     /**
      * Displays a form for editing
      *
-     * @param   object|null  $row
+     * @param   \stdClass|null  $row
      *
      * @return  void
      */

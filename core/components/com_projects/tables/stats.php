@@ -130,7 +130,7 @@ class Stats extends Table
     /**
      * Collect overall projects stats
      *
-     * @param   object   $model
+     * @param   \Components\Projects\Models\Project   $model
      * @param   bool     $cron
      * @param   bool|int     $publishing
      * @param   string   $period

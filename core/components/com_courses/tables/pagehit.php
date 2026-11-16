@@ -22,7 +22,7 @@ class PageHit extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver|null  &$db  Database
      * @return  void
      */
     public function __construct(&$db)

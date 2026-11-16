@@ -133,7 +133,7 @@ class Entries extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $tag  Tag being edited
+     * @param   \Components\Tags\Models\Tag|null  $tag  Tag being edited
      *
      * @return  void
      */

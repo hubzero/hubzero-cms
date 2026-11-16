@@ -271,7 +271,7 @@ class Members extends AdminController
     /**
      * Edit a member's information
      *
-     * @param   object|null  $user
+     * @param   \Components\Members\Models\Member|null  $user
      *
      * @return  void
      */
@@ -1053,7 +1053,7 @@ class Members extends AdminController
      * Send an email to a user
      * stating their account has been approved
      *
-     * @param   object  $user
+     * @param   \Components\Members\Models\Member  $user
      * @return  bool
      */
     protected function emailApprovedUser($user)

@@ -1758,7 +1758,7 @@ class Item extends Nested
      * The ids of a node's descendants (its own row excluded), from its
      * current lft/rgt range.
      *
-     * @param   object  $node
+     * @param   \Components\Menus\Models\Item  $node
      * @return  array<mixed>
      */
     protected function descendantIds($node)

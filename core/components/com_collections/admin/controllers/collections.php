@@ -129,7 +129,7 @@ class Collections extends AdminController
     /**
      * Edit a collection
      *
-     * @param   object|null  $row
+     * @param   \Components\Collections\Models\Orm\Collection|null  $row
      *
      * @return  void
      */

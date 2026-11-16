@@ -221,7 +221,7 @@ class Sponsors extends Plugin
     /**
      * Edit a type
      *
-     * @param   object|null  $row
+     * @param   \Plugins\Resources\Sponsors\Models\Sponsor|null  $row
      * @return  string
      */
     public function editTask($row = null)

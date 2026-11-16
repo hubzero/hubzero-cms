@@ -681,7 +681,7 @@ class Tags extends SiteController
     /**
      * Show a form for editing a tag
      *
-     * @param   object|null  $tag
+     * @param   \Components\Tags\Models\Tag|null  $tag
      *
      * @return  void
      */

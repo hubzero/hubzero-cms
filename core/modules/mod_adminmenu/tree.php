@@ -50,7 +50,7 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * Method to add a child
      *
-     * @param   object    &$node       The node to process
+     * @param   \Modules\Adminmenu\Node    &$node       The node to process
      * @param   boolean  $setCurrent  True to set as current working node
      * @return  mixed
      */

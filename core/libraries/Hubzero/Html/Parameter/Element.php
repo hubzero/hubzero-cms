@@ -87,7 +87,7 @@ class Element extends Obj
      *
      * @param   string  $label         Label attribute for the element
      * @param   string  $description   Description attribute for the element
-     * @param   object  &$xmlElement   The element object
+     * @param   \SimpleXMLElement  &$xmlElement   The element object
      * @param   string  $control_name  Control name
      * @param   string  $name          Name attribut
      * @return  string

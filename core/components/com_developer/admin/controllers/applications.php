@@ -76,7 +76,7 @@ class Applications extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Developer\Models\Application|null  $row
      *
      * @return  void
      */

@@ -66,7 +66,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var Iterator|null
      */
     private $assets = null;
 
@@ -377,11 +377,11 @@ class Unit extends Base
      *   Accepts an array of filters to apply to the list of assets
      *
      * @param   array<mixed> $filters Filters to apply
-     * @return  \Traversable<mixed, mixed>  A \Components\Courses\Models\Iterator
+     * @return  Iterator
      */
     public function assets($filters = [])
     {
-        if (!isset($this->assets) || !($this->assets instanceof \Traversable)) {
+        if (!isset($this->assets)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }

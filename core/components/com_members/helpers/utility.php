@@ -187,8 +187,8 @@ class Utility
     /**
      * Send a confirmation email to a user
      *
-     * @param   object  $user
-     * @param   object|null  $xregistration
+     * @param   \Components\Members\Models\Member|\Hubzero\User\User  $user
+     * @param   \Components\Members\Models\Registration|null  $xregistration
      * @param   bool  $new
      * @return  bool
      */

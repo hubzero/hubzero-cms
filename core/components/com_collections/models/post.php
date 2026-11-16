@@ -145,7 +145,7 @@ class Post extends Base
     /**
      * Get the item for this post
      *
-     * @param   integer|Item|object|null  $oid  An item's ID, the item itself to use in place of the stored
+     * @param   integer|Item|\stdClass|null  $oid  An item's ID, the item itself to use in place of the stored
      *                                          one, or its fields
      * @return  \Components\Collections\Models\Item
      */

@@ -338,7 +338,7 @@ class Jobs extends AdminController
     /**
      * Check job ad quota depending on subscription
      *
-     * @param    object  $job       Job entry
+     * @param    \Components\Jobs\Tables\Job  $job       Job entry
      * @param   integer  $uid       User ID
      * @param   object   $database  Database
      * @return  integer

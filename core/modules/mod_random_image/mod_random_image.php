@@ -135,7 +135,7 @@ class RandomImage extends Module
     /**
      * Get a folder
      *
-     * @param   object  $params  Registry
+     * @param   \Hubzero\Config\Registry|null  $params  Registry
      * @return  string
      */
     public static function getFolder(&$params)

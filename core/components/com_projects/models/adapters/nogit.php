@@ -150,7 +150,7 @@ class Nogit extends Models\Adapter
     /**
      * Check if file should be skipped
      *
-     * @param   object  $file  Models\File
+     * @param   \Components\Projects\Models\File  $file  Models\File
      * @return  bool
      */
     protected function shouldSkipFile($file)

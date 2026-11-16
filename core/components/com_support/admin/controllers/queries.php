@@ -94,7 +94,7 @@ class Queries extends AdminController
     /**
      * Display a form for adding/editing a record
      *
-     * @param   object|null  $row
+     * @param   \Components\Support\Models\Query|null  $row
      *
      * @return  void
      */
@@ -273,7 +273,7 @@ class Queries extends AdminController
     /**
      * Display a form for adding/editing a folder
      *
-     * @param   object|null  $row
+     * @param   \Components\Support\Models\QueryFolder|null  $row
      *
      * @return  void
      */

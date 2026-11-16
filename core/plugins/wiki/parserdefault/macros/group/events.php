@@ -83,7 +83,7 @@ class Events extends GroupMacro
     /**
      * Get a list of events for a group
      *
-     * @param      object $group
+     * @param      \Hubzero\User\Group $group
      * @param      array<mixed>  $filters
      * @return     array<int, \stdClass>
      */
@@ -115,7 +115,7 @@ class Events extends GroupMacro
     /**
      * Render the events
      *
-     * @param      object  $group  The group
+     * @param      \Hubzero\User\Group  $group  The group
      * @param      array<mixed>  $events Array of events
      * @return     string
      */

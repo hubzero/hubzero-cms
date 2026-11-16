@@ -37,7 +37,7 @@ class Asset
     /**
      * Resolves the asset id based on the default parameters and expectations
      *
-     * @param   object  $model  The database model to which the asset refers
+     * @param   \Hubzero\Database\Relational  $model  The database model to which the asset refers
      * @return  int
      **/
     public static function resolve($model)

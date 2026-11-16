@@ -124,7 +124,7 @@ class Items extends AdminController
     /**
      * Edit a collection
      *
-     * @param   object|null  $row
+     * @param   \Components\Collections\Models\Orm\Item|null  $row
      *
      * @return  void
      */

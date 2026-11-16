@@ -385,7 +385,7 @@ class Tool extends Base
      *
      * @param   mixed  $toolObject
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
      * @param   object   $element

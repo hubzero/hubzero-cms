@@ -114,7 +114,7 @@ class Questions extends AdminController
     /**
      * Displays a question for editing
      *
-     * @param   object|null  $row
+     * @param   \Components\Answers\Models\Question|null  $row
      *
      * @return  void
      */

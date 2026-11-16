@@ -947,7 +947,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object|null  $entry
+     * @param   \Components\Collections\Models\Item|null  $entry
      * @return  string
      */
     private function edit($entry = null)
@@ -1020,7 +1020,8 @@ class Collections extends Plugin
             $view->set('collection', $this->model->collection(Request::getString('board', 0)));
         }
 
-        $view->set('entry', (is_object($entry) ? $entry : $view->get('collection')->post($id)));
+        // Only an Item comes in, and it is moved to $typedItem above
+        $view->set('entry', $view->get('collection')->post($id));
         if ($typedItem) {
             $view->get('entry')->item($typedItem);
             if (isset($posted['description']) && is_string($posted['description'])) {
@@ -2044,7 +2045,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing a collection
      *
-     * @param   object|null  $row
+     * @param   \Components\Collections\Models\Collection|null  $row
      * @return  string
      */
     private function editcollection($row = null)

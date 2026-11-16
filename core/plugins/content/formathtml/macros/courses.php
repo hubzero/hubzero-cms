@@ -104,7 +104,7 @@ class Courses extends Macro
     /**
      * Render Courses List
      *
-     * @param  object  $courses  Courses list
+     * @param  \Hubzero\Base\ItemList  $courses  Courses list
      * @return string
      */
     private function renderCourses($courses)

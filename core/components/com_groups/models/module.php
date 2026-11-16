@@ -155,7 +155,7 @@ class Module extends Model
     /**
      * Check to see if group owns module
      *
-     * @param   object  $group \Hubzero\User\Group
+     * @param   \Hubzero\User\Group  $group \Hubzero\User\Group
      * @return  boolean
      */
     public function belongsToGroup($group)

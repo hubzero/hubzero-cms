@@ -142,7 +142,7 @@ class Messages extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Messages\Models\Message|null  $row
      *
      * @return  void
      */

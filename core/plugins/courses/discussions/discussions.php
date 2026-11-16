@@ -524,7 +524,7 @@ class Discussions extends Plugin
      *
      * @param   object  $course
      * @param   object  $unit
-     * @param   object  $lecture
+     * @param   \Components\Courses\Models\Assetgroup  $lecture
      * @return  string
      */
     public function onCourseAfterLecture($course, $unit, $lecture)
@@ -827,7 +827,7 @@ class Discussions extends Plugin
     /**
      * Get an entire thread
      *
-     * @param   object  $post
+     * @param   \Components\Forum\Models\Post  $post
      * @param   array<mixed>   $filters  Filters to apply
      * @return  \stdClass
      */
@@ -905,7 +905,7 @@ class Discussions extends Plugin
     /**
      * Get a filtered list of threads
      *
-     * @param   object  $post     \Components\Forum\Models\Post
+     * @param   \Components\Forum\Models\Post  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
      * @return  \stdClass
      */
@@ -920,13 +920,14 @@ class Discussions extends Plugin
 
         // If we have a search term
         if (isset($filters['search']) && $filters['search']) {
-            // Find all posts with that terms
+            // Find all posts with that terms. The forum Post model has no
+            // find(), which this called and failed on; the course's forum
+            // manager applies the search and scope filters.
             $ids = [];
 
-            if ($results = $post->find($filters)) {
-                foreach ($results as $result) {
-                    $ids[] = $result->thread;
-                }
+            $results = (new Manager($filters['scope'], $filters['scope_id']))->posts($filters)->rows();
+            foreach ($results as $result) {
+                $ids[] = (int) $result->get('thread');
             }
             // A collection of thread IDs
             $filters['id'] = $ids;
@@ -939,11 +940,19 @@ class Discussions extends Plugin
             $filters['search'] = null;
             $filters['parent'] = $post->get('id');
 
+            // The threads' starting posts
+            $starters = count($ids) > 0
+                ? Post::all()
+                    ->whereIn('id', array_unique($ids))
+                    ->whereEquals('parent', (int) $filters['parent'])
+                    ->rows()
+                : new \Hubzero\Database\Rows();
+
             $cview = $this
                 ->view('_threads', 'threads')
                 ->set('category', 'categorysearch')
                 ->set('option', $this->option)
-                ->set('threads', (count($filters['id']) > 0) ? $post->find($filters) : null)
+                ->set('threads', $starters)
                 ->set('config', $this->params)
                 ->set('cls', 'odd')
                 ->set('search', $srch) // Pass the search term along so it can be highlighted in text
@@ -969,7 +978,7 @@ class Discussions extends Plugin
     /**
      * Get a filtered list of threads
      *
-     * @param   object  $post     \Components\Forum\Models\Post
+     * @param   \Components\Forum\Models\Post  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
      * @return  \stdClass
      */
@@ -1043,7 +1052,7 @@ class Discussions extends Plugin
     /**
      * Get a filtered list of posts for a thread
      *
-     * @param   object  $post     \Components\Forum\Models\Post
+     * @param   \Components\Forum\Models\Post  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
      * @return  \stdClass|array<mixed>
      */
@@ -1886,7 +1895,7 @@ class Discussions extends Plugin
     /**
      * Show a form for editing a category
      *
-     * @param   object|null  $category
+     * @param   \Components\Forum\Models\Category|null  $category
      * @return  string
      */
     public function editcategory($category = null)
@@ -2314,7 +2323,7 @@ class Discussions extends Plugin
     /**
      * Show a form for editing a post
      *
-     * @param   object|null  $post
+     * @param   \Components\Forum\Models\Post|null  $post
      * @return  string
      */
     public function editthread($post = null)

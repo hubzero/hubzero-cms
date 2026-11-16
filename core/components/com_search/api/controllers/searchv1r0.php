@@ -30,7 +30,7 @@ class Searchv1r0 extends ApiController
      * Query constructor died on a missing \Hubzero\Search\Adapters\BasicQueryAdapter
      * class (a 500 on every call). Say that the API is unavailable instead.
      *
-     * @param   object  $config
+     * @param   \Hubzero\Config\Registry  $config
      * @return  Query
      */
     private function searchQuery($config)

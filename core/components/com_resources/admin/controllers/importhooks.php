@@ -75,7 +75,7 @@ class ImportHooks extends AdminController
     /**
      * Edit an Import
      *
-     * @param   object|null  $hook
+     * @param   \Components\Resources\Models\Import\Hook|null  $hook
      *
      * @return  void
      */

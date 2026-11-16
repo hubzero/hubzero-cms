@@ -368,7 +368,7 @@ class MorphToMany extends OneToManyThrough
     /**
      * Group results by the associative local key
      *
-     * @param  iterable<mixed>|object  $relations  The relations to group
+     * @param  iterable<mixed>|\Hubzero\Database\Rows  $relations  The relations to group
      * @return array<mixed>
      */
     protected function getResultsByRelatedKey($relations)

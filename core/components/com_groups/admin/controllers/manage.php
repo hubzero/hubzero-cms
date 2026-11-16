@@ -461,7 +461,7 @@ class Manage extends AdminController
     /**
      * Generate default template files for special groups
      *
-     * @param   object  $group  \Hubzero\User\Group
+     * @param   \Hubzero\User\Group  $group  \Hubzero\User\Group
      * @return  void
      */
     private function handleSuperGroup($group)
@@ -596,7 +596,7 @@ class Manage extends AdminController
     /**
      * Create necessary super groups files
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  void
      */
     private function handSuperGroupGitlab($group)

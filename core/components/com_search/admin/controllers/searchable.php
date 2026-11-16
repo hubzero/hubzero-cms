@@ -147,7 +147,7 @@ class Searchable extends AdminController
     /**
      * Edit a search category
      *
-     * @param   integer|object|null  $obj
+     * @param   integer|\Components\Search\Models\Solr\SearchComponent|null  $obj
      *
      * @return  void
      */

@@ -197,7 +197,7 @@ class Blocks extends Obj
      *
      * @param   string   $name
      * @param   string   $manifest
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication   $pub
      * @param   object   $old
      * @param   object   $new
      * @return  boolean

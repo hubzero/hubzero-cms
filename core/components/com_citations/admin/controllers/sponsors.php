@@ -54,7 +54,7 @@ class Sponsors extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Citations\Models\Sponsor|null  $row
      *
      * @return  void
      */

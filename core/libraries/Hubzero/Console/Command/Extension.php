@@ -255,7 +255,7 @@ class Extension extends Base implements CommandInterface
      * migration base resolves in __call(), so method_exists() never sees them;
      * the unknown-helper case surfaces as a BadMethodCallException instead.
      *
-     * @param   object  $migration  The migration base
+     * @param   \Hubzero\Content\Migration\Base  $migration  The migration base
      * @param   string  $type       Plural extension type, for the error message
      * @param   string  $method     Helper name
      * @param   array<mixed>   $args       Helper arguments

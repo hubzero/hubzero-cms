@@ -43,7 +43,7 @@ class Server
     /**
      * Constructor to setup setup server
      *
-     * @param   object  $storage
+     * @param   \Hubzero\Oauth\Storage\Mysql  $storage
      * @param   array<mixed>   $options
      * @return  void
      */

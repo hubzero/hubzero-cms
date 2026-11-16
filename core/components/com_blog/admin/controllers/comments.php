@@ -185,7 +185,7 @@ class Comments extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $row
+     * @param   \Components\Blog\Models\Comment|null  $row
      *
      * @return  void
      */

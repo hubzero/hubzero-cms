@@ -1184,7 +1184,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * Check if a property of an object exist and is filled in
      *
      * @param   string   $key  Property name
-     * @param   object   $row  Object to look in
+     * @param   \Components\Citations\Models\Citation   $row  Object to look in
      * @return  boolean  True if exists, false if not
      */
     public static function keyExistsOrIsNotEmpty($key, $row)
@@ -1373,7 +1373,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * Output a citation's OpenURL
      *
      * @param   array<mixed>   $openurl   OpenURL data
-     * @param   object  $citation  Citation
+     * @param   \Components\Citations\Models\Citation  $citation  Citation
      * @return  string  HTML
      */
     public static function citationOpenUrl($openurl, $citation)

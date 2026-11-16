@@ -390,7 +390,7 @@ class Link extends Base
      * @param   integer  $path
      * @param   string   $title
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
      * @param   object   $element

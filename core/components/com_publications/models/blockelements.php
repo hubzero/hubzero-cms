@@ -79,7 +79,7 @@ class BlockElements extends Obj
      * @param   string   $name
      * @param   integer  $elementId
      * @param   string|null   $manifest
-     * @param   object|null   $master
+     * @param   \stdClass|null   $master
      * @param   object|null   $pub
      * @param   object|null   $status
      * @param   string   $viewname

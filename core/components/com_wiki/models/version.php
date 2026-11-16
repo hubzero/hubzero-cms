@@ -170,7 +170,7 @@ class Version extends Relational
      * clean  - parses content and then strips tags
      * raw    - as is, no parsing
      *
-     * @param   object|null  $page
+     * @param   \Components\Wiki\Models\Page|null  $page
      * @param   string|null  $option
      * @return  string
      */

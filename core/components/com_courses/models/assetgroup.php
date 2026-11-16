@@ -41,7 +41,7 @@ class Assetgroup extends Base
     /**
      * \Components\Courses\Models\Asset
      *
-     * @var object|null
+     * @var Iterator|null
      */
     private $assets = null;
 
@@ -223,7 +223,7 @@ class Assetgroup extends Base
      *   Accepts an array of filters to apply to the list of assets
      *
      * @param   array<mixed>  $filters Filters to apply
-     * @return  \Traversable<mixed, mixed>  A \Components\Courses\Models\Iterator
+     * @return  Iterator
      */
     public function assets($filters = [])
     {

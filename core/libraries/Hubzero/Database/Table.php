@@ -177,7 +177,7 @@ abstract class Table extends \stdClass
     /**
      * The properties of an object that code outside its class can reach
      *
-     * @param   object  $object
+     * @param   \Hubzero\Database\Table  $object
      * @return  array<mixed>
      */
     private static function publicVars($object)

@@ -80,7 +80,7 @@ class Media extends SiteController
      * (models/ticket.php, setAccess('update', 'tickets', isOwner() ? 1 : -1)),
      * and (bool) -1 is true.
      *
-     * @param   object  $model  Attachment
+     * @param   \Components\Support\Models\Attachment  $model  Attachment
      * @return  boolean
      */
     protected function mayManageAttachment($model)

@@ -301,7 +301,7 @@ class Asset extends Base
     /**
      * Render an asset
      *
-     * @param   object|null $course \Components\Courses\Models\Course
+     * @param   \Components\Courses\Models\Course|null $course \Components\Courses\Models\Course
      * @param   string $option Component name
      * @return  string
      */
@@ -376,7 +376,7 @@ class Asset extends Base
     /**
      * Download a wiki file
      *
-     * @param   object $course \Components\Courses\Models\Course
+     * @param   \Components\Courses\Models\Course $course \Components\Courses\Models\Course
      * @return  void
      */
     public function download($course)

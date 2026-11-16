@@ -253,7 +253,7 @@ class Guard
     /**
      * Authorises that a particular user should be able to login
      *
-     * @param   object  $response  response including username of the user to authorise
+     * @param   \Hubzero\Auth\Response  $response  response including username of the user to authorise
      * @param   array<mixed>   $options   list of options
      * @return  array<mixed>   Results of authorisation
      */

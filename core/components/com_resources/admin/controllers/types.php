@@ -90,7 +90,7 @@ class Types extends AdminController
     /**
      * Edit a type
      *
-     * @param   object|null  $row
+     * @param   \Components\Resources\Models\Type|null  $row
      *
      * @return  void
      */

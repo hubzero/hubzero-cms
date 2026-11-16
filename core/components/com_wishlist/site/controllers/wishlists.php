@@ -96,7 +96,7 @@ class Wishlists extends SiteController
     /**
      * Build the breadcrumbs
      *
-     * @param   object  $wishlist  Wishlist
+     * @param   \Components\Wishlist\Models\Wishlist  $wishlist  Wishlist
      * @return  void
      */
     protected function buildPathway($wishlist)

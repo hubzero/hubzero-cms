@@ -60,8 +60,8 @@ class Threads extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object|null  $section
-     * @param   object|null  $category
+     * @param   \Components\Forum\Models\Section|null  $section
+     * @param   \Components\Forum\Models\Category|null  $category
      * @param   object|null  $thread
      * @return  void
      */
@@ -111,8 +111,8 @@ class Threads extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object|null  $section
-     * @param   object|null  $category
+     * @param   \Components\Forum\Models\Section|null  $section
+     * @param   \Components\Forum\Models\Category|null  $category
      * @param   object|null  $thread
      * @return  void
      */

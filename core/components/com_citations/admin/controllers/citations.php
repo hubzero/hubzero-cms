@@ -100,7 +100,7 @@ class Citations extends AdminController
     /**
      * Edit a citation
      *
-     * @param   object|null $row
+     * @param   \Components\Citations\Models\Citation|null $row
      *
      * @return  void
      */

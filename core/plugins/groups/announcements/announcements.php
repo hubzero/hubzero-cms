@@ -355,7 +355,7 @@ class Announcements extends Plugin
     /**
      * Display a list of all announcements
      *
-     * @param   object|null  $model  Hubzero\Item\Announcement
+     * @param   \Hubzero\Item\Announcement|null  $model  Hubzero\Item\Announcement
      * @return  string  HTML
      */
     private function edit($model = null)

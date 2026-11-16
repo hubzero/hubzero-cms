@@ -299,7 +299,7 @@ class Categories extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   object|null  $category
+     * @param   \Components\Forum\Models\Category|null  $category
      *
      * @return  void
      */

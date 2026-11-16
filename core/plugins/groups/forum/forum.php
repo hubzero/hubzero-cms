@@ -1022,7 +1022,7 @@ class Forum extends Plugin
     /**
      * Show a form for editing a category
      *
-     * @param   object|null  $category
+     * @param   \Components\Forum\Models\Category|null  $category
      * @return  string
      */
     public function editcategory($category = null)
@@ -1441,7 +1441,7 @@ class Forum extends Plugin
     /**
      * Show a form for editing a post
      *
-     * @param   object|null  $post
+     * @param   \Components\Forum\Models\Post|null  $post
      * @return  string
      */
     public function editthread($post = null)
@@ -2111,7 +2111,7 @@ class Forum extends Plugin
     /**
      * Get email recipient IDs
      *
-     * @param   object  $category       Category the post belongs to
+     * @param   \Components\Forum\Models\Category  $category       Category the post belongs to
      * @param   array<mixed>   $accessLevels   View levels the content is gated behind
      *                                  (section/category/thread/post access).
      *                                  A recipient is only notified if they are

@@ -228,7 +228,7 @@ class Tickets extends AdminController
     /**
      * Displays a ticket and comments
      *
-     * @param   object|null  $comment
+     * @param   \Components\Support\Models\Comment|null  $comment
      *
      * @return  void
      */

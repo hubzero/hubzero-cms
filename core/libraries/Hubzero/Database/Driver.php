@@ -1240,7 +1240,7 @@ abstract class Driver implements LoggerAwareInterface
      * your choice.  We assume the person setting the connection
      * has done their checks to make sure it is valid.
      *
-     * @param   object $connection the connection to set
+     * @param   \Hubzero\Database\Connection\PdoConnection|\PDO $connection the connection to set
      * @return  $this
      **/
     public function setConnection($connection)

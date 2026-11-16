@@ -45,7 +45,7 @@ class Languages extends Module
     /**
      * Get a list of languages
      *
-     * @param   object  $params  Registry The module options.
+     * @param   \Hubzero\Config\Registry|null  $params  Registry The module options.
      * @return  array<mixed>
      */
     public static function getList(&$params)

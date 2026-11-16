@@ -37,7 +37,7 @@ class Plain implements RendererInterface
     /**
      * Display the given exception to the user.
      *
-     * @param   object  $error
+     * @param   \Throwable  $error
      * @return  void
      */
     public function render($error)
@@ -51,29 +51,27 @@ class Plain implements RendererInterface
         if ($this->debug) {
             $backtrace = $error->getTrace();
 
-            if (is_array($backtrace)) {
-                $backtrace = array_reverse($backtrace);
+            $backtrace = array_reverse($backtrace);
 
-                for ($i = count($backtrace) - 1; $i >= 0; $i--) {
-                    if (isset($backtrace[$i]['class'])) {
-                        $response .= "\n[$i] "
-                            . sprintf(
-                                "%s %s %s()",
-                                $backtrace[$i]['class'],
-                                $backtrace[$i]['type'],
-                                $backtrace[$i]['function'],
-                            );
-                    } else {
-                        $response .= "\n[$i] " . sprintf("%s()", $backtrace[$i]['function']);
-                    }
-
-                    if (isset($backtrace[$i]['file'])) {
-                        $response .= sprintf(
-                            ' @ %s:%d',
-                            str_replace(PATH_ROOT, '', $backtrace[$i]['file']),
-                            $backtrace[$i]['line'],
+            for ($i = count($backtrace) - 1; $i >= 0; $i--) {
+                if (isset($backtrace[$i]['class'])) {
+                    $response .= "\n[$i] "
+                        . sprintf(
+                            "%s %s %s()",
+                            $backtrace[$i]['class'],
+                            $backtrace[$i]['type'],
+                            $backtrace[$i]['function'],
                         );
-                    }
+                } else {
+                    $response .= "\n[$i] " . sprintf("%s()", $backtrace[$i]['function']);
+                }
+
+                if (isset($backtrace[$i]['file'])) {
+                    $response .= sprintf(
+                        ' @ %s:%d',
+                        str_replace(PATH_ROOT, '', $backtrace[$i]['file']),
+                        $backtrace[$i]['line'],
+                    );
                 }
             }
         }

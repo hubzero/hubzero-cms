@@ -1819,7 +1819,7 @@ class Members extends Plugin
     /**
      * Edit a member role
      *
-     * @param   object|null  $role
+     * @param   \Components\Groups\Models\Role|null  $role
      * @return   false|null
      */
     public function editRole($role = null)
@@ -2204,7 +2204,7 @@ class Members extends Plugin
     /**
      * Notify user of changes
      *
-     * @param   object  $targetuser  User to message
+     * @param   \Hubzero\User\User  $targetuser  User to message
      * @return  void
      */
     private function notifyUser($targetuser)

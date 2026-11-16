@@ -60,7 +60,7 @@ class BillBoards extends AdminController
     /**
      * Edit a billboard
      *
-     * @param   object|null|mixed  $billboard
+     * @param   \Components\Billboards\Models\Billboard|null|mixed  $billboard
      *
      * @return  void
      */

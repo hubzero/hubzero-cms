@@ -56,7 +56,7 @@ class Economy extends Obj
     /**
      * Calculate royalties for a contributor and distribute
      *
-     * @param   object|mixed   $con   Resources Contributor
+     * @param   \stdClass|mixed   $con   Resources Contributor
      * @param   string   $type  Point calculation type
      * @return  boolean  False if errors, true on success
      */
