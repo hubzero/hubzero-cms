@@ -581,6 +581,9 @@ class Orders extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
+        if ($output === false) {
+            \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+        }
         $row = ['Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)', 'Order Notes'];
         fputcsv($output, $row);
         foreach ($rows as $row) {
@@ -671,6 +674,9 @@ class Orders extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
+        if ($output === false) {
+            \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+        }
         $row = [
             'SKU ID',
             'Product',

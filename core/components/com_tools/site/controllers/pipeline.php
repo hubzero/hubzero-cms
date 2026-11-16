@@ -629,12 +629,9 @@ class Pipeline extends SiteController
      */
     protected function writeToFile($content = '', $file = '', $append = false)
     {
-        $place   = $append == true ? 'a' : 'w';
         $content = $append ? $content . "\n" : $content;
 
-        $handle  = fopen($file, $place);
-        fwrite($handle, $content);
-        fclose($handle);
+        file_put_contents($file, $content, $append ? FILE_APPEND : 0);
     }
 
     /**

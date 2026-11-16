@@ -252,6 +252,10 @@ class Google extends Obj
 
             $status = false;
             $handle = fopen($localPath, "rb");
+            if ($handle === false) {
+                $client->setDefer(false);
+                return false;
+            }
             while (!$status && !feof($handle)) {
                 $chunk  = fread($handle, $chunkSizeBytes);
                 $status = $media->nextChunk($chunk);
@@ -362,6 +366,10 @@ class Google extends Obj
 
             $status = false;
             $handle = fopen($localPath, "rb");
+            if ($handle === false) {
+                $client->setDefer(false);
+                return false;
+            }
             while (!$status && !feof($handle)) {
                 $chunk  = fread($handle, $chunkSizeBytes);
                 $status = $media->nextChunk($chunk);

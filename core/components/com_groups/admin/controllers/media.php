@@ -458,14 +458,17 @@ class Media extends AdminController
 
         if (is_dir($base)) {
             $dh = opendir($base);
-            while (false !== ($dir = readdir($dh))) {
+            // A directory that cannot be read lists nothing
+            while ($dh !== false && false !== ($dir = readdir($dh))) {
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
                     $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
-            closedir($dh);
+            if ($dh !== false) {
+                closedir($dh);
+            }
         }
 
         return $dirlist;

@@ -135,7 +135,7 @@ class Encrypter
             // Collect any entropy available from the PHP system and filesystem.
             // If we have ssl data that isn't strong, we use it once.
             $entropy  = rand() . uniqid((string) random_int(0, PHP_INT_MAX), true) . $sslStr;
-            $entropy .= implode('', @fstat(fopen(__FILE__, 'r')));
+            $entropy .= implode('', stat(__FILE__) ?: []);
             $entropy .= memory_get_usage();
             $sslStr = '';
 

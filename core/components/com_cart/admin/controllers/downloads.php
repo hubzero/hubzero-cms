@@ -347,6 +347,9 @@ class Downloads extends AdminController
         header('Pragma: no-cache'); // HTTP 1.0
 
         $output = fopen("php://output", "w");
+        if ($output === false) {
+            \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+        }
 
         $row = [
             'Downloaded',
@@ -488,6 +491,9 @@ class Downloads extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
+        if ($output === false) {
+            \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+        }
         $row = ['Product', 'SKU', 'Downloaded (times)'];
         fputcsv($output, $row);
         foreach ($rows as $row) {

@@ -122,10 +122,10 @@ class Test extends Base implements CommandInterface
             while (false !== ($s = fgets($pipes[1]))) {
                 print $s;
             }
-        }
 
-        // Close process
-        proc_close($process);
+            // Close process
+            proc_close($process);
+        }
     }
 
     /**

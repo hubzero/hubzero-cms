@@ -121,6 +121,9 @@ class Exports extends AdminController
 
         $path = Config::get('tmp_path') . DS . 'members.csv';
         $file = fopen($path, 'w');
+        if ($file === false) {
+            App::abort(500, 'Unable to write ' . $path);
+        }
         fputcsv($file, $keys);
 
         // Get filters

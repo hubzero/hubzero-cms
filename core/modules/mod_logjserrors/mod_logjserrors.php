@@ -45,9 +45,7 @@ class Logjserrors extends Module
             }
 
             if ($log !== null) {
-                $fh = fopen($path . '/client_error.log', 'a');
-                fwrite($fh, json_encode($log));
-                fclose($fh);
+                file_put_contents($path . '/client_error.log', (string) json_encode($log), FILE_APPEND);
                 exit();
             }
         }

@@ -1258,8 +1258,9 @@ class Html
         $files = [];
 
         $dirHandle = opendir($path);
+        // A directory that cannot be read lists nothing
 
-        while (false !== ($fileName = readdir($dirHandle))) {
+        while ($dirHandle !== false && false !== ($fileName = readdir($dirHandle))) {
             $tnPattern = '/\_tn\.gif/';
             $mediumPattern = '/\_medium\.gif/';
 
@@ -1278,7 +1279,9 @@ class Html
                 $files[] = $path . DIRECTORY_SEPARATOR . $fileName;
             }
         }
-        closedir($dirHandle);
+        if ($dirHandle !== false) {
+            closedir($dirHandle);
+        }
 
         return $files;
     }
@@ -1414,8 +1417,9 @@ class Html
         }
 
         $dirHandle = opendir($galleryDir);
+        // A directory that cannot be read lists nothing
 
-        while (false !== ($galleryFile = readdir($dirHandle))) {
+        while ($dirHandle !== false && false !== ($galleryFile = readdir($dirHandle))) {
             $tnPattern = '/\_tn\.png/';
             $hashPattern = '/\.hash/';
 
@@ -1440,7 +1444,9 @@ class Html
                 $mimeTypes[] = $mimeType;
             }
         }
-        closedir($dirHandle);
+        if ($dirHandle !== false) {
+            closedir($dirHandle);
+        }
 
         return null;
     }

@@ -1934,9 +1934,9 @@ class Connect extends Obj
             return false;
         }
 
-        $handle = fopen($path . DS . $fpath, 'w');
-        fwrite($handle, $fc);
-        fclose($handle);
+        if (file_put_contents($path . DS . $fpath, $fc) === false) {
+            return false;
+        }
         chmod($path . DS . $fpath, 0775);
 
         if (file_exists($path . DS . $fpath)) {

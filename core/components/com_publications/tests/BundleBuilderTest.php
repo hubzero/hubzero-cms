@@ -301,7 +301,8 @@ class BundleBuilderTest extends Basic
 
         // Chop the tail (end-of-central-directory + part of the central dir).
         $fh = fopen($z, 'r+');
-        ftruncate($fh, max(1, filesize($z) - 1024));
+        $this->assertNotFalse($fh, 'the archive opens for truncating');
+        ftruncate($fh, max(1, (int) filesize($z) - 1024));
         fclose($fh);
 
         $this->assertFalse($this->verifyZip($z, 1), 'truncated archive is rejected');

@@ -855,9 +855,7 @@ class File extends Base
 
                 // Create hash file
                 $hfile =  $copyTo . '.hash';
-                $handle = fopen($hfile, 'w');
-                fwrite($handle, $md5hash);
-                fclose($handle);
+                file_put_contents($hfile, $md5hash);
                 @chmod($hfile, 0644);
 
                 $pAttach->store();
@@ -1660,9 +1658,7 @@ class File extends Base
 
             // Create hash file
             $hfile = $copyTo . '.hash';
-            $handle = fopen($hfile, 'w');
-            fwrite($handle, $md5hash);
-            fclose($handle);
+            file_put_contents($hfile, $md5hash);
             chmod($hfile, 0644);
 
             $objPA->store();

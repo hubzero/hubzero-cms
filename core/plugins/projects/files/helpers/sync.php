@@ -994,12 +994,9 @@ class Sync extends \Hubzero\Base\Obj
             $sfile = $filename;
         }
 
-        $place   = $append == true ? 'a' : 'w';
         $content = $append ? $content . "\n" : $content;
 
-        $handle  = fopen($sfile, $place);
-        fwrite($handle, $content);
-        fclose($handle);
+        file_put_contents($sfile, $content, $append ? FILE_APPEND : 0);
     }
 
     /**
@@ -1024,6 +1021,9 @@ class Sync extends \Hubzero\Base\Obj
             } else {
                 // Return one line
                 $file = fopen($sfile, 'r');
+                if ($file === false) {
+                    return null;
+                }
                 $line = fgets($file);
                 fclose($file);
                 return $line;

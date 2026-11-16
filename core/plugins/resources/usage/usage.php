@@ -440,6 +440,9 @@ class Usage extends Plugin
         );
 
         $out = fopen('php://output', 'w');
+        if ($out === false) {
+            \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+        }
         fputcsv($out, $columns);
 
         foreach ($results as $row) {

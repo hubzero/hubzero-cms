@@ -51,6 +51,9 @@ class Zip extends Expandable
                 if ($entity->isFile()) {
                     // Open
                     $item = fopen('zip://' . $temp->getAbsolutePath() . '#' . $filename, 'r');
+                    if ($item === false) {
+                        continue;
+                    }
 
                     // Write stream
                     $entity->putStream($item);

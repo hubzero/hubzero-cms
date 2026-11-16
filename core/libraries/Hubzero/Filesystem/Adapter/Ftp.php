@@ -432,6 +432,9 @@ class Ftp implements AdapterInterface
         $mimetype = Util::guessMimeType($path, $contents);
 
         $stream = tmpfile();
+        if ($stream === false) {
+            return false;
+        }
         fwrite($stream, $contents);
         rewind($stream);
 
@@ -450,7 +453,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      * @param   string  $path
-     * @param   resource|false  $resource
+     * @param   resource  $resource
      * @return  bool
      */
     public function writeStream($path, $resource)
@@ -716,6 +719,9 @@ class Ftp implements AdapterInterface
     public function readStream($path)
     {
         $stream = fopen('php://temp', 'w+');
+        if ($stream === false) {
+            return false;
+        }
         $result = ftp_fget($this->getConnection(), $stream, $path, $this->transferMode);
         rewind($stream);
 

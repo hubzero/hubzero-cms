@@ -2183,9 +2183,7 @@ class Curation extends Obj
                 $readme .= $this->pub->license_text . "\n ";
 
                 // Create license file
-                $handle  = fopen($licFile, 'w');
-                fwrite($handle, $this->pub->license_text);
-                fclose($handle);
+                file_put_contents($licFile, $this->pub->license_text);
             } elseif ($objL->text) {
                 $readme .= $objL->text . "\n ";
             }
@@ -2242,9 +2240,7 @@ class Curation extends Obj
                 $readme .= '--------------------------------------------' . "\n ";
                 $readme .= 'Archival package produced ' . Date::toSql();
 
-                $handle  = fopen($readmeFile, 'w');
-                fwrite($handle, $readme);
-                fclose($handle);
+                file_put_contents($readmeFile, $readme);
 
                 $zip->addFile($readmeFile, $where);
             }

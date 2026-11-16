@@ -70,6 +70,9 @@ class Log extends Model
         }
 
         $file_handle = fopen($logFile, "r");
+        if ($file_handle === false) {
+            return null;
+        }
         while (!feof($file_handle)) {
             $line = fgets($file_handle);
             $parts = explode("\t", $line);

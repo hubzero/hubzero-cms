@@ -120,12 +120,10 @@ class Slideshow extends Module
                     $xmlpath .= $alias ? '-' . $alias : '';
                     $xmlpath .= '.xml';
 
-                    $fh = fopen($xmlpath, "w");
                     if (function_exists('mbstring')) {
                         $xml = mbstring($xml);
                     }
-                    fwrite($fh, $xml);
-                    fclose($fh);
+                    file_put_contents($xmlpath, $xml);
                 }
             } else {
                 $noflash = 1;

@@ -127,6 +127,9 @@ class Resources extends Base implements CommandInterface
 
         $path = Config::get('tmp_path') . DS . 'resources_export_' . date("Ymd") . '.csv';
         $file = fopen($path, 'w');
+        if ($file === false) {
+            $this->output->error('Unable to write ' . $path);
+        }
         fputcsv($file, $keys, ',');
 
         foreach ($rows as $row) {

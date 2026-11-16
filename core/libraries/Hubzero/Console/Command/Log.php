@@ -101,6 +101,9 @@ class Log extends Base implements CommandInterface
 
         // Tail the given log
         $proc = proc_open("tail -f {$path}", $descs, $fp);
+        if (!is_resource($proc)) {
+            $this->output->error('Unable to follow ' . $path);
+        }
 
         // Set streams to be non-blocking so we aren't sitting and waiting
         stream_set_blocking(STDIN, false);

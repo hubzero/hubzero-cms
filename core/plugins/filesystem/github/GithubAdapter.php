@@ -275,6 +275,9 @@ class GithubAdapter implements FilesystemAdapter
         $contents = $this->read($path);
 
         $stream = fopen('php://temp', 'w+b');
+        if ($stream === false) {
+            throw new \RuntimeException('Unable to open a temporary stream');
+        }
         fwrite($stream, $contents);
         rewind($stream);
 

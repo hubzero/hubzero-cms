@@ -250,15 +250,18 @@ class PdfForm
         }
 
         $dir    = opendir($base);
+        // A directory that cannot be read lists nothing
         $images = [];
 
-        while (($file = readdir($dir))) {
+        while ($dir !== false && ($file = readdir($dir))) {
             if (preg_match('/^\d+[.]png$/', $file)) {
                 $images[] = $file;
             }
         }
 
-        closedir($dir);
+        if ($dir !== false) {
+            closedir($dir);
+        }
         natsort($images);
 
         $idx = 0;

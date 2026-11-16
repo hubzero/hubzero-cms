@@ -115,6 +115,9 @@ class Reports extends Base
                 header('Content-Type: text/csv; charset=utf-8');
                 header('Content-Disposition: attachment; filename=' . $filename);
                 $output = fopen('php://output', 'w');
+                if ($output === false) {
+                    \Hubzero\Facades\App::abort(500, 'Unable to write the export');
+                }
 
                 // output the column headings
                 fputcsv($output, $data);

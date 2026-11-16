@@ -38,6 +38,9 @@ class Tar extends Expandable
             if ($entity->isFile()) {
                 // Open
                 $item = fopen($file, 'r');
+                if ($item === false) {
+                    continue;
+                }
 
                 // Write stream
                 $entity->putStream($item);

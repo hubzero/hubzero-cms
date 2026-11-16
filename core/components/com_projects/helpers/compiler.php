@@ -118,9 +118,9 @@ class Compiler extends Obj
         }
 
         // Create temp tex copy
-        $fp = fopen($texFile . '.tex', 'w');
-        fwrite($fp, $data);
-        fclose($fp);
+        if (file_put_contents($texFile . '.tex', $data) === false) {
+            return false;
+        }
 
         chdir($cacheFolder);
         $command = escapeshellarg($texpath . DS . 'pdflatex')

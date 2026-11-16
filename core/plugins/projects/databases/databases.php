@@ -706,6 +706,10 @@ class Databases extends Plugin
             // Non expert mode
             if (!$expert_mode) {
                 $handle = fopen($path . '/' . $file, "r");
+                if ($handle === false) {
+                    echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
+                    return;
+                }
                 $col_labels = fgetcsv($handle);
 
                 $type_info = [];
@@ -965,6 +969,10 @@ class Databases extends Plugin
             // Non expert mode
             if (!$expert_mode) {
                 $handle = fopen($path . '/' . $file, "r");
+                if ($handle === false) {
+                    echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
+                    return;
+                }
                 $col_labels = fgetcsv($handle);
             }
 
@@ -1184,6 +1192,9 @@ class Databases extends Plugin
                 return false;
             }
             $fp = fopen($targetReal, 'w+');
+            if ($fp === false) {
+                return false;
+            }
             foreach ($header as $h) {
                 fputcsv($fp, $h);
             }

@@ -264,9 +264,12 @@ class Collection extends ItemList
                     $tmpFilePath = $temp . DS . $uniqueId . DS . $entity->getPath();
                     $bufferSize = 1024 * 8;
                     $tmpSrc = fopen($tmpFilePath, 'w');
+                    if ($tmpSrc === false) {
+                        throw new \RuntimeException('Unable to write ' . $tmpFilePath);
+                    }
                     while (!feof($fileSrc)) {
                         $buffer = fread($fileSrc, $bufferSize);
-                        fwrite($tmpSrc, $buffer);
+                        fwrite($tmpSrc, (string) $buffer);
                     }
                     fclose($tmpSrc);
                     fclose($fileSrc);

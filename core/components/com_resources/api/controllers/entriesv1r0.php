@@ -368,7 +368,7 @@ class Entriesv1r0 extends ApiController
         } else {
             // no errors - send base64 encoded image
             $object->error = "";
-            $imgbinary = fread(fopen($dir . DS . $filename . '.png', 'r'), filesize($dir . DS . $filename . '.png'));
+            $imgbinary = (string) file_get_contents($dir . DS . $filename . '.png');
             $base64img = 'data:image/png;base64,' . base64_encode($imgbinary);
             $object->img = $base64img;
         }

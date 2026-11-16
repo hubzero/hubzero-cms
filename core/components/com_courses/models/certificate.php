@@ -206,15 +206,18 @@ class Certificate extends Base
 
         $base   = $this->path('system');
         $dir    = opendir($base);
+        // A directory that cannot be read lists nothing
         $images = [];
 
-        while ($file = readdir($dir)) {
+        while ($dir !== false && $file = readdir($dir)) {
             if (preg_match('/^\d+[.]png$/', $file)) {
                 $images[] = $file;
             }
         }
 
-        closedir($dir);
+        if ($dir !== false) {
+            closedir($dir);
+        }
         natsort($images);
 
         $base  = $this->path('web');
