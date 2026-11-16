@@ -33,7 +33,7 @@ class Migration20261110130000ComUsage extends Base
      * Values the broken migration wrote: table, key, column, what it wrote,
      * and what 2.4 wrote
      *
-     * @var  array
+     * @var  array<int, array<int, array<string, string>|string>>
      */
     private const DAMAGED = [
         ['countries', ['code' => 'VA'], 'name', 'HOLY SEE (VATICAN CITY STATE', 'HOLY SEE (VATICAN CITY STATE)'],

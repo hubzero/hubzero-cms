@@ -28,7 +28,7 @@ use Hubzero\Facades\User;
  * Set on the controller as it runs:
  *
  * @property  int     $mid                The mailing list, set by doAddEmailTask()
- * @property  array   $emailFile          The uploaded file of addresses, doAddEmailTask()
+ * @property  array<mixed>   $emailFile          The uploaded file of addresses, doAddEmailTask()
  * @property  int     $emailGroup         The group whose members to add, doAddEmailTask()
  * @property  string  $emailBox           The addresses typed in, set by doAddEmailTask()
  * @property  string  $emailConfirmation  Whether to ask for confirmation, doAddEmailTask()

@@ -63,8 +63,8 @@ use Hubzero\Facades\Route;
  * Not columns:
  *
  * @property  \Components\Resources\Models\Type  $logicaltype    The logical type, transformLogicaltype()
- * @property  array                              $groups         The groups allowed access, transformGroups()
- * @property  array                              $users          The users allowed access, transformUsers()
+ * @property  array<mixed>                              $groups         The groups allowed access, transformGroups()
+ * @property  array<mixed>                              $users          The users allowed access, transformUsers()
  * @property  string                             $description    The full text for display, transformDescription()
  * @property  string                             $access_level   The access level's name, transformAccessLevel()
  * @property  \Hubzero\Database\Rows             $authors        The authors, through authors()

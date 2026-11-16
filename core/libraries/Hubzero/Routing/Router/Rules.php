@@ -14,6 +14,8 @@ use Iterator;
 
 /**
  * Iterator class for Rules
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Rules implements Countable, Iterator
 {

@@ -20,8 +20,8 @@ use Hubzero\Facades\App;
  * @property  mixed  $toolid
  * @property  mixed  $vnc_command
  * @property  mixed  $vnc_timeout
- * @property-read   array         $hostreq
- * @property-write  array|string  $hostreq  A single value is kept as a list of one
+ * @property-read   array<mixed>  $hostreq
+ * @property-write  array<mixed>|string  $hostreq  A single value is kept as a list of one
  * @property  mixed  $mw
  * @property  mixed  $params
  * @property  integer|null  $hardTimeout

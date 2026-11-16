@@ -8,6 +8,9 @@
 
 namespace Hubzero\Database\Tests;
 
+/**
+ * @implements \ArrayAccess<mixed, mixed>
+ */
 class TestContainer implements \ArrayAccess
 {
     private array $values = [];

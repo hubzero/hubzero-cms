@@ -13,6 +13,8 @@ use stdClass;
 
 /**
  *  Excel Reader Iterator Class implemeting interator
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Reader implements Iterator
 {

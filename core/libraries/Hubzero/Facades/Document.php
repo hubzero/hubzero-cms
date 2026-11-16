@@ -11,10 +11,10 @@ namespace Hubzero\Facades;
 /**
  * Document facade
  *
- * @method static object instance(string $type = null, array $options = [])
+ * @method static object instance(string $type = null, array<mixed> $options = [])
  * @method static object setType(string $type)
  * @method static string getType()
- * @method static array  getTypes()
+ * @method static array<mixed>  getTypes()
  * @method static object setTitle(string $title)
  * @method static string getTitle()
  * @method static object setDescription(string $description)
@@ -26,11 +26,11 @@ namespace Hubzero\Facades;
  * @method static string getLanguage()
  * @method static string getDirection()
  * @method static object setLink(string $url)
- * @method static mixed  getBuffer(string $type = null, string $name = null, array $attribs = [])
+ * @method static mixed  getBuffer(string $type = null, string $name = null, array<mixed> $attribs = [])
  * @method static object setBuffer(mixed $content, mixed $options = [], string $name = null)
  * @method static object addCustomTag(string $html)
- * @method static object addHeadLink(string $href, string $relation, string $relType = 'rel', array $attribs = [])
- * @method static array  getHeadData()
+ * @method static object addHeadLink(string $href, string $relation, string $relType = 'rel', mixed[] $attribs = [])
+ * @method static array<string, mixed>  getHeadData()
  * @method static object addItem(\Hubzero\Document\Type\Feed\Item $item)
  *
  * @codeCoverageIgnore

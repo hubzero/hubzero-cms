@@ -22,7 +22,7 @@ class Anchor
     /**
      * Other names wiki text has used for an entity, and the entity they mean
      *
-     * @var  array
+     * @var  array<string, string>
      */
     public const ENTITY_ALIASES = [
         "\u{05E8}\u{05DC}\u{05DE}" => 'rlm',

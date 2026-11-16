@@ -13,6 +13,8 @@ use stdClass;
 
 /**
  *  CSV Iterator Class implemeting interator
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Reader implements Iterator
 {

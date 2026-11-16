@@ -29,7 +29,7 @@ class Preflight
     /**
      * Required PHP extensions
      *
-     * @var array
+     * @var array<string, string>
      **/
     private const REQUIRED_EXTENSIONS = [
         'pdo'       => 'Database abstraction layer',

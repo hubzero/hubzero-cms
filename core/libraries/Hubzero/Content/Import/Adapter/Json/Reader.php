@@ -12,6 +12,8 @@ use Iterator;
 
 /**
  *  JSON Reader Iterator Class
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Reader implements Iterator
 {

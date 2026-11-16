@@ -20,7 +20,7 @@ use Hubzero\View\View as AbstractView;
  * @property  integer    $total    Number of records
  * @property  \stdClass  $pages    The page links and where the list of them starts and stops
  * @property  boolean    $viewall  Whether every record is shown
- * @property  array      $limits   The per-page choices on offer
+ * @property  array<mixed>      $limits   The per-page choices on offer
  * @property  string     $prefix   Prefix for the limit and limitstart field names
  */
 class View extends AbstractView

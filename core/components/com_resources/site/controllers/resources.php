@@ -48,7 +48,7 @@ use Hubzero\Facades\Filesystem;
  * @property  string                              $type           The type of resource browsed by tag, browsetagsTask()
  * @property  \Components\Resources\Models\Entry|null  $activechild    The child being played, set by playTask()
  * @property  \Components\Resources\Models\Entry  $model          The resource being shown, set by viewTask()
- * @property  array                               $allowedgroups  The groups that may see it, checkGroupAccess()
+ * @property  array<mixed>                               $allowedgroups  The groups that may see it, checkGroupAccess()
  */
 class Resources extends SiteController
 {

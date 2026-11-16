@@ -18,6 +18,8 @@ use Hubzero\Facades\App;
 
 /**
  * Search result set
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Set extends Obj implements Iterator
 {

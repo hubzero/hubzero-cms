@@ -14,6 +14,8 @@ use Iterator;
 
 /**
  * Associative list
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class AssocList extends Assoc implements Iterator, Countable
 {

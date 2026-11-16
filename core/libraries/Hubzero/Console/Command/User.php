@@ -30,7 +30,7 @@ class User extends Base implements CommandInterface
     /**
      * Accounts web servers run as, for tasks that must run as the web server
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public const WEB_ACCOUNTS = ['apache', 'www-data', 'nginx'];
 

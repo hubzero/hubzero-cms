@@ -10,6 +10,8 @@ namespace Components\Courses\Models;
 
 /**
  * Courses model class for a course
+ *
+ * @implements \Iterator<mixed, mixed>
  */
 class Iterator implements \Countable, \Iterator
 {

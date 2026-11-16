@@ -21,8 +21,8 @@ namespace Hubzero\Facades;
  * @method static bool   isCli()
  * @method static string version()
  * @method static string hash(string $seed)
- * @method static object register(mixed $provider, array $options = [])
- * @method static never  redirect(string $url, ?string $message = null, array|string|null $type = 'success')
+ * @method static object register(mixed $provider, array<mixed> $options = [])
+ * @method static never  redirect(string $url, ?string $message = null, array<mixed>|string|null $type = 'success')
  * @method static never  abort(int $code, string $message = '')
  * @method static never  close()
  *

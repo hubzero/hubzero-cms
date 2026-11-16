@@ -33,7 +33,7 @@ use Hubzero\Facades\Notify;
  * @property  string                    $_action         The action request variable, set by a task
  * @property  string                    $_error          An error to show, set by a task
  * @property  string                    $_msg            A message for the user, set by a task
- * @property  array                     $license_choice  The license chosen, set by savelicenseTask()
+ * @property  array<mixed>                     $license_choice  The license chosen, set by savelicenseTask()
  */
 class Pipeline extends SiteController
 {

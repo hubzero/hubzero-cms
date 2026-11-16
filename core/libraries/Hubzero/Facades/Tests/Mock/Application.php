@@ -12,6 +12,8 @@ namespace Hubzero\Facades\Tests\Mock;
  * Mock Application
  *
  * @codeCoverageIgnore
+ *
+ * @implements \ArrayAccess<mixed, mixed>
  */
 class Application implements \ArrayAccess
 {

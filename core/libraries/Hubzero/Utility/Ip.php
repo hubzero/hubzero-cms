@@ -320,7 +320,7 @@ class Ip
      * assignments 192.0.0.0/24, benchmarking 198.18.0.0/15, multicast in both
      * families, and the deprecated IPv6 site-local fec0::/10
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public const NOT_PUBLIC = [
         '::/96',

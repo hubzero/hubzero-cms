@@ -8,6 +8,9 @@
 
 namespace Hubzero\Component\Tests;
 
+/**
+ * @implements \ArrayAccess<mixed, mixed>
+ */
 class HtmxContainerStub implements \ArrayAccess
 {
     private array $values = [];

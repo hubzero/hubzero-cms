@@ -63,14 +63,14 @@ class Entriesv1r0 extends ApiController
      * counters, the checkout columns -- is the component's bookkeeping,
      * not the caller's, and a posted value for it is ignored.
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public const ARTICLE_FIELDS = ['title', 'alias', 'fulltxt', 'category', 'state', 'access', 'created', 'created_by'];
 
     /**
      * Request variables a JSON body may not set: they come from the route
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public const ROUTE_FIELDS = ['option', 'controller', 'task', 'id', 'version', 'format', 'no_html', 'tmpl'];
 

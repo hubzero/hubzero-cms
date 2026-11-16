@@ -35,7 +35,7 @@ namespace Hubzero\Facades;
  * @method static bool   copyDirectory(string $path, string $target, int $options = null)
  * @method static bool   deleteDirectory(string $path, bool $preserve = false)
  * @method static bool   emptyDirectory(string $path)
- * @method static array  directoryTree(string $path, $filter = '.', $maxLevel = 3, $level = 0, $parent = 0)
+ * @method static array<mixed>  directoryTree(string $path, $filter = '.', $maxLevel = 3, $level = 0, $parent = 0)
  * @method static bool   setPermissions(string $path, string $filemode = '0644', string $foldermode = '0755')
  * @method static string cleanDirectory(string $directory)
  * @method static string clean(string $file)

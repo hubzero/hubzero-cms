@@ -54,7 +54,7 @@ use Hubzero\Facades\Config;
  * @method mixed getParams(string $element, bool $returnRaw = false)
  * @method bool  saveParams(string $element, mixed $params)
  * @method bool  savePluginParams(string $element, mixed ...$args) ($folder, $element, $params) or ($element, $params)
- * @method void  setAssetRules(string $element, array $rules)
+ * @method void  setAssetRules(string $element, array<mixed> $rules)
  * @method bool  widenColumn(string $table, string $column, int $width, string $charset = null, object $db = null)
  **/
 class Base

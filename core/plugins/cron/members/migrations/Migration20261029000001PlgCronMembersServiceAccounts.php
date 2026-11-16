@@ -28,7 +28,7 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
     /**
      * Service accounts added when they exist on the hub
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public const USERNAMES = ['apps', 'gridstat', 'hubzerosolrworker'];
 

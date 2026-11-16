@@ -21,7 +21,7 @@ class UsageMetricsSeed
      * Seed rows by table: column names, whether 2.4 inserted them with
      * INSERT IGNORE, and the rows in column order
      *
-     * @var  array
+     * @var  array<string, array{columns: array<int, string>, ignore: bool, rows: array<int, array<int, int|string>>}>
      */
     private const TABLES = [
         'countries'         => [

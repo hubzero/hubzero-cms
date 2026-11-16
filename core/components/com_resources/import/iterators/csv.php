@@ -10,6 +10,8 @@ namespace Components\Resources\Import\Iterators;
 
 /**
  *  CSV Iterator Class implemeting interator
+ *
+ * @implements \Iterator<mixed, mixed>
  */
 class Csv implements \Iterator
 {

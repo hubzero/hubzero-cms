@@ -37,7 +37,7 @@ use Hubzero\Facades\Plugin;
  * @property  int                                  $_gid            The incoming or resolved group id
  * @property  string                               $title           The page title, set by buildTitle()
  * @property  string                               $_msg            The message login() shows
- * @property  array                                $messages        Notifications, cached by getNotifications()
+ * @property  array<mixed>                                $messages        Notifications, cached by getNotifications()
  * @property  string                               $active          The active project tab
  * @property  \Hubzero\User\Group|null             $group           The group that owns the project, if any
  */

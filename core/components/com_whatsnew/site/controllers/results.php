@@ -25,7 +25,7 @@ use Hubzero\Facades\Route;
  *
  * Set on the controller as it runs:
  *
- * @property  array  $searchareas  The areas plugins offer, cached by getAreas()
+ * @property  array<mixed>  $searchareas  The areas plugins offer, cached by getAreas()
  */
 class Results extends SiteController
 {

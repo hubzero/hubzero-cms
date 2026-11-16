@@ -30,7 +30,7 @@ class AsCollection implements CastsAttributes
      * @param  string      $key
      * @param  mixed       $value
      * @param  array<mixed>       $attributes
-     * @return ArrayObject|null
+     * @return ArrayObject<int|string, mixed>|null
      */
     public function get(Relational $model, string $key, $value, array $attributes)
     {

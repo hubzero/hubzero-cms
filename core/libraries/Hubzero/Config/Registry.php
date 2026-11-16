@@ -14,6 +14,9 @@ use stdClass;
  * Registry class
  *
  * Based on Joomla's JRegistry class
+ *
+ * @implements \ArrayAccess<string, mixed>
+ * @implements \IteratorAggregate<string, mixed>
  */
 class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \Countable
 {

@@ -28,7 +28,7 @@ use Hubzero\Facades\Component;
  * @property  string  $active    The active group tab from the request
  * @property  string  $action    The plugin action from the request
  * @property  string  $_title    The page title, built by buildTitle()
- * @property  array   $messages  The queued notifications, read by getNotifications()
+ * @property  array<mixed>   $messages  The queued notifications, read by getNotifications()
  */
 class Base extends SiteController
 {

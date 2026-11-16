@@ -24,7 +24,7 @@ class Profile extends Obj
     /**
      * Properties the profile keeps for itself, not fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const INTERNAL = ['plainPassword', 'paramsRegistry'];
 

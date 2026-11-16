@@ -16,7 +16,7 @@ class Duration
     /**
      * Seconds in each unit, largest first
      *
-     * @var  array
+     * @var  array<string, int>
      */
     public const UNITS = [
         'days'    => 86400,

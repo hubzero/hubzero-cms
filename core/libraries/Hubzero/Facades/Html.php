@@ -17,7 +17,7 @@ namespace Hubzero\Facades;
  * @method static bool  register(string $key, callable $callable)
  * @method static bool  forget(string $key)
  * @method static bool  has(string $key)
- * @method static array addIncludePath(string $path = '')
+ * @method static array<mixed> addIncludePath(string $path = '')
  * @method static mixed access(string $function, mixed ...$args)
  * @method static mixed asset(string $function, mixed ...$args)
  * @method static mixed batch(string $function, mixed ...$args)

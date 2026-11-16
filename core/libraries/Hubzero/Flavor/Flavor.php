@@ -34,7 +34,7 @@ class Flavor
      * the lever and their shapes. Anything else in a definition is a
      * mistake, and is said to be one rather than silently ignored.
      *
-     * @var  array
+     * @var  array<string, array<string, string>|string>
      */
     public const LEVERS = [
         'description'    => 'string',

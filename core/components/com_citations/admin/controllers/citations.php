@@ -33,7 +33,7 @@ use Hubzero\Facades\User;
  *
  * @property  string  $tags      The tags typed in, set by saveTask()
  * @property  string  $badges    The badges typed in, set by saveTask()
- * @property  array   $sponsors  The sponsor IDs chosen, set by saveTask()
+ * @property  array<mixed>   $sponsors  The sponsor IDs chosen, set by saveTask()
  */
 class Citations extends AdminController
 {

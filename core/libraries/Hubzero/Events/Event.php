@@ -16,6 +16,8 @@ use Countable;
 
 /**
  * Default Event class.
+ *
+ * @implements ArrayAccess<mixed, mixed>
  */
 class Event implements ArrayAccess, Countable
 {

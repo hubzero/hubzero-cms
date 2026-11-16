@@ -18,7 +18,7 @@ trait CanMock
     /**
      * Class being mocked, kept so method names can be checked against it
      *
-     * @var  string
+     * @var  class-string
      */
     protected $mockClass;
 
@@ -78,20 +78,24 @@ trait CanMock
      * component is not autoloaded.
      *
      * @param   string  $name
-     * @return  string
+     * @return  class-string
      */
     protected function resolveClass($name)
     {
+        $class = $name;
+
         // The map comes first: App, Lang and User are real facade aliases, but
         // their methods are reached through __callStatic and cannot be stubbed
-        if (!isset(static::$mockClassMap[$name])) {
-            return $name;
+        if (isset(static::$mockClassMap[$name])) {
+            list($class, $file) = static::$mockClassMap[$name];
+
+            if ($file && !class_exists($class, false)) {
+                require_once Component::path('com_search') . '/' . $file;
+            }
         }
 
-        list($class, $file) = static::$mockClassMap[$name];
-
-        if ($file && !class_exists($class, false)) {
-            require_once Component::path('com_search') . '/' . $file;
+        if (!class_exists($class) && !interface_exists($class)) {
+            throw new \InvalidArgumentException('No class or interface to mock: ' . $class);
         }
 
         return $class;

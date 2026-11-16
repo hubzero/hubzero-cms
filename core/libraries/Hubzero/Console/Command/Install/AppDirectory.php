@@ -20,7 +20,7 @@ class AppDirectory
      * Subdirectories created at install time
      * (cache, logs, tmp, templates are created on-demand at runtime)
      *
-     * @var array
+     * @var array<int, string>
      **/
     private const SUBDIRECTORIES = [
         'config',

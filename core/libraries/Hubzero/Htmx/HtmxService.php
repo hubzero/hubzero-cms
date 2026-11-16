@@ -20,7 +20,7 @@ class HtmxService
     /**
      * Supported values for HX-Reswap.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected const RESWAP_STRATEGIES = [
         'innerhtml',

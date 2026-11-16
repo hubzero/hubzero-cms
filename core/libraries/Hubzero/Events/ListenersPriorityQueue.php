@@ -18,6 +18,8 @@ use Countable;
  * One instance of ListenersPriorityQueue is used per Event in the Dispatcher.
  *
  * Based on work by the Joomla Framework
+ *
+ * @implements IteratorAggregate<mixed, mixed>
  */
 class ListenersPriorityQueue implements IteratorAggregate, Countable
 {

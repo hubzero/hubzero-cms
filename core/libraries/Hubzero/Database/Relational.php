@@ -175,15 +175,15 @@ use Hubzero\Facades\User;
  * @method static static orWhere(string $column, string $operator, mixed $value, int $depth = 0)
  * @method static static whereEquals(string $column, mixed $value, int $depth = 0)
  * @method static static orWhereEquals(string $column, mixed $value, int $depth = 0)
- * @method static static whereIn(string $column, array $values, int $depth = 0)
- * @method static static orWhereIn(string $column, array $values, int $depth = 0)
- * @method static static whereNotIn(string $column, array $values, int $depth = 0)
+ * @method static static whereIn(string $column, array<mixed> $values, int $depth = 0)
+ * @method static static orWhereIn(string $column, array<mixed> $values, int $depth = 0)
+ * @method static static whereNotIn(string $column, array<mixed> $values, int $depth = 0)
  * @method static static whereLike(string $column, string $value, int $depth = 0)
  * @method static static orWhereLike(string $column, string $value, int $depth = 0)
  * @method static static whereIsNull(string $column, int $depth = 0)
  * @method static static whereIsNotNull(string $column, int $depth = 0)
- * @method static static whereRaw(string $string, array $bindings = [], int $depth = 0)
- * @method static static orWhereRaw(string $string, array $bindings = [], int $depth = 0)
+ * @method static static whereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
+ * @method static static orWhereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
  * @method static static group(string $column)
  * @method static static having(string $column, string $operator, mixed $value)
  * @method static static order(string $column, string $dir)
@@ -207,6 +207,9 @@ use Hubzero\Facades\User;
  * @method static void retrieved(callable $callback)
  *
  * @phpstan-consistent-constructor
+ *
+ * @implements \ArrayAccess<mixed, mixed>
+ * @implements \IteratorAggregate<mixed, mixed>
  */
 class Relational implements \IteratorAggregate, \ArrayAccess
 {
@@ -2560,7 +2563,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * designed for Relational model instances.
      *
      * @param   mixed  $value  The value to cast
-     * @return  \ArrayObject
+     * @return  \ArrayObject<int|string, mixed>
      */
     protected function castToCollection($value)
     {

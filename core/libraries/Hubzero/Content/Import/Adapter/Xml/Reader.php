@@ -14,6 +14,8 @@ use DOMDocument;
 
 /**
  *  XML Reader Iterator Class implemeting interator
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Reader implements Iterator
 {

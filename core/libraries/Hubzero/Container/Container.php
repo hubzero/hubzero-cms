@@ -18,6 +18,8 @@ use Closure;
  * Container main class.
  *
  * Inspired by Fabien Potencier's Pimple DI class
+ *
+ * @implements ArrayAccess<mixed, mixed>
  */
 class Container implements ArrayAccess
 {
@@ -25,9 +27,9 @@ class Container implements ArrayAccess
      * @var  array<mixed>
      */
     private $values = [];
-    /** @var \SplObjectStorage|null */
+    /** @var \SplObjectStorage<object, mixed>|null */
     private $factories;
-    /** @var \SplObjectStorage|null */
+    /** @var \SplObjectStorage<object, mixed>|null */
     private $protected;
     /**
      * @var  array<mixed>

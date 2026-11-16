@@ -35,7 +35,7 @@ class MacrosTest extends TestCase
     /**
      * What PHP gives a class without anyone declaring it
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const MAGIC = ['__construct', '__call', '__get', '__set', '__invoke', '__toString'];
 

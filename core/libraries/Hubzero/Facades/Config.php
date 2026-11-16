@@ -16,7 +16,7 @@ namespace Hubzero\Facades;
  * @method static mixed  def(string $key, mixed $default = '')
  * @method static bool   has(string $path)
  * @method static object merge(mixed $source, bool $recursive = false)
- * @method static array  toArray()
+ * @method static array<mixed>  toArray()
  *
  * @codeCoverageIgnore
  */

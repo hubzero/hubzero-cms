@@ -22,7 +22,7 @@ class Database
     /**
      * Supported database types
      *
-     * @var array
+     * @var array<string, string>
      **/
     private const SUPPORTED_TYPES = [
         'mysql' => 'MySQL (PDO)',
@@ -31,7 +31,7 @@ class Database
     /**
      * Planned but not yet supported database types
      *
-     * @var array
+     * @var array<string, string>
      **/
     private const UNSUPPORTED_TYPES = [
         'pgsql'  => 'PostgreSQL',
@@ -48,7 +48,7 @@ class Database
     /**
      * MySQL connection type options
      *
-     * @var array
+     * @var array<int, array<string, int|string|null>>
      **/
     private const MYSQL_CONNECTION_TYPES = [
         1 => [

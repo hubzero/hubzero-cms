@@ -13,8 +13,8 @@ namespace Hubzero\Facades;
  *
  * @method static object append(string|int $name, string $link = '')
  * @method static object prepend(string $name, string $link = '')
- * @method static array  names()
- * @method static array  items()
+ * @method static array<int, mixed>  names()
+ * @method static array<mixed>  items()
  * @method static object clear()
  * @method static int    count()
  *

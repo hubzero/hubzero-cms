@@ -19,7 +19,7 @@ class SiteSettings
     /**
      * Common timezones for selection
      *
-     * @var array
+     * @var array<string, string>
      **/
     private const COMMON_TIMEZONES = [
         'UTC'                    => 'UTC (Coordinated Universal Time)',

@@ -28,13 +28,13 @@ use Hubzero\Facades\App;
  * @method ($name is '' ? object : string)  editor(string $name = '', string $content = '', mixed ...$args)
  *                 The editor's HTML; with no arguments, the editor itself
  * @method mixed   grid(string $method, mixed ...$args)
- * @method string  highlight(string $text = null, mixed $phrase = null, array $options = [])
+ * @method string  highlight(string $text = null, mixed $phrase = null, array<mixed> $options = [])
  * @method string  icon(string $symbol, bool $ariahidden = true)
  * @method string  img(string $asset = '', string $extension = null, string $element = null)
  * @method $this   js(string $asset = '', string $extension = null, string $element = null)
  * @method string  obfuscate(string $text = null)
  * @method mixed   pagination(int $total, int $start, int $limit)
- * @method string  truncate(string $text = null, int $length = null, array $options = [])
+ * @method string  truncate(string $text = null, int $length = null, array<mixed> $options = [])
  */
 class View extends Obj
 {

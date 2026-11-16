@@ -18,7 +18,7 @@ class Project
     /**
      * Properties that are the object's own bookkeeping, not columns
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const INTERNAL = ['updatedKeys', 'listKeys'];
 

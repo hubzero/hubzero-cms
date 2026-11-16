@@ -19,7 +19,7 @@ class AnswersTest extends Basic
     /**
      * The variables these tests set
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const VARIABLES = [
         'HUB_SITENAME',

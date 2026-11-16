@@ -17,7 +17,7 @@ namespace Hubzero\Facades;
  * @method static object params(string $type, string $plugin)
  * @method static string path(string $type, string $plugin = null)
  * @method static bool   language(string $extension, string $basePath = '')
- * @method static array  all()
+ * @method static array<mixed>  all()
  *
  * @codeCoverageIgnore
  */

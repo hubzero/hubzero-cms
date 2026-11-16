@@ -20,7 +20,7 @@ namespace Hubzero\Facades;
  * @method static string getToken(bool $forceNew = false)
  * @method static bool   hasToken(string $tCheck, bool $forceExpire = true)
  * @method static string getFormToken(bool $forceNew = false)
- * @method static bool   checkToken(string|array $method = 'post', bool $capture = false)
+ * @method static bool   checkToken(string|array<mixed> $method = 'post', bool $capture = false)
  * @method static string getState()
  * @method static int    getExpire()
  * @method static bool   isNew()

@@ -11,6 +11,9 @@ namespace Hubzero\Component\Tests;
 use ArrayAccess;
 use Closure;
 
+/**
+ * @implements ArrayAccess<mixed, mixed>
+ */
 class HtmxFlowContainerStub implements ArrayAccess
 {
     private array $values = [];

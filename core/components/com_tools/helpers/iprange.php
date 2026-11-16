@@ -32,7 +32,7 @@ class Iprange
     /**
      * Every address, IPv4 and IPv6, as a range: what a /0 network is
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public const EVERYONE = ['00000000000000000000000000000000', 'ffffffffffffffffffffffffffffffff'];
 

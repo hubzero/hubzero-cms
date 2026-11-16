@@ -24,7 +24,7 @@ class SeedRepairTest extends Basic
     /**
      * Metrics tables, with the keys the usage migrations give them
      *
-     * @var  array
+     * @var  array<string, string>
      */
     private const METRICS_TABLES = [
         'countries'         => 'code TEXT PRIMARY KEY, name TEXT',
@@ -42,7 +42,7 @@ class SeedRepairTest extends Basic
     /**
      * What the broken migrations wrote that 2.4 did not: table, key, column, value
      *
-     * @var  array
+     * @var  array<int, array<int, array<string, int|string>|string>>
      */
     private const WRONG = [
         ['countries', ['code' => 'VA'], 'name', 'HOLY SEE (VATICAN CITY STATE'],
@@ -62,7 +62,7 @@ class SeedRepairTest extends Basic
     /**
      * Tables the broken 2015 migration seeded one row at a time, keeping only the last
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const LAST_ROW_ONLY = [
         'domainclass',

@@ -21,7 +21,7 @@ class Answers
     /**
      * The sections an answer file may carry
      *
-     * @var  array
+     * @var  array<int, string>
      */
     private const SECTIONS = ['site', 'database', 'admin'];
 
@@ -85,7 +85,7 @@ class Answers
     /**
      * The environment variables that can stand in for an answer file
      *
-     * @var  array
+     * @var  array<string, array<string, string>>
      */
     private const ENVIRONMENT = [
         'site' => [

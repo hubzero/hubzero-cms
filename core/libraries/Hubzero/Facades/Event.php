@@ -11,15 +11,15 @@ namespace Hubzero\Facades;
 /**
  * Event dispatcher facade
  *
- * @method static array  trigger(mixed $event, array $args = [])
- * @method static object addListener(object|\Closure $listener, array|string $events = [])
- * @method static object listen(mixed $listener, array|string $events = [])
+ * @method static array<mixed>  trigger(mixed $event, array<mixed> $args = [])
+ * @method static object addListener(object|\Closure $listener, array<mixed>|string $events = [])
+ * @method static object listen(mixed $listener, array<mixed>|string $events = [])
  * @method static object removeListener(object $listener, mixed $event = null)
  * @method static object forget(object $listener, mixed $event = null)
- * @method static array  getListeners(mixed $event = null)
+ * @method static array<mixed>  getListeners(mixed $event = null)
  * @method static bool   hasListener(object $listener, mixed $event = null)
  * @method static int    countListeners(mixed $event)
- * @method static array  getCalledListeners() Only while debugging, when the dispatcher is traceable
+ * @method static array<mixed>  getCalledListeners() Only while debugging, when the dispatcher is traceable
  */
 class Event extends Facade
 {

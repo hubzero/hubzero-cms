@@ -12,7 +12,7 @@ namespace Hubzero\Facades;
  * Submenu facade
  *
  * @method static void   addEntry(string $name, string $link = '', bool $active = false)
- * @method static array  getItems()
+ * @method static array<mixed>  getItems()
  * @method static string render()
  *
  * @codeCoverageIgnore

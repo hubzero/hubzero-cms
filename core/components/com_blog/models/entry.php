@@ -146,7 +146,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates automatic owned by field value
      *
-     * @param   array<mixed>|\ArrayAccess   $data  the data being saved
+     * @param   array<mixed>|\ArrayAccess<string, mixed>   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)

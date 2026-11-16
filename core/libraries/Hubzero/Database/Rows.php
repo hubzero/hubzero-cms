@@ -13,6 +13,8 @@ use Countable;
 
 /**
  * Database Iterable class
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class Rows implements Iterator, Countable
 {

@@ -17,7 +17,7 @@ namespace Hubzero\Facades;
  * @method static string urlForClient(string $client, string $url, bool $xhtml = true, int $ssl = null)
  * @method static object client(string $client = null)
  * @method static object rules(string $type)
- * @method static void   bind(array $vars = [], bool $merge = true)
+ * @method static void   bind(array<mixed> $vars = [], bool $merge = true)
  * @method static void   flush()
  *
  * @codeCoverageIgnore

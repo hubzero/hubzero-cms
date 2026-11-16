@@ -14,7 +14,7 @@ namespace Components\Events\Tables;
  * The settings are the rows of #__events_config, kept by name through
  * __set() and __get(). The one this class reads itself:
  *
- * @property  array|string  $fields  The custom fields: one "name=label" line each, split into lists by load()
+ * @property  array<mixed>|string  $fields  The custom fields: one "name=label" line each, split into lists by load()
  */
 class Configs
 {

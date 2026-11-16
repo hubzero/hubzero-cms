@@ -10,6 +10,8 @@ namespace Components\Resources\Import\Iterators;
 
 /**
  *  XML Reader Iterator Class implemeting interator
+ *
+ * @implements \Iterator<mixed, mixed>
  */
 class Xml implements \Iterator
 {
