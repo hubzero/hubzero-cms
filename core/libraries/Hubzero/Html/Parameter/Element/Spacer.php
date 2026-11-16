@@ -28,7 +28,7 @@ class Spacer extends Element
      *
      * @param   string  $label         Element label
      * @param   string  $description   Element description for tool tip
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @param   string  $name          The name.
      * @return  string
@@ -43,7 +43,7 @@ class Spacer extends Element
      *
      * @param   string  $name          Element name
      * @param   string  $value         Element value
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string
      */

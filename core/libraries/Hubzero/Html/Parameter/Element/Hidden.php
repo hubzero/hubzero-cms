@@ -28,7 +28,7 @@ class Hidden extends Element
      *
      * @param   string  $name          Element name
      * @param   string  $value         Element value
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string
      */
@@ -45,7 +45,7 @@ class Hidden extends Element
      *
      * @param   string  $label         Element label
      * @param   string  $description   Element description (which renders as a tool tip)
-     * @param   object  &$xmlElement   Element object
+     * @param   \SimpleXMLElement  &$xmlElement   Element object
      * @param   string  $control_name  Control name
      * @param   string  $name          Element name
      * @return  string|false

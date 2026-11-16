@@ -29,7 +29,7 @@ class Filelist extends Element
      *
      * @param   string  $name          Element name
      * @param   string  $value         Element value
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string
      */

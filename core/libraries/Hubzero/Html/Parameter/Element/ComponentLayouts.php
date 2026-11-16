@@ -26,7 +26,7 @@ class ComponentLayouts extends Select
     /**
      * Get the options for the list.
      *
-     * @param   object  &$node  XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node  XMLElement node object containing the settings for the element
      * @return  array<mixed>
      */
     protected function getOptions(&$node)

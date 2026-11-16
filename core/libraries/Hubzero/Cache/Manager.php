@@ -24,9 +24,9 @@ use Closure;
 class Manager
 {
     /**
-     * The application instance.
+     * The application instance (only its services are read)
      *
-     * @var  object
+     * @var  \Hubzero\Container\Container
      */
     protected $app;
 
@@ -48,7 +48,7 @@ class Manager
     /**
      * Create a new Cache manager instance.
      *
-     * @param   object  $app
+     * @param   \Hubzero\Container\Container  $app
      * @return  void
      */
     public function __construct($app)
@@ -84,7 +84,10 @@ class Manager
         }
 
         if (!isset($config['hash'])) {
-            $config['hash']      = $this->app->hash('');
+            // As Application::hash('') makes it, for a plain container too
+            $config['hash']      = $this->app instanceof \Hubzero\Base\Application
+                ? $this->app->hash('')
+                : md5((string) $this->app['config']->get('secret'));
         }
         if (!isset($config['cachebase'])) {
             $config['cachebase'] = PATH_APP

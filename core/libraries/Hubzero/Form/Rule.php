@@ -42,7 +42,7 @@ class Rule
     /**
      * Method to test the value.
      *
-     * @param   object   &$element  The SimpleXMLElement object representing the <field /> tag for
+     * @param   \SimpleXMLElement   &$element  The SimpleXMLElement object representing the <field /> tag for
      * the form field object.
      * @param   mixed    $value     The form field value to validate.
      * @param   string|null   $group     The field name group control value. This acts as as an array

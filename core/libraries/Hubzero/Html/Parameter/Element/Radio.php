@@ -29,7 +29,7 @@ class Radio extends Element
      *
      * @param   string  $name          Element name
      * @param   string  $value         Element value
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string
      */
@@ -56,7 +56,7 @@ class Radio extends Element
      *
      * @param   string  $label         Label attribute for the element
      * @param   string  $description   Description attribute for the element
-     * @param   object  &$xmlElement   The element object
+     * @param   \SimpleXMLElement  &$xmlElement   The element object
      * @param   string  $control_name  Control name
      * @param   string  $name          Name attribut
      * @return  string

@@ -18,8 +18,7 @@ class Orcid extends Rule
     /**
      * Method to test for a well-formed ORCID iD with a valid check digit
      *
-     * @param   object   &$element  The SimpleXMLElement object representing the <field /> tag for the form field
-     *                              object.
+     * @param   \SimpleXMLElement   &$element  The <field /> tag for the form field
      * @param   mixed    $value     The form field value to validate.
      * @param   string|null   $group     The field name group control value.
      * @param  object|null  &$input  An optional Registry object with the entire data set to validate against the entire

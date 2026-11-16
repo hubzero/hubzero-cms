@@ -27,7 +27,7 @@ class Select extends Element
     /**
      * Get the options for the element
      *
-     * @param   object  &$node  XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node  XMLElement node object containing the settings for the element
      * @return  array<int, mixed>
      */
     protected function getOptions(&$node)
@@ -46,7 +46,7 @@ class Select extends Element
      *
      * @param   string  $name          Element name
      * @param   string  $value         Element value
-     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   \SimpleXMLElement  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string
      */
