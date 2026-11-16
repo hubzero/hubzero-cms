@@ -316,7 +316,7 @@ class DriverTest extends AbstractDriverTestCase
         $result = $driver->loadObjectList();
 
         $this->assertCount(2, $result, 'Should have 2 rows');
-        $this->assertIsObject($result[0], 'First item should be an object');
+        $this->assertSame('User 1', $result[0]->name, 'First item should be the first row, as an object');
     }
 
     #[Test]

@@ -537,7 +537,7 @@ class User extends \Hubzero\Database\Relational
      * This must be used when setting data to be saved. Otherwise, the properties
      * will be attached directly to the model itself and not included in the save.
      *
-     * @param   array<mixed>|string  $key    The key to set, or array of key/value pairs
+     * @param   array<mixed>|string|object  $key    The key to set, or array (or object) of key/value pairs
      * @param   mixed         $value  The value to set if key is string
      * @return  object        $this   Chainable
      * @since   2.1.0

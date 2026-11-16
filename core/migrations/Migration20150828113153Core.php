@@ -43,8 +43,7 @@ class Migration20150828113153Core extends Base
             if ($results) {
                 foreach ($results as $result) {
                     if (
-                        empty($result)
-                        || empty($result->min)
+                        empty($result->min)
                         || empty($result->max)
                         || empty($result->folder)
                         || empty($result->element)

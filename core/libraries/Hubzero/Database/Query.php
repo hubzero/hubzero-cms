@@ -4861,7 +4861,7 @@ class Query
      * Gets the first row of the result set from the database query as an object
      *
      * @param   string  $class  The class name to use for the returned row object
-     * @return  object|null
+     * @return  ($class is 'stdClass' ? \stdClass|null : object|null)
      */
     public function loadObject($class = 'stdClass')
     {
@@ -4876,7 +4876,7 @@ class Query
      *
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
-     * @return  array<mixed>|null
+     * @return  ($class is 'stdClass' ? array<\stdClass>|null : array<object>|null)
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {

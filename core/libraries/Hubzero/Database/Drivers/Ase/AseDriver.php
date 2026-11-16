@@ -1529,7 +1529,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $key    Column to key results by
      * @param   string  $class  Class name for result objects
-     * @return  array<mixed>
+     * @return  ($class is 'stdClass' ? array<\stdClass> : array<object>)
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {

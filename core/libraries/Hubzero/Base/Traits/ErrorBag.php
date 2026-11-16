@@ -67,12 +67,19 @@ trait ErrorBag
     /**
      * Add an error message.
      *
-     * @param   string  $error  Error message.
+     * @param   string|\Exception|false|null  $error  Error message. False, null or empty (what getError() gives
+     *                                                when there is none, often passed on) is not recorded.
      * @param   string|null  $key    Specific key to set the value to
      * @return  object
      */
     public function setError($error, $key = null)
     {
+        // Passing on another object's getError() when it had none gave false,
+        // which used to be recorded as an error
+        if ($error === false || $error === null || $error === '') {
+            return $this;
+        }
+
         if ($key !== null) {
             $this->errors[$key] = $error;
         } else {

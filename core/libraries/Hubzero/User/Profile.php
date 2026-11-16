@@ -370,12 +370,17 @@ class Profile extends Obj
     /**
      * Add an error message.
      *
-     * @param   string  $error  Error message.
+     * @param   string|\Exception|false|null  $error  Error message. False, null or empty (what getError() gives
+     *                                                when there is none, often passed on) is not recorded.
      * @param   string|null  $key    Specific key to set the value to
      * @return  object
      */
     public function setError($error, $key = null)
     {
+        if ($error === false || $error === null || $error === '') {
+            return $this;
+        }
+
         $bt = debug_backtrace();
 
         $error = __CLASS__ . '::' . $bt[1]['function'] . '():' . $error;
