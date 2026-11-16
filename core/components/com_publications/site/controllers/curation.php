@@ -922,7 +922,7 @@ class Curation extends SiteController
             : Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_KICKED_BACK');
 
         // Get authors
-        $authors = $pub->table('Author')->getAuthors($pub->version_id, 1, 1, 1);
+        $authors = $pub->table('Author')->getAuthors($pub->version_id, 1, 1, true);
 
         // No authors – send to publication creator
         if (count($authors) == 0) {

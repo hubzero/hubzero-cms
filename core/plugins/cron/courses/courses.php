@@ -147,9 +147,7 @@ class Courses extends Plugin
         $course_id = 0;
 
         $params = $job->params;
-        if (isset($params) && is_object($params)) {
-            $course_id = $params->get('course');
-        }
+        $course_id = $params->get('course');
 
         $coursesObj = new \Components\Courses\Models\Courses();
 

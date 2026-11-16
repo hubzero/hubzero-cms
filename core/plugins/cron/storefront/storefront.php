@@ -54,10 +54,7 @@ class Storefront extends Plugin
         // Get the notification days
         $params = $job->params;
         $days = [];
-        if (
-            is_object($params)
-            && ($params->get('publish_down_notification1') || $params->get('publish_down_notification2'))
-        ) {
+        if ($params->get('publish_down_notification1') || $params->get('publish_down_notification2')) {
             if (
                 $params->get('publish_down_notification1')
                 && is_numeric($params->get('publish_down_notification1'))

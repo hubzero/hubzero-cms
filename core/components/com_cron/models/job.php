@@ -19,7 +19,7 @@ use Hubzero\Facades\App;
 /**
  * Cron model for a job
  *
- * @property-read  mixed  $params  What transformParams() gives
+ * @property-read  \Hubzero\Config\Registry  $params  What transformParams() gives
  */
 class Job extends Relational
 {

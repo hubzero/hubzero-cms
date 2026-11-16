@@ -1112,7 +1112,14 @@ class Project extends Model
      * Get project table
      *
      * @param   string|null  $name
-     * @return  object
+     * @return  (
+     *     $name is 'Activity' ? Tables\Activity : (
+     *     $name is 'Owner' ? Tables\Owner : (
+     *     $name is 'Type' ? Tables\Type : (
+     *     $name is 'Blog' ? Tables\Blog : (
+     *     $name is 'Comment' ? Tables\Comment : (
+     *     $name is 'Todo' ? Tables\Todo : Tables\Project|null))))))
+     * )
      */
     public function table($name = null)
     {

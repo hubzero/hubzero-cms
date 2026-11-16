@@ -107,7 +107,7 @@ class Publications extends Plugin
 
         // If we need to restrict to selected authors
         $params = $job->params;
-        if (is_object($params) && $params->get('userids')) {
+        if ($params->get('userids')) {
             $apu = explode(',', $params->get('userids'));
             $apu = array_map('trim', $apu);
 

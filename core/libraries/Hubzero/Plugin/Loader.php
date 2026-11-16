@@ -68,7 +68,7 @@ class Loader implements LoaderInterface
      *
      * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
      * @param   string  $plugin  The plugin name.
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function params($type, $plugin)
     {

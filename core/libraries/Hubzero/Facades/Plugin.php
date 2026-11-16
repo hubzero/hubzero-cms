@@ -14,7 +14,7 @@ namespace Hubzero\Facades;
  * @method static bool   import(string $type, string $plugin = null, bool $autocreate = true, object $dispatcher = null)
  * @method static mixed  byType(string $type, string $plugin = null)
  * @method static bool   isEnabled(string $type, string $plugin = null)
- * @method static object params(string $type, string $plugin)
+ * @method static \Hubzero\Config\Registry params(string $type, string $plugin)
  * @method static string path(string $type, string $plugin = null)
  * @method static bool   language(string $extension, string $basePath = '')
  * @method static array<mixed>  all()

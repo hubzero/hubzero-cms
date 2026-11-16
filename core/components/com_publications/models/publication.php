@@ -814,7 +814,11 @@ class Publication extends Obj
      * Get publication table
      *
      * @param   string|null  $name
-     * @return  object
+     * @return  (
+     *     $name is 'Author' ? Tables\Author : (
+     *     $name is 'Content' ? Tables\Attachment : (
+     *     $name is 'License' ? Tables\License : Tables\Publication))
+     * )
      */
     public function table($name = null)
     {

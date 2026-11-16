@@ -20,7 +20,7 @@ namespace Hubzero\Facades;
  * @method static string render(object $module, array<mixed> $attribs = [])
  * @method static string getLayoutPath(string $module, string $layout = 'default')
  * @method static array<mixed>  all()
- * @method static object params(mixed $id)
+ * @method static \Hubzero\Config\Registry params(mixed $id)
  * @method static string canonical(string $module)
  * @method static string path(string $module)
  */

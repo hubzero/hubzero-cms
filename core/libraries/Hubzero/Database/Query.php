@@ -4905,7 +4905,7 @@ class Query
      * Retrieve the first row from the query
      *
      * @param   string|array<mixed>|null  $columns  Optional columns to select
-     * @return  object|null
+     * @return  \stdClass|null
      **/
     public function first($columns = null)
     {

@@ -62,7 +62,7 @@ class Newsletter extends Plugin
 
         // do we have a param defined limit
         $params = $job->params;
-        if (is_object($params) && $params->get('newsletter_queue_limit')) {
+        if ($params->get('newsletter_queue_limit')) {
             $paramDefinedLimit = $params->get('newsletter_queue_limit');
             if (is_numeric($paramDefinedLimit) && $paramDefinedLimit > 0 && $paramDefinedLimit < 100) {
                 $limit = $paramDefinedLimit;
@@ -278,9 +278,7 @@ class Newsletter extends Plugin
 
         $params = $job->params;
         $limit = 100;
-        if (is_object($params)) {
-            $limit = $params->get('newsletter_ips_limit', 100);
-        }
+        $limit = $params->get('newsletter_ips_limit', 100);
 
         // get actions
         $unconvertedActions = \Components\Newsletter\Models\Mailing\Recipient\Action::all()

@@ -200,7 +200,7 @@ class Owner extends Table
      * Get owner id from user id
      *
      * @param   integer|null  $projectid
-     * @param   integer  $uid
+     * @param   integer|string  $uid
      * @param   mixed  $name
      * @return  mixed    integer or null
      */
@@ -998,7 +998,7 @@ class Owner extends Table
      * @param   integer|null  $projectid
      * @param   string|int $actor             user id of person adding new member
      * @param   integer|mixed  $userid
-     * @param   integer  $groupid
+     * @param   integer|string  $groupid  The group's id or cn
      * @param   integer  $role
      * @param   integer  $status
      * @param   integer  $native

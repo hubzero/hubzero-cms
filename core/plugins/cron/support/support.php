@@ -119,160 +119,155 @@ class Support extends Plugin
         $where[] = "t.`type`=0";
         $where[] = "t.`open`=1";
 
-        if (is_object($params)) {
-            $statuses = [];
-            if (is_numeric($params->get('support_ticketpending_status1'))) {
-                $statuses[] = $params->get('support_ticketpending_status1');
-            }
-            if (is_numeric($params->get('support_ticketpending_status2'))) {
-                $statuses[] = $params->get('support_ticketpending_status2');
-            }
-            if (is_numeric($params->get('support_ticketpending_status3'))) {
-                $statuses[] = $params->get('support_ticketpending_status3');
-            }
-            if (count($statuses)) {
-                $where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
-            }
+        $statuses = [];
+        if (is_numeric($params->get('support_ticketpending_status1'))) {
+            $statuses[] = $params->get('support_ticketpending_status1');
+        }
+        if (is_numeric($params->get('support_ticketpending_status2'))) {
+            $statuses[] = $params->get('support_ticketpending_status2');
+        }
+        if (is_numeric($params->get('support_ticketpending_status3'))) {
+            $statuses[] = $params->get('support_ticketpending_status3');
+        }
+        if (count($statuses)) {
+            $where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+        }
 
-            if ($group = $params->get('support_ticketpending_group')) {
-                if (!is_numeric($group)) {
-                    $g = \Hubzero\User\Group::getInstance($group);
-                    if ($g) {
-                        $group = $g->get('gidNumber');
-                    }
-                }
-                $where[] = "t.`group_id`=" . $database->quote((int) $group);
-            }
-
-            if ($owners = $params->get('support_ticketpending_owners')) {
-                $usernames = explode(',', $owners);
-                $usernames = array_map('trim', $usernames);
-                foreach ($usernames as $k => $username) {
-                    $user = User::getInstance($username);
-                    $usernames[$k] = $database->quote($user->get('id'));
-                }
-
-                $where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
-            }
-
-            if ($severity = $params->get('support_ticketpending_severity')) {
-                if ($severity != 'all') {
-                    $severities = explode(',', $severity);
-                    $severities = array_map('trim', $severities);
-                    foreach ($severities as $k => $severity) {
-                        $severities[$k] = $database->quote($severity);
-                    }
-                    $where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+        if ($group = $params->get('support_ticketpending_group')) {
+            if (!is_numeric($group)) {
+                $g = \Hubzero\User\Group::getInstance($group);
+                if ($g) {
+                    $group = $g->get('gidNumber');
                 }
             }
+            $where[] = "t.`group_id`=" . $database->quote((int) $group);
+        }
 
-            if ($owned = intval($params->get('support_ticketpending_owned', 0))) {
-                if ($owned == 1) {
-                    $where[] = "(t.`owner` IS NULL OR `owner`='')";
-                } elseif ($owned == 2) {
-                    $where[] = "(t.`owner` IS NOT NULL AND `owner` !='')";
-                }
+        if ($owners = $params->get('support_ticketpending_owners')) {
+            $usernames = explode(',', $owners);
+            $usernames = array_map('trim', $usernames);
+            foreach ($usernames as $k => $username) {
+                $user = User::getInstance($username);
+                $usernames[$k] = $database->quote($user->get('id'));
             }
 
-            if ($submitters = $params->get('support_ticketpending_submitters')) {
-                $usernames = explode(',', $submitters);
-                $usernames = array_map('trim', $usernames);
-                foreach ($usernames as $k => $username) {
-                    $usernames[$k] = $database->quote($username);
-                }
+            $where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
+        }
 
-                $where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+        if ($severity = $params->get('support_ticketpending_severity')) {
+            if ($severity != 'all') {
+                $severities = explode(',', $severity);
+                $severities = array_map('trim', $severities);
+                foreach ($severities as $k => $severity) {
+                    $severities[$k] = $database->quote($severity);
+                }
+                $where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+            }
+        }
+
+        if ($owned = intval($params->get('support_ticketpending_owned', 0))) {
+            if ($owned == 1) {
+                $where[] = "(t.`owner` IS NULL OR `owner`='')";
+            } elseif ($owned == 2) {
+                $where[] = "(t.`owner` IS NOT NULL AND `owner` !='')";
+            }
+        }
+
+        if ($submitters = $params->get('support_ticketpending_submitters')) {
+            $usernames = explode(',', $submitters);
+            $usernames = array_map('trim', $usernames);
+            foreach ($usernames as $k => $username) {
+                $usernames[$k] = $database->quote($username);
             }
 
-            if ($tags = $params->get('support_ticketpending_excludeTags', '')) {
-                $tags = explode(',', $tags);
-                $tags = array_map('trim', $tags);
-                foreach ($tags as $k => $tag) {
-                    $tags[$k] = $database->quote($tag);
-                }
+            $where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+        }
 
-                $where[] = "t.`id` NOT IN (
+        if ($tags = $params->get('support_ticketpending_excludeTags', '')) {
+            $tags = explode(',', $tags);
+            $tags = array_map('trim', $tags);
+            foreach ($tags as $k => $tag) {
+                $tags[$k] = $database->quote($tag);
+            }
+
+            $where[] = "t.`id` NOT IN (
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
-                                . implode(", ", $tags) . ")
+                            . implode(", ", $tags) . ")
 							)
 						)";
+        }
+
+        if ($tags = $params->get('support_ticketpending_includeTags', '')) {
+            $tags = explode(',', $tags);
+            $tags = array_map('trim', $tags);
+            foreach ($tags as $k => $tag) {
+                $tags[$k] = $database->quote($tag);
             }
 
-            if ($tags = $params->get('support_ticketpending_includeTags', '')) {
-                $tags = explode(',', $tags);
-                $tags = array_map('trim', $tags);
-                foreach ($tags as $k => $tag) {
-                    $tags[$k] = $database->quote($tag);
-                }
-
-                $where[] = "t.`id` IN (
+            $where[] = "t.`id` IN (
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
-                                . implode(", ", $tags) . ")
+                            . implode(", ", $tags) . ")
 							)
 						)";
+        }
+
+        if ($created = $params->get('support_ticketpending_activity', '-2week')) {
+            $op = '';
+            $timestamp = null;
+            switch ($created) {
+                // Created before (older than)
+                case '-day':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 day');
+                    break;
+
+                case '-week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 week');
+                    break;
+
+                case '-2week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-2 week');
+                    break;
+
+                case '-3week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-3 week');
+                    break;
+
+                case '-month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 month');
+                    break;
+
+                case '-6month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-6 month');
+                    break;
+
+                case '-year':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 year');
+                    break;
+
+                case '--':
+                    $op = '';
+                    break;
             }
 
-            if ($created = $params->get('support_ticketpending_activity', '-2week')) {
-                $op = '';
-                $timestamp = null;
-                switch ($created) {
-                    // Created before (older than)
-                    case '-day':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 day');
-                        break;
-
-                    case '-week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 week');
-                        break;
-
-                    case '-2week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-2 week');
-                        break;
-
-                    case '-3week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-3 week');
-                        break;
-
-                    case '-month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 month');
-                        break;
-
-                    case '-6month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-6 month');
-                        break;
-
-                    case '-year':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 year');
-                        break;
-
-                    case '--':
-                        $op = '';
-                        break;
-                }
-
-                if ($op) {
-                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
-                        . $op . $database->quote($timestamp->toSql());
-                }
+            if ($op) {
+                $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
+                    . $op . $database->quote($timestamp->toSql());
             }
-        } else {
-            $timestamp = Date::modify('-2 week');
-            $where[] = "t.`created` <= " . $database->quote($timestamp->toSql());
         }
 
         $slc .= " WHERE " . implode(" AND ", $where);
@@ -432,7 +427,7 @@ class Support extends Plugin
 
         $sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
-        if (is_object($params) && $params->get('support_ticketreminder_group')) {
+        if ($params->get('support_ticketreminder_group')) {
             $group = \Hubzero\User\Group::getInstance($params->get('support_ticketreminder_group'));
 
             $users = [];
@@ -451,7 +446,7 @@ class Support extends Plugin
             return true;
         }
 
-        if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all') {
+        if ($params->get('support_ticketreminder_severity', 'all') != 'all') {
             $severities = explode(',', $params->get('support_ticketreminder_severity', 'all'));
         } else {
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
@@ -583,246 +578,242 @@ class Support extends Plugin
 
         $where[] = "t.`type`=0";
 
-        if (is_object($params)) {
-            if ($val = $params->get('support_ticketlist_open', 1)) {
-                $where[] = "t.`open`=" . $val;
-            }
+        if ($val = $params->get('support_ticketlist_open', 1)) {
+            $where[] = "t.`open`=" . $val;
+        }
 
-            $statuses = [];
-            if (is_numeric($params->get('support_ticketlist_status1'))) {
-                $statuses[] = $params->get('support_ticketlist_status1');
-            }
-            if (is_numeric($params->get('support_ticketlist_status2'))) {
-                $statuses[] = $params->get('support_ticketlist_status2');
-            }
-            if (is_numeric($params->get('support_ticketlist_status3'))) {
-                $statuses[] = $params->get('support_ticketlist_status3');
-            }
+        $statuses = [];
+        if (is_numeric($params->get('support_ticketlist_status1'))) {
+            $statuses[] = $params->get('support_ticketlist_status1');
+        }
+        if (is_numeric($params->get('support_ticketlist_status2'))) {
+            $statuses[] = $params->get('support_ticketlist_status2');
+        }
+        if (is_numeric($params->get('support_ticketlist_status3'))) {
+            $statuses[] = $params->get('support_ticketlist_status3');
+        }
 
-            if (count($statuses)) {
-                $where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
-            }
+        if (count($statuses)) {
+            $where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+        }
 
-            if ($group = $params->get('support_ticketlist_group')) {
-                if (!is_numeric($group)) {
-                    $g = \Hubzero\User\Group::getInstance($group);
-                    if ($g) {
-                        $group = $g->get('gidNumber');
-                    }
-                }
-                $where[] = "t.`group_id`=" . $database->quote((int) $group);
-            }
-
-            if ($owners = $params->get('support_ticketlist_owners')) {
-                $usernames = explode(',', $owners);
-                $usernames = array_map('trim', $usernames);
-                foreach ($usernames as $k => $username) {
-                    $user = User::getInstance($username);
-                    $usernames[$k] = $database->quote($user->get('id'));
-                }
-
-                $where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
-            }
-
-            if ($severity = $params->get('support_ticketlist_severity')) {
-                if ($severity != 'all') {
-                    $severities = explode(',', $severity);
-                    $severities = array_map('trim', $severities);
-                    foreach ($severities as $k => $severity) {
-                        $severities[$k] = $database->quote($severity);
-                    }
-                    $where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+        if ($group = $params->get('support_ticketlist_group')) {
+            if (!is_numeric($group)) {
+                $g = \Hubzero\User\Group::getInstance($group);
+                if ($g) {
+                    $group = $g->get('gidNumber');
                 }
             }
+            $where[] = "t.`group_id`=" . $database->quote((int) $group);
+        }
 
-            if ($owned = intval($params->get('support_ticketlist_owned', 0))) {
-                if ($owned == 1) {
-                    $where[] = "(t.`owner` IS NULL OR t.`owner`='0')";
-                } elseif ($owned == 2) {
-                    $where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='0')";
-                }
+        if ($owners = $params->get('support_ticketlist_owners')) {
+            $usernames = explode(',', $owners);
+            $usernames = array_map('trim', $usernames);
+            foreach ($usernames as $k => $username) {
+                $user = User::getInstance($username);
+                $usernames[$k] = $database->quote($user->get('id'));
             }
 
-            if ($submitters = $params->get('support_ticketlist_submitters')) {
-                $usernames = explode(',', $submitters);
-                $usernames = array_map('trim', $usernames);
-                foreach ($usernames as $k => $username) {
-                    $usernames[$k] = $database->quote($username);
-                }
+            $where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
+        }
 
-                $where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+        if ($severity = $params->get('support_ticketlist_severity')) {
+            if ($severity != 'all') {
+                $severities = explode(',', $severity);
+                $severities = array_map('trim', $severities);
+                foreach ($severities as $k => $severity) {
+                    $severities[$k] = $database->quote($severity);
+                }
+                $where[] = "t.`severity` IN (" . implode(", ", $severities) . ")";
+            }
+        }
+
+        if ($owned = intval($params->get('support_ticketlist_owned', 0))) {
+            if ($owned == 1) {
+                $where[] = "(t.`owner` IS NULL OR t.`owner`='0')";
+            } elseif ($owned == 2) {
+                $where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='0')";
+            }
+        }
+
+        if ($submitters = $params->get('support_ticketlist_submitters')) {
+            $usernames = explode(',', $submitters);
+            $usernames = array_map('trim', $usernames);
+            foreach ($usernames as $k => $username) {
+                $usernames[$k] = $database->quote($username);
             }
 
-            if ($tags = $params->get('support_ticketlist_excludeTags')) {
-                $tags = explode(',', $tags);
-                $tags = array_map('trim', $tags);
-                foreach ($tags as $k => $tag) {
-                    $tags[$k] = $database->quote($tag);
-                }
+            $where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
+        }
 
-                $where[] = "t.`id` NOT IN (
+        if ($tags = $params->get('support_ticketlist_excludeTags')) {
+            $tags = explode(',', $tags);
+            $tags = array_map('trim', $tags);
+            foreach ($tags as $k => $tag) {
+                $tags[$k] = $database->quote($tag);
+            }
+
+            $where[] = "t.`id` NOT IN (
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
-                                . implode(", ", $tags) . ")
+                            . implode(", ", $tags) . ")
 							)
 						)";
+        }
+
+        if ($tags = $params->get('support_ticketlist_includeTags')) {
+            $tags = explode(',', $tags);
+            $tags = array_map('trim', $tags);
+            foreach ($tags as $k => $tag) {
+                $tags[$k] = $database->quote($tag);
             }
 
-            if ($tags = $params->get('support_ticketlist_includeTags')) {
-                $tags = explode(',', $tags);
-                $tags = array_map('trim', $tags);
-                foreach ($tags as $k => $tag) {
-                    $tags[$k] = $database->quote($tag);
-                }
-
-                $where[] = "t.`id` IN (
+            $where[] = "t.`id` IN (
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
-                                . implode(", ", $tags) . ")
+                            . implode(", ", $tags) . ")
 							)
 						)";
+        }
+
+        if ($created = $params->get('support_ticketlist_created', '+week')) {
+            $op = '';
+            switch ($created) {
+                // Created before (older than)
+                case '-day':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 day');
+                    break;
+
+                case '-week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 week');
+                    break;
+
+                case '-2week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-2 week');
+                    break;
+
+                case '-3week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-3 week');
+                    break;
+
+                case '-month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 month');
+                    break;
+
+                case '-6month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-6 month');
+                    break;
+
+                case '-year':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 year');
+                    break;
+
+                    // Created since (newer than)
+                case '+day':
+                    $op = '>=';
+                    $timestamp = Date::modify('-1 day');
+                    break;
+
+                case '+week':
+                    $op = '>=';
+                    $timestamp = Date::modify('-1 week');
+                    break;
+
+                case '+2week':
+                    $op = '>=';
+                    $timestamp = Date::modify('-2 week');
+                    break;
+
+                case '+3week':
+                    $op = '>=';
+                    $timestamp = Date::modify('-3 week');
+                    break;
+
+                case '+month':
+                    $op = '>=';
+                    $timestamp = Date::modify('-1 month');
+                    break;
+
+                case '+6month':
+                    $op = '>=';
+                    $timestamp = Date::modify('-6 month');
+                    break;
+
+                case '+year':
+                    $op = '>=';
+                    $timestamp = Date::modify('-1 year');
+                    break;
             }
 
-            if ($created = $params->get('support_ticketlist_created', '+week')) {
-                $op = '';
-                switch ($created) {
-                    // Created before (older than)
-                    case '-day':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 day');
-                        break;
+            if ($op) {
+                $where[] = "t.`created`" . $op . $database->quote($timestamp->toSql());
+            }
+        }
 
-                    case '-week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 week');
-                        break;
+        if ($created = $params->get('support_ticketlist_activity', '--')) {
+            $op = '';
+            $timestamp = null;
+            switch ($created) {
+                // Created before (older than)
+                case '-day':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 day');
+                    break;
 
-                    case '-2week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-2 week');
-                        break;
+                case '-week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 week');
+                    break;
 
-                    case '-3week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-3 week');
-                        break;
+                case '-2week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-2 week');
+                    break;
 
-                    case '-month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 month');
-                        break;
+                case '-3week':
+                    $op = '<=';
+                    $timestamp = Date::modify('-3 week');
+                    break;
 
-                    case '-6month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-6 month');
-                        break;
+                case '-month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 month');
+                    break;
 
-                    case '-year':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 year');
-                        break;
+                case '-6month':
+                    $op = '<=';
+                    $timestamp = Date::modify('-6 month');
+                    break;
 
-                        // Created since (newer than)
-                    case '+day':
-                        $op = '>=';
-                        $timestamp = Date::modify('-1 day');
-                        break;
+                case '-year':
+                    $op = '<=';
+                    $timestamp = Date::modify('-1 year');
+                    break;
 
-                    case '+week':
-                        $op = '>=';
-                        $timestamp = Date::modify('-1 week');
-                        break;
-
-                    case '+2week':
-                        $op = '>=';
-                        $timestamp = Date::modify('-2 week');
-                        break;
-
-                    case '+3week':
-                        $op = '>=';
-                        $timestamp = Date::modify('-3 week');
-                        break;
-
-                    case '+month':
-                        $op = '>=';
-                        $timestamp = Date::modify('-1 month');
-                        break;
-
-                    case '+6month':
-                        $op = '>=';
-                        $timestamp = Date::modify('-6 month');
-                        break;
-
-                    case '+year':
-                        $op = '>=';
-                        $timestamp = Date::modify('-1 year');
-                        break;
-                }
-
-                if ($op) {
-                    $where[] = "t.`created`" . $op . $database->quote($timestamp->toSql());
-                }
+                case 'all':
+                case '--':
+                    $op = '';
+                    break;
             }
 
-            if ($created = $params->get('support_ticketlist_activity', '--')) {
-                $op = '';
-                $timestamp = null;
-                switch ($created) {
-                    // Created before (older than)
-                    case '-day':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 day');
-                        break;
-
-                    case '-week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 week');
-                        break;
-
-                    case '-2week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-2 week');
-                        break;
-
-                    case '-3week':
-                        $op = '<=';
-                        $timestamp = Date::modify('-3 week');
-                        break;
-
-                    case '-month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 month');
-                        break;
-
-                    case '-6month':
-                        $op = '<=';
-                        $timestamp = Date::modify('-6 month');
-                        break;
-
-                    case '-year':
-                        $op = '<=';
-                        $timestamp = Date::modify('-1 year');
-                        break;
-
-                    case 'all':
-                    case '--':
-                        $op = '';
-                        break;
-                }
-
-                if ($op) {
-                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
-                        . $op . $database->quote($timestamp->toSql());
-                }
+            if ($op) {
+                $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
+                    . $op . $database->quote($timestamp->toSql());
             }
-        } else {
-            $where[] = "t.`open`=1";
         }
 
         $sql .= " WHERE " . implode(" AND ", $where);

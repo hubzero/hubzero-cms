@@ -1374,7 +1374,7 @@ class Items extends AdminController
         // Send email
         if ($sendmail && !$this->getError()) {
             // Get ids of publication authors with accounts
-            $notify   = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, 1, true);
+            $notify   = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, true, true);
             $notify[] = $this->model->version->created_by;
             $notify   = array_unique($notify);
 
@@ -1430,7 +1430,7 @@ class Items extends AdminController
 
         // Get pub authors' ids
         if (empty($authors)) {
-            $authors = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, 1);
+            $authors = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, true);
         }
 
         // No authors – send to publication creator
