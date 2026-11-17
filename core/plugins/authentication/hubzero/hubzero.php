@@ -191,7 +191,7 @@ class Hubzero extends Plugin
         $result    = true;
 
         // Get the user's tokens
-        $threshold = date("Y-m-d H:i:s", strtotime(Date::toSql() . " {$timeframe} hours ago"));
+        $threshold = date("Y-m-d H:i:s", (int) strtotime(Date::toSql() . " {$timeframe} hours ago"));
         $auths     = new \Hubzero\User\Log\Auth();
 
         $auths
@@ -232,7 +232,7 @@ class Hubzero extends Plugin
         // Fail2ban Enabled?
         if ($fail2ban == 1) {
             // Determine what the threshold is
-            $threshold = date("Y-m-d H:i:s", strtotime(Date::toSql() . " {$timeframe} hours ago"));
+            $threshold = date("Y-m-d H:i:s", (int) strtotime(Date::toSql() . " {$timeframe} hours ago"));
             $auths     = new \Hubzero\User\Log\Auth();
 
             // Select all usernames which are blocked

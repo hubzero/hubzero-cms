@@ -422,10 +422,10 @@ class Usage extends Plugin
 
         for ($i = 0; $i < $diff; $i++) {
             $count = 0;
-            $date = date("M d, Y", strtotime("-{$i} DAYS", strtotime($end)));
+            $date = date("M d, Y", (int) strtotime("-{$i} DAYS", (int) strtotime($end)));
 
-            $day_s = date("Y-m-d 00:00:00", strtotime("-{$i} DAYS", strtotime($end)));
-            $day_e = date("Y-m-d 23:59:59", strtotime("-{$i} DAYS", strtotime($end)));
+            $day_s = date("Y-m-d 00:00:00", (int) strtotime("-{$i} DAYS", (int) strtotime($end)));
+            $day_e = date("Y-m-d 23:59:59", (int) strtotime("-{$i} DAYS", (int) strtotime($end)));
 
             foreach ($views as $view) {
                 $t = $view['date'];

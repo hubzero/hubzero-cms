@@ -129,11 +129,11 @@ class Period
                     $tokens = preg_split('/_/', $this->period);
                     $this->period = $tokens[1];
 
-                    $end   = strtotime('12/31/' . $this->period);
-                    $start = strtotime('01/01/' . $this->period);
+                    $end   = (int) strtotime('12/31/' . $this->period);
+                    $start = (int) strtotime('01/01/' . $this->period);
                 } else {
-                    $end   = strtotime('08/31/' . $this->period);
-                    $start = strtotime('09/01/' . ((int) $this->period - 1));
+                    $end   = (int) strtotime('08/31/' . $this->period);
+                    $start = (int) strtotime('09/01/' . ((int) $this->period - 1));
                 }
                 $this->endTime   = gmdate("Y-m-d H:i:s", $end);
                 $this->startTime = gmdate("Y-m-d H:i:s", $start);

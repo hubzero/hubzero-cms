@@ -142,7 +142,7 @@ class Status extends AdminController
         $dailyVolume = [];
         for ($i = 29; $i >= 0; $i--) {
             $d = gmdate('Y-m-d', strtotime("-$i day"));
-            $dailyVolume[] = ['label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0];
+            $dailyVolume[] = ['label' => date('n/j', (int) strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0];
         }
 
         $db->setQuery(

@@ -589,7 +589,7 @@ class Git extends Obj
 
             case 'date':
                 $arr = explode("\t", $out[0]);
-                $timestamp = strtotime($arr[0]);
+                $timestamp = (int) strtotime($arr[0]);
                 $response = date('m/d/Y g:i A', $timestamp);
                 break;
 
@@ -837,7 +837,7 @@ class Git extends Obj
 
                 // We are only interested in last local change on the file
                 if (!isset($locals[$filename])) {
-                    $time = strtotime(date('c', time())); // Important! needs to be local time, NOT UTC
+                    $time = (int) strtotime(date('c', time())); // Important! needs to be local time, NOT UTC
 
                     $locals[$filename] = [
                         'status'     => 'A',

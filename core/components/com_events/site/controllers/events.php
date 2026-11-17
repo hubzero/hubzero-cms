@@ -521,7 +521,7 @@ class Events extends SiteController
         if ($numday == -1) {
             $numday = 6;
         }
-        $week_start = mktime(0, 0, 0, $month, ($day - $numday), $year);
+        $week_start = (int) mktime(0, 0, 0, $month, ($day - $numday), $year);
 
         $this_date = new EventsDate();
         $this_date->setDate(date("Y", $week_start), date("m", $week_start), date("d", $week_start));

@@ -692,7 +692,7 @@ class Credentials extends SiteController
         $result     = true;
 
         // Get the user's tokens
-        $threshold = date("Y-m-d H:i:s", strtotime(Date::toSql() . " {$resetHours} hours ago"));
+        $threshold = date("Y-m-d H:i:s", (int) strtotime(Date::toSql() . " {$resetHours} hours ago"));
         $tokens    = $user->tokens()->where('created', '>=', $threshold)->rows();
 
         if ($tokens->count() < $resetCount) {

@@ -173,8 +173,8 @@ class Log extends Model
                         $pubLog->logParsed(
                             $pid,
                             $version->id,
-                            date('y', strtotime($date)),
-                            date('m', strtotime($date)),
+                            date('y', (int) strtotime($date)),
+                            date('m', (int) strtotime($date)),
                             $count,
                             $type,
                             'unique',
@@ -188,8 +188,8 @@ class Log extends Model
                         $pubLog->logParsed(
                             $pid,
                             $version->id,
-                            date('y', strtotime($date)),
-                            date('m', strtotime($date)),
+                            date('y', (int) strtotime($date)),
+                            date('m', (int) strtotime($date)),
                             $count,
                             $type,
                             'filtered',

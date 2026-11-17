@@ -200,17 +200,17 @@ class Reviews extends Plugin
                     $dt = mktime(0, 0, 0, $month, ($day + 7), $year);
                     break;
                 case 'month':
-                    $dt = mktime(0, 0, 0, ($month + 1), $day, $year);
+                    $dt = (int) mktime(0, 0, 0, ($month + 1), $day, $year);
                     break;
                 case '6months':
-                    $dt = mktime(0, 0, 0, ($month + 6), $day, $year);
+                    $dt = (int) mktime(0, 0, 0, ($month + 6), $day, $year);
                     break;
                 case 'year':
-                    $dt = mktime(0, 0, 0, $month, $day, ($year + 1));
+                    $dt = (int) mktime(0, 0, 0, $month, $day, ($year + 1));
                     break;
                 case 'never':
                 default:
-                    $dt = mktime(0, 0, 0, $month, $day, $year);
+                    $dt = (int) mktime(0, 0, 0, $month, $day, $year);
                     break;
             }
 

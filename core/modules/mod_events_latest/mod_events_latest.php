@@ -114,7 +114,8 @@ class EventsLatest extends Module
 
         // Derive the event date range we want based on current date and form the db query.
         $todayBegin = date('Y-m-d') . ' 00:00:00';
-        $yesterdayEnd = date('Y-m-d', mktime(0, 0, 0, (int) date('m'), date('d') - 1, (int) date('Y'))) . ' 23:59:59';
+        $yesterdayEnd = date('Y-m-d', (int) mktime(0, 0, 0, (int) date('m'), date('d') - 1, (int) date('Y')))
+            . ' 23:59:59';
 
         // Get the start day
         $startday = $this->params->get('start_day');
@@ -131,10 +132,10 @@ class EventsLatest extends Module
                 //if (!defined(_CAL_CONF_STARDAY)) define(_CAL_CONF_STARDAY, 0);
                 $numDay = (date("w") - _CAL_CONF_STARDAY + 7) % 7;
                 // begin of this week
-                $weekStartTs = mktime(0, 0, 0, (int) date('m'), date('d') - $numDay, (int) date('Y'));
+                $weekStartTs = (int) mktime(0, 0, 0, (int) date('m'), date('d') - $numDay, (int) date('Y'));
                 $beginDate = date('Y-m-d', $weekStartTs) . ' 00:00:00';
                 // end of next week
-                $weekEndTs = mktime(0, 0, 0, (int) date('m'), date('d') - $numDay + 13, (int) date('Y'));
+                $weekEndTs = (int) mktime(0, 0, 0, (int) date('m'), date('d') - $numDay + 13, (int) date('Y'));
                 $endDate = date('Y-m-d', $weekEndTs) . ' 23:59:59';
                 break;
             case 2:
@@ -163,7 +164,8 @@ class EventsLatest extends Module
                 //$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y'))) . ' 23:59:59';
                 // end of this year
                 //$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 0, date('Y') + 1)) . ' 23:59:59';
-                $endDate = gmdate('Y-m-d', mktime(0, 0, 0, (int) gmdate('m') + 1, 0, (int) gmdate('Y'))) . ' 23:59:59';
+                $endDate = gmdate('Y-m-d', (int) mktime(0, 0, 0, (int) gmdate('m') + 1, 0, (int) gmdate('Y')))
+                    . ' 23:59:59';
                 break;
         }
 

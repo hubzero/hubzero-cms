@@ -92,8 +92,8 @@ $runsScaled = [];
 $min = (date("Y") - 1) . '/' . date("m") . '/01';
 $to = $max = date("Y") . '/' . date("m") . '/01';
 $from = (date("Y") - 1) . '/' . date("m") . '/01';
-$half = date('Y/m/d', mktime(0, 0, 0, (date("m") - 6), 1, (int) date("Y")));
-$qrtr = date('Y/m/d', mktime(0, 0, 0, (date("m") - 3), 1, (int) date("Y")));
+$half = date('Y/m/d', (int) mktime(0, 0, 0, (date("m") - 6), 1, (int) date("Y")));
+$qrtr = date('Y/m/d', (int) mktime(0, 0, 0, (date("m") - 3), 1, (int) date("Y")));
 
 if ($results) {
     $usersTop = 0;

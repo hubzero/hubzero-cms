@@ -44,7 +44,7 @@ $day_name = [
     Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
 ];
 
-$time  = mktime(0, 0, 0, intval($this->month), 1, intval($this->year));
+$time  = (int) mktime(0, 0, 0, intval($this->month), 1, intval($this->year));
 $ptime = mktime(0, 0, 0, ($this->month - 1), 1, intval($this->year));
 $ntime = mktime(0, 0, 0, ($this->month + 1), 1, intval($this->year));
 
@@ -146,7 +146,7 @@ foreach ((array) $database->loadObjectList() as $ev) {
               : $dayStart;
     for ($cur = $dayStart, $guard = 0; $cur <= $dayEnd && $guard < 400; $guard++) {
         $eventDays[$cur] = true;
-        $cur = date('Y-m-d', strtotime($cur . ' +1 day'));
+        $cur = date('Y-m-d', (int) strtotime($cur . ' +1 day'));
     }
 }
 

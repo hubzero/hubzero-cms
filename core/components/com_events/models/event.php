@@ -235,13 +235,13 @@ class Event extends Model
         $url      = $this->get('extra_info');
         $location = $this->get('adresse_info');
         $now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-        $created  = gmdate('Ymd', strtotime((string) $this->get('created')))
+        $created  = gmdate('Ymd', (int) strtotime((string) $this->get('created')))
             . 'T'
-            . gmdate('His', strtotime((string) $this->get('created')))
+            . gmdate('His', (int) strtotime((string) $this->get('created')))
             . 'Z';
-        $modified = gmdate('Ymd', strtotime((string) $this->get('modified')))
+        $modified = gmdate('Ymd', (int) strtotime((string) $this->get('modified')))
             . 'T'
-            . gmdate('His', strtotime((string) $this->get('modified')))
+            . gmdate('His', (int) strtotime((string) $this->get('modified')))
             . 'Z';
 
         //create ouput

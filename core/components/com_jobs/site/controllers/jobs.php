@@ -1546,7 +1546,7 @@ class Jobs extends SiteController
         }
 
         // expiration date is more than a year away
-        if ($job->expiredate > date('Y-m-d 00:00:00', strtotime($job->edited . '+ 1 years'))) {
+        if ($job->expiredate > date('Y-m-d 00:00:00', (int) strtotime($job->edited . '+ 1 years'))) {
             $this->_job     = $job;
             $this->_jobCode = $code;
             $this->setError(Lang::txt('COM_JOBS_ERROR_WRONG_EXPIRATION_DATE'));

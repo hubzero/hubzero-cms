@@ -185,10 +185,10 @@ class Archive extends Model
             */
             // create now, created, and modified vars
             $now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-            $created  = gmdate('Ymd', strtotime((string) $event->get('created'))) . 'T'
-                . gmdate('His', strtotime((string) $event->get('created'))) . 'Z';
-            $modified = gmdate('Ymd', strtotime((string) $event->get('modified'))) . 'T'
-                . gmdate('His', strtotime((string) $event->get('modified'))) . 'Z';
+            $created  = gmdate('Ymd', (int) strtotime((string) $event->get('created'))) . 'T'
+                . gmdate('His', (int) strtotime((string) $event->get('created'))) . 'Z';
+            $modified = gmdate('Ymd', (int) strtotime((string) $event->get('modified'))) . 'T'
+                . gmdate('His', (int) strtotime((string) $event->get('modified'))) . 'Z';
 
             // start output
             $output .= "BEGIN:VEVENT\r\n";
