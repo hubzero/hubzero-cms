@@ -113,7 +113,7 @@ class Permissions extends Obj
     ) {
         static $instance;
 
-        if (!is_object($instance)) {
+        if (!$instance instanceof Permissions) {
             $instance = new Permissions($course_id, $offering_id, $section_id);
         }
 

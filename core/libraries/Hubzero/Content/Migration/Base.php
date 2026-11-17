@@ -202,7 +202,7 @@ class Base
     {
         static $instance;
 
-        if (!is_object($instance)) {
+        if (!$instance instanceof Driver) {
             $config = $this->getParams('com_tools');
 
             $options['driver']   = 'pdo';

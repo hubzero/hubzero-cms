@@ -21,7 +21,7 @@ class Categories
     /**
      * Array to hold the object instances
      *
-     * @var  array<mixed>
+     * @var  array<string, self>
      */
     public static $instances = [];
 
@@ -130,6 +130,10 @@ class Categories
             } else {
                 return false;
             }
+        }
+
+        if (!is_a($classname, self::class, true)) {
+            return false;
         }
 
         self::$instances[$hash] = new $classname($options);

@@ -84,7 +84,7 @@ class ACL extends Obj
     {
         static $instance;
 
-        if (!is_object($instance)) {
+        if (!$instance instanceof self) {
             $instance = new self();
         }
 
