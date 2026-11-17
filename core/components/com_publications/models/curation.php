@@ -288,7 +288,7 @@ class Curation extends Obj
     /**
      * Get schema for metadata elements
      *
-     * @return  bool|string
+     * @return  string|false
      */
     public function getMetaSchema()
     {

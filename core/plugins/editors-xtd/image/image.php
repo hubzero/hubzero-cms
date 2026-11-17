@@ -42,7 +42,7 @@ class Image extends Plugin
      * @param   string   $name
      * @param   string   $asset
      * @param   integer  $author
-     * @return  \Hubzero\Base\Obj|bool    A two element array of (imageName, textToInsert)
+     * @return  \Hubzero\Base\Obj|false    A two element array of (imageName, textToInsert)
      */
     public function onDisplay($name, $asset, $author)
     {

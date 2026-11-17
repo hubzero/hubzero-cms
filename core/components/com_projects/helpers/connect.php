@@ -737,7 +737,7 @@ class Connect extends Obj
      * @param   object|null   $file       Models\File
      * @param   int|false  $parentId
      * @param   boolean  $convert    Convert for remote editing? (Google only)
-     * @return  bool|string|null
+     * @return  false|string|null
      */
     public function addRemoteFile(
         $projectid = null,

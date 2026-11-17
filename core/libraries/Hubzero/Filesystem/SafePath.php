@@ -65,7 +65,7 @@ class SafePath
      * @param   boolean  $create    Create missing directories?
      * @param   integer  $mode      Mode for directories that get created
      * @param   string|null   &$reason   One of the REASON_* constants on failure
-     * @return  string|boolean      Canonical path, or false
+     * @return  string|false      Canonical path, or false
      */
     public static function directory($base, $relative = '', $create = false, $mode = 0700, &$reason = null)
     {
@@ -132,7 +132,7 @@ class SafePath
      * @param   string|mixed  $directory  Directory returned by directory()
      * @param   string  $name       File name, a single path component
      * @param   string|null  &$reason    One of the REASON_* constants on failure
-     * @return  string|boolean      Path of the file, or false
+     * @return  string|false      Path of the file, or false
      */
     public static function file($directory, $name, &$reason = null)
     {
@@ -221,7 +221,7 @@ class SafePath
      * is resolved on disk.
      *
      * @param   string  $relative
-     * @return  string|boolean  Normalized relative path, or false if it isn't safe
+     * @return  string|false  Normalized relative path, or false if it isn't safe
      */
     public static function relative($relative)
     {
@@ -254,7 +254,7 @@ class SafePath
      * Split a relative path into components, refusing traversal
      *
      * @param   string|mixed  $relative
-     * @return  array<mixed>|boolean  Components, or false if the path isn't safe
+     * @return  array<mixed>|false  Components, or false if the path isn't safe
      */
     protected static function components($relative)
     {

@@ -307,7 +307,7 @@ class CurrentCart extends Cart
     /**
      * Get all cart messages, both changes and set messages
      * Works like a flash variable -- gets messages once and then resets the state/messages
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function getMessages()
     {
@@ -422,7 +422,7 @@ class CurrentCart extends Cart
      * Check if transaction is still valid and get transaction details and items
      *
      * @param   bool|string  $resetStatus
-     * @return bool|\stdClass of items in the transaction or false on failed attempt
+     * @return \stdClass|false of items in the transaction or false on failed attempt
      */
     public function liftTransaction($resetStatus = false)
     {

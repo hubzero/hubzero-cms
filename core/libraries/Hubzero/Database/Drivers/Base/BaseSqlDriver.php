@@ -674,7 +674,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * @param   array<mixed>        $create
      * @param   string       $table
      * @param   string|null  $field
-     * @return  string|bool
+     * @return  string|false
      */
     protected function parseCharacterSetFromCreate(array $create, string $table, ?string $field = null)
     {

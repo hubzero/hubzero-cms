@@ -100,7 +100,7 @@ class Base
      *
      * @param   mixed  $field
      * @param   mixed  $status
-     * @return  string|bool
+     * @return  string|false
      **/
     public static function toggle($field, $status = null)
     {

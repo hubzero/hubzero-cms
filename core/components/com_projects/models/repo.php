@@ -830,7 +830,7 @@ class Repo extends Obj
      * Insert file into the repo
      *
      * @param   array<mixed>    $params
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function insert($params = [])
     {
@@ -1201,7 +1201,7 @@ class Repo extends Obj
      * @param   mixed  $target
      * @param   mixed  $params
      * @param   mixed  $available
-     * @return  bool|int
+     * @return  int|false
      */
     protected function addFromExtracted($extractPath, $zipName, $target, $params, &$available)
     {

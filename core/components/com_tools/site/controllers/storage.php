@@ -402,7 +402,7 @@ class Storage extends SiteController
      *
      * @param   string  $path   Directory returned by _buildUploadPath()
      * @param   string  $name   Incoming file or folder name
-     * @return  string|boolean  Path to act on, or false
+     * @return  string|false  Path to act on, or false
      */
     private function resolveTarget($path, $name)
     {

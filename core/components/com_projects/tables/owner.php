@@ -383,7 +383,7 @@ class Owner extends Table
      * @param   integer|null  $projectid
      * @param   string   $service
      * @param   array<mixed>    $exclude
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function getConnected($projectid = null, $service = 'google', $exclude = [])
     {

@@ -162,7 +162,7 @@ class Asset extends Base
     /**
      * Get the file size
      *
-     * @return  int|bool
+     * @return  int|false
      */
     public function size()
     {

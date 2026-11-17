@@ -1598,7 +1598,7 @@ abstract class Driver implements LoggerAwareInterface
      * you'll have nothing to load.
      *
      * @param   string  $class  The class name to use for the returned row object
-     * @return  object|bool
+     * @return  object|false
      */
     public function loadNextObject($class = 'stdClass')
     {
@@ -1619,7 +1619,7 @@ abstract class Driver implements LoggerAwareInterface
      * You must call query() or execute() before calling this method, otherwise
      * you'll have nothing to load.
      *
-     * @return  array<mixed>|bool
+     * @return  array<mixed>|false
      */
     public function loadNextRow()
     {

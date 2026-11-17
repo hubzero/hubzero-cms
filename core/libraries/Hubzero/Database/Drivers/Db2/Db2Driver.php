@@ -780,7 +780,7 @@ class Db2Driver extends BaseSqlDriver
      * DB2 doesn't have storage engines like MySQL
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine($table)
     {
@@ -831,7 +831,7 @@ class Db2Driver extends BaseSqlDriver
      * This attempts to find a sequence named {table}_SEQ or identity column.
      *
      * @param   string    $table  The table for which to retrieve the value
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {
@@ -2269,7 +2269,7 @@ class Db2Driver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {

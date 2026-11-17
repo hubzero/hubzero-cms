@@ -430,7 +430,7 @@ class Processor extends Obj
     /**
      * Image Geo Location Data
      *
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function getGeoLocation()
     {

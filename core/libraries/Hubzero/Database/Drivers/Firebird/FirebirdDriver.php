@@ -1255,7 +1255,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Gets the database collation in use
      *
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCollation()
     {
@@ -1352,7 +1352,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {
@@ -1381,7 +1381,7 @@ class FirebirdDriver extends BaseSqlDriver
      * This attempts to find a generator associated with the table.
      *
      * @param   string    $table  The table
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {

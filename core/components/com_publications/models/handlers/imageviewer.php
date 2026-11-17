@@ -199,7 +199,7 @@ class ImageViewer extends Base
      * Show attachments in an image band (gallery)
      *
      * @param   \Components\Publications\Models\Publication  $pub
-     * @return  bool|string|null
+     * @return  false|string|null
      */
     public function showImageBand($pub)
     {
@@ -299,7 +299,7 @@ class ImageViewer extends Base
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   boolean|mixed  $authorized
      * @param   integer  $elementId
-     * @return  bool|string
+     * @return  string|false
      */
     public function drawList($attachments, $attConfigs, $pub, $authorized, $elementId)
     {

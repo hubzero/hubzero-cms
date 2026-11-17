@@ -391,7 +391,7 @@ class IcalParser
     /**
      * Return sorted eventlist as array or false if calenar is empty
      *
-     * @return array<mixed>|boolean
+     * @return array<mixed>|false
      */
     public function getSortedEvents()
     {
@@ -407,7 +407,7 @@ class IcalParser
     /**
      * Return reverse sorted eventlist as array or false if calenar is empty
      *
-     * @return array<mixed>|boolean
+     * @return array<mixed>|false
      */
     public function getReverseSortedEvents()
     {

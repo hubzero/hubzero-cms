@@ -317,7 +317,7 @@ class DoiService extends Obj
      * Build XML - DOI is not required when register metadata using DataCite MDS API
      *
      * @param  string|null $doi
-     * @return bool|string string
+     * @return string|false string
      */
     public function buildXml($doi = null)
     {
@@ -663,7 +663,7 @@ class DoiService extends Obj
      *
      * @param   string   $url
      * @param   string    $postvals
-     * @return  bool|string
+     * @return  string|false
      */
     public function runCurl($url, $postvals = null)
     {

@@ -993,7 +993,7 @@ class AseDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {
@@ -1075,7 +1075,7 @@ class AseDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string  $table  The table name
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {

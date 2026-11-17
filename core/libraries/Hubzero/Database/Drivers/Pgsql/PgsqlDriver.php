@@ -345,7 +345,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Gets the database collation in use
      *
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCollation()
     {
@@ -366,7 +366,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {
@@ -389,7 +389,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string    $table  The table for which to retrieve the auto-increment value
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {
@@ -608,7 +608,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Returns 'PostgreSQL' for compatibility.
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine($table)
     {
@@ -621,7 +621,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set
      * @param   string|null       $field  The field to check (optional)
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {

@@ -268,7 +268,7 @@ class Collection
      * Update collection info
      * TODO: remove it and use save()
      *
-     * @return int|bool   info
+     * @return int|false   info
      */
     public function update()
     {

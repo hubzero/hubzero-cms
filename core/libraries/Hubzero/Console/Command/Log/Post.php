@@ -39,7 +39,7 @@ class Post extends Base
      * Parses
      *
      * @param   mixed  $value
-     * @return  string|bool
+     * @return  string|false
      **/
     public static function parseData($value)
     {

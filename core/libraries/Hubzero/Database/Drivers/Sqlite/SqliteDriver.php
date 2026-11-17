@@ -262,7 +262,7 @@ class SqliteDriver extends BaseSqlDriver
      * SQLite doesn't have database-level collation like MySQL.
      * Collation in SQLite is defined per-column or per-expression.
      *
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCollation()
     {
@@ -334,7 +334,7 @@ class SqliteDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string    $table  The table for which to retrieve the auto-increment value
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {
@@ -511,7 +511,7 @@ class SqliteDriver extends BaseSqlDriver
      * SQLite has only one storage engine.
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine($table)
     {
@@ -527,7 +527,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set
      * @param   string|null       $field  The field to check (optional)
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {

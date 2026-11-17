@@ -458,7 +458,7 @@ class Git
     /**
      * Get the latest rollback point
      *
-     * @return  string|bool
+     * @return  string|false
      **/
     public function getRollbackPoint()
     {

@@ -1624,7 +1624,7 @@ class Publication extends Obj
     /**
      * Get version count
      *
-     * @return  string|bool|null
+     * @return  string|false|null
      */
     public function versionCount()
     {
@@ -1741,7 +1741,7 @@ class Publication extends Obj
      * @param   int     $tagger_id
      * @param   int     $strength
      * @param   int     $admin
-     * @return  bool|array<mixed>  HTML
+     * @return  array<mixed>|false  HTML
      */
     public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
     {
@@ -2540,7 +2540,7 @@ class Publication extends Obj
      * @param   string  $orcidID
      * @param   string  $accessToken
      *
-     * @return  bool|string or string
+     * @return  string|false or string
      */
     public function addPubToORCID($orcidID, $accessToken)
     {

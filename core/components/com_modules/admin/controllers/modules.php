@@ -1209,7 +1209,7 @@ class Modules extends AdminController
      * @param   integer|mixed  $value      The new value matching a module position.
      * @param   array<mixed>    $pks        An array of row IDs.
      * @param   array<mixed>    $contexts   An array of item contexts.
-     * @return  bool|array<mixed>  True if successful, false otherwise and internal error is set.
+     * @return  array<mixed>|false  True if successful, false otherwise and internal error is set.
      */
     protected function batchCopy($value, $pks, $contexts)
     {

@@ -516,7 +516,7 @@ class OciDriver extends BaseSqlDriver
      *
      * Oracle uses NLS_SORT and NLS_COMP parameters for collation
      *
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCollation()
     {
@@ -872,7 +872,7 @@ class OciDriver extends BaseSqlDriver
      * Oracle doesn't have storage engines like MySQL
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine($table)
     {
@@ -887,7 +887,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set (ignored)
      * @param   string|null       $field  The field to check (ignored)
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {
@@ -920,7 +920,7 @@ class OciDriver extends BaseSqlDriver
      * This attempts to find a sequence named {table}_SEQ or {table}_{pk}_SEQ
      *
      * @param   string    $table  The table for which to retrieve the value
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {
@@ -2366,7 +2366,7 @@ class OciDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {

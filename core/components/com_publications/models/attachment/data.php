@@ -842,7 +842,7 @@ class Data extends Base
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass    $blockParams
      * @param   boolean  $authorized
-     * @return  bool|string
+     * @return  string|false
      */
     public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
     {

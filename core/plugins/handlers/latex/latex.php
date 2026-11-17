@@ -49,7 +49,7 @@ class Latex extends Plugin
      * Handles view events for latex files
      *
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
-     * @return  bool|\Hubzero\Plugin\View
+     * @return  \Hubzero\Plugin\View|false
      **/
     public function onHandleView(\Hubzero\Filesystem\Collection $collection)
     {

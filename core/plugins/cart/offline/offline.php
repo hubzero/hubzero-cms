@@ -50,7 +50,7 @@ class Offline extends Plugin
      *
      * @param   object  $transaction
      * @param   \Hubzero\User\User  $user
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function onSelectedPayment($transaction, $user)
     {
@@ -81,7 +81,7 @@ class Offline extends Plugin
      * Return a list of filters that can be applied
      *
      * @param   mixed  $postData
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public function onPostback($postData)
     {

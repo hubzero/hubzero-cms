@@ -984,7 +984,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getPrimaryKey($table)
     {
@@ -1024,7 +1024,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * SQL Server doesn't have storage engines like MySQL.
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      * @note    NO-OP: SQL Server doesn't have storage engines
      */
     public function getEngine($table)
@@ -1050,7 +1050,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string  $table  The table name
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {

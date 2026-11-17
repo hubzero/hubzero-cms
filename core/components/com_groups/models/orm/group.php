@@ -934,7 +934,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for search
      *
-     * @return  bool|\stdClass
+     * @return  \stdClass|false
      */
     public function searchResult()
     {

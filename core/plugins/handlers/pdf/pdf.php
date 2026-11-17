@@ -47,7 +47,7 @@ class Pdf extends Plugin
      * Handles view events for pdf files
      *
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
-     * @return  bool|\Hubzero\Plugin\View
+     * @return  \Hubzero\Plugin\View|false
      **/
     public function onHandleView(\Hubzero\Filesystem\Collection $collection)
     {

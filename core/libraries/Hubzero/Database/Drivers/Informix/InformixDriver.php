@@ -1530,7 +1530,7 @@ class InformixDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string    $table  The table for which to retrieve the auto-increment value
-     * @return  int|bool
+     * @return  int|false
      */
     public function getAutoIncrement($table)
     {
@@ -2026,7 +2026,7 @@ class InformixDriver extends BaseSqlDriver
      * Gets the database engine of the given table (not applicable for Informix)
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine($table)
     {

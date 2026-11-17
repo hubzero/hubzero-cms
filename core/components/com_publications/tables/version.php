@@ -431,7 +431,7 @@ class Version extends Table
      *
      * @param   integer|mixed  $projectid  Project ID
      * @param   string   $title
-     * @return  bool|string
+     * @return  string|false
      */
     public function getDefaultTitle($projectid = 0, $title = '')
     {

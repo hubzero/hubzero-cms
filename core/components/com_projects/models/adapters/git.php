@@ -74,7 +74,7 @@ class Git extends Models\Adapter
      * Get file count
      *
      * @param   array<mixed>  $params
-     * @return  string|bool|null
+     * @return  string|false|null
      */
     public function count($params = [])
     {

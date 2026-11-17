@@ -418,7 +418,7 @@ class Storagev1r0 extends ApiController
      * no traversal, no null bytes.
      *
      * @param   string          $name  Incoming name
-     * @return  string|boolean
+     * @return  string|false
      */
     protected function safeName($name)
     {
@@ -490,7 +490,7 @@ class Storagev1r0 extends ApiController
      *
      * @param   string  $path  Directory from resolveDir()
      * @param   string  $name  Incoming file or folder name
-     * @return  string|boolean
+     * @return  string|false
      */
     protected function resolveTarget($path, $name)
     {

@@ -652,7 +652,7 @@ abstract class Cart
      * Get main transaction facts (total, other verification info)
      *
      * @param   int|mixed    $tId
-     * @return  bool|\stdClass  List of items in the transaction or false on failed attempt
+     * @return  \stdClass|false  List of items in the transaction or false on failed attempt
      */
     public static function getTransactionFacts($tId)
     {

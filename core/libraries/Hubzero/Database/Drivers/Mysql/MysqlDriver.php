@@ -1522,7 +1522,7 @@ class MysqlDriver extends BaseSqlDriver
      * Gets the auto-increment value for the given table
      *
      * @param   string    $table  The table for which to retrieve the character set
-     * @return  int|bool
+     * @return  int|false
      **/
     public function getAutoIncrement($table)
     {

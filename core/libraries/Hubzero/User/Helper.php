@@ -359,7 +359,7 @@ class Helper
      * @param   string  $uid
      * @param   string  $type
      * @param   string|null  $cat
-     * @return  bool|array<mixed>
+     * @return  array<mixed>|false
      */
     public static function getCourses($uid, $type = 'all', $cat = null)
     {
