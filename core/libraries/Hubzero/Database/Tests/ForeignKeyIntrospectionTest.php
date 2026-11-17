@@ -84,7 +84,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * This method lowercases names and uppercases actions for cross-database comparison.
      *
      * @param object $fk Foreign key object from getForeignKeys()
-     * @return object Normalized FK object
+     * @return \stdClass Normalized FK object
      */
     private function normalizeFk(object $fk): object
     {

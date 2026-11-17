@@ -96,6 +96,8 @@ class UpsertTest extends AbstractDriverTestCase
 
     /**
      * Helper to read a row by code
+     *
+     * @return  \stdClass|null
      */
     private function getRowByCode(
         BaseSqlDriver $driver,
