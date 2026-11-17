@@ -36,7 +36,7 @@ class DefaultHandler extends Plugin
     /**
      * Import data from a file
      *
-     * @param   object   $file     the uploaded file
+     * @param   \Symfony\Component\HttpFoundation\File\UploadedFile  $file  the uploaded file
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
      * @return  array<mixed>|null
@@ -53,22 +53,30 @@ class DefaultHandler extends Plugin
             return null;
         }
 
-        // Get the file contents, uses temporary file
-        $raw_contents = file_get_contents($file->getFilename());
+        // Get the file contents, uses temporary file (getFilename() is only its base name)
+        $raw_contents = (string) file_get_contents($file->getPathname());
 
         // Check to see if this is endnote content
         if (preg_match('/%A|%0|%T/', $raw_contents)) {
-            // Make new file to pass to dispatcher
-            $new_file = [
-                'name'     => $file->getClientOriginalName() . '.enw',
-                'type'     => $file->getType(),
-                'tmp_name' => $file->getName(),
-                'error'    => $file->getError(),
-                'size'     => $file->getClientSize(),
-            ];
+            // Hand the same upload on as an EndNote file. This built an array,
+            // with getName() and getClientSize() that UploadedFile does not
+            // have, which no importer could take.
+            $new_file = new \Symfony\Component\HttpFoundation\File\UploadedFile(
+                $file->getPathname(),
+                $file->getClientOriginalName() . '.enw',
+                $file->getClientMimeType(),
+                $file->getError(),
+                true,
+            );
 
-            $return = Event::trigger('citation.onImport', [$new_file, $scope, $scope_id]);
-            return $return[0];
+            // The first importer that takes it answers; the rest say null
+            foreach (Event::trigger('citation.onImport', [$new_file, $scope, $scope_id]) as $result) {
+                if ($result) {
+                    return $result;
+                }
+            }
+
+            return null;
         }
 
         return null;

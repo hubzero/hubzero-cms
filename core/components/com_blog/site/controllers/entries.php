@@ -839,8 +839,8 @@ class Entries extends SiteController
     /**
      * Recursive method to add comments to a flat RSS feed
      *
-     * @param   object  $doc  Document
-     * @param   object  $row  Comment
+     * @param   \Hubzero\Document\Type\Feed  $doc  Document
+     * @param   \Components\Blog\Models\Comment  $row  Comment
      * @return  void
      */
     private function comment(&$doc, $row)

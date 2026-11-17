@@ -38,7 +38,7 @@ class Notification implements RendererInterface
     /**
      * Render the error page based on an exception.
      *
-     * @param   object  $error  The exception for which to render the error page.
+     * @param   \Throwable  $error  The exception for which to render the error page.
      * @return  void
      */
     public function render($error)

@@ -903,7 +903,7 @@ class Html extends Obj
     /**
      * Get suggestions for new project members
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  array<int, mixed>
      */
     public static function getSuggestions($model)

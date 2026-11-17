@@ -22,6 +22,9 @@ use Hubzero\Facades\Request;
  * Not columns, read and set through __get() and __set():
  *
  * @property  string  $_contentParsed  The parsed content, cached by transformContent()
+ * @property  \Hubzero\User\User  $creator  The author, through creator()
+ *
+ * @method string content()  The parsed content, through __call() from transformContent()
  */
 class Comment extends Relational
 {

@@ -37,7 +37,7 @@ class Endnote extends Plugin
     /**
      * Import data from a file
      *
-     * @param   object   $file     the uploaded file
+     * @param   \Symfony\Component\HttpFoundation\File\UploadedFile  $file  the uploaded file
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
      * @return  array<mixed>|null

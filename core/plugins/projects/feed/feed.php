@@ -242,7 +242,7 @@ class Feed extends Plugin
     /**
      * Event call to get plugin notification
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @param   string  $area
      * @return  mixed
      */
@@ -262,7 +262,7 @@ class Feed extends Plugin
         }
 
         // Show welcome screen?
-        $showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0 ? 1 : 0;
+        $showWelcome = $member && $member->params->get('hide_welcome') == 0 ? 1 : 0;
 
         // Show welcome banner with suggestions
         if ($showWelcome) {
