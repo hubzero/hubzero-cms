@@ -329,7 +329,7 @@ class Database extends Base implements CommandInterface
                         // Calculate column widths
                         $widths = [];
                         foreach ($headers as $header) {
-                            $widths[$header] = strlen($header);
+                            $widths[$header] = strlen((string) $header);
                         }
                         foreach ($results as $row) {
                             foreach ($row as $key => $value) {
@@ -344,7 +344,7 @@ class Database extends Base implements CommandInterface
                         $headerLine = '| ';
                         $separator = '+-';
                         foreach ($headers as $header) {
-                            $headerLine .= str_pad($header, $widths[$header]) . ' | ';
+                            $headerLine .= str_pad((string) $header, $widths[$header]) . ' | ';
                             $separator .= str_repeat('-', $widths[$header]) . '-+-';
                         }
                         $separator = rtrim($separator, '-+') . '+';

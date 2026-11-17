@@ -434,7 +434,7 @@ class Html extends Base
         $words = preg_split('# ' . $operators . ' #', $condition, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
         for ($i = 0, $n = count($words); $i < $n; $i += 2) {
             // odd parts (modules)
-            $name = strtolower($words[$i]);
+            $name = strtolower((string) $words[$i]);
             $words[$i] = ((isset(parent::$buffer['modules'][$name])) && (parent::$buffer['modules'][$name] === false))
                 ? 0
                 : count(Module::byPosition($name));

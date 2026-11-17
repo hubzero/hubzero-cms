@@ -231,7 +231,7 @@ class Module extends Model
         $dir = '';
         if ($move < 0) {
             $dir = '-';
-            $move = substr($move, 1);
+            $move = substr((string) $move, 1);
         }
 
         // move the number of times different

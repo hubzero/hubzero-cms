@@ -155,7 +155,7 @@ class Url extends Rule
         // Now, decode each value of the resulting array
         if ($encodedParts) {
             foreach ($encodedParts as $key => $value) {
-                $result[$key] = urldecode($value);
+                $result[$key] = urldecode((string) $value);
             }
         }
 

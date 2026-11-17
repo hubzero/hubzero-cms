@@ -73,7 +73,7 @@ class ClientManager
             }
         } else {
             foreach (self::$clients as $client) {
-                if ($client->name == strtolower($id)) {
+                if ($client->name == strtolower((string) $id)) {
                     return $client;
                 }
             }

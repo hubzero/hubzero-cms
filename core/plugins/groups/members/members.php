@@ -503,7 +503,7 @@ class Members extends Plugin
      */
     public function niceidformat($someid)
     {
-        while (strlen($someid) < 5) {
+        while (strlen((string) $someid) < 5) {
             $someid = 0 . "$someid";
         }
         return (int) $someid;

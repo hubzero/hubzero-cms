@@ -195,7 +195,7 @@ class Usage extends Plugin
                     $month -= 1;
                 }
 
-                $previousDate = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT);
+                $previousDate = "$year-" . str_pad((string) $month, 2, '0', STR_PAD_LEFT);
 
                 if ($model->isTool()) {
                     $query = \Components\Resources\Models\Stat\Tool::all();

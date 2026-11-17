@@ -69,7 +69,7 @@ class Main extends WikiMacro
                 $scope = $this->scope;
             }
             // No, get resource by alias
-            if (strstr($page, ' ')) {
+            if (strstr((string) $page, ' ')) {
                 $g = \Components\Wiki\Models\Page::oneByTitle($page, $this->domain, $this->domain_id);
             } else {
                 $g = \Components\Wiki\Models\Page::oneByPath(

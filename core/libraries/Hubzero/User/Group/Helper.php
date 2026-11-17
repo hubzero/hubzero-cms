@@ -27,7 +27,7 @@ class Helper
      */
     public static function niceidformat($group_id)
     {
-        while (strlen($group_id) < 5) {
+        while (strlen((string) $group_id) < 5) {
             $group_id = 0 . $group_id;
         }
         return (int) $group_id;

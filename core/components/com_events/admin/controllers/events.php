@@ -330,14 +330,14 @@ class Events extends AdminController
         if (strlen($start_mins) == 1) {
             $start_mins = '0' . $start_mins;
         }
-        if (strlen($start_hrs) == 1) {
+        if (strlen((string) $start_hrs) == 1) {
             $start_hrs = '0' . $start_hrs;
         }
         $start_time = $start_hrs . ':' . $start_mins;
         if (strlen($end_mins) == 1) {
             $end_mins = '0' . $end_mins;
         }
-        if (strlen($end_hrs) == 1) {
+        if (strlen((string) $end_hrs) == 1) {
             $end_hrs = '0' . $end_hrs;
         }
         $end_time = $end_hrs . ':' . $end_mins;

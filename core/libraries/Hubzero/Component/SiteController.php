@@ -188,7 +188,7 @@ class SiteController extends Obj implements ControllerInterface
         } else {
             // Set base path relative to the controller file rather than
             // an absolute path. This gives us a little more flexibility.
-            $this->basePath = dirname((string) dirname($r->getFileName()));
+            $this->basePath = dirname((string) dirname((string) $r->getFileName()));
         }
 
         // Set the component name

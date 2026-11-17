@@ -745,7 +745,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             if ($identityCol) {
                 $identityLower = strtolower($identityCol);
                 foreach ($columns as $col) {
-                    if (strtolower($col) === $identityLower) {
+                    if (strtolower((string) $col) === $identityLower) {
                         return '';
                     }
                 }

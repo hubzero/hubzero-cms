@@ -1383,7 +1383,7 @@ class Citations extends Plugin
 
                 // for searching
                 if ($filter == "search" && $value != "") {
-                    $terms = preg_split('/\s+/', $value);
+                    $terms = preg_split('/\s+/', (string) $value);
 
                     $value = \Hubzero\Utility\Sanitize::clean($value);
                     $term = $value;
@@ -1432,7 +1432,7 @@ class Citations extends Plugin
 
                 if ($filter == "sort" && $value != "") {
                     // only the columns the sort menu offers, and a real direction
-                    $clause = explode(" ", $value);
+                    $clause = explode(" ", (string) $value);
                     if (in_array($clause[0], ['year', 'created', 'title', 'author', 'journal'])) {
                         $dir = (isset($clause[1]) && strtolower($clause[1]) == 'desc') ? 'desc' : 'asc';
                         $citations->order($clause[0], $dir);

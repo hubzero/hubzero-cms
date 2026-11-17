@@ -144,7 +144,7 @@ class Access extends Table
         }
 
         foreach ($add as $a) {
-            $a = trim($a);
+            $a = trim((string) $a);
             if ($a == '') {
                 continue;
             }

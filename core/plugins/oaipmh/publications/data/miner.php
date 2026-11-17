@@ -245,8 +245,8 @@ class Miner extends Obj implements Provider
      */
     public function record($id)
     {
-        if (strstr($id, ':')) {
-            list($id, $revision) = explode(':', $id);
+        if (strstr((string) $id, ':')) {
+            list($id, $revision) = explode(':', (string) $id);
         }
         $id = intval($id);
         if (!isset($revision)) {

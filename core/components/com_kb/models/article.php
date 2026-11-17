@@ -188,7 +188,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 break;
         }
 
-        $pdt = date('Y', (int) $dt) . '-' . date('m', $dt) . '-' . date('d', $dt) . ' 00:00:00';
+        $pdt = date('Y', (int) $dt) . '-' . date('m', (int) $dt) . '-' . date('d', (int) $dt) . ' 00:00:00';
         $today = Date::toSql();
 
         if ($this->param('close_comments') != 'now' && $today < $pdt) {

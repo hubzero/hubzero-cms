@@ -297,7 +297,7 @@ class Git
             $total = (int) $total + (int) $upcomingTotal;
         }
 
-        return trim($total);
+        return trim((string) $total);
     }
 
     /**

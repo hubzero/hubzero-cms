@@ -60,7 +60,7 @@ class Loader
         $words = explode(' ', $condition);
         for ($i = 0; $i < count($words); $i += 2) {
             // odd parts (modules)
-            $name = strtolower($words[$i]);
+            $name = strtolower((string) $words[$i]);
             $words[$i] = count($this->byPosition($name));
         }
 
