@@ -164,7 +164,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Return position key
      *
-     * @return  integer
+     * @return  int|string|null
      */
 
     #[\ReturnTypeWillChange]

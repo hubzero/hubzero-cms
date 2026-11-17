@@ -101,7 +101,12 @@ class RoleOrder
             }
         }
 
-        return gmmktime(0, 0, 0, $month, 1, $year);
+        $time = gmmktime(0, 0, 0, $month, 1, $year);
+        if ($time === false) {
+            return null;
+        }
+
+        return $time;
     }
 
     /**

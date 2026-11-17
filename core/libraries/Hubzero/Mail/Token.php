@@ -166,6 +166,10 @@ class Token
 
         // Convert from hex to bin
         $encrypted = hex2bin($rawtoken);
+        if ($encrypted === false) {
+            // Not a token: nothing to unpack
+            return [null, null, null];
+        }
 
         // Do the decryption
         $decrypted = openssl_decrypt(
@@ -178,6 +182,6 @@ class Token
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
         $arr = unpack("N3", (string) $decrypted) ?: [];
-        return [$arr[1], $arr[2], $arr[3]];
+        return [$arr[1] ?? null, $arr[2] ?? null, $arr[3] ?? null];
     }
 }

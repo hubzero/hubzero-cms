@@ -553,7 +553,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * Check if this entry has an image
      *
      * @param   string   $type  The type of image
-     * @return  boolean
+     * @return  string|false  The image's path, false when there is none
      */
     public function hasImage($type = 'thumb')
     {

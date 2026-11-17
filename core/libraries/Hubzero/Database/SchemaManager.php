@@ -625,7 +625,7 @@ class SchemaManager
      * Get the primary key column name for a table
      *
      * @param   string  $table  The table name
-     * @return  string|false
+     * @return  string|bool|null  The key column; false or null when the table has none
      */
     public function getPrimaryKey(string $table)
     {

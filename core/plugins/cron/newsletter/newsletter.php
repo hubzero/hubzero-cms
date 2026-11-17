@@ -102,7 +102,7 @@ class Newsletter extends Plugin
             if ($queuedEmail->tracking) {
                 $queuedEmail->html_body = \Components\Newsletter\Helpers\Helper::addTrackingToEmailMessage(
                     $queuedEmail->html_body,
-                    $emailToken,
+                    (string) $emailToken,
                 );
             }
 

@@ -283,7 +283,7 @@ class Rules implements Countable, Iterator
     /**
      * Get the key of the current item
      *
-     * @return  string
+     * @return  int|string|null
      */
 
     #[\ReturnTypeWillChange]

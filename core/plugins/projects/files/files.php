@@ -3143,7 +3143,7 @@ class Files extends Plugin
                 $this->remoteService,
                 $this->subdir,
                 $remoteEdit,
-            );
+            ) ?: [];
         }
 
         return $remotes;

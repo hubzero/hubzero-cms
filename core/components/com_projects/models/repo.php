@@ -533,7 +533,7 @@ class Repo extends Obj
     /**
      * Get trashed items
      *
-     * @return  boolean
+     * @return  array<mixed>|bool
      */
     public function getTrash()
     {

@@ -156,7 +156,7 @@ class Notes extends Plugin
      * @param   string  $action  Plugin task
      * @param   string|array<mixed>|null  $areas   Plugins to return data
      * @param   string|null  $tool    Name of tool wiki belongs to
-     * @return  array<mixed>|null   Return array of html
+     * @return  array<mixed>|false|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null, $tool = null)
     {

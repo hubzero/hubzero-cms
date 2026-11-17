@@ -108,7 +108,7 @@ class Xml extends Base
         // Iterate over the object members.
         $this->getXmlChildren($root, $object, $nodeName);
 
-        return $root->asXML();
+        return (string) $root->asXML();
     }
 
     /**

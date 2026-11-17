@@ -139,7 +139,7 @@ class Archive extends Model
         $output .= "CALSCALE:GREGORIAN\r\n";
 
         // get daylight start and end
-        $ttz = new DateTimezone(timezone_name_from_abbr('EST'));
+        $ttz = new DateTimezone(timezone_name_from_abbr('EST') ?: 'America/New_York');
         $first = Date::of(date('Y') . '-01-02 00:00:00')->toUnix();
         $last = Date::of(date('Y') . '-12-30 00:00:00')->toUnix();
         $transitions = $ttz->getTransitions($first, $last);
@@ -180,8 +180,8 @@ class Archive extends Model
             // ----------------------------------------------------------------------------------
             // The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
             // adjust date/time display according to that timezone and their systems timezone setting
-            $publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
-            $publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
+            $publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST') ?: 'America/New_York'));
+            $publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST') ?: 'America/New_York'));
             */
             // create now, created, and modified vars
             $now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
