@@ -44,6 +44,9 @@ Html::behavior('keepalive');
                 <?php
                 foreach ($authenticators as $a) :
                     $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+                    if (!class_exists($authClass)) :
+                        continue;
+                    endif;
                     $refl[$a['name']] = new \ReflectionClass($authClass);
                     if ($refl[$a['name']]->hasMethod('onRenderOption')) :
                         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);

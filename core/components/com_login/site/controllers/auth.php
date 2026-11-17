@@ -587,13 +587,12 @@ class Auth extends SiteController
         Plugin::import('authentication', $hzad->authenticator);
         $plugin       = Plugin::byType('authentication', $hzad->authenticator);
         $pparams      = new Registry($plugin->params);
-        $refl         = new \ReflectionClass("plgAuthentication{$plugin->name}");
-        $display_name = $pparams->get(
-            'display_name',
-            $refl->hasMethod('onGetLinkDescription')
-                ? $refl->getMethod('onGetLinkDescription')->invoke(null)
-                : ucfirst($plugin->name),
-        );
+        $authClass    = 'Plugins\\Authentication\\' . ucfirst($plugin->name) . '\\' . ucfirst($plugin->name);
+        $defaultName  = ucfirst($plugin->name);
+        if (class_exists($authClass) && method_exists($authClass, 'onGetLinkDescription')) {
+            $defaultName = $authClass::onGetLinkDescription();
+        }
+        $display_name = $pparams->get('display_name', $defaultName);
 
         // Look for conflicts - first check in the hub accounts
         $profile_conflicts = \Hubzero\User\User::all()

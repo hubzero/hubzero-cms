@@ -99,9 +99,12 @@ $this
                     $plugin       = Plugin::byType('authentication', $domain->name);
                     $pparams      = new \Hubzero\Config\Registry($plugin->params);
                     $display_name = $pparams->get('display_name', ucfirst($domain->name));
-                    $refl         = new \ReflectionClass(
-                        'plgauthentication' . $domain->name,
-                    );
+                    $authName     = ucfirst($domain->name);
+                    $authClass    = 'Plugins\\Authentication\\' . $authName . '\\' . $authName;
+                    if (!class_exists($authClass)) {
+                        continue;
+                    }
+                    $refl         = new \ReflectionClass($authClass);
                     $hasRender = $refl->hasMethod('onRenderOption');
                     $html = $hasRender
                         ? $refl->getMethod('onRenderOption')->invoke(null)

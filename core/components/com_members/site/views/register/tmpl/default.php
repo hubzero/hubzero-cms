@@ -155,6 +155,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             $provider_html = "";
             foreach ($authenticators as $a) {
                 $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+                if (!class_exists($authClass)) {
+                    continue;
+                }
                 $refl = new \ReflectionClass($authClass);
                 if ($refl->hasMethod('onRenderOption')) {
                     $html = $refl->getMethod('onRenderOption')->invoke(null);

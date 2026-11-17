@@ -73,6 +73,9 @@ $refl = [];
 $login_provider_html = "";
 foreach ($this->authenticators as $a) {
     $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+    if (!class_exists($authClass)) {
+        continue;
+    }
     $refl[$a['name']] = new \ReflectionClass($authClass);
     if ($refl[$a['name']]->hasMethod('onRenderOption')) {
         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $this->returnQueryString);
