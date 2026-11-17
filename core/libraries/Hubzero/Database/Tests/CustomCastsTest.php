@@ -126,7 +126,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('options', null);
         $instance->save();
 
-        $retrieved = CastTestModelJson::one($instance->get('id'));
+        $retrieved = CastTestModelJson::oneOrFail($instance->get('id'));
         $this->assertNull($retrieved->get('options'), "[$dbName]");
     }
 
@@ -218,7 +218,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('expires', null);
         $instance->save();
 
-        $retrieved = CastTestModelDateTime::one($instance->get('id'));
+        $retrieved = CastTestModelDateTime::oneOrFail($instance->get('id'));
         $this->assertNull($retrieved->get('expires'), "[$dbName]");
     }
 
@@ -337,7 +337,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->save();
 
         // ORM returns null for null columns without passing through cast
-        $retrieved = CastTestModelCollection::one($instance->get('id'));
+        $retrieved = CastTestModelCollection::oneOrFail($instance->get('id'));
         $this->assertNull($retrieved->get('tags'), "[$dbName]");
     }
 

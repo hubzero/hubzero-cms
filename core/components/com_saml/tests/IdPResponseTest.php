@@ -138,13 +138,13 @@ class IdPResponseTest extends Basic
     {
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $this->user, '_req1', '_sess1'));
 
-        $this->assertEquals(1, $x->query('/samlp:Response[@Destination="https://sp.example.com/acs"]')->length);
-        $this->assertEquals(1, $x->query('/samlp:Response[@InResponseTo="_req1"]')->length);
-        $this->assertEquals(1, $x->query('//saml:SubjectConfirmationData[@InResponseTo="_req1"]')->length);
-        $this->assertEquals(1, $x->query('//saml:Audience[text()="https://sp.example.com/saml2"]')->length);
+        $this->assertEquals(1, $this->countNodes($x, '/samlp:Response[@Destination="https://sp.example.com/acs"]'));
+        $this->assertEquals(1, $this->countNodes($x, '/samlp:Response[@InResponseTo="_req1"]'));
+        $this->assertEquals(1, $this->countNodes($x, '//saml:SubjectConfirmationData[@InResponseTo="_req1"]'));
+        $this->assertEquals(1, $this->countNodes($x, '//saml:Audience[text()="https://sp.example.com/saml2"]'));
         $this->assertEquals(
             1,
-            $x->query('//samlp:StatusCode[@Value="urn:oasis:names:tc:SAML:2.0:status:Success"]')->length,
+            $this->countNodes($x, '//samlp:StatusCode[@Value="urn:oasis:names:tc:SAML:2.0:status:Success"]'),
         );
     }
 
@@ -157,7 +157,7 @@ class IdPResponseTest extends Basic
     {
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $this->user, '_req1', '_opaque99'));
 
-        $this->assertEquals(1, $x->query('//saml:AuthnStatement[@SessionIndex="_opaque99"]')->length);
+        $this->assertEquals(1, $this->countNodes($x, '//saml:AuthnStatement[@SessionIndex="_opaque99"]'));
     }
 
     /**
@@ -168,7 +168,7 @@ class IdPResponseTest extends Basic
     public function testNameIdFollowsPerSpPolicy()
     {
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $this->user, '_r', '_s'));
-        $this->assertEquals(1, $x->query('//saml:NameID[text()="jdoe"]')->length);
+        $this->assertEquals(1, $this->countNodes($x, '//saml:NameID[text()="jdoe"]'));
 
         $byEmail = new StubSamlSp([
             'entity_id'     => 'https://sp.example.com/saml2',
@@ -177,7 +177,7 @@ class IdPResponseTest extends Basic
         ]);
 
         $x = $this->xpath($this->idp->createSAMLResponse($byEmail, $this->user, '_r', '_s'));
-        $this->assertEquals(1, $x->query('//saml:NameID[text()="jdoe@example.org"]')->length);
+        $this->assertEquals(1, $this->countNodes($x, '//saml:NameID[text()="jdoe@example.org"]'));
     }
 
     /**
@@ -189,8 +189,8 @@ class IdPResponseTest extends Basic
     {
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $this->user, '_r', '_s'));
 
-        $this->assertEquals(4, $x->query('//saml:Attribute')->length);
-        $this->assertEquals(1, $x->query('//saml:AttributeValue[text()="jdoe@example.org"]')->length);
+        $this->assertEquals(4, $this->countNodes($x, '//saml:Attribute'));
+        $this->assertEquals(1, $this->countNodes($x, '//saml:AttributeValue[text()="jdoe@example.org"]'));
     }
 
     /**
@@ -208,8 +208,8 @@ class IdPResponseTest extends Basic
 
         $x = $this->xpath($this->idp->createSAMLResponse($mapped, $this->user, '_r', '_s'));
 
-        $this->assertEquals(1, $x->query('//saml:Attribute')->length);
-        $this->assertEquals(1, $x->query('//saml:Attribute[@Name="eppn"]')->length);
+        $this->assertEquals(1, $this->countNodes($x, '//saml:Attribute'));
+        $this->assertEquals(1, $this->countNodes($x, '//saml:Attribute[@Name="eppn"]'));
     }
 
     /**
@@ -225,8 +225,8 @@ class IdPResponseTest extends Basic
 
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $bare, '_r', '_s'));
 
-        $this->assertEquals(0, $x->query('//saml:AttributeStatement')->length);
-        $this->assertEquals(1, $x->query('//saml:NameID[text()="ghost"]')->length);
+        $this->assertEquals(0, $this->countNodes($x, '//saml:AttributeStatement'));
+        $this->assertEquals(1, $this->countNodes($x, '//saml:NameID[text()="ghost"]'));
     }
 
     /**
@@ -239,11 +239,14 @@ class IdPResponseTest extends Basic
     {
         $x = $this->xpath($this->idp->createSAMLResponse($this->sp, $this->user, '_r', '_s'));
 
-        $this->assertEquals(1, $x->query('/samlp:Response/ds:Signature')->length);
-        $this->assertEquals(0, $x->query('//saml:Assertion/ds:Signature')->length);
+        $this->assertEquals(1, $this->countNodes($x, '/samlp:Response/ds:Signature'));
+        $this->assertEquals(0, $this->countNodes($x, '//saml:Assertion/ds:Signature'));
         $this->assertEquals(
             1,
-            $x->query('//ds:SignatureMethod[@Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"]')->length,
+            $this->countNodes(
+                $x,
+                '//ds:SignatureMethod[@Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"]',
+            ),
         );
 
         $signing = new StubSamlSp([
@@ -255,6 +258,20 @@ class IdPResponseTest extends Basic
 
         $x = $this->xpath($this->idp->createSAMLResponse($signing, $this->user, '_r', '_s'));
 
-        $this->assertEquals(1, $x->query('//saml:Assertion/ds:Signature')->length);
+        $this->assertEquals(1, $this->countNodes($x, '//saml:Assertion/ds:Signature'));
+    }
+
+    /**
+     * How many nodes an XPath expression finds (none when it does not evaluate)
+     *
+     * @param   \DOMXPath  $x
+     * @param   string     $expression
+     * @return  int
+     */
+    private function countNodes(\DOMXPath $x, $expression)
+    {
+        $list = $x->query($expression);
+
+        return $list ? $list->length : 0;
     }
 }

@@ -132,13 +132,13 @@ class Metadata
         $xpath->registerNamespace('md', self::NS_MD);
         $xpath->registerNamespace('ds', self::NS_DS);
 
-        $entity = $xpath->query('//md:EntityDescriptor')->item(0);
+        $entity = self::first($xpath, '//md:EntityDescriptor');
 
         if (!$entity instanceof \DOMElement || !$entity->getAttribute('entityID')) {
             return false;
         }
 
-        $descriptor = $xpath->query('.//md:SPSSODescriptor', $entity)->item(0);
+        $descriptor = self::first($xpath, './/md:SPSSODescriptor', $entity);
 
         if (!$descriptor instanceof \DOMElement) {
             return false;
@@ -243,7 +243,7 @@ class Metadata
                 continue;
             }
 
-            $cert = $xpath->query('.//ds:X509Certificate', $key)->item(0);
+            $cert = self::first($xpath, './/ds:X509Certificate', $key);
 
             if ($cert) {
                 $fields['signing_cert'] = preg_replace('/\s+/', '', $cert->nodeValue);
@@ -255,5 +255,20 @@ class Metadata
         }
 
         return $fields;
+    }
+
+    /**
+     * The first node an XPath expression finds, or null
+     *
+     * @param   \DOMXPath       $xpath
+     * @param   string          $expression
+     * @param   \DOMNode|null   $context
+     * @return  \DOMNode|null
+     */
+    private static function first(\DOMXPath $xpath, $expression, $context = null)
+    {
+        $list = $xpath->query($expression, $context);
+
+        return $list ? $list->item(0) : null;
     }
 }

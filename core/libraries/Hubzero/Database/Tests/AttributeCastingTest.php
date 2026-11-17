@@ -335,7 +335,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['is_active' => 0]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertFalse($item->get('is_active'));
         $this->assertIsBool($item->get('is_active'));
@@ -538,7 +538,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['published_at' => null]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertNull($item->get('published_at'));
     }
@@ -623,7 +623,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
             'published_at' => null,
         ]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertNull($item->get('is_active'));
         $this->assertNull($item->get('view_count'));

@@ -570,7 +570,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
 
         // Initially should not be force deleting
         $this->assertFalse($post->isForceDeleting());

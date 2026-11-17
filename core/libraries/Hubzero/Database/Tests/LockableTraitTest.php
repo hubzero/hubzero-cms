@@ -129,7 +129,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         $this->assertNull($article->get('checked_out_time'));
 
         // Verify in database by reloading
-        $reloaded = LockableArticle::one($id);
+        $reloaded = LockableArticle::oneOrFail($id);
         $this->assertNull($reloaded->get('checked_out'));
         $this->assertNull($reloaded->get('checked_out_time'));
     }
@@ -176,7 +176,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         $this->assertFalse($article->checkout(0));
         $this->assertFalse($article->checkout(-1));
@@ -204,7 +204,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         $this->assertFalse($article->isCheckedOut(1));
     }
@@ -228,7 +228,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         // Same user (42) should not be blocked
         $this->assertFalse($article->isCheckedOut(42));
@@ -278,7 +278,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         // User 99 cannot checkout when user 42 has it
         $this->assertFalse($article->checkout(99));
@@ -338,7 +338,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         // Lock is expired, so other user should be able to check out
         $this->assertFalse($article->isCheckedOut(99));
@@ -364,7 +364,7 @@ class LockableTraitTest extends AbstractDriverTestCase
             'checked_out_time' => $now,
         ]]);
         $id1 = 1;
-        $article1 = LockableArticle::one($id1);
+        $article1 = LockableArticle::oneOrFail($id1);
         $this->assertFalse($article1->isLockExpired());
 
         // Expired lock (3 hours old)
@@ -427,7 +427,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         $this->assertNull($article->getCheckedOutUserId());
     }

@@ -110,7 +110,7 @@ class TouchMethodTest extends AbstractDriverTestCase
         // Purge query cache and reload from database to verify
         Query::purgeCache();
         TouchTestItem::$columns = [];
-        $reloaded = TouchTestItem::one($id);
+        $reloaded = TouchTestItem::oneOrFail($id);
         $this->assertNotNull($reloaded->get('last_viewed_at'));
 
         // Cleanup
@@ -294,7 +294,7 @@ class TouchMethodTest extends AbstractDriverTestCase
         // Purge query cache and reload to verify both are set
         Query::purgeCache();
         TouchTestItem::$columns = [];
-        $reloaded = TouchTestItem::one($id);
+        $reloaded = TouchTestItem::oneOrFail($id);
         $this->assertNotNull($reloaded->get('modified'));
         $this->assertNotNull($reloaded->get('last_viewed_at'));
 
