@@ -105,8 +105,8 @@ class Attachments extends Obj
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $params
-     * @param   object   $oldVersion
-     * @param   object   $newVersion
+     * @param   \Components\Publications\Tables\Version   $oldVersion
+     * @param   \Components\Publications\Tables\Version   $newVersion
      * @return  void
      */
     public function transferData($name, $element, $elementId, $pub, $params, $oldVersion, $newVersion)

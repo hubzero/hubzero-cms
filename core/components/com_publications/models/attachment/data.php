@@ -260,8 +260,8 @@ class Data extends Base
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $blockParams
      * @param   array<mixed>    $attachments
-     * @param   object   $oldVersion
-     * @param   object   $newVersion
+     * @param   \Components\Publications\Tables\Version   $oldVersion
+     * @param   \Components\Publications\Tables\Version   $newVersion
      * @return  bool
      */
     public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
@@ -613,7 +613,7 @@ class Data extends Base
     /**
      * Update attachment properties
      *
-     * @param   object   $row
+     * @param   \Components\Publications\Tables\Attachment   $row
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
@@ -836,7 +836,7 @@ class Data extends Base
         // Delegated to a shared helper so the off-request bundle builder produces
         // the datastore CSV exactly the same way this in-request packager does.
 
-        return \Components\Publications\Helpers\Datastore::generateCsv($db_name, $version, $tmpFile);
+        return \Components\Publications\Helpers\Datastore::generateCsv($db_name, (string) $version, $tmpFile);
     }
 
     /**

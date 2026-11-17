@@ -222,8 +222,8 @@ class Link extends Base
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $blockParams
      * @param   array<mixed>    $attachments
-     * @param   object   $oldVersion
-     * @param   object   $newVersion
+     * @param   \Components\Publications\Tables\Version   $oldVersion
+     * @param   \Components\Publications\Tables\Version   $newVersion
      * @return  void
      */
     public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
@@ -482,7 +482,7 @@ class Link extends Base
     /**
      * Update attachment properties
      *
-     * @param   object   $row
+     * @param   \Components\Publications\Tables\Attachment   $row
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
