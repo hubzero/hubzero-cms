@@ -610,14 +610,17 @@ class Auth extends SiteController
             $user->isGuest()
             || !$user->hasAttribute('auth_link_id')
             || !is_numeric($user->get('username'))
-            || !$user->get('username') < 0
+            || $user->get('username') >= 0
         ) {
             $this->linkaccountsTask();
         }
 
         // Look up a few things
         $hzal    = \Hubzero\Auth\Link::findById($user->get('auth_link_id'));
-        $hzad    = \Hubzero\Auth\Domain::findById($hzal->auth_domain_id);
+        $hzad    = $hzal ? \Hubzero\Auth\Domain::findById($hzal->auth_domain_id) : false;
+        if (!$hzal || !$hzad) {
+            App::abort(404, Lang::txt('JERROR_LAYOUT_REQUESTED_RESOURCE_WAS_NOT_FOUND'));
+        }
         $plugins = Plugin::byType('authentication');
 
         // Get the display name for the current plugin being used
@@ -922,7 +925,8 @@ class Auth extends SiteController
 
                 if (is_object($auth_domain)) {
                     $auth_domain_id   = $auth_domain->auth_domain_id;
-                    $auth_domain_name = \Hubzero\Auth\Domain::findById($auth_domain_id)->authenticator;
+                    $domain           = \Hubzero\Auth\Domain::findById($auth_domain_id);
+                    $auth_domain_name = $domain ? $domain->authenticator : '';
                 }
 
                 // Redirect to user third party signout view
