@@ -61,7 +61,7 @@ class Resources extends Macro
         $nolink = false;
         $scrnshts = false;
         $num = 1;
-        $p = explode(' ', end($p));
+        $p = explode(' ', (string) end($p));
         foreach ($p as $a) {
             $a = trim($a);
 

@@ -58,7 +58,7 @@ class Vnc
         $vnckey = [23,82,107,6,35,78,88,7];
 
         if (is_string($data)) {
-            $data = array_values(unpack('C*', $data));
+            $data = array_values((unpack('C*', $data) ?: []));
         }
 
         $result = self::crypt($data, $vnckey, false);
@@ -90,7 +90,7 @@ class Vnc
         $vnckey = [23,82,107,6,35,78,88,7];
 
         if (is_string($data)) {
-            $data = array_values(unpack('C*', $data));
+            $data = array_values((unpack('C*', $data) ?: []));
         }
 
         $result = self::crypt($data, $vnckey, true);

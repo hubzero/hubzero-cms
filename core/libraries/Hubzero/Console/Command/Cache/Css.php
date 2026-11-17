@@ -65,7 +65,7 @@ class Css extends Base implements CommandInterface
                     continue;
                 }
 
-                $name = basename($clientDir) . '/' . $file;
+                $name = basename((string) $clientDir) . '/' . $file;
 
                 if (!Filesystem::delete($path)) {
                     $this->output->addLine('Unable to delete cache file: ' . $name, 'error');

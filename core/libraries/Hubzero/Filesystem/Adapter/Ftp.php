@@ -578,7 +578,7 @@ class Ftp implements AdapterInterface
             }
         }
 
-        if (in_array($directory, $listing)) {
+        if (in_array($directory, ($listing ?: []))) {
             return true;
         }
 

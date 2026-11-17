@@ -44,7 +44,7 @@ class Gallery
 
         //  $file_list = scandir(PATH_ROOT . $real_path);
         $cmd = 'find ' . PATH_ROOT . $real_path . ' -type f|grep -v small|grep -v medium';
-        $file_list = explode("\n", (`$cmd`));
+        $file_list = explode("\n", (string) ((`$cmd`)));
         array_pop($file_list);
 
         foreach ($file_list as $file) {

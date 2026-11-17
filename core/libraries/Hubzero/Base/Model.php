@@ -156,7 +156,7 @@ abstract class Model extends Obj
     {
         if (defined('JPATH_GROUPCOMPONENT')) {
             $r = new \ReflectionClass($this);
-            if (substr($r->getFileName(), 0, strlen(JPATH_GROUPCOMPONENT)) == JPATH_GROUPCOMPONENT) {
+            if (substr((string) $r->getFileName(), 0, strlen(JPATH_GROUPCOMPONENT)) == JPATH_GROUPCOMPONENT) {
                 return \Hubzero\User\Group\Helper::getDbo();
             }
         }

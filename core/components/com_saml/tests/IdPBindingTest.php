@@ -108,7 +108,7 @@ class IdPBindingTest extends Basic
         }
 
         if ($this->dir && is_dir($this->dir)) {
-            array_map('unlink', glob($this->dir . '/*'));
+            array_map('unlink', (glob($this->dir . '/*') ?: []));
             rmdir($this->dir);
         }
     }
@@ -193,7 +193,7 @@ class IdPBindingTest extends Basic
         $request->serialize($context->getSerializationContext()->getDocument(), $context->getSerializationContext());
 
         $message = $this->idp->readSAMLRequest($this->arrive('POST', 'https://idp.example.org/saml/idp/login', [
-            'SAMLRequest' => base64_encode($context->getSerializationContext()->getDocument()->saveXML()),
+            'SAMLRequest' => base64_encode((string) $context->getSerializationContext()->getDocument()->saveXML()),
             'RelayState'  => 'state-123',
         ]))->getMessage();
 

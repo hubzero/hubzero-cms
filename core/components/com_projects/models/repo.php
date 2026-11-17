@@ -1458,7 +1458,7 @@ class Repo extends Obj
             $path = Helpers\Html::getProjectRepoPath($alias, 'files', false);
 
             // Make sure there is .git directory
-            if (!is_dir($path) || !is_dir($path . DS . '.git')) {
+            if (!is_dir((string) $path) || !is_dir($path . DS . '.git')) {
                 continue;
             }
 
@@ -1485,7 +1485,7 @@ class Repo extends Obj
                 }
 
                 if ($engine == 'git') {
-                    $git = new Helpers\Git($path);
+                    $git = new Helpers\Git((string) $path);
                     if ($get == 'commitCount') {
                         $nf = $git->callGit('ls-files --full-name ');
                         if ($nf && substr($nf[0], 0, 5) != 'fatal') {
@@ -1504,7 +1504,7 @@ class Repo extends Obj
                     }
                 } else {
                     $commits = 0; // There are no commits in nogit, stub for reports
-                    $helper = new Helpers\Nogit($path);
+                    $helper = new Helpers\Nogit((string) $path);
                     $recursive = true;
                     $subdir = '';
                     $count = count($helper->getFiles($subdir, $recursive));

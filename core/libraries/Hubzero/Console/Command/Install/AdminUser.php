@@ -524,7 +524,7 @@ class AdminUser
             if ($oldStyle !== null) {
                 shell_exec('stty -echo 2>/dev/null');
                 $password = self::readInput();
-                shell_exec('stty ' . trim($oldStyle) . ' 2>/dev/null');
+                shell_exec('stty ' . trim((string) $oldStyle) . ' 2>/dev/null');
                 return $password;
             }
         }

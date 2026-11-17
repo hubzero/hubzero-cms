@@ -171,7 +171,7 @@ class Projects extends Obj
     private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
-            $data = array_map('trim', preg_split("/($delim)/", $data));
+            $data = array_map('trim', (preg_split("/($delim)/", $data) ?: []));
             $data = array_values(array_filter($data));
         }
 

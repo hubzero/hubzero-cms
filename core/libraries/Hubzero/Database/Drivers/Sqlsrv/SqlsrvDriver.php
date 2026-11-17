@@ -1279,7 +1279,7 @@ class SqlsrvDriver extends BaseSqlDriver
 
         // Find where SELECT starts after INSERT INTO table
         $selectPos = stripos($sql, 'SELECT', strlen($m[1]));
-        $newSql = $m[1] . " ($colList) " . substr($sql, $selectPos);
+        $newSql = $m[1] . " ($colList) " . substr($sql, (int) $selectPos);
 
         // Re-prepare with the rewritten SQL and rebind parameters
         $savedBindings = $this->bindings;

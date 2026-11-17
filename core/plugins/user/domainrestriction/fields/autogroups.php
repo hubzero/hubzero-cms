@@ -86,7 +86,7 @@ class AutoGroups extends Field
         $html[] = Html::access('usergroup', $this->id . '-groups', '', 'multiple="multiple"', []) . '<br />';
         $html[] = '<button id="' . $this->id . '-save">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_ADD') . '</button>';
         $html[] = '<input id="' . $this->id . '" name="' . $this->name
-            . '" type="hidden" value="' . base64_encode($value) . '"/>';
+            . '" type="hidden" value="' . base64_encode((string) $value) . '"/>';
         $html[] = '<br style="clear:both" />';
         $html[] = '<ul id="' . $this->id . '-list">';
         $html[] = '</ul>';

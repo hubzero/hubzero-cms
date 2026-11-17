@@ -136,7 +136,7 @@ class Externalhref extends Plugin
                 // Get classes
                 if (!empty($list['class'])) {
                     $linkClasses = preg_split('/\s+/', $list['class']);
-                    $linkClasses = array_map('strtolower', $linkClasses);
+                    $linkClasses = array_map('strtolower', ($linkClasses ?: []));
                 } else {
                     $linkClasses = [];
                 }

@@ -800,7 +800,7 @@ class Translator extends Obj
             return [];
         }
 
-        $disabledFunctions      = explode(',', ini_get('disable_functions'));
+        $disabledFunctions      = explode(',', (string) ini_get('disable_functions'));
         $isParseIniFileDisabled = in_array('parse_ini_file', array_map('trim', $disabledFunctions));
 
         // Capture hidden PHP errors from the parsing.
@@ -827,7 +827,7 @@ class Translator extends Obj
 
         // Ini files are processed in the "RAW" mode of parse_ini_string, leaving escaped quotes untouched - lets
         // postprocessthem
-        $strings = str_replace('\"', '"', $strings);
+        $strings = str_replace('\"', '"', ($strings ?: []));
 
         return $strings;
     }

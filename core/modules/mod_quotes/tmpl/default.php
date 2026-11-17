@@ -76,8 +76,9 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                                 <?php echo rtrim($quote->get('short_quote'), '.'); ?>
                                  &#8230;
                                 <?php
-                                $linkUrl = $this->escape($base) . (strstr($base, '?') ? '&amp;' : '?') . 'quoteid='
-                                    . $quote->get('id');
+                                $linkUrl = $this->escape($base)
+                                    . (strstr((string) $base, '?') ? '&amp;' : '?')
+                                    . 'quoteid=' . $quote->get('id');
                                 $titleText = Lang::txt(
                                     'MOD_QUOTES_VIEW_QUOTE_BY',
                                     $this->escape(stripslashes($quote->get('fullname'))),

@@ -56,7 +56,7 @@ class MembershipAuditor extends BaseAuditor
                 // so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
 
                 // Get the proper product type subscription object reference
-                $subscription = Memberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
+                $subscription = Memberships::getSubscriptionObject($this->type, $this->pId, (int) $this->uId);
 
                 // Get the expiration for the current subscription (if any)
                 $currentExpiration = $subscription->getExpiration();

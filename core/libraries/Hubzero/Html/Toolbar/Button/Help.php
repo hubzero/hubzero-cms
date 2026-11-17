@@ -101,7 +101,7 @@ class Help extends Button
     protected function getCommand($ref, $com, $override, $component)
     {
         // Get Help URL
-        $url = self::createURL($ref, $com, $override, $component);
+        $url = self::createURL($ref, $com, (string) $override, $component);
         $url = htmlspecialchars($url, ENT_QUOTES);
         //$cmd = "Hubzero.popupWindow('$url', '" . Lang::txt('JHELP', true) . "', 700, 500, 1)";
 

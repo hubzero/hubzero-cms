@@ -154,7 +154,7 @@ class Initialcon
             $this->setColor($color);
         }
         $color = imagecolorallocate($image, $this->color[0], $this->color[1], $this->color[2]);
-        imagefilledrectangle($image, 0, 0, $this->size, $this->size, $color);
+        imagefilledrectangle($image, 0, 0, $this->size, $this->size, (int) $color);
 
         // Allocate A Color For The Text
         $white = imagecolorallocate($image, 255, 255, 255);
@@ -201,7 +201,7 @@ class Initialcon
         //$y = $this->size - $y;
 
         // Print Text On Image
-        imagettftext($image, $fontsize, 0, (int) $x, (int) $y, $white, $this->getFontPath(), $string);
+        imagettftext($image, $fontsize, 0, (int) $x, (int) $y, (int) $white, $this->getFontPath(), $string);
 
         imagepng($image);
     }

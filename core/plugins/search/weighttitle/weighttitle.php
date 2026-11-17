@@ -77,7 +77,7 @@ class Weighttitle extends Plugin
             $stemmer = new \Wamania\Snowball\Stemmer\English();
         }
         $stems = [];
-        foreach (array_unique(preg_split('/\s+/', trim($str))) as $word) {
+        foreach (array_unique((preg_split('/\s+/', trim($str)) ?: [])) as $word) {
             if (!\Components\Search\Models\Basic\DocumentMetadata::isStopWord($word)) {
                 $stems[] = $stemmer->stem(preg_replace('/[^[:alnum:]]/', '', $word));
             }

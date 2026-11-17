@@ -108,7 +108,7 @@ class Git
     public function getMechanismVersionName()
     {
         $name = $this->call('rev-parse', ['--abbrev-ref', 'HEAD']);
-        $name = trim($name);
+        $name = trim((string) $name);
 
         return $name;
     }
@@ -231,7 +231,7 @@ class Git
             $upcomingLog = $this->call('log', $args);
 
             if (isset($upcomingLog)) {
-                $upcomingLogs  = explode("\n", $upcomingLog);
+                $upcomingLogs  = explode("\n", (string) $upcomingLog);
                 $upcomingCount = count($upcomingLogs);
             }
 
@@ -286,14 +286,14 @@ class Git
             $installedArgs = $countArgs;
             array_unshift($installedArgs, 'HEAD');
             $total = $this->call('rev-list', $installedArgs);
-            $total = trim($total);
+            $total = trim((string) $total);
         }
 
         if ($upcoming) {
             $upcomingArgs = $countArgs;
             array_unshift($upcomingArgs, "HEAD..{$this->upstream}");
             $upcomingTotal = $this->call('rev-list', $upcomingArgs);
-            $upcomingTotal = trim($upcomingTotal);
+            $upcomingTotal = trim((string) $upcomingTotal);
             $total = (int) $total + (int) $upcomingTotal;
         }
 
@@ -318,7 +318,7 @@ class Git
 
             // Fetch first: merging the tracking ref as the last fetch left it
             // would bring the checkout only as far as the last dry run looked
-            $fetch = trim($this->call('fetch'));
+            $fetch = trim((string) $this->call('fetch'));
 
             if (preg_match('/^(fatal|error):/mi', $fetch)) {
                 return [
@@ -364,7 +364,7 @@ class Git
                 putenv("GIT_MERGE_AUTOEDIT");
             }
 
-            $response  = trim($response);
+            $response  = trim((string) $response);
             $return    = [];
 
             // Newer git puts hints before the line that says it refused, so
@@ -383,7 +383,7 @@ class Git
             $return['raw'] = $response;
         } else {
             // Be sure to fetch so we known we're up-to-date
-            $fetch = trim($this->call('fetch'));
+            $fetch = trim((string) $this->call('fetch'));
             $this->call('remote update');
 
             // A fetch that could not reach or authenticate to the remote used to
@@ -401,7 +401,7 @@ class Git
 
             // Make call to get log differences between us and origin
             $log    = $this->call('log', $arguments);
-            $log    = trim($log);
+            $log    = trim((string) $log);
             $return = [];
             $logs   = explode("\n", $log);
 
@@ -428,7 +428,7 @@ class Git
         $ref      = (isset($remoteRef)) ? $ref . ':' . $remoteRef : $ref;
         $response = $this->call('push', [$remote, $ref]);
 
-        $response = trim($response);
+        $response = trim((string) $response);
         $return   = [];
 
         if (stripos($response, 'error: failed to push some refs') !== false) {
@@ -463,7 +463,7 @@ class Git
     public function getRollbackPoint()
     {
         $tagList = $this->call('tag');
-        $tags    = explode("\n", $tagList);
+        $tags    = explode("\n", (string) $tagList);
         $rbp     = 0;
 
         foreach ($tags as $tag) {
@@ -490,7 +490,7 @@ class Git
     public function purgeRollbackPoints()
     {
         $tagList        = $this->call('tag');
-        $tags           = explode("\n", $tagList);
+        $tags           = explode("\n", (string) $tagList);
         $rollbackPoints = [];
 
         foreach ($tags as $tag) {
@@ -527,7 +527,7 @@ class Git
         $tagname = 'cmsrollbackpoint-' . $rollbackPoint;
 
         // Make sure the tag exists first
-        if (substr($this->call('show', [$tagname]), 0, 5) == 'fatal') {
+        if (substr((string) $this->call('show', [$tagname]), 0, 5) == 'fatal') {
             return false;
         }
 

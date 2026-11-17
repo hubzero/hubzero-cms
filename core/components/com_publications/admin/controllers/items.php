@@ -1713,8 +1713,8 @@ class Items extends AdminController
         $path = Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
 
         // Delete all files
-        if (is_dir($path)) {
-            Filesystem::deleteDirectory($path);
+        if (is_dir((string) $path)) {
+            Filesystem::deleteDirectory((string) $path);
         }
 
         return true;

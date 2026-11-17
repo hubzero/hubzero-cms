@@ -212,7 +212,7 @@ class Comments extends Plugin
                     break;
             }
 
-            $pdt = date('Y', $dt) . '-' . date('m', $dt) . '-' . date('d', $dt) . ' 00:00:00';
+            $pdt = date('Y', (int) $dt) . '-' . date('m', $dt) . '-' . date('d', $dt) . ' 00:00:00';
             $today = Date::toSql();
 
             // Can users create comments?

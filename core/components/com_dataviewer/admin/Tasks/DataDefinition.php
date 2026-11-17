@@ -78,7 +78,7 @@ class DataDefinition
 
             <div id="tabs-2">
                 <textarea id="db-dd-source-php" style="display: none;">
-                    <?php echo htmlspecialchars($dd_php); ?>
+                    <?php echo htmlspecialchars((string) $dd_php); ?>
                 </textarea>
                 <?php $editorHeight = $full_screen ? 600 : 500; ?>
                 <div id="db-dd-editor-php"
@@ -91,7 +91,7 @@ class DataDefinition
             <div id="tabs-3">
                 <?php $editorHeight = $full_screen ? 600 : 500; ?>
                 <div id="db-dd-editor" style="height: <?php echo $editorHeight; ?>px; width: 100%;">
-                    <?php echo htmlspecialchars($dd_json); ?>
+                    <?php echo htmlspecialchars((string) $dd_json); ?>
                 </div>
             </div>
 

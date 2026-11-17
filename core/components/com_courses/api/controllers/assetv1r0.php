@@ -62,9 +62,9 @@ class Assetv1r0 extends Base
 
         $max = array_map(
             function ($v) {
-                if (stristr($v, 'G')) {
+                if (stristr((string) $v, 'G')) {
                     $v = intval($v) * 1024;
-                } elseif (stristr($v, 'K')) {
+                } elseif (stristr((string) $v, 'K')) {
                     $v = intval($v) / 1024;
                 }
                 return $v;
@@ -790,7 +790,7 @@ class Assetv1r0 extends Base
         $dirname  = dirname($path);
         $corePath = $toolHandler !== null ? $toolHandler::getToolDirectory() : PATH_APP;
 
-        if (!is_file($corePath . $path) || $dirname != rtrim($basePath, DS)) {
+        if (!is_file($corePath . $path) || $dirname != rtrim((string) $basePath, DS)) {
             App::abort(500, 'Illegal file path');
         }
 

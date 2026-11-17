@@ -372,10 +372,10 @@ class QueryLoggingTest extends AbstractDriverTestCase
         $query->dump();
         $output = ob_get_clean();
 
-        $this->assertStringContainsString('SQL:', $output);
-        $this->assertStringContainsString('Bindings:', $output);
-        $this->assertStringContainsString('Raw SQL:', $output);
-        $this->assertStringContainsString('published', $output);
+        $this->assertStringContainsString('SQL:', (string) $output);
+        $this->assertStringContainsString('Bindings:', (string) $output);
+        $this->assertStringContainsString('Raw SQL:', (string) $output);
+        $this->assertStringContainsString('published', (string) $output);
     }
 
     /**

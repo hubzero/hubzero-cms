@@ -281,7 +281,7 @@ class Youtube extends Module
                 }
                 $f = json_encode($feed);
 
-                Filesystem::write($cacheFile, $f);
+                Filesystem::write($cacheFile, (string) $f);
             }
         }
 

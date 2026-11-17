@@ -613,10 +613,10 @@ class Debug extends Plugin
         foreach ($log as $k => $sql) {
             // Start Query Type Ticker Additions
             $fromStart  = stripos($sql, 'from');
-            $whereStart = stripos($sql, 'where', $fromStart);
+            $whereStart = stripos($sql, 'where', (int) $fromStart);
 
             if ($whereStart === false) {
-                $whereStart = stripos($sql, 'order by', $fromStart);
+                $whereStart = stripos($sql, 'order by', (int) $fromStart);
             }
 
             if ($whereStart === false) {
@@ -1006,7 +1006,7 @@ class Debug extends Plugin
             // Compute needed iv size and random iv
             $ivSize = openssl_cipher_iv_length('AES-256-CBC');
             $iv = openssl_random_pseudo_bytes($ivSize);
-            $ciphertext = openssl_encrypt($post, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            $ciphertext = openssl_encrypt((string) $post, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
 
             // Prepend iv for decoding later
             $ciphertext = $iv . $ciphertext;

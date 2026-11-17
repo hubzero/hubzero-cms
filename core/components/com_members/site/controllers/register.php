@@ -1801,7 +1801,7 @@ class Register extends SiteController
 
         if ($email_confirmed == 1 || $email_confirmed == 3) {
             // The current user is confirmed - check to see if the incoming code is valid at all
-            if (\Components\Members\Helpers\Utility::isActiveCode($code)) {
+            if (\Components\Members\Helpers\Utility::isActiveCode((int) $code)) {
                 $this->setError('login mismatch');
 
                 // Build logout/login/confirm redirect flow

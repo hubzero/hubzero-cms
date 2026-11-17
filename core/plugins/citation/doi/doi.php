@@ -354,7 +354,7 @@ class Doi extends Plugin
             }
             $xmlStr = $dom->saveXML();
 
-            $result = $this->regMetadata($xmlStr);
+            $result = $this->regMetadata((string) $xmlStr);
 
             return $result;
         }

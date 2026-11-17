@@ -515,7 +515,7 @@ class Job extends Relational
         }
 
         $pid     = getmypid();
-        $started = self::procStartTime($pid);
+        $started = self::procStartTime((int) $pid);
         $host    = self::thisHost();
         $nowSql  = Date::toSql();
 

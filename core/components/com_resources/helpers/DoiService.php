@@ -726,7 +726,7 @@ class DoiService extends Obj
         // Make service call to provision doi
         $doi = false;
         if ($status == 'reserved') {
-            $doi = $this->runCurl($url, $input);
+            $doi = $this->runCurl((string) $url, $input);
         }
 
         // Send XML and set DOI to public
@@ -741,7 +741,7 @@ class DoiService extends Obj
             $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
 
             // Make service call to send extended metadata
-            $doi = $this->runCurl($url, $input);
+            $doi = $this->runCurl((string) $url, $input);
         }
 
         // Return DOI
@@ -801,7 +801,7 @@ class DoiService extends Obj
         $url = $this->getServicePath($doi);
 
         // Make service call
-        $result = $this->runCurl($url, $input);
+        $result = $this->runCurl((string) $url, $input);
 
         return $result ? $result : false;
     }

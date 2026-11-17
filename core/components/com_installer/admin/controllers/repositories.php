@@ -169,7 +169,7 @@ class Repositories extends AdminController
         }
 
         // Add the repository
-        ComposerHelper::addRepository($alias, $json);
+        ComposerHelper::addRepository($alias, (string) $json);
 
         Notify::success('Success');
 

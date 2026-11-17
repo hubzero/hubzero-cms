@@ -83,7 +83,7 @@ class Help extends Output
                     $description = 'no description available';
 
                     // Check for help ignore flag
-                    if (preg_match('/@museDescription ([[:alnum:] ,\.()\-\'\/]*)/', $comment, $matched)) {
+                    if (preg_match('/@museDescription ([[:alnum:] ,\.()\-\'\/]*)/', (string) $comment, $matched)) {
                         $description = trim($matched[1]);
                     }
 

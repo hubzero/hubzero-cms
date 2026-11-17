@@ -141,7 +141,7 @@ class Token
         $encrypted = openssl_encrypt($binaryString, 'AES-128-CBC', $this->key, OPENSSL_RAW_DATA, $this->iv);
 
         // Prepend an unencrypted version byte and action byte (in base16)
-        $rv = substr(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) . bin2hex($encrypted), 0, 36);
+        $rv = substr(bin2hex((string) pack("C", $version)) . bin2hex(pack("C", $action)) . bin2hex($encrypted), 0, 36);
 
         return $rv;
     }
@@ -174,7 +174,7 @@ class Token
         );
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
-        $arr = unpack("N3", $decrypted);
+        $arr = unpack("N3", (string) $decrypted);
         return [$arr[1], $arr[2], $arr[3]];
     }
 }

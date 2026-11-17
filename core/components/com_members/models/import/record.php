@@ -359,7 +359,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
-            $data = array_map('trim', preg_split("/($delim)/", $data));
+            $data = array_map('trim', (preg_split("/($delim)/", $data) ?: []));
             $data = array_values(array_filter($data));
         }
 
@@ -420,7 +420,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 // Try to create from portion preceding @ in email address
                 if (!$valid) {
                     $username = strstr($this->record->entry->get('email'), '@', true);
-                    if (Validate::username($username)) {
+                    if (Validate::username((string) $username)) {
                         if (!$this->usernameExists($username)) {
                             $valid = true;
                         }
@@ -578,7 +578,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      */
     private function usernameExists($username)
     {
-        return Member::oneByUsername($username)->get('id');
+        return Member::oneByUsername((string) $username)->get('id');
     }
 
     /**

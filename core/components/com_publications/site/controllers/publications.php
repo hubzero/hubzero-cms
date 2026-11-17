@@ -1290,7 +1290,7 @@ class Publications extends SiteController
         $file = $p . DS . $f;
 
         $fsize = filesize($file);
-        $mod_date = date('r', filemtime($file));
+        $mod_date = date('r', (int) filemtime($file));
 
         $cont_dis = $inline ? 'inline' : 'attachment';
 
@@ -1333,7 +1333,7 @@ class Publications extends SiteController
             $buffer = fread($handle, $chunksize);
             echo $buffer;
             if ($retbytes) {
-                $cnt += strlen($buffer);
+                $cnt += strlen((string) $buffer);
             }
         }
         $status = fclose($handle);
@@ -2002,13 +2002,13 @@ class Publications extends SiteController
                 $source = [];
                 $source['main'] = $file;
                 $source['hash'] = $file . '.hash';
-                $source['thmb'] = \Components\Projects\Helpers\Html::createThumbName($file, '_tn', 'png');
+                $source['thmb'] = \Components\Projects\Helpers\Html::createThumbName((string) $file, '_tn', 'png');
 
                 $dest = [];
                 $dest['main'] = $filenew;
                 $dest['hash'] = $filenew . '.hash';
                 // thumbnails aren't in sub?
-                $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png');
+                $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName((string) $filenew, '_tn', 'png');
 
                 if (!is_dir($toProj)) {
                     Filesystem::makeDirectory($toProj, 0755, true, true);

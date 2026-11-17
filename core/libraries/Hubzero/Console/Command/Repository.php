@@ -561,7 +561,7 @@ class Repository extends Base implements CommandInterface
         $lsremote_command  = "cd " . escapeshellarg($repoPath) . " && git ls-remote" . ' 2>&1';
         $lsremote_command_response = shell_exec($lsremote_command);
 
-        if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response)) {
+        if (preg_match("/fatal: Authentication failed.../uis", (string) $lsremote_command_response)) {
             $output = [
                 Lang::txt(
                     "Authentication failure. Please check the specified Access Token has access to this extension's "
@@ -594,7 +594,7 @@ class Repository extends Base implements CommandInterface
             // get remote default branch
             // "git remote show" may list several remotes; take the first line
             $default_remote_branch_cmd = "git remote show "
-                . escapeshellarg(strtok(trim((string) $default_remote), "\n"))
+                . escapeshellarg((string) (strtok(trim((string) $default_remote), "\n")))
                 . " | grep 'HEAD branch' | cut -d ':' -f 2";
             // cut leaves a leading space and a trailing newline, which the shell used
             // to discard by word-splitting but a quoted argument keeps

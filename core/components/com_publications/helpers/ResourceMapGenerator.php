@@ -276,12 +276,12 @@ class ResourceMapGenerator
             $xmlwriter->writeElement('dc:format', $datatype);
         }
 
-        $dataCategory = explode('/', $datatype);
+        $dataCategory = explode('/', (string) $datatype);
 
         switch ($dataCategory[0]) {
             case 'image':
                 // SVG types do not have height/width
-                if (stripos($datatype, 'svg') !== false) {
+                if (stripos((string) $datatype, 'svg') !== false) {
                     break;
                 }
 

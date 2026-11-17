@@ -817,7 +817,7 @@ class Manage extends AdminController
                 // build group & project names
                 $host        = explode('.', $_SERVER['HTTP_HOST']);
                 $tld         = array_pop($host);
-                $groupName   = 'hub-' . strtolower(end($host));
+                $groupName   = 'hub-' . strtolower((string) end($host));
                 $projectName = 'sg_' . $group->get('cn');
 
                 // get gitlab config
@@ -1034,7 +1034,7 @@ class Manage extends AdminController
             // this will run a "git pull --rebase origin master"
             $output = shell_exec($cmd);
 
-            if (strpos($output, 'ineligble') === false) {
+            if (strpos((string) $output, 'ineligble') === false) {
                 $museCmd = 'migrate';
                 $cmd = "cd {$uploadPath} && ";
                 $cmd .= $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
@@ -1045,7 +1045,7 @@ class Manage extends AdminController
             }
 
             // did we succeed
-            if (preg_match("/Updating the repository.../uis", $output)) {
+            if (preg_match("/Updating the repository.../uis", (string) $output)) {
                 // add success message
                 $success[] = [
                     'group'   => $group->get('cn'),

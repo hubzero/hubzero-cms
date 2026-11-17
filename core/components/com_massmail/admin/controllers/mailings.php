@@ -461,13 +461,13 @@ class Mailings extends AdminController
         // groups arrive as a single comma/space separated text field (groups[]) of
         // group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
         $groupsRaw = implode(',', (array) Request::getArray('groups', []));
-        $groups = array_map('trim', preg_split('/[\s,]+/', $groupsRaw));
+        $groups = array_map('trim', (preg_split('/[\s,]+/', $groupsRaw) ?: []));
         $spec['groups'] = array_values(array_filter($groups, static fn ($value) => $value !== ''));
 
         // users: comma/space separated list of user IDs and/or usernames
         // (resolved at send time).
         $usersRaw = Request::getString('users', '');
-        $users = array_map('trim', preg_split('/[\s,]+/', $usersRaw));
+        $users = array_map('trim', (preg_split('/[\s,]+/', $usersRaw) ?: []));
         $spec['users'] = array_values(array_filter($users, static fn ($value) => $value !== ''));
 
         // emails: one per line

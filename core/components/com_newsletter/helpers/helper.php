@@ -197,7 +197,7 @@ class Helper
         //create fake image to output
         $im = imagecreatetruecolor(1, 1);
         $red = imagecolorallocate($im, 255, 0, 0);
-        imagecolortransparent($im, $red);
+        imagecolortransparent($im, (int) $red);
         imagefilledrectangle($im, 0, 0, 99, 99, 0xFF0000);
         header('Content-Type: image/gif');
         imagegif($im);

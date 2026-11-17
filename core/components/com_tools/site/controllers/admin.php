@@ -279,7 +279,7 @@ class Admin extends SiteController
             // Extract revision number and optional commitHash
             $rev = '';
             $commitHash = '';
-            $nRead = sscanf($this->getMessage(), "installed revision: %s commitHash: %s", $rev, $commitHash);
+            $nRead = sscanf((string) $this->getMessage(), "installed revision: %s commitHash: %s", $rev, $commitHash);
 
             // The version to record it on; none when the tool has no development version
             $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->toolid);
@@ -798,7 +798,7 @@ class Admin extends SiteController
                 return false;
             }
             // get tarball
-            $tar = explode("source tarball: /tmp/", $this->getMessage());
+            $tar = explode("source tarball: /tmp/", (string) $this->getMessage());
             if (!isset($tar[1])) {
                 $out .= " invoke script failure";
                 return false;

@@ -153,9 +153,9 @@ class Memcache extends Store
             $this->engine->set($key . '_expire', time(), 0);
         }
         if ($this->engine->get($key)) {
-            $this->engine->replace($key, $data, $this->compress);
+            $this->engine->replace($key, $data, (int) $this->compress);
         } else {
-            $this->engine->set($key, $data, $this->compress);
+            $this->engine->set($key, $data, (int) $this->compress);
         }
 
         return null;

@@ -406,7 +406,7 @@ class Membership
         // otherwise from now
         $from = ($current && strtotime($current) > time()) ? strtotime($current) : time();
 
-        $next = strtotime($interval, $from);
+        $next = strtotime($interval, (int) $from);
 
         if ($next === false) {
             throw new \InvalidArgumentException(self::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_BAD_INTERVAL'));

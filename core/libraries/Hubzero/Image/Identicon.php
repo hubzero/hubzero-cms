@@ -178,7 +178,7 @@ class Identicon
         // prepare the image
         $image = imagecreatetruecolor($this->pixelRatio * 5, $this->pixelRatio * 5);
         $background = imagecolorallocate($image, 0, 0, 0);
-        imagecolortransparent($image, $background);
+        imagecolortransparent($image, (int) $background);
 
         // prepage the color
         if (null !== $color) {

@@ -173,7 +173,7 @@ class SearchComponent extends Relational
     {
         $model = $this->getSearchableModel();
         $searchFields = [];
-        if (class_exists($model)) {
+        if ($model && class_exists($model)) {
             $modelResults = $model::searchResults(1);
             $firstResultModel = $modelResults->first();
             if (!$firstResultModel) {
@@ -198,7 +198,7 @@ class SearchComponent extends Relational
     {
         $total = 0;
         $model = $this->getSearchableModel();
-        if (class_exists($model)) {
+        if ($model && class_exists($model)) {
             $total = $model::searchTotal();
         }
         return $total;
@@ -319,7 +319,7 @@ class SearchComponent extends Relational
     public function getSearchNamespace()
     {
         $searchModel = $this->getSearchableModel();
-        if (class_exists($searchModel)) {
+        if ($searchModel && class_exists($searchModel)) {
             return $searchModel::searchNamespace();
         }
         return $this->get('name');

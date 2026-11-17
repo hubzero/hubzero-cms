@@ -214,7 +214,7 @@ class Reviews extends Plugin
                     break;
             }
 
-            $pdt = date($yearFormat . '-' . $monthFormat . '-' . $dayFormat, $dt) . ' 00:00:00';
+            $pdt = date($yearFormat . '-' . $monthFormat . '-' . $dayFormat, (int) $dt) . ' 00:00:00';
             $today = Date::toSql();
 
             // Can users create comments?

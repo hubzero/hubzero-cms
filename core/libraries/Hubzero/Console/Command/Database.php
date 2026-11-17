@@ -70,7 +70,10 @@ class Database extends Base implements CommandInterface
 
         if (!$filename = $this->file()) {
             $now      = new Date();
-            $filename = tempnam(getenv('HOME'), gethostname() . '.mysql.dump.' . $now->format('Y.m.d') . '.sql.');
+            $filename = tempnam(
+                (string) getenv('HOME'),
+                gethostname() . '.mysql.dump.' . $now->format('Y.m.d') . '.sql.',
+            );
         }
 
         // Made first, so that the dump is never readable by anyone else

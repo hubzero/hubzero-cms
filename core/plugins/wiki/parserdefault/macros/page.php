@@ -47,7 +47,7 @@ class Page extends WikiMacro
         $page = array_shift($p);
 
         $nolink = false;
-        $p = explode(' ', end($p));
+        $p = explode(' ', (string) end($p));
         foreach ($p as $a) {
             $a = trim($a);
 

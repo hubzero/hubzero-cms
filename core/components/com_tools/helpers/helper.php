@@ -29,7 +29,7 @@ class Helper
         $string = preg_replace('# #', ',', $string);
         $arr = preg_split('#,#', $string);
 
-        $arr = self::cleanArray($arr);
+        $arr = self::cleanArray(($arr ?: []));
         $arr = array_unique($arr);
 
         return $arr;

@@ -36,7 +36,7 @@ class ServiceAccountsMigrationTest extends Basic
             $this->markTestSkipped('HZ_TEST_DB_DSN not set: no scratch database');
         }
 
-        $pdo = new PDO($dsn, getenv('HZ_TEST_DB_USER'), getenv('HZ_TEST_DB_PASS'));
+        $pdo = new PDO($dsn, (string) getenv('HZ_TEST_DB_USER'), (string) getenv('HZ_TEST_DB_PASS'));
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec("SET SESSION sql_mode = ''");
 

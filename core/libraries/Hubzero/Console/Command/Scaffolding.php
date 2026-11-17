@@ -105,7 +105,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     public function create()
     {
-        $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst($this->type);
+        $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst((string) $this->type);
 
         if (class_exists($class)) {
             $obj = new $class($this->output, $this->arguments);
@@ -161,7 +161,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     public function copy()
     {
-        $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst($this->type);
+        $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst((string) $this->type);
 
         if (class_exists($class)) {
             $obj = new $class($this->output, $this->arguments);

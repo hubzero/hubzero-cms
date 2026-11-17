@@ -230,7 +230,7 @@ class Log extends Base implements CommandInterface
                             $content = shell_exec("tail -100 {$path}");
 
                             // Split them up and loop through them
-                            $lines   = explode("\n", trim($content));
+                            $lines   = explode("\n", trim((string) $content));
                             foreach ($lines as $line) {
                                 $this->printPrompt();
                                 $class::parse(

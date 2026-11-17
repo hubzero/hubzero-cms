@@ -145,7 +145,7 @@ class Service extends Obj
         }
 
         $isSchemaClass = function ($class) {
-            return (in_array(__NAMESPACE__ . '\Schema', class_implements($class)));
+            return (in_array(__NAMESPACE__ . '\Schema', (class_implements($class) ?: [])));
         };
 
         $this->schemas = array_values(array_filter(get_declared_classes(), $isSchemaClass));
@@ -579,7 +579,7 @@ class Service extends Obj
         if (function_exists('gzcompress')) {
             $resumption = gzcompress($resumption);
         }
-        $resumption = base64_encode($resumption);
+        $resumption = base64_encode((string) $resumption);
 
         return rtrim(strtr($resumption, '+/', '-_'), '=');
     }
@@ -598,7 +598,7 @@ class Service extends Obj
             $resumption = gzuncompress($resumption);
         }
 
-        list($limit, $start, $from, $until, $set, $prefix) = explode(',', $resumption);
+        list($limit, $start, $from, $until, $set, $prefix) = explode(',', (string) $resumption);
 
         return [
             'limit'  => $limit,

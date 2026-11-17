@@ -188,7 +188,7 @@ class BundleQueue extends Relational
         }
 
         $pid     = getmypid();
-        $started = Process::startTime($pid);
+        $started = Process::startTime((int) $pid);
         $host    = Process::host();
 
         $db         = App::get('db');

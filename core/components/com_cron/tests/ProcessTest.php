@@ -87,7 +87,7 @@ class ProcessTest extends Basic
 
         $expected = (string) preg_split('/\s+/', trim(substr($stat, strrpos($stat, ')') + 1)))[19];
 
-        $this->assertEquals($expected, Process::startTime($pid));
+        $this->assertEquals($expected, Process::startTime((int) $pid));
     }
 
     /**
@@ -110,13 +110,13 @@ class ProcessTest extends Basic
     public function testIsAliveForSelf()
     {
         $pid     = getmypid();
-        $started = Process::startTime($pid);
+        $started = Process::startTime((int) $pid);
 
         if ($started === false) {
             $this->markTestSkipped('/proc not available on this platform');
         }
 
-        $this->assertTrue(Process::isAlive($pid, $started));
+        $this->assertTrue(Process::isAlive((int) $pid, $started));
     }
 
     /**
@@ -127,7 +127,7 @@ class ProcessTest extends Basic
      */
     public function testIsAlivePidReuseGuard()
     {
-        $this->assertFalse(Process::isAlive(getmypid(), '1'));
+        $this->assertFalse(Process::isAlive((int) getmypid(), '1'));
     }
 
     /**
@@ -139,8 +139,8 @@ class ProcessTest extends Basic
     {
         $this->assertFalse(Process::isAlive(4000000, '12345'));
         $this->assertFalse(Process::isAlive(0, '12345'));
-        $this->assertFalse(Process::isAlive(getmypid(), null));
-        $this->assertFalse(Process::isAlive(getmypid(), ''));
+        $this->assertFalse(Process::isAlive((int) getmypid(), null));
+        $this->assertFalse(Process::isAlive((int) getmypid(), ''));
     }
 
     /**
@@ -201,7 +201,7 @@ class ProcessTest extends Basic
         $this->assertTrue(Process::isStale(1, 4000000, '12345', Process::host()));
 
         // Live owner (this very process) on this host -> not stale.
-        $started = Process::startTime(getmypid());
+        $started = Process::startTime((int) getmypid());
 
         if ($started === false) {
             $this->markTestSkipped('/proc not available on this platform');
@@ -290,7 +290,7 @@ class ProcessTest extends Basic
         $this->assertFalse(Process::pidExists(-5));
         // Our own pid is alive: true on a /proc or posix host, null only if
         // neither is available — but never false.
-        $this->assertNotSame(false, Process::pidExists(getmypid()));
+        $this->assertNotSame(false, Process::pidExists((int) getmypid()));
     }
 
     /**
@@ -302,7 +302,7 @@ class ProcessTest extends Basic
      */
     public function testIsStaleSameHostAliveButPastCutoffIsStale()
     {
-        $started = Process::startTime(getmypid());
+        $started = Process::startTime((int) getmypid());
 
         if ($started === false) {
             $this->markTestSkipped('/proc not available on this platform');

@@ -62,7 +62,7 @@ class DatabaseTest extends TestCase
         );
         $this->assertStringContainsString(
             'database client',
-            strtolower($docComment),
+            strtolower((string) $docComment),
             'cli method description should mention database client',
         );
     }
@@ -85,7 +85,7 @@ class DatabaseTest extends TestCase
         );
         $this->assertStringContainsString(
             'sql query',
-            strtolower($docComment),
+            strtolower((string) $docComment),
             'query method description should mention SQL query',
         );
     }
@@ -125,8 +125,8 @@ class DatabaseTest extends TestCase
         $startLine = $method->getStartLine();
         $endLine = $method->getEndLine();
 
-        $source = file($filename);
-        $methodSource = implode('', array_slice($source, $startLine - 1, $endLine - $startLine + 1));
+        $source = file((string) $filename);
+        $methodSource = implode('', array_slice(($source ?: []), $startLine - 1, $endLine - $startLine + 1));
 
         // Check for driver support
         $this->assertStringContainsString('mysql', $methodSource, 'Should support mysql driver');
@@ -152,8 +152,8 @@ class DatabaseTest extends TestCase
         $startLine = $method->getStartLine();
         $endLine = $method->getEndLine();
 
-        $source = file($filename);
-        $methodSource = implode('', array_slice($source, $startLine - 1, $endLine - $startLine + 1));
+        $source = file((string) $filename);
+        $methodSource = implode('', array_slice(($source ?: []), $startLine - 1, $endLine - $startLine + 1));
 
         // Check for prefix replacement
         $this->assertStringContainsString('#__', $methodSource, 'Should handle #__ table prefix');
@@ -178,8 +178,8 @@ class DatabaseTest extends TestCase
         $startLine = $method->getStartLine();
         $endLine = $method->getEndLine();
 
-        $source = file($filename);
-        $methodSource = implode('', array_slice($source, $startLine - 1, $endLine - $startLine + 1));
+        $source = file((string) $filename);
+        $methodSource = implode('', array_slice(($source ?: []), $startLine - 1, $endLine - $startLine + 1));
 
         // Check that it detects different query types
         $this->assertStringContainsString('SELECT', $methodSource, 'Should detect SELECT queries');

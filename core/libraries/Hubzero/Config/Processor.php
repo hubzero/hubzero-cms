@@ -49,7 +49,7 @@ abstract class Processor
                     }
                 }
 
-                if (!class_exists($class)) {
+                if (!class_exists((string) $class)) {
                     throw new \InvalidArgumentException(
                         sprintf('Unable to load format class for format "%s"', $type),
                         500,

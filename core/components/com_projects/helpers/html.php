@@ -482,7 +482,7 @@ class Html extends Obj
             }
         }
         unset($part);
-        $string = implode('', $parts);
+        $string = implode('', ($parts ?: []));
 
         return $string;
     }

@@ -93,7 +93,7 @@ class Git extends Obj
             $gitInitCheck = $this->callGit('status');
         }
         // Check to see if a commit needs to be made
-        if (in_array('# Changes to be committed:', $gitInitCheck)) {
+        if (in_array('# Changes to be committed:', ($gitInitCheck ?: []))) {
             $this->callGit('commit -am "Initial commit or version control enabled"');
         }
 
@@ -373,7 +373,7 @@ class Git extends Obj
         $nCount = $this->callGit('diff --name-status ' . escapeshellarg($new['hash'] . '^'));
 
         // Get file content
-        if (count($oCount) <= 2 && count($nCount) <= 2) {
+        if (count(($oCount ?: [])) <= 2 && count($nCount) <= 2) {
             $out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash']) . ' ' . escapeshellarg($new['hash']));
         } else {
             $out = $this->callGit(

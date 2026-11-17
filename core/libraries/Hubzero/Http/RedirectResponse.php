@@ -124,12 +124,12 @@ class RedirectResponse extends BaseRedirectResponse
             $url = $this->getContent();
 
             // Check for relative internal links.
-            if (preg_match('/^index2?\.php/', $url)) {
+            if (preg_match('/^index2?\.php/', (string) $url)) {
                 $url = $this->request->base() . $url;
             }
 
             // Strip out any line breaks.
-            $url = preg_split("/[\r\n]/", $url);
+            $url = preg_split("/[\r\n]/", (string) $url);
             $url = $url[0];
 
             // If we don't start with a http we need to fix this before we proceed.

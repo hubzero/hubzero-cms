@@ -445,7 +445,7 @@ class Loader
             }
         }
 
-        echo substr($dom->saveHtml($body), 6, -7); // remove <body></body>
+        echo substr((string) $dom->saveHtml($body), 6, -7); // remove <body></body>
     }
 
     /**

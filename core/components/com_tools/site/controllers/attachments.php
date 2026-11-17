@@ -486,7 +486,7 @@ class Attachments extends SiteController
         $obj = new \Components\Tools\Tables\Tool($this->database);
 
         // check if user in tool dev team
-        if ($developers = $obj->getToolDevelopers($toolid)) {
+        if ($developers = $obj->getToolDevelopers((string) $toolid)) {
             foreach ($developers as $dv) {
                 if ($dv->uidNumber == User::get('id')) {
                     return true;

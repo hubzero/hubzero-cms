@@ -59,7 +59,7 @@ class Endnote extends Plugin
         $raw_citations = file($file->getPathname());
 
         // Process the uploaded citation data
-        return $this->onImportProcessEndnote($raw_citations);
+        return $this->onImportProcessEndnote(($raw_citations ?: []));
     }
 
     /**

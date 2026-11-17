@@ -70,7 +70,7 @@ class NativeStringProcessor implements StringProcessorInterface
             $string = preg_replace("/\.{2,}/", '.', $string);
         }
 
-        $string = trim(strtolower($string));
+        $string = trim(strtolower((string) $string));
         $string = str_replace(["\t", "\r\n", "\r", "\n"], '', $string);
 
         return $string;

@@ -191,7 +191,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn')
                 //    .'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
             ?>
-            <li class="file file-<?php echo strtolower($extension); ?>">
+            <li class="file file-<?php echo strtolower((string) $extension); ?>">
                 <div class="name">
                     <a href="javascript:void(0);"><?php echo $this->escape($file); ?></a>
                 </div>

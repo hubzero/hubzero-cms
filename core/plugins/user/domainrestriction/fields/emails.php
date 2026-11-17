@@ -64,7 +64,7 @@ class Emails extends Field
         $html[] = '<span class="input-cell">';
         $html[] = '<input type="text" id="' . $this->id . '-email" />';
         $html[] = '<input id="' . $this->id . '" name="' . $this->name
-            . '" type="hidden" value="' . base64_encode($value) . '"/>';
+            . '" type="hidden" value="' . base64_encode((string) $value) . '"/>';
         $html[] = '</span>';
         $html[] = '<span class="input-cell">';
         $html[] = '<button id="' . $this->id . '-save">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_ADD') . '</button>';

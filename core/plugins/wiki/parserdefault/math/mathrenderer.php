@@ -224,11 +224,11 @@ class MathRenderer
                  %m - mathml code, without \0 characters
             */
 
-            if (strlen($contents) == 0) {
+            if (strlen((string) $contents) == 0) {
                 return $this->error('math_unknown_error1');
             }
 
-            $retval = substr($contents, 0, 1);
+            $retval = substr((string) $contents, 0, 1);
             $errmsg = '';
             if (($retval == 'C') || ($retval == 'M') || ($retval == 'L')) {
                 if ($retval == 'C') {
@@ -238,14 +238,14 @@ class MathRenderer
                 } else {
                     $this->conservativeness = 0;
                 }
-                $outdata = substr($contents, 33);
+                $outdata = substr((string) $contents, 33);
 
                 $i = (int) strpos($outdata, "\000");
 
                 $this->html = substr($outdata, 0, $i);
                 $this->mathml = substr($outdata, $i + 1);
             } elseif (($retval == 'c') || ($retval == 'm') || ($retval == 'l')) {
-                $this->html = substr($contents, 33);
+                $this->html = substr((string) $contents, 33);
                 if ($retval == 'c') {
                     $this->conservativeness = 2;
                 } elseif ($retval == 'm') {
@@ -256,14 +256,14 @@ class MathRenderer
                 $this->mathml = null;
             } elseif ($retval == 'X') {
                 //$this->html = null;
-                $this->mathml = substr($contents, 33);
+                $this->mathml = substr((string) $contents, 33);
                 $this->conservativeness = 0;
             } elseif ($retval == '+') {
                 //$this->html = null;
                 //$this->mathml = null;
                 $this->conservativeness = 0;
             } else {
-                $errbit = htmlspecialchars(substr($contents, 1));
+                $errbit = htmlspecialchars(substr((string) $contents, 1));
                 switch ($retval) {
                     case 'E':
                         $errmsg = $this->error('math_lexing_error', $errbit);
@@ -281,7 +281,7 @@ class MathRenderer
             }
 
             if (!$errmsg) {
-                $this->hash = substr($contents, 1, 32);
+                $this->hash = substr((string) $contents, 1, 32);
             }
 
             if ($errmsg) {

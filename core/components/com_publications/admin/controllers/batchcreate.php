@@ -133,7 +133,7 @@ class Batchcreate extends AdminController
             $this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'));
             $output = '<pre>';
             foreach ($errors as $error) {
-                $output .=  $this->displayXmlError($error, $this->data);
+                $output .=  $this->displayXmlError($error, (string) $this->data);
             }
             $output .= '</pre>';
             $this->reader->close();
@@ -335,7 +335,7 @@ class Batchcreate extends AdminController
 
         // No errors. Let's rewind and parse
         $this->reader = new \XMLReader();
-        $this->reader->XML($this->data);
+        $this->reader->XML((string) $this->data);
 
         // Load classes
         $objCat = new Tables\Category($this->database);

@@ -321,7 +321,7 @@ class Changelog extends Obj
         }
 
         $val = preg_split("/[,;]/", $val);
-        $val = array_map('trim', $val);
+        $val = array_map('trim', ($val ?: []));
 
         foreach ($val as $acc) {
             // Is this a username or email address?

@@ -818,7 +818,7 @@ class Mailinglists extends AdminController
         $parsedEmails = [];
 
         // split file by line break
-        $parsedEmailLines = explode(PHP_EOL, $emails);
+        $parsedEmailLines = explode(PHP_EOL, (string) $emails);
 
         // loop through each line and parse
         foreach ($parsedEmailLines as $emailLine) {

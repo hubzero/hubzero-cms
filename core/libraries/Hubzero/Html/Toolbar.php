@@ -240,7 +240,7 @@ class Toolbar extends Obj
             // results in a directory registered so that
             // non-registered directories are not accessible via directory
             // traversal attempts.
-            if (file_exists($fullname) && substr($fullname, 0, strlen($path)) == $path) {
+            if (file_exists((string) $fullname) && substr((string) $fullname, 0, strlen($path)) == $path) {
                 return $fullname;
             }
         }

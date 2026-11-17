@@ -61,7 +61,12 @@ class Migration20140408121756ComCourses extends Base
                         $offering = $bits[2];
                         $user = strstr($bits[3], '.', true);
 
-                        $member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
+                        $member = \Components\Courses\Models\Member::getInstance(
+                            (string) $user,
+                            $course,
+                            $offering,
+                            null,
+                        );
                         $member->token();
                     }
                 }

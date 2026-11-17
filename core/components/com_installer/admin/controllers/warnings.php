@@ -98,8 +98,8 @@ class Warnings extends AdminController
         }
 
 
-        $post_max_size = self::toBytes(ini_get('post_max_size'));
-        $upload_max_filesize = self::toBytes(ini_get('upload_max_filesize'));
+        $post_max_size = self::toBytes((string) ini_get('post_max_size'));
+        $upload_max_filesize = self::toBytes((string) ini_get('upload_max_filesize'));
 
         if ($post_max_size < $upload_max_filesize) {
             $messages[] = [

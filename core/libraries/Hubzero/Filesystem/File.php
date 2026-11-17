@@ -57,7 +57,7 @@ class File extends Entity
             ];
         }
 
-        return self::getSpecialized($metadata, $adapter);
+        return self::getSpecialized(($metadata ?: []), $adapter);
     }
 
     /**

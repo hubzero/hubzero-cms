@@ -1900,7 +1900,7 @@ class Files extends Plugin
                 $hash = $this->repo->getLastRevision($params);
             }
 
-            $image = $file->getPreview($this->model, $hash, 'fullPath', $render);
+            $image = $file->getPreview($this->model, (string) $hash, 'fullPath', $render);
 
             // Serve image
             if ($image && is_file($image)) {
@@ -1997,7 +1997,7 @@ class Files extends Plugin
                 $ftname = \Components\Projects\Helpers\Google::getImportFilename($file->get('remoteTitle'), $cExt);
                 $serveas = $ftname;
 
-                $this->connect->fetchFile($data, $ftname, $temp_path);
+                $this->connect->fetchFile((string) $data, $ftname, $temp_path);
                 $downloadPath = $temp_path . DS . $ftname;
             } elseif ($hash) {
                 // Download local revision

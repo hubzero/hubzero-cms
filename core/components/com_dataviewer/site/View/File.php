@@ -45,7 +45,7 @@ class File
             exit();
         }
 
-        if (is_file($full_path)) {
+        if (is_file((string) $full_path)) {
             if (!preg_match('/\.(gif|jpe?g|png|pdf)$/i', $file_name)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
@@ -53,7 +53,7 @@ class File
                 header('Content-Transfer-Encoding: binary');
             } else {
                 $mime = 'application/octet-stream';
-                switch (strtolower(pathinfo($full_path, PATHINFO_EXTENSION))) {
+                switch (strtolower(pathinfo((string) $full_path, PATHINFO_EXTENSION))) {
                     case 'jpeg':
                     case 'jpg':
                         $mime = 'image/jpeg';
@@ -74,12 +74,12 @@ class File
                 header('Content-Disposition: inline; filename="' . $file_name . '"');
             }
 
-            header('Content-Length: ' . filesize($full_path));
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', filemtime($full_path)));
+            header('Content-Length: ' . filesize((string) $full_path));
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s T', (int) filemtime((string) $full_path)));
 
             ob_clean();
             ob_end_flush();
-            readfile($full_path);
+            readfile((string) $full_path);
         }
 
         exit();

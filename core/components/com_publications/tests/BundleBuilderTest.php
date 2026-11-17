@@ -435,7 +435,7 @@ class BundleBuilderTest extends Basic
         $this->assertSame('OLD-SMALL', file_get_contents($old));
 
         // No temp relink artifact left behind.
-        $this->assertCount(0, glob($this->root . $ds . '*.relink.*'));
+        $this->assertCount(0, (glob($this->root . $ds . '*.relink.*') ?: []));
     }
 
     /**
@@ -455,7 +455,7 @@ class BundleBuilderTest extends Basic
 
         $this->assertTrue($this->linkInto($target, $link));
         $this->assertSame($ino, fileinode($link), 'still the same inode');
-        $this->assertCount(0, glob($this->root . $ds . '*.relink.*'), 'no temp created for a no-op');
+        $this->assertCount(0, (glob($this->root . $ds . '*.relink.*') ?: []), 'no temp created for a no-op');
     }
 
     /**

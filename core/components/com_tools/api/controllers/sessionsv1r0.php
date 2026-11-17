@@ -636,7 +636,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr(strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr($app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -845,7 +845,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr(strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr($app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -1196,7 +1196,7 @@ class Sessionsv1r0 extends ApiController
 
         //get the version
         if (strstr($row->appname, '_')) {
-            $v = substr(strrchr($row->appname, '_'), 1);
+            $v = substr((string) strrchr($row->appname, '_'), 1);
             $v = str_replace('r', '', $v);
             Request::setVar('version', $v);
         }

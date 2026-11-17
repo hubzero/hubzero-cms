@@ -183,7 +183,7 @@ class MediaHelper
                     // We have fileinfo
                     $finfo = finfo_open(FILEINFO_MIME);
                     $type = finfo_file($finfo, $file['tmp_name']);
-                    if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
+                    if (strlen((string) $type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
                         $err = 'COM_MEDIA_ERROR_WARNINVALID_MIME';
                         return false;
                     }
@@ -193,7 +193,7 @@ class MediaHelper
                     // we have mime magic
                     $type = mime_content_type($file['tmp_name']);
 
-                    if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
+                    if (strlen((string) $type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
                         $err = 'COM_MEDIA_ERROR_WARNINVALID_MIME';
                         return false;
                     }

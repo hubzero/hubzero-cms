@@ -157,7 +157,7 @@ class Dispatcher implements DispatcherInterface
             }
 
             foreach ($events as $name => $priority) {
-                $name = (strstr($name, '.') ? ltrim(strstr($name, '.'), '.') : $name);
+                $name = (strstr($name, '.') ? ltrim((string) strstr($name, '.'), '.') : $name);
 
                 if (!isset($this->listeners[$name])) {
                     $this->listeners[$name] = new ListenersPriorityQueue();

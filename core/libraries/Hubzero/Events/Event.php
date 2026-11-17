@@ -68,7 +68,7 @@ class Event implements ArrayAccess, Countable
     {
         if (strstr($name, '.')) {
             $this->group = strstr($name, '.', true);
-            $name = ltrim(strstr($name, '.'), '.');
+            $name = ltrim((string) strstr($name, '.'), '.');
         }
         $this->name      = $name;
         $this->arguments = $arguments;

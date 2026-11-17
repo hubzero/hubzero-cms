@@ -284,8 +284,8 @@ class Data extends Base
             . '&amp;task=serve';
 
         // Create new version path
-        if (!is_dir($newConfigs->dataPath)) {
-            if (!Filesystem::makeDirectory($newConfigs->dataPath, 0755, true, true)) {
+        if (!is_dir((string) $newConfigs->dataPath)) {
+            if (!Filesystem::makeDirectory((string) $newConfigs->dataPath, 0755, true, true)) {
                 $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }

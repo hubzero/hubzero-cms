@@ -136,7 +136,7 @@ class Attachment extends Relational
         $filename = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
 
         $ext = strrchr($filename, '.');
-        $prefix = substr($filename, 0, -strlen($ext));
+        $prefix = substr($filename, 0, -strlen((string) $ext));
 
         if (file_exists($this->getUploadDir() . DS . $data['parent'] . DS . $data['post_id'] . DS . $filename)) {
             $i = 1;

@@ -83,7 +83,7 @@ class Attachment extends Obj
         $filename = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
 
         $ext = strrchr($filename, '.');
-        $prefix = substr($filename, 0, -strlen($ext));
+        $prefix = substr($filename, 0, -strlen((string) $ext));
 
         if (strlen($prefix) > 240) {
             $prefix = substr($prefix, 0, 240);
@@ -112,7 +112,7 @@ class Attachment extends Obj
 
         if (file_exists($path)) {
             $ext = strrchr($filename, '.');
-            $prefix = substr($filename, 0, -strlen($ext));
+            $prefix = substr($filename, 0, -strlen((string) $ext));
 
             $i = 1;
 

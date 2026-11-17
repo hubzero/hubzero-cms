@@ -573,7 +573,7 @@ class Databases extends Plugin
         $list = [];
         $error = false;
 
-        if (file_exists($path) && is_dir($path)) {
+        if (file_exists((string) $path) && is_dir((string) $path)) {
             $list = $this->repo->filelist($params);
         } else {
             $error = Lang::txt('PLG_PROJECTS_DATABASES_MISSING_REPO');
@@ -649,7 +649,9 @@ class Databases extends Plugin
 
         // Confine the requested file to the project repository: resolve it and
         // verify it still sits under the repo root before opening it.
-        $repoReal   = realpath(\Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias')));
+        // No repository path is no repository: realpath('') would be the working directory
+        $repoPath   = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
+        $repoReal   = $repoPath ? realpath($repoPath) : false;
         $targetReal = realpath($path . DS . $file);
         if (
             $repoReal === false || $targetReal === false
@@ -667,7 +669,7 @@ class Databases extends Plugin
             $list = [];
             // The directory itself came from the request too; only list inside
             // the project repository
-            $dirReal = realpath($path);
+            $dirReal = realpath((string) $path);
             if ($dirReal === false || strpos($dirReal . DS, $repoReal . DS) !== 0) {
                 echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
                 return;
@@ -945,7 +947,9 @@ class Databases extends Plugin
 
         // Confine the source file to this project's repository (as the preview
         // action does): the path above is built straight from the request
-        $repoReal   = realpath(\Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias')));
+        // No repository path is no repository: realpath('') would be the working directory
+        $repoPath   = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
+        $repoReal   = $repoPath ? realpath($repoPath) : false;
         $targetReal = realpath($path . DS . $file);
         if (
             $repoReal === false || $targetReal === false
@@ -1181,7 +1185,9 @@ class Databases extends Plugin
 
             // The stored dir/file originally came from a request: confine the
             // target to this project's repository before writing and committing
-            $repoReal   = realpath(\Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias')));
+            // No repository path is no repository: realpath('') would be the working directory
+            $repoPath   = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
+            $repoReal   = $repoPath ? realpath($repoPath) : false;
             $targetReal = realpath($path . $file);
             $dirReal    = realpath($path);
             if (

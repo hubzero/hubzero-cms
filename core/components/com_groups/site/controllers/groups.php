@@ -67,7 +67,7 @@ class Groups extends Base
 
         // If we have a file
         if (isset($file)) {
-            $this->downloadTask($file);
+            $this->downloadTask((string) $file);
 
             return;
         }

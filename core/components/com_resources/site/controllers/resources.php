@@ -2727,7 +2727,7 @@ class Resources extends SiteController
         }
 
         $fsize = filesize($p . $f);
-        $mod_date = date('r', filemtime($p . $f));
+        $mod_date = date('r', (int) filemtime($p . $f));
 
         $cont_dis = $inline ? 'inline' : 'attachment';
 
@@ -2771,7 +2771,7 @@ class Resources extends SiteController
             $buffer = fread($handle, $chunksize);
             echo $buffer;
             if ($retbytes) {
-                $cnt += strlen($buffer);
+                $cnt += strlen((string) $buffer);
             }
         }
         $status = fclose($handle);

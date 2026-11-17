@@ -112,7 +112,7 @@ Html::behavior('tooltip');
             $appinfo = exec(
                 "/usr/bin/hz-aws-appstream getapp --appid " . escapeshellarg(stripslashes($row->get('path'))),
             );
-            $appinfoArray = explode("|", $appinfo);
+            $appinfoArray = explode("|", (string) $appinfo);
             ?>
             <tr>
                 <td>

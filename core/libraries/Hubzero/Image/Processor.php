@@ -412,8 +412,8 @@ class Processor extends Obj
             $transparencyColor['green'],
             $transparencyColor['blue'],
         );
-        imagefill($resource, 0, 0, $transparencyIndex);
-        imagecolortransparent($resource, $transparencyIndex);
+        imagefill($resource, 0, 0, (int) $transparencyIndex);
+        imagecolortransparent($resource, (int) $transparencyIndex);
 
         if ($resample) {
             imagecopyresampled($resource, $this->resource, 0, 0, $x, $y, $new_w, $new_h, $w, $h);
@@ -570,7 +570,7 @@ class Processor extends Obj
         ob_end_clean();
 
         // Encode and build data uri
-        $base64 = base64_encode($image_data);
+        $base64 = base64_encode((string) $image_data);
         $image_atts = getimagesize($this->source);
 
         return 'data:' . $image_atts['mime'] . ';base64,' . $base64;

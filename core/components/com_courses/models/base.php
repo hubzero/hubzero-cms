@@ -186,7 +186,7 @@ abstract class Base extends Model
 
         if ($res = parent::delete()) {
             // Log the event
-            $this->log($scope_id, $this->scope, 'delete', $log);
+            $this->log($scope_id, $this->scope, 'delete', (string) $log);
         }
 
         return $res;

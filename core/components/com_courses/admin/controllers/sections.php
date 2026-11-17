@@ -454,7 +454,7 @@ class Sections extends AdminController
                     // Added to allow users to overwrite their own image.
                     // Since it accepts multiple image types, this ensures all pre-existing images are removed
                     //   so the one they are uploading is displayed.
-                    array_map('unlink', glob($uploadDirectory . 'badge.*'));
+                    array_map('unlink', (glob($uploadDirectory . 'badge.*') ?: []));
 
                     // Get the final file path
                     $target_path = $uploadDirectory . 'badge.' . $ext;

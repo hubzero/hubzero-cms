@@ -134,7 +134,7 @@ class Response extends BaseResponse
     public function send($flush = false)
     {
         if ($this->compress) {
-            $this->setContent($this->squeeze($this->getContent()));
+            $this->setContent($this->squeeze((string) $this->getContent()));
         }
 
         $this->sendHeaders();

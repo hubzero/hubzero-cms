@@ -434,7 +434,7 @@ class SecurityGuard
         $secret = $this->getServerSecret();
 
         // HMAC ensures this cannot be forged without knowing the server secret
-        return hash_hmac('sha256', $sessionId, $secret);
+        return hash_hmac('sha256', (string) $sessionId, $secret);
     }
 
     /**
@@ -1315,14 +1315,14 @@ class SecurityGuard
         // Check Origin header first (more reliable)
         $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
         if (!empty($origin)) {
-            $originHost = strtolower(parse_url($origin, PHP_URL_HOST) ?? '');
+            $originHost = strtolower((string) (parse_url($origin, PHP_URL_HOST) ?? ''));
             return $originHost === $serverHost;
         }
 
         // Fall back to Referer header
         $referer = $_SERVER['HTTP_REFERER'] ?? '';
         if (!empty($referer)) {
-            $refererHost = strtolower(parse_url($referer, PHP_URL_HOST) ?? '');
+            $refererHost = strtolower((string) (parse_url($referer, PHP_URL_HOST) ?? ''));
             return $refererHost === $serverHost;
         }
 

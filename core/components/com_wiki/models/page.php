@@ -143,7 +143,7 @@ class Page extends Relational
             $pagename = $this->get('pagename', '') ?? '';
         }
         if (strstr($pagename, ':')) {
-            return strtolower(strstr($pagename, ':', true));
+            return strtolower((string) strstr($pagename, ':', true));
         }
         return '';
     }
@@ -161,7 +161,7 @@ class Page extends Relational
             $pagename = $this->get('pagename');
         }
         if (strstr($pagename, ':')) {
-            return ltrim(strstr($pagename, ':'), ':');
+            return ltrim((string) strstr($pagename, ':'), ':');
         }
         return '';
     }

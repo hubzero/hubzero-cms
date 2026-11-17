@@ -102,6 +102,6 @@ class WinCache extends Store
     {
         return (extension_loaded('wincache')
             && function_exists('wincache_ucache_get')
-            && !strcmp(ini_get('wincache.ucenabled'), "1"));
+            && !strcmp((string) ini_get('wincache.ucenabled'), "1"));
     }
 }

@@ -26,7 +26,11 @@ curl_setopt($ch, \CURLOPT_TIMEOUT, 2);
 curl_setopt($ch, \CURLOPT_HTTPHEADER, []);
 curl_setopt($ch, \CURLOPT_TIMEOUT, 60);
 if (file_exists($cache)) {
-    curl_setopt($ch, \CURLOPT_HTTPHEADER, ['If-Modified-Since: ' . gmdate('D, d M Y H:i:s \G\M\T', filemtime($cache))]);
+    curl_setopt(
+        $ch,
+        \CURLOPT_HTTPHEADER,
+        ['If-Modified-Since: ' . gmdate('D, d M Y H:i:s \G\M\T', (int) filemtime($cache))],
+    );
     $xml = curl_exec($ch);
     if (curl_getinfo($ch, \CURLINFO_HTTP_CODE) == 304) {
         echo file_get_contents($cache);

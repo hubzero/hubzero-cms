@@ -354,7 +354,7 @@ class Mozify extends Obj
             $mosaic .= '<tr>';
             for ($x = 0; $x < $this->imageWidth; $x += $this->mosaicSize) {
                 $color = imagecolorat($resource, $x, $y);
-                $rgba = imagecolorsforindex($resource, $color);
+                $rgba = imagecolorsforindex($resource, (int) $color);
                 //$rgba['alpha'] = $rgba['alpha'];
                 $color_string = $this->rgb2hex($rgba);
                 $mosaic .= '<td width="'

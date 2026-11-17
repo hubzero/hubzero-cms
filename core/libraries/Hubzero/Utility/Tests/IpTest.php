@@ -144,13 +144,13 @@ class IpTest extends Basic
     public function testPacked16()
     {
         $v4 = \Hubzero\Utility\Ip::toPacked16('192.0.2.7');
-        $this->assertEquals('00000000000000000000ffffc0000207', bin2hex($v4));
+        $this->assertEquals('00000000000000000000ffffc0000207', bin2hex((string) $v4));
         $this->assertEquals($v4, \Hubzero\Utility\Ip::toPacked16('::ffff:192.0.2.7'));
-        $this->assertEquals('192.0.2.7', \Hubzero\Utility\Ip::fromPacked16($v4));
+        $this->assertEquals('192.0.2.7', \Hubzero\Utility\Ip::fromPacked16((string) $v4));
 
         $v6 = \Hubzero\Utility\Ip::toPacked16('2001:db8::1');
-        $this->assertEquals(16, strlen($v6));
-        $this->assertEquals('2001:db8::1', \Hubzero\Utility\Ip::fromPacked16($v6));
+        $this->assertEquals(16, strlen((string) $v6));
+        $this->assertEquals('2001:db8::1', \Hubzero\Utility\Ip::fromPacked16((string) $v6));
 
         $this->assertTrue(\Hubzero\Utility\Ip::toPacked16('192.0.2.7') < \Hubzero\Utility\Ip::toPacked16('192.0.2.10'));
         $this->assertTrue(
@@ -167,13 +167,13 @@ class IpTest extends Basic
      **/
     public function testToPacked()
     {
-        $this->assertEquals('c0000207', bin2hex(\Hubzero\Utility\Ip::toPacked('192.0.2.7', $mapped)));
+        $this->assertEquals('c0000207', bin2hex((string) \Hubzero\Utility\Ip::toPacked('192.0.2.7', $mapped)));
         $this->assertFalse($mapped);
 
-        $this->assertEquals('c0000207', bin2hex(\Hubzero\Utility\Ip::toPacked('::ffff:192.0.2.7', $mapped)));
+        $this->assertEquals('c0000207', bin2hex((string) \Hubzero\Utility\Ip::toPacked('::ffff:192.0.2.7', $mapped)));
         $this->assertTrue($mapped);
 
-        $this->assertEquals(16, strlen(\Hubzero\Utility\Ip::toPacked('2001:db8::1', $mapped)));
+        $this->assertEquals(16, strlen((string) \Hubzero\Utility\Ip::toPacked('2001:db8::1', $mapped)));
         $this->assertFalse($mapped);
 
         $this->assertFalse(\Hubzero\Utility\Ip::toPacked('nonsense', $mapped));

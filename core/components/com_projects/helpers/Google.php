@@ -810,7 +810,7 @@ class Google extends Obj
             $fpath = \Components\Projects\Helpers\Html::fixFileName($fpath, '-' . $num);
 
             // Check that new path isn't used either
-            return self::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);
+            return self::buildDuplicatePath($id, (string) $fpath, $format, $connections, $remotes, $duplicates);
         }
 
         return $fpath;

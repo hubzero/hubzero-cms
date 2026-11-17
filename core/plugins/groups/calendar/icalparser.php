@@ -334,7 +334,7 @@ class IcalParser
             'ACTION',
             'REQUEST-STATUS',
         ];
-        if (in_array($key, $text_properties) || strpos($key, 'X-') === 0) {
+        if (in_array($key, $text_properties) || strpos((string) $key, 'X-') === 0) {
             if (is_array($value)) {
                 foreach ($value as &$var) {
                     $var = strtr($var, ['\\\\' => '\\', '\\N' => "\n", '\\n' => "\n", '\\;' => ';', '\\,' => ',']);

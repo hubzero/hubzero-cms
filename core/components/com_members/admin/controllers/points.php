@@ -677,7 +677,7 @@ class Points extends AdminController
                                 );
                                 break;
                         }
-                        if ($out = trim(strip_tags(ob_get_clean()))) {
+                        if ($out = trim(strip_tags((string) ob_get_clean()))) {
                             Notify::warning($validuser->get('username') . ': ' . $out);
                         }
                     }

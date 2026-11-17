@@ -309,7 +309,7 @@ class Menus extends AdminController
 
         foreach ($items as $item) {
             // Parse the link.
-            parse_str(parse_url($item->link, PHP_URL_QUERY), $parts);
+            parse_str((string) parse_url($item->link, PHP_URL_QUERY), $parts);
 
             // Tease out the option.
             if (isset($parts['option'])) {

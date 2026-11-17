@@ -90,7 +90,7 @@ class Product extends \Hubzero\Component\SiteController
             // Check if passed options/productID map to a SKU
             try {
                 $sku = $this->warehouse->mapSku($pId, $options);
-                $cart->add($sku, $qty);
+                $cart->add((string) $sku, $qty);
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
                 $pageMessages[] = [$e->getMessage(), 'error'];

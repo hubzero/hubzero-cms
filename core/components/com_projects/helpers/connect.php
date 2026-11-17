@@ -387,7 +387,7 @@ class Connect extends Obj
             if (!$refresh_token || $reauth) {
                 $authUrl = $this->createAuthUrl('google', $return);
                 //header('Location: ' . $authUrl);
-                App::redirect($authUrl);
+                App::redirect((string) $authUrl);
             }
         }
 
@@ -685,7 +685,7 @@ class Connect extends Obj
                 }
 
                 // Save params for project team member
-                $this->storeParam($service . '_email', $email, $uid);
+                $this->storeParam($service . '_email', (string) $email, $uid);
                 $this->storeParam($service . '_name', $name, $uid);
                 $this->storeParam($service . '_userid', $user['id'], $uid);
             } catch (Exception $e) {
@@ -1857,7 +1857,7 @@ class Connect extends Obj
             return $fc;
         }
 
-        if ($this->fetchFile($fc, $fpath, $path)) {
+        if ($this->fetchFile((string) $fc, $fpath, $path)) {
             return true;
         }
 
@@ -1913,7 +1913,7 @@ class Connect extends Obj
             $fc = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $fc);
         }
 
-        if ($this->fetchFile($fc, $fpath, $path)) {
+        if ($this->fetchFile((string) $fc, $fpath, $path)) {
             return true;
         }
 
@@ -2107,7 +2107,7 @@ class Connect extends Obj
                 'service' => $service,
             ];
             $json = json_encode($array);
-            $json = base64_encode($json);
+            $json = base64_encode((string) $json);
 
             $params[] = 'state=' . urlencode($json);
 

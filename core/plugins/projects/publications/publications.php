@@ -1740,7 +1740,7 @@ class Publications extends Plugin
             $used_labels = $pub->version->getUsedLabels($pid, 'dev');
             if (!$label) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE'));
-            } elseif (in_array($label, $used_labels)) {
+            } elseif (in_array($label, ($used_labels ?: []))) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
             } else {
                 // Create new version
@@ -1935,7 +1935,7 @@ class Publications extends Plugin
 
         // Check that version label was not published before
         $used_labels = $pub->version->getUsedLabels($pid, $version);
-        if (!$pub->version->version_label || in_array($pub->version->version_label, $used_labels)) {
+        if (!$pub->version->version_label || in_array($pub->version->version_label, ($used_labels ?: []))) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
         }
 

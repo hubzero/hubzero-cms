@@ -240,7 +240,7 @@ class Image extends Plugin
             $white = imagecolorallocate($img, 255, 255, 255);
             $black = imagecolorallocate($img, 0, 0, 0);
 
-            imagefilledrectangle($img, 0, 0, $width - 1, $height - 1, $white);
+            imagefilledrectangle($img, 0, 0, $width - 1, $height - 1, (int) $white);
 
             // draw text
             $x = 1;
@@ -269,8 +269,8 @@ class Image extends Plugin
         $img2 = imagecreatetruecolor($width, $height);
         $foreground = imagecolorallocate($img2, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
         $background = imagecolorallocate($img2, $background_color[0], $background_color[1], $background_color[2]);
-        imagefilledrectangle($img2, 0, 0, $width - 1, $height - 1, $background);
-        imagefilledrectangle($img2, 0, $height, $width - 1, $height + 12, $foreground);
+        imagefilledrectangle($img2, 0, 0, $width - 1, $height - 1, (int) $background);
+        imagefilledrectangle($img2, 0, $height, $width - 1, $height + 12, (int) $foreground);
 
         // periods
         $rand1 = random_int(750000, 1200000) / 10000000;
@@ -339,7 +339,7 @@ class Image extends Plugin
                 $newgreen = (int) round($newgreen);
                 $newblue  = (int) round($newblue);
 
-                imagesetpixel($img2, $x, $y, imagecolorallocate($img2, $newred, $newgreen, $newblue));
+                imagesetpixel($img2, $x, $y, (int) imagecolorallocate($img2, $newred, $newgreen, $newblue));
             }
         }
 
@@ -399,7 +399,7 @@ class Image extends Plugin
         $grey = imagecolorallocate($image, 204, 204, 204);
 
         // Make the background black
-        imagefill($image, 0, 0, $black);
+        imagefill($image, 0, 0, (int) $black);
 
         $size = 10;
         $this->ly = (int) (2.4 * $size);

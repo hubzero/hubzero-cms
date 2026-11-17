@@ -1109,7 +1109,7 @@ class WikiParser
             switch ($t) {
                 case 'wiki':
                     $cls = trim($lines[0]);
-                    $cls = trim(strstr($cls, ' '));
+                    $cls = trim((string) strstr($cls, ' '));
 
                     $txt = str_replace('#!wiki ' . $cls, '', $txt);
 

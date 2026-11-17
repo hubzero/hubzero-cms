@@ -494,7 +494,7 @@ class Manager extends Obj
             // Only the cookie may name an existing session. Anything arriving
             // in the query string or a form field is a fixation attempt, so a
             // request without the cookie starts a session of our choosing.
-            if (!\Request::getVar($session_name, false, 'COOKIE')) {
+            if (!\Request::getVar((string) $session_name, false, 'COOKIE')) {
                 session_id($this->createId());
             }
         }
@@ -539,7 +539,7 @@ class Manager extends Obj
             $cookie_domain = $this->cookie_domain;
             $cookie_path   = $this->cookie_path;
 
-            setcookie(session_name(), '', time() - 42000, $cookie_path, $cookie_domain);
+            setcookie((string) session_name(), '', time() - 42000, $cookie_path, $cookie_domain);
         }
 
         session_unset();

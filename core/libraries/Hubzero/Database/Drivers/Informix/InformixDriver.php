@@ -353,7 +353,7 @@ class InformixDriver extends BaseSqlDriver
     public function execute()
     {
         $sql = $this->statement->queryString ?? '';
-        $firstWord = strtoupper(strtok(ltrim($sql), " \t\n"));
+        $firstWord = strtoupper((string) strtok(ltrim($sql), " \t\n"));
         $isDdl = in_array($firstWord, ['CREATE', 'ALTER', 'DROP', 'TRUNCATE', 'RENAME'], true);
         if ($sql !== '') {
             $this->trace('execute SQL: ' . preg_replace('/\s+/', ' ', trim($sql)));
@@ -417,7 +417,7 @@ class InformixDriver extends BaseSqlDriver
      */
     public function exec($statement)
     {
-        $firstWord = strtoupper(strtok(ltrim((string) $statement), " \t\n"));
+        $firstWord = strtoupper((string) (strtok(ltrim((string) $statement), " \t\n")));
         $isDdl = in_array($firstWord, ['CREATE', 'ALTER', 'DROP', 'TRUNCATE', 'RENAME'], true);
 
         if (

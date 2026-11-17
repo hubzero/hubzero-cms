@@ -31,7 +31,7 @@ class Router extends Base
         for ($i = 0; $i < $total; $i++) {
             //$segments[$i] = str_replace(':', '-', $segments[$i]);
             if (strstr($segments[$i], ':')) {
-                $segments[$i] = trim(strstr($segments[$i], ':'), ':');
+                $segments[$i] = trim((string) strstr($segments[$i], ':'), ':');
             }
         }
 

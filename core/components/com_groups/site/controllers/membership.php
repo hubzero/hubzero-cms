@@ -200,7 +200,7 @@ class Membership extends Base
 
         // Explode the string of logins/e-mails into an array
         $la = preg_split("/[,;]/", $logins);
-        $la = array_map('trim', $la);
+        $la = array_map('trim', ($la ?: []));
 
         // turn usernames into proper IDs
         foreach ($la as $k => $l) {

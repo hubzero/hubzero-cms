@@ -1008,7 +1008,7 @@ class Citations extends SiteController
         }
 
         $fsize = filesize($p . DS . $f);
-        $mod_date = date('r', filemtime($p . DS . $f));
+        $mod_date = date('r', (int) filemtime($p . DS . $f));
 
         $cont_dis = $inline ? 'inline' : 'attachment';
 
@@ -1054,7 +1054,7 @@ class Citations extends SiteController
             $buffer = fread($handle, $chunksize);
             echo $buffer;
             if ($retbytes) {
-                $cnt += strlen($buffer);
+                $cnt += strlen((string) $buffer);
             }
         }
         $status = fclose($handle);

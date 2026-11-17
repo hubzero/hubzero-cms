@@ -124,7 +124,7 @@ class Help extends Base implements CommandInterface
                         $comment = $reflection->getDocComment();
 
                         // Check for help ignore flag
-                        if (!preg_match('/@museIgnoreHelp/', $comment)) {
+                        if (!preg_match('/@museIgnoreHelp/', (string) $comment)) {
                             $this->commands[] = $class;
                         }
                     }

@@ -65,7 +65,7 @@ class Migration20150330124145Core extends Base
         $configuration = preg_replace($pattern, '$1pdo$2', $configuration);
 
         // The configuration file typically doesn't even give write permissions to the owner
-        $permissions = substr(decoct(fileperms($configFile)), 2);
+        $permissions = substr(decoct((int) fileperms($configFile)), 2);
 
         if (substr($permissions, 1, 1) != '6') {
             App::get('filesystem')->setPermissions(

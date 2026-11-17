@@ -29,7 +29,7 @@ class JsonFormat
         }
 
         $json = json_encode($json_obj);
-        $len = strlen($json);
+        $len = strlen((string) $json);
 
         for ($c = 0; $c < $len; $c++) {
             $char = $json[$c];

@@ -2514,7 +2514,7 @@ class Database
                 }
 
                 // Regular printable character
-                if (ord($char) >= 32 && ord($char) < 127) {
+                if (ord((string) $char) >= 32 && ord($char) < 127) {
                     $input .= $char;
                     if ($isPassword) {
                         echo '*';

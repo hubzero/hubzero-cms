@@ -77,7 +77,7 @@ class Iprange
             return $value;
         }
 
-        return Ip::fromPacked16(hex2bin($value));
+        return Ip::fromPacked16((string) hex2bin($value));
     }
 
     /**

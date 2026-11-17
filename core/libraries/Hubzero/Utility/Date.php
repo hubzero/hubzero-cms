@@ -600,7 +600,7 @@ class Date extends DateTime
 
         // [!] HUBZERO - Changed default to format "% days ago"
         // Over a month, return the absolute time
-        $text = $this->ago(strtotime($this), strtotime($time));
+        $text = $this->ago((float) strtotime($this), strtotime($time));
 
         $parts = explode(' ', $text);
 

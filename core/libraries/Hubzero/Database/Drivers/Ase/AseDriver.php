@@ -1953,7 +1953,7 @@ class AseDriver extends BaseSqlDriver
                         // Rebuild: INSERT INTO table (dest_cols) SELECT ...
                         $selectPos = stripos($sql, 'SELECT');
                         $newSql = "INSERT INTO {$quotedTable} ({$colListStr}) "
-                            . substr($sql, $selectPos);
+                            . substr($sql, (int) $selectPos);
                         $this->prepare($newSql);
                         return $table;
                     }

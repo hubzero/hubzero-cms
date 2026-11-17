@@ -2350,7 +2350,7 @@ class Curation extends Obj
                 1,
             );
 
-            if (is_dir($galleryPath)) {
+            if (is_dir((string) $galleryPath)) {
                 // Track first transferred image so we can mark it as the
                 // version's default thumbnail. publishAttachment() doesn't
                 // do this on its own (only addAttachment() does), so without
@@ -2482,7 +2482,7 @@ class Curation extends Obj
         $label = trim(Request::getString('label', '', 'post'));
         $used_labels = $row->getUsedLabels($this->pub->id, $this->pub->version_number);
 
-        if ($label && in_array($label, $used_labels)) {
+        if ($label && in_array($label, ($used_labels ?: []))) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
             return false;
         } elseif ($label) {

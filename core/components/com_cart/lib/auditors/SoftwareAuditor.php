@@ -46,7 +46,7 @@ class SoftwareAuditor extends BaseAuditor
                 $skuDownloadLimit = $sku->getMeta('downloadLimit');
                 if ($skuDownloadLimit > 0) {
                     // Get SKU download count
-                    $skuDownloadCount = Download::countUserSkuDownloads($this->sId, $this->uId);
+                    $skuDownloadCount = Download::countUserSkuDownloads($this->sId, (int) $this->uId);
                     // Check if the limit is reached
                     if ($skuDownloadCount >= $skuDownloadLimit) {
                         $this->setResponseStatus('error');

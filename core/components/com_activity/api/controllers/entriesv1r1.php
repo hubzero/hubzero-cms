@@ -221,7 +221,7 @@ class Entriesv1r1 extends ApiController
                     // Get the scope up to the asterisk
                     $scope = strstr($filters['scope'], '*', true);
 
-                    $query->whereLike($l . '.scope', $scope);
+                    $query->whereLike($l . '.scope', (string) $scope);
                 }
             } else {
                 $query->whereEquals($l . '.scope', $filters['scope']);

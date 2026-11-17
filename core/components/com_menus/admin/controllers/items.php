@@ -469,7 +469,7 @@ class Items extends AdminController
             case 'alias':
                 $row->set('component_id', 0);
 
-                parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
+                parse_str((string) parse_url($row->get('link'), PHP_URL_QUERY), $args);
                 break;
 
             case 'separator':
@@ -522,7 +522,7 @@ class Items extends AdminController
         if ($row->get('type') == 'alias') {
             // Note that all request arguments become reserved parameter names.
             $args = [];
-            parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
+            parse_str((string) parse_url($row->get('link'), PHP_URL_QUERY), $args);
             $params = array_merge($params, $args);
         }
 
@@ -595,7 +595,7 @@ class Items extends AdminController
         ) {
             // Parse the submitted link arguments.
             $args = [];
-            parse_str(parse_url($fields['link'], PHP_URL_QUERY), $args);
+            parse_str((string) parse_url($fields['link'], PHP_URL_QUERY), $args);
 
             // Merge in the user supplied request arguments.
             $args = array_merge($args, $fields['request']);

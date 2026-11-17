@@ -71,8 +71,8 @@ class Sync extends \Hubzero\Base\Obj
             'logs',
             false,
         );
-        if (!is_dir($this->logPath)) {
-            Filesystem::makeDirectory($this->logPath, 0755, true, true);
+        if (!is_dir((string) $this->logPath)) {
+            Filesystem::makeDirectory((string) $this->logPath, 0755, true, true);
         }
         $this->path    = $this->model->repo()->get('path');
     }
@@ -221,7 +221,7 @@ class Sync extends \Hubzero\Base\Obj
             );
         } else {
             // Via List feed
-            $remotes = $this->connect->getRemoteItems($service, $projectOwner, '', $connections);
+            $remotes = $this->connect->getRemoteItems($service, $projectOwner, '', ($connections ?: []));
             $newSyncId = 1;
 
             // The connector failed and said why: stop before taking that for
@@ -256,7 +256,7 @@ class Sync extends \Hubzero\Base\Obj
         // Get changes via List feed (to make sure we get ALL changes)
         // We need this because Changes feed is not 100% reliable :(
         if ($newSyncId > $lastSyncId) {
-            $timedRemotes = $this->connect->getRemoteItems($service, $projectOwner, $from, $connections);
+            $timedRemotes = $this->connect->getRemoteItems($service, $projectOwner, $from, ($connections ?: []));
         }
 
         // Record timed remote changes (for debugging)

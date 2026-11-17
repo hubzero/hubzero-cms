@@ -126,7 +126,7 @@ $formAction = Route::url(
                         require_once PATH_ROOT . DS . $row['entry'];
                     }
                     $class = new ReflectionClass(substr($row['file'], 0, -4));
-                    $desc  = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/'));
+                    $desc  = trim(rtrim(ltrim((string) $class->getDocComment(), "/**\n *"), '**/'));
                 } else {
                     $notFoundTxt = Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND');
                     $desc = '<span class="warning">' . $notFoundTxt . '</span>';

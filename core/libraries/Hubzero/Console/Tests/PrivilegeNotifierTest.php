@@ -207,7 +207,7 @@ class PrivilegeNotifierTest extends Basic
      */
     public function testSudoOnYourOwnCheckoutKeepsSudoHandling()
     {
-        $me = posix_getpwuid(fileowner(__DIR__))['name'];
+        $me = posix_getpwuid((int) fileowner(__DIR__))['name'];
 
         /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);

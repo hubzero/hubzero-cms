@@ -811,8 +811,8 @@ class File extends Base
         $newConfigs->dirHierarchy = $configs->dirHierarchy;
 
         // Create new path
-        if (!is_dir($newPath)) {
-            Filesystem::makeDirectory($newPath, 0755, true, true);
+        if (!is_dir((string) $newPath)) {
+            Filesystem::makeDirectory((string) $newPath, 0755, true, true);
         }
 
         // Track the first successfully transferred imageviewer attachment
@@ -1199,7 +1199,7 @@ class File extends Base
         $removed = 0;
 
         foreach ((array) glob($bundlesDir . DS . '*.part') as $partFile) {
-            $mtime = @filemtime($partFile);
+            $mtime = @filemtime((string) $partFile);
             if ($mtime !== false && $mtime < $threshold) {
                 if (@unlink($partFile)) {
                     $removed++;

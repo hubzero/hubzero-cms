@@ -1171,7 +1171,7 @@ class Setup extends Base
         $maxLength = $this->config->get('max_name_length', 30);
         $maxLength = $maxLength > 30 ? 30 : $maxLength;
 
-        $this->model->check($suggested, $maxLength);
+        $this->model->check((string) $suggested, $maxLength);
         if ($this->model->getError()) {
             return false;
         }

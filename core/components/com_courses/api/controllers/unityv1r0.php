@@ -104,7 +104,7 @@ class Unityv1r0 extends Base
         $data = substr($data, $iv_size);
         $message = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
 
-        $message = trim($message);
+        $message = trim((string) $message);
         $message = json_decode($message);
 
         if (!$message || !is_object($message)) {

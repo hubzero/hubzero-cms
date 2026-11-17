@@ -188,7 +188,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 break;
         }
 
-        $pdt = date('Y', $dt) . '-' . date('m', $dt) . '-' . date('d', $dt) . ' 00:00:00';
+        $pdt = date('Y', (int) $dt) . '-' . date('m', $dt) . '-' . date('d', $dt) . ' 00:00:00';
         $today = Date::toSql();
 
         if ($this->param('close_comments') != 'now' && $today < $pdt) {
@@ -416,7 +416,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if ($position === false) {
             $terms = [];
 
-            foreach (array_unique(preg_split('/ /', $needle)) as $word) {
+            foreach (array_unique((preg_split('/ /', $needle) ?: [])) as $word) {
                 $at = mb_stripos($text, $word, 0, 'UTF-8');
 
                 if ($at !== false) {

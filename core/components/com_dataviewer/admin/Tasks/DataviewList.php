@@ -122,7 +122,7 @@ class DataviewList
                     }
 
                     $dd = json_decode((string) file_get_contents($json_file), true);
-                    $last_mod = date("Y-m-d H:i:s", filemtime($php_file));
+                    $last_mod = date("Y-m-d H:i:s", (int) filemtime($php_file));
 
                     print '<tr>';
                     print '<td >' . ++$c . '</td>';

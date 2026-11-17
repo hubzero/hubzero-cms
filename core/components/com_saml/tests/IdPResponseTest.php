@@ -104,7 +104,7 @@ class IdPResponseTest extends Basic
     public function tearDown(): void
     {
         if ($this->dir && is_dir($this->dir)) {
-            array_map('unlink', glob($this->dir . '/*'));
+            array_map('unlink', (glob($this->dir . '/*') ?: []));
             rmdir($this->dir);
         }
     }

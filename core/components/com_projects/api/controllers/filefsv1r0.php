@@ -736,7 +736,7 @@ class Filefsv1r0 extends ApiController
                 $hash = $this->repo->getLastRevision($params);
             }
 
-            $image = $file->getPreview($this->model, $hash, 'fullPath', $render);
+            $image = $file->getPreview($this->model, (string) $hash, 'fullPath', $render);
 
             // Serve image
             if ($image && is_file($image)) {

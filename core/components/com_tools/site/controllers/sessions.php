@@ -574,7 +574,7 @@ class Sessions extends SiteController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr(strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr($app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -1165,7 +1165,7 @@ class Sessions extends SiteController
         $this->view->set('zone', $this->view->get('middleware')->zone($row->zone_id));
 
         if (strstr($row->appname, '_')) {
-            $v = substr(strrchr($row->appname, '_'), 1);
+            $v = substr((string) strrchr($row->appname, '_'), 1);
             $v = str_replace('r', '', $v);
             Request::setVar('version', $v);
         }

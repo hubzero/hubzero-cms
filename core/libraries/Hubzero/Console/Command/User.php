@@ -648,7 +648,7 @@ class User extends Base implements CommandInterface
         }
 
         $restore = function () use ($style) {
-            shell_exec('stty ' . trim($style) . ' 2>/dev/null');
+            shell_exec('stty ' . trim((string) $style) . ' 2>/dev/null');
         };
 
         // Ctrl+C raises SIGINT, which neither the finally below nor a shutdown

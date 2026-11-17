@@ -302,7 +302,7 @@ class Session extends Base
                 return strstr($app, '_', true);
 
             case 'version':
-                $r = substr(strrchr($app, '_'), 1);
+                $r = substr((string) strrchr($app, '_'), 1);
                 if (substr($r, 0, 1) == 'r') {
                     return substr($r, 1);
                 } elseif (substr($r, 0, 3) == 'dev') {

@@ -427,7 +427,7 @@ class BibTex
                         $proceed = false;
                     }
                     if ($proceed) {
-                        $proceed = $this->checkEqualSign($entry, $position);
+                        $proceed = $this->checkEqualSign($entry, (int) $position);
                     }
                 }
 

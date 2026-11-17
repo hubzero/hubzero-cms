@@ -75,7 +75,7 @@ class Log extends Model
         }
         while (!feof($file_handle)) {
             $line = fgets($file_handle);
-            $parts = explode("\t", $line);
+            $parts = explode("\t", (string) $line);
 
             if ((count($parts) == 4) && trim($parts[3]) == $type) {
                 // One form per address, so 2001:DB8::1 and 2001:db8::1 are
@@ -221,7 +221,7 @@ class Log extends Model
         // Build log path (access logs)
         $logPath = Html::buildPubPath($pid, $vid, $this->config->get('webpath'), 'logs', 1);
 
-        if (!is_dir($logPath)) {
+        if (!is_dir((string) $logPath)) {
             return false;
         }
         return $logPath;

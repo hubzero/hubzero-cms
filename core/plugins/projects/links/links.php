@@ -1131,7 +1131,7 @@ class Links extends Plugin
         }
 
         // Error - redirected instead of printing metadata
-        if (strpos($contenttype, 'text/html;') !== false) {
+        if (strpos((string) $contenttype, 'text/html;') !== false) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
             return null;
         }

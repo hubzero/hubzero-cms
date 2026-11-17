@@ -481,7 +481,7 @@ class Resume extends Plugin
         $path = PATH_APP . $path;
 
         // Replace file title with user name
-        $file_ext = substr($file['name'], strripos($file['name'], '.'));
+        $file_ext = substr($file['name'], (int) strripos($file['name'], '.'));
         $file['name']  = $member->get('firstname')
             ? $member->get('firstname')
                 . ' '
@@ -766,7 +766,7 @@ class Resume extends Plugin
         $default_title  = $member->get('givenName')
             ? $member->get('givenName') . ' ' . $member->get('surname') . ' ' . ucfirst(Lang::txt('Resume'))
             : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
-        $default_title .= substr($resume->filename, strripos($resume->filename, '.'));
+        $default_title .= substr($resume->filename, (int) strripos($resume->filename, '.'));
 
         // Initiate a new content server and serve up the file
         $xserver = new \Hubzero\Content\Server();

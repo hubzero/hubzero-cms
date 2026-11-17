@@ -405,6 +405,10 @@ class Asset extends Base
         // Get the configured upload path
         $config = Component::params('com_courses');
         $base_path = $this->path($course->get('id'));
+        // An asset with no id has no path to serve from
+        if ($base_path === false) {
+            App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+        }
 
         // Does the path start with a slash?
         $filename = DS . ltrim($filename, DS);
