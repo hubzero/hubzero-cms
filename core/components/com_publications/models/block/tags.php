@@ -50,7 +50,7 @@ class Tags extends Base
      * Display block content
      *
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   string   $viewname
      * @param   integer  $blockId
      * @return  string   HTML
@@ -131,7 +131,7 @@ class Tags extends Base
     /**
      * Save block content
      *
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
@@ -179,7 +179,7 @@ class Tags extends Base
      * Check completion status
      *
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer|null  $elementId
      * @return  \Components\Publications\Models\Status
      */

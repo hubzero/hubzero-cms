@@ -224,7 +224,7 @@ class Blocks extends Obj
      *
      * @param   string   $name      Name of block to render
      * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
-     * @param   object|null  $manifest
+     * @param   \stdClass|null  $manifest
      * @param   \Components\Publications\Models\Publication|null|mixed   $pub
      * @param   integer  $blockId
      * @return  string|false   HTML
@@ -255,7 +255,7 @@ class Blocks extends Obj
     /**
      * Check if changes are allowed
      *
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @param   \Components\Publications\Models\Publication  $pub
      * @return  boolean
      */

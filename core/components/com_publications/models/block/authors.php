@@ -54,7 +54,7 @@ class Authors extends Base
      * Display block content
      *
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   string   $viewname
      * @param   integer  $blockId
      * @return  string   HTML
@@ -104,7 +104,7 @@ class Authors extends Base
     /**
      * Save block content
      *
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
@@ -221,7 +221,7 @@ class Authors extends Base
     /**
      * Transfer data from one version to another
      *
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $oldVersion
      * @param   object   $newVersion
@@ -264,7 +264,7 @@ class Authors extends Base
     /**
      * Save block content
      *
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
@@ -307,7 +307,7 @@ class Authors extends Base
     /**
      * Add new author
      *
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
@@ -480,7 +480,7 @@ class Authors extends Base
     /**
      * Update attachment record
      *
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
@@ -631,7 +631,7 @@ class Authors extends Base
     /**
      * Delete author record
      *
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
@@ -713,7 +713,7 @@ class Authors extends Base
      * Check completion status
      *
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $manifest
+     * @param   \stdClass|null   $manifest
      * @param   integer|null  $elementId
      * @return  \Components\Publications\Models\Status
      */

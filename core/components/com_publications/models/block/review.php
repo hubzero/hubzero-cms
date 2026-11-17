@@ -198,7 +198,7 @@ class Review extends Base
     /**
      * Update author record
      *
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor

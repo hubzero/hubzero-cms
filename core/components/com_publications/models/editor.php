@@ -31,7 +31,7 @@ class Editor extends Obj
      * Constructor
      *
      * @param   object  $handler
-     * @param   object  $configs
+     * @param   \stdClass  $configs
      * @return  void
      */
     public function __construct($handler, $configs)

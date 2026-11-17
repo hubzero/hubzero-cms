@@ -48,10 +48,10 @@ class Data extends Base
     /**
      * Get configs
      *
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -95,10 +95,10 @@ class Data extends Base
      * Draw list
      *
      * @param   array<mixed>    $attachments
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object    $blockParams
+     * @param   \stdClass    $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
      */
@@ -150,10 +150,10 @@ class Data extends Base
     /**
      * Draw launcher
      *
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
      * @return  string   HTML
@@ -255,10 +255,10 @@ class Data extends Base
     /**
      * Transfer files from one version to another
      *
-     * @param   object   $elementparams
+     * @param   \stdClass   $elementparams
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
      * @param   object   $newVersion
@@ -353,10 +353,10 @@ class Data extends Base
     /**
      * Serve
      *
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @param   integer  $itemId
      * @return  boolean
      */
@@ -399,10 +399,10 @@ class Data extends Base
     /**
      * Save incoming
      *
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $blockParams
+     * @param   \stdClass   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
      */
@@ -468,7 +468,7 @@ class Data extends Base
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $ordering
      * @return  boolean
      */
@@ -572,10 +572,10 @@ class Data extends Base
      * Remove attachment
      *
      * @param   object   $row
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object    $blockParams
+     * @param   \stdClass    $blockParams
      * @return  boolean
      */
     public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -614,10 +614,10 @@ class Data extends Base
      * Update attachment properties
      *
      * @param   object   $row
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object    $blockParams
+     * @param   \stdClass    $blockParams
      * @return  boolean
      */
     public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -653,7 +653,7 @@ class Data extends Base
     /**
      * Check completion status
      *
-     * @param   object  $element
+     * @param   \stdClass  $element
      * @param   array|mixed   $attachments
      * @return  \Components\Publications\Models\Status
      */
@@ -743,10 +743,10 @@ class Data extends Base
      *
      * @param   object   $zip
      * @param   array<mixed>    $attachments
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object    $blockParams
+     * @param   \stdClass    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
      * @return  boolean
@@ -837,10 +837,10 @@ class Data extends Base
      * Draw list
      *
      * @param   array<mixed>    $attachments
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object    $blockParams
+     * @param   \stdClass    $blockParams
      * @param   boolean  $authorized
      * @return  bool|string
      */

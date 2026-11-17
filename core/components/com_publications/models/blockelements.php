@@ -54,7 +54,7 @@ class BlockElements extends Obj
      * Get status for a block element within publication
      *
      * @param   string  $name
-     * @param   object|null  $manifest
+     * @param   \stdClass|null  $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @return  object
      */

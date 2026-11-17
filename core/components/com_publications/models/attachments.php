@@ -72,7 +72,7 @@ class Attachments extends Obj
      * Get status for an attachment within publication
      *
      * @param   string   $name
-     * @param   object|null   $element
+     * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   array<mixed>|null    $attachments
      * @return  object
@@ -101,7 +101,7 @@ class Attachments extends Obj
      * Transfer data
      *
      * @param   string   $name
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $params
@@ -140,7 +140,7 @@ class Attachments extends Obj
      * Attach items to publication
      *
      * @param   string   $name
-     * @param   object|null   $element
+     * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $params
@@ -171,7 +171,7 @@ class Attachments extends Obj
      * Serve attachments within element
      *
      * @param   string|null   $name
-     * @param   object|null   $element
+     * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication|null   $pub
      * @param   object|null   $params
@@ -259,7 +259,7 @@ class Attachments extends Obj
      *
      * @param   string|null   $name
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $element
+     * @param   \stdClass|null   $element
      * @param   array<mixed>|null    $elements
      * @param   boolean  $authorized
      * @return  mixed    object or boolean
@@ -336,7 +336,7 @@ class Attachments extends Obj
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   object   $params
      * @return  boolean
      */
@@ -374,7 +374,7 @@ class Attachments extends Obj
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @param   object   $element
+     * @param   \stdClass   $element
      * @param   object   $params
      * @return  boolean
      */

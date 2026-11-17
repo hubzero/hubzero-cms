@@ -41,7 +41,7 @@ class Dataselector extends Base
      * Render
      *
      * @param   integer  $elementid
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string   $viewname
      * @param   object|null   $status
@@ -113,7 +113,7 @@ class Dataselector extends Base
      * Draw element without editing capabilities
      *
      * @param   integer  $elementId
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $status
      * @param   object|null   $master
@@ -169,7 +169,7 @@ class Dataselector extends Base
      * Draw file selector
      *
      * @param   integer  $elementId
-     * @param   object   $manifest
+     * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $status
      * @param   integer  $active

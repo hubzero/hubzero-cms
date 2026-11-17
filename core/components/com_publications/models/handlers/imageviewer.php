@@ -84,7 +84,7 @@ class ImageViewer extends Base
      * Clean-up related files
      *
      * @param   string  $path
-     * @param   object|null   $configs
+     * @param   \stdClass|null   $configs
      * @param   string|null  $md5
      * @return  bool
      */
@@ -132,7 +132,7 @@ class ImageViewer extends Base
      *
      * @param   object  $row
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @return  bool
      */
     public function makeDefault($row, $pub, $configs)
@@ -385,7 +385,7 @@ class ImageViewer extends Base
      *
      * @param   object  $row
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object  $configs
+     * @param   \stdClass  $configs
      * @return  bool|null
      */
     public function makeThumbnail($row, $pub, $configs)
@@ -470,7 +470,7 @@ class ImageViewer extends Base
      *
      * @param   string   $path
      * @param   integer  $id
-     * @param   object|null   $configs
+     * @param   \stdClass|null   $configs
      * @param   object|null   $params
      * @param   string|null   $suffix
      * @return  string
