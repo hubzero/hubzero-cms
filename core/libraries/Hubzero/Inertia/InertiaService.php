@@ -422,7 +422,12 @@ class InertiaService
         }
 
         $response = \App::get('response');
-        if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
+        if (
+            $response
+            && isset($response->headers)
+            && is_object($response->headers)
+            && method_exists($response->headers, 'get')
+        ) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
                 $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: []);
@@ -483,7 +488,7 @@ class InertiaService
             return true;
         }
 
-        if (method_exists($request, 'get')) {
+        if (is_object($request) && method_exists($request, 'get')) {
             $query = strtolower(trim((string) $request->get('inertia_debug', '')));
             if ($query === 'true' || $query === '1') {
                 return true;
@@ -681,7 +686,7 @@ class InertiaService
     protected function setStatusCode(int $status): void
     {
         $response = \App::get('response');
-        if ($response && method_exists($response, 'setStatusCode')) {
+        if (is_object($response) && method_exists($response, 'setStatusCode')) {
             $response->setStatusCode($status);
         }
 
@@ -756,13 +761,13 @@ class InertiaService
         }
 
         $ctx = [];
-        if (method_exists($request, 'getMethod')) {
+        if (is_object($request) && method_exists($request, 'getMethod')) {
             $ctx['method'] = (string) $request->getMethod();
         }
-        if (method_exists($request, 'server')) {
+        if (is_object($request) && method_exists($request, 'server')) {
             $ctx['uri'] = (string) $request->server('REQUEST_URI', '');
         }
-        if (method_exists($request, 'get')) {
+        if (is_object($request) && method_exists($request, 'get')) {
             $ctx['option'] = (string) $request->get('option', '');
             $ctx['task'] = (string) $request->get('task', '');
         }
@@ -798,7 +803,7 @@ class InertiaService
     protected function requestHeaderValue(string $name): string
     {
         $request = \App::get('request');
-        if ($request && method_exists($request, 'header')) {
+        if (is_object($request) && method_exists($request, 'header')) {
             $value = (string) $request->header($name, '');
             if ($value !== '') {
                 return $value;

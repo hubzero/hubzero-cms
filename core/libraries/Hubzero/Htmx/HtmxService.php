@@ -389,7 +389,12 @@ class HtmxService
         }
 
         $response = \App::get('response');
-        if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
+        if (
+            $response
+            && isset($response->headers)
+            && is_object($response->headers)
+            && method_exists($response->headers, 'get')
+        ) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
                 $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: []);
@@ -785,14 +790,14 @@ class HtmxService
             return false;
         }
 
-        if (method_exists($request, 'header')) {
+        if (is_object($request) && method_exists($request, 'header')) {
             $header = $this->normalizeBoolString((string) $request->header('HX-Debug', ''));
             if ($header === 'true' || $header === '1') {
                 return true;
             }
         }
 
-        if (method_exists($request, 'get')) {
+        if (is_object($request) && method_exists($request, 'get')) {
             $query = $this->normalizeBoolString((string) $request->get('htmx_debug', ''));
             if ($query === 'true' || $query === '1') {
                 return true;
@@ -938,12 +943,12 @@ class HtmxService
         }
 
         $ctx = [];
-        if (method_exists($request, 'server')) {
+        if (is_object($request) && method_exists($request, 'server')) {
             $ctx['method'] = (string) $request->server('REQUEST_METHOD', '');
             $ctx['uri'] = (string) $request->server('REQUEST_URI', '');
         }
 
-        if (method_exists($request, 'get')) {
+        if (is_object($request) && method_exists($request, 'get')) {
             $ctx['option'] = (string) $request->get('option', '');
             $ctx['task'] = (string) $request->get('task', '');
         }
@@ -960,7 +965,7 @@ class HtmxService
     protected function requestHeaderValue(string $name): string
     {
         $request = \App::get('request');
-        if ($request && method_exists($request, 'header')) {
+        if (is_object($request) && method_exists($request, 'header')) {
             $value = (string) $request->header($name, '');
             if ($value !== '') {
                 return $value;
@@ -1016,7 +1021,7 @@ class HtmxService
         $host = '';
         $port = null;
 
-        if ($request && method_exists($request, 'server')) {
+        if (is_object($request) && method_exists($request, 'server')) {
             $scheme = strtolower(trim((string) $request->server('REQUEST_SCHEME', '')));
             $https = strtolower(trim((string) $request->server('HTTPS', '')));
             if ($scheme === '' && ($https === 'on' || $https === '1')) {
