@@ -837,20 +837,26 @@ class Connections
         // upload land where it was meant to.
         if (isset($_FILES['qqfile'])) {
             $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_FILES['qqfile']['name']));
-            $file = Entity::fromPath($path, $this->connection->adapter());
+            $file = $this->uploadTarget($path);
+            if ($file) {
+                $file->setContents(file_get_contents($_FILES['qqfile']['tmp_name']));
+                $file->setSize((int) $_FILES['qqfile']['size']);
 
-            $file->setContents(file_get_contents($_FILES['qqfile']['tmp_name']));
-            $file->setSize((int) $_FILES['qqfile']['size']);
-
-            $files[] = $file;
+                $files[] = $file;
+            } else {
+                $results['failed'][] = $path;
+            }
         } elseif (isset($_GET['qqfile'])) {
             $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_GET['qqfile']));
-            $file = Entity::fromPath($path, $this->connection->adapter());
+            $file = $this->uploadTarget($path);
+            if ($file) {
+                $file->setContents(fopen('php://input', 'r'));
+                $file->setSize((int) $_SERVER["CONTENT_LENGTH"]);
 
-            $file->setContents(fopen('php://input', 'r'));
-            $file->setSize((int) $_SERVER["CONTENT_LENGTH"]);
-
-            $files[] = $file;
+                $files[] = $file;
+            } else {
+                $results['failed'][] = $path;
+            }
         } else {
             // Regular upload
             $upload = Request::getArray('upload', '', 'files');
@@ -863,12 +869,15 @@ class Connections
             for ($i = 0; $i < count($upload['name']); $i++) {
                 // As the single-file branches above: a name, not a path
                 $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $upload['name'][$i]));
-                $file = Entity::fromPath($path, $this->connection->adapter());
+                $file = $this->uploadTarget($path);
+                if ($file) {
+                    $file->setContents(file_get_contents($upload['tmp_name'][$i]));
+                    $file->setSize((int) $upload['size'][$i]);
 
-                $file->setContents(file_get_contents($upload['tmp_name'][$i]));
-                $file->setSize((int) $upload['size'][$i]);
-
-                $files[] = $file;
+                    $files[] = $file;
+                } else {
+                    $results['failed'][] = $path;
+                }
             }
         }
 
@@ -963,12 +972,14 @@ class Connections
             $path = trim($this->subdir, DS) . DS . $fileName;
 
             // Final destination file
-            $file = Entity::fromPath($path, $this->connection->adapter());
+            $file = $this->uploadTarget($path);
 
-            $file->setContents($fp);
-            $file->setSize((int) $totalSize);
+            if ($file) {
+                $file->setContents($fp);
+                $file->setSize((int) $totalSize);
+            }
 
-            if ($file->save()) {
+            if ($file && $file->save()) {
                 $results['uploaded'][] = $file->getPath();
 
                 if ($file instanceof \Hubzero\Filesystem\Type\Expandable && $expand) {
@@ -978,7 +989,7 @@ class Connections
                     }
                 }
             } else {
-                $results['failed'][] = $file->getPath();
+                $results['failed'][] = $file ? $file->getPath() : $path;
             }
 
             // The stream, not the entity; some (3rd party) adapters close it
@@ -1155,12 +1166,15 @@ class Connections
             for ($i = 0; $i < count($upload['name']); $i++) {
                 // As the single-file branches above: a name, not a path
                 $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $upload['name'][$i]));
-                $file = Entity::fromPath($path, $this->connection->adapter());
+                $file = $this->uploadTarget($path);
+                if ($file) {
+                    $file->setContents(file_get_contents($upload['tmp_name'][$i]));
+                    $file->setSize((int) $upload['size'][$i]);
 
-                $file->setContents(file_get_contents($upload['tmp_name'][$i]));
-                $file->setSize((int) $upload['size'][$i]);
-
-                $files[] = $file;
+                    $files[] = $file;
+                } else {
+                    $results['failed'][] = $path;
+                }
             }
 
             foreach ($files as $file) {
@@ -1715,5 +1729,24 @@ class Connections
         }
 
         return $vars;
+    }
+
+    /**
+     * The file an upload is written to
+     *
+     * A new path is a file whether or not its name has a dot (Entity::fromPath()
+     * would have taken one without for a folder); null when a folder is there.
+     *
+     * @param   string  $path
+     * @return  \Hubzero\Filesystem\File|null
+     */
+    private function uploadTarget($path)
+    {
+        $file = \Hubzero\Filesystem\File::fromPath($path, $this->connection->adapter());
+        if ($file instanceof \Hubzero\Filesystem\File) {
+            return $file;
+        }
+
+        return null;
     }
 }

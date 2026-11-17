@@ -652,17 +652,23 @@ class Filesv1r0 extends ApiController
             if (is_uploaded_file($_FILES["file"]["tmp_name"])) {
                 $updateType = 'uploaded';
 
-                $file  = Entity::fromPath(
+                // A new path is a file, dot in its name or not; a folder there stays one
+                $file  = \Hubzero\Filesystem\File::fromPath(
                     Request::getString('subdir', '', 'post') . DS . $_FILES["file"]["name"],
                     $this->ormconn->adapter(),
                 );
+                if (!$file instanceof \Hubzero\Filesystem\File) {
+                    $file = null;
+                }
 
-                if ($file->exists()) {
+                if ($file && $file->exists()) {
                     $updateType = 'updated';
                 }
-                $file->setContents(file_get_contents($_FILES["file"]["tmp_name"]));
-                $file->setSize((int) $_FILES["file"]["size"]);
-                if ($file->save()) {
+                if ($file) {
+                    $file->setContents((string) file_get_contents($_FILES["file"]["tmp_name"]));
+                    $file->setSize((int) $_FILES["file"]["size"]);
+                }
+                if ($file && $file->save()) {
                     $parsedResults = [];
 
                     // Get metadata
@@ -1456,13 +1462,15 @@ class Filesv1r0 extends ApiController
 
             $path = trim($subdir, DS) . DS . $fileName;
 
-            // Final destination file
-            $file = Entity::fromPath($path, $this->ormconn->adapter());
+            // Final destination file: a new path is a file, a folder there is not one
+            $file = \Hubzero\Filesystem\File::fromPath($path, $this->ormconn->adapter());
 
-            $file->setContents($fp);
-            $file->setSize((int) $totalSize);
+            if ($file instanceof \Hubzero\Filesystem\File) {
+                $file->setContents($fp);
+                $file->setSize((int) $totalSize);
+            }
 
-            if ($file->save()) {
+            if ($file instanceof \Hubzero\Filesystem\File && $file->save()) {
                 $result = true;
             } else {
                 $result = false;
