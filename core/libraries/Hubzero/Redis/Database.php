@@ -89,7 +89,7 @@ class Database
      * Get a specific Redis connection instance.
      *
      * @param   string  $name
-     * @return  object
+     * @return  \Predis\Client
      */
     public static function connect($name = 'default')
     {

@@ -363,7 +363,7 @@ class Profile extends Obj
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     private $paramsRegistry = null;
 
@@ -1318,7 +1318,7 @@ class Profile extends Obj
      *
      * @param   string   $key    The name of the property.
      * @param   mixed    $value  The value of the property to set.
-     * @return  boolean
+     * @return  \Hubzero\Config\Registry  The parameters (chainable)
      */
     public function setParam($key, $value)
     {
@@ -1331,7 +1331,7 @@ class Profile extends Obj
      *
      * @param   string   $key    The name of the property.
      * @param   mixed    $value  The default value.
-     * @return  boolean
+     * @return  string  The value set, or the default if it was not set
      */
     public function defParam($key, $value)
     {
