@@ -190,7 +190,7 @@ class Rules implements Countable, Iterator
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  mixed
+     * @return  $this
      */
     public function set($key, $value)
     {

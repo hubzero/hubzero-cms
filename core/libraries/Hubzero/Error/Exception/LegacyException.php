@@ -83,7 +83,7 @@ class LegacyException extends \Exception
      *
      * @param   string  $property  The name of the property
      * @param   mixed   $value     The value of the property to set
-     * @return  mixed   Previous value of the property
+     * @return  $this   Chainable
      */
     public function set($property, $value = null)
     {

@@ -74,7 +74,7 @@ trait ErrorBag
      * @param   string|\Exception|false|null  $error  Error message. False, null or empty (what getError() gives
      *                                                when there is none, often passed on) is not recorded.
      * @param   string|null  $key    Specific key to set the value to
-     * @return  object
+     * @return  $this
      */
     public function setError($error, $key = null)
     {
