@@ -450,7 +450,7 @@ class Events extends SiteController
             . '-'
             . $month
             . '-'
-            . date("t", mktime(0, 0, 0, ($month + 1), 0, (int) $year))
+            . date("t", (int) mktime(0, 0, 0, ($month + 1), 0, (int) $year))
             . ' 23:59:59';
         $select_date = Date::of($select_date, Config::get('offset'));
         $select_date_fin = Date::of($select_date_fin, Config::get('offset'));
@@ -517,7 +517,7 @@ class Events extends SiteController
         $day    = intval($this->day);
 
         $startday = intval($this->config->getCfg('starday'));
-        $numday = ((date("w", mktime(0, 0, 0, $month, $day, $year)) - $startday) % 7);
+        $numday = ((date("w", (int) mktime(0, 0, 0, $month, $day, $year)) - $startday) % 7);
         if ($numday == -1) {
             $numday = 6;
         }

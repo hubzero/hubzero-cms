@@ -208,7 +208,7 @@ class Html
      */
     public static function buildDaySelect($year, $month, $day, $args)
     {
-        $nbdays = date("d", mktime(0, 0, 0, ($month + 1), 0, $year));
+        $nbdays = date("d", (int) mktime(0, 0, 0, ($month + 1), 0, $year));
         for ($a = 1; $a <= $nbdays; $a++) {
             $dys = $a;
             if ($dys <= "9" & preg_match("/(^[1-9]{1})/", (string) $dys)) {

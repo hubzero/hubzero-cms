@@ -606,7 +606,7 @@ abstract class Factory
     public static function pastDate(int $maxDaysAgo = 30)
     {
         $daysAgo = random_int(1, $maxDaysAgo);
-        return date('Y-m-d H:i:s', strtotime("-{$daysAgo} days"));
+        return date('Y-m-d H:i:s', (int) strtotime("-{$daysAgo} days"));
     }
 
     /**
@@ -618,7 +618,7 @@ abstract class Factory
     public static function futureDate(int $maxDaysAhead = 30)
     {
         $daysAhead = random_int(1, $maxDaysAhead);
-        return date('Y-m-d H:i:s', strtotime("+{$daysAhead} days"));
+        return date('Y-m-d H:i:s', (int) strtotime("+{$daysAhead} days"));
     }
 
     /**

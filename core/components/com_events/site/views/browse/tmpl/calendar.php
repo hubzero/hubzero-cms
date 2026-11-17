@@ -108,8 +108,8 @@ $content .= '  <tr>' . "\n";
 
 // dmcd May 7/04 fix to fill in end days out of month correctly
 $dayOfWeek = $startday;
-$start = (date("w", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year)) - $startday + 7) % 7;
-$d = date("t", mktime(0, 0, 0, (int) $cal_month, 0, (int) $cal_year)) - $start + 1;
+$start = (date("w", (int) mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year)) - $startday + 7) % 7;
+$d = date("t", (int) mktime(0, 0, 0, (int) $cal_month, 0, (int) $cal_year)) - $start + 1;
 $kownt = 0;
 
 for ($a = $start; $a > 0; $a--) {
@@ -124,7 +124,7 @@ for ($a = $start; $a > 0; $a--) {
 
 $monthHasEvent = false;
 //$eventCheck = new EventsRepeat;
-$lastDayOfMonth = date("t", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year));
+$lastDayOfMonth = date("t", (int) mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year));
 
 // Pre-bucket events by their OWN local date. Times are stored in UTC; convert
 // each event to its time zone so it lands on the day it occurs locally.

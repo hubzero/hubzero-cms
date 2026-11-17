@@ -94,13 +94,14 @@ class Region extends Plugin
                 $dtyearnext++;
             }
             $dtyearprior = intval(substr($enddate, 0, 4)) - 1;
-            $monthtext   = date("F", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
-            $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
-            $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear))
+            $monthtext   = date("F", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
+            $yeartext    = 'Jan - ' . date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
+                . ' ' . $dtyear;
+            $twelvetext  = date("M", (int) mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear))
                 . ' '
                 . $dtyearprior
                 . ' - '
-                . date("M", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
+                . date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
                 . ' '
                 . $dtyear;
             $period = [

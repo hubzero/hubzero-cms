@@ -124,10 +124,11 @@ class Helper
             }
 
             $dtyearprior = (int) substr($enddate, 0, 4) - 1;
-            $monthtext   = date("F", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
-            $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
-            $startMonth  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear));
-            $endMonth    = date("M", mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear));
+            $monthtext   = date("F", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
+            $yeartext    = 'Jan - ' . date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
+                . ' ' . $dtyear;
+            $startMonth  = date("M", (int) mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear));
+            $endMonth    = date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear));
             $twelvetext  = $startMonth . ' ' . $dtyearprior . ' - ' . $endMonth . ' ' . $dtyear;
             $period = [
                 ['key' => 1,  'name' => $monthtext],

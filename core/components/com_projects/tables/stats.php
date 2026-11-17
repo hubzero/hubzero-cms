@@ -101,25 +101,25 @@ class Stats extends Table
         $n = ($includeCurrent) ? 0 : 1;
 
         for ($a = $numMonths; $a >= $n; $a--) {
-            $yearNum  = intval(date('y', strtotime("-" . $a . " month")));
-            $monthNum = intval(date('m', strtotime("-" . $a . " month")));
+            $yearNum  = intval(date('y', (int) strtotime("-" . $a . " month")));
+            $monthNum = intval(date('m', (int) strtotime("-" . $a . " month")));
 
             $log = $this->getLog($yearNum, $monthNum);
 
             if ($log) {
-                $stats[date('M', strtotime("-" . $a . " month"))] = json_decode($log[0]->stats, true);
+                $stats[date('M', (int) strtotime("-" . $a . " month"))] = json_decode($log[0]->stats, true);
 
                 // Get new users by month
-                if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['team']['new'])) {
-                    $new = $objO->getTeamStats($testProjects, 'new', date('Y-m', strtotime("-" . $a . " month")));
-                    $stats[date('M', strtotime("-" . $a . " month"))]['team']['new'] = $new ? $new : 0;
+                if (!isset($stats[date('M', (int) strtotime("-" . $a . " month"))]['team']['new'])) {
+                    $new = $objO->getTeamStats($testProjects, 'new', date('Y-m', (int) strtotime("-" . $a . " month")));
+                    $stats[date('M', (int) strtotime("-" . $a . " month"))]['team']['new'] = $new ? $new : 0;
                 }
 
                 // Get publication release count by month
-                if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['pub']['new'])) {
-                    $month = date('Y-m', strtotime("-" . $a . " month"));
+                if (!isset($stats[date('M', (int) strtotime("-" . $a . " month"))]['pub']['new'])) {
+                    $month = date('Y-m', (int) strtotime("-" . $a . " month"));
                     $new = $objP->getPubStats($validProjectIds, 'released', $month);
-                    $monthKey = date('M', strtotime("-" . $a . " month"));
+                    $monthKey = date('M', (int) strtotime("-" . $a . " month"));
                     $stats[$monthKey]['pub']['new'] = $new ? $new : 0;
                 }
             }

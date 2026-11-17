@@ -138,13 +138,13 @@ class Log extends Model
             $n = ($includeCurrent) ? 0 : 1;
 
             for ($a = $numMonths; $a >= $n; $a--) {
-                $yearNum  = intval(date('y', strtotime("-" . $a . " month")));
-                $monthNum = intval(date('m', strtotime("-" . $a . " month")));
-                $date     = date('Y-m', strtotime("-" . $a . " month"));
+                $yearNum  = intval(date('y', (int) strtotime("-" . $a . " month")));
+                $monthNum = intval(date('m', (int) strtotime("-" . $a . " month")));
+                $date     = date('Y-m', (int) strtotime("-" . $a . " month"));
                 $logFile  = 'pub-' . $pid . '-v-' . $version->id . '.' . $date . '.log';
 
                 $fpath = $logPath . DS . $logFile;
-                $mo = date('M', strtotime("-" . $a . " month"));
+                $mo = date('M', (int) strtotime("-" . $a . " month"));
 
                 $pubLog = new $this->tableClass($this->db);
 
