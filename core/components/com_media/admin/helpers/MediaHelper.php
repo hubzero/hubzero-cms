@@ -182,13 +182,15 @@ class MediaHelper
                 if (function_exists('finfo_open') && $params->get('check_mime', 1)) {
                     // We have fileinfo
                     $finfo = finfo_open(FILEINFO_MIME);
-                    $type = finfo_file($finfo, $file['tmp_name']);
+                    $type = $finfo ? finfo_file($finfo, $file['tmp_name']) : false;
                     if (strlen((string) $type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
                         $err = 'COM_MEDIA_ERROR_WARNINVALID_MIME';
                         return false;
                     }
 
-                    finfo_close($finfo);
+                    if ($finfo) {
+                        finfo_close($finfo);
+                    }
                 } elseif (function_exists('mime_content_type') && $params->get('check_mime', 1)) {
                     // we have mime magic
                     $type = mime_content_type($file['tmp_name']);

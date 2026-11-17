@@ -241,6 +241,10 @@ class ImgHandler extends Obj
 
         // Read in the original image
         $src = $creationFunction($docRoot . $image);
+        if (!$dst || !$src) {
+            $this->setError(Lang::txt('The file is not an image.'));
+            return false;
+        }
 
         if (in_array($size['mime'], ['image/gif', 'image/png'])) {
             if (!$color) {

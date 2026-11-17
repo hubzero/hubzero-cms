@@ -121,7 +121,7 @@ class Importer
 
         // get the mime type of file
         $file  = finfo_open(FILEINFO_MIME_TYPE);
-        $mime  = finfo_file($file, $dataPath);
+        $mime  = $file ? finfo_file($file, $dataPath) : false;
 
         // anonymous function to see if we can use any
         $respondsTo = function ($class) use ($mime) {

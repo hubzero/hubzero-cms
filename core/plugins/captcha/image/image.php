@@ -208,8 +208,12 @@ class Image extends Plugin
                 }
             }
 
-            $font_file = $font_file = __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.png';
+            $font_file = __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.png';
             $font = imagecreatefrompng($font_file);
+            if (!$font) {
+                // The bundled font image is missing or unreadable: no image
+                return;
+            }
             imagealphablending($font, true);
             $fontfile_width = imagesx($font);
             $fontfile_height = imagesy($font) - 1;

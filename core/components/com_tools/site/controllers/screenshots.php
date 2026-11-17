@@ -552,6 +552,11 @@ class Screenshots extends SiteController
                 break;
         }
 
+        if (!$imorig) {
+            // Not an image GD can read
+            return false;
+        }
+
         $x = imageSX($imorig);
         $y = imageSY($imorig);
         if ($gis[0] <= $maxwidth) {

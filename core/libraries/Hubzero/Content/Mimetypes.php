@@ -765,8 +765,10 @@ class Mimetypes
                 }
             } else {
                 $finfo = finfo_open(FILEINFO_MIME);
-                $MIMEType = finfo_file($finfo, $file);
-                finfo_close($finfo);
+                $MIMEType = $finfo ? finfo_file($finfo, $file) : false;
+                if ($finfo) {
+                    finfo_close($finfo);
+                }
                 return $MIMEType ?: 'application/octet-stream';
             }
         } else {

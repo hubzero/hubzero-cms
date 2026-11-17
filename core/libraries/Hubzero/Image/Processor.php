@@ -141,8 +141,10 @@ class Processor extends Obj
             }
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($finfo, $this->source);
-            finfo_close($finfo);
+            $mimeType = $finfo ? finfo_file($finfo, $this->source) : false;
+            if ($finfo) {
+                finfo_close($finfo);
+            }
 
             $allowedTypes = ['image/jpeg', 'image/png', 'image/x-png', 'image/gif'];
             if (!in_array($mimeType, $allowedTypes, true)) {
@@ -170,6 +172,11 @@ class Processor extends Obj
                     break;
                 default:
                     return false;
+            }
+
+            if (!$this->resource) {
+                // Not an image GD can read
+                return false;
             }
 
             if ($this->image_type == IMAGETYPE_PNG) {
@@ -537,8 +544,10 @@ class Processor extends Obj
         }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $this->source);
-        finfo_close($finfo);
+        $mimeType = $finfo ? finfo_file($finfo, $this->source) : false;
+        if ($finfo) {
+            finfo_close($finfo);
+        }
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/x-png', 'image/gif'];
         if (!in_array($mimeType, $allowedTypes, true)) {
