@@ -277,7 +277,7 @@ class Resources extends Plugin
     /**
      * Special formatting for results
      *
-     * @param   object  $row     Database row
+     * @param   \Components\Resources\Models\Entry  $row     The resource
      * @param   string  $period  Time period
      * @return  string
      */

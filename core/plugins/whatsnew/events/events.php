@@ -116,7 +116,7 @@ class Events extends Plugin
     /**
      * Special formatting for results
      *
-     * @param   object  $row    Database row
+     * @param   \stdClass  $row    Database row
      * @param   string  $period  Time period
      * @return  string
      */
