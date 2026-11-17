@@ -49,7 +49,7 @@ class Log extends Model
     /**
      * Parse log file
      *
-     * @param   object|null  $pubLog
+     * @param   \Components\Publications\Tables\Log|null  $pubLog
      * @param   string|null  $logFile
      * @param   string  $type     primary or view
      * @param   string  $category

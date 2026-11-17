@@ -317,7 +317,7 @@ class Content extends Base
      * @param   mixed  $elementId
      * @param   mixed  $elementparams
      * @param   mixed  $attachments
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getElementStatus($elementId, $elementparams, $attachments = null)
     {

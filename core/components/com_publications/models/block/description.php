@@ -345,7 +345,7 @@ class Description extends Base
      *
      * @param   mixed  $element
      * @param   mixed  $pub
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getElementStatus($element, $pub = null)
     {

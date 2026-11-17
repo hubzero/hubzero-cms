@@ -129,7 +129,7 @@ class Upay extends Plugin
     /**
      * Complete payment
      *
-     * @param   object  $transaction
+     * @param   \stdClass  $transaction
      * @param   \Hubzero\User\User  $user
      * @return  mixed
      */
