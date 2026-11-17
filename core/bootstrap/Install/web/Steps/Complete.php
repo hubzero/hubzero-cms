@@ -41,7 +41,7 @@ class Complete implements StepInterface
 
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/complete.php';
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     public function process($data)

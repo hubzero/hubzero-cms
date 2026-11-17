@@ -2185,7 +2185,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function toJson()
     {
-        return json_encode($this->attributes);
+        return (string) json_encode($this->attributes);
     }
 
     /**
@@ -2773,7 +2773,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $value = $value->toArray();
         }
 
-        return json_encode($value, JSON_UNESCAPED_UNICODE);
+        return (string) json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 
     /**

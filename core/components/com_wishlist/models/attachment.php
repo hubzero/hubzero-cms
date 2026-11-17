@@ -198,13 +198,13 @@ class Attachment extends Relational
      */
     public function isImage()
     {
-        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename')) === 1;
     }
 
     /**
      * Is the file an image?
      *
-     * @return  boolean
+     * @return  integer  The file's size in bytes, 0 when it cannot be read
      */
     public function size()
     {
@@ -212,7 +212,7 @@ class Attachment extends Relational
             $this->size = 0;
 
             if ($this->exists()) {
-                $this->size = filesize($this->link('file'));
+                $this->size = (int) filesize($this->link('file'));
             }
         }
 

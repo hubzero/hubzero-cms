@@ -49,7 +49,7 @@ class XML extends Base
             }
         }
 
-        return $root->asXML();
+        return (string) $root->asXML();
     }
 
     /**

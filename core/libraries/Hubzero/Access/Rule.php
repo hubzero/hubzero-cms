@@ -137,6 +137,6 @@ class Rule
      */
     public function __toString()
     {
-        return json_encode($this->data);
+        return (string) json_encode($this->data);
     }
 }

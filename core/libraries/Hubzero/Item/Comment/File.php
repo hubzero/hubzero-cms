@@ -216,13 +216,13 @@ class File extends Relational
      */
     public function isImage()
     {
-        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename')) === 1;
     }
 
     /**
      * Is the file an image?
      *
-     * @return  boolean
+     * @return  integer  The file's size in bytes, 0 when it cannot be read
      */
     public function size()
     {
@@ -232,7 +232,7 @@ class File extends Relational
             $path = $this->path();
 
             if (file_exists($path)) {
-                $this->size = filesize($path);
+                $this->size = (int) filesize($path);
             }
         }
 

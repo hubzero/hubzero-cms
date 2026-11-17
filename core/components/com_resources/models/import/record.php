@@ -675,6 +675,6 @@ class Record extends Obj
         }
 
         // output as json
-        return json_encode($this);
+        return (string) json_encode($this);
     }
 }

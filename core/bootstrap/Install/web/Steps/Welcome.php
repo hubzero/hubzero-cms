@@ -35,7 +35,7 @@ class Welcome implements StepInterface
         $installer = $this->installer;
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/welcome.php';
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     public function process($data)

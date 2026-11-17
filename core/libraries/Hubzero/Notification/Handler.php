@@ -191,7 +191,7 @@ class Handler
      */
     public function toJson($options = 0, $domain = null)
     {
-        return json_encode($this->toArray($domain), $options);
+        return (string) json_encode($this->toArray($domain), $options);
     }
 
     /**

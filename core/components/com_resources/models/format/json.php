@@ -25,7 +25,7 @@ class JSON extends Base
      */
     public function objectToString($object, $options = [])
     {
-        return json_encode($object);
+        return (string) json_encode($object);
     }
 
     /**

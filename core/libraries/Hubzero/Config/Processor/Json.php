@@ -96,10 +96,10 @@ class Json extends Base
         }
 
         if (isset($options['pretty_print']) && $options['pretty_print']) {
-            return json_encode($object, JSON_PRETTY_PRINT);
+            return (string) json_encode($object, JSON_PRETTY_PRINT);
         }
 
-        return json_encode($object);
+        return (string) json_encode($object);
     }
 
     /**

@@ -240,6 +240,6 @@ class EntryTest extends Basic
     {
         ob_start();
         $module->display();
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 }

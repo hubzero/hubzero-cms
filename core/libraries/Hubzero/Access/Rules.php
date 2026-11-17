@@ -172,6 +172,6 @@ class Rules
             $temp[$name] = json_decode((string) $rule);
         }
 
-        return json_encode($temp);
+        return (string) json_encode($temp);
     }
 }

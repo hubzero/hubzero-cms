@@ -522,7 +522,7 @@ class Changelog extends Obj
      */
     public function toString()
     {
-        return json_encode($this->log);
+        return (string) json_encode($this->log);
     }
 
     /**

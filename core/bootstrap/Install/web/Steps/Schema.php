@@ -53,7 +53,7 @@ class Schema implements StepInterface
         }
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/schema.php';
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     public function process($data)

@@ -129,7 +129,7 @@ class Attachment extends Relational
      */
     public function isImage()
     {
-        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename')) === 1;
     }
 
     /**

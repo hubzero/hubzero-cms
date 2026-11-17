@@ -3039,7 +3039,7 @@ class Files extends Plugin
             }
         }
 
-        return json_encode($status);
+        return (string) json_encode($status);
     }
 
     /**

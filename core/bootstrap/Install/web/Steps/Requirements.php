@@ -50,7 +50,7 @@ class Requirements implements StepInterface
         $passed = $this->passed;
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/requirements.php';
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     /**

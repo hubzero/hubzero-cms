@@ -850,7 +850,7 @@ class Links extends Plugin
 
         if (!$url) {
             $output['error'] = Lang::txt('PLG_PROJECTS_LINKS_EMPTY_URL');
-            return json_encode($output);
+            return (string) json_encode($output);
         }
 
         // Is this a DOI?
@@ -871,13 +871,13 @@ class Links extends Plugin
 
             if ($this->getError()) {
                 $output['error'] = $this->getError();
-                return json_encode($output);
+                return (string) json_encode($output);
             }
         }
 
         if (!$doi && filter_var($url, FILTER_VALIDATE_URL) == false) {
             $output['error'] = Lang::txt('Please enter a valid URL starting with http:// or https://');
-            return json_encode($output);
+            return (string) json_encode($output);
         }
 
         // DOI metadata
@@ -909,7 +909,7 @@ class Links extends Plugin
             $target = $safeTarget($url);
             if (!$target) {
                 $output['error'] = Lang::txt('Please enter a valid URL starting with http:// or https://');
-                return json_encode($output);
+                return (string) json_encode($output);
             }
 
             $options = [
@@ -964,7 +964,7 @@ class Links extends Plugin
 
             if (!$finalUrl || !$content) {
                 $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
-                return json_encode($output);
+                return (string) json_encode($output);
             } else {
                 $output['url'] = $finalUrl;
             }
@@ -976,7 +976,7 @@ class Links extends Plugin
             // always hands back a parser, so an empty body is caught here instead
             if (trim((string) $content) === '') {
                 $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
-                return json_encode($output);
+                return (string) json_encode($output);
             }
 
             $html = new HtmlDomParser($content);
@@ -1075,7 +1075,7 @@ class Links extends Plugin
             $output['title']       = $title;
         }
 
-        return json_encode($output);
+        return (string) json_encode($output);
     }
 
     /**

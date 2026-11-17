@@ -280,7 +280,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      */
     public function write($file, $format = 'json', $options = [])
     {
-        return file_put_contents($file, $this->processor($format)->objectToString($this->data, $options));
+        return file_put_contents($file, $this->processor($format)->objectToString($this->data, $options)) !== false;
     }
 
     /**

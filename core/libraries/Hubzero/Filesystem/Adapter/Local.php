@@ -69,7 +69,7 @@ class Local implements AdapterInterface
      */
     public function write($path, $contents)
     {
-        return file_put_contents($path, $contents);
+        return file_put_contents($path, $contents) !== false;
     }
 
     /**
@@ -89,7 +89,7 @@ class Local implements AdapterInterface
      */
     public function append($path, $contents)
     {
-        return file_put_contents($path, $contents, FILE_APPEND);
+        return file_put_contents($path, $contents, FILE_APPEND) !== false;
     }
 
     /**

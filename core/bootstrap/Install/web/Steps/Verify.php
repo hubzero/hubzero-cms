@@ -59,7 +59,7 @@ class Verify implements StepInterface
 
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/verify.php';
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     /**

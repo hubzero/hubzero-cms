@@ -678,14 +678,14 @@ class Publications extends Plugin
         // Make sure the publication belongs to the project
         if (!$publication->exists() || !$publication->belongsToProject($this->model->get('id'))) {
             $this->setError(Lang::txt('Failed to save a setting'));
-            return json_encode(['error' => $this->getError(), 'result' => null]);
+            return (string) json_encode(['error' => $this->getError(), 'result' => null]);
         }
 
         if ($result = $publication->saveParam($param, $value)) {
-            return json_encode(['success' => true, 'result' => $result]);
+            return (string) json_encode(['success' => true, 'result' => $result]);
         } else {
             $this->setError(Lang::txt('Failed to save a setting'));
-            return json_encode(['error' => $this->getError(), 'result' => $result]);
+            return (string) json_encode(['error' => $this->getError(), 'result' => $result]);
         }
     }
 
@@ -720,7 +720,7 @@ class Publications extends Plugin
 
         // If publication not found, raise error
         if (!$pub->exists() || !$pub->belongsToProject($this->model->get('id'))) {
-            return json_encode($status);
+            return (string) json_encode($status);
         }
 
         // Set curation
@@ -734,7 +734,7 @@ class Publications extends Plugin
             $status = $pub->_curationModel->getStatus($block, $pub, $blockId);
         }
 
-        return json_encode($status);
+        return (string) json_encode($status);
     }
 
     /**
@@ -874,7 +874,7 @@ class Publications extends Plugin
 
         // Report only status action
         if ($json) {
-            return json_encode([
+            return (string) json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),
                 'message' => $this->msg,
