@@ -227,7 +227,7 @@ foreach ($this->cats as $cat) {
 
                     $html .= '<ol class="entries">' . "\n";
                     foreach ($category as $row) {
-                        $row->href = str_replace('&amp;', '&', $row->href);
+                        $row->href = str_replace('&amp;', '&', (string) $row->href);
                         $row->href = str_replace('&', '&amp;', $row->href);
 
                         // Does this category have a unique output display?

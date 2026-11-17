@@ -366,7 +366,7 @@ class Json
                                 $arr = [];
                                 parse_str($repo_base['query'], $arr);
 
-                                $pub_vid = $arr['vid'];
+                                $pub_vid = is_string($arr['vid'] ?? null) ? $arr['vid'] : '';
                                 if (strlen($pub_vid) < 5) {
                                     $pub_vid = str_pad($pub_vid, 5, '0', STR_PAD_LEFT);
                                 }

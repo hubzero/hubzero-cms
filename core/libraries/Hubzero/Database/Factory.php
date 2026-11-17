@@ -626,7 +626,7 @@ abstract class Factory
      *
      * @param   int   $count
      * @param   bool  $asArray  Return as array or string
-     * @return  array<mixed>|string
+     * @return  ($asArray is true ? array<int, string> : string)
      */
     public static function words(int $count = 3, bool $asArray = false)
     {

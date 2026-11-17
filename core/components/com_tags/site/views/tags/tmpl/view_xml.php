@@ -92,7 +92,7 @@ foreach ($this->results as $category) {
         $html .= "\t\t\t" . '<total>' . $total . '</total>' . "\n";
         $html .= "\t\t\t" . '<items>' . "\n";
         foreach ($category as $row) {
-            $row->href = str_replace('&amp;', '&', $row->href);
+            $row->href = str_replace('&amp;', '&', (string) $row->href);
             $row->href = str_replace('&', '&amp;', $row->href);
 
             if (strstr($row->href, 'index.php')) {

@@ -374,7 +374,7 @@ class FactoryTest extends AbstractDriverTestCase
     public function wordsReturnsStringByDefault(): void
     {
         $words = Factory::words(3);
-        $this->assertIsString($words);
+        $this->assertMatchesRegularExpression('/^\S+ \S+ \S+$/', $words);
     }
 
     #[Test]
@@ -389,7 +389,6 @@ class FactoryTest extends AbstractDriverTestCase
     public function wordsCanReturnArray(): void
     {
         $words = Factory::words(4, true);
-        $this->assertIsArray($words);
         $this->assertCount(4, $words);
     }
 

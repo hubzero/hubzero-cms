@@ -46,7 +46,7 @@ if (isset($this->tickets) && count($this->tickets) > 0) {
                 $ticket->summary = Lang::txt('(no content found)');
             }
         }
-        $ticket->summary = str_replace("\r", "", $ticket->summary);
+        $ticket->summary = str_replace("\r", "", (string) $ticket->summary);
         $ticket->summary = str_replace("\t", " ", $ticket->summary);
         $ticket->summary = str_replace("\n", " ", $ticket->summary);
 
