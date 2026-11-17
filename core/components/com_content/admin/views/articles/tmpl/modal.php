@@ -21,7 +21,11 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, pagination: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     filters: mixed,
+ *     items: array<int, \Components\Content\Models\Article>,
+ *     pagination: mixed,
+ * } $this
  */
 
 /**

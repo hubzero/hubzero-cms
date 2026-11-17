@@ -67,6 +67,11 @@ use Hubzero\Facades\Route;
  *
  * @property  string                                  $name      The title, through transformName()
  * @property  \Components\Categories\Models\Category  $category  The category, through category()
+ * @property  \Hubzero\User\User                      $author       The author, through author()
+ * @property  \Hubzero\User\User                      $editor       Who has it checked out, through editor()
+ * @property  \Hubzero\Access\Viewlevel                $accessLevel  The access level, through accessLevel()
+ * @property  string|null                             $language_title  Not a column: joined in by the admin lists
+ * @property  mixed                                   $max_ordering    Not a column: set by the admin lists
  *
  * @property mixed $params       Not a column: the article's parameters, set for display
  * @property mixed $articletext  Not a column: the text to edit, set by the edit form

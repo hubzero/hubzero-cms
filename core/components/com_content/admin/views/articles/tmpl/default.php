@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
  *     authors: mixed,
  *     f_levels: mixed,
  *     filters: mixed,
- *     items: mixed,
+ *     items: array<int, \Components\Content\Models\Article>,
  *     pagination: mixed,
  * } $this
  */
