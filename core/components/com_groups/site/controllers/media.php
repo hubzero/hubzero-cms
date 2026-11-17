@@ -55,16 +55,17 @@ class Media extends Base
         }
 
         // Load the group page
-        $this->group = Group::getInstance($this->cn);
+        $group = Group::getInstance($this->cn);
+
+        // Ensure we found the group info
+        if (!$group || !$group->get('gidNumber')) {
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+        }
+        $this->group = $group;
         $this->authorized = false;
 
         // Load plugin access groups
         $this->pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
-
-        // Ensure we found the group info
-        if (!$this->group || !$this->group->get('gidNumber')) {
-            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
-        }
 
         // Kick user out if not logged in and should be
         /*if (User::isGuest() && $this->pluginAccess['files'] == 'registered')

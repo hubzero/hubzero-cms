@@ -51,7 +51,13 @@ class Modules extends AdminController
             );
         }
 
-        $this->group = Group::getInstance($this->gid);
+        $group = Group::getInstance($this->gid);
+
+        // Ensure we found the group info
+        if (!$group) {
+            App::abort(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+        }
+        $this->group = $group;
 
         parent::execute();
     }

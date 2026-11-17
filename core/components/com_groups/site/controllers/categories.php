@@ -48,12 +48,13 @@ class Categories extends Base
         }
 
         // Load the group page
-        $this->group = Group::getInstance($this->cn);
+        $group = Group::getInstance($this->cn);
 
         // Ensure we found the group info
-        if (!$this->group || !$this->group->get('gidNumber')) {
+        if (!$group || !$group->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
+        $this->group = $group;
 
         // Check authorization
         if (

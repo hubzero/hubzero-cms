@@ -45,7 +45,13 @@ class Categories extends AdminController
             );
         }
 
-        $this->group = Group::getInstance($gid);
+        $group = Group::getInstance($gid);
+
+        // Ensure we found the group info
+        if (!$group) {
+            App::abort(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+        }
+        $this->group = $group;
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');

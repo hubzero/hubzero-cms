@@ -37,12 +37,13 @@ class Media extends AdminController
         $id = Request::getInt('gidNumber');
 
         // Load the group page
-        $this->group = Group::getInstance($id);
+        $group = Group::getInstance($id);
 
         // Ensure we found the group info
-        if (!$this->group || !$this->group->get('gidNumber')) {
+        if (!$group || !$group->get('gidNumber')) {
             App::abort(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
+        $this->group = $group;
 
         //build path to the group folder
         $uploadPath = trim($this->config->get('uploadpath', '/site/groups'), DS);
