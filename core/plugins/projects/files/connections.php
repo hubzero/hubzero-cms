@@ -40,7 +40,7 @@ use Hubzero\Facades\User;
  * And calls these on the plugin through __call():
  *
  * @method void  registerUpdate(string $type = '', string $file = '', bool $append = true, string $appendMessage = '')
- * @method void  onAfterUpdate(object $model = null, array<mixed> $changes = [])
+ * @method void  onAfterUpdate(\Components\Projects\Models\Project $model = null, array<mixed> $changes = [])
  * @method mixed getError(int $i = null, bool $toString = true)
  */
 class Connections

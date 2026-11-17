@@ -3236,7 +3236,7 @@ class Files extends Plugin
     /**
      * Event call after file update
      *
-     * @param   object|null  $model
+     * @param   \Components\Projects\Models\Project|null  $model
      * @param   array<mixed>   $changes
      * @return  bool|null
      */

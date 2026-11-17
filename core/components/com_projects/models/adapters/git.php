@@ -359,7 +359,7 @@ class Git extends Models\Adapter
      * Get last file revision
      *
      * @param   array<mixed>   $params
-     * @return  boolean
+     * @return  string|false  The revision hash, or false when there is no such file
      */
     public function getLastRevision($params = [])
     {

@@ -72,12 +72,12 @@ class Coins extends Plugin
     /**
      *  Generate microformat
      *
-     * @param   object|mixed  $model  Current model
+     * @param   \Components\Resources\Models\Entry|mixed  $model  Current model
      * @return  string|null
      */
     public function coins($model)
     {
-        if (!is_object($model)) {
+        if (!($model instanceof \Components\Resources\Models\Entry)) {
             return null;
         }
 
@@ -162,6 +162,7 @@ class Coins extends Plugin
         }
 
         if ($this->params->get('payload_url')) {
+            /** @var \Components\Resources\Models\Entry $firstchild The children relationship holds Entry rows */
             $firstchild = $model
                 ->children()
                 ->whereEquals('standalone', 0)
@@ -170,7 +171,7 @@ class Coins extends Plugin
                 ->limit(1)
                 ->row();
 
-            if ($firstchild && $firstchild->id) {
+            if ($firstchild->id) {
                 $doi = \Components\Resources\Helpers\Html::processPath('com_resources', $firstchild, $model->id, '');
                 if (substr($doi, 0, strlen('http')) != 'http') {
                     $doi = Route::url($doi, true, 1);
