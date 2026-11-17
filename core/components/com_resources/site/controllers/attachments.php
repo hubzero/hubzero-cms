@@ -91,6 +91,9 @@ class Attachments extends SiteController
 
         if (!$parentResource) {
             $parentResource = Entry::one($pid);
+            if (!$parentResource) {
+                App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+            }
         }
         if (!($parentResource->access('edit')) && !($parentResource->access('edit-own'))) {
             App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
@@ -264,7 +267,7 @@ class Attachments extends SiteController
                 exit();
             }
         }
-        $parentResource = Entry::one($pid);
+        $parentResource = Entry::oneOrFail($pid);
         // Create new parent/child association
         if (!$resource->makeChildOf($pid)) {
             echo json_encode([

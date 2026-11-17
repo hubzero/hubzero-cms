@@ -22,7 +22,7 @@ $status = $this->status;
 $status['fulltxt'] = stripslashes($this->status['fulltxt']);
 $this->set('status', $status);
 
-$type = \Components\Resources\Models\Type::one(7);
+$type = \Components\Resources\Models\Type::oneOrNew(7);
 
 $data = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltxt'], $matches, PREG_SET_ORDER);

@@ -260,8 +260,11 @@ class Solr extends AdminController
     {
         $entryID = Request::getInt('entryID', 0);
 
+        // Already gone, nothing to remove
         $entry = Blacklist::one($entryID);
-        $entry->destroy();
+        if ($entry) {
+            $entry->destroy();
+        }
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=manageBlacklist';

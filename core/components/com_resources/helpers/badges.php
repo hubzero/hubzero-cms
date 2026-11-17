@@ -212,15 +212,16 @@ class Badges
      */
     protected function removeBadge($tagId)
     {
-        $tagAssociationId = Objct::all()
-            ->select('id')
+        $tagAssociation = Objct::all()
             ->whereEquals('tagid', $tagId)
             ->whereEquals('tbl', $this->scope)
             ->whereEquals('objectid', $this->scopeId)
-            ->rows()->toArray()[0]['id'];
-        $tagAssociation = Objct::one($tagAssociationId);
+            ->row();
 
-        $tagAssociation->destroy();
+        // Not associated, nothing to remove
+        if ($tagAssociation->get('id')) {
+            $tagAssociation->destroy();
+        }
     }
 
 

@@ -69,6 +69,9 @@ class DayOfMonthField extends AbstractField
     {
         $tday = str_pad((string) $targetDay, 2, '0', STR_PAD_LEFT);
         $target = DateTime::createFromFormat('Y-m-d', "$currentYear-$currentMonth-$tday");
+        if ($target === false) {
+            return null;
+        }
         $currentWeekday = (int) $target->format('N');
 
         if ($currentWeekday < 6) {

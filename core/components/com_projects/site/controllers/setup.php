@@ -690,7 +690,7 @@ class Setup extends Base
                     $newInfo = Request::getArray('description', []);
 
                     $projectID = $this->model->get('id');
-                    $project = ProjectORM::one($this->model->get('id'));
+                    $project = ProjectORM::oneOrFail($this->model->get('id'));
 
                     $old = Description::collect($project->descriptions);
                     $oldKeys = array_fill_keys(array_keys($old), '');

@@ -37,7 +37,7 @@ class Unconfirmed extends Plugin
             $pending = Session::get('members.confirmcode');
             if ($pending) {
                 Session::set('members.confirmcode', null); // one-shot; avoid loops
-                $activation = User::one(User::get('id'))->get('activation');
+                $activation = $this->activation(User::get('id'));
                 if ($activation < 0 && (int) $activation === -(int) $pending) {
                     App::redirect(
                         Route::url(
@@ -84,7 +84,7 @@ class Unconfirmed extends Plugin
                     || (Request::getWord('view') == 'register' && !Request::getWord('controller'))));
 
             $id = User::get('id');
-            $activation = User::one($id)->get('activation');
+            $activation = $this->activation($id);
 
             if (
                 User::get('id')
@@ -121,5 +121,21 @@ class Unconfirmed extends Plugin
                 }
             }
         }
+    }
+
+    /**
+     * The account's activation state, read fresh from the database
+     *
+     * @param   int|string  $id  Account ID
+     * @return  mixed  Null when there is no such account: not confirmed
+     */
+    private function activation($id)
+    {
+        $user = User::one($id);
+        if (!$user) {
+            return null;
+        }
+
+        return $user->get('activation');
     }
 }

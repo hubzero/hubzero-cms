@@ -715,6 +715,10 @@ class Post extends Relational
                 // Re-read the parent inside the lock: a concurrent reply may
                 // have shifted the tree since it was first loaded above.
                 $parent = $this->parent();
+                if (!$parent) {
+                    $this->addError(Lang::txt('Parent node does not exist.'));
+                    return false;
+                }
 
                 // Get the reposition data for shifting the tree and re-inserting the node.
                 if (!($reposition = $this->getTreeRepositionData($parent, 2, 'last-child'))) {

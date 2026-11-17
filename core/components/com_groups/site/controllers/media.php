@@ -268,7 +268,7 @@ class Media extends Base
     private function buildFolderTreeHtml($tree)
     {
         //load group object
-        $hubzeroGroup = Group::getInstance($this->cn);
+        $hubzeroGroup = Group::getInstance($this->cn) ?: new Group();
 
         // Sort the tree by name
         $name = array_column($tree, 'name');
@@ -315,7 +315,7 @@ class Media extends Base
     private function buildFolderTreeSelect($tree)
     {
         // load group object
-        $hubzeroGroup = Group::getInstance($this->cn);
+        $hubzeroGroup = Group::getInstance($this->cn) ?: new Group();
 
         $html  = '<select class="" name="folder">';
         /*
@@ -339,7 +339,7 @@ class Media extends Base
     private function buildFolderTreeSelectOptionList($tree)
     {
         // load group object
-        $hubzeroGroup = Group::getInstance($this->cn);
+        $hubzeroGroup = Group::getInstance($this->cn) ?: new Group();
 
         $base = substr(PATH_APP, strlen(PATH_ROOT));
 

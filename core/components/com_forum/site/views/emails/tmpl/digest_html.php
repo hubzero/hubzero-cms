@@ -157,7 +157,7 @@ $spanStyle = 'display:none !important; visibility:hidden; opacity:0; color:trans
                                     <?php
                                     $sef  = Route::urlForClient(
                                         'site',
-                                        Components\Forum\Models\Post::one($post->id)->link(),
+                                        $post->link(),
                                     );
                                     $link = $base . '/' . trim($sef, '/');
                                     ?>

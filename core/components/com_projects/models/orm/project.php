@@ -829,15 +829,18 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 case 'admin':
                 default:
                     $reviewer = 'admin';
-                    $group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'));
+                    $group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'))
+                        ?: new \Hubzero\User\Group();
                     break;
 
                 case 'sensitive':
-                    $group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'));
+                    $group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'))
+                        ?: new \Hubzero\User\Group();
                     break;
 
                 case 'sponsored':
-                    $group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'));
+                    $group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'))
+                        ?: new \Hubzero\User\Group();
                     break;
 
                 case 'reports':

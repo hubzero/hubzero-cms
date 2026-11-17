@@ -740,14 +740,17 @@ class Tag extends Relational
 
         // Update new tag's counts
         if ($this->hasAttribute('objects') || $this->hasAttribute('substitutes')) {
+            // No tag by that id, no counts to update
             $tag = self::one($tag_id);
-            if ($this->hasAttribute('objects')) {
-                $tag->set('objects', $tag->purgeCache()->objects()->total());
+            if ($tag) {
+                if ($this->hasAttribute('objects')) {
+                    $tag->set('objects', $tag->purgeCache()->objects()->total());
+                }
+                if ($this->hasAttribute('substitutes')) {
+                    $tag->set('substitutes', $tag->purgeCache()->substitutes()->total());
+                }
+                $tag->save();
             }
-            if ($this->hasAttribute('substitutes')) {
-                $tag->set('substitutes', $tag->purgeCache()->substitutes()->total());
-            }
-            $tag->save();
         }
 
         // Destroy the old tag
@@ -779,10 +782,13 @@ class Tag extends Relational
         }
 
         // Update new tag's counts
+        // No tag by that id, no counts to update
         $tag = self::one($tag_id);
-        $tag
-            ->set('objects', $tag->objects()->total())
-            ->save();
+        if ($tag) {
+            $tag
+                ->set('objects', $tag->objects()->total())
+                ->save();
+        }
 
         return true;
     }

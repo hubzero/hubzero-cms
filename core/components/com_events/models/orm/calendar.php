@@ -75,6 +75,14 @@ class Calendar extends Relational
         foreach ($calendarIds as $k => $calendarId) {
             // load calendar model
             $eventsCalendar = self::one($calendarId);
+            if (!$eventsCalendar) {
+                if ($calendarId != 0) {
+                    continue;
+                }
+                // Calendar 0 is not a row: it holds the events outside any calendar
+                $eventsCalendar = self::blank();
+                $eventsCalendar->set('id', 0);
+            }
 
             // make sure calendar is published
             if (!$eventsCalendar->get('published') && $calendarId != 0) {
