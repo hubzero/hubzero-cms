@@ -576,7 +576,7 @@ abstract class Cart
         if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
-        return md5(self::$securitySalt . $tId) == $token;
+        return hash_equals(md5(self::$securitySalt . $tId), (string) $token);
     }
 
     /**

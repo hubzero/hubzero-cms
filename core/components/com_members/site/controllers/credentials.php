@@ -465,7 +465,7 @@ class Credentials extends SiteController
         $user = \Hubzero\User\User::oneOrFail($id);
 
         // Check for a user and that the tokens match
-        if ($user->tokens()->latest('id')->get('token') !== $token) {
+        if (!hash_equals((string) $user->tokens()->latest('id')->get('token'), (string) $token)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),

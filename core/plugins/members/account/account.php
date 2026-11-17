@@ -432,7 +432,11 @@ class Account extends Plugin
         $parts = json_decode($row->params);
 
         // Invalide token (or none pending: params may be empty or lack the key)
-        if (!is_object($parts) || !isset($parts->auth_link_token) || $parts->auth_link_token != $token) {
+        if (
+            !is_object($parts)
+            || !isset($parts->auth_link_token)
+            || !hash_equals((string) $parts->auth_link_token, (string) $token)
+        ) {
             App::abort(404, Lang::txt('INVALID_TOKEN'));
         }
 

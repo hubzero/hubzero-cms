@@ -84,7 +84,7 @@ class Formv1r0 extends Base
         $secret     = Config::get('secret');
         $hash       = hash('sha256', $session_id . ':' . $secret);
 
-        if ($token !== $hash) {
+        if (!hash_equals($hash, $token)) {
             App::abort(401, 'You don\'t have permission to do this');
         }
 

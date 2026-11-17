@@ -1426,7 +1426,7 @@ class Calendar extends Plugin
             //is the event restricted
             if (
                 $view->get('event')->get('restricted') != ''
-                && $view->get('event')->get('restricted') != $password
+                && !hash_equals((string) $view->get('event')->get('restricted'), $password)
                 && !isset($this->register)
             ) {
                 //if we entered a password and it was bad lets tell the user

@@ -63,7 +63,7 @@ class Authorize extends SiteController
         if (Request::method() == 'POST') {
             $token = Request::getString('token', '', 'post');
 
-            if ($token != sha1($result->verifier)) {
+            if (!hash_equals(sha1($result->verifier), $token)) {
                 throw new Exception('Forbidden', 403);
             }
 
