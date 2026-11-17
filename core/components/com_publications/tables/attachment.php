@@ -482,11 +482,11 @@ class Attachment extends Table
     /**
      * Copy entry
      *
-     * @param   object|null   $att
+     * @param   \stdClass|null   $att  The attachment row to copy
      * @param   integer|null  $vid
      * @param   integer|null  $elementId
      * @param   integer  $uid
-     * @return  object|bool   object or FALSE
+     * @return  bool  Whether the copy was bound
      */
     public function copyAttachment($att = null, $vid = null, $elementId = null, $uid = 0)
     {
