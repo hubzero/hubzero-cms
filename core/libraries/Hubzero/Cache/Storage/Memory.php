@@ -187,12 +187,13 @@ class Memory extends None
     /**
      * Get the expiration time based on the given minutes.
      *
-     * @param   integer  $minutes
+     * @param   int|null  $minutes  0 or null for no expiry
      * @return  integer
      */
     protected function expiration($minutes)
     {
-        if ($minutes === 0) {
+        // No lifetime (0 or null) keeps the item, as the other stores do
+        if (!$minutes) {
             return 9999999999;
         }
 
