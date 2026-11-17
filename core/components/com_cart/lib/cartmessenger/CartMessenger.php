@@ -352,9 +352,12 @@ class CartMessenger
         // Get user's email address
         $uId = \Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId);
         $usr = \Hubzero\User\Profile::getInstance($uId);
-        $message->addTo($usr->get('email'));
-        $message->setBody($plain);
-        $message->send();
+        // No profile, no address to send to; the notifications below still go
+        if ($usr) {
+            $message->addTo($usr->get('email'));
+            $message->setBody($plain);
+            $message->send();
+        }
 
         // Email notifications
         $notifyTo = $params->get('sendNotificationTo');

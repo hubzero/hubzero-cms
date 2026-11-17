@@ -67,6 +67,12 @@ class Download extends ComponentController
 
         // Check if the transaction is complete and belongs to the user and is active and the SKU requested is valid
         $transaction = Cart::getTransactionFacts($tId);
+        if (!$transaction || !$transaction->info) {
+            // No such transaction: it never completed
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'), 'error']];
+            $this->messageTask($messages);
+            return;
+        }
         $transactionExistingItems = $transaction->items;
         $transaction = $transaction->info;
         $transactionItems = unserialize($transaction->tiItems);

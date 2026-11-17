@@ -855,7 +855,7 @@ class Database
                 $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $adminUser, $adminPass, $options);
 
                 // Check who we connected as
-                $stmt = $adminPdo->query('SELECT CURRENT_USER()');
+                $stmt = self::query($adminPdo, 'SELECT CURRENT_USER()');
                 $currentUser = $stmt->fetchColumn();
 
                 // Verify this user has admin privileges
@@ -1300,7 +1300,7 @@ class Database
         }
 
         // We have a connection with verified privileges - check who we connected as
-        $stmt = $adminPdo->query('SELECT CURRENT_USER()');
+        $stmt = self::query($adminPdo, 'SELECT CURRENT_USER()');
         $currentUser = $stmt->fetchColumn();
 
         self::output("\n", $ansi);
@@ -1328,7 +1328,7 @@ class Database
     {
         try {
             // Check global privileges
-            $stmt = $pdo->query("SHOW GRANTS FOR CURRENT_USER()");
+            $stmt = self::query($pdo, "SHOW GRANTS FOR CURRENT_USER()");
             $grants = [];
             while (($grant = $stmt->fetchColumn()) !== false) {
                 $grants[] = $grant;
@@ -1495,7 +1495,7 @@ class Database
                         \muse_escalate_privileges();
                     }
 
-                    $stmt = $adminPdo->prepare("SELECT COUNT(*) FROM mysql.user WHERE user = ? AND host = ?");
+                    $stmt = self::prepare($adminPdo, "SELECT COUNT(*) FROM mysql.user WHERE user = ? AND host = ?");
                     $stmt->execute([$username, $userHost]);
                     $userExists = (int) $stmt->fetchColumn() > 0;
 
@@ -1939,7 +1939,7 @@ class Database
             $pdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $username, $password, $options);
 
             // Query for the current user
-            $stmt = $pdo->query('SELECT CURRENT_USER()');
+            $stmt = self::query($pdo, 'SELECT CURRENT_USER()');
             $currentUser = $stmt->fetchColumn();
 
             self::output("\e[32mConnected.\e[39m\n", $ansi);
@@ -2024,7 +2024,7 @@ class Database
                 $pdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $username, $password, $options);
 
                 // Connection succeeded!
-                $stmt = $pdo->query('SELECT CURRENT_USER()');
+                $stmt = self::query($pdo, 'SELECT CURRENT_USER()');
                 $currentUser = $stmt->fetchColumn();
 
                 self::output("\e[32mConnected.\e[39m\n", $ansi);
@@ -2703,6 +2703,42 @@ class Database
         }
 
         return $dsn;
+    }
+
+    /**
+     * Run a query; its connection throws on failure, and a false is one too
+     *
+     * @param   \PDO    $pdo  Connection
+     * @param   string  $sql  Query
+     * @return  \PDOStatement
+     * @throws  \PDOException
+     */
+    private static function query(\PDO $pdo, string $sql): \PDOStatement
+    {
+        $stmt = $pdo->query($sql);
+        if ($stmt === false) {
+            throw new \PDOException('Query failed: ' . $sql);
+        }
+
+        return $stmt;
+    }
+
+    /**
+     * Prepare a statement; its connection throws on failure, and a false is one too
+     *
+     * @param   \PDO    $pdo  Connection
+     * @param   string  $sql  Statement
+     * @return  \PDOStatement
+     * @throws  \PDOException
+     */
+    private static function prepare(\PDO $pdo, string $sql): \PDOStatement
+    {
+        $stmt = $pdo->prepare($sql);
+        if ($stmt === false) {
+            throw new \PDOException('Statement failed: ' . $sql);
+        }
+
+        return $stmt;
     }
 
     /**

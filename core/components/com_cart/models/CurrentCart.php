@@ -341,7 +341,7 @@ class CurrentCart extends Cart
      * Redirect to cart different cart pages
      *
      * @param string $where Where to redirect
-     * @return void
+     * @return never
      */
     public function redirect($where)
     {

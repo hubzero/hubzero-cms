@@ -71,8 +71,13 @@ class Orders extends ComponentController
 
         // Get transactions' info
         if ($transactions) {
-            foreach ($transactions as $transaction) {
+            foreach ($transactions as $k => $transaction) {
                 $transactionInfo = Cart::getTransactionInfo($transaction->tId);
+                if (!$transactionInfo) {
+                    // Gone since the list was read
+                    unset($transactions[$k]);
+                    continue;
+                }
 
                 // Figure out if the items int the transactions are still available
                 $tItems = unserialize($transactionInfo->tiItems);

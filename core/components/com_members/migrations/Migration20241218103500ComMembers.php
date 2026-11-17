@@ -66,6 +66,10 @@ class Migration20241218103500ComMembers extends Base
 
         foreach ($results as $result) {
             $profile = \Hubzero\User\Profile::getInstance($result);
+            if (!$profile) {
+                // Gone since the query
+                continue;
+            }
             $profile->set('surname', $profile->get('surname'));
             $profile->set('givenName', $profile->get('givenName'));
             $profile->set('middleName', $profile->get('middleName'));

@@ -817,6 +817,9 @@ abstract class Cart
     public static function updateTransactionItem($tId, $item)
     {
         $tInfo = self::getTransactionInfo($tId);
+        if (!$tInfo) {
+            throw new \Exception('Missing transaction item.');
+        }
         $tItems = unserialize($tInfo->tiItems);
 
         $sId = $item['info']->sId;
@@ -989,6 +992,13 @@ abstract class Cart
         // Get the transaction info to check the changes against and to
         // recalculate the total from
         $currerntTransactionInfo = self::getTransactionInfo($tId);
+        if (!$currerntTransactionInfo) {
+            // No such transaction: nothing to update
+            if ($returnChanges) {
+                return [];
+            }
+            return false;
+        }
         $transactionChanges = [];
 
         $setSql = [];
