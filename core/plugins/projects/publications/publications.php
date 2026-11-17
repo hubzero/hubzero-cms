@@ -549,7 +549,10 @@ class Publications extends Plugin
             // Handler actions are not done yet (Handlers::update() is a stub)
 
             // Load editor
-            $view->set('editor', $modelHandler->loadEditor($view->get('handler'), $view->get('publication'), $element));
+            $view->set(
+                'editor',
+                $modelHandler->loadEditor($view->get('handler'), $view->get('publication'), (int) $element),
+            );
         }
 
         $view->set('option', $this->componentOption);
@@ -728,10 +731,10 @@ class Publications extends Plugin
 
         if ($element && $block) {
             // Get block element status
-            $status = $pub->_curationModel->getElementStatus($block, $element, $pub, $blockId);
+            $status = $pub->_curationModel->getElementStatus($block, (int) $element, $pub, (int) $blockId);
         } elseif ($block) {
             // Getting block status
-            $status = $pub->_curationModel->getStatus($block, $pub, $blockId);
+            $status = $pub->_curationModel->getStatus($block, $pub, (int) $blockId);
         }
 
         return (string) json_encode($status);
@@ -810,44 +813,44 @@ class Publications extends Plugin
         Event::trigger('publications.onBeforeSave', [$pub]);
 
         // Make sure block exists, else redirect to status
-        if (!$pub->_curationModel->setBlock($block, $blockId)) {
+        if (!$pub->_curationModel->setBlock($block, (int) $blockId)) {
             $block = 'status';
         }
 
         // Save incoming
         switch ($this->task) {
             case 'additem':
-                $pub->_curationModel->addItem($this->uid, $element);
+                $pub->_curationModel->addItem($this->uid, (int) $element);
                 break;
 
             case 'saveitem':
-                $pub->_curationModel->saveItem($this->uid, $element);
+                $pub->_curationModel->saveItem($this->uid, (int) $element);
                 break;
 
             case 'deleteitem':
-                $pub->_curationModel->deleteItem($this->uid, $element);
+                $pub->_curationModel->deleteItem($this->uid, (int) $element);
                 break;
 
             case 'reorder':
-                $pub->_curationModel->reorder($this->uid, $element);
+                $pub->_curationModel->reorder($this->uid, (int) $element);
                 $json = 1; // return result as json
                 break;
 
             case 'dispute':
-                $pub->_curationModel->dispute($this->uid, $element);
+                $pub->_curationModel->dispute($this->uid, (int) $element);
                 break;
 
             case 'skip':
-                $pub->_curationModel->skip($this->uid, $element);
+                $pub->_curationModel->skip($this->uid, (int) $element);
                 break;
 
             case 'undispute':
-                $pub->_curationModel->undispute($this->uid, $element);
+                $pub->_curationModel->undispute($this->uid, (int) $element);
                 break;
 
             default:
                 if ($this->task != 'rewind') {
-                    $pub->_curationModel->saveBlock($this->uid, $element);
+                    $pub->_curationModel->saveBlock($this->uid, (int) $element);
                 }
                 break;
         }
@@ -892,7 +895,7 @@ class Publications extends Plugin
 
         // Get next element
         if ($next) {
-            $next = $pub->_curationModel->getNextElement($block, $blockId, $element);
+            $next = $pub->_curationModel->getNextElement($block, $blockId, (int) $element);
         }
 
         // What's next?

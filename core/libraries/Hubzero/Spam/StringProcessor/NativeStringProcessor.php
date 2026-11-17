@@ -61,7 +61,7 @@ class NativeStringProcessor implements StringProcessorInterface
 
         if ($this->aggressive) {
             // Convert some characters that 'MAY' be used as alias
-            $string = str_replace(['@', '$', '[dot]', '(dot)'], ['at', 's', '.', '.'], $string);
+            $string = str_replace(['@', '$', '[dot]', '(dot)'], ['at', 's', '.', '.'], (string) $string);
 
             // Remove special characters
             $string = preg_replace("/[^a-zA-Z0-9-\.]/", '', $string);

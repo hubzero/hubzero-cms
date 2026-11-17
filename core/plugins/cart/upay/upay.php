@@ -184,7 +184,7 @@ class Upay extends Plugin
     /**
      * Set transaction details
      *
-     * @param   object  $transactionDetails
+     * @param   \stdClass  $transactionDetails
      * @return  void
      */
     private function setTransactionDetails($transactionDetails)

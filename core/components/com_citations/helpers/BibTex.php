@@ -287,8 +287,8 @@ class BibTex
         $char           = '';
         $lastchar       = '';
         $buffer         = '';
-        for ($i = 0; $i < strlen($this->content); $i++) {
-            $char = substr($this->content, $i, 1);
+        for ($i = 0; $i < strlen((string) $this->content); $i++) {
+            $char = substr((string) $this->content, $i, 1);
             if ((0 != $open) && ('@' == $char)) {
                 if (!$this->checkAt($buffer)) {
                     $this->generateWarning('WARNING_MISSING_END_BRACE', '', $buffer);
@@ -586,7 +586,7 @@ class BibTex
             $char     = '';
             $lastchar = '';
             for ($i = 0; $i < strlen($value); $i++) {
-                $char = substr($this->content, $i, 1);
+                $char = substr((string) $this->content, $i, 1);
                 if (in_array($char, $opening) && ('\\' != $lastchar)) {
                     $open++;
                 } elseif (in_array($char, $closing) && ('\\' != $lastchar)) {

@@ -169,7 +169,7 @@ class Economy extends Obj
             if ($wish->assigned && $mainshare) {
                 $o = User::getInstance($wish->assigned);
                 if ($o->get('id')) {
-                    $BTLM = new Teller($wish->assigned);
+                    $BTLM = new Teller((int) $wish->assigned);
                     $msg = Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist);
                     $BTLM->deposit($mainshare, $msg, 'wish', $wishid);
                 }
@@ -208,9 +208,9 @@ class Economy extends Obj
         if ($wish->ranking > 0 && $wish->proposed_by != User::get('id') && $wish->proposed_by) {
             $o = User::getInstance($wish->proposed_by);
             if ($o->get('id')) {
-                $BTLA = new Teller($wish->proposed_by);
+                $BTLA = new Teller((int) $wish->proposed_by);
                 $msg = Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist);
-                $BTLA->deposit($wish->ranking, $msg, 'wish', $wishid);
+                $BTLA->deposit((int) $wish->ranking, $msg, 'wish', $wishid);
             }
         }
 

@@ -377,11 +377,11 @@ class Media extends Base
 
         $uri = Request::getString('SCRIPT_URL', '', 'server');
         if (strstr($uri, 'Compiled:')) {
-            $media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));
+            $media = str_replace('Compiled:', '', (string) strstr($uri, 'Compiled:'));
             $dir   = 'compiled';
         }
         if (strstr($uri, 'Tool:')) {
-            $media = str_replace('Tool:', '', strstr($uri, 'Tool:'));
+            $media = str_replace('Tool:', '', (string) strstr($uri, 'Tool:'));
             $media = $media ? $media : 'default';
             $dir   = 'tools';
         }

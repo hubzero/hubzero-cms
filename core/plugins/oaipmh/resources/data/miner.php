@@ -344,7 +344,7 @@ class Miner extends Obj implements Provider
 				ORDER BY `versionid` DESC LIMIT 1",
             );
         }
-        $record->identifier = $this->identifier($id, $this->database->loadObject(), $revision);
+        $record->identifier = $this->identifier($id, $this->database->loadObject(), (int) $revision);
 
         $idQuoted = $this->database->quote($id);
         $this->database->setQuery(

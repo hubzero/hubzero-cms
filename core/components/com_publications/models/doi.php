@@ -1122,7 +1122,7 @@ class Doi extends Obj
 
         $ch = curl_init($metadataURL);
         curl_setopt($ch, CURLOPT_USERPWD, $this->configs->dataciteUserPW);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, (string) $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/xml;charset=UTF-8']);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);

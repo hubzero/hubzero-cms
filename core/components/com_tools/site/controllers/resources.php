@@ -178,7 +178,7 @@ class Resources extends SiteController
                 App::abort(500, Lang::txt('COM_TOOLS_ERROR_UPDATING_TOOL'));
             } else {
                 // get updated tool status
-                $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
+                $obj->getToolStatus((string) $this->_toolid, $this->option, $status, $version);
             }
 
             if ($version == 'dev') {

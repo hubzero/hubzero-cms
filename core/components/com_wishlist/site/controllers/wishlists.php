@@ -1644,7 +1644,7 @@ class Wishlists extends SiteController
             $oldlist = Wishlist::oneOrFail($listid);
 
             // Where do we put this wish?
-            $newlist = Wishlist::oneByReference($refid, $category);
+            $newlist = Wishlist::oneByReference((int) $refid, $category);
 
             if (!$newlist->get('id')) {
                 // Create wishlist for resource if doesn't exist

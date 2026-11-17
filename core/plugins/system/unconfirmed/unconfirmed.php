@@ -131,7 +131,7 @@ class Unconfirmed extends Plugin
      */
     private function activation($id)
     {
-        $user = User::one($id);
+        $user = User::one((int) $id);
         if (!$user) {
             return null;
         }

@@ -218,7 +218,12 @@ class Activity extends Table
 
         // Collapse checked/posted to-do item activities
         if ($class == 'todo' && $activity == Lang::txt('COM_PROJECTS_ACTIVITY_TODO_COMPLETED')) {
-            $this->loadActivityByRef($projectid, $referenceid, $class, Lang::txt('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
+            $this->loadActivityByRef(
+                $projectid,
+                (int) $referenceid,
+                $class,
+                Lang::txt('COM_PROJECTS_ACTIVITY_TODO_ADDED'),
+            );
         }
 
         $this->projectid   = $projectid;

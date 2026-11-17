@@ -367,7 +367,7 @@ class Miner extends Obj implements Provider
             }
         }
 
-        $record->identifier  = $this->identifier($id, $record->identifier, $revision);
+        $record->identifier  = $this->identifier($id, $record->identifier, (int) $revision);
 
         $this->database->setQuery(
             "SELECT pv.created, pv.submitted, pv.published_up, pv.accepted

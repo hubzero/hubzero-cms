@@ -18,7 +18,7 @@ abstract class Base extends Obj
     /**
      * The object the referenceid references
      *
-     * @var  object|null
+     * @var  \Hubzero\User\Group|\Hubzero\User\User|null
      */
     protected $item = null;
 

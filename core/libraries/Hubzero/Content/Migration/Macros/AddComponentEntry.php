@@ -201,7 +201,7 @@ class AddComponentEntry extends Macro
             $this->routes()->rebuild();
         }
 
-        $this->addSiteRoute($option, $component_id, $enabled, $createRoute);
+        $this->addSiteRoute($option, (int) $component_id, $enabled, $createRoute);
 
         return true;
     }

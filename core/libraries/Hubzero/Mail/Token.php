@@ -143,7 +143,7 @@ class Token
         // Prepend an unencrypted version byte and action byte (in base16)
         $rv = bin2hex((string) pack("C", $version))
             . bin2hex((string) pack("C", $action))
-            . bin2hex($encrypted);
+            . bin2hex((string) $encrypted);
         $rv = substr($rv, 0, 36);
 
         return $rv;

@@ -43,7 +43,7 @@ class Group extends Base implements CommandInterface
             $currentDirectory = getcwd();
 
             // Remove web root
-            $currentDirectory = str_replace(PATH_APP, '', $currentDirectory);
+            $currentDirectory = str_replace(PATH_APP, '', (string) $currentDirectory);
 
             // Get group upload directory
             $groupsConfig     = Component::params('com_groups');

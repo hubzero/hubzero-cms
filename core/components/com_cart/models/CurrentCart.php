@@ -127,7 +127,7 @@ class CurrentCart extends Cart
      */
     public function add($sId, $qty = 1)
     {
-        parent::add($sId, $qty);
+        parent::add((int) $sId, $qty);
 
         // Update session
         $this->syncSessionCart();

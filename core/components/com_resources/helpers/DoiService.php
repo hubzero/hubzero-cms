@@ -576,7 +576,7 @@ class DoiService extends Obj
 
         $ch = curl_init($metadataURL);
         curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, (string) $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
             $ch,

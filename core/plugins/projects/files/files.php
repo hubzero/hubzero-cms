@@ -636,7 +636,7 @@ class Files extends Plugin
             // Get attached items
             $attachments = $view->get('publication')->attachments();
             $attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
-            $attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
+            $attachments = $attModel->getElementAttachments((int) $elId, $attachments, $params->type);
             $route = $this->model->isProvisioned()
                 ? 'index.php?option=com_publications&task=submit&active=files'
                 : $this->model->link('files');

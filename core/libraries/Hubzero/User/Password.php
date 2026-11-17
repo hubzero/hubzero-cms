@@ -715,7 +715,7 @@ class Password
      * Save a password record whose passhash was changed, mirror the hash to
      * #__xprofiles and #__users, and keep the old hash in the history
      *
-     * @param   object  $hzup      Password record with passhash already set
+     * @param   \Hubzero\User\Password  $hzup      Password record with passhash already set
      * @param   string  $passhash  New hash, '' for no password
      * @param   string  $oldhash   Previous hash
      * @param   mixed   $user

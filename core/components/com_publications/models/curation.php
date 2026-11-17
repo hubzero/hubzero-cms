@@ -278,7 +278,7 @@ class Curation extends Obj
     /**
      * Returns the Blocks of this curation flow
      *
-     * @return  array<mixed>|object
+     * @return  array<mixed>|\stdClass
      */
     public function getBlockSchema()
     {

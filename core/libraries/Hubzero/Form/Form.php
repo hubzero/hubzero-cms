@@ -1099,7 +1099,7 @@ class Form
                     $countrycode = substr($value, 0, (int) strpos($value, ' '));
                     $countrycode = (string) preg_replace('/[^\d]/', '', $countrycode);
                     $number = strstr($value, ' ');
-                    $number = (string) preg_replace('/[^\d]/', '', $number);
+                    $number = (string) preg_replace('/[^\d]/', '', (string) $number);
                     $result = $countrycode . '.' . $number;
                 } elseif (preg_match('/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/', $value) == 1) {
                     // If not, does it match EPP?

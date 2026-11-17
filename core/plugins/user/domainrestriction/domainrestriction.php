@@ -466,6 +466,6 @@ class Domainrestriction extends Plugin
         $tail = strlen($domain) >= 7 ? substr($domain, -7) : $domain;
         $tld = strstr($tail, '.');
 
-        return preg_replace('/^\./', '', $tld);
+        return preg_replace('/^\./', '', (string) $tld);
     }
 }

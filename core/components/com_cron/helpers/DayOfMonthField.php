@@ -83,7 +83,7 @@ class DayOfMonthField extends AbstractField
         foreach ([-1, 1, -2, 2] as $i) {
             $adjusted = $targetDay + $i;
             if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
-                $target->setDate($currentYear, $currentMonth, $adjusted);
+                $target->setDate((int) $currentYear, (int) $currentMonth, $adjusted);
                 if ($target->format('N') < 6 && $target->format('m') == $currentMonth) {
                     return $target;
                 }

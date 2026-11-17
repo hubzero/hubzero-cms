@@ -68,7 +68,7 @@ class Offering extends Base
     /**
      * Page
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Page|null
      */
     private $page = null;
 

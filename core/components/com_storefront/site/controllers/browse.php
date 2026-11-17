@@ -91,7 +91,7 @@ class Browse extends \Hubzero\Component\SiteController
         $view = new \Hubzero\Component\View(['name' => 'browse', 'layout' => 'collection']);
 
         // Get collection name
-        $collection = $this->warehouse->getCollectionInfo($cId);
+        $collection = $this->warehouse->getCollectionInfo((int) $cId);
         $collectionName = $collection->cName;
 
         // Get the collection products

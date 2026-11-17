@@ -50,7 +50,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                         <p>
                             <?php
                             $linkUrl = $this->escape(
-                                rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?'),
+                                rtrim(str_replace('quoteid=' . $this->filters['id'], '', (string) $base), '?'),
                             );
                             ?>
                             <a href="<?= $linkUrl ?>"

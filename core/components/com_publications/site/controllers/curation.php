@@ -841,7 +841,7 @@ class Curation extends SiteController
         $notice = $action == 'pass' ? '' : $review;
 
         // Save curation
-        if ($this->pub->_curationModel->saveUpdate($data, $element, $block, $this->pub, $step)) {
+        if ($this->pub->_curationModel->saveUpdate($data, (int) $element, $block, $this->pub, (int) $step)) {
             echo json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),

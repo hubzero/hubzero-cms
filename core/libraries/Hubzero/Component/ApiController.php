@@ -374,7 +374,7 @@ class ApiController implements ControllerInterface
                 $output->errors[] = Lang::txt(
                     'JLIB_APPLICATION_ERROR_DOCBLOCK_MISSING',
                     $method->getName(),
-                    str_replace(PATH_ROOT, '', $classReflector->getFileName()),
+                    str_replace(PATH_ROOT, '', (string) $classReflector->getFileName()),
                 );
                 continue;
             }
@@ -403,7 +403,7 @@ class ApiController implements ControllerInterface
                         $output->errors[] = Lang::txt(
                             'JLIB_APPLICATION_ERROR_DOCLBOCK_PARSING',
                             $method->getName(),
-                            str_replace(PATH_ROOT, '', $classReflector->getFileName()),
+                            str_replace(PATH_ROOT, '', (string) $classReflector->getFileName()),
                         );
                         continue;
                     }

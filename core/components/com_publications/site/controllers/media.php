@@ -72,9 +72,9 @@ class Media extends SiteController
         $uri = Request::getString('REQUEST_URI', '', 'server');
         $file = '';
         if (strstr($uri, 'Image:')) {
-            $file = str_replace('Image:', '', strstr($uri, 'Image:'));
+            $file = str_replace('Image:', '', (string) strstr($uri, 'Image:'));
         } elseif (strstr($uri, 'File:')) {
-            $file = str_replace('File:', '', strstr($uri, 'File:'));
+            $file = str_replace('File:', '', (string) strstr($uri, 'File:'));
         }
 
         //decode file name
