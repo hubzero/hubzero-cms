@@ -31,7 +31,7 @@ class Collect extends Module
      */
     protected $groupboards;
     /**
-     * @var  object|null
+     * @var  \Components\Collections\Models\Item|null
      */
     protected $item;
     /** @var \Components\Collections\Models\Archive|null */

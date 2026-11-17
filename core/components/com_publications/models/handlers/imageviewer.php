@@ -30,9 +30,9 @@ class ImageViewer extends Base
     protected $name = 'imageviewer';
 
     /**
-     * Configs
+     * Configs, decoded from JSON
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     protected $config = null;
 

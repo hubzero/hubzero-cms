@@ -627,7 +627,7 @@ class Archive extends Obj
      * Get a collectible item based on component
      *
      * @param   string  $option
-     * @return  object
+     * @return  Item
      */
     public function collectible($option)
     {
