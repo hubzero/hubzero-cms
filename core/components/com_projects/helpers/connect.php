@@ -556,7 +556,7 @@ class Connect extends Obj
         );
 
         // Setup remote directory & update permissions
-        $dir = $this->getRemoteDirectory($service, $this->model->get('owned_by_user'), $connected);
+        $dir = $this->getRemoteDirectory($service, $this->model->get('owned_by_user'), ($connected ?: []));
 
         return true;
     }

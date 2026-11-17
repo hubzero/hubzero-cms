@@ -354,13 +354,13 @@ class SafePathTest extends Basic
         $dir  = SafePath::directory($this->home, 'data', true);
         $path = SafePath::file($dir, 'keys');
 
-        $this->assertTrue(SafePath::write($path, "one\n"));
-        $this->assertEquals("one\n", file_get_contents($path));
-        $this->assertEquals(0600, fileperms($path) & 0777);
+        $this->assertTrue(SafePath::write((string) $path, "one\n"));
+        $this->assertEquals("one\n", file_get_contents((string) $path));
+        $this->assertEquals(0600, fileperms((string) $path) & 0777);
 
         // Overwriting, including with nothing at all
-        $this->assertTrue(SafePath::write($path, ''));
-        $this->assertEquals('', file_get_contents($path));
+        $this->assertTrue(SafePath::write((string) $path, ''));
+        $this->assertEquals('', file_get_contents((string) $path));
 
         $this->assertEquals([], glob($dir . DS . '.keys.*'));
     }
@@ -375,8 +375,8 @@ class SafePathTest extends Basic
         $dir  = SafePath::directory($this->home, 'data', true);
         $path = SafePath::file($dir, 'driver.xml');
 
-        $this->assertTrue(SafePath::write($path, "<run/>\n", null));
-        $this->assertEquals(0666 & ~umask(), fileperms($path) & 0777);
+        $this->assertTrue(SafePath::write((string) $path, "<run/>\n", null));
+        $this->assertEquals(0666 & ~umask(), fileperms((string) $path) & 0777);
     }
 
     /**
@@ -390,11 +390,11 @@ class SafePathTest extends Basic
         $dir  = SafePath::directory($this->home, 'data', true);
         $path = SafePath::file($dir, 'keys');
 
-        symlink($this->victim . DS . 'data' . DS . 'secret', $path);
+        symlink($this->victim . DS . 'data' . DS . 'secret', (string) $path);
 
-        $this->assertTrue(SafePath::write($path, "mine\n"));
-        $this->assertFalse(is_link($path));
-        $this->assertEquals("mine\n", file_get_contents($path));
+        $this->assertTrue(SafePath::write((string) $path, "mine\n"));
+        $this->assertFalse(is_link((string) $path));
+        $this->assertEquals("mine\n", file_get_contents((string) $path));
         $this->assertVictimIntact();
     }
 

@@ -1201,7 +1201,7 @@ class File extends Base
         foreach ((array) glob($bundlesDir . DS . '*.part') as $partFile) {
             $mtime = @filemtime((string) $partFile);
             if ($mtime !== false && $mtime < $threshold) {
-                if (@unlink($partFile)) {
+                if (@unlink((string) $partFile)) {
                     $removed++;
                 }
             }

@@ -515,7 +515,7 @@ class DoiService extends Obj
         // Submit DOI metadata
         $metadataURL = $this->configs->serviceURL . '/metadata/' . $this->configs->shoulder;
         $xml = $this->buildXml();
-        $subResult = $this->regMetadata($metadataURL, $xml, $doi);
+        $subResult = $this->regMetadata($metadataURL, (string) $xml, $doi);
 
         if (!$subResult) {
             return false;
@@ -581,7 +581,7 @@ class DoiService extends Obj
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
-            ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)],
+            ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen((string) $xml)],
         );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -735,10 +735,12 @@ class DoiService extends Obj
 
             // Load the xml document in the DOMDocument object
             $xdoc = new \DomDocument();
-            $xdoc->loadXML($xml);
+            $xdoc->loadXML((string) $xml);
 
             // Append XML
-            $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
+            $input .= 'datacite: '
+                . strtr((string) $xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"])
+                . "\n";
 
             // Make service call to send extended metadata
             $doi = $this->runCurl((string) $url, $input);
@@ -786,14 +788,16 @@ class DoiService extends Obj
 
             // Load the xml document in the DOMDocument object
             $xdoc = new \DomDocument();
-            $xdoc->loadXML($xml);
+            $xdoc->loadXML((string) $xml);
 
             // Validate against schema
             if (!$xdoc->schemaValidate($this->configs->xmlSchema)) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_DOI_XML_INVALID'));
             } else {
                 // Append XML
-                $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
+                $input .= 'datacite: '
+                    . strtr((string) $xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"])
+                    . "\n";
             }
         }
 

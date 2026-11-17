@@ -1055,7 +1055,7 @@ class Doi extends Obj
         // Submit DOI metadata
         $metadataURL = $this->configs->dataciteServiceURL . DS . 'metadata' . DS . $this->configs->shoulder;
         $xml = $this->buildXml($doi);
-        $subResult = $this->regMetadata($metadataURL, $xml, $doi);
+        $subResult = $this->regMetadata($metadataURL, (string) $xml, $doi);
 
         if (!$subResult) {
             return false;
@@ -1274,10 +1274,12 @@ class Doi extends Obj
 
             // Load the xml document in the DOMDocument object
             $xdoc = new \DomDocument();
-            $xdoc->loadXML($xml);
+            $xdoc->loadXML((string) $xml);
 
             // Append XML
-            $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
+            $input .= 'datacite: '
+                . strtr((string) $xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"])
+                . "\n";
 
             // Make service call to send extended metadata
             $doi = $this->runCurl((string) $url, $input);
@@ -1325,14 +1327,16 @@ class Doi extends Obj
 
             // Load the xml document in the DOMDocument object
             $xdoc = new \DomDocument();
-            $xdoc->loadXML($xml);
+            $xdoc->loadXML((string) $xml);
 
             // Validate against schema
             if (!$xdoc->schemaValidate($this->configs->xmlSchema)) {
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
             } else {
                 // Append XML
-                $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
+                $input .= 'datacite: '
+                    . strtr((string) $xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"])
+                    . "\n";
             }
         }
 
