@@ -45,7 +45,7 @@ class Form extends Content
             // Get the file extension
             $pathinfo = pathinfo($file);
             $filename = $pathinfo['filename'];
-            $ext      = $pathinfo['extension'];
+            $ext      = $pathinfo['extension'] ?? '';
         } else {
             return ['error' => 'No files provided'];
         }

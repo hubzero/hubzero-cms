@@ -49,10 +49,10 @@ class Gallery
 
         foreach ($file_list as $file) {
             $pi = pathinfo($file);
-            $dir_name = str_replace(PATH_ROOT, '', $pi['dirname']);
-            $ext = strtolower($pi['extension']);
+            $dir_name = str_replace(PATH_ROOT, '', $pi['dirname'] ?? '');
+            $ext = strtolower($pi['extension'] ?? '');
 
-            $desc_file = str_replace($pi['extension'], 'txt', PATH_ROOT . $real_path . '/' . $file);
+            $desc_file = str_replace($pi['extension'] ?? '', 'txt', PATH_ROOT . $real_path . '/' . $file);
             $desc = '';
             if (file_exists($desc_file)) {
                 $desc = htmlentities((string) file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');

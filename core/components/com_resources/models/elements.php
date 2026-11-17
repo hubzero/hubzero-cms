@@ -28,7 +28,7 @@ class Elements
     /**
      * The XML params element
      *
-     * @var  object|null
+     * @var  array<string, object>|null
      */
     protected $schema = null;
 

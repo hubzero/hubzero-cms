@@ -699,12 +699,12 @@ class Manage extends AdminController
 
         // url
         $url_bits = parse_url($gitLabProject['http_url_to_repo']) ?: [];
-        $gitLabUrl = $url_bits["scheme"]
+        $gitLabUrl = ($url_bits["scheme"] ?? '')
             . '://oauth2:'
             . $client->get('token')
             . '@'
-            . $url_bits["host"]
-            . $url_bits["path"];
+            . ($url_bits["host"] ?? '')
+            . ($url_bits["path"] ?? '');
 
         // build command to run via shell
         // this will init the git repo, make the initial commit and push to the repo management machine
@@ -839,12 +839,12 @@ class Manage extends AdminController
 
                 // url
                 $url_bits = parse_url($gitlabProject['http_url_to_repo']) ?: [];
-                $gitLabUrl = $url_bits["scheme"]
+                $gitLabUrl = ($url_bits["scheme"] ?? '')
                     . '://oauth2:'
                     . $gitlabKey
                     . '@'
-                    . $url_bits["host"]
-                    . $url_bits["path"];
+                    . ($url_bits["host"] ?? '')
+                    . ($url_bits["path"] ?? '');
 
                 // setup stage environment
                 $cmd  = 'sh '

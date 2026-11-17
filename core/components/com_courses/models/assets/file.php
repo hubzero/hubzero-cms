@@ -93,7 +93,7 @@ class File extends Handler
         // Get the file extension
         $pathinfo = pathinfo($file);
         $filename = $pathinfo['filename'];
-        $ext      = $pathinfo['extension'];
+        $ext      = $pathinfo['extension'] ?? '';
 
         // @FIXME: should these come from the global settings, or should they be courses specific
         // Get config

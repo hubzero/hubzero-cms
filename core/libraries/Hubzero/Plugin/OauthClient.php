@@ -36,7 +36,7 @@ abstract class OauthClient extends Plugin
      * Grab the return URL if set and handle denial of app privileges from provider
      *
      * @param   object  $credentials
-     * @param   object  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     abstract public function login(&$credentials, &$options);

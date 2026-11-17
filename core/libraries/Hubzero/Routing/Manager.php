@@ -16,7 +16,7 @@ class Manager
     /**
      * The application instance.
      *
-     * @var  object
+     * @var  \Hubzero\Base\Application
      */
     protected $app;
 
@@ -37,7 +37,7 @@ class Manager
     /**
      * Create a new manager instance.
      *
-     * @param   object  $app
+     * @param   \Hubzero\Base\Application  $app
      * @param   array<mixed>   $paths
      * @return  void
      */

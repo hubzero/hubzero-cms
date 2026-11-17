@@ -231,7 +231,7 @@ class File extends Base
                 $filePath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
                 $fileinfo = pathinfo($filePath);
-                $a_dir  = $fileinfo['dirname'];
+                $a_dir  = $fileinfo['dirname'] ?? '';
                 $a_dir  = trim(str_replace($configs->pubPath, '', $a_dir), DS);
 
                 $fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
@@ -327,7 +327,7 @@ class File extends Base
 
             if (file_exists($filePath)) {
                 $fileinfo = pathinfo($filePath);
-                $a_dir  = $fileinfo['dirname'];
+                $a_dir  = $fileinfo['dirname'] ?? '';
                 $a_dir  = trim(str_replace($configs->pubPath, '', $a_dir), DS);
                 $fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
                 $fPath .= basename($filePath);

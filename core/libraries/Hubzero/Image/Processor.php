@@ -601,10 +601,10 @@ class Processor extends Obj
             $info = pathinfo($save_path);
 
             if ($make_paths) {
-                App::get('filesystem')->makeDirectory($info['dirname']);
+                App::get('filesystem')->makeDirectory($info['dirname'] ?? '');
             }
 
-            if (!is_dir($info['dirname']) && $make_paths == false) {
+            if (!is_dir($info['dirname'] ?? '') && $make_paths == false) {
                 $this->setError(
                     Lang::txt('You must supply a valid path or allow save function to create recursive path'),
                 );

@@ -811,7 +811,7 @@ class Group extends Obj
     {
         $backtrace = debug_backtrace();
 
-        $caller = next($backtrace);
+        $caller = next($backtrace) ?: [];
 
         switch ($level) {
             case E_USER_NOTICE:
@@ -825,7 +825,7 @@ class Group extends Obj
                 break;
         }
 
-        echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
+        echo $message . ' in ' . ($caller['file'] ?? '') . ' on line ' . ($caller['line'] ?? '') . "\n";
     }
 
     /**

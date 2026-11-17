@@ -232,7 +232,7 @@ class Languagefilter extends Plugin
                     if (isset($parts['query']) && strpos($parts['query'], '&amp;')) {
                         $parts['query'] = str_replace('&amp;', '&', $parts['query']);
                     }
-                    parse_str($parts['query'], $vars);
+                    parse_str($parts['query'] ?? '', $vars);
 
                     // test if the url contains same vars as in menu link
                     $test = true;

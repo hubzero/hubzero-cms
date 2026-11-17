@@ -428,9 +428,9 @@ class Scaffolding extends Base implements CommandInterface
                 }
             }
 
-            rename($path, $info['dirname'] . DS . $newfile . '.' . $info['extension']);
+            rename($path, ($info['dirname'] ?? '') . DS . $newfile . '.' . ($info['extension'] ?? ''));
 
-            $path = $info['dirname'] . DS . $newfile . '.' . $info['extension'];
+            $path = ($info['dirname'] ?? '') . DS . $newfile . '.' . ($info['extension'] ?? '');
         }
 
         $this->output->addLine("Creating {$path}", 'success');

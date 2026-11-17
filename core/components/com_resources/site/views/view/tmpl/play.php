@@ -90,7 +90,7 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
         $url = str_replace('http:', 'https:', $url);
     }
     $parsed = parse_url($url) ?: [];
-    if (stristr($parsed['host'], 'youtube')) {
+    if (stristr($parsed['host'] ?? '', 'youtube')) {
         // YouTube
         $video_id = '';
         if (strstr($url, '?')) {
@@ -125,7 +125,7 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
                 ),
                 ENT_QUOTES,
             ) . '" frameborder="0" allowfullscreen></iframe>';
-    } elseif (stristr($parsed['host'], 'vimeo')) {
+    } elseif (stristr($parsed['host'] ?? '', 'vimeo')) {
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
             . $this->escape($url) . '" title="'
             . htmlspecialchars(
@@ -136,7 +136,7 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
                 ),
                 ENT_QUOTES,
             ) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-    } elseif (stristr($parsed['host'], 'blip')) {
+    } elseif (stristr($parsed['host'] ?? '', 'blip')) {
         $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
             . $this->escape($url) . '" title="'
             . htmlspecialchars(

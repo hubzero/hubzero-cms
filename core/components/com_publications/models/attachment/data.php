@@ -808,7 +808,7 @@ class Data extends Base
                 }
 
                 $fileinfo = pathinfo($e);
-                $a_dir = $fileinfo['dirname'];
+                $a_dir = $fileinfo['dirname'] ?? '';
                 $a_dir = trim(str_replace($configs->dataPath, '', $a_dir), DS);
 
                 $fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
@@ -885,7 +885,7 @@ class Data extends Base
                 $file = new \Components\Projects\Models\File($e);
 
                 $fileinfo = pathinfo($e);
-                $a_dir = $fileinfo['dirname'];
+                $a_dir = $fileinfo['dirname'] ?? '';
                 $a_dir = trim(str_replace($configs->dataPath, '', $a_dir), DS);
 
                 $fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';

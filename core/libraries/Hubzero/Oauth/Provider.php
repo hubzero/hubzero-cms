@@ -132,7 +132,7 @@ class Provider
 
         $parts = parse_url($uri) ?: [];
 
-        $path = trim($parts['path'], '/');
+        $path = trim($parts['path'] ?? '', '/');
 
         if ($path == $this->request_token_path) {
             $this->provider->isRequestTokenEndpoint(true);

@@ -1266,7 +1266,7 @@ class Resources extends SiteController
 
             // object to hold media type & source
             $media         = new stdClass();
-            $media->type   = $videoInfo['extension'];
+            $media->type   = $videoInfo['extension'] ?? '';
             $media->source = $path . DS . $video;
 
             // add media object to array of media
@@ -1309,7 +1309,7 @@ class Resources extends SiteController
 
             // object to hold subtitle info
             $sub = new stdClass();
-            $sub->type     = strtoupper($info['extension']);
+            $sub->type     = strtoupper($info['extension'] ?? '');
             $sub->name     = $name;
             $sub->lang     = $lang ?: 'en';
             $sub->source   = $path . DS . $subtitle;

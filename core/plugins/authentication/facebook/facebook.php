@@ -130,7 +130,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
      * Grab the return URL if set and handle denial of app privileges from provider
      *
      * @param   object  $credentials
-     * @param   object  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function login(&$credentials, &$options)

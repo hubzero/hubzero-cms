@@ -80,7 +80,7 @@ class Wiki extends Content
                 // Get the file extension
                 $pathinfo = pathinfo($file);
                 $filename = $pathinfo['filename'];
-                $ext      = $pathinfo['extension'];
+                $ext      = $pathinfo['extension'] ?? '';
 
                 // Check to make sure we have a file and its not too big
                 if ($size == 0) {

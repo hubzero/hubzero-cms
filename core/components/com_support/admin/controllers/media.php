@@ -97,7 +97,7 @@ class Media extends AdminController
         $filename = Filesystem::clean($filename);
         $filename = str_replace(' ', '_', $filename);
 
-        $ext = $pathinfo['extension'];
+        $ext = $pathinfo['extension'] ?? '';
         while (file_exists($path . DS . $filename . '.' . $ext)) {
             $filename .= rand(10, 99);
         }

@@ -475,7 +475,7 @@ class Project
     {
         $backtrace = debug_backtrace();
 
-        $caller = next($backtrace);
+        $caller = next($backtrace) ?: [];
 
         switch ($level) {
             case E_USER_NOTICE:
@@ -489,7 +489,7 @@ class Project
                 break;
         }
 
-        echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
+        echo $message . ' in ' . ($caller['file'] ?? '') . ' on line ' . ($caller['line'] ?? '') . "\n";
     }
 
     /**

@@ -178,7 +178,7 @@ class Media extends Base
         //if (!$this->group->isSuperGroup())
         //{
         $pathInfo = pathinfo($this->view->get('activeFolder'));
-        if ($pathInfo['dirname'] != '/uploads') {
+        if (($pathInfo['dirname'] ?? '') != '/uploads') {
             $this->view->set('activeFolder', '/uploads');
         }
         //}
@@ -974,7 +974,7 @@ class Media extends Base
 
         // make sure we have a name
         if ($name == '') {
-            echo $fileInfo['dirname'];
+            echo $fileInfo['dirname'] ?? '';
             exit();
         }
 
@@ -990,7 +990,7 @@ class Media extends Base
         }
 
         // build new file
-        $newFile = $fileInfo['dirname'] . DS . $name;
+        $newFile = ($fileInfo['dirname'] ?? '') . DS . $name;
 
         // full path source and destination
         $source = $this->path . $file;
@@ -1008,7 +1008,7 @@ class Media extends Base
         $this->logActivity('renamed', [$file, $name]);
 
         // return folder were moving to
-        echo $fileInfo['dirname'];
+        echo $fileInfo['dirname'] ?? '';
         exit();
     }
 
@@ -1030,7 +1030,7 @@ class Media extends Base
 
         // Get base path
         $fileInfo = pathinfo($this->path . $file);
-        $folder = str_replace($this->path, '', $fileInfo['dirname']);
+        $folder = str_replace($this->path, '', $fileInfo['dirname'] ?? '');
 
         // If file exists extract
         if ($archive instanceof \Hubzero\Filesystem\Type\Expandable) {
@@ -1059,7 +1059,7 @@ class Media extends Base
 
         // get folder to output to
         $fileInfo = pathinfo($file);
-        $folder = str_replace($this->path, '', $fileInfo['dirname']);
+        $folder = str_replace($this->path, '', $fileInfo['dirname'] ?? '');
 
         // if file exists delete
         if (file_exists($file)) {
@@ -1221,7 +1221,7 @@ class Media extends Base
         $folderInfo = pathinfo($folder);
 
         //create return folder
-        $returnFolder = $folderInfo['dirname'];
+        $returnFolder = $folderInfo['dirname'] ?? '';
 
         // make sure we have a name
         if ($name == '') {

@@ -59,7 +59,7 @@ class Emailtoken extends Plugin
 
     /**
      * @param   mixed  $credentials
-     * @param   mixed  $options
+     * @param   array<mixed>  $options
      * @return void
      */
     public function login(&$credentials, &$options)

@@ -399,7 +399,7 @@ class Media extends SiteController
         //check to make sure we have an allowable extension
         $pathinfo = pathinfo($file);
         $filename = $pathinfo['filename'];
-        $ext      = $pathinfo['extension'];
+        $ext      = $pathinfo['extension'] ?? '';
         if (!in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
             echo json_encode(['error' => 'File has an invalid extension, it should be one of ' . $these . '.']);

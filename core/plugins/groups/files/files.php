@@ -244,7 +244,7 @@ class Files extends Plugin
         //if (!$this->group->isSuperGroup())
         //{
         $pathInfo = pathinfo($view->get('activeFolder'));
-        if ($pathInfo['dirname'] != '/uploads') {
+        if (($pathInfo['dirname'] ?? '') != '/uploads') {
             $view->set('activeFolder', '/uploads');
         }
         //}

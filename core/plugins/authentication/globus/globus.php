@@ -76,7 +76,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
      * Grab the return URL if set and handle denial of app privileges from gc
      *
      * @param   object  $credentials
-     * @param   object  $options
+     * @param   array<mixed>  $options
      * @return  void
      */
     public function login(&$credentials, &$options)

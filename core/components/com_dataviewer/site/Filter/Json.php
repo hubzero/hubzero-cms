@@ -356,7 +356,7 @@ class Json
                             if (isset($dd['publication_state'])) {
                                 // Publication id
                                 $repo_base = parse_url($dd['repo_base']) ?: [];
-                                $repo_base_path = explode('/', $repo_base['path']);
+                                $repo_base_path = explode('/', $repo_base['path'] ?? '');
                                 $pub_id = $repo_base_path[2];
                                 if (strlen($pub_id) < 5) {
                                     $pub_id = str_pad($pub_id, 5, '0', STR_PAD_LEFT);
@@ -364,7 +364,7 @@ class Json
 
                                 // Publication version
                                 $arr = [];
-                                parse_str($repo_base['query'], $arr);
+                                parse_str($repo_base['query'] ?? '', $arr);
 
                                 $pub_vid = is_string($arr['vid'] ?? null) ? $arr['vid'] : '';
                                 if (strlen($pub_vid) < 5) {

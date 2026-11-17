@@ -525,7 +525,7 @@ class Batchcreate extends AdminController
     /**
      * Process parsed data
      *
-     * @param   object  $item
+     * @param   array<mixed>  $item
      * @param   object  $out
      * @return  boolean
      */
@@ -613,7 +613,7 @@ class Batchcreate extends AdminController
      * @param   \SimpleXMLElement   $file
      * @param   int|string   $role
      * @param   integer  $ordering
-     * @param   object   $item
+     * @param   array<mixed>   $item
      * @param   integer  $element_id
      * @return  void
      */

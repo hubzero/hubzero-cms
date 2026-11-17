@@ -1271,7 +1271,7 @@ class Repo extends Obj
         $z = 0;
         foreach ($extracted as $e) {
             $fileinfo = pathinfo($e);
-            $a_dir  = $fileinfo['dirname'];
+            $a_dir  = $fileinfo['dirname'] ?? '';
             $a_dir  = str_replace($extractPath . DS, '', $a_dir);
 
             // Skip certain system files
