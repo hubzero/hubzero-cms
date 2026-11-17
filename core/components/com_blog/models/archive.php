@@ -33,7 +33,7 @@ class Archive extends Obj
     /**
      * File space path
      *
-     * @var  object|null
+     * @var  Adapters\Base|null
      */
     private $adapter;
 
@@ -202,7 +202,7 @@ class Archive extends Obj
 
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, Adapters\Base::class, true)) {
                 throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 

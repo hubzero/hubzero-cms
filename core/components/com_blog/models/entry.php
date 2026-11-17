@@ -122,7 +122,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Scope adapter
      *
-     * @var  object|null
+     * @var  Adapters\Base|null
      */
     protected $adapter = null;
 
@@ -475,7 +475,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Return the adapter for this entry's scope,
      * instantiating it if it doesn't already exist
      *
-     * @return  object
+     * @return  Adapters\Base
      */
     public function adapter()
     {
@@ -484,7 +484,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, Adapters\Base::class, true)) {
                 throw new \InvalidArgumentException(
                     Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')),
                 );

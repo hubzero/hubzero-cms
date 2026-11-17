@@ -182,8 +182,8 @@ class Version extends Relational
 
         $route = $page->adapter()->routing('');
         $route['option'] = '';
-        $route = implode('/', $route);
-        $route = ($route ? $route . '/' : $route);
+        // At least two parts (task and option), so never empty
+        $route = implode('/', $route) . '/';
 
         // Resolve automatic table-of-contents settings so the parser can place an
         // inline TOC on pages that have no explicit [[TableOfContents]] macro.

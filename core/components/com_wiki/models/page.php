@@ -38,7 +38,7 @@ class Page extends Relational
     /**
      * Adapter type
      *
-     * @var  object|null
+     * @var  Adapters\Base|null
      */
     protected $adapter = null;
 
@@ -484,7 +484,7 @@ class Page extends Relational
     /**
      * Get the adapter
      *
-     * @return  object
+     * @return  Adapters\Base
      */
     public function adapter()
     {
@@ -494,7 +494,7 @@ class Page extends Relational
 
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, Adapters\Base::class, true)) {
                 $file = $scope . '.php';
 
                 static::addAdapterPath(__DIR__ . DS . 'adapters' . DS . $file);

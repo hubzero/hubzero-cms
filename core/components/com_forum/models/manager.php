@@ -426,7 +426,7 @@ class Manager extends Obj
     /**
      * Create an adapter object based on scope
      *
-     * @return  object
+     * @return  Adapters\Base
      */
     public function adapter()
     {
@@ -437,7 +437,7 @@ class Manager extends Obj
         $scope = strtolower($this->get('scope'));
         $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-        if (!class_exists($cls)) {
+        if (!is_a($cls, Adapters\Base::class, true)) {
             throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
         }
 

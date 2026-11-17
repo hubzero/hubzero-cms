@@ -89,7 +89,7 @@ class Category extends Relational
     /**
      * Scope adapter
      *
-     * @var  object|null
+     * @var  Adapters\Base|null
      */
     protected $adapter = null;
 
@@ -388,7 +388,7 @@ class Category extends Relational
     /**
      * Get the adapter
      *
-     * @return  object
+     * @return  Adapters\Base
      */
     public function adapter()
     {
@@ -397,7 +397,7 @@ class Category extends Relational
             $scope = strtolower($this->get('scope', 'site'));
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, Adapters\Base::class, true)) {
                 throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
