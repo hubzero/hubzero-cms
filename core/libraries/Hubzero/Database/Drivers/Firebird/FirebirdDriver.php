@@ -1255,7 +1255,7 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Gets the database collation in use
      *
-     * @return  string|false
+     * @return  string
      */
     public function getCollation()
     {

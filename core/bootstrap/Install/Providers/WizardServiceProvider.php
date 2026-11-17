@@ -64,7 +64,7 @@ class WizardServiceProvider extends Middleware
         ob_start();
         $installer = new \Bootstrap\Install\Web\Installer();
         $installer->run();
-        $contents = ob_get_contents();
+        $contents = (string) ob_get_contents();
         ob_end_clean();
 
         $response->setContent($contents);

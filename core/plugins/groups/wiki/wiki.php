@@ -310,7 +310,7 @@ class Wiki extends Plugin
             ob_start();
             $controller->execute();
             $controller->redirect();
-            $content = ob_get_contents();
+            $content = (string) ob_get_contents();
             ob_end_clean();
 
             $this

@@ -491,7 +491,7 @@ class Modules extends AdminController
             $eval = function () use ($content) {
                 ob_start();
                 eval("?> $content <?php ");
-                $content = ob_get_clean();
+                $content = (string) ob_get_clean();
                 return $content;
             };
             $content = $eval();

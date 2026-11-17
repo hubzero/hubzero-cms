@@ -112,7 +112,7 @@ class Module
         if (!($content = App::get('cache.store')->get($key))) {
             ob_start();
             $this->run();
-            $content = ob_get_contents();
+            $content = (string) ob_get_contents();
             ob_end_clean();
 
             $content .= '<!-- cached ' . with(new Date('now'))->toSql() . ' -->';

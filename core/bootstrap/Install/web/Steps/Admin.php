@@ -66,7 +66,7 @@ class Admin implements StepInterface
         $defaultEmail = $this->installer->getSessionData('settings')['mailfrom'] ?? '';
         ob_start();
         include __DIR__ . '/../views/steps/tmpl/admin.php';
-        $content = ob_get_clean();
+        $content = (string) ob_get_clean();
 
         // Clear errors from session after rendering (they've been displayed)
         unset($_SESSION[self::SESSION_ERRORS_KEY]);

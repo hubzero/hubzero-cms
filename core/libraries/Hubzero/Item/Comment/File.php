@@ -250,7 +250,7 @@ class File extends Relational
             $this->dimensions = [0, 0];
 
             if ($this->isImage() && file_exists($this->path())) {
-                $this->dimensions = getimagesize($this->path());
+                $this->dimensions = getimagesize($this->path()) ?: [0, 0];
             }
         }
 

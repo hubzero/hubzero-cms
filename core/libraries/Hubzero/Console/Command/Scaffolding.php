@@ -190,7 +190,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     protected function getType()
     {
-        return $this->type;
+        return (string) $this->type;
     }
 
     /**

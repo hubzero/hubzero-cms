@@ -265,7 +265,7 @@ class Identicon
     {
         ob_start();
         $this->generateImage($string, $size, $hexaColor);
-        $imageData = ob_get_contents();
+        $imageData = (string) ob_get_contents();
         ob_end_clean();
 
         return $imageData;

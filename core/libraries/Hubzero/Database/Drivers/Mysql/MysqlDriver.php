@@ -1447,7 +1447,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Gets the primary key of a table
      *
-     * @return  string
+     * @return  string|false  False when the table has none
      **/
     public function getPrimaryKey($table)
     {

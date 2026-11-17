@@ -43,7 +43,7 @@ namespace Hubzero\Component\Tests {
             } catch (\Hubzero\Test\Halted $e) {
                 // stopped, as the application would
             }
-            $output = ob_get_clean();
+            $output = (string) ob_get_clean();
 
             $response = \App::get('response');
             $this->assertSame('<li>ok</li>', $output);
@@ -84,7 +84,7 @@ namespace Hubzero\Component\Tests {
             } catch (\Hubzero\Test\Halted $e) {
                 // stopped, as the application would
             }
-            $output = ob_get_clean();
+            $output = (string) ob_get_clean();
 
             $response = \App::get('response');
             $this->assertSame('', $output);
@@ -105,7 +105,7 @@ namespace Hubzero\Component\Tests {
             } catch (\Hubzero\Test\Halted $e) {
                 // stopped, as the application would
             }
-            $output = ob_get_clean();
+            $output = (string) ob_get_clean();
 
             $response = \App::get('response');
             $this->assertSame('', $output);

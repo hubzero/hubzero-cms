@@ -152,7 +152,7 @@ class Error extends Base
             // Get the file content
             ob_start();
             require_once $directory . DS . $filename;
-            $contents = ob_get_contents();
+            $contents = (string) ob_get_contents();
             ob_end_clean();
         }
 

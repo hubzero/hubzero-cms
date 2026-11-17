@@ -161,7 +161,7 @@ class Info extends Obj
             ob_start();
             date_default_timezone_set('UTC');
             phpinfo(INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES);
-            $phpinfo = ob_get_contents();
+            $phpinfo = (string) ob_get_contents();
             ob_end_clean();
 
             preg_match_all('#<body[^>]*>(.*)</body>#siU', $phpinfo, $output);

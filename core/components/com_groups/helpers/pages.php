@@ -786,7 +786,7 @@ class Pages
             $eval = function () use ($document) {
                 ob_start();
                 eval("?>$document<?php ");
-                $document = ob_get_clean();
+                $document = (string) ob_get_clean();
                 return $document;
             };
             $document = $eval();
@@ -850,7 +850,7 @@ class Pages
             $eval = function () use ($content) {
                 ob_start();
                 eval("?>$content<?php ");
-                $content = ob_get_clean();
+                $content = (string) ob_get_clean();
                 return $content;
             };
             $content = $eval();

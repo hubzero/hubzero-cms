@@ -292,7 +292,7 @@ class Loader
             $this->executeBootstrap($path);
         }
 
-        $contents = ob_get_contents();
+        $contents = (string) ob_get_contents();
         ob_end_clean();
 
         return $contents;

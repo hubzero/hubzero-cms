@@ -271,7 +271,7 @@ class Loader
                 $content = '';
                 ob_start();
                 include $path;
-                $output = ob_get_contents() . $content;
+                $output = (string) ob_get_contents() . $content;
                 ob_end_clean();
             }
 
@@ -283,7 +283,7 @@ class Loader
 
                 ob_start();
                 $instance->display();
-                $module->content = ob_get_contents();
+                $module->content = (string) ob_get_contents();
                 ob_end_clean();
             } else {
                 $module->content = $output;
@@ -325,7 +325,7 @@ class Loader
 
                 ob_start();
                 $chromeMethod($module, $params, $attribs);
-                $module->content = ob_get_contents();
+                $module->content = (string) ob_get_contents();
                 ob_end_clean();
             }
         }

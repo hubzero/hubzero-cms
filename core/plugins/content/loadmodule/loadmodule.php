@@ -148,7 +148,7 @@ class Loadmodule extends Plugin
                 echo $renderer->render($module, $params);
             }
 
-            self::$modules[$position] = ob_get_clean();
+            self::$modules[$position] = (string) ob_get_clean();
         }
 
         return self::$modules[$position];
@@ -184,7 +184,7 @@ class Loadmodule extends Plugin
             ob_start();
             echo $renderer->render($mod, $params);
 
-            self::$mods[$moduleinstance] = ob_get_clean();
+            self::$mods[$moduleinstance] = (string) ob_get_clean();
         }
 
         return self::$mods[$moduleinstance];

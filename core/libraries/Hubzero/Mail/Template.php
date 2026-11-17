@@ -104,7 +104,7 @@ class Template extends Html
             // Get the file content
             ob_start();
             require $directory . DS . $filename;
-            $contents = ob_get_contents();
+            $contents = (string) ob_get_contents();
             ob_end_clean();
         }
 

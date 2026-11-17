@@ -44,7 +44,7 @@ class Help extends SiteController
         if ($finalHelpPage != '') {
             ob_start();
             require_once $finalHelpPage;
-            $content = ob_get_contents();
+            $content = (string) ob_get_contents();
             ob_end_clean();
         } elseif ($component != '' && $page == 'index') {
             // Get list of component pages

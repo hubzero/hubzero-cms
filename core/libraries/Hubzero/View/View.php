@@ -557,7 +557,7 @@ class View extends Obj
 
             // Done with the requested template; get the buffer and
             // clear it.
-            $this->renderedOutput = ob_get_contents();
+            $this->renderedOutput = (string) ob_get_contents();
             ob_end_clean();
 
             return $this->renderedOutput;

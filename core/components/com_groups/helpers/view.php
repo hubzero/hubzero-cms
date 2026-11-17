@@ -640,7 +640,7 @@ class View
 
         // output content
         $template->output(true);
-        $errorTemplate = ob_get_clean();
+        $errorTemplate = (string) ob_get_clean();
 
         // bootstrap document
         // add custom error template as component buffer
@@ -748,7 +748,7 @@ class View
         // include and render component
         ob_start();
         include $templateComponentFile;
-        $componentContent = ob_get_contents();
+        $componentContent = (string) ob_get_contents();
         ob_end_clean();
 
         // create view object
@@ -826,7 +826,7 @@ class View
         // include & render php file
         ob_start();
         include $templatePhpPagePath;
-        $phpPageContent = ob_get_contents();
+        $phpPageContent = (string) ob_get_contents();
         ob_end_clean();
 
         // create new group document helper
@@ -848,7 +848,7 @@ class View
         $eval = function () use ($phpPageContent) {
             ob_start();
             eval("?>$phpPageContent<?php ");
-            $document = ob_get_clean();
+            $document = (string) ob_get_clean();
             return $document;
         };
         $phpPageContent = $eval();

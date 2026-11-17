@@ -300,7 +300,12 @@ class Session extends Base
         switch (strtolower($what)) {
             case 'tool':
             case 'name':
-                return strstr($app, '_', true);
+                // The name before the revision suffix, all of it when there is none
+                $name = strstr($app, '_', true);
+                if ($name === false) {
+                    return $app;
+                }
+                return $name;
 
             case 'version':
                 $r = substr((string) strrchr($app, '_'), 1);

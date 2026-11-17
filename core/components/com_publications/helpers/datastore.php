@@ -47,7 +47,7 @@ class Datastore
 
         ob_start();
         \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
-        $csv = ob_get_contents();
+        $csv = (string) ob_get_contents();
         ob_end_clean();
 
         if ($csv && $tmpFile) {

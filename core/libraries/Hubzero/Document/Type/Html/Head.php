@@ -34,7 +34,7 @@ class Head extends Renderer
         /** @var \Hubzero\Document\Type\Html $document A head renderer is made by the HTML document */
         $document = $this->doc;
         echo $this->fetchHead($document);
-        $buffer = ob_get_contents();
+        $buffer = (string) ob_get_contents();
         ob_end_clean();
 
         return $buffer;

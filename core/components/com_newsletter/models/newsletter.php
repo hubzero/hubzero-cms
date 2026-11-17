@@ -486,7 +486,7 @@ class Newsletter extends Relational
                     $view->display();
 
                     // Grab the buffer's content
-                    $html = ob_get_contents();
+                    $html = (string) ob_get_contents();
 
                     // Clear and close the buffer
                     ob_end_clean();

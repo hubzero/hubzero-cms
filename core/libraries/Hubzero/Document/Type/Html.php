@@ -499,7 +499,7 @@ class Html extends Base
             ob_start();
             try {
                 require $directory . DS . $filename;
-                $contents = ob_get_contents();
+                $contents = (string) ob_get_contents();
             } finally {
                 ob_end_clean();
             }

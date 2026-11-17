@@ -566,7 +566,7 @@ class Processor extends Obj
         // Start buffer and grab output
         ob_start();
         $this->output(null);
-        $image_data = ob_get_contents();
+        $image_data = (string) ob_get_contents();
         ob_end_clean();
 
         // Encode and build data uri

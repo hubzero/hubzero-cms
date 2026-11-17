@@ -935,7 +935,7 @@ class InformixDriver extends BaseSqlDriver
      * Get the details list of keys for a table
      *
      * @param   string  $table  The name of the table
-     * @return  array<mixed>|false   An array of the key specification for the table
+     * @return  array<mixed>   An array of the key specification for the table
      */
     public function getTableKeys($table)
     {

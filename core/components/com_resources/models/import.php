@@ -125,7 +125,7 @@ class Import extends Relational
      */
     public function getData()
     {
-        return file_get_contents($this->getDataPath());
+        return (string) file_get_contents($this->getDataPath());
     }
 
     /**

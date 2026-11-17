@@ -295,7 +295,7 @@ class Asset extends Relational
             $this->dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
-                $this->dimensions = getimagesize($this->path());
+                $this->dimensions = getimagesize($this->path()) ?: [0, 0];
             }
         }
 
