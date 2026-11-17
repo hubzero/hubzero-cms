@@ -130,7 +130,7 @@ class Flysystem
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array([$this->filesystem, $method], $arguments);
+        return $this->filesystem->$method(...$arguments);
     }
 
     /**

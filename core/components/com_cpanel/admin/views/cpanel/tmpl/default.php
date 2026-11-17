@@ -37,7 +37,7 @@ foreach ($modules as $module) {
         echo Html::sliders('panel', $module->title, 'cpanel-panel-' . $module->name);
     } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
         $helperClass = 'mod' . $module->name . 'Helper';
-        $panelTitle = call_user_func_array([$helperClass, 'getTitle'], [$params]);
+        $panelTitle = $helperClass::getTitle($params);
         echo Html::sliders('panel', $panelTitle, 'cpanel-panel-' . $module->name);
     } else {
         $panelTitle = Lang::txt('MOD_' . $module->name . '_TITLE');

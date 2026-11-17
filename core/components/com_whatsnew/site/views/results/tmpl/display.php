@@ -192,7 +192,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'documents')) {
-                        $html .= call_user_func([$obj, 'documents']);
+                        $html .= $obj::documents();
                     }
 
                     $act = ($this->active) ? $this->active : $this->cats[$ci]['category'];
@@ -222,7 +222,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'before')) {
-                        $html .= call_user_func([$obj,'before'], $this->period);
+                        $html .= $obj::before($this->period);
                     }
 
                     $html .= '<ol class="entries">' . "\n";
@@ -239,7 +239,7 @@ foreach ($this->cats as $cat) {
                         if (function_exists($func)) {
                             $html .= $func($row, $this->period);
                         } elseif (method_exists($obj, 'out')) {
-                            $html .= call_user_func([$obj,'out'], $row, $this->period);
+                            $html .= $obj::out($row, $this->period);
                         } else {
                             if (strstr($row->href, 'index.php')) {
                                 $row->href = Route::url($row->href);
@@ -312,7 +312,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'after')) {
-                        $html .= call_user_func([$obj,'after'], $this->period);
+                        $html .= $obj::after($this->period);
                     }
 
                     $html .= '</div><!-- / #' . $divid . ' -->' . "\n";

@@ -216,7 +216,7 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array([$this->storage(), $method], $parameters);
+        return $this->storage()->$method(...$parameters);
     }
 
     /**
@@ -247,7 +247,7 @@ class Manager
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
-            if (call_user_func_array([$class, 'isAvailable'], [])) {
+            if ($class::isAvailable()) {
                 // Connector names should not have file extensions
                 $stores[] = str_ireplace('.php', '', $type);
             }

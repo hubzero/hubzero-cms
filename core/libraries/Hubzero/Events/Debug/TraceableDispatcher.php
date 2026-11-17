@@ -238,7 +238,7 @@ class TraceableDispatcher implements DispatcherInterface
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array([$this->dispatcher, $method], $arguments);
+        return $this->dispatcher->$method(...$arguments);
     }
 
     /**

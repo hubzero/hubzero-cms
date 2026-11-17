@@ -159,7 +159,7 @@ class Gravatar implements Resolver
                 continue;
             }
 
-            if ($called = call_user_func([$this, $method])) {
+            if ($called = $this->$method()) {
                 $build = array_replace($build, $called);
             }
         }

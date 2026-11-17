@@ -89,7 +89,7 @@ class Writer
             $parameters[0] = json_encode($parameters[0]);
         }
 
-        return call_user_func_array([$this->monolog, $method], $parameters);
+        return $this->monolog->$method(...$parameters);
     }
 
     /**

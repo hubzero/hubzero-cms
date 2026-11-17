@@ -275,7 +275,7 @@ foreach ($this->results as $category) {
         $catName = ucfirst($this->cats[$k]['category']);
         $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'documents')) {
-            $html .= call_user_func([$obj, 'documents']);
+            $html .= $obj::documents();
         }
 
         $ttl = ($total > 5) ? 5 : $total;
@@ -311,7 +311,7 @@ foreach ($this->results as $category) {
         $catName = ucfirst($this->cats[$k]['category']);
         $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'before')) {
-            $html .= call_user_func([$obj,'before']);
+            $html .= $obj::before();
         }
 
         $html .= '<ol class="search results">' . "\n";
@@ -329,7 +329,7 @@ foreach ($this->results as $category) {
             if (function_exists($func)) {
                 $html .= $func($row);
             } elseif (method_exists($obj, 'out')) {
-                $html .= call_user_func([$obj,'out'], $row);
+                $html .= $obj::out($row);
             } else {
                 $html .= "\t" . '<li>' . "\n";
                 $html .= "\t\t"

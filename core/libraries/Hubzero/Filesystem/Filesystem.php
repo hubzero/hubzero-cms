@@ -570,7 +570,7 @@ class Filesystem
             $macro = $this->macros[$method];
             $macro->setFilesystem($this);
 
-            return call_user_func_array([$macro, 'handle'], $arguments);
+            return $macro->handle(...$arguments);
         }
 
         throw new \BadMethodCallException('Call to undefined method ' . __CLASS__ . '::' . $method);

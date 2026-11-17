@@ -157,7 +157,7 @@ class Entity extends Obj
         $alt = 'get' . ucfirst($name);
 
         if (in_array($alt, $methods)) {
-            return call_user_func_array([$this, $alt], $arguments);
+            return $this->$alt(...$arguments);
         }
 
         throw new BadMethodCallException("'{$name}' method does not exist.", 500);

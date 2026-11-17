@@ -224,7 +224,7 @@ foreach ($cats as $cat) {
                             $obj = 'Plugins\\Tags\\' . $section . '\\' . $section;
 
                             if (method_exists($obj, 'out')) {
-                                $html .= call_user_func([$obj, 'out'], $row);
+                                $html .= $obj::out($row);
                             } else {
                                 // @todo accommodate scope (aka) group citations
                                 if (strstr($row->href, 'index.php')) {

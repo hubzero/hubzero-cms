@@ -171,6 +171,6 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array([$this->logger(), $method], $parameters);
+        return $this->logger()->$method(...$parameters);
     }
 }

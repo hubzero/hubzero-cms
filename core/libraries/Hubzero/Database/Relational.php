@@ -857,7 +857,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             // Call method and get type of response
-            $result = call_user_func_array([$this->query, $name], $arguments);
+            $result = $this->query->$name(...$arguments);
             $class  = __NAMESPACE__ . '\\Query';
             // We never want to return an instance of the query class, because
             // we want to be able to chain methods together that are on the model
@@ -917,7 +917,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return;
         }
 
-        return call_user_func_array([new static(), $name], $arguments);
+        return (new static())->$name(...$arguments);
     }
 
     /**
@@ -2885,7 +2885,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function callHelper($name, $arguments)
     {
-        return call_user_func_array([$this, 'helper' . ucfirst($name)], $arguments);
+        return $this->{'helper' . ucfirst($name)}(...$arguments);
     }
 
     /**
@@ -2908,7 +2908,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function callTransformer($name, $arguments = [])
     {
-        return call_user_func_array([$this, 'transform' . ucfirst($this->snakeToCamel($name))], $arguments);
+        return $this->{'transform' . ucfirst($this->snakeToCamel($name))}(...$arguments);
     }
 
     /**
@@ -6694,7 +6694,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
                     // Call the scope method on the query
                     // Scopes are called as scopeName on the query (magic method handles it)
-                    call_user_func_array([$query, $scopeName], $scopeParams);
+                    $query->$scopeName(...$scopeParams);
                 }
             }
 
@@ -7092,7 +7092,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // See if the relationship already exists
         if (!$this->getRelationship($name)) {
             // Get the child rows/row and set them back on the model as a relationship for future use
-            $rows = call_user_func_array([$this, $name], [])->rows();
+            $rows = $this->$name()->rows();
             $this->addRelationship($name, $rows);
         }
 

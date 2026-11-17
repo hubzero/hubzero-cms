@@ -723,7 +723,7 @@ class Validate
             );
         }
         $check = (array) $check;
-        return call_user_func_array([$className, $method], $check);
+        return $className::$method(...$check);
     }
 
     /**

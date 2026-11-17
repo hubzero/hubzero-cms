@@ -18,7 +18,7 @@ trait Escapable
     /**
      * Callback for escaping.
      *
-     * @var  string
+     * @var  callable
      */
     protected $escaper = 'htmlspecialchars';
 
@@ -63,7 +63,7 @@ trait Escapable
     /**
      * Sets the _escape() callback.
      *
-     * @param   mixed   $spec  The callback for _escape() to use.
+     * @param   callable   $spec  The callback for _escape() to use.
      * @return  static  Chainable
      */
     public function setEscape($spec)

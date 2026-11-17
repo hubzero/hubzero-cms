@@ -151,7 +151,7 @@ class Relationship
      **/
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->constrain(), $name], $arguments);
+        return $this->constrain()->$name(...$arguments);
     }
 
     /**

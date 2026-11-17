@@ -83,7 +83,7 @@ class Server
     public function __call($name, $args)
     {
         // call method on OAuth2 Server
-        $response = call_user_func_array([$this->server, $name], $args);
+        $response = $this->server->$name(...$args);
 
         // If its an OAuth2\Response object that means it was used for token fetching or autorization
         // and we can modify it if its an error, otherwise we want to leave the result alone.

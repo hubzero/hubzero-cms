@@ -356,7 +356,7 @@ class Manager extends Obj
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
-            if (call_user_func_array([$class, 'isAvailable'], [])) {
+            if ($class::isAvailable()) {
                 $names[] = str_ireplace('.php', '', $name);
             }
         }

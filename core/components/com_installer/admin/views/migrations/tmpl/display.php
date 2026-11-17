@@ -122,11 +122,15 @@ $formAction = Route::url(
                 $component = substr($item, 14, -4);
 
                 if (is_file(PATH_ROOT . DS . $row['entry'])) {
-                    if (!class_exists(substr($row['file'], 0, -4))) {
+                    $className = substr($row['file'], 0, -4);
+                    if (!class_exists($className)) {
                         require_once PATH_ROOT . DS . $row['entry'];
                     }
-                    $class = new ReflectionClass(substr($row['file'], 0, -4));
-                    $desc  = trim(rtrim(ltrim((string) $class->getDocComment(), "/**\n *"), '**/'));
+                    $desc = '';
+                    if (class_exists($className)) {
+                        $class = new ReflectionClass($className);
+                        $desc  = trim(rtrim(ltrim((string) $class->getDocComment(), "/**\n *"), '**/'));
+                    }
                 } else {
                     $notFoundTxt = Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND');
                     $desc = '<span class="warning">' . $notFoundTxt . '</span>';

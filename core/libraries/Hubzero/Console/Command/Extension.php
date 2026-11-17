@@ -264,7 +264,7 @@ class Extension extends Base implements CommandInterface
     private function callMigration($migration, $type, $method, array $args)
     {
         try {
-            $result = call_user_func_array([$migration, $method], $args);
+            $result = $migration->$method(...$args);
         } catch (\BadMethodCallException $e) {
             $this->output->error('Sorry, ' . $type . ' do not currently support the ' . $method . ' method');
         }

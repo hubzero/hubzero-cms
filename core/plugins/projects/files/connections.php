@@ -125,7 +125,7 @@ class Connections
      **/
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->plugin, $name], $arguments);
+        return $this->plugin->$name(...$arguments);
     }
 
     /**
@@ -150,7 +150,7 @@ class Connections
         }
 
         if (in_array($task, $methods)) {
-            return call_user_func([$this, $task]);
+            return $this->$task();
         }
 
         throw new \Exception("Call to undefined action", 500);

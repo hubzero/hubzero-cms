@@ -52,7 +52,7 @@ $example = Component::path('com_installer') . '/config/composer.json.dist';
                     $contents = json_decode($contents);
                     $contents->name = $site . '/' . $site . '-app';
                     $contents = json_encode($contents, JSON_PRETTY_PRINT);
-                    $contents = str_replace('\/', '/', $contents);
+                    $contents = str_replace('\/', '/', (string) $contents);
 
                     echo $contents;
                     ?></textarea>
