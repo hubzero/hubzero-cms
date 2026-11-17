@@ -190,7 +190,7 @@ class Menutype extends Obj
     /**
      * Method to get type options from MVC
      *
-     * @param   object  $component
+     * @param   \stdClass  $component
      * @return  array<mixed>|false
      */
     protected function getTypeOptionsFromMVC($component)

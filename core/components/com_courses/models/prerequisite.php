@@ -76,7 +76,7 @@ class Prerequisite extends Base
      * Constructor
      *
      * @param  int       $section_id
-     * @param  object    $gradebook
+     * @param  \Components\Courses\Models\GradeBook    $gradebook
      * @param  int|null  $member_id
      * @return bool
      */
@@ -105,9 +105,10 @@ class Prerequisite extends Base
 
         $this->progress = $gradebook->progress($member_id);
         $this->views    = $gradebook->views($member_id);
-        $grades         = $gradebook->table->find(['member_id' => $member_id, 'scope' => 'asset']);
+        // The grade book's table is protected; reading it from here was a fatal error
+        $grades         = $gradebook->find(['member_id' => $member_id, 'scope' => 'asset']);
 
-        if ($grades && count($grades) > 0) {
+        if ($grades) {
             $this->grades = [];
             foreach ($grades as $grade) {
                 $this->grades[$grade->scope_id] = (!is_null($grade->override)) ? $grade->override : $grade->score;

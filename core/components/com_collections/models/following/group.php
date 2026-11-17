@@ -18,7 +18,7 @@ class Group extends Base
     /**
      * \Hubzero\User\Group
      *
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     private $obj = null;
 

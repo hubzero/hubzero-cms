@@ -123,6 +123,17 @@ class GradeBook extends Base
     }
 
     /**
+     * Grade book rows matching filters, straight from the table
+     *
+     * @param   array<mixed>  $filters  Filters such as member_id and scope
+     * @return  array<\stdClass>
+     */
+    public function find($filters = [])
+    {
+        return $this->table->find($filters);
+    }
+
+    /**
      * Generate summary statistics
      *
      * @param      bool  $section - section only?

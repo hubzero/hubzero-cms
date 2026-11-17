@@ -169,7 +169,7 @@ class Tool extends Model
      *
      * @param   integer|null  $id
      * @param   integer|null  $parent
-     * @return  object
+     * @return  \Components\Projects\Models\Tool\Instance
      */
     public function version($id = null, $parent = null)
     {
