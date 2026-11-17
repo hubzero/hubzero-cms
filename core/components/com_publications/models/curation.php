@@ -67,7 +67,7 @@ class Curation extends Obj
     /**
      * Blocks
      *
-     * @var  object|array<mixed>
+     * @var  \stdClass|array<mixed>  The manifest's blocks by id; empty until a manifest is set
      */
     public $blocks = [];
 
@@ -95,7 +95,7 @@ class Curation extends Obj
     /**
      * Current block blockId
      *
-     * @var  int|string|null
+     * @var  int|null
      */
     public $blockorder = null;
 
@@ -252,7 +252,7 @@ class Curation extends Obj
 
         $this->block      = $this->blocks->$blockId;
         $this->blockname  = $this->blocks->$blockId->name;
-        $this->blockorder = $blockId;
+        $this->blockorder = (int) $blockId;
         return true;
     }
 
@@ -260,14 +260,14 @@ class Curation extends Obj
      * Get block blockId
      *
      * @param   string|null  $name  Block name
-     * @return  int|string|null
+     * @return  int|null
      */
     public function getBlockId($name = null)
     {
         $blockId = null;
-        foreach ($this->blocks as $index => $block) {
+        foreach ((array) $this->blocks as $index => $block) {
             if ($block->name == $name) {
-                $blockId = $index;
+                $blockId = (int) $index;
                 break;
             }
         }
@@ -302,7 +302,7 @@ class Curation extends Obj
         $blocksModel = new Blocks($this->db);
 
         // Find all blocks of the same parent
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if ($parentBlock == 'description') {
@@ -344,7 +344,7 @@ class Curation extends Obj
         $elements = [];
 
         // Find all blocks of the same parent
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if ($parentBlock == 'content') {
@@ -416,7 +416,7 @@ class Curation extends Obj
         $blocksModel = new Blocks($this->db);
 
         // Find all blocks of the same parent
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             // Go through elements
@@ -459,7 +459,7 @@ class Curation extends Obj
         // Get blocks model
         $blocksModel = new Blocks($this->db);
 
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             foreach ($block->elements as $elId => $element) {
                 if ($element->name == 'dataselector') {
                     // Check the list for one matching our element ID
@@ -507,7 +507,7 @@ class Curation extends Obj
 
             $this->block      = $this->blocks->$blockId;
             $this->blockname  = $this->blocks->$blockId->name;
-            $this->blockorder = $blockId;
+            $this->blockorder = (int) $blockId;
         }
 
         // Get blocks model
@@ -820,7 +820,7 @@ class Curation extends Obj
         $blockId = null;
 
         // Check status for each
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             // Skip inactive blocks
             if (isset($block->active) && $block->active == 0) {
                 continue;
@@ -902,7 +902,7 @@ class Curation extends Obj
         }
 
         // Check status for each
-        foreach ($this->blocks as $blockId => $block) {
+        foreach ((array) $this->blocks as $blockId => $block) {
             if ($block->name == $name) {
                 return true;
             }
@@ -918,7 +918,7 @@ class Curation extends Obj
      */
     public function getFirstBlock()
     {
-        foreach ($this->blocks as $id => $block) {
+        foreach ((array) $this->blocks as $id => $block) {
             if (!isset($block->active) || $block->active > 0) {
                 return $id;
             }
@@ -949,7 +949,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->blocks as $id => $block) {
+        foreach ((array) $this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
@@ -987,7 +987,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->blocks as $id => $block) {
+        foreach ((array) $this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
@@ -1024,7 +1024,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->blocks as $id => $block) {
+        foreach ((array) $this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
