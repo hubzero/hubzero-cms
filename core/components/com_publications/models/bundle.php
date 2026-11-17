@@ -60,7 +60,7 @@ class Bundle
     /**
      * Gets size of corresponding bundle in bytes
      *
-     * @return  integer
+     * @return  int|null
      */
     public function getSize()
     {
@@ -68,7 +68,7 @@ class Bundle
         $size = null;
 
         if (file_exists($path)) {
-            $size = filesize($path);
+            $size = (int) filesize($path);
         }
 
         return $size;
@@ -77,7 +77,7 @@ class Bundle
     /**
      * Gets checksum of corresponding bundle
      *
-     * @return  string
+     * @return  string|null
      */
     public function getMd5()
     {
@@ -85,7 +85,7 @@ class Bundle
         $checksum = null;
 
         if (file_exists($path)) {
-            $checksum = md5_file($path);
+            $checksum = md5_file($path) ?: null;
         }
 
         return $checksum;
@@ -145,7 +145,7 @@ class Bundle
      * Gets index of bundle element
      *
      * @param   array<mixed>     $contents
-     * @return  integer
+     * @return  int|string|null
      */
     protected static function getBundleIndex($contents)
     {

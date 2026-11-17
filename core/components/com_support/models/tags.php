@@ -32,7 +32,7 @@ class Tags extends Cloud
      * @param   string   $rtrn     Format to render
      * @param   array<mixed>    $filters  Filters to apply
      * @param   boolean  $clear    Clear cached data?
-     * @return  string
+     * @return  ($rtrn is 'array' ? array<mixed> : string)
      */
     public function render($rtrn = 'html', $filters = [], $clear = false)
     {

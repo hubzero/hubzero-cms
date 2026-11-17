@@ -389,7 +389,7 @@ class File extends Base
         $handler =  $configs->handler;
         if ($handler) {
             // Handler will draw list
-            $html = $handler->drawList($attachments, $configs, $pub, $authorized, $elementId);
+            $html = (string) $handler->drawList($attachments, $configs, $pub, $authorized, $elementId);
             if ($html) {
                 return $html;
             }

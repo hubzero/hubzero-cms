@@ -705,7 +705,7 @@ class DoiService extends Obj
      *
      * @param   boolean  $sendXml
      * @param   string   $status  DOI status [public, reserved]
-     * @return  boolean
+     * @return  string|false|null
      */
     public function registerEZID($sendXml = false, $status = 'public')
     {
@@ -756,7 +756,7 @@ class DoiService extends Obj
      * @param   string|null   $doi
      * @param   boolean  $sendXml
      * @param   string   $status  DOI status [public, reserved]
-     * @return  boolean
+     * @return  string|false
      */
     public function ezidMetadataUpdate($doi = null, $sendXml = false, $status = 'public')
     {

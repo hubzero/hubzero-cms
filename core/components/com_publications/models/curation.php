@@ -260,7 +260,7 @@ class Curation extends Obj
      * Get block blockId
      *
      * @param   string|null  $name  Block name
-     * @return  integer
+     * @return  int|string|null
      */
     public function getBlockId($name = null)
     {
@@ -278,7 +278,7 @@ class Curation extends Obj
     /**
      * Returns the Blocks of this curation flow
      *
-     * @return  object
+     * @return  array<mixed>|object
      */
     public function getBlockSchema()
     {
