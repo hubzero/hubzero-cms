@@ -52,7 +52,7 @@ class Archive extends Obj
     /**
      * Collection
      *
-     * @var object|null
+     * @var Collection|null
      */
     private $collection = null;
 
@@ -158,7 +158,7 @@ class Archive extends Obj
      * Set and get a specific collection
      *
      * @param   mixed   $id
-     * @return  object
+     * @return  Collection
      */
     public function collection($id = null)
     {
