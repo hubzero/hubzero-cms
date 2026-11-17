@@ -286,7 +286,7 @@ $formAction = Route::url(
                         <p class="smallsub" title="<?php echo $this->escape($item->path); ?>">
                             <?php
                             if ($item->level - 1  > 0) {
-                                echo str_repeat('<span class="gi">|&mdash;</span>', $item->level - 1);
+                                echo str_repeat('<span class="gi">|&mdash;</span>', (int) ($item->level - 1));
                             }
                             ?>
                             <?php

@@ -563,7 +563,7 @@ class Screenshots extends SiteController
 
         $im = imagecreate($av, $ah);
         $im = imagecreatetruecolor($av, $ah);
-        if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y)) {
+        if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, (int) $av, (int) $ah, $x, $y)) {
             if (imagegif($im, $save_dir . $save_name)) {
                 return true;
             } else {

@@ -97,7 +97,7 @@ class Region extends Plugin
             $monthtext   = date("F", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
                 . ' ' . $dtyear;
-            $twelvetext  = date("M", (int) mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear))
+            $twelvetext  = date("M", (int) mktime(0, 0, 0, (int) $dtmonthnext, 1, (int) $dtyear))
                 . ' '
                 . $dtyearprior
                 . ' - '

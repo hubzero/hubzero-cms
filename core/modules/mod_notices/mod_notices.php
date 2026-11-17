@@ -217,7 +217,7 @@ class Notices extends Module
             $hide = Request::getString($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
 
             if (!$hide && Request::getString($this->params->get('moduleid', 'sitenotice'), '', 'get')) {
-                setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', $expires);
+                setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', (int) $expires);
             }
         }
 

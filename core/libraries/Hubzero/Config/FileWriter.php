@@ -134,7 +134,7 @@ class FileWriter
         $result = @file_put_contents($file, $contents);
 
         if ($result) {
-            @chmod($file, octdec($mode));
+            @chmod($file, (int) octdec($mode));
         }
 
         return $result;

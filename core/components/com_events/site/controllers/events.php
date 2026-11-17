@@ -2076,7 +2076,7 @@ class Events extends SiteController
                 // Newer events store an IANA zone name (ex: 'US/Eastern') rather than
                 // a numeric offset, so only convert when we really have a number.
                 $tz = is_numeric($row->time_zone)
-                    ? timezone_name_from_abbr('', $row->time_zone * 3600, -1)
+                    ? timezone_name_from_abbr('', (int) ($row->time_zone * 3600), -1)
                     : $row->time_zone;
                 break;
         }

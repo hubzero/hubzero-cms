@@ -744,7 +744,7 @@ class Ftp implements AdapterInterface
         $mode = $this->isDirectory($path) ? $foldermode : $filemode;
         $mode = octdec($mode);
 
-        if (!ftp_chmod($this->getConnection(), $mode, $path)) {
+        if (!ftp_chmod($this->getConnection(), (int) $mode, $path)) {
             return false;
         }
 

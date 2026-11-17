@@ -127,7 +127,7 @@ class Helper
             $monthtext   = date("F", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear))
                 . ' ' . $dtyear;
-            $startMonth  = date("M", (int) mktime(0, 0, 0, $dtmonthnext, 1, (int) $dtyear));
+            $startMonth  = date("M", (int) mktime(0, 0, 0, (int) $dtmonthnext, 1, (int) $dtyear));
             $endMonth    = date("M", (int) mktime(0, 0, 0, (int) $dtmonth, 1, (int) $dtyear));
             $twelvetext  = $startMonth . ' ' . $dtyearprior . ' - ' . $endMonth . ' ' . $dtyear;
             $period = [

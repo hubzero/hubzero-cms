@@ -53,7 +53,7 @@ class Xml
     {
         $declaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 
-        $indent = ($depth > 1) ? str_repeat("\t", $depth - 1) : '';
+        $indent = ($depth > 1) ? str_repeat("\t", (int) ($depth - 1)) : '';
 
         $xml = ($show_declaration) ? $indent . $declaration . "\n" : '';
 

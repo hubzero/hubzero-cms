@@ -632,20 +632,20 @@ class Local implements AdapterInterface
                 }
 
                 if (isset($filemode)) {
-                    if (!@chmod($item->getPathname(), octdec($filemode))) {
+                    if (!@chmod($item->getPathname(), (int) octdec($filemode))) {
                         $success = false;
                     }
                 }
             }
 
             if (isset($foldermode)) {
-                if (!@chmod($path, octdec($foldermode))) {
+                if (!@chmod($path, (int) octdec($foldermode))) {
                     $success = false;
                 }
             }
         } else {
             if (isset($filemode)) {
-                $success = @chmod($path, octdec($filemode));
+                $success = @chmod($path, (int) octdec($filemode));
             }
         }
 

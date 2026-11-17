@@ -416,9 +416,9 @@ class Processor extends Obj
         imagecolortransparent($resource, (int) $transparencyIndex);
 
         if ($resample) {
-            imagecopyresampled($resource, $this->resource, 0, 0, $x, $y, $new_w, $new_h, $w, $h);
+            imagecopyresampled($resource, $this->resource, 0, 0, (int) $x, (int) $y, $new_w, $new_h, $w, $h);
         } else {
-            imagecopyresized($resource, $this->resource, 0, 0, $x, $y, $new_w, $new_h, $w, $h);
+            imagecopyresized($resource, $this->resource, 0, 0, (int) $x, (int) $y, $new_w, $new_h, $w, $h);
         }
 
         imagedestroy($this->resource);

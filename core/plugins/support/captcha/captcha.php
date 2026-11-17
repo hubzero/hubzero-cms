@@ -583,7 +583,7 @@ class Captcha extends Plugin
                                     break;
                                 }
                                 for ($px = min($left, $width - 1); $px > $left - 12 && $px >= 0; $px -= 1) {
-                                    $color = imagecolorat($img, $px, $py) & 0xff;
+                                    $color = imagecolorat($img, $px, (int) $py) & 0xff;
                                     if ($color + $opacity < 190) {
                                         if ($shift > $left - $px) {
                                             $shift = $left - $px;
@@ -599,7 +599,16 @@ class Captcha extends Plugin
                         $shift = random_int(4, 6);
                     }
                 }
-                imagecopy($img, $font, $x - $shift, $y, $m['start'], 1, $m['end'] - $m['start'], $fontfile_height);
+                imagecopy(
+                    $img,
+                    $font,
+                    $x - $shift,
+                    (int) $y,
+                    $m['start'],
+                    1,
+                    $m['end'] - $m['start'],
+                    $fontfile_height,
+                );
                 $x += $m['end'] - $m['start'] - $shift;
             }
         } while ($x >= $width - 10); // While not fit in canvas
