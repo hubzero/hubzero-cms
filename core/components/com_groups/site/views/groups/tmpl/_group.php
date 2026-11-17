@@ -22,6 +22,11 @@ defined('_HZEXEC_') or die();
 
 $group = Hubzero\User\Group::getInstance($this->group->gidNumber);
 
+// Gone since the list was read
+if (!$group) {
+    return;
+}
+
 //get status
 $status  = '';
 $options = '';

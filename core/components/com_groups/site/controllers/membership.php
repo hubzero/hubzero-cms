@@ -89,7 +89,7 @@ class Membership extends Base
         }
 
         // Ensure we found the group info
-        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -596,7 +596,6 @@ class Membership extends Base
         //do we have permission to join group
         if ($this->view->get('group')->get('type') == 2) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_FORBIDDEN'));
-            return;
         }
 
         // Get the group params

@@ -653,7 +653,6 @@ class Media extends Base
 
         if (!$this->authorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-            return;
         }
 
         //get config

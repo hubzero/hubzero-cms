@@ -1540,7 +1540,6 @@ class Groups extends Base
             // attachments live under <page id>/<file>.
             if (!$page->get('id')) {
                 $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
-                return;
             }
 
             // Check specific wiki page access
@@ -1550,7 +1549,6 @@ class Groups extends Base
                 && $authorized != 'admin'
             ) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-                return;
             }
 
             // Get the config and build base path
@@ -1627,7 +1625,6 @@ class Groups extends Base
         if (!file_exists(PATH_APP . DS . $file_path)) {
             if ($alt_file_path == null || !file_exists(PATH_APP . DS . $alt_file_path)) {
                 $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
-                return;
             } else {
                 $file_path = $alt_file_path;
                 $pathCheck = $altPathCheck;
@@ -1639,7 +1636,6 @@ class Groups extends Base
             // Make sure requested file is within acceptable dir
             if (strpos($realPath, $pathCheck) === false) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
-                return;
             }
         }
 

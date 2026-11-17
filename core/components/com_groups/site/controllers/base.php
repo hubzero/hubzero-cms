@@ -229,7 +229,7 @@ class Base extends SiteController
      *
      * @param   integer  $errorCode     Error code number
      * @param   string   $errorMessage  Error message
-     * @return  void
+     * @return  never
      */
     public function errorHandler($errorCode, $errorMessage)
     {
