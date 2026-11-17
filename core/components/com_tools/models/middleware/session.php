@@ -22,7 +22,7 @@ class Session extends Base
     /**
      * Table class name
      *
-     * @var  string
+     * @var  class-string
      */
     protected $tableClass = '\\Components\\Tools\\Tables\\Session';
 
@@ -56,10 +56,10 @@ class Session extends Base
 
         if ($this->tableClass) {
             $cls = $this->tableClass;
-            $this->table = new $cls($this->db);
+            $table = new $cls($this->db);
 
             // It is asked for loadSession() below, which the sessions table has
-            if (!($this->table instanceof \Components\Tools\Tables\Session)) {
+            if (!($table instanceof \Components\Tools\Tables\Session)) {
                 $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); '
                     . Lang::txt('Table class must be an instance of \\Components\\Tools\\Tables\\Session.'),
@@ -68,6 +68,7 @@ class Session extends Base
                     Lang::txt('Table class must be an instance of \\Components\\Tools\\Tables\\Session.'),
                 );
             }
+            $this->table = $table;
 
             if (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty

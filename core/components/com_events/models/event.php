@@ -33,7 +33,7 @@ class Event extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Events\Tables\Event>
      */
     protected $tableClass = '\\Components\\Events\\Tables\\Event';
 

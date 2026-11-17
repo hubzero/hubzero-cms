@@ -20,7 +20,7 @@ class Assetgroup extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\AssetGroup>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\AssetGroup';
 

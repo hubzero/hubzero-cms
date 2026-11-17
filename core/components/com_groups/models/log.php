@@ -29,7 +29,7 @@ class Log extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Groups\Tables\Log>
      */
     protected $tableClass = '\\Components\\Groups\\Tables\\Log';
 

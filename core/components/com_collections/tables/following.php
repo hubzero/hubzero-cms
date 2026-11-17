@@ -46,7 +46,7 @@ class Following extends Table
      *
      * @param   string|null   $oid             Record alias
      * @param   string|null   $following_type  Following type
-     * @param   string|null   $follower_id     Follower ID
+     * @param   integer|string|null   $follower_id     Follower ID
      * @param   string|null   $follower_type   Follower type
      * @return  boolean  True on success
      */

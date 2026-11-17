@@ -33,7 +33,7 @@ class Version extends Model
     /**
      * Table name
      *
-     * @var  string
+     * @var  class-string<\Components\Groups\Tables\PageVersion>
      */
     protected $tableClass = '\\Components\\Groups\\Tables\\PageVersion';
 

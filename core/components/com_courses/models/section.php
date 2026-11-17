@@ -29,7 +29,7 @@ class Section extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Section>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Section';
 

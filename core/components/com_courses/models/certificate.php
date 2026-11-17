@@ -27,7 +27,7 @@ class Certificate extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Certificate';
 
@@ -72,16 +72,17 @@ class Certificate extends Base
 
         if ($this->tableClass) {
             $cls = $this->tableClass;
-            $this->table = new $cls($this->db);
+            $table = new $cls($this->db);
 
-            if (!($this->table instanceof Table)) {
+            if (!($table instanceof \Components\Courses\Tables\Certificate)) {
                 $errorMsg = Lang::txt(
-                    'Table class must be an instance of Hubzero\\Database\\Table.',
+                    'Table class must be an instance of Components\\Courses\\Tables\\Certificate.',
                 );
                 $logMsg = __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg;
                 $this->logError($logMsg);
                 throw new \LogicException($errorMsg);
             }
+            $this->table = $table;
 
             if ($course_id) {
                 $this->table->load(['course_id' => $course_id]);

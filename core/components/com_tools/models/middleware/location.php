@@ -16,7 +16,7 @@ class Location extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Tools\Tables\ZoneLocations>
      */
     protected $tableClass = '\\Components\\Tools\\Tables\\ZoneLocations';
 

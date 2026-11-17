@@ -19,7 +19,7 @@ class Prerequisite extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Prerequisites>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Prerequisites';
 

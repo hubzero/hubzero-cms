@@ -28,7 +28,7 @@ class Entry extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Projects\Tables\Todo>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 

@@ -233,8 +233,8 @@ class Log extends Table
      *
      * @param   integer|null  $pid       Publication ID
      * @param   integer|null  $vid       Publication version ID
-     * @param   integer|null  $year
-     * @param   integer|null  $month
+     * @param   integer|string|null  $year
+     * @param   integer|string|null  $month
      * @param   integer  $count
      * @param   string   $type
      * @param   string   $category

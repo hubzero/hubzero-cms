@@ -24,7 +24,7 @@ class GradeBook extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\GradeBook>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\GradeBook';
 

@@ -37,9 +37,9 @@ class Base extends Model
 
         if ($this->tableClass) {
             $cls = $this->tableClass;
-            $this->table = new $cls($this->db);
+            $table = new $cls($this->db);
 
-            if (!($this->table instanceof \Hubzero\Database\Table)) {
+            if (!($table instanceof \Hubzero\Database\Table)) {
                 $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); '
                     . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
@@ -48,6 +48,7 @@ class Base extends Model
                     Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
             }
+            $this->table = $table;
 
             if (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty

@@ -20,7 +20,7 @@ class View extends Model
     /**
      * Table class name
      *
-     * @var  string
+     * @var  class-string<\Components\Projects\Tables\ToolView>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolView';
 

@@ -40,7 +40,7 @@ class Calendar extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Events\Tables\Calendar>
      */
     protected $tableClass = '\\Components\\Events\\Tables\\Calendar';
 

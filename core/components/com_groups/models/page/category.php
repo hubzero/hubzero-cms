@@ -30,7 +30,7 @@ class Category extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Groups\Tables\PageCategory>
      */
     protected $tableClass = '\\Components\\Groups\\Tables\\PageCategory';
 

@@ -19,7 +19,7 @@ class Member extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Member>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Member';
 

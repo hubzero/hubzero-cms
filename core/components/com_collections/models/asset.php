@@ -22,7 +22,7 @@ class Asset extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Collections\Tables\Asset>
      */
     public $tableClass = '\\Components\\Collections\\Tables\\Asset';
 

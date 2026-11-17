@@ -51,7 +51,7 @@ abstract class Model extends Obj
     /**
      * Table class name
      *
-     * @var  string|null
+     * @var  class-string|null
      */
     protected $tableClass = null;
 
@@ -89,14 +89,15 @@ abstract class Model extends Obj
 
         if ($this->tableClass) {
             $cls = $this->tableClass;
-            $this->table = new $cls($this->db);
+            $table = new $cls($this->db);
 
-            if (!($this->table instanceof \Hubzero\Database\Table)) {
+            if (!($table instanceof \Hubzero\Database\Table)) {
                 $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Table.'),
                 );
                 throw new \LogicException(Lang::txt('Table class must be an instance of Table.'));
             }
+            $this->table = $table;
 
             if (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty

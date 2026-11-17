@@ -20,7 +20,7 @@ class Following extends Model
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Collections\Tables\Following>
      */
     protected $tableClass = '\\Components\\Collections\\Tables\\Following';
 

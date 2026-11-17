@@ -18,7 +18,7 @@ class MemberBadge extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\MemberBadge>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\MemberBadge';
 

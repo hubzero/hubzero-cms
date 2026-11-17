@@ -22,7 +22,7 @@ class Job extends Model
     /**
      * Table name
      *
-     * @var  string
+     * @var  class-string<\Components\Jobs\Tables\Job>
      */
     protected $tableClass = '\\Components\\Jobs\\Tables\\Job';
 

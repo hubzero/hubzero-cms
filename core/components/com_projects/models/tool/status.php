@@ -25,7 +25,7 @@ class Status extends Model
     /**
      * Table class name
      *
-     * @var  string
+     * @var  class-string<\Components\Projects\Tables\ToolStatus>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolStatus';
 

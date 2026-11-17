@@ -22,7 +22,7 @@ class Page extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Page>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Page';
 

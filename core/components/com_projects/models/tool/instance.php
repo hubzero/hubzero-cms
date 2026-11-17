@@ -25,7 +25,7 @@ class Instance extends Model
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Projects\Tables\ToolInstance>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolInstance';
 

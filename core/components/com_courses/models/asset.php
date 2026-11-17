@@ -32,7 +32,7 @@ class Asset extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Asset>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Asset';
 

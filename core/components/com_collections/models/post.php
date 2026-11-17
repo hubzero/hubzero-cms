@@ -20,7 +20,7 @@ class Post extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Collections\Tables\Post>
      */
     protected $tableClass = '\\Components\\Collections\\Tables\\Post';
 

@@ -31,7 +31,7 @@ class Unit extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\Unit>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\Unit';
 

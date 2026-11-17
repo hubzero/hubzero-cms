@@ -24,7 +24,7 @@ class Module extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Groups\Tables\Module>
      */
     protected $tableClass = '\\Components\\Groups\\Tables\\Module';
 

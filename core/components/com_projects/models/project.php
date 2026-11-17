@@ -100,7 +100,7 @@ class Project extends Model
     /**
      * Table class name
      *
-     * @var  string
+     * @var  class-string<\Components\Projects\Tables\Project>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\Project';
 

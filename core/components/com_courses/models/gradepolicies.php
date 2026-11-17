@@ -19,7 +19,7 @@ class GradePolicies extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\GradePolicies>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\GradePolicies';
 

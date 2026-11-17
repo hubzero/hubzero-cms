@@ -68,7 +68,7 @@ class Tool extends Model
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Projects\Tables\Tool>
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\Tool';
 

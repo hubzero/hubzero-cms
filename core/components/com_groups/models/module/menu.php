@@ -22,7 +22,7 @@ class Menu extends Model
     /**
      * Table name
      *
-     * @var string
+     * @var class-string<\Components\Groups\Tables\ModuleMenu>
      */
     protected $tableClass = '\\Components\\Groups\\Tables\\ModuleMenu';
 

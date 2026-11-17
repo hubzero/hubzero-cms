@@ -38,7 +38,7 @@ class Collection extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Collections\Tables\Collection>
      */
     protected $tableClass = '\\Components\\Collections\\Tables\\Collection';
 

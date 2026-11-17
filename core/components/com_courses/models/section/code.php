@@ -21,7 +21,7 @@ class Code extends Base
     /**
      * Table class name
      *
-     * @var string
+     * @var class-string<\Components\Courses\Tables\SectionCode>
      */
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionCode';
 
