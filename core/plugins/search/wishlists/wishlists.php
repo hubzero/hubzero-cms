@@ -21,7 +21,7 @@ class Wishlists extends Plugin
     /**
      * Basic search
      *
-     * @param   object  $request
+     * @param   \Components\Search\Models\Basic\Request  $request
      * @param   object  &$results
      * @return  void
      */

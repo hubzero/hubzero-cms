@@ -654,7 +654,7 @@ class Credentials extends SiteController
      * Email a user whose account was expired for inactivity why a password
      * reset is not available
      *
-     * @param   object  $user  \Hubzero\User\User
+     * @param   \Hubzero\User\User  $user  \Hubzero\User\User
      * @return  void
      */
     private function sendInactiveNotice($user)

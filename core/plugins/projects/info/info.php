@@ -117,7 +117,7 @@ class Info extends Plugin
     /**
      * Event call to get content for public project page
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  string|null
      */
     public function onProjectPublicList($model)

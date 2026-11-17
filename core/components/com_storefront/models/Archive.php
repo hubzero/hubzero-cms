@@ -170,7 +170,7 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Update SKU info
      *
-     * @param   object $sku     SKU
+     * @param   \Components\Storefront\Models\Sku $sku     SKU
      * @param   array<mixed>  $fields  New info
      * @return  object  the saved SKU
      */

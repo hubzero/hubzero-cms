@@ -391,7 +391,7 @@ class IdP
      * Returns null for unknown sources so the attribute is skipped, and an
      * array for the group sources, which are multi-valued by nature.
      *
-     * @param   object  $sp      ServiceProvider
+     * @param   \Components\Saml\Models\ServiceProvider  $sp      ServiceProvider
      * @param   object  $user    \Hubzero\User\User
      * @param   string  $source
      * @return  string|array<mixed>|null
@@ -447,7 +447,7 @@ class IdP
      * an AttributeStatement to have at least one attribute, and validating
      * SPs reject an assertion carrying an empty one.
      *
-     * @param   object  $sp    ServiceProvider
+     * @param   \Components\Saml\Models\ServiceProvider  $sp    ServiceProvider
      * @param   object  $user  \Hubzero\User\User
      * @return  \LightSaml\Model\Assertion\AttributeStatement|null
      */

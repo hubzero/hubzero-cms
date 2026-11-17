@@ -26,7 +26,7 @@ class Resources extends Plugin
      *
      * @param      object $request  \Components\Search\Models\Basic\Request
      * @param      object &$results \Components\Search\Models\Basic\Result\Set
-     * @param      object $authz    \Components\Search\Models\Basic\Authorization
+     * @param      \Components\Search\Models\Basic\Authorization $authz    \Components\Search\Models\Basic\Authorization
      * @return     void
      */
     public static function onSearch($request, &$results, $authz)

@@ -103,7 +103,7 @@ class Forks extends Plugin
     /**
      * Return data on a publication sub view (this will be some form of HTML)
      *
-     * @param   object   $publication  Current publication
+     * @param   \Components\Publications\Models\Publication  $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   integer  $miniview     View style
      * @return  array<string, mixed>

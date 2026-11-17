@@ -165,7 +165,7 @@ class Base
      * Parse log line
      *
      * @param   string  $line      Log line
-     * @param   object  $output    Output object
+     * @param   \Hubzero\Console\Output  $output    Output object
      * @param   array<mixed>   $settings  Settings to honor
      * @return  void
      **/

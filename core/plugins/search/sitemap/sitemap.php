@@ -32,7 +32,7 @@ class Sitemap extends Plugin
     /**
      * On search
      *
-     * @param   object  $request
+     * @param   \Components\Search\Models\Basic\Request  $request
      * @param   object  &$results
      * @return  void
      */

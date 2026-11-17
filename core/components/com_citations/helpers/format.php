@@ -799,7 +799,7 @@ class Format
     /**
      * Output a tagcloud of tags associated with a citation
      *
-     * @param   object  $cite  Citation
+     * @param   \Components\Citations\Models\Citation  $cite  Citation
      * @param   object|bool $includeHtml  Database
      * @return  string|array<mixed>  HTML, or the raw tags when $includeHtml is false
      */

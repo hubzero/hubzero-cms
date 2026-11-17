@@ -261,7 +261,7 @@ class Tool extends Content
 
     /**
      * Right remote file to local temp directory
-     * @param  object $conFile remote connection file object
+     * @param  \Hubzero\Filesystem\File $conFile remote connection file object
      * @return mixed  File object or false if unable to write
      */
     private function writeRemoteTempFile($conFile)

@@ -557,7 +557,7 @@ class Geocode
      * the table not asked again for five minutes (see unusable()). The IPv4
      * tables are queried as they always were.
      *
-     * @param   object  $gdb     Geo database
+     * @param   \Hubzero\Database\Driver  $gdb     Geo database
      * @param   string  $table
      * @param   string  $sql
      * @param   bool    $failed  Set true when an IPv6 query failed

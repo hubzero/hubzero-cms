@@ -213,7 +213,7 @@ class Team extends Plugin
      * Event call to get side content for main project page
      * Will show recent visits and who is online
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  mixed
      */
     public function onProjectMiniList($model)
@@ -243,7 +243,7 @@ class Team extends Plugin
     /**
      * Event call to get content for public project page
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  mixed
      */
     public function onProjectPublicList($model)

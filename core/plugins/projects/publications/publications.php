@@ -389,7 +389,7 @@ class Publications extends Plugin
     /**
      * Event call to get content for public project page
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  mixed
      */
     public function onProjectPublicList($model)

@@ -20,7 +20,7 @@ class Citations extends Plugin
     /**
      * Build search query and add it to the $results
      *
-     * @param      object $request  \Components\Search\Models\Basic\Request
+     * @param      \Components\Search\Models\Basic\Request $request  \Components\Search\Models\Basic\Request
      * @param      object &$results \Components\Search\Models\Basic\Result\Set
      * @param      object $authz    \Components\Search\Models\Basic\Authorization
      * @return     void
