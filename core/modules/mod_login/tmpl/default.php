@@ -107,7 +107,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
     <div class="auth">
         <div class="person">
             <?php if (isset($user_img) && file_exists($user_img)) : ?>
-                <?php $img_properties = getimagesize(PATH_APP . DS . $user_img); ?>
+                <?php $img_properties = getimagesize(PATH_APP . DS . $user_img) ?: [0, 0]; ?>
                 <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
                 <img class="<?= $class ?>" src="<?= $user_img ?>" alt="<?= Lang::txt('MOD_LOGIN_USER_PICTURE') ?>" />
             <?php endif; ?>

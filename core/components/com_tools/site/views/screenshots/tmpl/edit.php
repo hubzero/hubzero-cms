@@ -26,7 +26,7 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-$size = getimagesize($this->upath . DS . $this->file);
+$size = getimagesize($this->upath . DS . $this->file) ?: [0, 0];
 $w = ($size[0] > 600) ? $size[0] / 1.4444444 : $size[0];
 $h = ($w != $size[0]) ? $size[1] / 1.4444444 : $size[1];
 

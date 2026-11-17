@@ -285,9 +285,12 @@ class ResourceMapGenerator
                     break;
                 }
 
+                // No size to give for an image that cannot be read
                 $imageData = getimagesize(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
-                $xmlwriter->writeElement('exif:width', (string) $imageData[0]);
-                $xmlwriter->writeElement('exif:height', (string) $imageData[1]);
+                if ($imageData) {
+                    $xmlwriter->writeElement('exif:width', (string) $imageData[0]);
+                    $xmlwriter->writeElement('exif:height', (string) $imageData[1]);
+                }
                 break;
             default:
         }

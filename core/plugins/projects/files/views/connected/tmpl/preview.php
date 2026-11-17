@@ -41,7 +41,7 @@ if ($this->getError()) {
 <?php if ($this->file->isImage()) : ?>
     <?php $contents = $this->file->read(); ?>
     <?php $base64   = base64_encode($contents); ?>
-    <?php $attr     = getimagesizefromstring($contents); ?>
+    <?php $attr     = getimagesizefromstring($contents) ?: ['mime' => '']; ?>
     <div id="preview-image">
         <img src="data:<?php echo $attr['mime']; ?>;base64,<?php echo $base64; ?>"
             alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>"/>

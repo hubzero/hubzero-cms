@@ -59,7 +59,7 @@ class RandomImage extends Module
         $i      = count($images);
         $random = random_int(0, $i - 1);
         $image  = $images[$random];
-        $size   = getimagesize(PATH_APP . DS . $image->folder . DS . $image->name);
+        $size   = getimagesize(PATH_APP . DS . $image->folder . DS . $image->name) ?: [0, 0];
 
 
         if ($width == '') {

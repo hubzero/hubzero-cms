@@ -152,7 +152,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             <div class="person">
                 <?php if (isset($user_img) && is_object($user) && file_exists($user_img)) : ?>
                     <?php $image = $user->picture(0, false, false); ?>
-                    <?php $img_properties = getimagesize(PATH_CORE . DS . $image); ?>
+                    <?php $img_properties = getimagesize(PATH_CORE . DS . $image) ?: [0, 0]; ?>
                     <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
                     <img class="<?= $class ?>" src="<?= $user_img ?>"
                         alt="<?= Lang::txt('COM_USERS_LOGIN_USER_PICTURE') ?>" />

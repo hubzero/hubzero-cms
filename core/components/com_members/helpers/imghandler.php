@@ -122,6 +122,10 @@ class ImgHandler extends Obj
 
         // Get the size and MIME type of the requested image
         $size = GetImageSize($docRoot . $image);
+        if (!$size) {
+            $this->setError(Lang::txt('The file is not an image.'));
+            return false;
+        }
         $mime = $size['mime'];
 
         // Make sure that the requested file is actually an image

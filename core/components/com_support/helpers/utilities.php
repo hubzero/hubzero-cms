@@ -63,6 +63,10 @@ class Utilities
                     if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path)) {
                         $file = basename($path);
                         $size = getimagesize($path);
+                        // Not readable as an image: leave its link as it is
+                        if (!$size) {
+                            continue;
+                        }
                         $width = ($size[0] > 650 ? 650 : $size[0]);
                         $pattern = '/<a class="img" data\-filename="'
                             . str_replace('.', '\.', $file)

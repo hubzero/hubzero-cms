@@ -572,8 +572,9 @@ class Processor extends Obj
         // Encode and build data uri
         $base64 = base64_encode((string) $image_data);
         $image_atts = getimagesize($this->source);
+        $mime = $image_atts ? $image_atts['mime'] : 'application/octet-stream';
 
-        return 'data:' . $image_atts['mime'] . ';base64,' . $base64;
+        return 'data:' . $mime . ';base64,' . $base64;
     }
 
     /**

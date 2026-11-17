@@ -529,6 +529,10 @@ class Screenshots extends SiteController
     {
         $save_dir = rtrim($save_dir, DS) . DS;
         $gis = getimagesize($tmpname);
+        if (!$gis) {
+            // Not an image
+            return false;
+        }
 
         switch ($gis[2]) {
             case '1':
