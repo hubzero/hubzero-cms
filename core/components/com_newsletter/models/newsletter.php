@@ -514,7 +514,7 @@ class Newsletter extends Relational
 
         // Do we want to strip <html> & <body> tags
         if ($stripHtmlAndBodyTags) {
-            $campaignParsed = preg_replace('/<html[^>]*>/', '', $campaignParsed);
+            $campaignParsed = preg_replace('/<html[^>]*>/', '', (string) $campaignParsed);
             $campaignParsed = preg_replace('/<body[^>]*>/', '', $campaignParsed);
             $campaignParsed = str_replace('</body>', '', $campaignParsed);
             $campaignParsed = str_replace('</html>', '', $campaignParsed);

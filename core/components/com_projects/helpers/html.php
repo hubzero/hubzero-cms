@@ -577,7 +577,7 @@ class Html extends Obj
 
         $parts = explode('-', $name);
         if (count($parts) > 1) {
-            $append = intval(end($parts));
+            $append = (string) intval(end($parts));
         }
 
         return $append;

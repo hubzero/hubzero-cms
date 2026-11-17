@@ -140,7 +140,7 @@ class Api extends SiteController
     /**
      * Get all active tokens for the current user
      *
-     * @return  array<mixed>
+     * @return  \Hubzero\Database\Rows|array<mixed>  No tokens for a guest
      */
     private function getUserTokens()
     {

@@ -583,7 +583,7 @@ class Repo extends Obj
      * Diff revisions
      *
      * @param   array<mixed>  $params
-     * @return  boolean
+     * @return  array<mixed>|bool
      */
     public function diff($params = [])
     {
@@ -817,7 +817,7 @@ class Repo extends Obj
      * Update file in the repo
      *
      * @param   array<mixed>    $params
-     * @return  boolean
+     * @return  array<mixed>|false
      */
     public function update($params = [])
     {
@@ -1127,7 +1127,7 @@ class Repo extends Obj
      * @param   mixed  $size
      * @param   mixed  $available
      * @param   mixed  $params
-     * @return  boolean
+     * @return  int|bool
      */
     protected function expand($file, $tmp_name, $target, $size, &$available, $params)
     {

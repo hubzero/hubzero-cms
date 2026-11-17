@@ -154,7 +154,7 @@ class ResourceMapGenerator
             // Attempts to load $id on this database object.
             $resource = new \Components\Publications\Tables\Version($database);
 
-            return $resource->getLastPubRelease($id);
+            return (bool) $resource->getLastPubRelease($id);
         }
 
         return false;

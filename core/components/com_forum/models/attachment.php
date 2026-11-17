@@ -36,7 +36,7 @@ class Attachment extends Relational
     /**
      * File size
      *
-     * @var  int|false|null
+     * @var  int|null
      */
     protected $size = null;
 

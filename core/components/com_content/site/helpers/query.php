@@ -19,7 +19,7 @@ class Query
      * Translate an order code to a field for primary category ordering.
      *
      * @param   string  $orderby  The ordering code.
-     * @return  string  The SQL field(s) to order by.
+     * @return  array<int, string>|string  The field and direction to order by, '' for none
      */
     public static function orderbyPrimary($orderby)
     {

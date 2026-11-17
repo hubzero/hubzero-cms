@@ -115,7 +115,7 @@ class Page extends Relational
     /**
      * Get parent entry
      *
-     * @return  static
+     * @return  static|false  False when it has none
      */
     public function parent()
     {

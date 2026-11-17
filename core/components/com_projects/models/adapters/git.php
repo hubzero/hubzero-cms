@@ -331,7 +331,7 @@ class Git extends Models\Adapter
     /**
      * Get trashed items
      *
-     * @return  boolean
+     * @return  array<mixed>|false
      */
     public function getTrash()
     {

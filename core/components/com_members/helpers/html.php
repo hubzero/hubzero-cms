@@ -138,7 +138,12 @@ class Html
         list($date, $time) = explode(' ', $datestr);
         list($y, $m, $d) = explode('-', $date);
         list($h, $i, $s) = explode(':', $time);
-        return mktime((int) $h, (int) $i, (int) $s, (int) $m, (int) $d, (int) $y);
+        $epoch = mktime((int) $h, (int) $i, (int) $s, (int) $m, (int) $d, (int) $y);
+        if ($epoch === false) {
+            return null;
+        }
+
+        return $epoch;
     }
 
     /**

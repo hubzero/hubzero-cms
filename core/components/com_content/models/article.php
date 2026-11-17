@@ -543,16 +543,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticAttribs($data)
     {
-        if (!isset($data['attribs'])) {
-            $data['attribs'] = '';
+        if (empty($data['attribs'])) {
+            return '';
         }
 
-        if (!empty($data['attribs'])) {
-            $metadata = new Registry($data['attribs']);
-            $data['attribs'] = $metadata->toString();
-        }
+        $metadata = new Registry($data['attribs']);
 
-        return $data['attribs'];
+        return $metadata->toString();
     }
 
     /**
@@ -563,16 +560,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticMetadata($data)
     {
-        if (!isset($data['metadata'])) {
-            $data['metadata'] = '';
+        if (empty($data['metadata'])) {
+            return '';
         }
 
-        if (!empty($data['metadata'])) {
-            $metadata = new Registry($data['metadata']);
-            $data['metadata'] = $metadata->toString();
-        }
+        $metadata = new Registry($data['metadata']);
 
-        return $data['metadata'];
+        return $metadata->toString();
     }
 
     /**

@@ -1102,7 +1102,7 @@ class Project extends Model
             $this->tblOwner = new Tables\Owner($this->db);
         }
         if (!isset($this->team) || $refresh == true) {
-            $this->team = $this->tblOwner->getOwners($this->get('id'), $filters);
+            $this->team = $this->tblOwner->getOwners($this->get('id'), $filters) ?: [];
         }
 
         return $this->team;

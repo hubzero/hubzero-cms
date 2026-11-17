@@ -107,7 +107,7 @@ class Menutype extends Obj
         }
 
         if (empty($options)) {
-            $options = $this->getTypeOptionsFromMVC($component);
+            $options = $this->getTypeOptionsFromMVC($component) ?: [];
         }
 
         return $options;

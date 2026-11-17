@@ -367,7 +367,7 @@ class Codes extends AdminController
             return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
         }
 
-        return $val;
+        return (string) $val;
     }
 
     /**

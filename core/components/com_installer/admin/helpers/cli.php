@@ -217,7 +217,7 @@ class Cli
      **/
     public static function call($cmd, $task = 'repository', $args = [])
     {
-        return shell_exec(self::command($cmd, $task, $args));
+        return (string) shell_exec(self::command($cmd, $task, $args));
     }
 
     /**
