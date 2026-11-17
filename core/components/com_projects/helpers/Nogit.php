@@ -19,7 +19,7 @@ use Hubzero\Facades\Lang;
 class Nogit extends Obj
 {
     /**
-     * @var  object|null
+     * @var  \Hubzero\Filesystem\Flysystem|null
      */
     protected $adapter;
 

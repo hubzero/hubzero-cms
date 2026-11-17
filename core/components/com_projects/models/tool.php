@@ -57,7 +57,7 @@ class Tool extends Model
      */
     protected $statusChanger;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Tool\Instance|null
      */
     protected $version;
     /**

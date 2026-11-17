@@ -984,7 +984,7 @@ class Account extends Plugin
     /**
      * Retrieve activation token from the database
      *
-     * @return  object|null  id and activation token for user; null when none is set
+     * @return  \stdClass|null  id and activation token for user; null when none is set
      */
     private function getToken()
     {

@@ -98,7 +98,7 @@ class Migration
      * Constructor
      *
      * @param   string|null  $docroot  Defaults to null, which should then resolve to the hub docroot
-     * @param   object|null  $runDb    The db that migrations will actually run against
+     * @param   \Hubzero\Database\Driver|null  $runDb    The db that migrations will actually run against
      * @return  bool
      **/
     public function __construct($docroot = null, $runDb = null)
@@ -251,7 +251,7 @@ class Migration
     /**
      * Setup database connect, test, return object
      *
-     * @return  object|false
+     * @return  \Hubzero\Database\Drivers\Base\BaseSqlDriver|false
      **/
     public function getDBO()
     {

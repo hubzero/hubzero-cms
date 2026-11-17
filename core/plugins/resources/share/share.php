@@ -151,7 +151,7 @@ class Share extends Plugin
      *
      * @param   string  $with      Social site to share with
      * @param   string  $url       The URL to share
-     * @param   object  $resource  Resource to share
+     * @param   \Components\Resources\Models\Entry  $resource  Resource to share
      *
      * @return  void
      */

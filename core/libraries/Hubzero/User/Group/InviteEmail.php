@@ -61,7 +61,7 @@ class InviteEmail extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\User\Group
      */
     public function group()
     {

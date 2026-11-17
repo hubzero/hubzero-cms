@@ -335,7 +335,7 @@ class Helper
      *
      * @param   array<mixed>   $config  Array of database options
      * @param   string  $cname
-     * @return  object  Database Object
+     * @return  \Hubzero\Database\Driver  Database Object
      */
     public static function getDbo($config = [], $cname = '')
     {

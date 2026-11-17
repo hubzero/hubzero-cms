@@ -100,12 +100,14 @@ class Latex extends Plugin
         $compiled = File::fromPath($uniqid . '.pdf', $adapter);
         $log      = File::fromPath($uniqid . '.log', $adapter);
 
-        if (!$compiled->size()) {
+        // There is no size(): getSize(true) is the size in bytes, or false
+        // when the file is not there, as when the compile failed
+        if (!($compiled instanceof File) || !$compiled->getSize(true)) {
             $view->setError(Lang::txt('PLG_HANDLERS_LATEX_ERROR_COMPILE_TEX_FAILED'));
         }
 
         // Read log (to show in case of error)
-        if ($log->size()) {
+        if ($log instanceof File && $log->getSize(true)) {
             $view->set('log', $log->read());
         }
 

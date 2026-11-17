@@ -921,7 +921,7 @@ class Course extends Base
     /**
      * Get a course logo
      *
-     * @return     object
+     * @return     \Components\Courses\Models\Certificate
      */
     public function certificate()
     {

@@ -191,7 +191,7 @@ class Course extends SiteController
     /**
      * Show a form for editing a course
      *
-     * @param   object|null  $model
+     * @param   \Components\Courses\Models\Course|null  $model
      *
      * @return  void
      */

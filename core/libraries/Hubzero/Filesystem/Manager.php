@@ -175,7 +175,7 @@ class Manager
      * Creates a filesystem handle to the PHP temp directory
      *
      * @param   string  $path  The relative path within the temp dir to use
-     * @return  object
+     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     public static function getTempPath($path = '')
     {

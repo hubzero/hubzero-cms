@@ -27,7 +27,7 @@ class Group extends Base
     /**
      * Group
      *
-     * @var object|null
+     * @var \Hubzero\User\Group|null
      */
     protected $group = null;
 

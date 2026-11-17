@@ -62,7 +62,7 @@ class Importer extends Obj
     /**
      * Defines a one to one relationship with citation
      *
-     * @param   object|mixed   $database
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver|mixed   $database
      * @param   object|mixed   $filesystem
      * @param   string   $path
      * @param   string|null   $hash

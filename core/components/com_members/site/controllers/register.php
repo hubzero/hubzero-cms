@@ -1342,7 +1342,7 @@ class Register extends SiteController
      * Regenerate a user's email-confirmation token and send the confirmation
      * email. Shared by the logged-in and guest resend paths.
      *
-     * @param   object   $profile  The user to (re)send confirmation to
+     * @param   \Hubzero\User\User   $profile  The user to (re)send confirmation to
      * @return  boolean  True if the message was handed off to the mailer
      */
     protected function sendConfirmationEmail($profile)

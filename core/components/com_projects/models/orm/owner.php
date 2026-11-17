@@ -83,7 +83,7 @@ class Owner extends Relational
     /**
      * Defines a belongs to one relationship between owner and group
      *
-     * @return  object
+     * @return  \Hubzero\User\Group
      */
     public function group()
     {

@@ -76,11 +76,6 @@ class Migration extends Base implements CommandInterface
 
                 // Get group database
                 $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
-
-                // make sure we have a group db
-                if ($alternativeDatabase->getErrorNum() > 0) {
-                    $this->output->error('Error: Could not connect to Group Database.');
-                }
             } else {
                 $this->output->error('Error: Provided group is not valid');
             }
@@ -575,10 +570,6 @@ class Migration extends Base implements CommandInterface
                 }
 
                 $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
-
-                if ($alternativeDatabase->getErrorNum() > 0) {
-                    $this->output->error('Error: Could not connect to Group Database.');
-                }
             } else {
                 $this->output->error('Error: Provided group is not valid');
             }
@@ -731,10 +722,6 @@ class Migration extends Base implements CommandInterface
                 }
 
                 $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
-
-                if ($alternativeDatabase->getErrorNum() > 0) {
-                    $this->output->error('Error: Could not connect to Group Database.');
-                }
             } else {
                 $this->output->error('Error: Provided group is not valid');
             }
@@ -886,10 +873,6 @@ class Migration extends Base implements CommandInterface
                 }
 
                 $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
-
-                if ($alternativeDatabase->getErrorNum() > 0) {
-                    $this->output->error('Error: Could not connect to Group Database.');
-                }
             } else {
                 $this->output->error('Error: Provided group is not valid');
             }

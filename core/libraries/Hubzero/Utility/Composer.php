@@ -186,7 +186,7 @@ class Composer
     /**
      * Return the local(installed) repository
      *
-     * @return  object  Composer\Repository\RepositoryInterface containing the local repository
+     * @return  \Composer\Repository\InstalledRepositoryInterface  The local repository
      */
     private static function getLocalRepository()
     {

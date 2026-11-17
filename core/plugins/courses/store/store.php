@@ -83,7 +83,7 @@ class Store extends Plugin
      *
      * @param   \Components\Courses\Models\Course   $course    Current resource
      * @param   \Components\Courses\Models\Offering   $offering
-     * @param   object   $section
+     * @param   \Components\Courses\Models\Section   $section
      * @return  string|null
      */
     public function onCourseEnrollLink($course, $offering, $section)

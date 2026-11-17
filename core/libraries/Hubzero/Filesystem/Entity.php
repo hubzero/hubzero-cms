@@ -90,7 +90,7 @@ class Entity extends Obj
      * @param   array<mixed>   $properties  The properties to use to build a new entity from
      * @param   \Hubzero\Filesystem\Flysystem|null  $adapter     The filesystem adapter to use for interaction with the
      *                                                           entity
-     * @return  object
+     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     public static function fromMetadata($properties, $adapter = null)
     {
@@ -499,7 +499,7 @@ class Entity extends Obj
     /**
      * Copies the entity
      *
-     * @param   string|object  $to  What/where to copy the entity to
+     * @param   string|\Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File  $to  What/where to copy the entity to
      * @return  bool
      **/
     public function copy($to)

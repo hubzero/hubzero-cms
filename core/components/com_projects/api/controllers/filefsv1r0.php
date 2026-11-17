@@ -1334,7 +1334,7 @@ class Filefsv1r0 extends ApiController
     /**
      * The adapter of the connection a metadata task operates on
      *
-     * @return  object
+     * @return  \Hubzero\Filesystem\Flysystem
      * @throws  Exception  when the request named no connection
      */
     private function connectionAdapter()

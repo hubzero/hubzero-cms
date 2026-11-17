@@ -41,7 +41,7 @@ class Utilities
     /**
      * Run mkAIP
      *
-     * @param            object $row            Publication version object
+     * @param            \Components\Publications\Tables\Version|\stdClass $row            Publication version object
      * @return       bool
      */
     public static function mkAip($row)

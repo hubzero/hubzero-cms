@@ -78,7 +78,7 @@ class Helper
      * Get the parameters for a module
      *
      * @param   integer  $id  Module ID
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public static function getParams($id)
     {

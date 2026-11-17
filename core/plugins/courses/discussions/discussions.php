@@ -76,7 +76,7 @@ class Discussions extends Plugin
     protected $active = null;
 
     /**
-     * @var object|null  The unit being discussed
+     * @var \Components\Courses\Models\Unit|null  The unit being discussed
      */
     protected $unit = null;
 
@@ -523,7 +523,7 @@ class Discussions extends Plugin
      * Set redirect and message
      *
      * @param   \Components\Courses\Models\Course  $course
-     * @param   object  $unit
+     * @param   \Components\Courses\Models\Unit  $unit
      * @param   \Components\Courses\Models\Assetgroup  $lecture
      * @return  string
      */

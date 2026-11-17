@@ -177,7 +177,7 @@ class Feed extends Base
     /**
      * iTunes feed owner
      *
-     * @var  object|null  With name and email
+     * @var  \Hubzero\Document\Type\Feed\ItunesOwner|null  With name and email
      */
     public $itunes_owner = null;
 
@@ -205,7 +205,7 @@ class Feed extends Base
     /**
      * iTunes image
      *
-     * @var  object|null  With url
+     * @var  \Hubzero\Document\Type\Feed\Image|null  With url
      */
     public $itunes_image = null;
 

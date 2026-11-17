@@ -1399,7 +1399,7 @@ class Manage extends AdminController
      * Checks if the group is a system group and the user has super admin access
      *
      * @param   string  $task
-     * @param   object|null   $group  \Hubzero\User\Group
+     * @param   \Hubzero\User\Group|null   $group  \Hubzero\User\Group
      * @return  boolean  True if authorized, false if not.
      */
     protected function canPerform($task, $group = null)

@@ -1033,7 +1033,7 @@ class Media extends Base
         $folder = str_replace($this->path, '', $fileInfo['dirname']);
 
         // If file exists extract
-        if ($archive->isExpandable()) {
+        if ($archive instanceof \Hubzero\Filesystem\Type\Expandable) {
             if (!$archive->expand()) {
                 $this->setError(Lang::txt('Failed to extract archive %s.', $file));
             }

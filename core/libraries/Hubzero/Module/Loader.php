@@ -74,7 +74,7 @@ class Loader
      *
      * @param   string  $name   The name of the module
      * @param   string|null  $title  The title of the module, optional
-     * @return  object|null  The Module object, or null if none matches a name without the mod_ prefix
+     * @return  \stdClass|null  The module's row, or null if none matches a name without the mod_ prefix
      */
     public function byName($name, $title = null)
     {
@@ -218,7 +218,7 @@ class Loader
     /**
      * Render the module.
      *
-     * @param   object  $module   A module object.
+     * @param   \stdClass  $module   A module's row.
      * @param   array<mixed>   $attribs  An array of attributes for the module (probably from the XML).
      * @return  string  The HTML content of the module output.
      */
@@ -526,7 +526,7 @@ class Loader
      * 'safeuri'     Id created from $cacheparams->modeparams array,
      * 'id'          Module sets own cache id's
      *
-     * @param   object  $module        Module object
+     * @param   \stdClass  $module        Module row
      * @param   object  $moduleparams  Module parameters
      * @param   object  $cacheparams   Module cache parameters - id or url parameters, depending on the module cache
      *                                 mode

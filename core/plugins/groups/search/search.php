@@ -27,7 +27,7 @@ class Search extends Plugin
     /**
      * Trigger onAddIndex to update search index.
      *
-     * @param   object  $before  group object before any changes
+     * @param   \Hubzero\User\Group  $before  group object before any changes
      * @param   \Hubzero\User\Group  $group   group object including changes made during most recent save.
      * @return  void
      */

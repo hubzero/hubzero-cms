@@ -156,7 +156,7 @@ class Emailtoken extends Plugin
      * Checks to see if the current user has exceeded the site
      * login attempt limit for a given time period
      *
-     * @param       object  $user \Hubzero\User\User
+     * @param       \Hubzero\User\User  $user \Hubzero\User\User
      *
      * @return  bool
      */

@@ -39,7 +39,7 @@ class Questions extends Plugin
      */
     protected $filters;
     /**
-     * @var  object|null
+     * @var  \Components\Resources\Models\Entry|null
      */
     protected $model;
 

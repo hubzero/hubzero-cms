@@ -842,8 +842,8 @@ class Item extends Nested
      * for SQL WHERE clauses for updating left and right id values to make room for
      * the node as well as the new left and right ids for the node.
      *
-     * @param   object|mixed   $referenceNode  A node object with at least a 'lft' and 'rgt' with
-     *                                   which to make room in the tree around for a new node.
+     * @param   \Components\Menus\Models\Item|\stdClass|mixed|null  $referenceNode  A node object with at least a
+     *          'lft' and 'rgt' with which to make room in the tree around for a new node.
      * @param   integer  $nodeWidth      The width of the node for which to make room in the tree.
      * @param   string   $position       The position relative to the reference node where the room
      *                                   should be made.

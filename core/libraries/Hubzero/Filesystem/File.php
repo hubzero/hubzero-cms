@@ -38,8 +38,8 @@ class File extends Entity
      * Don't forget, paths are relative to the adapter root
      *
      * @param   string  $path     The path to use to build a new entity from
-     * @param   object|null  $adapter  The filesystem adapter to use for interaction with the entity
-     * @return  object
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter  The filesystem adapter the entity works through
+     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     public static function fromPath($path, $adapter = null)
     {

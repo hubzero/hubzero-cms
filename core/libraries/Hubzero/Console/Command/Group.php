@@ -20,7 +20,7 @@ class Group extends Base implements CommandInterface
     /**
      * Group object
      *
-     * @var  object
+     * @var  \Hubzero\User\Group
      **/
     private $group;
 

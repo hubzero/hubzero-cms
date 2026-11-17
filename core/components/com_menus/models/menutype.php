@@ -92,7 +92,7 @@ class Menutype extends Obj
     /**
      * Method to get type options by component
      *
-     * @param   object  $component
+     * @param   \stdClass  $component
      * @return  array<mixed>
      */
     protected function getTypeOptionsByComponent($component)

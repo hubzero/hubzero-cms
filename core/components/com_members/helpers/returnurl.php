@@ -70,7 +70,7 @@ class ReturnUrl
      * sanitized; the first safe internal URL wins.
      *
      * @param   string  $param          Raw return value from the request
-     * @param   object|null  $profile        Member profile (checked for a stored 'return' param)
+     * @param   \Hubzero\User\User|mixed  $profile        Member profile (checked for a stored 'return' param)
      * @param   string  $configDefault  Site default (e.g. the ConfirmationReturn setting)
      * @return  string  A safe internal URL, or ''
      */

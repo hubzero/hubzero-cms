@@ -22,7 +22,7 @@ class Featuredmember extends Module
     /** @var string|null */
     protected $cls;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\User|null
      */
     protected $row;
     /** @var string|null */

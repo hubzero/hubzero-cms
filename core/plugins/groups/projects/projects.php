@@ -290,8 +290,8 @@ class Projects extends Plugin
     /**
      * On after group saved
      *
-     * @param   object  $before  Group before changes
-     * @param   object  $after   Group after changes
+     * @param   \Hubzero\User\Group  $before  Group before changes
+     * @param   \Hubzero\User\Group  $after   Group after changes
      * @return  void
      */
     public function onGroupAfterSave($before, $after)

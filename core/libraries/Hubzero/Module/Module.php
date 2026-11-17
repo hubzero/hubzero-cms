@@ -31,7 +31,7 @@ class Module
     /**
      * Database row
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     public $module = null;
 

@@ -136,7 +136,7 @@ class Sections extends AdminController
     /**
      * Displays an edit form
      *
-     * @param   object|null  $model
+     * @param   \Components\Courses\Models\Section|null  $model
      * @return  void
      */
     public function editTask($model = null)

@@ -190,7 +190,7 @@ class ObjectExpander extends Middleware
      * Function to return group object
      *
      * @param   integer  $gidNumber  Group identifier
-     * @return  object   Group object
+     * @return  \Hubzero\User\Group   Group object
      */
     private function groupExpander($gidNumber)
     {

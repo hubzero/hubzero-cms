@@ -116,7 +116,7 @@ class Todo extends Model
      * Set and get a specific offering
      *
      * @param   integer|null  $id
-     * @return  object
+     * @return  \Components\Projects\Models\Entry
      */
     public function entry($id = null)
     {
