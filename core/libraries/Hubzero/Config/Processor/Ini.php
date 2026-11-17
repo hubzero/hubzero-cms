@@ -264,6 +264,6 @@ class Ini extends Base
                 break;
         }
 
-        return $string;
+        return (string) $string;
     }
 }

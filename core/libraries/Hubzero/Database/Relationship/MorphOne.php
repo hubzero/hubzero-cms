@@ -133,7 +133,7 @@ class MorphOne extends Relationship
         $type = array_search($class, $morphMap, true);
 
         if ($type !== false) {
-            return $type;
+            return (string) $type;
         }
 
         // Default to lowercase model name

@@ -178,7 +178,7 @@ class Ip
     {
         $packed = self::toPacked($ip);
 
-        return $packed === false ? '' : inet_ntop($packed);
+        return $packed === false ? '' : (string) inet_ntop($packed);
     }
 
     /**

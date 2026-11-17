@@ -441,7 +441,7 @@ class File extends Obj
             return 0;
         }
 
-        return filemtime($source);
+        return (int) filemtime($source);
     }
 
     /**

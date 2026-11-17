@@ -1530,7 +1530,7 @@ class MysqlDriver extends BaseSqlDriver
 
         preg_match('/AUTO_INCREMENT=([0-9]*)/', $create[$table], $matches);
 
-        return (isset($matches[1])) ? $matches[1] : false;
+        return (isset($matches[1])) ? (int) $matches[1] : false;
     }
 
     /**

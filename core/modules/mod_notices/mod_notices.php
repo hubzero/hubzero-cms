@@ -91,7 +91,7 @@ class Notices extends Module
                 (int) $regs[1],
             );
         }
-        return $stime;
+        return (int) $stime;
     }
 
     /**

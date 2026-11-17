@@ -220,6 +220,6 @@ class Courses extends Macro
         }
 
         // return default
-        return $default;
+        return (string) $default;
     }
 }

@@ -407,7 +407,7 @@ class Arr
             }
 
             if ($cmp < 0) {
-                return -$direction;
+                return (int) -$direction;
             }
         }
 

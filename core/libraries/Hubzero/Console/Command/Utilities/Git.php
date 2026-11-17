@@ -547,7 +547,7 @@ class Git
     {
         $arguments = [$tagname];
 
-        return $this->call('tag', $arguments);
+        return (string) $this->call('tag', $arguments);
     }
 
     /**

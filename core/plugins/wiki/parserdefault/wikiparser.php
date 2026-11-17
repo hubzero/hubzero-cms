@@ -2418,7 +2418,7 @@ class WikiParser
         // @FIXME this whole function is broken: the comparison that should
         // stop at the first difference ($st1[$i] != $st2[$i]) was switched off
         // to avoid a type error, so it counts up to the smaller value
-        return max(0, $shorter);
+        return max(0, (int) $shorter);
     }
 
     /**

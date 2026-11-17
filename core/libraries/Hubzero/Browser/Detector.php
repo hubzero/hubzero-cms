@@ -1097,7 +1097,7 @@ class Detector
      */
     public function platformVersion()
     {
-        return $this->platformVersion;
+        return (string) $this->platformVersion;
     }
 
     /**
@@ -1117,7 +1117,7 @@ class Detector
      */
     public function major()
     {
-        return $this->majorVersion;
+        return (int) $this->majorVersion;
     }
 
     /**

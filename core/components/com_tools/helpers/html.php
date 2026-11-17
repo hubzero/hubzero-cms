@@ -52,7 +52,7 @@ class Html
                 (int) $regs[1],
             );
         }
-        return $stime;
+        return (int) $stime;
     }
 
     /**

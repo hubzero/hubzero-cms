@@ -186,7 +186,7 @@ class MorphToMany extends OneToManyThrough
         $type = array_search($class, $morphMap, true);
 
         if ($type !== false) {
-            return $type;
+            return (string) $type;
         }
 
         if ($this->inverse) {

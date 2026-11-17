@@ -954,7 +954,7 @@ class Password
                     return substr(preg_replace('|^{SSHA}|', '', $seed), -20);
                 } else {
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
-                    return mhash_keygen_s2k(MHASH_SHA1, $plaintext, $salt, 4);
+                    return (string) mhash_keygen_s2k(MHASH_SHA1, $plaintext, $salt, 4);
                 }
 
             case 'smd5':
@@ -962,7 +962,7 @@ class Password
                     return substr(preg_replace('|^{SMD5}|', '', $seed), -16);
                 } else {
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
-                    return mhash_keygen_s2k(MHASH_MD5, $plaintext, $salt, 4);
+                    return (string) mhash_keygen_s2k(MHASH_MD5, $plaintext, $salt, 4);
                 }
 
             case 'aprmd5':

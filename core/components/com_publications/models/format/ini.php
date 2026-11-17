@@ -199,6 +199,6 @@ class INI extends Base
                 break;
         }
 
-        return $string;
+        return (string) $string;
     }
 }

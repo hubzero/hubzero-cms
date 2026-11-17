@@ -109,6 +109,6 @@ class Courses extends Module
         if ($d < 10) {
             $d = '0' . $d;
         }
-        return $d;
+        return (string) $d;
     }
 }

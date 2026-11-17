@@ -792,7 +792,7 @@ class Mimetypes
             $key = '';
         }
 
-        return $key;
+        return (string) $key;
     }
 
     /**

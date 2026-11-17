@@ -169,7 +169,7 @@ class Ftp implements AdapterInterface
      */
     public function getRoot()
     {
-        return $this->root;
+        return (string) $this->root;
     }
 
     /**

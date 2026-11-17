@@ -161,7 +161,7 @@ class Transaction extends Relational
 
         $row = $model->row();
 
-        return $row->amount;
+        return (int) $row->amount;
     }
 
     /**

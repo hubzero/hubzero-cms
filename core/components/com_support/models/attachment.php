@@ -150,7 +150,7 @@ class Attachment extends Relational
     public function size()
     {
         if ($this->hasFile()) {
-            return filesize($this->path());
+            return (int) filesize($this->path());
         }
 
         return 0;
