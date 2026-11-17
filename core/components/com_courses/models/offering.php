@@ -823,16 +823,16 @@ class Offering extends Base
     }
 
     /**
-     * Check if the current user is enrolled
+     * Get the page with a URL, a blank page when there is none
      *
      * @param   mixed  $url
-     * @return     boolean
+     * @return  Page
      */
     public function page($url = null)
     {
         if (
             !isset($this->page)
-            || ($url !== null && (int) $this->page['url'] != $url)
+            || ($url !== null && $this->page->get('url') != $url)
         ) {
             $this->page = null;
 
@@ -860,7 +860,7 @@ class Offering extends Base
      *
      * @param   array<mixed>  $filters
      * @param   bool  $reload
-     * @return     array<mixed>|int|null  The pages, or their number when the filters ask for a count
+     * @return     ($filters is array{count: true} ? int : array<int, Page>|null)  Their number when counting
      */
     public function pages($filters = [], $reload = false)
     {
