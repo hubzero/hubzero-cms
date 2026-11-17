@@ -180,7 +180,7 @@ class Sql
 
         $body = [];
 
-        for ($i = $at + 1, $n = count($files[$path]); $i < $n; $i++) {
+        for ($i = (int) $at + 1, $n = count($files[$path]); $i < $n; $i++) {
             if (substr(trim($files[$path][$i]), 0, 1) === ')') {
                 break;
             }

@@ -1194,7 +1194,7 @@ class CurrentCart extends Cart
                                     }
 
                                     $discountAmount = ($cartItem['info']->sPrice * $applyPerkToQty)
-                                        * ($couponDiscount / 100);
+                                        * ((float) $couponDiscount / 100);
                                 }
 
                                 $perk->discount = round($discountAmount, 2, PHP_ROUND_HALF_DOWN);

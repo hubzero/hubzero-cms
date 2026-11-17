@@ -357,7 +357,7 @@ class Jobs extends AdminController
         $service = \Components\Services\Models\Service::getUserService($uid);
         $activejobs = $job->countMyActiveOpenings($uid, 1);
 
-        return ($service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs);
+        return ($service == 'employer_basic' ? 1 - (int) $activejobs : $maxads - $activejobs);
     }
 
     /**

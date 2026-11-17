@@ -93,7 +93,7 @@ class Primary extends Relational
                 ->order('order', 'desc')
                 ->row();
 
-            $data['order'] = $last->order + 1;
+            $data['order'] = (int) $last->order + 1;
         }
 
         return $data['order'];

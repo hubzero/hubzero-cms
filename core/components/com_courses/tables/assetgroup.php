@@ -63,7 +63,7 @@ class AssetGroup extends Table
 
         if (!$this->id) {
             $high = $this->getHighestOrder($this->unit_id, $this->parent);
-            $this->ordering = ($high + 1);
+            $this->ordering = ((int) $high + 1);
 
             $this->state = ($this->state) ? $this->state : 1;
 

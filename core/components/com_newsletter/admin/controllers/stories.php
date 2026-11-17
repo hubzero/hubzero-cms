@@ -312,12 +312,12 @@ class Stories extends AdminController
 
         //move page up or down
         if ($direction == 'down') {
-            $newOrder = $currentOrder + 1;
+            $newOrder = (int) $currentOrder + 1;
             if ($newOrder > $highestOrder) {
                 $newOrder = $highestOrder;
             }
         } else {
-            $newOrder = $currentOrder - 1;
+            $newOrder = (int) $currentOrder - 1;
             if ($newOrder < $lowestOrder) {
                 $newOrder = $lowestOrder;
             }

@@ -450,7 +450,7 @@ class Events extends SiteController
             . '-'
             . $month
             . '-'
-            . date("t", (int) mktime(0, 0, 0, ($month + 1), 0, (int) $year))
+            . date("t", (int) mktime(0, 0, 0, ((int) $month + 1), 0, (int) $year))
             . ' 23:59:59';
         $select_date = Date::of($select_date, Config::get('offset'));
         $select_date_fin = Date::of($select_date_fin, Config::get('offset'));

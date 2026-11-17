@@ -104,7 +104,7 @@ class Page extends Relational
                 ->order('ordering', 'desc')
                 ->row();
 
-            $data['ordering'] = $last->ordering + 1;
+            $data['ordering'] = (int) $last->ordering + 1;
         }
 
         return $data['ordering'];

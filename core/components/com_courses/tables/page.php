@@ -68,7 +68,7 @@ class Page extends Table
             }
 
             $high = $this->getHighestPageOrder($this->course_id, $this->offering_id);
-            $this->ordering = ($high + 1);
+            $this->ordering = ((int) $high + 1);
             $this->active = 1;
         }
 

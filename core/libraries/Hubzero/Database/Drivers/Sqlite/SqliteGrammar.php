@@ -497,7 +497,7 @@ class SqliteGrammar extends BaseSchemaGrammar
 
             // Check if this column is part of the primary key
             $pkIndex = array_search($columnInfo->getName(), $pkColumns);
-            $obj->pk = $pkIndex !== false ? ($pkIndex + 1) : 0;
+            $obj->pk = $pkIndex !== false ? ((int) $pkIndex + 1) : 0;
 
             $columns[] = $obj;
         }

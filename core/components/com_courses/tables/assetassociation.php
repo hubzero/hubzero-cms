@@ -55,7 +55,7 @@ class AssetAssociation extends Table
 
         if (!$this->id) {
             $high = $this->getHighestOrdering($this->scope_id, $this->scope);
-            $this->ordering = ($high + 1);
+            $this->ordering = ((int) $high + 1);
         }
 
         return true;

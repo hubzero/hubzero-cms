@@ -123,7 +123,7 @@ class Todo extends Relational
                 ->order('priority', 'desc')
                 ->row();
 
-            $data['priority'] = $last->priority + 1;
+            $data['priority'] = (int) $last->priority + 1;
         }
 
         return $data['priority'];
