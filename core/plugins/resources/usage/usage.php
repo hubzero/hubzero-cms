@@ -508,7 +508,7 @@ class Usage extends Plugin
         if ($orgs) {
             $i = 0;
             foreach ($orgs as $row) {
-                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $row->datetime));
                 if (
                     $row->datetime
                     && preg_match(
@@ -554,7 +554,7 @@ class Usage extends Plugin
 
             $i = 0;
             foreach ($countries as $row) {
-                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $row->datetime));
                 if (
                     $row->datetime
                     && preg_match(
@@ -594,7 +594,7 @@ class Usage extends Plugin
         if ($domains) {
             $i = 0;
             foreach ($domains as $row) {
-                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $row->datetime));
                 if (
                     $row->datetime
                     && preg_match(

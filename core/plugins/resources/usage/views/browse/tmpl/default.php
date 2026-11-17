@@ -326,7 +326,8 @@ $bars = [];
                             $r = [];
 
                             foreach ($dataset as $row) {
-                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                                $ky = (string) $row->datetime;
+                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $ky));
 
                                 if (!isset($r[$ky])) {
                                     $i = 0;
@@ -456,7 +457,8 @@ $bars = [];
                             $r = [];
                             $names = [];
                             foreach ($dataset as $row) {
-                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                                $ky = (string) $row->datetime;
+                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $ky));
 
                                 if (!isset($r[$ky])) {
                                     $i = 0;
@@ -595,7 +597,8 @@ $bars = [];
                             $r = array();
                             foreach ($results as $row)
                             {
-                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+                                $ky = (string) $row->datetime;
+                                $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $ky));
                                 //if (!isset($data[$ky]))
                                 if (!isset($r[$ky]))
                                 {

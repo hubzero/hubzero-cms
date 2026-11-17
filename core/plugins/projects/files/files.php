@@ -2246,7 +2246,8 @@ class Files extends Plugin
             // Is image?
             if (strpos($cType, 'image/') !== false) {
                 // Fix up object width & height
-                list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile);
+                list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile)
+                    ?: [null, null, null, null];
 
                 $xRatio = $view->get('oWidth') / $width;
                 $yRatio = $view->get('oHeight') / $height;

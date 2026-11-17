@@ -453,7 +453,8 @@ $activeStatusSelected = function ($value) use ($view) {
 
                 if ($image && file_exists(PATH_APP . $pathl . DS . $file)) {
                     $this_size = filesize(PATH_APP . $pathl . DS . $file);
-                    list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
+                    list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file)
+                        ?: [null, null, null, null];
                     $pic  = $file;
                     $path = '/app/' . $pathl;
                 } else {

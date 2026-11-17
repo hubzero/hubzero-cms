@@ -109,7 +109,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                 $pictures = $quote->files();
 
                 foreach ($pictures as $picture) {
-                    list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname());
+                    list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname()) ?: [null, null, null, null];
 
                     // Scale if image is bigger than 120w x120h
                     $num = max($ow / 120, $oh / 120);

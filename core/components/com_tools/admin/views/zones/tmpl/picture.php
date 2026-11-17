@@ -67,7 +67,7 @@ defined('_HZEXEC_') or die();
 
             if ($file && file_exists($path . DS . $file)) {
                 $this_size = filesize($path . DS . $file);
-                list($width, $height, $type, $attr) = getimagesize($path . DS . $file);
+                list($width, $height, $type, $attr) = getimagesize($path . DS . $file) ?: [null, null, null, null];
                 ?>
                 <tr>
                     <td rowspan="6">

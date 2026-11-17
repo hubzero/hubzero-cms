@@ -758,7 +758,7 @@ class Course extends Base
             $uploadPath = '/' . trim($this->config('uploadpath', '/site/courses'), '/');
             $path = $uploadPath . '/' . $this->get('id') . '/' . $file;
             if (file_exists(PATH_APP . $path)) {
-                list($width, $height) = getimagesize(PATH_APP . $path);
+                list($width, $height) = getimagesize(PATH_APP . $path) ?: [null, null];
                 $size['width']  = $width;
                 $size['height'] = $height;
                 //$path = \Request::base(true) . substr(PATH_APP, strlen(PATH_ROOT)) . $path;

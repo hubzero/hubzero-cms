@@ -306,8 +306,8 @@ class EventsLatest extends Module
      */
     public function cmpByStartTime(&$a, &$b)
     {
-        list($date, $aStrtTime) = preg_split('# #', $a->publish_up);
-        list($date, $bStrtTime) = preg_split('# #', $b->publish_up);
+        list($date, $aStrtTime) = preg_split('# #', $a->publish_up) ?: [null, null];
+        list($date, $bStrtTime) = preg_split('# #', $b->publish_up) ?: [null, null];
         if ($aStrtTime == $bStrtTime) {
             return 0;
         }

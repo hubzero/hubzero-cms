@@ -309,7 +309,8 @@ $locIframeUrl = Route::url(
                                 $path = $this->row->logo('path');
 
                                 $this_size = filesize($path . DS . $pic);
-                                list($width, $height, $type, $attr) = getimagesize($path . DS . $pic);
+                                list($width, $height, $type, $attr) = getimagesize($path . DS . $pic)
+                                    ?: [null, null, null, null];
                             } else {
                                 $pic  = 'blank.png';
                                 $path = '/core/components/com_tools/admin/assets/img';

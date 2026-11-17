@@ -392,12 +392,12 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     protected function extractJoinTableRef(string $table): ?string
     {
         if (preg_match('/\s+AS\s+/i', $table)) {
-            [$tbl, $alias] = preg_split('/\s+AS\s+/i', $table, 2);
+            [$tbl, $alias] = preg_split('/\s+AS\s+/i', $table, 2) ?: [null, null];
             return trim($alias);
         }
 
         if (preg_match('/\s+/', $table)) {
-            [$tbl, $alias] = preg_split('/\s+/', $table, 2);
+            [$tbl, $alias] = preg_split('/\s+/', $table, 2) ?: [null, null];
             return trim($alias);
         }
 
@@ -540,9 +540,9 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $joinAlias = null;
 
             if (preg_match('/\s+AS\s+/i', $table)) {
-                [$joinTable, $joinAlias] = preg_split('/\s+AS\s+/i', $table, 2);
+                [$joinTable, $joinAlias] = preg_split('/\s+AS\s+/i', $table, 2) ?: [null, null];
             } elseif (preg_match('/\s+/', $table)) {
-                [$joinTable, $joinAlias] = preg_split('/\s+/', $table, 2);
+                [$joinTable, $joinAlias] = preg_split('/\s+/', $table, 2) ?: [null, null];
             }
 
             $this->from[0]['table'] = $joinTable;

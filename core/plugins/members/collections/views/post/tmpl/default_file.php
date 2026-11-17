@@ -55,7 +55,7 @@ if ($assets->total() > 0) {
         $imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
 
         if ($first->exists()) {
-            list($originalWidth, $originalHeight) = getimagesize($imgPath);
+            list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [null, null];
             $ratio = $originalWidth / $originalHeight;
 
             $height = (!isset($this->actual) || !$this->actual)

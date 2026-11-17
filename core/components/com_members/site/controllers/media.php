@@ -279,7 +279,7 @@ class Media extends SiteController
         }
 
         $size = filesize(PATH_ROOT . $dir . $file);
-        list($width, $height) = getimagesize(PATH_ROOT . $dir . $file);
+        list($width, $height) = getimagesize(PATH_ROOT . $dir . $file) ?: [null, null];
 
         $result = [];
         $result['src']    = $dir . $file;

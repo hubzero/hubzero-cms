@@ -28,7 +28,7 @@ class CertificatePdf extends \TCPDF
         // disable auto-page-break
         $this->SetAutoPageBreak(false, 0);
         // set bacground image
-        list($width, $height) = getimagesize($this->img_file);
+        list($width, $height) = getimagesize($this->img_file) ?: [null, null];
         $imgWidth = (($width / 300) * 25.4);
         $imgHeight = (($height / 300) * 25.4);
         $this->Image(

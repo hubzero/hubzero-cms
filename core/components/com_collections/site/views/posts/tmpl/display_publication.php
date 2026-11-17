@@ -30,7 +30,7 @@ $content = $this->row->description('parsed');
 $content = ($content ?: '<p>' . $resource->get('abstract') . '</p>');
 
 if ($imgPath) {
-    list($originalWidth, $originalHeight) = getimagesize($imgPath);
+    list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [null, null];
     $ratio = $originalWidth / $originalHeight;
 
     $height = (!isset($this->actual) || !$this->actual)

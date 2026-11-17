@@ -664,9 +664,9 @@ abstract class BaseSqlSyntax
         $alias = null;
 
         if (preg_match('/\s+AS\s+/i', $table)) {
-            [$table, $alias] = preg_split('/\s+AS\s+/i', $table, 2);
+            [$table, $alias] = preg_split('/\s+AS\s+/i', $table, 2) ?: [null, null];
         } elseif (preg_match('/\s+/', $table)) {
-            [$table, $alias] = preg_split('/\s+/', $table, 2);
+            [$table, $alias] = preg_split('/\s+/', $table, 2) ?: [null, null];
         }
 
         $table = trim($table);

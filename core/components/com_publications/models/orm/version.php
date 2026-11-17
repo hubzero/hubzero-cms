@@ -579,7 +579,8 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
                     foreach ($file_list as $file) {
                         if ($file != '.' && $file != '..' && exif_imagetype($path . DS . 'gallery' . DS . $file)) {
-                            list($width, $height, $type, $attr) = getimagesize($path . DS . 'gallery' . DS . $file);
+                            list($width, $height, $type, $attr) = getimagesize($path . DS . 'gallery' . DS . $file)
+                                ?: [null, null, null, null];
 
                             if ($width > 200) {
                                 $source = $path . DS . 'gallery' . DS . $file;

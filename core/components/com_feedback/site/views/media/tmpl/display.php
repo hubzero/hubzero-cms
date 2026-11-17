@@ -42,7 +42,8 @@ $this
 
             if ($this->file && file_exists($this->file_path . DS . $this->file)) {
                 $this_size = filesize($this->file_path . DS . $this->file);
-                list($ow, $oh, $type, $attr) = getimagesize($this->file_path . DS . $this->file);
+                list($ow, $oh, $type, $attr) = getimagesize($this->file_path . DS . $this->file)
+                    ?: [null, null, null, null];
 
                 // scale if image is bigger than 120w x120h
                 $num = max($ow / 120, $oh / 120);

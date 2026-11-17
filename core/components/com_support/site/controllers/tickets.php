@@ -279,7 +279,7 @@ class Tickets extends SiteController
         $this->view->set('end', Request::getString('end', ''));
 
         $endmonth = $month;
-        $endyear = date("Y");
+        $endyear = (int) date("Y");
         $endyear++;
 
         $end = '';
@@ -418,7 +418,7 @@ class Tickets extends SiteController
         $closedmonths = [];
         $openedmonths = [];
 
-        for ($k = $startyear, $n = $endyear; $k < $n; $k++) {
+        for ($k = (int) $startyear, $n = $endyear; $k < $n; $k++) {
             $closedmonths[$k] = [];
             $openedmonths[$k] = [];
             if ($k == $startyear && intval($startmonth) > 1) {

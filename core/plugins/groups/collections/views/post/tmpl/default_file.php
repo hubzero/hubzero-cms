@@ -60,7 +60,7 @@ if ($assets->total() > 0) {
         $imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
 
         if (file_exists($imgPath)) {
-            list($originalWidth, $originalHeight) = getimagesize($imgPath);
+            list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [null, null];
             $ratio = $originalWidth / $originalHeight;
 
             $alt = $this->escape(stripslashes($first->get('description', '')));

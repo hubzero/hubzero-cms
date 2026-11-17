@@ -229,7 +229,7 @@ if ($this->model->isTool()) {
                         $width  = 0;
                         $height = 0;
                         if (file_exists($filename)) {
-                            list($width, $height) = getimagesize($filename);
+                            list($width, $height) = getimagesize($filename) ?: [null, null];
                         }
                         if ($width > 0 && $height > 0) {
                             $class .= ' ' . $width . 'x' . $height;

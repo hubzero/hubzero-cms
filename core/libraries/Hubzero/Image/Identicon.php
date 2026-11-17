@@ -123,15 +123,15 @@ class Identicon
 
         foreach ($chars[1] as $i => $char) {
             if ($i % 3 == 0) {
-                $this->arrayOfSquare[$i / 3][0] = $this->convertHexaToBoolean($char);
-                $this->arrayOfSquare[$i / 3][4] = $this->convertHexaToBoolean($char);
+                $this->arrayOfSquare[intdiv($i, 3)][0] = $this->convertHexaToBoolean($char);
+                $this->arrayOfSquare[intdiv($i, 3)][4] = $this->convertHexaToBoolean($char);
             } elseif ($i % 3 == 1) {
-                $this->arrayOfSquare[$i / 3][1] = $this->convertHexaToBoolean($char);
-                $this->arrayOfSquare[$i / 3][3] = $this->convertHexaToBoolean($char);
+                $this->arrayOfSquare[intdiv($i, 3)][1] = $this->convertHexaToBoolean($char);
+                $this->arrayOfSquare[intdiv($i, 3)][3] = $this->convertHexaToBoolean($char);
             } else {
-                $this->arrayOfSquare[$i / 3][2] = $this->convertHexaToBoolean($char);
+                $this->arrayOfSquare[intdiv($i, 3)][2] = $this->convertHexaToBoolean($char);
             }
-            ksort($this->arrayOfSquare[$i / 3]);
+            ksort($this->arrayOfSquare[intdiv($i, 3)]);
         }
 
         $this->color[0] = hexdec(array_pop($chars[1])) * 16;

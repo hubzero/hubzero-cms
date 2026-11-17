@@ -310,7 +310,7 @@ class Certificate extends Base
 
         $img = $this->path('system') . '/1.png';
 
-        list($width, $height) = getimagesize($img);
+        list($width, $height) = getimagesize($img) ?: [null, null];
 
         // 300 dots per inch
         // 1 inch = 25.4mm

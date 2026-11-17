@@ -610,7 +610,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     $size = 0;
                     $path = $this->model->picture('thumb', true);
                     if (file_exists($path)) {
-                        list($width, $height) = getimagesize($path);
+                        list($width, $height) = getimagesize($path) ?: [null, null];
                         $size = filesize($path);
                     }
                     ?>
@@ -641,7 +641,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     $size = 0;
                     $path = $this->model->picture('master', true);
                     if (file_exists($path)) {
-                        list($width, $height) = getimagesize($path);
+                        list($width, $height) = getimagesize($path) ?: [null, null];
                         $size = filesize($path);
                     }
                     ?>
@@ -672,7 +672,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     $size = 0;
                     $path = $this->model->picture('original', true);
                     if (file_exists($path)) {
-                        list($width, $height) = getimagesize($path);
+                        list($width, $height) = getimagesize($path) ?: [null, null];
                         $size = filesize($path);
                     }
                     ?>

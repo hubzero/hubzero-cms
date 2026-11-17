@@ -314,7 +314,8 @@ $stateSelected = function ($value) use ($view) {
 
                         if (file_exists(PATH_ROOT . $pathl . DS . $logo)) {
                             $this_size = filesize(PATH_ROOT . $pathl . DS . $file);
-                            list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file);
+                            list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file)
+                                ?: [null, null, null, null];
                             $pic  = $file;
                             $path = $pathl;
                         } else {

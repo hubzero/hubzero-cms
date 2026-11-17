@@ -260,7 +260,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     $pictures = $this->row->files();
 
                     foreach ($pictures as $counter => $picture) {
-                        list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname());
+                        list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname())
+                            ?: [null, null, null, null];
 
                         // scale if image is bigger than 120w x120h
                         $num = max($ow / 120, $oh / 120);

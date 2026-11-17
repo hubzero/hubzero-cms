@@ -73,7 +73,7 @@ class Courses extends Module
         $endMonth = Date::of('now')->format('m');
 
         $totals = [];
-        for ($y = $startYear; $y <= $endYear; $y++) {
+        for ($y = (int) $startYear; $y <= (int) $endYear; $y++) {
             if (!isset($totals[$y])) {
                 $totals[$y] = [];
             }

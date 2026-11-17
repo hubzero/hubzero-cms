@@ -313,7 +313,7 @@ class Asset extends Base
     private function resize($orig, $dest, $size)
     {
         if (!file_exists($dest)) {
-            list($originalWidth, $originalHeight) = getimagesize($orig);
+            list($originalWidth, $originalHeight) = getimagesize($orig) ?: [null, null];
 
             if ($originalWidth > $size || $originalHeight > $size) {
                 $useHeight = ($originalHeight > $originalWidth) ? true : false;

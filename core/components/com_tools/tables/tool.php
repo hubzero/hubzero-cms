@@ -571,7 +571,8 @@ class Tool extends Table
             }
         }
 
-        list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
+        list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry'])
+            ?: [null, null];
 
         // get latest version information
         if ($status['published']) {

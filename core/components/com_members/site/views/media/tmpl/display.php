@@ -56,7 +56,8 @@ defined('_HZEXEC_') or die();
 
             if ($this->file && file_exists($this->file_path . DS . $this->file)) {
                 $this_size = filesize($this->file_path . DS . $this->file);
-                list($width, $height, $type, $attr) = getimagesize($this->file_path . DS . $this->file);
+                list($width, $height, $type, $attr) = getimagesize($this->file_path . DS . $this->file)
+                    ?: [null, null, null, null];
                 ?>
                 <tr>
                     <td rowspan="6"><img src="<?= $this->webpath . DS . $this->path . DS . $this->file ?>"

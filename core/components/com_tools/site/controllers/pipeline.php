@@ -647,7 +647,7 @@ class Pipeline extends SiteController
         $this->view->setLayout('edit');
 
         // set defaults
-        list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
+        list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc')) ?: [null, null];
 
         $this->view->set('defaults', [
             'toolname'     => '',

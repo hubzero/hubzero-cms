@@ -453,7 +453,7 @@ class Media extends SiteController
         }
 
         $this_size = filesize($file);
-        list($width, $height, $type, $attr) = getimagesize($file);
+        list($width, $height, $type, $attr) = getimagesize($file) ?: [null, null, null, null];
 
         echo json_encode([
             'success'   => true,
