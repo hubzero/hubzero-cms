@@ -185,7 +185,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
         $n = count($this->rows);
         $ordering = true;
         foreach ($this->rows as $row) {
-            $orderkey = array_search($row->get('id'), $this->ordering[$row->get('parent')]);
+            $orderkey = (int) array_search($row->get('id'), $this->ordering[$row->get('parent')]);
 
             $assets = $row->assets()->total();
 

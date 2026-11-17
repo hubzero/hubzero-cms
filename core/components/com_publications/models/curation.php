@@ -1900,7 +1900,7 @@ class Curation extends Obj
         }
         $doi = $this->pub->version->get('doi');
         if ($doi != '') {
-            $doi = str_replace('.', '_', $doi);
+            $doi = str_replace('.', '_', (string) $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
         } else {

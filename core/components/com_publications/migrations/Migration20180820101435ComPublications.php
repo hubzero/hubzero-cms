@@ -113,7 +113,7 @@ class Migration20180820101435ComPublications extends Base
         $bundleWithVersion = $bundleName . '_' . $versionNum;
 
         if ($doi != '') {
-            $doi = str_replace('.', '_', $doi);
+            $doi = str_replace('.', '_', (string) $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
             // Set link to the same name as bundle if it is using DOI
@@ -163,7 +163,7 @@ class Migration20180820101435ComPublications extends Base
         $bundleName = 'Publication' . '_' . $pubId;
         $bundleWithVersion = $bundleName . '_' . $versionNum;
         if ($doi != '') {
-            $doi = str_replace('.', '_', $doi);
+            $doi = str_replace('.', '_', (string) $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
             // Set link to the same name as bundle if it is using DOI

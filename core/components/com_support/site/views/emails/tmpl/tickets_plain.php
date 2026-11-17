@@ -54,7 +54,7 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0) 
                     $ticket->summary = Lang::txt('(no content found)');
                 }
             }
-            $ticket->summary = str_replace("\r", "", $ticket->summary);
+            $ticket->summary = str_replace("\r", "", (string) $ticket->summary);
             $ticket->summary = str_replace("\t", " ", $ticket->summary);
             $ticket->summary = str_replace("\n", " ", $ticket->summary);
         } else {
@@ -89,7 +89,7 @@ if (isset($this->tickets['major']) && count($this->tickets['major']) > 0) {
                     $ticket->summary = Lang::txt('(no content found)');
                 }
             }
-            $ticket->summary = str_replace("\r", "", $ticket->summary);
+            $ticket->summary = str_replace("\r", "", (string) $ticket->summary);
             $ticket->summary = str_replace("\t", " ", $ticket->summary);
             $ticket->summary = str_replace("\n", " ", $ticket->summary);
         } else {
@@ -133,7 +133,7 @@ foreach ($this->tickets as $severity => $tickets) {
                     $ticket->summary = Lang::txt('(no content found)');
                 }
             }
-            $ticket->summary = str_replace("\r", "", $ticket->summary);
+            $ticket->summary = str_replace("\r", "", (string) $ticket->summary);
             $ticket->summary = str_replace("\t", " ", $ticket->summary);
             $ticket->summary = str_replace("\n", " ", $ticket->summary);
         } else {

@@ -103,7 +103,7 @@ if ($this->message) { ?>
         foreach ($results as $result) {
             $highest = $result->value > $highest ? $result->value : $highest;
             $visits[] = "[new Date('"
-                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime))
                 . "'),"
                 . $result->value
                 . "]";
@@ -135,7 +135,7 @@ if ($this->message) { ?>
         foreach ($results as $result) {
             $highest = $result->value > $highest ? $result->value : $highest;
             $downloads[] = "[new Date('"
-                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime))
                 . "'),"
                 . $result->value
                 . "]";
@@ -519,7 +519,7 @@ if ($this->message) { ?>
             if ($results) {
                 foreach ($results as $result) {
                     $simusers[] = "[new Date('"
-                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime))
                         . "'),"
                         . $result->value
                         . "]";
@@ -555,7 +555,7 @@ if ($this->message) { ?>
             if ($results) {
                 foreach ($results as $result) {
                     $simjobs[] = "[new Date('"
-                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime))
                         . "'),"
                         . $result->value
                         . "]";

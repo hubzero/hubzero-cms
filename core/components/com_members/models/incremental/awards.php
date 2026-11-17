@@ -154,7 +154,9 @@ class Awards
         $completeSql = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1';
         $optedOut = null;
 
-        foreach ($this->awards as $k => $complete) {
+        // 1 stands for "no award columns": nothing to go through
+        $awards = is_array($this->awards) ? $this->awards : [];
+        foreach ($awards as $k => $complete) {
             if ($k === 'opted_out') {
                 $optedOut = $complete;
                 continue;

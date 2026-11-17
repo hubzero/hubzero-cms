@@ -522,7 +522,7 @@ $area = Request::getString('area', 'about');
                     </tr>
                 <?php endif; ?>
 
-                <?php if (is_array($tags) && count($tags) > 0 && $showTags == 'yes') : ?>
+                <?php if (count($tags) > 0 && $showTags == 'yes') : ?>
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_TAGS'); ?></th>
                         <td>
@@ -531,7 +531,7 @@ $area = Request::getString('area', 'about');
                     </tr>
                 <?php endif; ?>
 
-                <?php if (is_array($badges) && count($badges) > 0 && $showBadges == 'yes') : ?>
+                <?php if (count($badges) > 0 && $showBadges == 'yes') : ?>
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
                         <td>

@@ -555,7 +555,7 @@ class Articles extends SiteController
     /**
      * Recursive function to append comments to a feed
      *
-     * @param   object  $comments  Resolved comment rows, not a relation
+     * @param   \Hubzero\Database\Rows  $comments  Resolved comment rows, not a relation
      * @param   string  $link      Link to the article the comments hang off
      * @return  void
      */

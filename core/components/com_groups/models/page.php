@@ -322,7 +322,7 @@ class Page extends Model
     /**
      * Get Page Children
      *
-     * @return  object  the list of pages
+     * @return  \Hubzero\Base\ItemList  the list of pages
      */
     public function getChildren()
     {

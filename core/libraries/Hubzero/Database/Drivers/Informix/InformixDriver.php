@@ -874,7 +874,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string|int|float|bool|null|array<mixed>  $text   The string to quote
      * @param   bool    $escape Whether to escape special characters
-     * @return  string|array<mixed>
+     * @return  ($text is array ? array<mixed> : string)
      */
     public function quote($text, $escape = true)
     {

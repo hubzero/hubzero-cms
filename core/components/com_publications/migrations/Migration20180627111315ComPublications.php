@@ -118,7 +118,7 @@ class Migration20180627111315ComPublications extends Base
     protected function createLink($pubId, $versionId, $versionNum, $doi = '')
     {
         if ($doi != '') {
-            $doi = str_replace('.', '_', $doi);
+            $doi = str_replace('.', '_', (string) $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
 
@@ -164,7 +164,7 @@ class Migration20180627111315ComPublications extends Base
     protected function removeLink($pubId, $versionId, $versionNum, $doi = '')
     {
         if ($doi != '') {
-            $doi = str_replace('.', '_', $doi);
+            $doi = str_replace('.', '_', (string) $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
         } else {

@@ -371,7 +371,7 @@ class Uri
      * Returns flat query string.
      *
      * @param   boolean  $toArray  True to return the query as a key => value pair array.
-     * @return  string|array<mixed>   Query string.
+     * @return  ($toArray is true ? array<mixed> : string)   Query string.
      */
     public function getQuery($toArray = false)
     {

@@ -24,7 +24,7 @@ class Sanitize
      *
      * @param   string|int|array<mixed>  $string   String to sanitize
      * @param   array<mixed>   $allowed  An array of additional characters that are not to be removed.
-     * @return  string|array<mixed>  Sanitized string
+     * @return  ($string is array ? array<mixed> : string)  Sanitized string
      */
     public static function paranoid($string, $allowed = [])
     {
@@ -36,7 +36,7 @@ class Sanitize
         }
 
         if (!is_array($string)) {
-            return preg_replace("/[^{$allow}a-zA-Z0-9]/", '', $string);
+            return (string) preg_replace("/[^{$allow}a-zA-Z0-9]/", '', (string) $string);
         }
 
         $cleaned = [];

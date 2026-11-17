@@ -232,7 +232,7 @@ $formAction = Route::url(
             <?php
             $originalOrders = [];
             foreach ($this->items as $i => $item) :
-                $orderkey  = array_search(
+                $orderkey  = (int) array_search(
                     $item->id,
                     $this->ordering[$item->parent_id],
                 );

@@ -2163,7 +2163,7 @@ class Files extends Plugin
 
         // Build temp name
         $tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($fileName) : $fileName;
-        $tempBase = str_replace(' ', '_', $tempBase);
+        $tempBase = str_replace(' ', '_', (string) $tempBase);
 
         // Get file contents
         if (!empty($this->remoteService) && $file->get('converted')) {

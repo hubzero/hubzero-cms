@@ -90,7 +90,7 @@ Examples:
             // Only labelled (non-empty stub) footnotes are de-duplicated;
             // otherwise distinct footnotes with empty stubs would collide.
             if ($stub !== '' && in_array($stub, $wm->footnotes_stubs)) {
-                $i = array_search($stub, $wm->footnotes_stubs) + 1;
+                $i = (int) array_search($stub, $wm->footnotes_stubs) + 1;
                 $k = $wm->footnotes_count;
 
                 $wm->footnotes[$i - 1]->refs[] = 'fndef-' . $k;

@@ -253,7 +253,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
         $originalOrders = [];
         $i = 0;
         foreach ($this->rows as $item) :
-            $orderkey = array_search(
+            $orderkey = (int) array_search(
                 $item->get('id'),
                 $this->ordering[$item->get('parent_id')],
             );

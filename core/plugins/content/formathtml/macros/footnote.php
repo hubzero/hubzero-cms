@@ -64,7 +64,7 @@ class FootNote extends Macro
             $wm->footnotes_count++;
 
             if (in_array($note, $wm->footnotes_notes)) {
-                $i = array_search($note, $wm->footnotes_notes) + 1;
+                $i = (int) array_search($note, $wm->footnotes_notes) + 1;
                 $k = $wm->footnotes_count;
 
                 $wm->footnotes[$i - 1]->refs[] = 'fndef-' . $k;

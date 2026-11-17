@@ -760,7 +760,7 @@ class Format
      *
      * @param   mixed  $cite
      * @param   boolean  $includeHtml
-     * @return  string|array<mixed>   HTML, or the raw tags when $includeHtml is false
+     * @return  ($includeHtml is false ? array<mixed> : string)   HTML, or the raw tags when $includeHtml is false
      */
     public static function citationBadges(&$cite, $includeHtml = true)
     {
@@ -801,7 +801,7 @@ class Format
      *
      * @param   \Components\Citations\Models\Citation  $cite  Citation
      * @param   object|bool $includeHtml  Database
-     * @return  string|array<mixed>  HTML, or the raw tags when $includeHtml is false
+     * @return  ($includeHtml is false ? array<mixed> : string)  HTML, or the raw tags when $includeHtml is false
      */
     public static function citationTags(&$cite, $includeHtml = true)
     {
