@@ -69,7 +69,7 @@ class Member extends Base
                 $key = 'username';
                 break;
 
-            case 'uidNumber':
+            case 'uidnumber':
                 $key = 'id';
                 break;
 

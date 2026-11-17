@@ -161,7 +161,7 @@ class Ticketsv1r0 extends ApiController
             if (strstr($val, ',')) {
                 $vals = explode(',', $val);
                 foreach ($vals as $i => $v) {
-                    $vales[$i] = $this->toTimestamp(trim($v));
+                    $vals[$i] = $this->toTimestamp(trim($v));
                 }
                 return $vals;
             }

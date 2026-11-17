@@ -148,7 +148,7 @@ class RecommendedTags
             }
             foreach ($stems as $set_idx => $set) {
                 list($stem, $word) = $set;
-                if (isset($this->existing_map[strtolower($word)]) || isset($this->focus_area_map[strtolower($word)])) {
+                if (isset($this->existing_map[strtolower($word)]) || isset($this->existing_fa_map[strtolower($word)])) {
                     continue;
                 }
                 if (!isset($freq[$stem])) {

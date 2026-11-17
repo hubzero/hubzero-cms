@@ -223,7 +223,7 @@ class Pagebreak extends Plugin
             $headingtext = Lang::txt('PLG_CONTENT_PAGEBREAK_ARTICLE_INDEX');
 
             if ($this->params->get('article_index_text')) {
-                htmlspecialchars($headingtext = $this->params->get('article_index_text'));
+                $headingtext = htmlspecialchars((string) $this->params->get('article_index_text'));
             }
             $row->toc .= '<h3>' . $headingtext . '</h3>';
         }

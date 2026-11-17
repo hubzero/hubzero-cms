@@ -96,7 +96,7 @@ class Publications extends Plugin
             }*/
         }
 
-        if ($category == 'review') {
+        if ($category == 'pubreview') {
             $database->setQuery("SELECT publication_id FROM `#__publication_ratings` WHERE id=" . $refid);
             return $database->loadResult();
         }
@@ -161,7 +161,7 @@ class Publications extends Plugin
         $database = App::get('db');
 
         switch ($category) {
-            case 'review':
+            case 'pubreview':
                 // Delete the review
                 $review = new \Components\Publications\Tables\Review($database);
                 $review->load($referenceid);
@@ -196,7 +196,7 @@ class Publications extends Plugin
                 $message .= Lang::txt('PLG_SUPPORT_PUBLICATIONS_NOTIFICATION_OF_REMOVAL', $parentid);
                 break;
 
-            case 'reviewcomment':
+            case 'pubreviewcomment':
                 $comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
 
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->get('content'), $matches)) {

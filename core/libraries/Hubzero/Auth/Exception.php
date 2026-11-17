@@ -90,30 +90,15 @@ class Exception extends \Exception
         if ($backtrace && function_exists('debug_backtrace')) {
             $this->backtrace = debug_backtrace();
 
-            for ($i = count($this->backtrace) - 1; $i >= 0; --$i) {
-                ++$i;
-                if (isset($this->backtrace[$i]['file'])) {
-                    $this->file = $this->backtrace[$i]['file'];
-                }
-                if (isset($this->backtrace[$i]['line'])) {
-                    $this->line = $this->backtrace[$i]['line'];
-                }
-                if (isset($this->backtrace[$i]['class'])) {
-                    $this->class = $this->backtrace[$i]['class'];
-                }
-                if (isset($this->backtrace[$i]['function'])) {
-                    $this->function = $this->backtrace[$i]['function'];
-                }
-                if (isset($this->backtrace[$i]['type'])) {
-                    $this->type = $this->backtrace[$i]['type'];
-                }
+            // The method the error occurred in: the frame that created this
+            // exception (frame 0 is the constructor call). PHP has already
+            // recorded its file and line.
+            $frame = $this->backtrace[1] ?? [];
 
-                $this->args = false;
-                if (isset($this->backtrace[$i]['args'])) {
-                    $this->args = $this->backtrace[$i]['args'];
-                }
-                break;
-            }
+            $this->class    = $frame['class'] ?? null;
+            $this->function = $frame['function'] ?? null;
+            $this->type     = $frame['type'] ?? null;
+            $this->args     = $frame['args'] ?? false;
         }
 
         parent::__construct($msg, (int) $code);

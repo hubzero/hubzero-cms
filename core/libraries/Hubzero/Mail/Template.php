@@ -69,14 +69,10 @@ class Template extends Html
             $data = $this->renderTemplate();
         }
 
-        if (class_exists('\Pelago\Emogrifier') && $data) {
+        // Move the template's <style> rules onto its elements, as mail clients want
+        if (class_exists(\Pelago\Emogrifier\CssInliner::class) && $data) {
             $data = str_replace('&#', '{_ANDNUM_}', $data);
-            $emogrifier = new \Pelago\Emogrifier();
-            $emogrifier->preserveEncoding = true;
-            $emogrifier->setHtml($data);
-            //$emogrifier->setCss($css);
-
-            $data = $emogrifier->emogrify();
+            $data = \Pelago\Emogrifier\CssInliner::fromHtml($data)->inlineCss()->render();
             $data = str_replace('{_ANDNUM_}', '&#', $data);
         }
 

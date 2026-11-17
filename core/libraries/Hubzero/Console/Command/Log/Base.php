@@ -175,7 +175,7 @@ class Base
         $index    = 0;
         $i_used   = 0;
         $style    = null;
-        $exceeded = false;
+        $exceeded = [];
 
         // First loop through and see if any of our thresholds are exceeded
         if (is_array($settings['threshold'])) {
