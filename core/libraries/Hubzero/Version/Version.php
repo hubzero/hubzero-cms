@@ -99,7 +99,7 @@ final class Version
             }
         }
 
-        return static::$latestVersion;
+        return (string) static::$latestVersion;
     }
 
     /**

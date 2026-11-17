@@ -73,7 +73,7 @@ class InviteEmail extends Relational
      *
      * @param   integer  $gid         Group ID
      * @param   boolean  $email_only  Resturn only email addresses?
-     * @return  array<mixed>
+     * @return  \Hubzero\Database\Rows|array<mixed>
      */
     public function getInviteEmails($gid, $email_only = false)
     {

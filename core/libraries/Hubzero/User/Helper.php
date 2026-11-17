@@ -214,14 +214,14 @@ class Helper
      * @param   string   $domain_username
      * @param   string   $domain
      * @param   integer  $uidNumber
-     * @return  bool|int
+     * @return  bool
      */
     public static function mapXDomainUser($domain_username, $domain, $uidNumber)
     {
         $db = App::get('db');
 
         if (empty($domain)) {
-            return 0;
+            return false;
         }
 
         $query = 'SELECT domain_id FROM `#__xdomains` WHERE '

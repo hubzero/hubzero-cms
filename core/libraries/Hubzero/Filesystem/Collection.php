@@ -114,7 +114,7 @@ class Collection extends ItemList
      **/
     public function has($name)
     {
-        return $this->find($name, false);
+        return $this->find($name, false) !== false;
     }
 
     /**

@@ -1226,7 +1226,7 @@ class Translator extends Obj
     /**
      * Get the language locale based on current language.
      *
-     * @return  array<mixed>  The locale according to the language.
+     * @return  array<mixed>|false  The locale according to the language.
      */
     public function getLocale()
     {

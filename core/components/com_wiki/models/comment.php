@@ -213,7 +213,7 @@ class Comment extends Relational
                     return $content;
                 }
 
-                return $this->get('chtml');
+                return (string) $this->get('chtml');
 
             case 'clean':
                 $content = strip_tags($this->content('parsed'));

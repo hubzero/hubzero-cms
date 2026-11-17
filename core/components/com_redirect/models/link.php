@@ -112,7 +112,7 @@ class Link extends Relational
                 $data['new_url'] = '/' . $data['new_url'];
             }
         }
-        return $data['new_url'];
+        return (string) $data['new_url'];
     }
 
     /**
