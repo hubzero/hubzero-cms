@@ -489,7 +489,7 @@ class Sessionsv1r0 extends ApiController
             throw new Exception(Lang::txt('Unable to find tool.xml.'), 404);
         }
 
-        $xml = new \SimpleXMLElement(file_get_contents($path . 'tool.xml'));
+        $xml = new \SimpleXMLElement((string) file_get_contents($path . 'tool.xml'));
         $xpath = Request::getString('xpath', '');
 
         // replace loader > example references to external files with the file
@@ -538,7 +538,7 @@ class Sessionsv1r0 extends ApiController
             $domLoader->appendChild($examples);
             foreach ($include as $file) {
                 $subDoc = new \DOMDocument();
-                $subDoc->loadXML(file_get_contents($file));
+                $subDoc->loadXML((string) file_get_contents($file));
                 // select top level element
                 $run = $subDoc->getElementsByTagName('run');
                 // non-conforming, skip it
@@ -1049,7 +1049,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Read the file
-        $status   = file_get_contents($statusFile);
+        $status   = (string) file_get_contents($statusFile);
         $parsed   = explode("\n", trim($status));
         $finished = (strpos(end($parsed), '[status] exit') !== false) ? true : false;
         $runFile  = '';

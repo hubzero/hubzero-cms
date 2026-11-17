@@ -284,7 +284,7 @@ class Override extends Obj
         error_clear_last();
 
         if ($version >= '5.3.1') {
-            $contents = file_get_contents($filename);
+            $contents = (string) file_get_contents($filename);
             $contents = str_replace('_QQ_', '"\""', $contents);
             $strings  = parse_ini_string($contents, false, INI_SCANNER_RAW);
 

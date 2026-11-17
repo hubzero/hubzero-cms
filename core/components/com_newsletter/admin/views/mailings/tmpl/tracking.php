@@ -142,8 +142,8 @@ if ($this->getError()) {
                     unset($opensGeo['country']['undetermined']);
                     unset($opensGeo['state']['undetermined']);
                     $this->set('opensGeo', $opensGeo);
-                    $countryGeo = strtoupper(json_encode($this->opensGeo['country']));
-                    $stateGeo = strtoupper(json_encode($this->opensGeo['state']));
+                    $countryGeo = strtoupper((string) json_encode($this->opensGeo['country']));
+                    $stateGeo = strtoupper((string) json_encode($this->opensGeo['state']));
                 ?>
                 <div id="world-map-data" data-src='<?php echo $countryGeo; ?>'></div>
                 <div id="us-map-data" data-src='<?php echo $stateGeo; ?>'></div>

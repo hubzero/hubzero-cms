@@ -1115,7 +1115,7 @@ class Resources extends SiteController
             // unwritable filespace should not cost the user the player. An empty
             // manifest is never cached, or it would mask files landing later.
             if (count($manifest->presentation->media) > 0) {
-                Filesystem::write($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT));
+                Filesystem::write($manifestPath, (string) json_encode($manifest, JSON_PRETTY_PRINT));
             }
         }
 

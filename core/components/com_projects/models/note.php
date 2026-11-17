@@ -101,17 +101,17 @@ class Note extends \Components\Wiki\Models\Book
         ];
 
         // Check valid stamp
-        $objSt->checkStamp($this->project_id, json_encode($reference), 'notes');
+        $objSt->checkStamp($this->project_id, (string) json_encode($reference), 'notes');
         $list = ($listed !== null && $listed != $objSt->listed) ? true : false;
 
         if ($list == true) {
-            return $objSt->registerStamp($this->project_id, json_encode($reference), 'notes', $listed);
+            return $objSt->registerStamp($this->project_id, (string) json_encode($reference), 'notes', $listed);
         }
 
         // Register new stamp?
         if (!$objSt->id && $register == true) {
-            $objSt->registerStamp($this->project_id, json_encode($reference), 'notes', $listed);
-            $objSt->checkStamp($this->project_id, json_encode($reference), 'notes');
+            $objSt->registerStamp($this->project_id, (string) json_encode($reference), 'notes', $listed);
+            $objSt->checkStamp($this->project_id, (string) json_encode($reference), 'notes');
         }
 
         return $objSt;

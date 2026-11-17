@@ -55,7 +55,7 @@ class Gallery
             $desc_file = str_replace($pi['extension'], 'txt', PATH_ROOT . $real_path . '/' . $file);
             $desc = '';
             if (file_exists($desc_file)) {
-                $desc = htmlentities(file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');
+                $desc = htmlentities((string) file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');
             }
 
             if (in_array($ext, $imagetypes)) {

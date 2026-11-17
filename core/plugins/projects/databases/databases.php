@@ -1170,7 +1170,7 @@ class Databases extends Plugin
                 unset($prop['styles']);
 
                 $header[1][] = rtrim(
-                    ltrim(str_replace('","', "\",\r\n\"", json_encode($prop)), '{'),
+                    ltrim(str_replace('","', "\",\r\n\"", (string) json_encode($prop)), '{'),
                     '}',
                 );
             }

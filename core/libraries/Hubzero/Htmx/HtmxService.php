@@ -220,7 +220,7 @@ class HtmxService
         }
 
         $this->triggers[$event] = $payload;
-        $this->setHeader('HX-Trigger', json_encode($this->triggers));
+        $this->setHeader('HX-Trigger', (string) json_encode($this->triggers));
     }
 
     /**
@@ -236,7 +236,7 @@ class HtmxService
         }
 
         $this->triggersAfterSettle[$event] = $payload;
-        $this->setHeader('HX-Trigger-After-Settle', json_encode($this->triggersAfterSettle));
+        $this->setHeader('HX-Trigger-After-Settle', (string) json_encode($this->triggersAfterSettle));
     }
 
     /**
@@ -252,7 +252,7 @@ class HtmxService
         }
 
         $this->triggersAfterSwap[$event] = $payload;
-        $this->setHeader('HX-Trigger-After-Swap', json_encode($this->triggersAfterSwap));
+        $this->setHeader('HX-Trigger-After-Swap', (string) json_encode($this->triggersAfterSwap));
     }
 
     /**
@@ -283,7 +283,7 @@ class HtmxService
             }
 
             $payload = array_merge(['path' => $url], $options);
-            $this->setHeader('HX-Location', json_encode($payload));
+            $this->setHeader('HX-Location', (string) json_encode($payload));
             return;
         }
 

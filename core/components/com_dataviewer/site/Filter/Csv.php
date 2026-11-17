@@ -114,7 +114,7 @@ class Csv
         unset($metadata['idx']);
         unset($metadata['styles']);
 
-        $columnMetadata = str_replace('"', '""', json_encode($metadata));
+        $columnMetadata = str_replace('"', '""', (string) json_encode($metadata));
         $columnMetadata = rtrim(ltrim($columnMetadata, '{'), '}');
 
         return '"' . $columnMetadata;

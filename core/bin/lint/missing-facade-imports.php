@@ -79,7 +79,7 @@ $paths = $paths ?: $defaults;
 $facadeNames = function ($root) {
     $names = [];
     foreach (glob($root . '/core/bootstrap/*/aliases.php') as $file) {
-        if (preg_match_all("/'(\\w+)'\\s*=>\\s*'[\\w\\\\]+'/", file_get_contents($file), $m)) {
+        if (preg_match_all("/'(\\w+)'\\s*=>\\s*'[\\w\\\\]+'/", (string) file_get_contents($file), $m)) {
             foreach ($m[1] as $name) {
                 $names[$name] = true;
             }
@@ -274,7 +274,7 @@ $inspect = function ($path, array $facades) {
  * @return  boolean
  */
 $addImports = function ($path, array $missing) {
-    $source = file_get_contents($path);
+    $source = (string) file_get_contents($path);
     $lines  = preg_split('/\R/', $source);
     $eol    = strpos($source, "\r\n") !== false ? "\r\n" : "\n";
 

@@ -604,7 +604,7 @@ class Assets
                 $cache     = null;
 
                 if (file_exists($cacheFile)) {
-                    $cache = unserialize(file_get_contents($cacheFile));
+                    $cache = unserialize((string) file_get_contents($cacheFile));
                 }
 
                 if ($cache && is_array($cache['files'])) {

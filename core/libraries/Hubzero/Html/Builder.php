@@ -159,7 +159,7 @@ class Builder
                 $inc = $path . DS . strtolower($cls) . '.php';
 
                 if (file_exists($inc)) {
-                    $code = file_get_contents($inc);
+                    $code = (string) file_get_contents($inc);
 
                     $tokens = token_get_all($code);
 

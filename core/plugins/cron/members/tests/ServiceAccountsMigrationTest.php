@@ -53,7 +53,7 @@ class ServiceAccountsMigrationTest extends Basic
             );
         }
 
-        preg_match_all('/INSERT INTO `#__usergroups` .*?;/s', file_get_contents($sql . 'data.sql'), $inserts);
+        preg_match_all('/INSERT INTO `#__usergroups` .*?;/s', (string) file_get_contents($sql . 'data.sql'), $inserts);
         $this->assertNotEmpty($inserts[0]);
         foreach ($inserts[0] as $insert) {
             $pdo->exec(str_replace('#__', 'jos_', $insert));
@@ -196,7 +196,7 @@ class ServiceAccountsMigrationTest extends Basic
      */
     private static function statement($file, $pattern)
     {
-        if (!preg_match($pattern, file_get_contents($file), $m)) {
+        if (!preg_match($pattern, (string) file_get_contents($file), $m)) {
             throw new \RuntimeException($pattern . ' not found in ' . $file);
         }
 

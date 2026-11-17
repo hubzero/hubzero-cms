@@ -101,7 +101,7 @@ function prettyPrint($json)
             <tr>
                 <td>
 <pre>
-<?php echo str_replace("\t", ' &nbsp; &nbsp;', $this->escape(prettyPrint(json_encode($this->output)))); ?>
+<?php echo str_replace("\t", ' &nbsp; &nbsp;', $this->escape(prettyPrint((string) json_encode($this->output)))); ?>
 </pre>
                 </td>
             </tr>

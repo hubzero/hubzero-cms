@@ -56,7 +56,7 @@ class ExpireInactiveTest extends Basic
 
         $this->assertStringContainsString(
             "'params' => 'expireinactive'",
-            file_get_contents(dirname(__DIR__) . DS . 'members.php'),
+            (string) file_get_contents(dirname(__DIR__) . DS . 'members.php'),
         );
 
         $form = new \Hubzero\Html\Parameter('', $file);
@@ -182,7 +182,7 @@ class ExpireInactiveTest extends Basic
      */
     private static function schemaTable($table)
     {
-        $schema = file_get_contents(PATH_CORE . '/bootstrap/Install/sql/mysql/schema.sql');
+        $schema = (string) file_get_contents(PATH_CORE . '/bootstrap/Install/sql/mysql/schema.sql');
 
         if (!preg_match('/CREATE TABLE `#__' . preg_quote($table, '/') . '` \(.*?\) ENGINE=[^;]*;/s', $schema, $m)) {
             throw new \RuntimeException('#__' . $table . ' not found in schema.sql');

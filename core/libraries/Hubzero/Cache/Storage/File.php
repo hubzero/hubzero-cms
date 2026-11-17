@@ -141,7 +141,7 @@ class File extends None
             return null;
         }
 
-        $data = @unserialize(file_get_contents($file));
+        $data = @unserialize((string) file_get_contents($file));
 
         if (!$data) {
             throw new RuntimeException('Cache file is invalid.');
@@ -169,7 +169,7 @@ class File extends None
             return false;
         }
 
-        $data = @unserialize(file_get_contents($file));
+        $data = @unserialize((string) file_get_contents($file));
 
         if (!$data) {
             throw new RuntimeException('Cache file is invalid.');
@@ -265,7 +265,7 @@ class File extends None
                     continue;
                 }
 
-                $data = @unserialize(file_get_contents($file->getPathname()));
+                $data = @unserialize((string) file_get_contents($file->getPathname()));
 
                 if (!$data) {
                     throw new RuntimeException(sprintf('Cache file "%s" is invalid.', $file->getPathname()));

@@ -92,7 +92,7 @@ class Request extends ComponentController
             $response->errors = $errors;
         }
 
-        echo htmlspecialchars(json_encode($response), ENT_NOQUOTES);
+        echo htmlspecialchars((string) json_encode($response), ENT_NOQUOTES);
         die();
     }
 }

@@ -52,7 +52,7 @@ class UpdateTimezoneDatabase extends Base
         }
 
         if (is_file($tz_dat_file)) {
-            $tz_dat = file_get_contents($tz_dat_file);
+            $tz_dat = (string) file_get_contents($tz_dat_file);
             $lines  = explode("\n", $tz_dat);
         }
 

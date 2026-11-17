@@ -133,7 +133,7 @@ class SchemaConverter
      */
     protected function convertMysqlToSqlite(string $inputFile, string $outputFile): bool
     {
-        $content = file_get_contents($inputFile);
+        $content = (string) file_get_contents($inputFile);
 
         // Remove MySQL session settings
         $content = preg_replace("/^SET NAMES.*$/m", '', $content);

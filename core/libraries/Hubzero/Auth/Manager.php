@@ -108,7 +108,7 @@ class Manager
                         new \Hubzero\Encryption\Cipher\Simple(),
                         new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey),
                     );
-                    $rcookie = $crypt->encrypt(json_encode($credentials));
+                    $rcookie = $crypt->encrypt((string) json_encode($credentials));
                     $lifetime = time() + 365 * 24 * 60 * 60;
 
                     // Use domain and path set in config for cookie if it exists.

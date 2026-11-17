@@ -375,7 +375,7 @@ class SecurityGuard
             return null;
         }
 
-        $content = file_get_contents($file);
+        $content = (string) file_get_contents($file);
 
         // Extract secret from PHP file format
         // Expected format: return 'SECRET';
@@ -474,7 +474,7 @@ class SecurityGuard
         $signature = $data['signature'];
         unset($data['signature']);
 
-        $expectedSignature = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+        $expectedSignature = hash_hmac('sha256', (string) json_encode($data), $this->getServerSecret());
 
         if (!hash_equals($expectedSignature, $signature)) {
             // Tampered data - delete and return null
@@ -497,7 +497,7 @@ class SecurityGuard
         $this->cleanupOldChallenges();
 
         // Sign the data to detect tampering
-        $signature = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+        $signature = hash_hmac('sha256', (string) json_encode($data), $this->getServerSecret());
         $data['signature'] = $signature;
 
         $file = $this->getChallengeFilePath();
@@ -690,7 +690,7 @@ class SecurityGuard
         $signature = $data['signature'];
         unset($data['signature']);
 
-        $expected = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+        $expected = hash_hmac('sha256', (string) json_encode($data), $this->getServerSecret());
 
         if (!hash_equals($expected, $signature)) {
             @unlink($file);
@@ -710,7 +710,7 @@ class SecurityGuard
     {
         $this->ensureStorageDir();
 
-        $data['signature'] = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+        $data['signature'] = hash_hmac('sha256', (string) json_encode($data), $this->getServerSecret());
 
         return file_put_contents(
             $this->getIpAttemptFilePath(),
@@ -962,7 +962,7 @@ class SecurityGuard
         }
 
         // Read and verify file contents contain the fingerprint
-        $contents = file_get_contents($filePath);
+        $contents = (string) file_get_contents($filePath);
         if (strpos($contents, $storedFingerprint) === false) {
             $this->clearVerification();
             return [

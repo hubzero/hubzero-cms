@@ -331,8 +331,12 @@ class Mozify extends Obj
      */
     private function mozifyMosaic()
     {
-        //get image resource
-        $resource = imagecreatefromstring(file_get_contents($this->imageUrl));
+        //get image resource; no mosaic when the image cannot be fetched or read
+        $data     = file_get_contents($this->imageUrl);
+        $resource = $data ? imagecreatefromstring($data) : false;
+        if (!$resource) {
+            return '';
+        }
 
         //get the class
         $class = $this->getCssClassName();

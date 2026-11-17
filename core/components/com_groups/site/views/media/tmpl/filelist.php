@@ -152,7 +152,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 $extension = Filesystem::extension($file);
 
                 if (!$extension) {
-                    $fileContent = file_get_contents($filePath);
+                    $fileContent = (string) file_get_contents($filePath);
                     $mimeType = \Hubzero\Filesystem\Util\MimeType::detectByContent($fileContent);
                     $extension = array_search($mimeType, $mimeTypes);
                 }

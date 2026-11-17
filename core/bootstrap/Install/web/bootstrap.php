@@ -356,14 +356,14 @@ use Hubzero\System\Requirements;
         $composer = $this->findComposer();
         if (empty($composer)) {
             $this->sendSSE('error', 'Composer not found');
-            $this->sendSSE('done', json_encode(['success' => false]));
+            $this->sendSSE('done', (string) json_encode(['success' => false]));
             return;
         }
 
         $php = PhpCli::find();
         if ($php === '') {
             $this->sendSSE('error', 'No PHP command line found to run Composer with');
-            $this->sendSSE('done', json_encode(['success' => false]));
+            $this->sendSSE('done', (string) json_encode(['success' => false]));
             return;
         }
 
@@ -388,7 +388,7 @@ use Hubzero\System\Requirements;
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start composer process');
-            $this->sendSSE('done', json_encode(['success' => false]));
+            $this->sendSSE('done', (string) json_encode(['success' => false]));
             return;
         }
 
@@ -417,7 +417,7 @@ use Hubzero\System\Requirements;
         // Check if vendor now exists
         $vendorExists = file_exists($this->corePath . '/vendor/autoload.php');
 
-        $this->sendSSE('done', json_encode([
+        $this->sendSSE('done', (string) json_encode([
             'success' => $success && $vendorExists,
             'returnCode' => $returnCode,
         ]));

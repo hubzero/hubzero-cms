@@ -233,7 +233,7 @@ class Scaffolding extends Base implements CommandInterface
                     }
 
                     // Get template contents
-                    $contents = file_get_contents($template['destination']);
+                    $contents = (string) file_get_contents($template['destination']);
                     $contents = $this->doReplacements($contents);
 
                     // Write file
@@ -363,7 +363,7 @@ class Scaffolding extends Base implements CommandInterface
                         continue;
                     }
 
-                    $subTmpl = file_get_contents($subPath);
+                    $subTmpl = (string) file_get_contents($subPath);
 
                     if (isset($this->replacements[$keyReal]) && is_array($this->replacements[$keyReal])) {
                         $count    = count($this->replacements[$keyReal]);
@@ -449,7 +449,7 @@ class Scaffolding extends Base implements CommandInterface
         if ($files) {
             foreach ($files as $file) {
                 if (is_file($path . DS . $file)) {
-                    $contents = file_get_contents($path . DS . $file);
+                    $contents = (string) file_get_contents($path . DS . $file);
                     $contents = $this->doReplacements($contents);
 
                     $this->putContents($path . DS . $file, $contents);

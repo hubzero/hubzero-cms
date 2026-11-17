@@ -92,7 +92,7 @@ $definedKeys = function ($root) {
  * @return  array  List of [key, line]
  */
 $requestedKeys = function ($path) {
-    $tokens = @token_get_all(file_get_contents($path));
+    $tokens = @token_get_all((string) file_get_contents($path));
     if (!$tokens) {
         return [];
     }

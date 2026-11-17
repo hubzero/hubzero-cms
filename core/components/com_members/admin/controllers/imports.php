@@ -424,7 +424,7 @@ class Imports extends AdminController
 
         // Outputted with html entities to allow browser json formatter
         if (Request::getInt('format', 0) == 1) {
-            echo htmlentities(json_encode([
+            echo htmlentities((string) json_encode([
                 'import'  => 'success',
                 'time'    => $time,
                 'records' => $resourceData,

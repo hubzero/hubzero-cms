@@ -126,7 +126,7 @@ class Remote
         curl_setopt($ch, CURLOPT_URL, $this->server);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, (string) json_encode($json));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
 
         $result = curl_exec($ch);

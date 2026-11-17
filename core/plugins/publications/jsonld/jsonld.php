@@ -256,7 +256,7 @@ class Jsonld extends Plugin
             $data['encodingFormat'] = $mimeTypes;
         }
 
-        Document::addScriptDeclaration(json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
+        Document::addScriptDeclaration((string) json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
 
         /*
         Example

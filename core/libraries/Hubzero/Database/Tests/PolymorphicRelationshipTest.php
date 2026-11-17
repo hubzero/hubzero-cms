@@ -298,7 +298,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
     public function morphRelationshipClassesAreImportedInRelational(): void
     {
         $filePath = dirname(__DIR__) . '/Relational.php';
-        $content = file_get_contents($filePath);
+        $content = (string) file_get_contents($filePath);
 
         $imports = [
             'use Hubzero\Database\Relationship\MorphTo;',

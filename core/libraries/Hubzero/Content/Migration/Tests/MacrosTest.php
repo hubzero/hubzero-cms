@@ -69,7 +69,7 @@ class MacrosTest extends TestCase
         $this->assertTrue(class_exists($class), $class . ' should exist');
 
         $reflection = new ReflectionClass($class);
-        $source     = file_get_contents($reflection->getFileName());
+        $source     = (string) file_get_contents($reflection->getFileName());
 
         preg_match_all('/\$this->([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', $source, $matches);
 

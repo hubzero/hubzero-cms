@@ -74,7 +74,7 @@ class ImageViewer extends Base
         ];
 
         $this->config = json_decode(
-            json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)),
+            (string) json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)),
             false,
         );
         return $this->config;

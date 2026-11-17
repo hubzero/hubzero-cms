@@ -128,7 +128,7 @@ class DetectorTest extends Basic
     {
         $collection = [];
 
-        $xml = new SimpleXmlElement(file_get_contents(__DIR__
+        $xml = new SimpleXmlElement((string) file_get_contents(__DIR__
             . DIRECTORY_SEPARATOR
             . 'Fixtures'
             . DIRECTORY_SEPARATOR

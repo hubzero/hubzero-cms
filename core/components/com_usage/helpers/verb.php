@@ -50,7 +50,7 @@ class Verb
         $task["id"] = sha1(json_encode($task["args"]) . time());
 
         $bodyTask = [
-            "body" => base64_encode(json_encode($task)),
+            "body" => base64_encode((string) json_encode($task)),
             "headers" => new stdClass(),
             "content-type" => "application/json",
             "properties" => [
@@ -60,7 +60,7 @@ class Verb
                     "routing_key" => "default",
                     "exchange" => "default",
                 ],
-                "delivery_tag" => sha1(base64_encode(json_encode($task)) . time()),
+                "delivery_tag" => sha1(base64_encode((string) json_encode($task)) . time()),
                 "delivery_mode" => 2,
             ],
             "content-encoding" => "utf-8",

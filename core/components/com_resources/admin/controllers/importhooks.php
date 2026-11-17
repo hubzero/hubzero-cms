@@ -224,7 +224,7 @@ class ImportHooks extends AdminController
         // if we have a file
         if (file_exists($file)) {
             // get contents of file
-            $contents = file_get_contents($file);
+            $contents = (string) file_get_contents($file);
         }
 
         // output contents of hook file

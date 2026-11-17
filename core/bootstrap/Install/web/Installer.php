@@ -1222,7 +1222,7 @@ class Installer
 
         if (!file_exists($musePath)) {
             $this->sendSSE('error', 'Muse executable not found');
-            $this->sendSSE('done', json_encode(['success' => false]));
+            $this->sendSSE('done', (string) json_encode(['success' => false]));
             return;
         }
 
@@ -1247,7 +1247,7 @@ class Installer
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start migration process');
-            $this->sendSSE('done', json_encode(['success' => false]));
+            $this->sendSSE('done', (string) json_encode(['success' => false]));
             return;
         }
 
@@ -1273,7 +1273,7 @@ class Installer
         $returnCode = proc_close($process);
         $success = ($returnCode === 0);
 
-        $this->sendSSE('done', json_encode([
+        $this->sendSSE('done', (string) json_encode([
             'success' => $success,
             'returnCode' => $returnCode,
         ]));

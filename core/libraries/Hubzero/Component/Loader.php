@@ -383,7 +383,7 @@ class Loader
      */
     protected function executeReactApp($path)
     {
-        $index = file_get_contents($path . DS . 'build' . DS . 'index.html');
+        $index = (string) file_get_contents($path . DS . 'build' . DS . 'index.html');
 
         $dom = new \DOMDocument();
         $dom->loadHTML($index);

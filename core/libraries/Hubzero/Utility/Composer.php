@@ -289,7 +289,7 @@ class Composer
         }
         self::init();
         $json = self::getComposerJson();
-        $contents = file_get_contents($json->getPath());
+        $contents = (string) file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
         if (!$manipulator->addLink('require', $packageName, $constraint, false)) {
             return false;
@@ -312,7 +312,7 @@ class Composer
         self::init();
         self::dispatch('remove');
         $json = self::getComposerJson();
-        $contents = file_get_contents($json->getPath());
+        $contents = (string) file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
         if (!$manipulator->removeSubNode('require', $packageName)) {
             return false;

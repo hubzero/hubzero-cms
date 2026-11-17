@@ -810,7 +810,7 @@ class Translator extends Obj
 
         try {
             if (!function_exists('parse_ini_file') || $isParseIniFileDisabled) {
-                $contents = file_get_contents($fileName);
+                $contents = (string) file_get_contents($fileName);
                 $strings  = parse_ini_string($contents, false, INI_SCANNER_RAW);
             } else {
                 $strings = parse_ini_file($fileName, false, INI_SCANNER_RAW);

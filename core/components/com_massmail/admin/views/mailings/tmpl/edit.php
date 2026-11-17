@@ -639,8 +639,8 @@ $this->js('edit.js', 'com_massmail');
     </form>
 
     <div id="mm-compose-config" hidden
-        data-lang="<?= htmlspecialchars(json_encode($composeLang), ENT_QUOTES, 'UTF-8') ?>"
-        data-state="<?= htmlspecialchars(json_encode($rcptState), ENT_QUOTES, 'UTF-8') ?>"></div>
+        data-lang="<?= htmlspecialchars((string) json_encode($composeLang), ENT_QUOTES, 'UTF-8') ?>"
+        data-state="<?= htmlspecialchars((string) json_encode($rcptState), ENT_QUOTES, 'UTF-8') ?>"></div>
 
     <?php if ($editable) { ?>
     <div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true"

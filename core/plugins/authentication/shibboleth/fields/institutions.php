@@ -103,7 +103,7 @@ class Institutions extends Field
 
         // Only store xmlPath and activeIdps — never the full entity list
         $storedVal = ['xmlPath' => $val['xmlPath'], 'activeIdps' => $val['activeIdps']];
-        $hiddenJson = htmlspecialchars(json_encode($storedVal), ENT_QUOTES, 'UTF-8');
+        $hiddenJson = htmlspecialchars((string) json_encode($storedVal), ENT_QUOTES, 'UTF-8');
         $xmlPathEsc = htmlspecialchars($val['xmlPath'], ENT_QUOTES, 'UTF-8');
         $nameEsc    = htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8');
 

@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
                                 'title' => $item->title,
                                 'request' => $item->request,
                             ];
-                            $encoded = base64_encode(json_encode($itemData));
+                            $encoded = base64_encode((string) json_encode($itemData));
                             $descTitle = Lang::txt($item->description);
                             ?>
                         <li>
@@ -61,7 +61,7 @@ defined('_HZEXEC_') or die();
                 <ul>
                     <li>
                         <?php
-                        $urlData = base64_encode(json_encode(
+                        $urlData = base64_encode((string) json_encode(
                             ['id' => $this->recordId, 'title' => 'url'],
                         ));
                         $urlDesc = Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL_DESC');
@@ -74,7 +74,7 @@ defined('_HZEXEC_') or die();
                     </li>
                     <li>
                         <?php
-                        $aliasData = base64_encode(json_encode(
+                        $aliasData = base64_encode((string) json_encode(
                             ['id' => $this->recordId, 'title' => 'alias'],
                         ));
                         $aliasDesc = Lang::txt('COM_MENUS_TYPE_ALIAS_DESC');
@@ -87,7 +87,7 @@ defined('_HZEXEC_') or die();
                     </li>
                     <li>
                         <?php
-                        $sepData = base64_encode(json_encode(
+                        $sepData = base64_encode((string) json_encode(
                             ['id' => $this->recordId, 'title' => 'separator'],
                         ));
                         $sepDesc = Lang::txt('COM_MENUS_TYPE_SEPARATOR_DESC');
@@ -100,7 +100,7 @@ defined('_HZEXEC_') or die();
                     </li>
                     <li>
                         <?php
-                        $noneData = base64_encode(json_encode(
+                        $noneData = base64_encode((string) json_encode(
                             ['id' => $this->recordId, 'title' => 'none'],
                         ));
                         $noneDesc = Lang::txt('COM_MENUS_TYPE_NONE_DESC');

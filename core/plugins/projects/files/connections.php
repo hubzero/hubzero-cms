@@ -963,7 +963,7 @@ class Connections
             $fp = tmpfile();
 
             for ($i = 1; $i <= $total_files; $i++) {
-                fwrite($fp, file_get_contents($temp_dir . DS . $fileName . '.part' . $i));
+                fwrite($fp, (string) file_get_contents($temp_dir . DS . $fileName . '.part' . $i));
                 unlink($temp_dir . DS . $fileName . '.part' . $i);
             }
 

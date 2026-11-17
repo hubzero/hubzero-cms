@@ -464,7 +464,7 @@ class View
             }
 
             // get file contents
-            $contents = file_get_contents($file);
+            $contents = (string) file_get_contents($file);
 
             // if template is defined
             if (preg_match('|Template Name:(.*)$|mi', $contents, $header)) {

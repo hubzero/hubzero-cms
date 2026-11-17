@@ -53,7 +53,7 @@ class Migration20150330124145Core extends Base
             return;
         }
 
-        $configuration = file_get_contents($configFile);
+        $configuration = (string) file_get_contents($configFile);
         $pattern       = '/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/';
 
         // Nothing to change, so nothing to write: not the old class format,
@@ -97,7 +97,7 @@ class Migration20150330124145Core extends Base
             return;
         }
 
-        $configuration = file_get_contents($configFile);
+        $configuration = (string) file_get_contents($configFile);
 
         // Skip if not using array format with dbtype
         if (strpos($configuration, "'dbtype'") === false && strpos($configuration, '"dbtype"') === false) {
