@@ -99,7 +99,7 @@ class Upay extends Plugin
         }
 
         // Nothing below can be verified against a transaction that does not exist
-        if ($response['status'] == 'error') {
+        if ($response['status'] == 'error' || !$tInfo) {
             return $response;
         }
 

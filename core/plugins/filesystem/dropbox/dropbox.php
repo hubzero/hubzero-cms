@@ -71,7 +71,7 @@ class Dropbox extends Plugin
     protected static function setLocalOauthData($state)
     {
         $connectionId = Request::getInt('connection', 0);
-        $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
+        $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
         $project = $connection->project;
         $projectsFilesUrl = Route::url($project->link('files') . '/browse?connection=' . $connectionId);
 

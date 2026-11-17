@@ -479,9 +479,9 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $this->assertEquals(3, $count);
 
         // Check new orderings
-        $this->assertEquals(2, OrderableItem::one($id1)->getOrdering()); // A is now 2nd
-        $this->assertEquals(3, OrderableItem::one($id2)->getOrdering()); // B is now 3rd
-        $this->assertEquals(1, OrderableItem::one($id3)->getOrdering()); // C is now 1st
+        $this->assertEquals(2, OrderableItem::oneOrFail($id1)->getOrdering()); // A is now 2nd
+        $this->assertEquals(3, OrderableItem::oneOrFail($id2)->getOrdering()); // B is now 3rd
+        $this->assertEquals(1, OrderableItem::oneOrFail($id3)->getOrdering()); // C is now 1st
     }
 
     // =========================================================================
@@ -546,10 +546,10 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $item->moveUp();
 
         // Menu 1 Item 2 moved up
-        $this->assertEquals(1, OrderableMenuItem::one($id2)->getOrdering());
+        $this->assertEquals(1, OrderableMenuItem::oneOrFail($id2)->getOrdering());
 
         // Menu 2 Item 1 should be unchanged
-        $this->assertEquals(1, OrderableMenuItem::one($id3)->getOrdering());
+        $this->assertEquals(1, OrderableMenuItem::oneOrFail($id3)->getOrdering());
     }
 
     // =========================================================================

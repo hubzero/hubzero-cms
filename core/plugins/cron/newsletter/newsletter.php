@@ -181,10 +181,12 @@ class Newsletter extends Plugin
                         $queuedEmail->mailing_recipientid,
                     );
 
-                    // mark as sent and save
-                    $newsletterMailingRecipient->set('status', 'sent');
-                    $newsletterMailingRecipient->set('date_sent', Date::toSql());
-                    $newsletterMailingRecipient->save();
+                    // mark as sent and save (unless the recipient is gone)
+                    if ($newsletterMailingRecipient) {
+                        $newsletterMailingRecipient->set('status', 'sent');
+                        $newsletterMailingRecipient->set('date_sent', Date::toSql());
+                        $newsletterMailingRecipient->save();
+                    }
                 } else {
                     $sql = "SELECT *, max(date) AS maxDate FROM `#__newsletter_mailings` WHERE nid "
                         . "= {$queuedEmail->newsletterid} AND deleted=0;";

@@ -327,12 +327,12 @@ class Doi extends Obj
 
         // Map related identifier
         $prevPub = $pub->prevPublication();
-        if ($prevPub->doi) {
+        if ($prevPub && $prevPub->doi) {
             $this->set('doiOfPrevPub', $prevPub->doi);
         }
 
         $nextPub = $pub->nextPublication();
-        if ($nextPub->doi) {
+        if ($nextPub && $nextPub->doi) {
             $this->set('doiOfNextPub', $nextPub->doi);
         }
 

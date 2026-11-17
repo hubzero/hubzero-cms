@@ -39,12 +39,14 @@ $this->js('media.js');
                     if (is_dir($folderName)) {
                         $d = @dir($folderName);
 
-                        while (false !== ($entry = $d->read())) {
-                            if (substr($entry, 0, 1) != '.') {
-                                $numFiles++;
+                        if ($d) {
+                            while (false !== ($entry = $d->read())) {
+                                if (substr($entry, 0, 1) != '.') {
+                                    $numFiles++;
+                                }
                             }
+                            $d->close();
                         }
-                        $d->close();
                     }
 
                     if ($this->listdir == '/') {

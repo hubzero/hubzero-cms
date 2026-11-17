@@ -155,12 +155,15 @@ class Feed extends Plugin
         // Hide welcome screen?
         $c = Request::getInt('c', 0);
         if ($c) {
-            $model->member()->saveParam(
-                $model->get('id'),
-                User::get('id'),
-                $param = 'hide_welcome',
-                1,
-            );
+            $member = $model->member();
+            if ($member) {
+                $member->saveParam(
+                    $model->get('id'),
+                    User::get('id'),
+                    $param = 'hide_welcome',
+                    1,
+                );
+            }
             App::redirect(Route::url($model->link()));
         }
 

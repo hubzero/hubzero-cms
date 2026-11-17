@@ -36,7 +36,6 @@ class Search extends Plugin
         $groupId = $group->get('gidNumber');
 
         $ormGroup = \Components\Groups\Models\Orm\Group::one($groupId);
-        $attributes = $ormGroup->getAttributes();
 
         if ($ormGroup) {
             $table = $ormGroup->getTableName();

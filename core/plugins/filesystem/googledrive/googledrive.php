@@ -51,7 +51,7 @@ class Googledrive extends Plugin
             $accessToken = (array) $accessToken;
         } else {
             $connectionId = Request::getInt('connection', 0);
-            $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
+            $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
             $project = $connection->project;
             $projectsFilesUrl = Route::url($project->link('files') . '/browse?connection=' . $connectionId);
             Session::set('googledrive.app_id', $app_id);

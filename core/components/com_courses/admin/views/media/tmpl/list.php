@@ -61,12 +61,14 @@ $imgBase = $base . '/core/components/'
                 if (is_dir(PATH_APP . DS . $folders[$folderName])) {
                     $d = @dir(PATH_APP . DS . $folders[$folderName]);
 
-                    while (false !== ($entry = $d->read())) {
-                        if (substr($entry, 0, 1) != '.') {
-                            $numFiles++;
+                    if ($d) {
+                        while (false !== ($entry = $d->read())) {
+                            if (substr($entry, 0, 1) != '.') {
+                                $numFiles++;
+                            }
                         }
+                        $d->close();
                     }
-                    $d->close();
                 }
 
                 if ($this->listdir == '/') {

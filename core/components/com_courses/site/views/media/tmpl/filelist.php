@@ -50,12 +50,14 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                     if (is_dir(PATH_APP . DS . $folders[$folder_name])) {
                         $d = @dir(PATH_APP . DS . $folders[$folder_name]);
 
-                        while (false !== ($entry = $d->read())) {
-                            if (substr($entry, 0, 1) != '.') {
-                                $num_files++;
+                        if ($d) {
+                            while (false !== ($entry = $d->read())) {
+                                if (substr($entry, 0, 1) != '.') {
+                                    $num_files++;
+                                }
                             }
+                            $d->close();
                         }
-                        $d->close();
                     }
 
                     if ($this->listdir == '/') {

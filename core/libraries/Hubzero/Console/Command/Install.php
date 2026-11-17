@@ -609,6 +609,10 @@ class Install extends Base implements CommandInterface
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE '{$prefix}%'",
             );
+            if ($stmt === false) {
+                // The connection throws on failure; a false is one too
+                throw new \PDOException('Could not count the existing tables');
+            }
             $tableCount = (int) $stmt->fetchColumn();
 
             if ($tableCount === 0) {
