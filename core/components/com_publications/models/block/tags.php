@@ -229,7 +229,7 @@ class Tags extends Base
                 ],
             ];
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

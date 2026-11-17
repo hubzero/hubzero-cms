@@ -38,7 +38,7 @@ class NoneTest extends Basic
             throw new \Exception('Configuration file not found in "' . $configurationFile . '"');
         }
 
-        $config = json_decode(file_get_contents($configurationFile), true);
+        $config = json_decode((string) file_get_contents($configurationFile), true);
 
         $app = new Application();
         $app['config'] = new Registry();

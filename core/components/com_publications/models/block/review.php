@@ -189,7 +189,7 @@ class Review extends Base
                 'params'        => [  'required' => 1, 'published_editing' => 0 ],
             ];
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

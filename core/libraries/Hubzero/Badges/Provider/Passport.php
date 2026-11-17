@@ -145,7 +145,7 @@ class Passport implements ProviderInterface
         curl_setopt($request, CURLOPT_VERBOSE, true);
 
         $response = curl_exec($request);
-        $badge = json_decode($response);
+        $badge = json_decode((string) $response);
 
         if (empty($badge->Id)) {
             throw new Exception($badge->message);

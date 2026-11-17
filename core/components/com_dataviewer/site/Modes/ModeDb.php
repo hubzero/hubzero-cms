@@ -40,14 +40,14 @@ class ModeDb
         }
 
         $db_conf_file = DvConfig::$dv_conf['db_base_dir'] . "/$db_name/database.json";
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $db_conf = json_decode((string) file_get_contents($db_conf_file), true);
         DvConfig::$dv_conf['db'] = array_merge(DvConfig::$dv_conf['db'], $db_conf['database_ro']);
 
         $dv_conf_file = DvConfig::$dv_conf['db_base_dir'] . "/$db_name/applications/"
             . DvConfig::$com_name . "/config.json";
 
         if (file_exists($dv_conf_file)) {
-            $db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
+            $db_dv_conf = json_decode((string) file_get_contents($dv_conf_file), true);
             if (!is_array($db_dv_conf)) {
                 $db_dv_conf = [];
             } if (isset($db_dv_conf['settings'])) {
@@ -104,7 +104,7 @@ class ModeDb
         } else {
             // Definitions are read from JSON; the PHP form is the admin's source only
             if ($dd_json_file) {
-                $dd = json_decode(file_get_contents($dd_json_file), true);
+                $dd = json_decode((string) file_get_contents($dd_json_file), true);
             } else {
                 App::abort(404, 'Invalid or Missing Dataview');
             }

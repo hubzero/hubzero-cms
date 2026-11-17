@@ -122,7 +122,7 @@ class Recaptcha extends Plugin
         ]);
 
         // json decode response
-        $verificationResponse = json_decode($verificationResponse);
+        $verificationResponse = json_decode((string) $verificationResponse);
 
         // something went wrong
         if ($verificationResponse->success !== true) {

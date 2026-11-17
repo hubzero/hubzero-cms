@@ -92,7 +92,7 @@ class Notes extends Base
                 'params'    => [ 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 ],
             ];
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

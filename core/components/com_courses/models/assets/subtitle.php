@@ -132,7 +132,7 @@ class Subtitle extends Handler
 
         // get manifest
         $manifest = file_get_contents(PATH_APP . DS . $jsonFile);
-        $manifest = json_decode($manifest);
+        $manifest = json_decode((string) $manifest);
 
         // make sure we have a subtitles section
         $currentSubtitles = [];

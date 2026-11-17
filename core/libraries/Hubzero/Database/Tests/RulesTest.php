@@ -270,7 +270,7 @@ class RulesTest extends TestCase
         $error = new ValidationError('email', 'email', 'Invalid email', ['format' => 'email']);
 
         $json = json_encode($error);
-        $data = json_decode($json, true);
+        $data = json_decode((string) $json, true);
 
         $this->assertEquals('email', $data['field']);
         $this->assertEquals('email', $data['rule']);

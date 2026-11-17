@@ -2004,7 +2004,7 @@ class Profiles extends SiteController
 
             $organizations = [];
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             foreach ($resultObj->items as $orgObj) {
                 foreach ($orgObj->names as $nameObj) {
@@ -2057,7 +2057,7 @@ class Profiles extends SiteController
                 return false;
             }
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             foreach ($resultObj->items as $orgObj) {
                 foreach ($orgObj->names as $nameObj) {

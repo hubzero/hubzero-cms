@@ -165,7 +165,7 @@ class Spreadsheet
 
 
             $f_data = \Components\Dataviewer\Site\Filter\Json::filter($res, $dd);
-            $d_arr = json_decode($f_data, true);
+            $d_arr = json_decode((string) $f_data, true);
 
             if (isset($dd['show_maps'])) {
                 $document->addScript('//maps.google.com/maps/api/js?sensor=false');

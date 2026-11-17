@@ -47,7 +47,7 @@ $content_folder = $this->content_folder;
 $content_url = $this->content_url;
 
 //decode the json formatted manifest so we can use the information
-$presentation = json_decode($contents);
+$presentation = json_decode((string) $contents);
 $presentation = $presentation->presentation ?? null;
 if (!is_object($presentation)) {
     $presentation = new stdClass();

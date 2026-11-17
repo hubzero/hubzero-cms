@@ -42,7 +42,7 @@ class Reader implements Iterator
     public function __construct($file)
     {
         $this->position = 0;
-        $this->file     = json_decode(file_get_contents($file), true);
+        $this->file     = json_decode((string) file_get_contents($file), true);
     }
 
     /**

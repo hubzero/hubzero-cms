@@ -180,7 +180,7 @@ class Orcid extends SiteController
         $result = curl_exec($ch);
 
         if ($result) {
-            $response = json_decode($result, true);
+            $response = json_decode((string) $result, true);
             $this->accessToken = $response['access_token'];
             return $this->accessToken;
         } else {
@@ -641,7 +641,7 @@ class Orcid extends SiteController
             $result = curl_exec($ch);
             //Transform cURL response from json string to php array
             if ($result) {
-                $response = json_decode($result, true);
+                $response = json_decode((string) $result, true);
                 $this->userName = $response['name'];
                 $this->userOrcidID = $response['orcid'];
             }
@@ -758,7 +758,7 @@ class Orcid extends SiteController
             curl_close($ch);
 
             if ($result) {
-                $response = json_decode($result, true);
+                $response = json_decode((string) $result, true);
                 $userID = User::get('id');
 
                 if (!empty($userID)) {

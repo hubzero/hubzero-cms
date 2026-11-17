@@ -39,7 +39,7 @@ abstract class AbstractCache extends Basic
             throw new \Exception('Configuration file not found in "' . $configurationFile . '"');
         }
 
-        $config = json_decode(file_get_contents($configurationFile), true);
+        $config = json_decode((string) file_get_contents($configurationFile), true);
 
         // Use Container instead of Application to avoid destructor
         // that flushes output buffers (causes PHPUnit risky test warning)

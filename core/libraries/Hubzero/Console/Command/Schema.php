@@ -317,7 +317,7 @@ class Schema extends Base implements CommandInterface
         $filter = $this->arguments->getOpt('filter');
 
         $this->output->addLine("Loading schema from file...");
-        $targetData = json_decode(file_get_contents($inputFile), true);
+        $targetData = json_decode((string) file_get_contents($inputFile), true);
         $targetSchema = DatabaseInfo::fromArray($targetData);
 
         // Build filter callback if filter is specified
@@ -535,7 +535,7 @@ class Schema extends Base implements CommandInterface
         $prefix = $this->arguments->getOpt('prefix') ?: $db->getPrefix();
 
         $this->output->addLine("Loading target schema from file...");
-        $targetData = json_decode(file_get_contents($inputFile), true);
+        $targetData = json_decode((string) file_get_contents($inputFile), true);
 
         if ($targetData === null) {
             $this->output->error("Invalid JSON in schema file: {$inputFile}");

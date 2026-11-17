@@ -2245,7 +2245,7 @@ class Publications extends SiteController
         }
 
         $rpublica->setCuration();
-        $customFields = json_decode($rpublica->_curationModel->getMetaSchema(), true);
+        $customFields = json_decode((string) $rpublica->_curationModel->getMetaSchema(), true);
 
         // Diff the two versions
         $diffs = [];

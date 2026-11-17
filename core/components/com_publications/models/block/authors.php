@@ -777,7 +777,7 @@ class Authors extends Base
                 ],
             ];
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;
@@ -818,7 +818,7 @@ class Authors extends Base
                 return false;
             }
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             foreach ($resultObj->items as $orgObj) {
                 foreach ($orgObj->names as $nameObj) {

@@ -103,7 +103,7 @@ class Callback extends SiteController
 
         curl_close($ch);
 
-        $data = json_decode($result);
+        $data = json_decode((string) $result);
 
         if ($new_connection && $data) {
             $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);

@@ -25,7 +25,7 @@ class DataDefinition
 
         $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('db', false), 'db');
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $db_conf = json_decode((string) file_get_contents($db_conf_file), true);
 
         $dd_name = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('dd', false), 'dd');
 
@@ -35,7 +35,7 @@ class DataDefinition
 
         $dd_file = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . "/datadefinitions/$dd_name.json";
         $dd_json = file_get_contents($dd_file);
-        $dd = json_decode($dd_json, true);
+        $dd = json_decode((string) $dd_json, true);
 
 
         Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');

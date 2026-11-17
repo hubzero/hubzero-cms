@@ -47,7 +47,7 @@ class TaskList
             chdir($base);
             $id = explode('/', $item);
             $id = $id[1];
-            $db = json_decode(file_get_contents($item), true);
+            $db = json_decode((string) file_get_contents($item), true);
 
             print '<tr>';
             print '<td >' . ++$c . '</td>';

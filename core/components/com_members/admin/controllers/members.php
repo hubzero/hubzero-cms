@@ -1120,7 +1120,7 @@ class Members extends AdminController
         // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the
         // value encoded in json in appropriate PHP type
         $objString = json_encode($objRows);
-        return json_decode($objString, true);
+        return json_decode((string) $objString, true);
     }
 
     /**
@@ -1900,7 +1900,7 @@ class Members extends AdminController
 
             $organizations = [];
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             foreach ($resultObj->items as $orgObj) {
                 foreach ($orgObj->names as $nameObj) {
@@ -1954,7 +1954,7 @@ class Members extends AdminController
                 return false;
             }
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             foreach ($resultObj->items as $orgObj) {
                 foreach ($orgObj->names as $nameObj) {

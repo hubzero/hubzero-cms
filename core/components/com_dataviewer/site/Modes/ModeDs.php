@@ -119,7 +119,7 @@ class ModeDs
             $path = DvConfig::$dv_conf['base_path'] . "/datadefinitions";
             $dd_file = "$dv_id.json";
             if (file_exists("$path/$dd_file")) {
-                $dd = json_decode(file_get_contents("$path/$dd_file"), true);
+                $dd = json_decode((string) file_get_contents("$path/$dd_file"), true);
             } else {
                 return false;
             }

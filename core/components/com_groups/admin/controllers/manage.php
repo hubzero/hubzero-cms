@@ -926,7 +926,7 @@ class Manage extends AdminController
 
             // Execute and format the output
             $output = shell_exec($cmd);
-            $output = json_decode($output);
+            $output = json_decode((string) $output);
 
             // did we succeed
             if ($output == '' || json_last_error() == JSON_ERROR_NONE) {

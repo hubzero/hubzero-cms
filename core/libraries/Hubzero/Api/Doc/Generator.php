@@ -117,7 +117,7 @@ class Generator
             // check if its still valid
             $cacheMakeTime = @filemtime($cacheFile);
             if (time() - $cacheExpiration < $cacheMakeTime) {
-                $this->output = json_decode(file_get_contents($cacheFile), true);
+                $this->output = json_decode((string) file_get_contents($cacheFile), true);
                 return true;
             }
         }

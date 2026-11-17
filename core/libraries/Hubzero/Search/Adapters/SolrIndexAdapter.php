@@ -236,7 +236,7 @@ class SolrIndexAdapter implements IndexInterface
         }
         foreach ($document as $field => $value) {
             if (!is_string($value)) {
-                $newDoc->$field = json_decode(json_encode($value), true);
+                $newDoc->$field = json_decode((string) json_encode($value), true);
             } else {
                 $newDoc->setField($field, $value);
             }

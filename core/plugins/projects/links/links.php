@@ -1148,7 +1148,7 @@ class Links extends Plugin
             }
 
             // crossref DOI
-            $metadata = json_decode($metadata, true);
+            $metadata = json_decode((string) $metadata, true);
 
             // Parse data
             $data = self::parseDoiData($data, $metadata);

@@ -79,7 +79,7 @@ final class Version
             if ($service == self::VERSION_SERVICE_GITHUB) {
                 $url = 'https://api.github.com/repos/hubzero/hubzero-cms/git/refs/tags/release-';
 
-                $apiResponse = json_decode(file_get_contents($url), true);
+                $apiResponse = json_decode((string) file_get_contents($url), true);
 
                 // Simplify the API response into a simple array of version numbers
                 $tags = array_map(function ($tag) {

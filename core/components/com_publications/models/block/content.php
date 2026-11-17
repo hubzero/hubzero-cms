@@ -505,7 +505,7 @@ class Content extends Base
                 ],
             ],
         ];
-        return json_decode(json_encode($manifest), false);
+        return json_decode((string) json_encode($manifest), false);
     }
 
     /**
@@ -570,7 +570,7 @@ class Content extends Base
                 $manifest['elements'] = [1 => $this->getElementManifest()];
             }
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

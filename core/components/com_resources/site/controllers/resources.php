@@ -1105,7 +1105,7 @@ class Resources extends SiteController
         $manifestPath = PATH_APP . $this->getVideoManifestForResource($activechild);
 
         if (is_file($manifestPath)) {
-            $manifest = json_decode(file_get_contents($manifestPath));
+            $manifest = json_decode((string) file_get_contents($manifestPath));
         }
 
         if (!isset($manifest->presentation)) {

@@ -389,7 +389,7 @@ class Assetgroupv1r0 extends Base
         $jsonArray = [];
         foreach ($rows as $v) {
             // Solve Error "Cannot use object of type stdClass as array"
-            $assetGroupArray = (array) json_decode(json_encode($v), true);
+            $assetGroupArray = (array) json_decode((string) json_encode($v), true);
             $jsonArray[] = $assetGroupArray;
         }
 

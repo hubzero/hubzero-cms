@@ -54,7 +54,7 @@ class DataStore extends Base
         ];
 
         $parsedConfig = $this->parent->parseConfig($this->name, $configs, $savedConfig);
-        $this->config = json_decode(json_encode($parsedConfig), false);
+        $this->config = json_decode((string) json_encode($parsedConfig), false);
         return $this->config;
     }
 

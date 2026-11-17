@@ -43,7 +43,7 @@ class DataDefinitionNew
         }
 
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $db_conf = json_decode((string) file_get_contents($db_conf_file), true);
 
         $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
 

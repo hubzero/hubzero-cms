@@ -540,7 +540,7 @@ class Hubzero extends Plugin
         // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the
         // value encoded in json in appropriate PHP type
         $objString = json_encode($objRows);
-        return json_decode($objString, true);
+        return json_decode((string) $objString, true);
     }
 
     /**

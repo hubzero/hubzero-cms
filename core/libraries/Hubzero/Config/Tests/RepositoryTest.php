@@ -887,7 +887,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $dbGroup);
 
         // Convert to array via json roundtrip (real-world pattern)
-        $dbArray = json_decode(json_encode($dbGroup), true);
+        $dbArray = json_decode((string) json_encode($dbGroup), true);
 
         $this->assertIsArray($dbArray);
         $this->assertEquals('localhost', $dbArray['host']);

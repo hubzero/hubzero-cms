@@ -46,7 +46,7 @@ class Migration20150826208413ComContent extends Base
                         $attribs = preg_replace("/\\\\\"/", "\"", $attribs);
                     }
 
-                    $attribs = json_decode($attribs);
+                    $attribs = json_decode((string) $attribs);
 
                     if (json_last_error() === JSON_ERROR_NONE) {
                         $attribs = json_encode($attribs);

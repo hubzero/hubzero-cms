@@ -180,7 +180,7 @@ class SchemaSnapshot
         }
 
         $json = file_get_contents($filepath);
-        $data = json_decode($json, true);
+        $data = json_decode((string) $json, true);
 
         if ($data === null) {
             throw new \RuntimeException("Invalid JSON in snapshot: {$name}");
@@ -235,7 +235,7 @@ class SchemaSnapshot
 
         foreach (glob($pattern) as $filepath) {
             $json = file_get_contents($filepath);
-            $data = json_decode($json, true);
+            $data = json_decode((string) $json, true);
 
             if ($data !== null) {
                 $snapshots[] = [
@@ -408,7 +408,7 @@ class SchemaSnapshot
             throw new \InvalidArgumentException("Schema file not found: {$schemaFile}");
         }
 
-        $schemaData = json_decode(file_get_contents($schemaFile), true);
+        $schemaData = json_decode((string) file_get_contents($schemaFile), true);
 
         if ($schemaData === null) {
             throw new \RuntimeException("Invalid JSON in schema file: {$schemaFile}");

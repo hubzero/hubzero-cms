@@ -260,7 +260,7 @@ class Youtube extends Module
             && filemtime($cacheFile) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES')
         ) {
             $feed = file_get_contents($cacheFile);
-            $feed = json_decode($feed);
+            $feed = json_decode((string) $feed);
         } else {
             // get the feed with curl
             $ch = curl_init();

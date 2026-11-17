@@ -343,7 +343,7 @@ class Connect extends Obj
                 ];
 
                 // get JSON access token object (with refresh_token parameter)
-                $token = json_decode($this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
+                $token = json_decode((string) $this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
 
                 // Store refresh token in the database
                 if (isset($token->refresh_token)) {
@@ -1399,7 +1399,7 @@ class Connect extends Obj
                     $entry['url']      = isset($data['downloadUrl']) ? $data['downloadUrl'] : '';
                     $entry['export']   = isset($data['exportLinks']) ? $data['exportLinks'] : [];
                     $entry['mimeType'] = $data['mimeType'];
-                    return json_decode(json_encode($entry));
+                    return json_decode((string) json_encode($entry));
                 }
             } catch (Exception $e) {
                 $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
@@ -2156,7 +2156,7 @@ class Connect extends Obj
 
             // return JSON refreshed access token object
             try {
-                return json_decode($this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
+                return json_decode((string) $this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
             } catch (Exception $e) {
                 $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
                 return false;

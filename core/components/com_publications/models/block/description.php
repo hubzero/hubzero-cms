@@ -381,7 +381,7 @@ class Description extends Base
                 'rows'          => '6',
             ],
         ];
-        return json_decode(json_encode($manifest), false);
+        return json_decode((string) json_encode($manifest), false);
     }
 
     /**
@@ -471,7 +471,7 @@ class Description extends Base
                 $manifest['elements']     = [1 => $this->getElementManifest()];
             }
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

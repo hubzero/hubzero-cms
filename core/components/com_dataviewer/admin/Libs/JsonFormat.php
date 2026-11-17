@@ -22,7 +22,7 @@ class JsonFormat
         $indent_level = 0;
         $in_string = false;
 
-        $json_obj = json_decode($json);
+        $json_obj = json_decode((string) $json);
 
         if ($json_obj === false) {
             return false;

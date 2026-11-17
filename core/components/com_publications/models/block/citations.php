@@ -391,7 +391,7 @@ class Citations extends Base
                 'params'       => ['required' => 0, 'published_editing' => 1],
             ];
 
-            return json_decode(json_encode($manifest), false);
+            return json_decode((string) json_encode($manifest), false);
         }
 
         return $manifest;

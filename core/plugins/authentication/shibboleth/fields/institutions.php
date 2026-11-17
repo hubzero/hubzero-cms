@@ -159,7 +159,7 @@ class Institutions extends Field
         $cacheFile = $tmpDir . DS . 'shib_entities_' . md5($xmlPath) . '.json';
 
         if (file_exists($cacheFile) && filemtime($cacheFile) >= filemtime($xmlPath)) {
-            $cached = json_decode(file_get_contents($cacheFile), true);
+            $cached = json_decode((string) file_get_contents($cacheFile), true);
             if (is_array($cached)) {
                 return $cached;
             }

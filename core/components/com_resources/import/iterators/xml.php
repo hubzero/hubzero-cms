@@ -57,7 +57,7 @@ class Xml implements \Iterator
     {
         $doc = new \DOMDocument();
         $object = simplexml_import_dom($doc->importNode($this->reader->expand(), true));
-        return json_decode(json_encode($object));
+        return json_decode((string) json_encode($object));
     }
 
     /**

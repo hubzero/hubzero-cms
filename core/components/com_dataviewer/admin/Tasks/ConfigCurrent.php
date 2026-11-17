@@ -26,7 +26,7 @@ class ConfigCurrent
 
         $db_dv_conf = [];
         if (file_exists($dv_conf_file)) {
-            $db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
+            $db_dv_conf = json_decode((string) file_get_contents($dv_conf_file), true);
             if (!is_array($db_dv_conf)) {
                 $db_dv_conf = [];
             } if (isset($db_dv_conf['settings'])) {

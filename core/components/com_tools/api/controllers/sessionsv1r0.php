@@ -1854,7 +1854,7 @@ class Sessionsv1r0 extends ApiController
             $return_value = proc_close($process);
 
             $output = strstr($output, '{');
-            $joutput = json_decode($output);
+            $joutput = json_decode((string) $output);
 
             $object = [
                 'fileserver'   => '128.46.19.124',

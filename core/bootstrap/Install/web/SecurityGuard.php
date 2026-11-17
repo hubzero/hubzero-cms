@@ -460,7 +460,7 @@ class SecurityGuard
             return null;
         }
 
-        $data = json_decode(file_get_contents($file), true);
+        $data = json_decode((string) file_get_contents($file), true);
 
         if (!is_array($data)) {
             return null;
@@ -681,7 +681,7 @@ class SecurityGuard
             return null;
         }
 
-        $data = json_decode(file_get_contents($file), true);
+        $data = json_decode((string) file_get_contents($file), true);
 
         if (!is_array($data) || !isset($data['signature'])) {
             return null;

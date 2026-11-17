@@ -1237,7 +1237,7 @@ class Setup extends Base
 
             $agencies = [];
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             if (!$resultObj || empty($resultObj->items)) {
                 curl_close($ch);
@@ -1301,7 +1301,7 @@ class Setup extends Base
                 return false;
             }
 
-            $resultObj = json_decode($result);
+            $resultObj = json_decode((string) $result);
 
             if (!$resultObj || empty($resultObj->items)) {
                 curl_close($ch);

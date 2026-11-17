@@ -44,7 +44,7 @@ $media_path = null;
 if (isset($manifest) && is_file($manifest)) {
     $media_path = $manifest;
     $media_dir  = dirname($manifest);
-    $manifest   = json_decode(file_get_contents($manifest));
+    $manifest   = json_decode((string) file_get_contents($manifest));
 
     if (is_null($manifest)) {
         $type  = 'none';
@@ -124,7 +124,7 @@ if ($type == 'hubpresenter') {
     $content_folder = ltrim(substr(rtrim($media_dir, DS), strlen(PATH_ROOT)), DS);
 
     // Decode the json formatted manifest so we can use the information
-    $presentation = json_decode($contents);
+    $presentation = json_decode((string) $contents);
     $presentation = $presentation->presentation;
 
     // get subs from json file

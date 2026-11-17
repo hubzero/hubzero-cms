@@ -138,7 +138,7 @@ class Remote
             throw new Exception('cURL Error: ' . $error);
         }
 
-        $result = json_decode($result);
+        $result = json_decode((string) $result);
         if (!isset($result->success) || !$result->success) {
             throw new Exception(
                 'Postmark Error: ' . (isset($result->message) && $result->message ? $result->message : 'unknown'),

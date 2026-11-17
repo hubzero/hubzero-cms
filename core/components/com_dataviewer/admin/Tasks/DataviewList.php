@@ -26,7 +26,7 @@ class DataviewList
 
         $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('db', false), 'db');
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $db_conf = json_decode((string) file_get_contents($db_conf_file), true);
 
         // The connection is made on first use; make it now to learn whether it can be
         $jdb = null;
@@ -121,7 +121,7 @@ class DataviewList
                         system($cmd);
                     }
 
-                    $dd = json_decode(file_get_contents($json_file), true);
+                    $dd = json_decode((string) file_get_contents($json_file), true);
                     $last_mod = date("Y-m-d H:i:s", filemtime($php_file));
 
                     print '<tr>';
