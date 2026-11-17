@@ -223,8 +223,8 @@ class Authors extends Base
      *
      * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $oldVersion
-     * @param   object   $newVersion
+     * @param   \Components\Publications\Tables\Version   $oldVersion
+     * @param   \Components\Publications\Tables\Version   $newVersion
      * @return  boolean
      */
     public function transferData($manifest, $pub, $oldVersion, $newVersion)

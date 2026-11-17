@@ -45,7 +45,7 @@ class Dataselector extends Base
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string   $viewname
      * @param   object|null   $status
-     * @param   object|null   $master
+     * @param   \stdClass|null   $master
      * @param   integer  $order
      * @return  string
      */

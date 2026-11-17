@@ -281,7 +281,7 @@ class Menutype extends Obj
     /**
      * Method to get type options from layouts
      *
-     * @param   object  $component
+     * @param   \stdClass  $component
      * @param   string  $view
      * @return  array<int, mixed>
      */

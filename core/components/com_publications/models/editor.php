@@ -16,7 +16,7 @@ use Hubzero\Base\Obj;
 class Editor extends Obj
 {
     /**
-     * @var  object|null
+     * @var  \stdClass|null
      */
     protected $configs;
 

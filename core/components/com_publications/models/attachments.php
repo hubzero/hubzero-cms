@@ -75,7 +75,7 @@ class Attachments extends Obj
      * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   array<mixed>|null    $attachments
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($name, $element = null, $elementId = 0, $attachments = null)
     {

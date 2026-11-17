@@ -741,7 +741,7 @@ class Data extends Base
     /**
      * Add to zip bundle
      *
-     * @param   object   $zip
+     * @param   \ZipArchive   $zip
      * @param   array<mixed>    $attachments
      * @param   \stdClass   $element
      * @param   integer  $elementId
