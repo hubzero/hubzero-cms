@@ -675,7 +675,7 @@ class Publication extends Base
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
-     * @param   object   $readme
+     * @param   string   $readme
      * @param   string   $bundleDir
      * @return  boolean
      */

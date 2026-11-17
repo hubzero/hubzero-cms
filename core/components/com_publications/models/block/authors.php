@@ -307,7 +307,7 @@ class Authors extends Base
     /**
      * Add new author
      *
-     * @param   object   $manifest
+     * @param   object|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
@@ -480,7 +480,7 @@ class Authors extends Base
     /**
      * Update attachment record
      *
-     * @param   object   $manifest
+     * @param   object|null   $manifest
      * @param   integer  $blockId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor

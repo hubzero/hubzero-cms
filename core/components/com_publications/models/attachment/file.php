@@ -1902,7 +1902,7 @@ class File extends Base
     /**
      * Draw attachment
      *
-     * @param   object  $data
+     * @param   array<mixed>|object  $data
      * @param   object  $params
      * @param   object|null  $handler
      * @return  string  HTML

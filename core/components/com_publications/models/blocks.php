@@ -90,7 +90,10 @@ class Blocks extends Obj
      * @param   string   $name
      * @param   integer  $blockId
      * @param   boolean  $new
-     * @return  object|false
+     * @return  (
+     *     Block\Authors|Block\Citations|Block\Content|Block\Description|Block\Extras
+     *     |Block\License|Block\Notes|Block\Review|Block\Tags|false
+     * )  False when there is no such type
      */
     public function loadBlock($name, $blockId = 0, $new = false)
     {
@@ -162,7 +165,8 @@ class Blocks extends Obj
             return false;
         } else {
             $manifest = $block->getManifest();
-            if ($manifest->elements) {
+            // Only the blocks that have elements say what they are
+            if ($manifest->elements && method_exists($block, 'getElementManifest')) {
                 return $block->getElementManifest();
             }
         }
@@ -207,7 +211,8 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false) {
+        // Not every block has data of its own to carry over
+        if ($block === false || !method_exists($block, 'transferData')) {
             return false;
         } else {
             return $block->transferData($manifest, $pub, $old, $new);
@@ -318,7 +323,8 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false || !$pub || !is_object($pub)) {
+        // Only some blocks have items
+        if ($block === false || !method_exists($block, 'reorder') || !$pub || !is_object($pub)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -354,7 +360,8 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false || !$pub || !is_object($pub)) {
+        // Only some blocks have items
+        if ($block === false || !method_exists($block, 'saveItem') || !$pub || !is_object($pub)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -390,7 +397,8 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false || !$pub || !is_object($pub)) {
+        // Only some blocks have items
+        if ($block === false || !method_exists($block, 'deleteItem') || !$pub || !is_object($pub)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -426,7 +434,8 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false || !$pub || !is_object($pub)) {
+        // Only some blocks have items
+        if ($block === false || !method_exists($block, 'addItem') || !$pub || !is_object($pub)) {
             $this->setError('Error saving block');
             return false;
         } else {

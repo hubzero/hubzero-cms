@@ -455,7 +455,10 @@ class Attachments extends Obj
      *
      * @param   string   $name
      * @param   boolean  $new
-     * @return  object|false
+     * @return  (
+     *     $name is 'file' ? Attachment\File|false
+     *     : Attachment\Data|Attachment\File|Attachment\Link|Attachment\Publication|Attachment\Tool|false
+     * )  False when there is no such type
      */
     public function loadAttach($name, $new = false)
     {
