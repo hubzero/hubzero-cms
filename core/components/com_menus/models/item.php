@@ -1067,7 +1067,7 @@ class Item extends Nested
             // Confirm that the option is defined.
             $option = '';
             $base = '';
-            if (isset($args['option'])) {
+            if (isset($args['option']) && is_string($args['option'])) {
                 // The option determines the base path to work with.
                 $option = $args['option'];
                 $base   = Component::path($option) . '/site';
@@ -1075,11 +1075,11 @@ class Item extends Nested
 
             // Confirm a view is defined.
             $formFile = false;
-            if (isset($args['view'])) {
+            if (isset($args['view']) && is_string($args['view'])) {
                 $view = $args['view'];
 
                 // Determine the layout to search for.
-                if (isset($args['layout'])) {
+                if (isset($args['layout']) && is_string($args['layout'])) {
                     $layout = $args['layout'];
                 } else {
                     $layout = 'default';

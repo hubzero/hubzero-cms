@@ -118,7 +118,7 @@ class Access extends Table
      * Save groups
      *
      * @param   integer|null  $vid       pub version id
-     * @param   array<mixed>|string $groups
+     * @param   string $groups
      * @param   string|int $sysgroup  name of system group
      * @return  integer|false
      */

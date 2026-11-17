@@ -302,7 +302,9 @@ class Items extends AdminController
                                 // Look for the first view node off of the root node.
                                 if ($view = $xml->xpath('view[1]')) {
                                     if (!empty($view[0]['title'])) {
-                                        $vars['layout'] = $vars['layout'] ?? 'default';
+                                        if (!isset($vars['layout']) || !is_string($vars['layout'])) {
+                                            $vars['layout'] = 'default';
+                                        }
 
                                         // Attempt to load the layout xml file.
                                         // If Alternative Menu Item, get template folder for layout file
@@ -495,7 +497,7 @@ class Items extends AdminController
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
 
-                if (isset($args['option'])) {
+                if (isset($args['option']) && is_string($args['option'])) {
                     // Load the language file for the component.
                     $lang = Lang::getRoot();
                     $lang->load($args['option'], PATH_APP, null, false, true)

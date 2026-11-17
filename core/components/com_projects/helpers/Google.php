@@ -1323,7 +1323,7 @@ class Google extends Obj
     /**
      * Get file name for import
      *
-     * @param   array<mixed>|string $name
+     * @param   string $name
      * @param   string  $importExt
      * @return  string
      */
