@@ -97,6 +97,7 @@ class MetadataTest extends Basic
         );
 
         $fields = Metadata::parse($xml);
+        $this->assertIsArray($fields);
 
         $this->assertArrayNotHasKey('slo_url', $fields);
     }
@@ -140,10 +141,12 @@ class MetadataTest extends Basic
         );
 
         $fields = Metadata::parse($xml);
+        $this->assertIsArray($fields);
         $this->assertArrayNotHasKey('nameid_format', $fields);
 
         // The base fixture publishes no NameIDFormat at all
         $fields = Metadata::parse($this->xml);
+        $this->assertIsArray($fields);
         $this->assertArrayNotHasKey('nameid_format', $fields);
         $this->assertArrayNotHasKey('nameid_source', $fields);
     }
@@ -192,6 +195,7 @@ class MetadataTest extends Basic
         $xml = str_replace('AuthnRequestsSigned="true"', '', $this->xml);
 
         $fields = Metadata::parse($xml);
+        $this->assertIsArray($fields);
 
         $this->assertArrayNotHasKey('want_requests_signed', $fields);
     }

@@ -690,6 +690,7 @@ class FactoryTest extends AbstractDriverTestCase
     {
         $url = Factory::url();
         $parsed = parse_url($url);
+        $this->assertIsArray($parsed);
 
         $this->assertArrayHasKey('scheme', $parsed);
         $this->assertArrayHasKey('host', $parsed);

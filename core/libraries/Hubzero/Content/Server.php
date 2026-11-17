@@ -438,7 +438,7 @@ class Server extends Obj
 
                     $bytes_left -= $bytes_to_read;
 
-                    echo fread($fp, $bytes_to_read);
+                    echo fread($fp, (int) $bytes_to_read);
 
                     flush();
                 }

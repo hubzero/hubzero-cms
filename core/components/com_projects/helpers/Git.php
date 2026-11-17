@@ -370,10 +370,10 @@ class Git extends Obj
         }
 
         $oCount = $this->callGit('diff --name-status ' . escapeshellarg($old['hash'] . '^')) ?: [];
-        $nCount = $this->callGit('diff --name-status ' . escapeshellarg($new['hash'] . '^'));
+        $nCount = $this->callGit('diff --name-status ' . escapeshellarg($new['hash'] . '^')) ?: [];
 
         // Get file content
-        if (count($oCount ?: []) <= 2 && count($nCount) <= 2) {
+        if (count($oCount) <= 2 && count($nCount) <= 2) {
             $out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash']) . ' ' . escapeshellarg($new['hash']));
         } else {
             $out = $this->callGit(
