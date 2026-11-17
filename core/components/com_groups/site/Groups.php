@@ -36,6 +36,7 @@ class Groups extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller and execute
+        /** @var \Hubzero\Component\SiteController $controller Every controller here extends it */
         $controller = new $controllerName();
         $controller->execute();
         $controller->redirect();

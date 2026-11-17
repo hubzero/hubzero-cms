@@ -52,6 +52,7 @@ class Categories extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Execute
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller->execute();
     }

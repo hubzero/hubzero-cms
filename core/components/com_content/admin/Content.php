@@ -61,6 +61,7 @@ class Content extends AbstractComponent
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller->execute();
     }

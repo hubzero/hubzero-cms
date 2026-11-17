@@ -1147,7 +1147,7 @@ class Html extends Obj
                 $name = $desectPath[$p];
                 if ($adapter) {
                     $temp = Entity::fromPath($desectPath[$p], $adapter);
-                    $name = $temp->displayName();
+                    $name = $temp->getDisplayName();
                 }
                 // the segment comes from the request (subdir=) or a stored name
                 $name = htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8');

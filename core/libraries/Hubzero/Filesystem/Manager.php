@@ -103,7 +103,7 @@ class Manager
      * @param   string  $name    The adapter name to instantiate
      * @param   array<mixed>   $params  Any initialization parameters
      * @param   string|null  $key     A custom key under which to store the adapter
-     * @return  object
+     * @return  \Hubzero\Filesystem\Flysystem
      **/
     public static function adapter($name, $params = [], $key = null)
     {

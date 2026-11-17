@@ -60,6 +60,7 @@ class Cart extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller
+        /** @var \Hubzero\Component\AdminController $controller Every controller here extends one */
         $controller = new $controllerName();
 
         $controller->execute();

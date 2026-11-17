@@ -46,6 +46,7 @@ class Members extends AbstractComponent
         // Instantiate controller
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller->execute();
     }

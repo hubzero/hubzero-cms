@@ -89,7 +89,7 @@ class Helper
      * Parse Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
      *
      * @param   string|mixed  $mailingToken  String Mailing token
-     * @return  object|false  Mailing Recipient Object
+     * @return  \stdClass|false|null  The mailing recipient, null when there is none
      */
     public static function parseMailingToken($mailingToken)
     {

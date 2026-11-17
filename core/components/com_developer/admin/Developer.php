@@ -55,6 +55,7 @@ class Developer extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller
+        /** @var \Hubzero\Component\ControllerInterface $component Every controller extends one that is */
         $component = new $controllerName();
         $component->execute();
     }

@@ -57,7 +57,7 @@ class Entity extends Obj
      *
      * @param   string  $path     The path to use to build a new entity from
      * @param   object|null  $adapter  The filesystem adapter to use for interaction with the entity
-     * @return  object
+     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     public static function fromPath($path, $adapter = null)
     {
@@ -102,7 +102,7 @@ class Entity extends Obj
      *
      * @param   array<mixed>   $properties  The properties to use to build a new entity from
      * @param   object  $adapter     The filesystem adapter to use for interaction with the entity
-     * @return  \Hubzero\Filesystem\Directory|object|\Hubzero\Filesystem\File
+     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     protected static function getSpecialized($properties, $adapter)
     {

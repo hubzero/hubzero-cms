@@ -61,6 +61,7 @@ class Saml extends AbstractComponent
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller here extends one */
         $controller = new $controllerName();
 
         $controller->execute();

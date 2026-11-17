@@ -877,7 +877,7 @@ class Connections
             if ($file->save()) {
                 $results['uploaded'][] = $file->getPath();
 
-                if ($file->isExpandable() && $expand) {
+                if ($file instanceof \Hubzero\Filesystem\Type\Expandable && $expand) {
                     if ($file->expand()) {
                         // Delete the archive itself
                         $file->delete();
@@ -966,12 +966,12 @@ class Connections
             $file = Entity::fromPath($path, $this->connection->adapter());
 
             $file->setContents($fp);
-            $file->setSize($totalSize);
+            $file->setSize((int) $totalSize);
 
             if ($file->save()) {
                 $results['uploaded'][] = $file->getPath();
 
-                if ($file->isExpandable() && $expand) {
+                if ($file instanceof \Hubzero\Filesystem\Type\Expandable && $expand) {
                     if ($file->expand()) {
                         // Delete the archive itself
                         $file->delete();
@@ -1168,7 +1168,7 @@ class Connections
                 if ($file->save()) {
                     $results['uploaded'][] = $file->getPath();
 
-                    if ($file->isExpandable() && $expand) {
+                    if ($file instanceof \Hubzero\Filesystem\Type\Expandable && $expand) {
                         if ($file->expand()) {
                             // Delete the archive itself
                             $file->delete();

@@ -77,7 +77,7 @@ class Connection extends Relational
      * Generates the filesystem adapter for the given provider
      *
      * @param   array<mixed>   $options  extra params to include with defaults
-     * @return  object
+     * @return  \Hubzero\Filesystem\Flysystem
      **/
     public function adapter($options = [])
     {

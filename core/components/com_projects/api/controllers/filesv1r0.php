@@ -1460,7 +1460,7 @@ class Filesv1r0 extends ApiController
             $file = Entity::fromPath($path, $this->ormconn->adapter());
 
             $file->setContents($fp);
-            $file->setSize($totalSize);
+            $file->setSize((int) $totalSize);
 
             if ($file->save()) {
                 $result = true;

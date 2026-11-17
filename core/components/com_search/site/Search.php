@@ -59,6 +59,7 @@ class Search extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller
+        /** @var \Hubzero\Component\SiteController $controller Every controller here extends it */
         $controller = new $controllerName();
         $controller->execute();
         $controller->redirect();

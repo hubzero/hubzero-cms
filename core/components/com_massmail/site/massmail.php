@@ -17,5 +17,6 @@ $controllerName = 'unsubscribe';
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+/** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
 $controller = new $controllerName();
 $controller->execute();

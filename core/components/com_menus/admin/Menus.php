@@ -64,6 +64,7 @@ class Menus extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller->execute();
     }

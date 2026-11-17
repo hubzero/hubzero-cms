@@ -47,6 +47,7 @@ class Storefront extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller and execute
+        /** @var \Hubzero\Component\SiteController $controller Every controller here extends one */
         $controller = new $controllerName();
 
         // See if user has to be logged in to see the component
