@@ -246,7 +246,7 @@ class Initialcon
      */
     public function getFontPath()
     {
-        return realpath($this->fontPath);
+        return (string) realpath($this->fontPath);
     }
 
     /**

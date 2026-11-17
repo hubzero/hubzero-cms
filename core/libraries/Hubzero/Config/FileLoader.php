@@ -205,7 +205,7 @@ class FileLoader
 
         // If `$path` is a directory
         if (is_dir($path)) {
-            $paths = glob($path . '/*.*');
+            $paths = glob($path . '/*.*') ?: [];
 
             return $paths;
         }

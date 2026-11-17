@@ -83,7 +83,7 @@ class Generator
                 break;
             case 'json':
             default:
-                $this->output = json_encode($this->output);
+                $this->output = (string) json_encode($this->output);
                 break;
         }
 

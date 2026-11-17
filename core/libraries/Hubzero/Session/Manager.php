@@ -299,7 +299,12 @@ class Manager extends Obj
             return null;
         }
 
-        return session_name();
+        $name = session_name();
+        if ($name === false) {
+            return null;
+        }
+
+        return $name;
     }
 
     /**
@@ -313,7 +318,12 @@ class Manager extends Obj
             return null;
         }
 
-        return session_id();
+        $id = session_id();
+        if ($id === false) {
+            return null;
+        }
+
+        return $id;
     }
 
     /**

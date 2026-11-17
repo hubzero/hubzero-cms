@@ -137,6 +137,6 @@ class FileWriter
             @chmod($file, (int) octdec($mode));
         }
 
-        return $result;
+        return $result !== false;
     }
 }

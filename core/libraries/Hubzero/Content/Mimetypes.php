@@ -767,7 +767,7 @@ class Mimetypes
                 $finfo = finfo_open(FILEINFO_MIME);
                 $MIMEType = finfo_file($finfo, $file);
                 finfo_close($finfo);
-                return $MIMEType;
+                return $MIMEType ?: 'application/octet-stream';
             }
         } else {
             $extension = $this->extractExtension($file);

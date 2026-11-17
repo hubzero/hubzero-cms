@@ -227,7 +227,7 @@ class Error extends Base
         $html[] = '</table>';
 
         echo "\n" . implode("\n", $html) . "\n";
-        $contents = ob_get_contents();
+        $contents = (string) ob_get_contents();
         ob_end_clean();
         return $contents;
     }

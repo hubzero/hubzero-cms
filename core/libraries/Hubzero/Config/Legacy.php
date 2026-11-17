@@ -294,7 +294,7 @@ class Legacy extends Registry
             @chmod($file, (int) octdec($original));
         }
 
-        return $result;
+        return $result !== false;
     }
 
     /**

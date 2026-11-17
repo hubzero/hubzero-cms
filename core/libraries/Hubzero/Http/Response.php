@@ -79,6 +79,10 @@ class Response extends BaseResponse
         */
 
         $gzdata = gzencode($data, $level);
+        if ($gzdata === false) {
+            // Could not compress: send it as it is
+            return $data;
+        }
 
         $this->headers->set('Content-Encoding', $encoding);
         $this->headers->set('X-Content-Encoded-By', 'HUBzero');

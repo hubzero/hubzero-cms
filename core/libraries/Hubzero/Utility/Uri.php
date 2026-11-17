@@ -381,7 +381,7 @@ class Uri
 
         // If the query is empty build it first
         if (is_null($this->query)) {
-            $this->query = $this->buildQuery($this->vars);
+            $this->query = (string) $this->buildQuery($this->vars);
         }
 
         return $this->query;

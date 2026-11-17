@@ -64,6 +64,6 @@ class AsCollection implements CastsAttributes
             $value = $value->toArray();
         }
 
-        return json_encode($value, JSON_UNESCAPED_UNICODE);
+        return (string) json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 }

@@ -55,6 +55,6 @@ class AsJson implements CastsAttributes
             return null;
         }
 
-        return json_encode($value, JSON_UNESCAPED_UNICODE);
+        return (string) json_encode($value, JSON_UNESCAPED_UNICODE);
     }
 }

@@ -653,6 +653,6 @@ class IdP
 
         $serializationContext->getDocument()->formatOutput = true;
 
-        return $serializationContext->getDocument()->saveXML();
+        return (string) $serializationContext->getDocument()->saveXML();
     }
 }

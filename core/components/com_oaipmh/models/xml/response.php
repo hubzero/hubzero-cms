@@ -43,7 +43,7 @@ class Response extends Element
     {
         $this->dom->formatOutput = is_bool($formatOutput) ? $formatOutput : $this->formatOutput;
 
-        return $this->dom->saveXML();
+        return (string) $this->dom->saveXML();
     }
 
     /**

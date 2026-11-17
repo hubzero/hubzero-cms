@@ -144,7 +144,7 @@ class Network
      */
     public function first()
     {
-        return inet_ntop($this->address);
+        return (string) inet_ntop($this->address);
     }
 
     /**
@@ -154,7 +154,7 @@ class Network
      */
     public function last()
     {
-        return inet_ntop($this->address | ~$this->mask);
+        return (string) inet_ntop($this->address | ~$this->mask);
     }
 
     /**

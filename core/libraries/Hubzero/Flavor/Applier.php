@@ -794,7 +794,7 @@ class Applier
             return 'unset';
         }
 
-        return is_scalar($value) ? "'" . $value . "'" : json_encode($value);
+        return is_scalar($value) ? "'" . $value . "'" : (string) json_encode($value);
     }
 
     /**

@@ -512,7 +512,7 @@ class File extends Obj
             return $this->name;
         }
 
-        return file_exists($this->targetPath()) ? file_get_contents($this->targetPath()) : '';
+        return file_exists($this->targetPath()) ? (string) file_get_contents($this->targetPath()) : '';
     }
 
     /**

@@ -579,7 +579,7 @@ class Str
      */
     public static function splitCamel($string)
     {
-        return preg_split('/(?<=[^A-Z_])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z_])/x', $string);
+        return preg_split('/(?<=[^A-Z_])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z_])/x', $string) ?: [];
     }
 
     /**
