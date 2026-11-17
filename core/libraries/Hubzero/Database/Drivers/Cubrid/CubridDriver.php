@@ -302,7 +302,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string       $table
      * @param   string|null  $field
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {

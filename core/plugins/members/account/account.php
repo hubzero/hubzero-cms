@@ -750,7 +750,7 @@ class Account extends Plugin
      *
      * @param   boolean  $create  Create the directory when it is missing?
      * @param   string|null   &$error  Language key describing why the path was rejected
-     * @return  string|boolean    Canonical path of the .ssh directory, false on failure
+     * @return  string|false    Canonical path of the .ssh directory, false on failure
      */
     protected function sshDirectory($create = true, &$error = null)
     {
@@ -806,7 +806,7 @@ class Account extends Plugin
      *
      * @param   string  $ssh     Validated .ssh directory
      * @param   string|null  &$error  Language key describing why the path was rejected
-     * @return  string|boolean   Path of the authorized_keys file, false on failure
+     * @return  string|false   Path of the authorized_keys file, false on failure
      */
     protected function authorizedKeysPath($ssh, &$error = null)
     {

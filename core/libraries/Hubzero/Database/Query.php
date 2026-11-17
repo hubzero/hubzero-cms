@@ -4836,7 +4836,7 @@ class Query
      * Gets the next row in the result set from the database query as an object
      *
      * @param   string  $class  The class name to use for the returned row object
-     * @return  object|bool
+     * @return  object|false
      */
     public function loadNextObject($class = 'stdClass')
     {
@@ -4849,7 +4849,7 @@ class Query
     /**
      * Gets the next row in the result set from the database query as an array
      *
-     * @return  array<mixed>|bool
+     * @return  array<mixed>|false
      */
     public function loadNextRow()
     {

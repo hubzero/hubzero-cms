@@ -1127,7 +1127,7 @@ class Repo extends Obj
      * @param   mixed  $size
      * @param   mixed  $available
      * @param   mixed  $params
-     * @return  int|bool
+     * @return  int|false
      */
     protected function expand($file, $tmp_name, $target, $size, &$available, $params)
     {

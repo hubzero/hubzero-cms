@@ -457,7 +457,7 @@ class Storagev1r0 extends ApiController
      *
      * @param   string  $listdir   Directory relative to the member's root
      * @param   string  $username  Member username
-     * @return  string|boolean
+     * @return  string|false
      */
     protected function resolveDir($listdir, $username)
     {
