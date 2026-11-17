@@ -416,7 +416,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if ($position === false) {
             $terms = [];
 
-            foreach (array_unique((preg_split('/ /', $needle) ?: [])) as $word) {
+            foreach (array_unique(preg_split('/ /', $needle) ?: []) as $word) {
                 $at = mb_stripos($text, $word, 0, 'UTF-8');
 
                 if ($at !== false) {

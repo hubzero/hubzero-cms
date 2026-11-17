@@ -130,6 +130,37 @@ class SshKeyPathTest extends Basic
     }
 
     /**
+     * The member's .ssh directory; the test fails when there is none
+     *
+     * @return  string
+     */
+    private function sshDir()
+    {
+        $ssh = $this->plugin->sshDirectory();
+        if ($ssh === false) {
+            $this->fail('The member has no usable .ssh directory');
+        }
+
+        return $ssh;
+    }
+
+    /**
+     * The authorized_keys path in a .ssh directory; the test fails when it is refused
+     *
+     * @param   string  $ssh  The .ssh directory
+     * @return  string
+     */
+    private function keysPath($ssh)
+    {
+        $auth = $this->plugin->authorizedKeysPath($ssh);
+        if ($auth === false) {
+            $this->fail('The authorized_keys path was refused');
+        }
+
+        return $auth;
+    }
+
+    /**
      * A member without a .ssh directory gets one, with restrictive permissions.
      *
      * @return  void
@@ -236,7 +267,7 @@ class SshKeyPathTest extends Basic
      */
     public function testRejectsSymlinkedAuthorizedKeys()
     {
-        $ssh = $this->plugin->sshDirectory();
+        $ssh = $this->sshDir();
 
         symlink($this->victimKeys(), $ssh . DS . 'authorized_keys');
 
@@ -253,7 +284,7 @@ class SshKeyPathTest extends Basic
      */
     public function testRejectsHardLinkedAuthorizedKeys()
     {
-        $ssh = $this->plugin->sshDirectory();
+        $ssh = $this->sshDir();
 
         if (!@link($this->victimKeys(), $ssh . DS . 'authorized_keys')) {
             $this->markTestSkipped('Hard links are not available here');
@@ -272,7 +303,7 @@ class SshKeyPathTest extends Basic
      */
     public function testRejectsAuthorizedKeysDirectory()
     {
-        $ssh = $this->plugin->sshDirectory();
+        $ssh = $this->sshDir();
 
         mkdir($ssh . DS . 'authorized_keys');
 
@@ -289,7 +320,7 @@ class SshKeyPathTest extends Basic
      */
     public function testAcceptsRegularAuthorizedKeys()
     {
-        $ssh = $this->plugin->sshDirectory();
+        $ssh = $this->sshDir();
 
         file_put_contents($ssh . DS . 'authorized_keys', "ssh-rsa AAAAmember member@example.org\n");
 
@@ -304,8 +335,8 @@ class SshKeyPathTest extends Basic
      */
     public function testWritesKeyWithRestrictivePermissions()
     {
-        $ssh     = $this->plugin->sshDirectory();
-        $auth    = $this->plugin->authorizedKeysPath($ssh);
+        $ssh     = $this->sshDir();
+        $auth    = $this->keysPath($ssh);
         $content = "ssh-rsa AAAAmember member@example.org\n";
 
         $this->assertTrue($this->plugin->writeAuthorizedKeys($auth, $content));
@@ -321,8 +352,8 @@ class SshKeyPathTest extends Basic
      */
     public function testWritesEmptyKey()
     {
-        $ssh  = $this->plugin->sshDirectory();
-        $auth = $this->plugin->authorizedKeysPath($ssh);
+        $ssh  = $this->sshDir();
+        $auth = $this->keysPath($ssh);
 
         file_put_contents($auth, "ssh-rsa AAAAmember member@example.org\n");
 
@@ -338,8 +369,8 @@ class SshKeyPathTest extends Basic
      */
     public function testWriteReplacesSymlinkPlantedAfterValidation()
     {
-        $ssh     = $this->plugin->sshDirectory();
-        $auth    = $this->plugin->authorizedKeysPath($ssh);
+        $ssh     = $this->sshDir();
+        $auth    = $this->keysPath($ssh);
         $content = "ssh-rsa AAAAattacker attacker@example.org\n";
 
         // The member wins the race and points authorized_keys at the victim

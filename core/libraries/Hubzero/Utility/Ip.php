@@ -244,7 +244,7 @@ class Ip
 
         // 16-bit limbs, most significant first; divide by 10^9 until nothing
         // is left. A remainder times 65536 plus a limb stays under 2^53.
-        $limbs  = array_values((unpack('n*', $packed) ?: []));
+        $limbs  = array_values(unpack('n*', $packed) ?: []);
         $digits = '';
 
         while ($limbs) {

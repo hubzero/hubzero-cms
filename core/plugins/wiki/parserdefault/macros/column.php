@@ -130,7 +130,7 @@ class Column extends WikiMacro
                     ) {
                         continue;
                     }
-                    $val = trim(end($a));
+                    $val = trim((string) end($a));
                     $val = trim($val, '"');
                     $val = trim($val, "'");
 

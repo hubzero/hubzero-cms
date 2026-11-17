@@ -79,7 +79,7 @@ class Span extends WikiMacro
                 ) {
                     continue;
                 }
-                $val = trim(end($a), "'\"");
+                $val = trim((string) end($a), "'\"");
 
                 $atts[] = $key . '="' . htmlspecialchars($val, ENT_QUOTES, 'UTF-8') . '"';
             }

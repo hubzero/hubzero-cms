@@ -58,7 +58,7 @@ class Span extends Macro
                 $key = $a[0];
                 $val = end($a);
 
-                $atts[] = $key . '="' . trim($val, "'\"") . '"';
+                $atts[] = $key . '="' . trim((string) $val, "'\"") . '"';
             }
         }
 

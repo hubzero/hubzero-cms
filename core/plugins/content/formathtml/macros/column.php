@@ -109,7 +109,7 @@ class Column extends Macro
                 foreach ($attribs as $a) {
                     $a = preg_split('/=/', $a) ?: [];
                     $key = strtolower(trim($a[0]));
-                    $val = trim(end($a));
+                    $val = trim((string) end($a));
                     $val = trim($val, '"');
                     $val = trim($val, "'");
 

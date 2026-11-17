@@ -1151,7 +1151,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $results = [];
 
         // Get traits for the class and all its parents
-        foreach (array_reverse((class_parents($class) ?: [])) + [$class => $class] as $class) {
+        foreach (array_reverse(class_parents($class) ?: []) + [$class => $class] as $class) {
             $results = array_merge($results, static::traitUsesRecursive($class, $autoload));
         }
 
@@ -5204,7 +5204,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return true;
         }
 
-        $this->setErrors(($validity ?: []));
+        $this->setErrors($validity ?: []);
         return false;
     }
 
