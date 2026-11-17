@@ -698,7 +698,7 @@ class Manage extends AdminController
         }
 
         // url
-        $url_bits = parse_url($gitLabProject['http_url_to_repo']);
+        $url_bits = parse_url($gitLabProject['http_url_to_repo']) ?: [];
         $gitLabUrl = $url_bits["scheme"]
             . '://oauth2:'
             . $client->get('token')
@@ -838,7 +838,7 @@ class Manage extends AdminController
                 }
 
                 // url
-                $url_bits = parse_url($gitlabProject['http_url_to_repo']);
+                $url_bits = parse_url($gitlabProject['http_url_to_repo']) ?: [];
                 $gitLabUrl = $url_bits["scheme"]
                     . '://oauth2:'
                     . $gitlabKey

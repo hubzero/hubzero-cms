@@ -558,7 +558,7 @@ class Orcid extends SiteController
 
         $pathComponents = [];
         if (isset($parsed_response['Location'])) {
-            $parsed_url = parse_url($parsed_response['Location']);
+            $parsed_url = parse_url($parsed_response['Location']) ?: [];
             $pathComponents = explode('/', trim($parsed_url['path'], '/'));
         }
 

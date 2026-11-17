@@ -461,7 +461,7 @@ class Domainrestriction extends Plugin
     {
         $url = strpos($url, '://') ? $url : 'http://' . $url;
 
-        $host = parse_url($url);
+        $host = parse_url($url) ?: [];
         $domain = str_replace('__', '', $host['host']);
         $tail = strlen($domain) >= 7 ? substr($domain, -7) : $domain;
         $tld = strstr($tail, '.');

@@ -130,7 +130,7 @@ class Provider
             $method = $_SERVER['REQUEST_METHOD'];
         }
 
-        $parts = parse_url($uri);
+        $parts = parse_url($uri) ?: [];
 
         $path = trim($parts['path'], '/');
 

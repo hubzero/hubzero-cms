@@ -355,7 +355,7 @@ class Json
 
                             if (isset($dd['publication_state'])) {
                                 // Publication id
-                                $repo_base = parse_url($dd['repo_base']);
+                                $repo_base = parse_url($dd['repo_base']) ?: [];
                                 $repo_base_path = explode('/', $repo_base['path']);
                                 $pub_id = $repo_base_path[2];
                                 if (strlen($pub_id) < 5) {

@@ -703,7 +703,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         for ($i = 0; $i < 20; $i++) {
             $url = Factory::url();
-            $parsed = parse_url($url);
+            $parsed = parse_url($url) ?: [];
             $this->assertContains($parsed['host'], $validDomains);
         }
     }

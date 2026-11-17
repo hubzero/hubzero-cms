@@ -228,7 +228,7 @@ class Languagefilter extends Plugin
             if ($item = App::get('menu')->getItem($Itemid)) {
                 if ($item->home && $uri->getUriVar('option') != 'com_search') {
                     $link  = $item->link;
-                    $parts = parse_url($link);
+                    $parts = parse_url($link) ?: [];
                     if (isset($parts['query']) && strpos($parts['query'], '&amp;')) {
                         $parts['query'] = str_replace('&amp;', '&', $parts['query']);
                     }

@@ -363,7 +363,7 @@ class IdPBindingTest extends Basic
      */
     private function arrive($method, $url, array $post = [])
     {
-        $parts = parse_url($url);
+        $parts = parse_url($url) ?: [];
         $query = isset($parts['query']) ? $parts['query'] : '';
 
         $_SERVER['REQUEST_METHOD'] = $method;

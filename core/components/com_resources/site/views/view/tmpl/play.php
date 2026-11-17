@@ -89,7 +89,7 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
     if (!empty($_SERVER['HTTPS'])) {
         $url = str_replace('http:', 'https:', $url);
     }
-    $parsed = parse_url($url);
+    $parsed = parse_url($url) ?: [];
     if (stristr($parsed['host'], 'youtube')) {
         // YouTube
         $video_id = '';
