@@ -265,7 +265,7 @@ class Ldap
             'host',
         ];
 
-        $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
+        $entry = self::search($conn, $dn, $filter, $reqattr);
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
         // If there was a database entry, but there was no ldap entry, create the ldap entry
@@ -310,9 +310,7 @@ class Ldap
         $ldapinfo = null;
 
         if ($count > 0) {
-            $firstentry = ldap_first_entry($conn, $entry);
-
-            $attr = ldap_get_attributes($conn, $firstentry);
+            $attr = self::firstAttributes($conn, $entry);
 
             if (!empty($attr)) {
                 foreach ($reqattr as $key) {
@@ -469,7 +467,7 @@ class Ldap
 
         $reqattr = ['gidNumber','cn','description','memberUid'];
 
-        $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
+        $entry = self::search($conn, $dn, $filter, $reqattr);
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
         // If there was a database entry, but there was no ldap entry, create the ldap entry
@@ -505,9 +503,7 @@ class Ldap
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
         if ($count > 0) {
-            $firstentry = ldap_first_entry($conn, $entry);
-
-            $attr = ldap_get_attributes($conn, $firstentry);
+            $attr = self::firstAttributes($conn, $entry);
 
             if (!empty($attr) && $attr['count'] > 0) {
                 foreach ($reqattr as $key) {
@@ -660,9 +656,9 @@ class Ldap
 
         $reqattr = ['gidNumber','cn'];
 
-        $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
+        $entry = self::search($conn, $dn, $filter, $reqattr);
 
-        $count = ldap_count_entries($conn, $entry);
+        $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
         // If there was a database entry, but there was no ldap entry, create the ldap entry
         if ($count <= 0) {
@@ -671,9 +667,7 @@ class Ldap
 
         $ldapinfo = null;
 
-        $firstentry = ldap_first_entry($conn, $entry);
-
-        $attr = ldap_get_attributes($conn, $firstentry);
+        $attr = self::firstAttributes($conn, $entry);
 
         if (!empty($attr) && $attr['count'] > 0) {
             foreach ($reqattr as $key) {
@@ -824,7 +818,7 @@ class Ldap
         $dn = "ou=groups," . $hubLDAPBaseDN;
         $filter = '(objectclass=hubGroup)';
 
-        $sr = ldap_search($conn, $dn, $filter, ['gid','cn'], 0, 0, 0);
+        $sr = self::search($conn, $dn, $filter, ['gid','cn']);
 
         $gids = [];
 
@@ -833,7 +827,7 @@ class Ldap
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
-                    $attr = ldap_get_attributes($conn, $entry);
+                    $attr = self::attributes($conn, $entry);
 
                     if (array_key_exists('gid', $attr)) {
                         $gids[] = "gid=" . $attr['gid'][0] . "," . "ou=groups," . $hubLDAPBaseDN;
@@ -871,7 +865,7 @@ class Ldap
             $dn = "cn=$row," . "ou=groups," . $hubLDAPBaseDN;
 
             // Added this search because the delete will error on a delete of a non existent object
-            $sr = ldap_search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", ['cn'], 0, 0, 0);
+            $sr = self::search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", ['cn']);
             if (($sr !== false) and ldap_count_entries($conn, $sr) == 1) {
                 $result = ldap_delete($conn, $dn);
 
@@ -890,7 +884,7 @@ class Ldap
         $dn = "ou=groups," . $hubLDAPBaseDN;
         $filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
 
-        $sr = ldap_search($conn, $dn, $filter, ['cn'], 0, 0, 0);
+        $sr = self::search($conn, $dn, $filter, ['cn']);
 
         $gids = [];
 
@@ -899,7 +893,7 @@ class Ldap
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
-                    $attr = ldap_get_attributes($conn, $entry);
+                    $attr = self::attributes($conn, $entry);
 
                     $gids[] = $attr['cn'][0];
 
@@ -947,7 +941,7 @@ class Ldap
         $dn = "ou=users," . $hubLDAPBaseDN;
         $filter = '(objectclass=hubAccount)';
 
-        $sr = ldap_search($conn, $dn, $filter, ['uid'], 0, 0, 0);
+        $sr = self::search($conn, $dn, $filter, ['uid']);
 
         $uids = [];
 
@@ -956,7 +950,7 @@ class Ldap
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
-                    $attr = ldap_get_attributes($conn, $entry);
+                    $attr = self::attributes($conn, $entry);
 
                     $uids[] = $attr['uid'][0];
 
@@ -994,6 +988,8 @@ class Ldap
             // see if item to be deleted is there
             $count = 0;
             $sr = ldap_search($conn, "ou=users," . $hubLDAPBaseDN, "uid=$row");
+            // One connection, so never the array of a parallel search
+            $sr = $sr instanceof \LDAP\Result ? $sr : false;
 
             if ($sr !== false) {
                 if (ldap_count_entries($conn, $sr) > 0) {
@@ -1013,9 +1009,9 @@ class Ldap
 
         // delete any remaining items with gid > 1000
         $dn = "ou=users," . $hubLDAPBaseDN;
-        $filter = '(&(objectclass=posixAccoiunt)(uidNumber>=1000))';
+        $filter = '(&(objectclass=posixAccount)(uidNumber>=1000))';
 
-        $sr = ldap_search($conn, $dn, $filter, ['uid'], 0, 0, 0);
+        $sr = self::search($conn, $dn, $filter, ['uid']);
 
         $uids = [];
 
@@ -1024,7 +1020,7 @@ class Ldap
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
-                    $attr = ldap_get_attributes($conn, $entry);
+                    $attr = self::attributes($conn, $entry);
 
                     $uids[] = $attr['uid'][0];
 
@@ -1049,5 +1045,55 @@ class Ldap
         } else {
             return self::$success;
         }
+    }
+
+    /**
+     * Search one connection for entries
+     *
+     * @param   \LDAP\Connection  $conn        Connection
+     * @param   string             $base        Base DN
+     * @param   string             $filter      Search filter
+     * @param   array<int, string> $attributes  Attributes to read
+     * @return  \LDAP\Result|false  False when the search fails
+     */
+    private static function search($conn, $base, $filter, $attributes)
+    {
+        $result = ldap_search($conn, $base, $filter, $attributes, 0, 0, 0);
+
+        // One connection, so never the array of a parallel search
+        if (!$result instanceof \LDAP\Result) {
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * The attributes of an entry, keyed by name (each a list with a 'count')
+     *
+     * @param   \LDAP\Connection   $conn   Connection
+     * @param   \LDAP\ResultEntry  $entry  Entry
+     * @return  array<mixed>
+     */
+    private static function attributes($conn, $entry)
+    {
+        return ldap_get_attributes($conn, $entry);
+    }
+
+    /**
+     * The attributes of a search result's first entry
+     *
+     * @param   \LDAP\Connection  $conn    Connection
+     * @param   \LDAP\Result      $result  Search result
+     * @return  array<mixed>  Empty when there is no entry
+     */
+    private static function firstAttributes($conn, $result)
+    {
+        $entry = ldap_first_entry($conn, $result);
+        if ($entry === false) {
+            return [];
+        }
+
+        return self::attributes($conn, $entry);
     }
 }
