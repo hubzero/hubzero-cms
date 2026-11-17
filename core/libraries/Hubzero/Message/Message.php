@@ -201,9 +201,9 @@ class Message extends Relational
             return substr($href, 1);
         }
 
-        $href = str_replace('"', '', $href);
+        $href = str_replace('"', '', (string) $href);
         $href = str_replace("'", '', $href);
-        $href = str_replace('&#8221', '', (string) $href);
+        $href = str_replace('&#8221', '', $href);
 
         $h = ['h', 'm', 'f', 'g', 'n'];
         if (!in_array(substr($href, 0, 1), $h)) {

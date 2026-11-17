@@ -730,11 +730,11 @@ class Html
      */
     public static function txtUnpee($pee)
     {
-        $pee = str_replace("\t", '', $pee);
+        $pee = str_replace("\t", '', (string) $pee);
         $pee = str_replace('</p><p>', '', $pee);
         $pee = str_replace('<p>', '', $pee);
         $pee = str_replace('</p>', "\n", $pee);
-        $pee = str_replace('<br />', '', (string) $pee);
+        $pee = str_replace('<br />', '', $pee);
         $pee = trim($pee);
         return $pee;
     }

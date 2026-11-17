@@ -105,14 +105,16 @@ class Link extends Relational
      */
     public function automaticNewUrl($data)
     {
-        if ($data['new_url']) {
-            $data['new_url'] = trim($data['new_url']);
-            $data['new_url'] = trim($data['new_url'], '/');
-            if (substr($data['new_url'], 0, strlen('http')) != 'http') {
-                $data['new_url'] = '/' . $data['new_url'];
-            }
+        if (!$data['new_url']) {
+            return '';
         }
-        return (string) $data['new_url'];
+
+        $url = trim(trim((string) $data['new_url']), '/');
+        if (substr($url, 0, strlen('http')) != 'http') {
+            $url = '/' . $url;
+        }
+
+        return $url;
     }
 
     /**
