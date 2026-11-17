@@ -55,7 +55,7 @@ class Module extends Relational
     /**
      * XML manifest
      *
-     * @var  object|null
+     * @var  \SimpleXMLElement|\stdClass|false|null  A stdClass with name and description when there is no XML
      */
     protected $manifest = null;
 

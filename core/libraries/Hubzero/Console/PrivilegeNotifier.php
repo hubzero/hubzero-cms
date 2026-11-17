@@ -368,7 +368,7 @@ class PrivilegeNotifier
     private function stream()
     {
         if ($this->stream === null) {
-            $this->stream = defined('STDERR') ? STDERR : fopen('php://stderr', 'w');
+            $this->stream = defined('STDERR') ? STDERR : (fopen('php://stderr', 'w') ?: null);
         }
 
         return $this->stream;

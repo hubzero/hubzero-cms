@@ -89,7 +89,7 @@ class Iterator implements \Countable, \Iterator
         // Is it a number?
         if (is_numeric($key)) {
             // Set the cursor
-            $this->pos = $key;
+            $this->pos = (int) $key;
             // Get current item
             $res = $this->current();
         } elseif (is_string($key)) {

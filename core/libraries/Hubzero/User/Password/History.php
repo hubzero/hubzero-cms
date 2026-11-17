@@ -32,7 +32,7 @@ class History
         $hzph = new self();
 
         if (is_numeric($instance) && $instance > 0) {
-            $hzph->user_id = $instance;
+            $hzph->user_id = (int) $instance;
         } else {
             $query = "SELECT id FROM `#__users` WHERE username=" . $db->quote($instance) . ";";
             $db->setQuery($query);

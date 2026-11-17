@@ -588,12 +588,13 @@ class Filefsv1r0 extends ApiController
 
         $this->database   = App::get('db');
         $this->uid        = User::get('id');
-        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(
+        $subdir = \Hubzero\Filesystem\SafePath::relative(
             urldecode((string) Request::getString('subdir', '')),
         );
-        if ($this->subdir === false) {
+        if ($subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
         }
+        $this->subdir      = $subdir;
 
         // Set params
         $params = [
@@ -660,12 +661,13 @@ class Filefsv1r0 extends ApiController
 
         $this->database   = App::get('db');
         $this->uid        = User::get('id');
-        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(
+        $subdir = \Hubzero\Filesystem\SafePath::relative(
             urldecode((string) Request::getString('subdir', '')),
         );
-        if ($this->subdir === false) {
+        if ($subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
         }
+        $this->subdir      = $subdir;
 
         // Params for repo call
         $params = [

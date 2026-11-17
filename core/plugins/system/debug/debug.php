@@ -65,7 +65,7 @@ class Debug extends Plugin
             ob_implicit_flush(false);
         }
 
-        $this->linkFormat = ini_get('xdebug.file_link_format');
+        $this->linkFormat = (string) ini_get('xdebug.file_link_format');
     }
 
     /**

@@ -52,7 +52,7 @@ class Group extends Base
             ->set('category', 'group')
             ->set('option', $this->segments['option']);
 
-        $this->item = \Hubzero\User\Group::getInstance($referenceid);
+        $this->item = \Hubzero\User\Group::getInstance($referenceid) ?: null;
         if (!$this->item) {
             $this->item = new \Hubzero\User\Group();
         }

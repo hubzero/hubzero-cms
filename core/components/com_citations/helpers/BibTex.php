@@ -90,7 +90,7 @@ class BibTex
      * String with the BibTex content
      *
      * @access public
-     * @var    string
+     * @var    string|false  False when the file cannot be read
      */
     public $content;
 

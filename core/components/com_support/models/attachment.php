@@ -164,7 +164,7 @@ class Attachment extends Relational
     public function width()
     {
         if (!$this->dimensions) {
-            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : [0, 0];
+            $this->dimensions = $this->isImage() && $this->hasFile() ? (getimagesize($this->path()) ?: [0, 0]) : [0, 0];
         }
 
         return $this->dimensions[0];
@@ -178,7 +178,7 @@ class Attachment extends Relational
     public function height()
     {
         if (!$this->dimensions) {
-            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : [0, 0];
+            $this->dimensions = $this->isImage() && $this->hasFile() ? (getimagesize($this->path()) ?: [0, 0]) : [0, 0];
         }
 
         return $this->dimensions[1];

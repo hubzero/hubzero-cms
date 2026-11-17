@@ -79,9 +79,9 @@ use Hubzero\Facades\Request;
  * @property  array<mixed>                                $_attachments             By attachments()
  * @property  int                                  $_attachmentsCount        By attachmentsCount()
  * @property  object|null                          $_license                 By license()
- * @property  object|null                          $_lastPublicRelease       By lastPublicRelease()
- * @property  object|null                          $_prevPublication         By prevPublication()
- * @property  object|null                          $_nextPublication         By nextPublication()
+ * @property  \stdClass|false|null                 $_lastPublicRelease       By lastPublicRelease()
+ * @property  \stdClass|false|null                 $_prevPublication         By prevPublication()
+ * @property  \stdClass|false|null                 $_nextPublication         By nextPublication()
  * @property  \Hubzero\Database\Rows|null          $_citations               By getCitations()
  * @property  string|null                          $_lastCitationDate        By getLastCitationDate()
  * @property  \Hubzero\Database\Rows               $citationsForMetadataSet  By getCitationsForMetadataSet()
@@ -581,7 +581,7 @@ class Publication extends Obj
     /**
      * Get last public release
      *
-     * @return  mixed
+     * @return  \stdClass|false
      */
     public function lastPublicRelease()
     {
@@ -596,7 +596,7 @@ class Publication extends Obj
     /**
      * Get previous version publication
      *
-     * @return  object
+     * @return  \stdClass|false
      */
     public function prevPublication()
     {
@@ -611,7 +611,7 @@ class Publication extends Obj
     /**
      * Get next version publication
      *
-     * @return  object
+     * @return  \stdClass|false
      */
     public function nextPublication()
     {

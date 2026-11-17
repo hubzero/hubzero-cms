@@ -53,7 +53,7 @@ class Remote
     {
         $result = new Result();
 
-        $result->output = json_encode($report);
+        $result->output = (string) json_encode($report);
 
         if (preg_match('/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/', $report->message, $matches)) {
             if ($matches[1] == 'True' || $matches[1] == 'Yes') {

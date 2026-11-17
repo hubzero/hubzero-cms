@@ -36,7 +36,7 @@ class Group extends Base
     {
         $this->set('scope_id', $scope_id);
 
-        $this->item = UserGroup::getInstance($scope_id);
+        $this->item = UserGroup::getInstance($scope_id) ?: null;
         if (!($this->item instanceof UserGroup)) {
             $this->item = new UserGroup();
         }

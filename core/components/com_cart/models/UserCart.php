@@ -30,7 +30,7 @@ class UserCart extends Cart
 
         parent::__construct();
 
-        $this->crtId = $crtId;
+        $this->crtId = (int) $crtId;
         if (!$this->exists()) {
             throw new \Exception(Lang::txt('COM_CART_NO_CART_FOUND'));
         }

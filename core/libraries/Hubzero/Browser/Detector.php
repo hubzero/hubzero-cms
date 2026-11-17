@@ -833,7 +833,7 @@ class Detector
                         $bits = explode('.', $version[1]);
 
                         $this->majorVersion = $bits[0];
-                        $this->minorVersion = (isset($bits[1]) ? $bits[1] : 0);
+                        $this->minorVersion = (isset($bits[1]) ? (int) $bits[1] : 0);
                     }
 
                     break;

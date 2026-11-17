@@ -74,7 +74,7 @@ class Plugin extends Relational
     /**
      * XML manifest
      *
-     * @var  object|null
+     * @var  \SimpleXMLElement|false|null
      */
     protected $manifest = null;
 

@@ -80,7 +80,7 @@ class Reader implements Iterator
 
             // store headers for later
             if ($this->position == 1) {
-                $this->headers = $row;
+                $this->headers = $row ?: [];
             }
 
             $this->rewind();

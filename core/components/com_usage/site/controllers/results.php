@@ -76,7 +76,7 @@ class Results extends SiteController
         if (is_array($this->view->get('cats'))) {
             if (!$this->task || $this->task == 'default') {
                 $hasCats = isset($this->view->cats[0]) && is_array($this->view->cats[0]);
-                $this->task = $hasCats ? key($this->view->cats[0]) : 'overview';
+                $this->task = $hasCats ? (string) key($this->view->cats[0]) : 'overview';
             }
         }
         $this->task = ($this->task) ? $this->task : 'overview';

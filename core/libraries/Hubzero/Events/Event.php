@@ -67,7 +67,7 @@ class Event implements ArrayAccess, Countable
     public function __construct($name, array $arguments = [])
     {
         if (strstr($name, '.')) {
-            $this->group = strstr($name, '.', true);
+            $this->group = (string) strstr($name, '.', true);
             $name = ltrim((string) strstr($name, '.'), '.');
         }
         $this->name      = $name;
