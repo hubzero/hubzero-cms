@@ -436,7 +436,7 @@ class Nogit extends Models\Adapter
             }
         }
 
-        return $used;
+        return (int) $used;
     }
 
     /**

@@ -1117,7 +1117,7 @@ class Html
             }
         }
 
-        return $used;
+        return (int) $used;
     }
 
     /**

@@ -2538,7 +2538,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the database timer
      *
-     * @return  int
+     * @return  float|int
      */
     public function getTimer()
     {
@@ -2854,7 +2854,7 @@ abstract class Driver implements LoggerAwareInterface
     public function insertid()
     {
         if ($this->connection instanceof ConnectionInterface) {
-            return $this->connection->lastInsertId();
+            return (int) $this->connection->lastInsertId();
         }
 
         // Backward compatibility: raw PDO, which gives the id as a string

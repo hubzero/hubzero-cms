@@ -4789,7 +4789,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Inserts a new row into the database
      *
-     * @return  bool
+     * @return  bool|int
      **/
     private function create()
     {

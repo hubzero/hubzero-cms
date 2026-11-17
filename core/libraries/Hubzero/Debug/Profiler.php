@@ -129,7 +129,7 @@ class Profiler
     /**
      * Gets the relative time of the start of the first period.
      *
-     * @return  int  The time (in milliseconds)
+     * @return  float|int  The time (in milliseconds)
      */
     public function started()
     {

@@ -181,7 +181,7 @@ class Stats extends Table
         $result =  $this->db->loadResult();
 
         $result = $result ? $result : 0;
-        return $result;
+        return (int) $result;
     }
 
     /**

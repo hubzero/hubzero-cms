@@ -362,6 +362,6 @@ class ImgHandler extends Obj
 
         $result = $a + $b * $final + $c * $final * $final;
 
-        return max(round($result), 0);
+        return (int) (max(round($result), 0));
     }
 }

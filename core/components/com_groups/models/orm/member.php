@@ -125,7 +125,7 @@ class Member extends Relational
     /**
      * Inserts a new row into the database
      *
-     * @return  bool
+     * @return  bool|int
      * @since   2.0.0
      **/
     protected function createWithNoPk()

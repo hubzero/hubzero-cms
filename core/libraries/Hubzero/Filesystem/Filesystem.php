@@ -116,7 +116,7 @@ class Filesystem
      *
      * @param   string  $path
      * @param   string  $data
-     * @return  int
+     * @return  int|bool
      */
     public function prepend($path, $data)
     {
@@ -132,7 +132,7 @@ class Filesystem
      *
      * @param   string  $path
      * @param   string  $data
-     * @return  int
+     * @return  int|bool
      */
     public function append($path, $data)
     {

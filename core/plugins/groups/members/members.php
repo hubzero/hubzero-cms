@@ -506,7 +506,7 @@ class Members extends Plugin
         while (strlen($someid) < 5) {
             $someid = 0 . "$someid";
         }
-        return $someid;
+        return (int) $someid;
     }
 
     /**

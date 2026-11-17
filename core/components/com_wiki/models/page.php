@@ -1064,7 +1064,7 @@ class Page extends Relational
     /**
      * Calculate the average rating for the page
      *
-     * @return  integer
+     * @return  float|int
      */
     public function calculateRating()
     {

@@ -30,7 +30,7 @@ class Helper
         while (strlen($group_id) < 5) {
             $group_id = 0 . $group_id;
         }
-        return $group_id;
+        return (int) $group_id;
     }
 
     /**
