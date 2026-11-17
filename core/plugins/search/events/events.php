@@ -221,7 +221,7 @@ class Events extends Plugin
 
                 // Build the description, clean up text
                 $content = preg_replace('/<[^>]*>/', ' ', $row->content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', (string) $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Format the date for SOLR

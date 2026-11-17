@@ -186,7 +186,7 @@ class IcalParser
         $string = str_replace("\r\n", "\n", $string);
 
         // Unfold multi-line strings
-        $string = str_replace("\n ", "", $string);
+        $string = str_replace("\n ", "", (string) $string);
 
         foreach (explode("\n", $string) as $row) {
             switch ($row) {

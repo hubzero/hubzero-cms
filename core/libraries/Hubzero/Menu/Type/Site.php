@@ -115,7 +115,7 @@ class Site extends Base
 
             // Create the query array.
             $url = str_replace('index.php?', '', $item->link);
-            $url = str_replace('&amp;', '&', $url);
+            $url = str_replace('&amp;', '&', (string) $url);
 
             parse_str($url, $item->query);
         }

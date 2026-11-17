@@ -734,7 +734,7 @@ class Html
         $pee = str_replace('</p><p>', '', $pee);
         $pee = str_replace('<p>', '', $pee);
         $pee = str_replace('</p>', "\n", $pee);
-        $pee = str_replace('<br />', '', $pee);
+        $pee = str_replace('<br />', '', (string) $pee);
         $pee = trim($pee);
         return $pee;
     }

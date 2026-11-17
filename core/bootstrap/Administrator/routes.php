@@ -72,7 +72,7 @@ $router->rules('parse')->append('prep', function ($uri) {
     $path = substr_replace($path, '', 0, strlen(App::get('request')->base(true)));
 
     // Remove prefix
-    $path = str_replace('index.php', '', $path);
+    $path = str_replace('index.php', '', (string) $path);
 
     // Set the route
     $uri->setPath(trim($path, '/'));

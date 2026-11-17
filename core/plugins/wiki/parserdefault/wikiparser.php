@@ -645,7 +645,7 @@ class WikiParser
 
         $title = (isset($matches[4])) ? trim($matches[4]) : $href;
         $title = preg_replace('/\(.*?\)/', '', $title);
-        $title = preg_replace('/^.*?\:/', '', $title);
+        $title = preg_replace('/^.*?\:/', '', (string) $title);
         $cls   = 'wiki int-link';
 
         // Are we placing an anchor?

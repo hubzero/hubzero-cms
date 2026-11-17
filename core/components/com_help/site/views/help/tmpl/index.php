@@ -43,7 +43,7 @@ foreach ($this->pages as $component) {
                 'index.php?option=com_help&component=' . $comp
                 . '&page=' . $name,
             );
-            $label = ucwords(str_replace('_', ' ', $name));
+            $label = ucwords(str_replace('_', ' ', (string) $name));
             $content .= '<li><a href="' . $url . '">'
                 . $label . '</a></li>';
         }

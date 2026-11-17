@@ -30,7 +30,7 @@ class Migration20150108152843ComSupport extends Base
             $params = Component::params('com_support');
 
             $defs = str_replace("\r", '', $params->get('emails', '{config.mailfrom}'));
-            $defs = str_replace('\n', "\n", $defs);
+            $defs = str_replace('\n', "\n", (string) $defs);
             $defs = explode("\n", $defs);
             $defs = array_map('trim', $defs);
 

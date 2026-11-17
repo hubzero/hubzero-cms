@@ -1995,7 +1995,7 @@ class Tickets extends SiteController
         $summary = $row->get('summary');
         if (strstr($summary, '"') || strstr($summary, "'")) {
             $summary = str_replace("\'", "\\\\\\\\\'", $summary);
-            $summary = str_replace('\"', '\\\\\\\\\"', $summary);
+            $summary = str_replace('\"', '\\\\\\\\\"', (string) $summary);
             $query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE "
                 . $this->database->quote('%' . strtolower($summary) . '%')
                 . " AND type=1 LIMIT 1";

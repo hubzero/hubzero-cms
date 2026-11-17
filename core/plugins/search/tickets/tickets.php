@@ -96,7 +96,7 @@ class Tickets extends Plugin
 
                 // Build the description, clean up text
                 $content = preg_replace('/<[^>]*>/', ' ', $row->report);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', (string) $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

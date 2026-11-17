@@ -157,7 +157,7 @@ class Filters
 
                 $val['field'] = preg_replace('/[^0-9a-zA-z\-_\.]/i', '', $val['field']);
 
-                $val['human_field']    = ucwords(str_replace('_', ' ', $val['field']));
+                $val['human_field']    = ucwords(str_replace('_', ' ', (string) $val['field']));
                 $val['o']              = self::translateOperator($val['operator']);
                 $val['human_operator'] = self::mapOperator($val['o']);
                 $val['human_value']    = $val['value'];

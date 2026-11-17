@@ -51,7 +51,7 @@ class Html
 
         $href = str_replace('"', '', $href);
         $href = str_replace("'", '', $href);
-        $href = str_replace('&#8221', '', $href);
+        $href = str_replace('&#8221', '', (string) $href);
 
         $h = ['h', 'm', 'f', 'g', 'n'];
         if (!in_array(substr($href, 0, 1), $h)) {

@@ -262,7 +262,7 @@ class Notices extends Module
             $message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
             $timezoneVal = $timezone == null ? '' : $timezone;
             $messageVal = $message == null ? '' : $message;
-            $message = str_replace('<notice:timezone>', $timezoneVal, $messageVal);
+            $message = str_replace('<notice:timezone>', $timezoneVal, (string) $messageVal);
 
             // auto link?
             if ($this->params->get('autolink', 1)) {

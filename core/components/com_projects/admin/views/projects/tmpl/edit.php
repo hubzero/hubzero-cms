@@ -488,7 +488,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
                         <td><?php if ($this->last_activity) {
                             $activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
-                            $activity = preg_replace('/&#58;/', "", $activity);
+                            $activity = preg_replace('/&#58;/', "", (string) $activity);
                     // Plain text: strip the tags, decode the entities they leave (&nbsp; etc.), then escape once
                             $activity = $this->escape(html_entity_decode(strip_tags($activity), ENT_QUOTES, 'UTF-8'));
                             ?>

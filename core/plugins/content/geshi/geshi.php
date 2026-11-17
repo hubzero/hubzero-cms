@@ -84,7 +84,7 @@ class Geshi extends Plugin
         $text = preg_replace($html_entities_match, $html_entities_replace, $text);
         $text = str_replace('&lt;', '<', $text);
         $text = str_replace('&gt;', '>', $text);
-        $text = str_replace("\t", '  ', $text);
+        $text = str_replace("\t", '  ', (string) $text);
 
         // Map legacy GeSHi language names to highlight.php names
         $hlLang = self::$langMap[$lang] ?? $lang;

@@ -608,7 +608,7 @@ abstract class Result
 
             // A line break in the source stands between two words, so it
             // becomes a space; dropping it ran them together
-            $wrapped = wordwrap(trim(preg_replace('/\s+/u', ' ', $descr)), self::$intro_excerpt_len);
+            $wrapped = wordwrap(trim(preg_replace('/\s+/u', ' ', (string) $descr)), self::$intro_excerpt_len);
             $wrap_pos = strpos($wrapped, "\n");
             $len = $wrap_pos ? $wrap_pos : self::$intro_excerpt_len;
             $ellip = $wrap_pos ? '<small>&hellip;</small>' : '';

@@ -195,7 +195,8 @@ class Help extends AdminController
                     $url = Route::url('index.php?option=com_help&component='
                         . $component['option'] . '&page=' . $name);
 
-                    $content .= '<li><a href="' . $url . '">' . ucwords(str_replace('_', ' ', $name)) . '</a></li>';
+                    $content .= '<li><a href="' . $url . '">'
+                        . ucwords(str_replace('_', ' ', (string) $name)) . '</a></li>';
                 }
                 $content .= '</ul>';
             } else {
