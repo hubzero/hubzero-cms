@@ -65,9 +65,6 @@ class Contentlanguage
             }
 
             // Detect errors
-            if ($db->getErrorNum()) {
-                throw new RuntimeException($db->getErrorMsg(), 500);
-            }
         }
         return self::$items;
     }

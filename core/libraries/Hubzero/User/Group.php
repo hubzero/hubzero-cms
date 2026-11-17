@@ -285,10 +285,6 @@ class Group extends Obj
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         $cn = $this->cn;
         $gidNumber = $this->gidNumber;
 
@@ -309,19 +305,28 @@ class Group extends Obj
 
             $db->setQuery($query);
 
-            $result = $db->query();
-
-            if ($result === false && $db->getErrorNum() != 1062) {
-                return false;
+            // A row already there is as good as one made now
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
             }
         } else {
             $query = "INSERT INTO `#__xgroups` (cn) VALUES (" . $db->quote($cn) . ");";
 
             $db->setQuery($query);
 
-            $result = $db->query();
+            try {
+                $db->query();
+                $this->__set('gidNumber', $db->insertid());
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
 
-            if ($result === false && $db->getErrorNum() == 1062) { // row exists
+                // The row exists: take its gidNumber
                 $query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($cn) . ";";
 
                 $db->setQuery($query);
@@ -333,10 +338,6 @@ class Group extends Obj
                 }
 
                 $this->__set('gidNumber', $result);
-            } elseif ($result !== false) {
-                $this->__set('gidNumber', $db->insertid());
-            } else {
-                return false;
             }
         }
 
@@ -357,10 +358,6 @@ class Group extends Obj
         $this->clear();
 
         $db = App::get('db');
-
-        if (empty($db)) {
-            return false;
-        }
 
         if (!is_null($name)) {
             if (Validate::positiveInteger($name)) {
@@ -417,10 +414,6 @@ class Group extends Obj
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!is_numeric($this->gidNumber)) {
             return false;
         }
@@ -466,10 +459,6 @@ class Group extends Obj
             $db->setQuery($query);
 
             $result = $db->query();
-
-            if ($result === false) {
-                return false;
-            }
 
             $affected = $db->getAffectedRows();
         }
@@ -628,10 +617,6 @@ class Group extends Obj
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!is_numeric($this->gidNumber)) {
             $db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($this->cn) . ";");
 
@@ -641,16 +626,12 @@ class Group extends Obj
                 return false;
             }
 
-            $this->gidNumber = $gidNumber;
+            $this->gidNumber = (int) $gidNumber;
         }
 
         $db->setQuery("DELETE FROM `#__xgroups` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 
         $result = $db->query();
-
-        if ($result === false) {
-            return false;
-        }
 
         // Keep a record of who was in the group, and on what terms, before
         // the rows go away
@@ -692,39 +673,37 @@ class Group extends Obj
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
-                if (is_object($db)) {
-                    $groups = ['applicants' => [], 'invitees' => [], 'members' => [], 'managers' => []];
+                $groups = ['applicants' => [], 'invitees' => [], 'members' => [], 'managers' => []];
+
+                foreach ($groups as $key => $data) {
+                    $this->__set($key, $data);
+                }
+
+                $query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber="
+                    . $db->quote($this->gidNumber) . ")
+						UNION
+							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber="
+                    . $db->quote($this->gidNumber) . ")
+						UNION
+							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber="
+                    . $db->quote($this->gidNumber)
+                    . ")
+						UNION
+							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber="
+                    . $db->quote($this->gidNumber)
+                    . ")";
+
+                $db->setQuery($query);
+
+                if (($results = $db->loadObjectList())) {
+                    foreach ($results as $result) {
+                        if (isset($groups[$result->role])) {
+                            $groups[$result->role][] = $result->uidNumber;
+                        }
+                    }
 
                     foreach ($groups as $key => $data) {
                         $this->__set($key, $data);
-                    }
-
-                    $query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber="
-                        . $db->quote($this->gidNumber) . ")
-						UNION
-							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber="
-                        . $db->quote($this->gidNumber) . ")
-						UNION
-							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber="
-                        . $db->quote($this->gidNumber)
-                        . ")
-						UNION
-							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber="
-                        . $db->quote($this->gidNumber)
-                        . ")";
-
-                    $db->setQuery($query);
-
-                    if (($results = $db->loadObjectList())) {
-                        foreach ($results as $result) {
-                            if (isset($groups[$result->role])) {
-                                $groups[$result->role][] = $result->uidNumber;
-                            }
-                        }
-
-                        foreach ($groups as $key => $data) {
-                            $this->__set($key, $data);
-                        }
                     }
                 }
             }
@@ -881,10 +860,6 @@ class Group extends Obj
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         $usernames = [];
         $userids = [];
 
@@ -965,10 +940,6 @@ class Group extends Obj
 
         $result = $db->loadColumn();
 
-        if ($result === false) {
-            return false;
-        }
-
         foreach ($result as $row) {
             call_user_func($func, $row);
         }
@@ -1015,9 +986,7 @@ class Group extends Obj
 
         $db->setQuery($query);
 
-        if (!$db->query()) {
-            return false;
-        }
+        $db->query();
 
         if ($db->loadResult() > 0) {
             return true;
@@ -1234,7 +1203,7 @@ class Group extends Obj
     {
         $db = App::get('db');
 
-        if (!is_object($db) || !is_numeric($uid)) {
+        if (!is_numeric($uid)) {
             return false;
         }
 
@@ -1342,10 +1311,6 @@ class Group extends Obj
         }
 
         $db = App::get('db');
-
-        if (empty($db)) {
-            return false;
-        }
 
         $query = 'SELECT u.email FROM #__users AS u, #__xgroups_'
             . $tbl

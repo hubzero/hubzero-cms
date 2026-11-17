@@ -230,13 +230,6 @@ class Accesslevels extends AdminController
                     $db->setQuery($query->toString());
 
                     $values = $db->loadColumn();
-                    $error  = $db->getErrorMsg();
-
-                    // Check for DB error.
-                    if ($error) {
-                        Notify::error($error);
-                        continue;
-                    }
 
                     $levelsInUse = array_merge($levelsInUse, $values);
                 }

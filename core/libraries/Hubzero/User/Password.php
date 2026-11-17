@@ -167,10 +167,6 @@ class Password
     {
         $db =  App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         // @FIXME: this should fail if id doesn't exist in #__users
         if ($this->user_id > 0) {
             // passhash is NOT NULL with no default: name it, or the insert fails
@@ -184,13 +180,16 @@ class Password
 
             $db->setQuery($query);
 
-            $result = $db->query();
-
-            if ($result !== false || $db->getErrorNum() == 1062) {
-                return true;
+            // A row already there is as good as one made now
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
             }
 
-            $this->update();
+            return true;
         }
 
         return false;
@@ -215,10 +214,6 @@ class Password
         $this->clear();
 
         $db = App::get('db');
-
-        if (empty($db)) {
-            return false;
-        }
 
         $result = true;
 
@@ -321,9 +316,7 @@ class Password
 
             $result = $db->query();
 
-            if ($result) {
-                $affected = $db->getAffectedRows();
-            }
+            $affected = $db->getAffectedRows();
         }
 
         if ($affected > 0) {
@@ -346,10 +339,6 @@ class Password
 
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!isset($this->user_id)) {
             $db->setQuery("SELECT user_id FROM `#__users_password` WHERE user_id" . $db->quote($this->user_id) . ";");
 
@@ -362,11 +351,10 @@ class Password
 
         $db->setQuery("DELETE FROM `#__users_password` WHERE user_id= " . $db->quote($this->user_id) . ";");
 
-        $affected = 0;
+        // A failed query throws
+        $db->query();
 
-        if ($db->query()) {
-            $affected = $db->getAffectedRows();
-        }
+        $affected = $db->getAffectedRows();
 
         if ($affected > 0) {
             Event::trigger('user.onAfterDeletePassword', [$this]);

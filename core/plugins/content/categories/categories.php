@@ -108,9 +108,6 @@ class Categories extends Plugin
         $count = $db->loadResult();
 
         // Check for DB error.
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
 
         return $count;
     }
@@ -149,9 +146,6 @@ class Categories extends Plugin
             $count = $db->loadResult();
 
             // Check for DB error.
-            if ($error = $db->getErrorMsg()) {
-                App::abort(500, $error);
-            }
 
             return $count;
         }

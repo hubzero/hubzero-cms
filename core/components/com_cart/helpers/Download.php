@@ -29,7 +29,7 @@ class Download
 				WHERE d.dStatus > 0 AND s.pId = ' . $db->quote($pId);
         $db->setQuery($sql);
         $downloadsCount = $db->loadResult();
-        return $downloadsCount;
+        return (int) $downloadsCount;
     }
 
     /**
@@ -49,7 +49,7 @@ class Download
         }
         $db->setQuery($sql);
         $downloadsCount = $db->loadResult();
-        return $downloadsCount;
+        return (int) $downloadsCount;
     }
 
     /**

@@ -28,7 +28,7 @@ class Serials
         $db->execute();
         $serialsCount = $db->loadResult();
 
-        return $serialsCount;
+        return (int) $serialsCount;
     }
 
     /**

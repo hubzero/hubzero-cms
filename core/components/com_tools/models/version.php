@@ -461,29 +461,37 @@ class Version
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        } elseif (is_numeric($this->id)) {
+        if (is_numeric($this->id)) {
             $query = "INSERT INTO #__tool_version (id,toolname,instance) VALUES ( "
                 . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . ","
                 . $db->Quote($this->instance) . ");";
 
             $db->setQuery($query);
 
-            $result = $db->query();
-
-            if ($result !== false || $db->getErrorNum() == 1062) {
-                return true;
+            // A row already there is as good as one made now
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
             }
+
+            return true;
         } else {
             $query = "INSERT INTO #__tool_version (toolname,instance) VALUES ( "
                 . $db->Quote($this->toolname) . "," . $db->Quote($this->instance) . ");";
 
             $db->setQuery($query);
 
-            $result = $db->query();
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
 
-            if ($result === false && $db->getErrorNum() == 1062) {
+                // Already there: take its id
                 $query = "SELECT id FROM #__tool_version where instance="
                     . $db->Quote($this->instance) . ";";
 
@@ -497,13 +505,11 @@ class Version
 
                 $this->id = $result;
                 return true;
-            } elseif ($result !== false) {
-                $this->id = $db->insertid();
-                return true;
             }
-        }
 
-        return false;
+            $this->id = $db->insertid();
+            return true;
+        }
     }
 
     /**
@@ -534,10 +540,6 @@ class Version
     private function sqlRead()
     {
         $db = App::get('db');
-
-        if (empty($db)) {
-            return false;
-        }
 
         if (is_numeric($this->instance)) {
             $query = "SELECT * FROM #__tool_version WHERE id=" . $db->Quote($this->instance) . ";";
@@ -667,10 +669,6 @@ class Version
             $db->setQuery($query);
 
             $result = $db->query();
-
-            if ($result === false) {
-                return false;
-            }
         }
 
         foreach ($this->listKeys as $property) {
@@ -736,9 +734,7 @@ class Version
 
                 $db->setQuery($query);
 
-                if (!$db->query()) {
-                    return false;
-                }
+                $db->query();
             }
 
             if (!is_array($list) || count($list) == 0) {
@@ -775,10 +771,7 @@ class Version
 
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                Log::debug('_sql_update_failed');
-                return false;
-            }
+            $db->query();
         }
 
         return true;
@@ -835,10 +828,6 @@ class Version
 
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!isset($this->id)) {
             $db->setQuery("SELECT id FROM #__tool_version WHERE instance=" . $db->Quote($this->instance) . ";");
 
@@ -851,9 +840,7 @@ class Version
 
         $db->setQuery("DELETE FROM #__tool_version WHERE id=" . $db->Quote($this->id) . ";");
 
-        if (!$db->query()) {
-            return false;
-        }
+        $db->query();
 
         $db->setQuery("DELETE FROM #__tool_version_alias WHERE tool_version_id=" . $db->Quote($this->id) . ";");
         $db->query();
@@ -926,35 +913,31 @@ class Version
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
-                if (is_object($db)) {
-                    if (in_array($property, ['alias', 'middleware', 'hostreq'])) {
-                        $aux_table = "#__tool_version_" . $property;
+                if (in_array($property, ['alias', 'middleware', 'hostreq'])) {
+                    $aux_table = "#__tool_version_" . $property;
 
-                        $query = "SELECT $property FROM $aux_table AS aux WHERE "
-                            . " aux.tool_version_id=" . $db->Quote($this->id)
-                            . " ORDER BY $property" . " ASC;";
-                    } elseif ($property == 'author') {
-                        $query = "SELECT uid FROM #__tool_authors WHERE version_id="
-                            . $db->Quote($this->id) . " ORDER BY ordering ASC;";
-                    } elseif ($property == 'member') {
-                        $query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid="
-                            . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
-                    } elseif ($property == 'owner') {
-                        $query = "SELECT cn FROM #__tool_groups WHERE (role='1' OR role='2') AND "
-                            . " toolid=" . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
-                    } else {
-                        $query = null;
-                    }
-
-                    $db->setQuery($query);
-
-                    $result = $db->loadColumn();
-
-                    if ($result !== false) {
-                        $this->$property = (isset($result[0])) ? $result : [];
-                        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
-                    }
+                    $query = "SELECT $property FROM $aux_table AS aux WHERE "
+                        . " aux.tool_version_id=" . $db->Quote($this->id)
+                        . " ORDER BY $property" . " ASC;";
+                } elseif ($property == 'author') {
+                    $query = "SELECT uid FROM #__tool_authors WHERE version_id="
+                        . $db->Quote($this->id) . " ORDER BY ordering ASC;";
+                } elseif ($property == 'member') {
+                    $query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid="
+                        . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
+                } elseif ($property == 'owner') {
+                    $query = "SELECT cn FROM #__tool_groups WHERE (role='1' OR role='2') AND "
+                        . " toolid=" . $db->Quote($this->toolid) . " ORDER BY cn ASC;";
+                } else {
+                    $query = null;
                 }
+
+                $db->setQuery($query);
+
+                $result = $db->loadColumn();
+
+                $this->$property = (isset($result[0])) ? $result : [];
+                $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
             }
         }
 
@@ -1173,7 +1156,7 @@ class Version
      * @param     string|null $version Parameter description (if any) ...
      * @param     string|array<mixed>|null $toolname Parameter description (if any) ...
      * @param     string|null $instance Parameter description (if any) ...
-     * @return   object Return description (if any) ...
+     * @return   array<\stdClass>  The matching versions
      */
     public static function getVersionInfo($id, $version = null, $toolname = null, $instance = null)
     {

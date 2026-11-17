@@ -69,9 +69,6 @@ class ModuleOrder extends Field
 
         $db->setQuery($query->toString());
         $orders = $db->loadObjectList();
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
 
         $orders2 = [];
         for ($i = 0, $n = count($orders); $i < $n; $i++) {

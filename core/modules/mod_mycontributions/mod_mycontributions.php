@@ -192,10 +192,6 @@ class Mycontributions extends Module
 							LIMIT $limit",
                         );
                         $tickets = $database->loadObjectList();
-                        if ($database->getErrorNum()) {
-                            echo $database->stderr();
-                            return false;
-                        }
                         $unassigned = 0;
                         if ($tickets) {
                             foreach ($tickets as $t) {

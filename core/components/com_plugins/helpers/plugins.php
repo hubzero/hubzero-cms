@@ -82,10 +82,6 @@ class Plugins
         $db->setQuery($query->toString());
         $options = $db->loadObjectList();
 
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
-
         return $options;
     }
 }

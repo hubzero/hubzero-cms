@@ -181,11 +181,6 @@ class Ldap
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            self::$errors['fatal'][] = 'Error connecting to the database';
-            return false;
-        }
-
         $conn = self::getLDO();
 
         if (empty($conn)) {
@@ -434,11 +429,6 @@ class Ldap
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            self::$errors['fatal'][] = 'Error connecting to the database';
-            return false;
-        }
-
         $conn = self::getLDO();
 
         if (empty($conn)) {
@@ -651,10 +641,6 @@ class Ldap
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         $conn = self::getLDO();
 
         if (empty($conn)) {
@@ -768,10 +754,6 @@ class Ldap
 
         $result = $db->loadColumn();
 
-        if ($result === false) {
-            return false;
-        }
-
         foreach ($result as $row) {
             self::syncGroup($row);
 
@@ -804,10 +786,6 @@ class Ldap
         $db->setQuery($query);
 
         $result = $db->loadColumn();
-
-        if ($result === false) {
-            return false;
-        }
 
         foreach ($result as $row) {
             self::syncUser($row);
@@ -888,10 +866,6 @@ class Ldap
         $db->setQuery($query);
 
         $result = $db->loadColumn();
-
-        if ($result === false) {
-            return false;
-        }
 
         foreach ($result as $row) {
             $dn = "cn=$row," . "ou=groups," . $hubLDAPBaseDN;
@@ -1013,10 +987,6 @@ class Ldap
         $db->setQuery($query);
 
         $result = $db->loadColumn();
-
-        if ($result === false) {
-            return false;
-        }
 
         foreach ($result as $row) {
             $dn = "uid=$row," . "ou=users," . $hubLDAPBaseDN;

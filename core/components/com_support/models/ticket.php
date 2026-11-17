@@ -728,7 +728,7 @@ class Ticket extends Relational
         }
 
         $db->setQuery($sql);
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 
     /**

@@ -55,10 +55,6 @@ class Sql extends SearchResult
         $db->setQuery($this->sql);
 
         if (!($rows = $db->loadAssocList())) {
-            if ($error = $db->getErrorMsg()) {
-                throw new Exception('Invalid SQL in ' . $this->sql . ': ' . $error);
-            }
-
             $rows = [];
         }
 

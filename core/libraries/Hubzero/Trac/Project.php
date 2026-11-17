@@ -159,10 +159,6 @@ class Project
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (is_numeric($this->id)) {
             $query = "INSERT INTO `#__trac_project` (id,name) VALUES ( "
                 . $db->quote($this->id)
@@ -171,19 +167,29 @@ class Project
                 . ");";
             $db->setQuery($query);
 
-            $result = $db->query();
-
-            if ($result !== false || $db->getErrorNum() == 1062) {
-                return true;
+            // A row already there is as good as one made now
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
             }
+
+            return true;
         } else {
             $query = "INSERT INTO `#__trac_project` (name) VALUES ( " . $db->quote($this->name) . ");";
 
             $db->setQuery($query);
 
-            $result = $db->query();
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
 
-            if ($result === false && $db->getErrorNum() == 1062) {
+                // Already there: take its id
                 $query = "SELECT id FROM `#__trac_project` WHERE name=" . $db->quote($this->name) . ";";
 
                 $db->setQuery($query);
@@ -196,13 +202,11 @@ class Project
 
                 $this->id = $result;
                 return true;
-            } elseif ($result !== false) {
-                $this->id = $db->insertid();
-                return true;
             }
-        }
 
-        return false;
+            $this->id = $db->insertid();
+            return true;
+        }
     }
 
     /**
@@ -215,10 +219,6 @@ class Project
         $db = App::get('db');
 
         $lazyloading = false;
-
-        if (empty($db)) {
-            return false;
-        }
 
         if (is_numeric($this->id)) {
             $query = "SELECT * FROM `#__trac_project` WHERE id = " . $db->quote($this->id) . ";";
@@ -298,10 +298,6 @@ class Project
 
             $result = $db->query();
 
-            if ($result === false) {
-                return false;
-            }
-
             $affected = $db->getAffectedRows();
 
             if ($affected < 1) {
@@ -310,10 +306,6 @@ class Project
                 $db->setQuery($query);
 
                 $result = $db->query();
-
-                if ($result === false) {
-                    return false;
-                }
 
                 $affected = $db->getAffectedRows();
 
@@ -339,10 +331,6 @@ class Project
 
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!isset($this->id)) {
             $db->setQuery("SELECT id FROM `#__trac_project` WHERE name=" . $db->quote($this->name) . ";");
 
@@ -355,9 +343,7 @@ class Project
 
         $db->setQuery("DELETE FROM `#__trac_project` WHERE id=" . $db->quote($this->id) . ";");
 
-        if (!$db->query()) {
-            return false;
-        }
+        $db->query();
 
         $db->setQuery("DELETE FROM `#__trac_user_permission` WHERE trac_project_id=" . $db->quote($this->id) . ";");
         $db->query();
@@ -388,9 +374,7 @@ class Project
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db =  App::get('db');
 
-                if (is_object($db)) {
-                    // Note: query logic not yet implemented
-                }
+                // Note: query logic not yet implemented
             }
         }
 
@@ -551,7 +535,7 @@ class Project
             $db->setQuery($query);
             $user_id = $db->loadResult();
 
-            if ($user_id === false) {
+            if ($user_id === null) {
                 $this->error("Unknown user $user");
                 return false;
             }
@@ -602,11 +586,6 @@ class Project
             $query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($group) . ";";
             $db->setQuery($query);
             $group_id = $db->loadResult();
-
-            if ($group_id === false) {
-                $this->error("Unknown group $group");
-                return false;
-            }
         }
 
         $quoted_project_id = $db->quote($this->id);
@@ -651,7 +630,7 @@ class Project
             $db->setQuery($query);
             $user_id = $db->loadResult();
 
-            if ($user_id === false) {
+            if ($user_id === null) {
                 $this->error("Unknown user $user");
                 return false;
             }

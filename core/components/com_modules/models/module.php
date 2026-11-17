@@ -424,10 +424,7 @@ class Module extends Relational
             $query = 'INSERT INTO `#__modules_menu` (moduleid, menuid) VALUES ' . implode(',', $tuples);
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                $this->addError($db->getErrorMsg());
-                return false;
-            }
+            $db->query();
         }
 
         return true;

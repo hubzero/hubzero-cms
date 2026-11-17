@@ -898,10 +898,6 @@ class Migration extends Base implements CommandInterface
         // Get database connection
         $db = $alternativeDatabase ?? \App::get('db');
 
-        if (!$db) {
-            $this->output->error('Error: Could not get database connection.');
-        }
-
         $this->output->addLine('');
         $this->output->addLine('=== FRESH: Dropping all tables ===', 'info');
         $this->output->addLine('');

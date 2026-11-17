@@ -77,6 +77,6 @@ class TemplateStyle extends Element
             ->whereEquals('id', (int) $id[0]);
         $db->setQuery($query->toString());
 
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 }

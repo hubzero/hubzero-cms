@@ -168,7 +168,10 @@ class BundleQueue extends Relational
 
         $db->setQuery($query);
 
-        return $db->query() !== false;
+        // A failed query throws
+        $db->query();
+
+        return true;
     }
 
     /**
@@ -246,7 +249,10 @@ class BundleQueue extends Relational
 
         $db->setQuery($query);
 
-        return $db->query() !== false;
+        // A failed query throws
+        $db->query();
+
+        return true;
     }
 
     /**
@@ -276,7 +282,10 @@ class BundleQueue extends Relational
 
         $db->setQuery($query);
 
-        return $db->query() !== false;
+        // A failed query throws
+        $db->query();
+
+        return true;
     }
 
     /**

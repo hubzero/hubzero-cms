@@ -107,9 +107,6 @@ class Componentlayout extends Field
             $templates = $db->loadObjectList('element');
 
             // Check for a database error.
-            if ($db->getErrorNum()) {
-                throw new Exception($db->getErrorMsg(), 500);
-            }
 
             $paths = [PATH_APP, PATH_CORE];
 

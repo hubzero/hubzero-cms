@@ -57,7 +57,7 @@ class Users extends Plugin
 
         $yesterday = strtotime("yesterday");
 
-        if ($users && count($users) > 0) {
+        if ($users) {
             foreach ($users as $u) {
                 $user = User::getInstance($u->id);
 

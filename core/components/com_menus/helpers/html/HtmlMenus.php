@@ -43,9 +43,6 @@ class HtmlMenus
         $items = $db->loadObjectList('id');
 
         // Check for a database error.
-        if ($error = $db->getErrorMsg()) {
-            throw new \Exception($error, 500);
-        }
 
         // Construct html
         $text = [];

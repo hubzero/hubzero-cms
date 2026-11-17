@@ -67,9 +67,6 @@ class MenuOrdering extends Select
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new Exception($db->getErrorMsg(), 500);
-        }
 
         $options = array_merge(
             [['value' => '-1', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST')]],

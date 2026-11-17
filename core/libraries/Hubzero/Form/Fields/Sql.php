@@ -50,9 +50,6 @@ class Sql extends Select
         $items = $db->loadObjectlist();
 
         // Check for an error.
-        if ($db->getErrorNum()) {
-            return $options;
-        }
 
         // Build the field options.
         if (!empty($items)) {

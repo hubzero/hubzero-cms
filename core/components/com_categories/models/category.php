@@ -427,10 +427,7 @@ class Category extends Nested
         $db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$db->execute()) {
-            $this->addError(Lang::txt('JLIB_DATABASE_ERROR_REBUILDPATH_FAILED', get_class($this), $db->getErrorMsg()));
-            return false;
-        }
+        $db->execute();
 
         // Update the current record's path to the new one:
         $this->set('path', $path);

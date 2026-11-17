@@ -230,10 +230,6 @@ class Login extends Obj
             $db->setQuery($query->toString());
             $modules = $db->loadObjectList();
 
-            if ($db->getErrorNum()) {
-                App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
-            }
-
             // Return to simple indexing that matches the query order.
             $loginmodule = $modules;
 

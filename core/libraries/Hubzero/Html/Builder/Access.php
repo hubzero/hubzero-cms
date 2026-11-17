@@ -54,9 +54,6 @@ class Access
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new \Exception($db->getErrorMsg(), 500);
-        }
 
         // If params is an array, push these options to the array
         if (is_array($params)) {
@@ -105,9 +102,6 @@ class Access
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new \Exception($db->getErrorMsg(), 500);
-        }
 
         for ($i = 0, $n = count($options); $i < $n; $i++) {
             $options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
@@ -154,9 +148,6 @@ class Access
         $groups = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new \Exception($db->getErrorMsg(), 500);
-        }
 
         $html = [];
 
@@ -285,9 +276,6 @@ class Access
             self::$asset_groups = $db->loadObjectList();
 
             // Check for a database error.
-            if ($db->getErrorNum()) {
-                throw new \Exception($db->getErrorMsg(), 500);
-            }
         }
 
         return self::$asset_groups;

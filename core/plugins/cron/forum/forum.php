@@ -92,7 +92,7 @@ class Forum extends Plugin
         $isMonth = (Date::of('now')->toLocal('j') == 1) ? true : false;
 
         // Loop through members and get their groups that have the digest set
-        if ($users && count($users) > 0) {
+        if ($users) {
             $query = "SELECT `gidNumber` FROM `#__xgroups_memberoption` WHERE `userid` = ?"
                 . " AND `optionname` = 'receive-forum-email' AND `optionvalue` = ?";
             $db->prepare($query);

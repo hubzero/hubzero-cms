@@ -745,9 +745,6 @@ class Resume extends Plugin
         $database = App::get('db');
 
         // Ensure we have a database object
-        if (!$database) {
-            App::abort(500, Lang::txt('DATABASE_NOT_FOUND'));
-        }
 
         // Incoming
         $uid = $member->get('id');

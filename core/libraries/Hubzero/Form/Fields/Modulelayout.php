@@ -100,9 +100,6 @@ class Modulelayout extends Field
             $templates = $db->loadObjectList('element');
 
             // Check for a database error.
-            if ($db->getErrorNum()) {
-                App::abort(500, $db->getErrorMsg());
-            }
 
             $paths = [PATH_APP, PATH_CORE];
 

@@ -61,11 +61,8 @@ class Helper
 
         //execute query and return result
         $database->setQuery($sql);
-        if (!$database->getError()) {
-            return $database->loadObjectList();
-        }
 
-        return [];
+        return $database->loadObjectList();
     }
 
     /**
@@ -98,11 +95,8 @@ class Helper
 				AND g.cn IN (" . implode(',', array_map([$database, 'quote'], $groupList)) . ")";
 
         $database->setQuery($sql);
-        if (!$database->getError()) {
-            return $database->loadObjectList();
-        }
 
-        return [];
+        return $database->loadObjectList();
     }
 
     /**
@@ -110,7 +104,7 @@ class Helper
      *
      * @param   string  $usertags
      * @param   string|array<mixed>  $usergroups
-     * @return  string
+     * @return  array<\stdClass>  The groups that share a tag, other than the user's own
      */
     public static function getGroupsMatchingTagString($usertags, $usergroups)
     {
@@ -187,10 +181,6 @@ class Helper
 
         $result = $db->loadColumn();
 
-        if ($result === false) {
-            return false;
-        }
-
         if (empty($result)) {
             return true;
         }
@@ -210,11 +200,7 @@ class Helper
 
         $db->setQuery($sql);
 
-        $result = $db->query();
-
-        if (!$result) {
-            return false;
-        }
+        $db->query();
 
         $sql = 'DELETE FROM `#__xgroups_inviteemails` WHERE email='
             . $db->quote($email)
@@ -224,11 +210,7 @@ class Helper
 
         $db->setQuery($sql);
 
-        $result = $db->query();
-
-        if (!$result) {
-            return false;
-        }
+        $db->query();
 
         return true;
     }

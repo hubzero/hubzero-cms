@@ -481,7 +481,9 @@ class Mysql implements
 				  AND time + " . (int) $timeout . " >= UNIX_TIMESTAMP();";
         //  AND client_id = 0;";
         $database->setQuery($sql);
-        return $database->loadResult();
+
+        // 0 when the session has expired or does not exist
+        return (int) $database->loadResult();
     }
 
     /**

@@ -48,9 +48,6 @@ class ContentLanguages extends Select
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new Exception($db->getErrorMsg(), 500);
-        }
 
         // Merge any additional options in the XML definition.
         return array_merge(parent::getOptions($node), $options);

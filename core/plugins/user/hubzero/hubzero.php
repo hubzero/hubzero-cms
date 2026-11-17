@@ -326,9 +326,9 @@ class Hubzero extends Plugin
                         $db->setQuery($query->toString());
                     }
 
-                    // If the insert failed, exit the application.
-                    if (App::get('client')->id != 4 && !$db->execute()) {
-                        exit($db->getErrorMsg());
+                    // A failed insert throws
+                    if (App::get('client')->id != 4) {
+                        $db->execute();
                     }
                 }
             }

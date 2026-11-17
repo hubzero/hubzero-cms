@@ -667,10 +667,7 @@ class Item extends Nested
         $db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$db->execute()) {
-            $this->addError(Lang::txt('JLIB_DATABASE_ERROR_REBUILDPATH_FAILED', get_class($this), $db->getErrorMsg()));
-            return false;
-        }
+        $db->execute();
 
         // Update the current record's path to the new one:
         $this->set('path', $path);
@@ -1349,7 +1346,7 @@ class Item extends Nested
         $referenceId = $db->loadResult();
 
         if ($referenceId) {
-            return $this->moveByReference($referenceId, $position, $this->get('id'));
+            return $this->moveByReference((int) $referenceId, $position, $this->get('id'));
         }
 
         $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED') . ': Reference not found for delta ' . $delta);
@@ -1628,9 +1625,7 @@ class Item extends Nested
                     . ' SET lft = ' . (int) $slots[$k] . ', ordering = ' . (int) $item['order']
                     . ' WHERE id = ' . (int) $item['id'],
                 );
-                if (!$db->query()) {
-                    return false;
-                }
+                $db->query();
             }
         }
 

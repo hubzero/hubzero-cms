@@ -120,12 +120,12 @@ class BundleBuilder
         // caller's markReady()/markFailed()) so "server has gone away" can't fatal
         // the run — which would also leave the queue row wedged in 'building'.
         $db = App::get('db');
-        if (
-            is_object($db) && is_callable([$db, 'connected']) && !$db->connected()
-            && is_callable([$db, 'reconnect'])
-        ) {
+        if (!$db->connected()) {
             $log('DB connection dropped during build; reconnecting.');
-            $db->reconnect();
+            // The driver has no reconnect(), which __call() took and did
+            // nothing with; disconnect() keeps the settings for connect()
+            $db->disconnect();
+            $db->connect();
         }
 
         // A successful (re)build created or replaced the served outer; point the

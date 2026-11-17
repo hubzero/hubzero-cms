@@ -133,9 +133,6 @@ class Admin
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new \Exception($db->getErrorMsg(), 500);
-        }
 
         foreach ($options as &$option) {
             //$option->set('text', str_repeat('- ', $option->get('level')) . $option->get('text'));

@@ -1711,7 +1711,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = "
             . "g.gidNumber";
         $db->prepare($sql)->bind([ $this->get('id')]);
-        $result = $db->loadArray();
+        $result = $db->loadColumn();
 
         if ($result) {
             $allowedgroups = $result;

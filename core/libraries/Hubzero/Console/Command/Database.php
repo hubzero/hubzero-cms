@@ -369,27 +369,17 @@ class Database extends Base implements CommandInterface
                 }
             } else {
                 // Execute non-SELECT query
-                $result = $db->execute();
+                // A failed query throws, and the catch below reports it
+                $db->execute();
 
-                if ($result) {
-                    $affected = $db->getAffectedRows();
-                    if ($jsonOutput) {
-                        $this->output->addLine(json_encode([
-                            'success' => true,
-                            'affected_rows' => $affected,
-                        ], JSON_PRETTY_PRINT));
-                    } else {
-                        $this->output->addLine("Query executed successfully. {$affected} row(s) affected.", 'success');
-                    }
+                $affected = $db->getAffectedRows();
+                if ($jsonOutput) {
+                    $this->output->addLine(json_encode([
+                        'success' => true,
+                        'affected_rows' => $affected,
+                    ], JSON_PRETTY_PRINT));
                 } else {
-                    if ($jsonOutput) {
-                        $this->output->addLine(json_encode([
-                            'success' => false,
-                            'error' => $db->getErrorMsg(),
-                        ], JSON_PRETTY_PRINT));
-                    } else {
-                        $this->output->error('Query failed: ' . $db->getErrorMsg());
-                    }
+                    $this->output->addLine("Query executed successfully. {$affected} row(s) affected.", 'success');
                 }
             }
         } catch (\Exception $e) {

@@ -381,7 +381,8 @@ class PdfFormRespondent
 
         $dbh->setQuery($query);
 
-        return $dbh->loadResult();
+        // 0 when the form has no questions yet
+        return (int) $dbh->loadResult();
     }
 
     /**

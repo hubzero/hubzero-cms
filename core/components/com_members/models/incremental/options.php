@@ -18,9 +18,9 @@ use Hubzero\Facades\App;
 class Options
 {
     /**
-     * Database connection
+     * The latest options row
      *
-     * @var  object|null
+     * @var  array<mixed>|null
      */
     private static $current = null;
 
@@ -90,9 +90,9 @@ class Options
     }
 
     /**
-     * Get the database connection
+     * Get the latest options row
      *
-     * @return  object
+     * @return  array<mixed>|null
      */
     private static function getCurrent()
     {

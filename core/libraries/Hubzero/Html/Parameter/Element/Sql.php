@@ -48,9 +48,6 @@ class Sql extends Element
         $options = $db->loadObjectlist();
 
         // Check for an error.
-        if ($db->getErrorNum()) {
-            throw new Exception($db->getErrorMsg(), 500);
-        }
 
         if (!$options) {
             $options = [];

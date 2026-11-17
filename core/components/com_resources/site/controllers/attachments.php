@@ -823,19 +823,22 @@ class Attachments extends SiteController
                 $doc_id = $database->loadResult();
 
                 if (!$doc_id) {
-                    $database->execute(
+                    // execute() takes no SQL; it ran the SELECT above again
+                    $database->setQuery(
                         "INSERT INTO `#__document_text_data` (hash) VALUES (" . $database->quote($hash) . ")",
                     );
+                    $database->query();
                     $doc_id = $database->insertId();
                 }
 
-                $database->execute(
+                $database->setQuery(
                     "INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES ("
                         . (int) $doc_id
                         . ", "
                         . (int) $id
                         . ")",
                 );
+                $database->query();
 
                 system('/usr/bin/textifier ' . escapeshellarg($path) . ' >/dev/null');
             }

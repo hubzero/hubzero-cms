@@ -246,9 +246,6 @@ class Tool
     {
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
         if (is_numeric($this->id)) {
             $query = "INSERT INTO #__tool (id,toolname,title) VALUES ("
                 . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . ","
@@ -256,20 +253,30 @@ class Tool
 
             $db->setQuery($query);
 
-            $result = $db->query();
-
-            if ($result !== false || $db->getErrorNum() == 1062) {
-                return true;
+            // A row already there is as good as one made now
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
             }
+
+            return true;
         } else {
             $query = "INSERT INTO #__tool (toolname,title) VALUES ("
                 . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
             $db->setQuery($query);
 
-            $result = $db->query();
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
+                }
 
-            if ($result === false && $db->getErrorNum() == 1062) {
+                // Already there: take its id
                 $query = "SELECT id FROM #__tool WHERE toolname=" . $db->Quote($this->toolname) . ";";
 
                 $db->setQuery($query);
@@ -282,13 +289,11 @@ class Tool
 
                 $this->id = $result;
                 return true;
-            } elseif ($result !== false) {
-                $this->id = $db->insertid();
-                return true;
             }
-        }
 
-        return false;
+            $this->id = $db->insertid();
+            return true;
+        }
     }
 
     /**
@@ -317,10 +322,6 @@ class Tool
     private function sqlRead()
     {
         $db = App::get('db');
-
-        if (empty($db)) {
-            return false;
-        }
 
         if (is_numeric($this->toolname)) {
             $query = "SELECT id,toolname,title,registered,registered_by,state_changed,"
@@ -440,10 +441,6 @@ class Tool
             $db->setQuery($query);
 
             $result = $db->query();
-
-            if ($result === false) {
-                return false;
-            }
         }
 
         foreach ($this->listKeys as $property) {
@@ -484,9 +481,7 @@ class Tool
                 Log::debug($query);
                 $db->setQuery($query);
 
-                if (!$db->query()) {
-                    return false;
-                }
+                $db->query();
             }
 
             if (!is_array($list) || count($list) == 0) {
@@ -513,9 +508,7 @@ class Tool
 
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                return false;
-            }
+            $db->query();
         }
 
         return true;
@@ -570,10 +563,6 @@ class Tool
 
         $db = App::get('db');
 
-        if (empty($db)) {
-            return false;
-        }
-
         if (!isset($this->id)) {
             $db->setQuery("SELECT id FROM `#__tool` WHERE toolname=" . $db->Quote($this->toolname) . ";");
 
@@ -586,9 +575,7 @@ class Tool
 
         $db->setQuery("DELETE FROM `#__tool` WHERE id= " . $db->Quote($this->id) . ";");
 
-        if (!$db->query()) {
-            return false;
-        }
+        $db->query();
 
         $db->setQuery("UPDATE `#__tool_version` SET toolid=null WHERE toolid=" . $db->Quote($this->id) . ";");
 
@@ -640,25 +627,21 @@ class Tool
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
-                if (is_object($db)) {
-                    if (in_array($property, ['version'])) {
-                        $aux_table = "#__tool_" . $property;
+                if (in_array($property, ['version'])) {
+                    $aux_table = "#__tool_" . $property;
 
-                        $query = "SELECT instance FROM $aux_table AS aux WHERE aux.toolid="
-                            . $db->Quote($this->id) . " ORDER BY $property" . " ASC;";
-                    } else {
-                        $query = null;
-                    }
-
-                    $db->setQuery($query);
-
-                    $result = $db->loadColumn();
-
-                    if ($result !== false) {
-                        $this->$property = (isset($result[0])) ? $result : [];
-                        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
-                    }
+                    $query = "SELECT instance FROM $aux_table AS aux WHERE aux.toolid="
+                        . $db->Quote($this->id) . " ORDER BY $property" . " ASC;";
+                } else {
+                    $query = null;
                 }
+
+                $db->setQuery($query);
+
+                $result = $db->loadColumn();
+
+                $this->$property = (isset($result[0])) ? $result : [];
+                $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
             }
         }
 
@@ -878,7 +861,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   boolean Return description (if any) ...
+     * @return   string|false  The development group's cn, or false when it has none
      */
     public function getDevelopmentGroup()
     {
@@ -1146,7 +1129,7 @@ class Tool
      *
      * @param     array<mixed> $filters Parameter description (if any) ...
      * @param     boolean $admin Parameter description (if any) ...
-     * @return   object Return description (if any) ...
+     * @return   integer  How many there are
      */
     public static function getToolCount($filters = [], $admin = false)
     {
@@ -1159,7 +1142,7 @@ class Tool
         $query .= ";";
         $db->setQuery($query);
 
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 
     /**
@@ -1705,10 +1688,10 @@ class Tool
         }
         $query = "UPDATE `#__tool` SET ticketid=" . $db->quote($ticketid) . " WHERE id=" . $db->quote($toolid);
         $db->setQuery($query);
-        if ($db->query()) {
-            return true;
-        }
-        return false;
+        // A failed query throws
+        $db->query();
+
+        return true;
     }
 
     /**

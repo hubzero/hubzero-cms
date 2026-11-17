@@ -249,6 +249,6 @@ class Respondent extends Table
             . " AND `email`="
             . $db->quote($email);
         $db->setQuery($sql);
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 }

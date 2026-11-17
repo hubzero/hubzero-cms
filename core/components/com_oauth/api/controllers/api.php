@@ -151,14 +151,11 @@ class Api extends ApiController
             . $db->Quote($callback_url) . ", " . $db->Quote($verifier) . ", UTC_TIMESTAMP());";
         $db->setQuery($sql);
 
-        if (!$db->query()) {
-            $this->send('Internal Server Error', 500);
-        } else {
-            $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-            $msg = "oauth_token=" . $token . "&oauth_token_secret=" . $token_secret
-                . "&oauth_callback_confirmed=true";
-            $this->send($msg, 200);
-        }
+        $db->query();
+        $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+        $msg = "oauth_token=" . $token . "&oauth_token_secret=" . $token_secret
+            . "&oauth_callback_confirmed=true";
+        $this->send($msg, 200);
     }
 
     /**
@@ -183,10 +180,6 @@ class Api extends ApiController
         $db->setQuery($sql);
 
         $result = $db->loadObject();
-
-        if ($result === false) {
-            $this->view->setLayout('internalerror');
-        }
 
         if (empty($result)) {
             $this->view->setLayout('invalidtoken');
@@ -342,11 +335,6 @@ class Api extends ApiController
 
             $result = $db->loadObject();
 
-            if ($result === false) {
-                $this->send('Internal Server Error', 500);
-                return;
-            }
-
             if (!is_object($result)) {
                 if ($this->provider->getConsumerData()->xauth_grant < 1) {
                     $this->send('Internal Server Error', 501);
@@ -366,10 +354,7 @@ class Api extends ApiController
                     . $db->Quote($this->provider->getConsumerData()->callback_url) . ");";
                 $db->setQuery($sql);
 
-                if (!$db->query()) {
-                    $this->send('Internal Server Error', 502);
-                    return;
-                }
+                $db->query();
 
                 if ($db->getAffectedRows() < 1) {
                     $this->send('Internal Server Error', 503);

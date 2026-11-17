@@ -99,10 +99,9 @@ class Autoapprove extends Plugin
 
             $db = App::get('db');
             $db->setQuery($query);
+            $db->query();
 
-            if ($db->query()) {
-                User::set('approved', 1);
-            }
+            User::set('approved', 1);
         }
 
         return true;

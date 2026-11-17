@@ -65,10 +65,6 @@ class Article extends Field
         );
         $title = $db->loadResult();
 
-        if ($error = $db->getErrorMsg()) {
-            throw new Exception($error, 500);
-        }
-
         if (empty($title)) {
             $title = Lang::txt('COM_CONTENT_SELECT_AN_ARTICLE');
         }

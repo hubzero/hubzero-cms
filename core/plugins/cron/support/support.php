@@ -284,9 +284,8 @@ class Support extends Plugin
 
         // Update the tickets
         $database->setQuery($upd);
-        if (!$database->query()) {
-            Log::error('CRON query failed: ' . $database->getErrorMsg());
-        } elseif ($message_id && !empty($tickets)) {
+        $database->query();
+        if ($message_id && !empty($tickets)) {
             // If we're sending a message...
             Lang::load('com_support')
             || Lang::load('com_support', Component::path('com_support') . DS . 'site');
@@ -442,7 +441,7 @@ class Support extends Plugin
 
         $database->setQuery($sql);
         if (!($results = $database->loadObjectList())) {
-            Log::error('CRON query failed: ' . $database->getErrorMsg());
+            // Nothing to do; a failed query throws
             return true;
         }
 
@@ -474,7 +473,7 @@ class Support extends Plugin
                 $this_status_sql = "SELECT title FROM `#__support_statuses` WHERE `id`=" . $result->status ;
                 $database->setQuery($this_status_sql);
                 if (!($this_result = $database->loadResult())) {
-                    Log::error('CRON query failed: ' . $database->getErrorMsg());
+                    // Nothing to do; a failed query throws
                     return true;
                 }
                 $result->status = $this_result;
@@ -821,7 +820,7 @@ class Support extends Plugin
 
         $database->setQuery($sql);
         if (!($results = $database->loadObjectList())) {
-            Log::error('CRON query failed: ' . $database->getErrorMsg());
+            // Nothing to do; a failed query throws
             return true;
         }
 

@@ -237,9 +237,7 @@ class Product
                 $sql .= " AND `agId`=" . $db->quote($group);
                 $sql .= " AND `exclude`=" . $db->quote($type);
                 $db->setQuery($sql);
-                if (!$db->query()) {
-                    return false;
-                }
+                $db->query();
             }
         }
 
@@ -255,9 +253,7 @@ class Product
             $sql .= $db->quote($id) . "," . $db->quote($group) . ",";
             $sql .= $db->quote($type) . ")";
             $db->setQuery($sql);
-            if (!$db->query()) {
-                return false;
-            }
+            $db->query();
         }
 
         return true;

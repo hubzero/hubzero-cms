@@ -976,9 +976,7 @@ class Account extends Plugin
         $db->setQuery($query);
 
         // Save the token
-        if (!$db->query()) {
-            App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
-        }
+        $db->query();
 
         return true;
     }

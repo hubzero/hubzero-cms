@@ -98,10 +98,6 @@ abstract class Modules
         $positions = $db->loadColumn();
         $positions = (is_array($positions)) ? $positions : [];
 
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
-
         /*$positions = Module::all()
             ->select('DISTINCT(position)')
             ->whereEquals('client_id', (int) $clientId)
@@ -367,9 +363,6 @@ abstract class Modules
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            App::abort(500, $db->getErrorMsg());
-        }
 
         // Pop the first item off the array if it's blank
         if (strlen($options[0]->text) < 1) {

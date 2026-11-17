@@ -300,20 +300,12 @@ class Menus extends AdminController
             . ' WHERE type = ' . $db->quote('component'),
         )->loadAssocList('element', 'extension_id');
 
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
-
         // Load all the component menu links
         $items = $db->setQuery(
             'SELECT id, link, component_id'
             . ' FROM #__menu'
             . ' WHERE type = ' . $db->quote('component'),
         )->loadObjectList();
-
-        if ($error = $db->getErrorMsg()) {
-            App::abort(500, $error);
-        }
 
         foreach ($items as $item) {
             // Parse the link.
@@ -342,10 +334,6 @@ class Menus extends AdminController
                         . ' SET component_id = ' . $componentId
                         . ' WHERE id = ' . $item->id,
                     )->query();
-
-                    if ($error = $db->getErrorMsg()) {
-                        App::abort(500, $error);
-                    }
                 }
             }
         }

@@ -50,10 +50,6 @@ class Authorize extends SiteController
 
         $result = $db->loadObject();
 
-        if ($result === false) {
-            throw new Exception('Internal Server Error', 500);
-        }
-
         if (empty($result)) {
             throw new Exception('Forbidden', 403);
         }

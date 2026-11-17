@@ -223,7 +223,7 @@ class User extends Base implements CommandInterface
                     $dbo->setQuery($query);
                     $results = $dbo->loadObjectList();
 
-                    if ($results && count($results) > 0) {
+                    if ($results) {
                         $count = count($results);
                         foreach ($results as $row) {
                             if (!$tablePK) {
@@ -358,44 +358,41 @@ class User extends Base implements CommandInterface
         if (!$results = $dbo->loadObjectList()) {
             $this->output->error("Sorry, we couldn't find a preexisting merge between these two users to undo");
         } else {
-            if (count($results) > 0) {
-                $count    = count($results);
-                $progress = null;
+            $count    = count($results);
+            $progress = null;
 
-                if ($this->output->isInteractive()) {
-                    $progress = $this->output->getProgressOutput();
-                    $progress->init('Unmerging records: ', 'ratio', $count);
+            if ($this->output->isInteractive()) {
+                $progress = $this->output->getProgressOutput();
+                $progress->init('Unmerging records: ', 'ratio', $count);
+            }
+
+            $counter = 0;
+            foreach ($results as $result) {
+                if (is_numeric($result->source)) {
+                    $query = "UPDATE `{$result->table}` SET `{$result->column}` = '{$result->source}' WHERE "
+                        . "`{$result->table_pk}` = '{$result->table_id}'";
+                } else {
+                    $query = "UPDATE `{$result->table}` SET `{$result->column}` = REPLACE({$result->column}, "
+                        . "'{$result->destination}', '{$result->source}') WHERE `{$result->table_pk}` = "
+                        . "'{$result->table_id}'";
                 }
-
-                $counter = 0;
-                foreach ($results as $result) {
-                    if (is_numeric($result->source)) {
-                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = '{$result->source}' WHERE "
-                            . "`{$result->table_pk}` = '{$result->table_id}'";
-                    } else {
-                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = REPLACE({$result->column}, "
-                            . "'{$result->destination}', '{$result->source}') WHERE `{$result->table_pk}` = "
-                            . "'{$result->table_id}'";
-                    }
-                    $dbo->setQuery($query);
-                    if ($dbo->query()) {
-                        $query = "DELETE FROM `#__users_merge_log` WHERE `id` = '{$result->id}'";
-                        $dbo->setQuery($query);
-                        $dbo->query();
-
-                        if ($progress !== null) {
-                            ++$counter;
-                            $progress->setProgress($counter, $count);
-                        } else {
-                            $this->output->addLine("Unmerging {$result->table}.{$result->column}");
-                        }
-                    }
-                }
+                $dbo->setQuery($query);
+                $dbo->query();
+                $query = "DELETE FROM `#__users_merge_log` WHERE `id` = '{$result->id}'";
+                $dbo->setQuery($query);
+                $dbo->query();
 
                 if ($progress !== null) {
-                    $progress->done();
-                    $this->output->addLine("Unmerged ({$counter}/{$count}) records successfully!", 'success');
+                    ++$counter;
+                    $progress->setProgress($counter, $count);
+                } else {
+                    $this->output->addLine("Unmerging {$result->table}.{$result->column}");
                 }
+            }
+
+            if ($progress !== null) {
+                $progress->done();
+                $this->output->addLine("Unmerged ({$counter}/{$count}) records successfully!", 'success');
             }
         }
 

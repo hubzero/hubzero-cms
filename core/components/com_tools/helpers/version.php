@@ -33,10 +33,6 @@ class Version
 
         $result = $db->loadColumn();
 
-        if ($result === false) {
-            return false;
-        }
-
         foreach ($result as $row) {
             call_user_func($func, $row);
         }

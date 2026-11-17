@@ -30,9 +30,9 @@ class Badges
      */
     public $scopeId = '';
     /**
-     * @var  string
+     * @var  \Hubzero\Database\Driver|null
      */
-    private $db = '';
+    private $db = null;
 
     public const LABEL = 'badge';
 

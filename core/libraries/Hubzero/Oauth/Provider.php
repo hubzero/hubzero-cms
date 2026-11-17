@@ -25,27 +25,16 @@ class Provider
     private $provider = null;
 
     /**
-     * What a handler returns when its own lookup fails
-     *
-     * The oauth extension answers such a request with a 503 and calls the
-     * code OAUTH_ERR_INTERNAL_ERROR in its C source, but exports no PHP
-     * constant of that name, unlike OAUTH_OK and the other handler results.
-     *
-     * @var  int
-     */
-    private const ERR_INTERNAL_ERROR = 503;
-
-    /**
      * Consumer data
      *
-     * @var  string|null
+     * @var  \stdClass|null
      */
     private $consumer_data = null;
 
     /**
      * Token data
      *
-     * @var  string|null
+     * @var  \stdClass|null
      */
     private $token_data = null;
 
@@ -281,7 +270,7 @@ class Provider
     /**
      * Get consumer data
      *
-     * @return  string
+     * @return  \stdClass|null
      */
     public function getConsumerData()
     {
@@ -291,7 +280,7 @@ class Provider
     /**
      * Get token data
      *
-     * @return  string
+     * @return  \stdClass|null
      */
     public function getTokenData()
     {
@@ -309,15 +298,11 @@ class Provider
      * @return  int  OAUTH_OK on success
      *      If consumer_key doesn't exist returns OAUTH_CONSUMER_KEY_UNKNOWN
      *      If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
-     *      If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
+     *      A failed lookup throws
      */
     public function consumerHandler()
     {
         $db = App::get('db');
-
-        if (!is_object($db)) {
-            return self::ERR_INTERNAL_ERROR;
-        }
 
         $db->setQuery(
             "SELECT * FROM `#__oauthp_consumers` WHERE token="
@@ -326,10 +311,6 @@ class Provider
         );
 
         $result = $db->loadObject();
-
-        if ($result === false) {  // query failed
-            return self::ERR_INTERNAL_ERROR;
-        }
 
         if (empty($result)) { // key not found
             return OAUTH_CONSUMER_KEY_UNKNOWN;
@@ -353,7 +334,7 @@ class Provider
      * @return  int  OAUTH_OK on success
      *      If timestamp is invalid (expired) returns OAUTH_BAD_TIMESTAMP
      *      If nonce has been seen before returns OAUTH_BAD_NONCE
-     *      If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
+     *      A failed lookup throws
      */
     public function timestampNonceHandler()
     {
@@ -365,10 +346,6 @@ class Provider
 
         $db = App::get('db');
 
-        if (!is_object($db)) {
-            return self::ERR_INTERNAL_ERROR;
-        }
-
         $db->setQuery(
             "INSERT INTO `#__oauthp_nonces` (nonce,stamp,created) "
                 . " VALUES ("
@@ -378,11 +355,18 @@ class Provider
                 . ", UTC_TIMESTAMP());",
         );
 
-        if (($db->query() === false) && ($db->getErrorNum() != 1062)) { // duplicate row error ok (well expected anyway)
-            return self::ERR_INTERNAL_ERROR;
+        // A nonce seen before is a replayed request
+        try {
+            $db->query();
+        } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+            if (!$db->isDuplicateKeyException($e)) {
+                throw $e;
+            }
+
+            return OAUTH_BAD_NONCE;
         }
 
-        if ($db->getAffectedRows() < 1) { // duplicate row error throws this error instead
+        if ($db->getAffectedRows() < 1) {
             return OAUTH_BAD_NONCE;
         }
 
@@ -400,25 +384,17 @@ class Provider
      *      If token not found returns OAUTH_TOKEN_REJECTED
      *      If token has expired or is otherwise unusable returns OAUTH_TOKEN_REJECTED
      *      If request verifier doesn't match token's verifier returns OAUTH_VERIFIER_INVALID
-     *      If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
+     *      A failed lookup throws
      */
     public function tokenHandler()
     {
         $db = App::get('db');
-
-        if (!is_object($db)) {
-            return self::ERR_INTERNAL_ERROR;
-        }
 
         $db->setQuery(
             "SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->provider->token) . " LIMIT 1;",
         );
 
         $result = $db->loadObject();
-
-        if ($result === false) { // query failed
-            return self::ERR_INTERNAL_ERROR;
-        }
 
         if (empty($result)) { // token not found
             return OAUTH_TOKEN_REJECTED;

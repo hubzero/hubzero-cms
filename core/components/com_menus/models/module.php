@@ -125,7 +125,8 @@ class Module extends Relational
             ->whereEquals('e.client_id', '0');
         $db->setQuery($query->toString());
 
-        return $db->loadResult();
+        // 0 when the module is not installed
+        return (int) $db->loadResult();
     }
 
     /**

@@ -452,10 +452,10 @@ class Collection
     /* ******************************** Static functions ********************************** */
 
     /**
-     * Delete the collection
+     * Find the active collection with an alias
      *
      * @param   mixed  $cAlias
-     * @return  bool    true on success, exception otherwise
+     * @return  string|null  Its id, or null when there is none
      */
     public static function findActiveCollectionByAlias($cAlias)
     {

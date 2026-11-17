@@ -46,7 +46,7 @@ class Kb extends Plugin
      * @param      integer $limitstart Start of records to pull
      * @param      array<mixed>|null   $areas      Active area(s)
      * @param      array<mixed>   $tagids     Array of tag IDs
-     * @return     array<mixed>
+     * @return     array<mixed>|int
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
@@ -92,7 +92,7 @@ class Kb extends Plugin
         if (!$limit) {
             // Get a count
             $database->setQuery($f_count . $f_from);
-            return $database->loadResult();
+            return (int) $database->loadResult();
         } else {
             // Get results
             $database->setQuery($f_fields . $f_from . $order_by);

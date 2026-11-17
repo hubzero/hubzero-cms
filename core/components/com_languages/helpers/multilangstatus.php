@@ -31,7 +31,7 @@ abstract class Multilangstatus
         $query->where('published', '=', 1);
         $query->where('client_id', '=', 0);
         $db->setQuery($query);
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 
     /**
@@ -50,7 +50,7 @@ abstract class Multilangstatus
         $query->where('published', '=', 1);
         $query->where('client_id', '=', 0);
         $db->setQuery($query);
-        return $db->loadResult();
+        return (int) $db->loadResult();
     }
 
     /**

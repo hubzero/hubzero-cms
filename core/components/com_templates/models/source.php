@@ -85,11 +85,7 @@ class Source extends Obj
             $result = $db->loadObject();
 
             if (empty($result)) {
-                if ($error = $db->getErrorMsg()) {
-                    $this->setError($error);
-                } else {
-                    $this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
-                }
+                $this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
                 $this->template = false;
             } else {
                 $this->template = $result;

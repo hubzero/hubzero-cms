@@ -407,10 +407,6 @@ class Manager extends Obj
 
         $results = $db->loadObjectList();
 
-        if (!$results || !is_array($results)) {
-            $results = [];
-        }
-
         $scope = $this->get('scope');
         $scope_id = $this->get('scope_id');
 

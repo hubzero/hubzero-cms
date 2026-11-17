@@ -73,9 +73,6 @@ class MenuParent extends Select
         $options = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            throw new Exception($db->getErrorMsg(), 500);
-        }
 
         // Pad the option text with spaces using depth level as a multiplier.
         for ($i = 0, $n = count($options); $i < $n; $i++) {

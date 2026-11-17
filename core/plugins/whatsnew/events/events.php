@@ -47,7 +47,7 @@ class Events extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   array<mixed>|null    $areas       Active area(s)
      * @param   array<mixed>    $tagids      Array of tag IDs
-     * @return  array<mixed>
+     * @return  array<mixed>|int
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
@@ -85,7 +85,7 @@ class Events extends Plugin
         if (!$limit) {
             // Get a count
             $database->setQuery($e_count . $e_from . " WHERE " . $e_where);
-            return $database->loadResult();
+            return (int) $database->loadResult();
         } else {
             // Get results
             $query = $e_fields . $e_from . " WHERE " . $e_where . $order_by;

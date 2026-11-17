@@ -501,11 +501,6 @@ class Profile extends Obj
 
         $result = $db->loadAssoc();
 
-        if ($result === false) {
-            $this->setError('Error retrieving data from xprofiles table: ' . $db->getErrorMsg());
-            return false;
-        }
-
         if (empty($result)) {
             $this->setError('No such user [' . $user . ']');
             return false;
@@ -559,11 +554,6 @@ class Profile extends Obj
         $db->setQuery($query);
 
         $result = $db->loadAssoc();
-
-        if ($result === false) {
-            $this->setError('Error retrieving data from author table: ' . $db->getErrorMsg());
-            return false;
-        }
 
         if (empty($result)) {
             $this->setError('No such author [' . $authorid . ']');
@@ -830,16 +820,16 @@ class Profile extends Obj
 
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                $errno = $db->getErrorNum();
-
-                if ($errno == 1062) {
-                    $this->setError(
-                        'uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table',
-                    );
-                } else {
-                    $this->setError('Error inserting user data to xprofiles table: ' . $db->getErrorMsg());
+            try {
+                $db->query();
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                if (!$db->isDuplicateKeyException($e)) {
+                    throw $e;
                 }
+
+                $this->setError(
+                    'uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table',
+                );
 
                 return false;
             }
@@ -855,11 +845,7 @@ class Profile extends Obj
 
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                $this->setError('Error inserting non-user data to xprofiles table: ' . $db->getErrorMsg());
-
-                return false;
-            }
+            $db->query();
 
             $query = "SELECT uidNumber FROM `#__xprofiles` WHERE username="
                 . $db->quote($token)
@@ -870,14 +856,9 @@ class Profile extends Obj
 
             $result = $db->loadColumn();
 
-            if ($result === false) {
-                $this->setError('Error adding data to xprofiles table: ' . $db->getErrorMsg());
-
-                return false;
-            }
-
             if (count($result) > 1) {
-                $this->setError('Error adding data to xprofiles table: ' . $db->getErrorMsg());
+                // The driver has no error to give here: say what went wrong
+                $this->setError('Error adding data to xprofiles table: more than one new row matched');
 
                 return false;
             }
@@ -979,9 +960,7 @@ class Profile extends Obj
 
         $db->setQuery($query);
 
-        if (!$db->query()) {
-            $this->setError('Error updating data in xprofiles table: ' . $db->getErrorMsg());
-        }
+        $db->query();
 
         $affected = $db->getAffectedRows();
 
@@ -1016,11 +995,8 @@ class Profile extends Obj
             if ($query_values != '') {
                 $db->setQuery($query . $query_values);
 
-                if (!$db->query()) {
-                    $this->setError("Error updating data in xprofiles $property table: " . $db->getErrorMsg());
-                } else {
-                    $affected += $db->getAffectedRows();
-                }
+                $db->query();
+                $affected += $db->getAffectedRows();
             }
 
             if (property_exists(__CLASS__, self::auxProperty($property, 'v'))) {
@@ -1042,11 +1018,8 @@ class Profile extends Obj
 
                 $db->setQuery($query);
 
-                if (!$db->query()) {
-                    $this->setError("Error deleting data in xprofiles $property table: " . $db->getErrorMsg());
-                } else {
-                    $affected += $db->getAffectedRows();
-                }
+                $db->query();
+                $affected += $db->getAffectedRows();
             }
         }
 
@@ -1085,21 +1058,15 @@ class Profile extends Obj
             $query = "DELETE FROM `#__xprofiles_$property` WHERE uidNumber = " . $db->quote($this->get('uidNumber'));
             $db->setQuery($query);
 
-            if (!$db->query()) {
-                $this->setError("Error deleting from xprofiles $property table: " . $db->getErrorMsg());
-            } else {
-                $affected += $db->getAffectedRows();
-            }
+            $db->query();
+            $affected += $db->getAffectedRows();
         }
 
         $query = "DELETE FROM `#__xprofiles` WHERE uidNumber = " . $db->quote($this->get('uidNumber'));
         $db->setQuery($query);
 
-        if (!$db->query()) {
-            $this->setError("Error deleting from xprofiles table: " . $db->getErrorMsg());
-        } else {
-            $affected += $db->getAffectedRows();
-        }
+        $db->query();
+        $affected += $db->getAffectedRows();
 
         if ($affected > 0) {
             Event::trigger('user.onAfterDeleteProfile', [$this]);
@@ -1153,9 +1120,7 @@ class Profile extends Obj
 
             $result = $db->loadColumn();
 
-            if ($result === false) {
-                $this->setError("Error retrieving data from xprofiles $property table: " . $db->getErrorMsg());
-            } elseif (self::isAux($property, 's')) {
+            if (self::isAux($property, 's')) {
                 if (isset($result[0])) {
                     $this->set($property_name, $result[0]);
                 } else {

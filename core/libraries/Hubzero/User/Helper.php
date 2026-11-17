@@ -249,9 +249,7 @@ class Helper
 
         $db->setQuery($query);
 
-        if (!$db->query()) {
-            return false;
-        }
+        $db->query();
 
         return true;
     }

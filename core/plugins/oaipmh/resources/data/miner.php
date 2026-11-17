@@ -55,7 +55,7 @@ class Miner extends Obj implements Provider
     /**
      * Constructor
      *
-     * @param   \Hubzero\Database\Driver|null  $db
+     * @param   \Hubzero\Database\Driver|mixed  $db  The database, or null for the site's
      * @return  void
      * @throws  \Exception
      */

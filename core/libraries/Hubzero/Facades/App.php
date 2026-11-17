@@ -11,7 +11,7 @@ namespace Hubzero\Facades;
 /**
  * App facade
  *
- * @method static mixed  get(string $key)
+ * @method static ($key is 'db' ? \Hubzero\Database\Drivers\Base\BaseSqlDriver : mixed) get(string $key)
  * @method static void   set(string $key, mixed $value)
  * @method static bool   has(string $key)
  * @method static void   forget(string $key)

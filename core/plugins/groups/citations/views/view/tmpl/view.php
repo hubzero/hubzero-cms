@@ -535,7 +535,7 @@ $area = Request::getString('area', 'about');
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
                         <td>
-                            <?= \Components\Citations\Helpers\Format::citationBadges($citation, App::get('db')) ?>
+                            <?= \Components\Citations\Helpers\Format::citationBadges($citation, true) ?>
                         </td>
                     </tr>
                 <?php endif; ?>

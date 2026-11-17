@@ -147,12 +147,11 @@ class Menus
 
         if ($parentId) {
             if ($mode == 2) {
-                // Prevent the parent and children from showing.
-                $query->join('#__menu AS p', 'p.id', (int) $parentId, 'left');
-                $query
-                    ->where('a.lft', '<=', 'p.lft', 1)
-                    ->orWhere('a.rgt', '>=', 'p.rgt', 1)
-                    ->resetDepth();
+                // Prevent the parent and children from showing. The join is on
+                // an id and the comparisons are between columns: join() and
+                // where() would have taken them for a column name and values.
+                $query->joinRaw('#__menu AS p', 'p.id = ' . (int) $parentId, 'left');
+                $query->whereRaw('(a.lft <= p.lft OR a.rgt >= p.rgt)');
             }
         }
 
@@ -182,9 +181,6 @@ class Menus
         $links = $db->loadObjectList();
 
         // Check for a database error.
-        if ($error = $db->getErrorMsg()) {
-            throw new \Exception($error, 500);
-        }
 
         // Pad the option text with spaces using depth level as a multiplier.
         foreach ($links as &$link) {
@@ -205,9 +201,6 @@ class Menus
             $menuTypes = $db->loadObjectList();
 
             // Check for a database error.
-            if ($error = $db->getErrorMsg()) {
-                return false;
-            }
 
             // Create a reverse lookup and aggregate the links.
             $rlu = [];
@@ -258,9 +251,6 @@ class Menus
         $menuitems = $db->loadObjectList('language');
 
         // Check for a database error.
-        if ($error = $db->getErrorMsg()) {
-            throw new \Exception($error, 500);
-        }
 
         foreach ($menuitems as $tag => $item) {
             $associations[$tag] = $item->id;

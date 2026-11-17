@@ -313,7 +313,8 @@ class Styles extends AdminController
                 ->update('#__menu')
                 ->set(['template_style_id' => 0]);
             if (!empty($assigned)) {
-                $query->whereRaw('id', 'NOT IN (' . implode(',', $assigned) . ')');
+                // whereRaw() took 'id' for the clause and the rest for bindings
+                $query->whereNotIn('id', $assigned);
             }
             $query->whereEquals('template_style_id', (int) $style->get('id'));
             $query->whereIn('checked_out', [0, (int) User::get('id')]);

@@ -56,7 +56,6 @@ class RelatedItems extends Module
         $db     = \Hubzero\Facades\App::get('db');
         $userId = (int) User::get('id');
         $count  = intval($params->get('count', 5));
-        $groups = implode(',', User::getAuthorisedViewLevels());
         $date   = \Hubzero\Facades\Date::toSql();
 
         $option = Request::getCmd('option');
@@ -86,7 +85,8 @@ class RelatedItems extends Module
                 foreach ($keys as $key) {
                     $key = trim($key);
                     if ($key) {
-                        $likes[] = $db->escape($key);
+                        // Bound below, so not escaped here
+                        $likes[] = $key;
                     }
                 }
 
@@ -101,56 +101,46 @@ class RelatedItems extends Module
                     $query->select('cc.access AS cat_access');
                     $query->select('cc.published AS cat_state');
 
-                    // sqlsrv changes
-                    $case_when = ' CASE WHEN ';
-                    $case_when .= $query->charLength('a.alias');
-                    $case_when .= ' THEN ';
-                    $a_id = $query->castAsChar('a.id');
-                    $case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
-                    $case_when .= ' ELSE ';
-                    $case_when .= $a_id . ' END as slug';
-                    $query->select($case_when);
-
-                    $case_when = ' CASE WHEN ';
-                    $case_when .= $query->charLength('cc.alias');
-                    $case_when .= ' THEN ';
-                    $c_id = $query->castAsChar('cc.id');
-                    $case_when .= $query->concatenate([$c_id, 'cc.alias'], ':');
-                    $case_when .= ' ELSE ';
-                    $case_when .= $c_id . ' END as catslug';
-                    $query->select($case_when);
+                    // The slugs: id:alias when there is an alias, else the id. This
+                    // used Joomla query methods (charLength(), castAsChar(),
+                    // concatenate()) the query builder does not have.
+                    $query->select(
+                        'CASE WHEN ' . $db->sqlLength('a.alias') . ' THEN '
+                        . $db->sqlConcatWs(':', ['a.id', 'a.alias']) . ' ELSE a.id END as slug',
+                    );
+                    $query->select(
+                        'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN '
+                        . $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END as catslug',
+                    );
                     $query->from('#__content AS a');
-                    $query->leftJoin('#__content_frontpage AS f ON f.content_id = a.id');
-                    $query->leftJoin('#__categories AS cc ON cc.id = a.catid');
+                    $query->joinRaw('#__content_frontpage AS f', 'f.content_id = a.id', 'left');
+                    $query->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'left');
                     $query->where('a.id', '!=', (int) $id);
                     $query->where('a.state', '=', 1);
-                    $query->where('a.access', 'IN', '(' . $groups . ')');
-                    $concat_string = $query->concatenate(
-                        ['","', ' REPLACE(a.metakey, ", ", ",")', ' ","'],
+                    $query->whereIn('a.access', User::getAuthorisedViewLevels());
+
+                    // The item's keywords, without the space after each comma and
+                    // with a comma at each end, holding any of this article's
+                    $keywords = $db->sqlConcat(["','", "REPLACE(a.metakey, ', ', ',')", "','"]);
+                    $matches  = [];
+                    $bindings = [];
+                    foreach ($likes as $like) {
+                        $matches[]  = $keywords . ' LIKE ?';
+                        $bindings[] = '%' . $like . '%';
+                    }
+                    $query->whereRaw('(' . implode(' OR ', $matches) . ')', $bindings);
+                    $query->whereRaw(
+                        '(a.publish_up IS NULL OR a.publish_up = ? OR a.publish_up <= ?)',
+                        [$nullDate, $now],
                     );
-                    // TODO: Fix the where clauses below. Not sure how to break
-                    // the params out to work with the new where clause
-                    // remove single space after commas in keywords
-                    $likeConditions = implode(
-                        '%" OR ' . $concat_string . ' LIKE "%',
-                        $likes,
-                    );
-                    $query->where('(' . $concat_string . ' LIKE "%' . $likeConditions . '%")');
-                    $query->where(
-                        '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate)
-                        . ' OR a.publish_up <= ' . $db->quote($now) . ')',
-                    );
-                    $query->where(
-                        '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate)
-                        . ' OR a.publish_down >= ' . $db->quote($now) . ')',
+                    $query->whereRaw(
+                        '(a.publish_down IS NULL OR a.publish_down = ? OR a.publish_down >= ?)',
+                        [$nullDate, $now],
                     );
 
                     // Filter by language
                     if (\Hubzero\Facades\App::get('language.filter')) {
-                        $query->where(
-                            'a.language in (' . $db->quote(Lang::getTag()) . ','
-                            . $db->quote('*') . ')',
-                        );
+                        $query->whereIn('a.language', [Lang::getTag(), '*']);
                     }
 
                     $temp = $query->fetch();

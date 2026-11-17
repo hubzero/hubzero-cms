@@ -594,7 +594,7 @@ abstract class Cart
         $uId = $db->loadResult();
 
         if (!empty($uId)) {
-            return $uId;
+            return (int) $uId;
         }
         return false;
     }

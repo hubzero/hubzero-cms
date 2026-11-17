@@ -67,7 +67,7 @@ class Publications extends Plugin
      *
      * @param      integer $parentid ID to check for parents of
      * @param      string  $category Element type (determines table to look in)
-     * @return     integer|null
+     * @return     integer|string|null
      */
     public function getParentId($parentid, $category)
     {

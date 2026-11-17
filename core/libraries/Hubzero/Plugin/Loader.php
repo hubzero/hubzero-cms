@@ -297,10 +297,6 @@ class Loader implements LoaderInterface
 
             self::$plugins = $db->setQuery($query->toString())->loadObjectList();
 
-            if ($error = $db->getErrorMsg()) {
-                throw new Exception($error, 500);
-            }
-
             $cache->put('com_plugins.' . $levels, self::$plugins, App::get('config')->get('cachetime', 15));
         }
 

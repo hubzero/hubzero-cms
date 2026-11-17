@@ -88,9 +88,7 @@ class Terms extends Base implements CommandInterface
                 . $dbo->quote($params->toString())
                 . " WHERE `name`='com_members'";
             $dbo->setQuery($query);
-            if (!$dbo->query()) {
-                $this->output->error('Unable to set registration field TOU to required on next update.');
-            }
+            $dbo->query();
 
             // Clear all old TOU states
             if ($dbo->tableExists('#__users') && $dbo->tableHasField('#__users', 'usageAgreement')) {

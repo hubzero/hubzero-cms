@@ -214,7 +214,7 @@ class Usage extends Plugin
         $database->setQuery($sql);
         $result = $database->loadResult();
         if ($result) {
-            return $result;
+            return (int) $result;
         }
 
         return 0;
@@ -392,7 +392,7 @@ class Usage extends Plugin
             . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
         $database->setQuery($sql);
-        return $database->loadResult();
+        return (int) $database->loadResult();
     }
 
     /**

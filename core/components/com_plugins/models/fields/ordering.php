@@ -84,9 +84,6 @@ class Ordering extends Field
         $items = $db->loadObjectList();
 
         // Check for a database error.
-        if ($db->getErrorNum()) {
-            App::abort(500, $db->getErrorMsg());
-        }
 
         if (empty($items)) {
             $options[] = Html::select('option', 1, Lang::txt('JOPTION_ORDER_FIRST'));

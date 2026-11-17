@@ -67,10 +67,6 @@ class Plugins extends Select
 
                 $options[$i]->text = $lang->txt($item->text);
             }
-
-            if ($db->getErrorMsg()) {
-                return '';
-            }
         } else {
             App::abort(500, App::get('language')->txt('JFRAMEWORK_FORM_FIELDS_PLUGINS_ERROR_FOLDER_EMPTY'));
         }

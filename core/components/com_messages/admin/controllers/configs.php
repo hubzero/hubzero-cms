@@ -95,10 +95,6 @@ class Configs extends AdminController
                 . ' VALUES ' . implode(',', $tuples),
             );
             $db->query();
-
-            if ($error = $db->getErrorMsg()) {
-                Notify::error($error);
-            }
         }
 
         $this->cancelTask();

@@ -2190,9 +2190,7 @@ class Members extends Plugin
                 . " AND uidNumber="
                 . $db->Quote($uid),
         );
-        if (!$db->query()) {
-            $this->setError('An error occurred while trying to remove the members role. Please try again.');
-        }
+        $db->query();
 
         App::redirect(
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),

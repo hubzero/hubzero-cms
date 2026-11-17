@@ -76,10 +76,6 @@ class Rules extends Field
                 ->whereEquals('name', $component);
             $db->setQuery($query->toString());
             $assetId = (int) $db->loadResult();
-
-            if ($error = $db->getErrorMsg()) {
-                throw new Exception($error, 500);
-            }
         } else {
             // Find the asset id of the content.
             // Note that for global configuration, com_config injects asset_id = 1 into the form.

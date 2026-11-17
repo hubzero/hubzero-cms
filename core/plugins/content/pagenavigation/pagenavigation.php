@@ -67,40 +67,36 @@ class Pagenavigation extends Plugin
                 $order_method = '';
             }
 
-            // Determine sort order.
+            // Determine sort order: columns and their directions, since the
+            // query builder's order() takes them apart
             switch ($order_method) {
                 case 'date':
-                    $orderby = 'a.created';
+                    $orderby = [['a.created', 'asc']];
                     break;
                 case 'rdate':
-                    $orderby = 'a.created DESC';
+                    $orderby = [['a.created', 'desc']];
                     break;
                 case 'alpha':
-                    $orderby = 'a.title';
+                    $orderby = [['a.title', 'asc']];
                     break;
                 case 'ralpha':
-                    $orderby = 'a.title DESC';
+                    $orderby = [['a.title', 'desc']];
                     break;
                 case 'hits':
-                    $orderby = 'a.hits';
+                    $orderby = [['a.hits', 'asc']];
                     break;
                 case 'rhits':
-                    $orderby = 'a.hits DESC';
-                    break;
-                case 'order':
-                    $orderby = 'a.ordering';
+                    $orderby = [['a.hits', 'desc']];
                     break;
                 case 'author':
-                    $orderby = 'a.created_by_alias, u.name';
+                    $orderby = [['a.created_by_alias', 'asc'], ['u.name', 'asc']];
                     break;
                 case 'rauthor':
-                    $orderby = 'a.created_by_alias DESC, u.name DESC';
+                    $orderby = [['a.created_by_alias', 'desc'], ['u.name', 'desc']];
                     break;
-                case 'front':
-                    $orderby = 'f.ordering';
-                    break;
+                case 'order':
                 default:
-                    $orderby = 'a.ordering';
+                    $orderby = [['a.ordering', 'asc']];
                     break;
             }
 
@@ -112,42 +108,36 @@ class Pagenavigation extends Plugin
 
             // Array of articles in same category correctly ordered.
             $query = $db->getQuery();
-            //sqlsrv changes
-            $case_when = ' CASE WHEN ';
-            $case_when .= $query->charLength('a.alias');
-            $case_when .= ' THEN ';
-            $a_id = $query->castAsChar('a.id');
-            $case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
-            $case_when .= ' ELSE ';
-            $case_when .= $a_id . ' END as slug';
-
-            $case_when1 = ' CASE WHEN ';
-            $case_when1 .= $query->charLength('cc.alias');
-            $case_when1 .= ' THEN ';
-            $c_id = $query->castAsChar('cc.id');
-            $case_when1 .= $query->concatenate([$c_id, 'cc.alias'], ':');
-            $case_when1 .= ' ELSE ';
-            $case_when1 .= $c_id . ' END as catslug';
-            $query->select('a.id, a.language,' . $case_when . ',' . $case_when1);
+            // The slugs: id:alias when there is an alias, else the id. This
+            // used Joomla query methods (charLength(), castAsChar(),
+            // concatenate()) the query builder does not have.
+            $query->select('a.id');
+            $query->select('a.language');
+            $query->select(
+                'CASE WHEN ' . $db->sqlLength('a.alias') . ' THEN '
+                . $db->sqlConcatWs(':', ['a.id', 'a.alias']) . ' ELSE a.id END as slug',
+            );
+            $query->select(
+                'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN '
+                . $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END as catslug',
+            );
             $query->from('#__content AS a');
-            $query->leftJoin('#__categories AS cc ON cc.id = a.catid');
-            // TODO: Fix where clause
+            $query->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'left');
+            // The author orderings name the user
+            $query->joinRaw('#__users AS u', 'u.id = a.created_by', 'left');
             $whereClause = 'a.catid = ' . (int) $row->catid . ' AND a.state = ' . (int) $row->state;
             $whereClause .= $canPublish ? '' : ' AND a.access = ' . (int) $row->access;
             $whereClause .= $xwhere;
-            $query->where($whereClause);
-            $query->order($orderby);
+            $query->whereRaw($whereClause);
+            foreach ($orderby as $order) {
+                $query->order($order[0], $order[1]);
+            }
             if (App::isSite() && App::get('language.filter')) {
                 $query->whereIn('a.language', [Lang::getTag(), '*']);
             }
 
             $db->setQuery($query);
             $list = $db->loadObjectList('id');
-
-            // This check needed if incorrect Itemid is given resulting in an incorrect result.
-            if (!is_array($list)) {
-                $list = [];
-            }
 
             reset($list);
 

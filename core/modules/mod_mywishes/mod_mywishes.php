@@ -59,10 +59,6 @@ class Mywishes extends Module
 			)",
         );
         $this->rows = $database->loadObjectList();
-        if ($database->getErrorNum()) {
-            $this->setError($database->stderr());
-            $this->rows = [];
-        }
 
         $rows1 = [];
         $rows2 = [];

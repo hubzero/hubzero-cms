@@ -68,6 +68,12 @@ use Hubzero\Facades\Event;
  * - ERROR: Database errors (failed queries, connection issues)
  * - WARNING: Slow queries exceeding the threshold
  * - DEBUG: All queries (when debugging is enabled)
+ *
+ * Shorthands, through __call():
+ *
+ * @method string q(string|int|float|bool|null $text, bool $escape = true)  quote()
+ * @method string qn(mixed $name, mixed $as = null)  quoteName()
+ * @method string nq(mixed $name, mixed $as = null)  quoteName()
  */
 abstract class Driver implements LoggerAwareInterface
 {

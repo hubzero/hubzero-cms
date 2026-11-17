@@ -116,7 +116,7 @@ class Activity extends Plugin
             $users = $db->loadColumn();
 
             // Loop through members and get their groups that have the digest set
-            if ($users && count($users) > 0) {
+            if ($users) {
                 foreach ($users as $user) {
                     $posts = \Hubzero\Activity\Recipient::all()
                         ->including('log')

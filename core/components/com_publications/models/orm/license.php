@@ -246,26 +246,22 @@ class License extends Relational
             return true;
         }
 
+        // Driver::execute() takes no SQL: these ran nothing. The query
+        // builder runs its own statement, and throws when it fails.
         $db = App::get('db');
-        $query = $db
-            ->getQuery()
+        $db->getQuery()
             ->update($this->getTableName())
             ->set(['main' => 1])
             ->where('id', '=', $this->get('id'))
-            ->toString();
+            ->execute();
 
-        if (!$db->execute($query)) {
-            return false;
-        }
-
-        $query = $db
-            ->getQuery()
+        $db->getQuery()
             ->update($this->getTableName())
             ->set(['main' => 0])
             ->where('id', '!=', $this->get('id'))
-            ->toString();
+            ->execute();
 
-        return $db->execute($query);
+        return true;
     }
 
     /**

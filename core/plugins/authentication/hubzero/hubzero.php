@@ -86,11 +86,11 @@ class Hubzero extends Plugin
 
         $result = $db->loadObjectList();
 
-        if (is_array($result) && count($result) > 1) {
+        if (count($result) > 1) {
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_UNKNOWN_USER');
             return false;
-        } elseif (is_array($result) && isset($result[0])) {
+        } elseif (isset($result[0])) {
             $result = $result[0];
         } else {
             $response->status = \Hubzero\Auth\Status::FAILURE;
@@ -122,57 +122,52 @@ class Hubzero extends Plugin
             return false;
         }
 
-        if ($result) {
-            $hzup = \Hubzero\User\Password::getInstance($result->id);
+        $hzup = \Hubzero\User\Password::getInstance($result->id);
 
-            // An account expired for inactivity may not sign in with a password. It fails
-            // exactly like a wrong password, so the form confirms neither the password nor the
-            // account's state; "Forgot password" mails the explanation to the owner.
-            if (
-                \Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true)
-                && !\Hubzero\User\Password::isInactive($hzup)
-            ) {
-                $user = User::getInstance($result->id);
+        // An account expired for inactivity may not sign in with a password. It fails
+        // exactly like a wrong password, so the form confirms neither the password nor the
+        // account's state; "Forgot password" mails the explanation to the owner.
+        if (
+            \Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true)
+            && !\Hubzero\User\Password::isInactive($hzup)
+        ) {
+            $user = User::getInstance($result->id);
 
-                $response->username      = $user->get('username');
-                $response->email         = $user->get('email');
-                $response->fullname      = $user->get('name');
-                $response->status        = \Hubzero\Auth\Status::SUCCESS;
-                $response->error_message = '';
+            $response->username      = $user->get('username');
+            $response->email         = $user->get('email');
+            $response->fullname      = $user->get('name');
+            $response->status        = \Hubzero\Auth\Status::SUCCESS;
+            $response->error_message = '';
 
-                // Check validity and age of password
-                $password_rules = \Hubzero\Password\Rule::all()
-                    ->whereEquals('enabled', 1)
-                    ->rows();
-                $msg = \Hubzero\Password\Rule::verify(
-                    $credentials['password'],
-                    $password_rules,
-                    $result->username,
-                    null,
-                    false,
-                );
-                if (!empty($msg[0])) {
-                    App::get('session')->set('badpassword', '1');
-                }
-                if (\Hubzero\User\Password::isPasswordExpired($hzup)) {
-                    App::get('session')->set('expiredpassword', '1');
-                }
-
-                // Set cookie with login preference info
-                $prefs = [
-                    'user_id'       => $user->get('id'),
-                    'user_img'      => $user->picture(0, false),
-                    'authenticator' => 'hubzero',
-                ];
-
-                $namespace = 'authenticator';
-                $lifetime  = time() + 365 * 24 * 60 * 60;
-
-                \Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
-            } else {
-                $response->status = \Hubzero\Auth\Status::FAILURE;
-                $response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
+            // Check validity and age of password
+            $password_rules = \Hubzero\Password\Rule::all()
+                ->whereEquals('enabled', 1)
+                ->rows();
+            $msg = \Hubzero\Password\Rule::verify(
+                $credentials['password'],
+                $password_rules,
+                $result->username,
+                null,
+                false,
+            );
+            if (!empty($msg[0])) {
+                App::get('session')->set('badpassword', '1');
             }
+            if (\Hubzero\User\Password::isPasswordExpired($hzup)) {
+                App::get('session')->set('expiredpassword', '1');
+            }
+
+            // Set cookie with login preference info
+            $prefs = [
+                'user_id'       => $user->get('id'),
+                'user_img'      => $user->picture(0, false),
+                'authenticator' => 'hubzero',
+            ];
+
+            $namespace = 'authenticator';
+            $lifetime  = time() + 365 * 24 * 60 * 60;
+
+            \Hubzero\Utility\Cookie::bake($namespace, $lifetime, $prefs);
         } else {
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
@@ -220,7 +215,7 @@ class Hubzero extends Plugin
     /**
      * hasExceededLoginLimit
      *
-     * @param   \Hubzero\Auth\Response  $response
+     * @param   \stdClass  $response  The account's row: id, username and password
      * @return  bool
      */
     private function hasExceededBlockLimit($response)

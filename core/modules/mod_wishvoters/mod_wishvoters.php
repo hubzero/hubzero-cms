@@ -57,10 +57,6 @@ class Wishvoters extends Module
 			GROUP BY v.userid ORDER BY times DESC, v.voted DESC ",
         );
         $this->rows = $database->loadObjectList();
-        if ($database->getErrorNum()) {
-            $this->setError($database->stderr());
-            return '<p class="error">' . Lang::txt('MOD_WISHVOTERS_ERROR_RETRIEVING') . '</p>';
-        }
 
         require $this->getLayoutPath();
 

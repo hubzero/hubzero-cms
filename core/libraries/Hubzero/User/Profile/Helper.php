@@ -32,10 +32,6 @@ class Helper
 
         $result = $db->loadColumn();
 
-        if ($result === false) {
-            throw new \Exception('Error retrieving data from xprofiles table: ' . $db->getErrorMsg(), 500);
-        }
-
         foreach ($result as $row) {
             $func($row);
         }

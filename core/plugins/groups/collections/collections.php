@@ -134,7 +134,7 @@ class Collections extends Plugin
             );
             $ids = $database->loadColumn();
 
-            if ($ids && count($ids)) {
+            if ($ids) {
                 // Mark all posts as "trashed"
                 $database->setQuery(
                     "UPDATE `#__collections_items` SET `state`=2 WHERE `id` IN (" . implode(',', $ids) . ")",

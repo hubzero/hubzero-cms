@@ -47,7 +47,7 @@ class Content extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   array<mixed>|null    $areas       Active area(s)
      * @param   array<mixed>    $tagids      Array of tag IDs
-     * @return  array<mixed>
+     * @return  array<mixed>|int
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
@@ -116,7 +116,7 @@ class Content extends Plugin
         } else {
             // Get a count
             $database->setQuery($c_count . $c_from . " WHERE " . $c_where);
-            return $database->loadResult();
+            return (int) $database->loadResult();
         }
     }
 

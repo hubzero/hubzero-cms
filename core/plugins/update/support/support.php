@@ -217,10 +217,7 @@ class Support extends Plugin
 
         // Update the tickets
         $database->setQuery($upd);
-        if (!$database->query()) {
-            Log::error('Ticket query failed: ' . $database->getErrorMsg());
-            return false;
-        }
+        $database->query();
 
         // If we're sending a message...
         if ($message_id && !empty($tickets)) {

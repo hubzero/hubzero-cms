@@ -70,10 +70,6 @@ class Mytickets extends Module
 			)",
         );
         $this->rows = $database->loadObjectList();
-        if ($database->getErrorNum()) {
-            $this->setError($database->stderr());
-            $this->rows = [];
-        }
 
         $rows1 = [];
         $rows2 = [];
@@ -114,10 +110,6 @@ class Mytickets extends Module
 				LIMIT $limit",
             );
             $this->rows3 = $database->loadObjectList();
-            if ($database->getErrorNum()) {
-                $this->setError($database->stderr());
-                $this->rows3 = null;
-            }
         }
 
         require $this->getLayoutPath();

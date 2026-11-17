@@ -281,7 +281,7 @@ class Usage extends Plugin
                 . " AND p.scope_id="
                 . $database->quote($gid),
         );
-        return $database->loadResult();
+        return (int) $database->loadResult();
     }
 
     /**
@@ -314,7 +314,7 @@ class Usage extends Plugin
             $database->setQuery(
                 "SELECT COUNT(*) FROM `#__wiki_attachments` WHERE page_id IN (" . implode(',', $ids) . ")",
             );
-            return $database->loadResult();
+            return (int) $database->loadResult();
         }
 
         return 0;
@@ -564,7 +564,7 @@ class Usage extends Plugin
         $database->setQuery($query);
 
         $count = $database->loadResult();
-        return $count;
+        return (int) $count;
     }
 
     /**
@@ -583,6 +583,6 @@ class Usage extends Plugin
             . $database->quote($gid)
             . " AND state=1";
         $database->setQuery($query);
-        return $database->loadResult();
+        return (int) $database->loadResult();
     }
 }

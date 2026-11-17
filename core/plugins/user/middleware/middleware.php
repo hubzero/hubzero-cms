@@ -201,9 +201,7 @@ class Middleware extends Plugin
                 $db = App::get('db');
                 $db->setQuery("DELETE FROM `#__users_quotas` WHERE `user_id`=" . $userId);
 
-                if (!$db->query()) {
-                    throw new \Exception($db->getErrorMsg());
-                }
+                $db->query();
 
                 $db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 

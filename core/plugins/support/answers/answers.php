@@ -114,7 +114,7 @@ class Answers extends Plugin
      *
      * @param      integer $parentid ID to check for parents of
      * @param      string  $category Element type (determines table to look in)
-     * @return     integer|null
+     * @return     integer|string|null
      */
     public function getParentId($parentid, $category)
     {
@@ -283,10 +283,7 @@ class Answers extends Plugin
         switch ($category) {
             case 'answer':
                 $database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $referenceid);
-                if (!$database->query()) {
-                    $this->setError($database->getErrorMsg());
-                    return false;
-                }
+                $database->query();
 
                 $message .= Lang::txt('PLG_SUPPORT_ANSWERS_NOTIFY_ANSWER_REMOVED', $parentid);
                 break;
@@ -309,18 +306,12 @@ class Answers extends Plugin
                     foreach ($answers as $answer) {
                         // Delete response
                         $database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $answer->id);
-                        if (!$database->query()) {
-                            $this->setError($database->getErrorMsg());
-                            return false;
-                        }
+                        $database->query();
                     }
                 }
 
                 $database->setQuery("UPDATE `#__answers_questions` SET state='2', reward='0' WHERE id=" . $referenceid);
-                if (!$database->query()) {
-                    $this->setError($database->getErrorMsg());
-                    return false;
-                }
+                $database->query();
 
                 if ($banking && $reward) {
                     // get id of asker
@@ -386,6 +377,7 @@ class Answers extends Plugin
             . $id;
         $database->setQuery($sql);
 
-        return $database->loadResult();
+        // 0 when no reward is held
+        return (int) $database->loadResult();
     }
 }
