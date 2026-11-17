@@ -128,7 +128,7 @@ class Teller extends Obj
      */
     public function withdraw($amount, $desc, $cat, $ref)
     {
-        $amount = $this->amountCheck($amount);
+        $amount = $this->amountCheck((int) $amount);
 
         if ($this->getError()) {
             echo $this->getError();

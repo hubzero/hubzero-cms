@@ -145,7 +145,7 @@ class Html
     public static function timeAgo($timestamp)
     {
         if (strstr((string) $timestamp, '-')) {
-            $timestamp = self::mkt($timestamp);
+            $timestamp = self::mkt((string) $timestamp);
         }
         $text = self::timeAgoo($timestamp);
 

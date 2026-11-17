@@ -117,7 +117,7 @@ class Assetgroups extends AdminController
         }
 
         // second pass - get an indent list of the items
-        $list = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
+        $list = $this->treeRecurse(0, '', [], $children, (int) max(0, $levellimit - 1));
 
         $this->view->set('total', count($list));
 

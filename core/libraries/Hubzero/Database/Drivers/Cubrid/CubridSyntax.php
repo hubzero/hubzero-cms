@@ -1253,7 +1253,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             if ($ignoreMode) {
                 $firstCol = !empty($this->values) ? array_key_first($this->values) : null;
                 if ($firstCol) {
-                    $values .= $this->buildNoopDuplicateUpdateClause($firstCol);
+                    $values .= $this->buildNoopDuplicateUpdateClause((string) $firstCol);
                 }
             }
 

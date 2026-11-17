@@ -279,6 +279,6 @@ class Conditions extends Obj
      */
     private function value($val = '=', $label = 'is', $sel = false)
     {
-        return $this->operator($val, $label, $sel);
+        return $this->operator((string) $val, $label, $sel);
     }
 }

@@ -1030,7 +1030,7 @@ class Threadsv1r0 extends ApiController
                     ->whereEquals('parent', 0)
                     ->row();
 
-                $list = $this->treeRecurse($post->get('id'), '', [], $children, max(0, $levellimit - 1));
+                $list = $this->treeRecurse($post->get('id'), '', [], $children, (int) max(0, $levellimit - 1));
 
                 $inc = false;
                 $newlist = [];

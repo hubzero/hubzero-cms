@@ -354,14 +354,14 @@ class Captcha extends Plugin
         $html .= '</label>' . "\n";
         $html .= "\t"
             . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="'
-            . $this->generateHash($key, date('j'))
+            . $this->generateHash((string) $key, date('j'))
             . '" />'
             . "\n";
         //$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
         App::get('session')->set(
             'securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']),
-            $this->generateHash($key, date('j')),
+            $this->generateHash((string) $key, date('j')),
         );
 
         if ($this->verified) {

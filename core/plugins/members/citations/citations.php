@@ -1385,7 +1385,7 @@ class Citations extends Plugin
                 if ($filter == "search" && $value != "") {
                     $terms = preg_split('/\s+/', (string) $value);
 
-                    $value = \Hubzero\Utility\Sanitize::clean($value);
+                    $value = \Hubzero\Utility\Sanitize::clean((string) $value);
                     $term = $value;
                     $collection = [];
                     $columns = ['author', 'title', 'isbn', 'doi', 'publisher', 'abstract'];

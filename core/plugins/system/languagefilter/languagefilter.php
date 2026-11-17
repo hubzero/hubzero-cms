@@ -247,7 +247,7 @@ class Languagefilter extends Plugin
                     }
                     if ($test) {
                         foreach ($vars as $key => $value) {
-                            $uri->delUriVar($key);
+                            $uri->delUriVar((string) $key);
                         }
                         $uri->delUriVar('Itemid');
                     }

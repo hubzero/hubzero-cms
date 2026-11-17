@@ -43,7 +43,7 @@ $incomplete = false;
 $authenticator = 'hub';
 if (substr($this->profile->get('email', ''), -8) == '@invalid') {
     $authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
-    if ($lnk = Hubzero\Auth\Link::findById(abs($this->profile->get('username')))) {
+    if ($lnk = Hubzero\Auth\Link::findById((int) abs($this->profile->get('username')))) {
         $domain = Hubzero\Auth\Domain::findById($lnk->auth_domain_id);
         $authenticator = $domain ? $domain->authenticator : '';
     }

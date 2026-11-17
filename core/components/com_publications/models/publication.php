@@ -2082,7 +2082,7 @@ class Publication extends Obj
     {
         // Clean up incoming
         $param  = \Hubzero\Utility\Sanitize::paranoid($param, ['-', '_']);
-        $value  = \Hubzero\Utility\Sanitize::clean($value);
+        $value  = \Hubzero\Utility\Sanitize::clean((string) $value);
 
         if (!$this->exists()) {
             return false;

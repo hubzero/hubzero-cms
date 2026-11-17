@@ -32,7 +32,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      */
     public function append($name, $link = '')
     {
-        $this->items[] = new Item($name, $link);
+        $this->items[] = new Item((string) $name, $link);
 
         return $this;
     }
