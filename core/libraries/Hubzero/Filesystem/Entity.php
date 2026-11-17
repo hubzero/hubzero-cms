@@ -124,7 +124,9 @@ class Entity extends Obj
         $file = __DIR__ . '/Type/' . ucfirst($properties['extension']) . '.php';
         if (file_exists($file)) {
             $class = __NAMESPACE__ . '\\Type\\' . ucfirst($properties['extension']);
-            return new $class($properties, $adapter);
+            if (is_a($class, File::class, true)) {
+                return new $class($properties, $adapter);
+            }
         }
 
         return new File($properties, $adapter);

@@ -88,7 +88,7 @@ class Manager
 
         $class = __NAMESPACE__ . '\\Type\\' . ucfirst($type);
 
-        if (!class_exists($class)) {
+        if (!is_a($class, Base::class, true)) {
             throw new InvalidArgumentException("Type [$type] not supported.");
         }
 

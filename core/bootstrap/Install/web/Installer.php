@@ -33,7 +33,7 @@ class Installer
     /**
      * Available steps in order
      *
-     * @var array<mixed>
+     * @var array<string, class-string<StepInterface>>
      */
     private $steps = [
         'verify'       => Verify::class,

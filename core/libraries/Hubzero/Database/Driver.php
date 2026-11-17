@@ -2625,7 +2625,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->fetchObject($class);
+        return $this->statement->fetchObject($class) ?: null;
     }
 
     /**
@@ -2640,7 +2640,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->fetch(\PDO::FETCH_NUM);
+        return $this->statement->fetch(\PDO::FETCH_NUM) ?: null;
     }
 
     /**
@@ -2655,7 +2655,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->fetch(\PDO::FETCH_ASSOC);
+        return $this->statement->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
     /**

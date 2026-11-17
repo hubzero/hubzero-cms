@@ -112,7 +112,7 @@ class MysqliStatement
         if (!$this->result) {
             return null;
         }
-        return $this->result->fetch_object($class);
+        return $this->result->fetch_object($class) ?: null;
     }
 
     /**
@@ -138,7 +138,7 @@ class MysqliStatement
         if (!$this->result) {
             return null;
         }
-        return $this->result->fetch_assoc();
+        return $this->result->fetch_assoc() ?: null;
     }
 
     /**
@@ -148,7 +148,7 @@ class MysqliStatement
      */
     public function affectedRows()
     {
-        return $this->stmt->affected_rows;
+        return (int) $this->stmt->affected_rows;
     }
 
     /**

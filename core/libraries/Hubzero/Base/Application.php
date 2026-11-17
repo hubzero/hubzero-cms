@@ -238,7 +238,12 @@ class Application extends Container
      */
     protected function resolveProviderClass($provider)
     {
-        return new $provider($this);
+        $instance = new $provider($this);
+        if (!$instance instanceof ServiceProvider) {
+            throw new \InvalidArgumentException("[$provider] is not a service provider.");
+        }
+
+        return $instance;
     }
 
     /**

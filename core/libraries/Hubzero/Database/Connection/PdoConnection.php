@@ -227,7 +227,8 @@ class PdoConnection implements ConnectionInterface
      */
     public function lastInsertId()
     {
-        return $this->getPdo()->lastInsertId();
+        // No id is 0, as on the other connections
+        return $this->getPdo()->lastInsertId() ?: 0;
     }
 
     /**

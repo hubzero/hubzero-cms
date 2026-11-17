@@ -353,6 +353,6 @@ class MysqliConnection implements ConnectionInterface
         if ($result === false) {
             throw new QueryFailedException($this->mysqli->error, $this->mysqli->errno);
         }
-        return $this->mysqli->affected_rows;
+        return (int) $this->mysqli->affected_rows;
     }
 }

@@ -631,14 +631,14 @@ class Archive extends Obj
      */
     public function collectible($option)
     {
-        $cls = __NAMESPACE__ . '\\Item';
+        $cls = Item::class;
 
         if ($option != 'com_collections') {
             $option = strtolower(substr($option, 4));
 
             $subCls = __NAMESPACE__ . '\\Item\\' . ucfirst($option);
 
-            if (class_exists($subCls)) {
+            if (is_a($subCls, Item::class, true)) {
                 $cls = $subCls;
             }
         }

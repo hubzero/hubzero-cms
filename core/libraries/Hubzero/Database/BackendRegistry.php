@@ -228,11 +228,16 @@ final class BackendRegistry
      * Resolve a canonical built-in driver class by backend name.
      *
      * @param  string $name
-     * @return string|null
+     * @return class-string<Driver>|null
      */
     public static function resolveDriverClassFor(string $name): ?string
     {
-        return self::classIfExists(self::driverClassFor($name));
+        $class = self::classIfExists(self::driverClassFor($name));
+        if ($class === null || !is_a($class, Driver::class, true)) {
+            return null;
+        }
+
+        return $class;
     }
 
     /**
