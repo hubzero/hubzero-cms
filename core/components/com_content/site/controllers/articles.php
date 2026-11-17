@@ -758,8 +758,8 @@ class Articles extends SiteController
         // PREPARE THE DATA
 
         // Get the metrics for the structural page layout.
-        $numLeading = $params->def('num_leading_articles', 1);
-        $numIntro   = $params->def('num_intro_articles', 4);
+        $numLeading = (int) $params->def('num_leading_articles', 1);
+        $numIntro   = (int) $params->def('num_intro_articles', 4);
         $numLinks   = $params->def('num_links', 4);
 
         // Compute the article slugs and prepare introtext (runs content plugins).
@@ -930,7 +930,7 @@ class Articles extends SiteController
             || !$mparams->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
-        $parent = $categories ? $categories->get($filters['parentId'], 'root') : false;
+        $parent = $categories ? $categories->get($filters['parentId']) : false;
 
         if ($parent == false) {
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
@@ -1137,7 +1137,7 @@ class Articles extends SiteController
             || !$params->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
-        $category = $categories ? $categories->get($filters['category_id'], 'root') : false;
+        $category = $categories ? $categories->get($filters['category_id']) : false;
 
         if ($category == false) {
             App::abort(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));

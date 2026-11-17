@@ -8,10 +8,13 @@
 
 namespace Hubzero\Facades;
 
+use Hubzero\Config\Registry;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
+
 /**
  * App facade
  *
- * @method static ($key is 'db' ? \Hubzero\Database\Drivers\Base\BaseSqlDriver : mixed) get(string $key)
+ * @method static ($key is 'db' ? BaseSqlDriver : ($key is 'menu.params' ? Registry : mixed)) get(string $key)
  * @method static void   set(string $key, mixed $value)
  * @method static bool   has(string $key)
  * @method static void   forget(string $key)

@@ -119,7 +119,7 @@ class Router
      * Get a set of rules
      *
      * @param   string  $type
-     * @return  object
+     * @return  Rules
      */
     public function rules($type)
     {
