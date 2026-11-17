@@ -613,8 +613,14 @@ class Link extends Base
     /**
      * Build Data object
      *
-     * @param   object   $att
-     * @param   object   $view
+     * @param   \stdClass   $att
+     * @param   \Hubzero\Plugin\View&object{
+     *     elementId: mixed,
+     *     manifest: mixed,
+     *     master: mixed,
+     *     pub: mixed,
+     *     viewer: mixed,
+     * }  $view
      * @param   integer  $i
      * @return  \stdClass
      */

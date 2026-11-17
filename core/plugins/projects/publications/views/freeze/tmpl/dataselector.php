@@ -27,6 +27,7 @@ defined('_HZEXEC_') or die();
  *     pub: mixed,
  *     status: mixed,
  *     type: mixed,
+ *     viewer: mixed,
  * } $this
  */
 

@@ -310,8 +310,14 @@ class Attachments extends Obj
      * Draws attachment
      *
      * @param   string   $name
-     * @param   object   $attachment
-     * @param   object   $view
+     * @param   \stdClass   $attachment
+     * @param   \Hubzero\Plugin\View&object{
+     *     elementId: mixed,
+     *     manifest: mixed,
+     *     master: mixed,
+     *     pub: mixed,
+     *     viewer: mixed,
+     * }  $view
      * @param   integer  $ordering
      * @return  mixed    object or bool
      */

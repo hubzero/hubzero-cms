@@ -498,8 +498,14 @@ class Tool extends Base
     /**
      * Build Data object
      *
-     * @param   object   $att
-     * @param   object   $view
+     * @param   \stdClass   $att
+     * @param   \Hubzero\Plugin\View&object{
+     *     elementId: mixed,
+     *     manifest: mixed,
+     *     master: mixed,
+     *     pub: mixed,
+     *     viewer: mixed,
+     * }  $view
      * @param   integer  $i
      * @return  \stdClass
      */
@@ -508,7 +514,7 @@ class Tool extends Base
         $data = new stdClass();
         $data->row      = $att;
         $data->ordering = $i;
-        $data->editUrl  = $view->editUrl;
+        $data->editUrl  = $view->pub->link('editversion');
         $data->id       = $att->id;
         $data->props    = $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
         $data->viewer   = $view->viewer;
