@@ -608,7 +608,7 @@ class Credentials extends SiteController
     /**
      * Send one of the password reset emails (layouts <name>_plain and <name>_html)
      *
-     * @param   object  $user    \Hubzero\User\User
+     * @param   \Hubzero\User\User  $user    \Hubzero\User\User
      * @param   string  $layout  Layout name without _plain/_html
      * @param   string  $object  X-Component-Object header
      * @param   array<mixed>   $vars    Extra variables for the layouts
@@ -680,7 +680,7 @@ class Credentials extends SiteController
      * Checks to see if the current user has exceeded the site
      * password reset request limit for a given time period
      *
-     * @param   object $user \Hubzero\User\User
+     * @param   \Hubzero\User\User $user \Hubzero\User\User
      *
      * @return  bool
      */

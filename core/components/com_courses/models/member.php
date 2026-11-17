@@ -109,7 +109,7 @@ class Member extends Base
     /**
      * Get member badge
      *
-     * @return  object \Components\Courses\Models\MemberBadge
+     * @return  \Components\Courses\Models\MemberBadge \Components\Courses\Models\MemberBadge
      */
     public function badge()
     {

@@ -27,7 +27,7 @@ class Pages
      * Build default home page object,
      * Check to see if group have a home page override
      *
-     * @param    object    $group    \Hubzero\User\Group Object
+     * @param    \Hubzero\User\Group    $group    \Hubzero\User\Group Object
      * @param    \Hubzero\Base\Model\ItemList|null  $pages  The group's pages
      * @return   \Hubzero\Base\Model\ItemList|null
      */

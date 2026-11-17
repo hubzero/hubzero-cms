@@ -1019,7 +1019,7 @@ class Members extends AdminController
     /**
      * Check a posted password expiry date ("Expires on")
      *
-     * @param   object  $passinfo   \Hubzero\User\Password
+     * @param   \Hubzero\User\Password  $passinfo   \Hubzero\User\Password
      * @param   string  $expiresOn  Empty (never expires) or yyyy-mm-dd
      * @param   mixed   $expiryDay  self::expiryDay($expiresOn)
      * @return  string  Error message, empty if the date can be applied

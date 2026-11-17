@@ -260,7 +260,7 @@ class Activity extends Plugin
      * Is this a post (a comment or a reply) written in this feed by the
      * current user? Only those can be edited here.
      *
-     * @param   object   $log  \Hubzero\Activity\Log
+     * @param   \Hubzero\Activity\Log   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     public function isOwnPost($log)
@@ -281,7 +281,7 @@ class Activity extends Plugin
      * the id of the user they are about, so authorship alone doesn't make
      * an entry theirs to hide.
      *
-     * @param   object   $log  \Hubzero\Activity\Log
+     * @param   \Hubzero\Activity\Log   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     public function isOwnContent($log)
@@ -302,7 +302,7 @@ class Activity extends Plugin
     /**
      * Did the current (logged-in) user create this log entry?
      *
-     * @param   object   $log  \Hubzero\Activity\Log
+     * @param   \Hubzero\Activity\Log   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     protected function isAuthor($log)

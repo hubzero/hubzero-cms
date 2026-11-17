@@ -220,7 +220,7 @@ class Publication extends Relational
     /**
      * Get most recent version that is still marked as active
      *
-     * @return  object  Components\Publications\Models\Orm\Version
+     * @return  \Components\Publications\Models\Orm\Version  Components\Publications\Models\Orm\Version
      */
     public function getActiveVersion()
     {

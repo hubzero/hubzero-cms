@@ -79,7 +79,7 @@ class Permissions
     /**
      * Check to see if user has permission to perform task
      *
-     * @param   object   $group   Hubzero\User\Group
+     * @param   \Hubzero\User\Group   $group   Hubzero\User\Group
      * @param   string   $action  Group Action to perform
      * @return  boolean
      */

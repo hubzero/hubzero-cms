@@ -69,7 +69,7 @@ class Pec extends Plugin
     /**
      * Actions to perform after saving an offering
      *
-     * @param      object  $model \Components\Courses\Models\Section
+     * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
      * @param      boolean $isNew Is this a newly created entry?
      * @return     void
      */
@@ -83,7 +83,7 @@ class Pec extends Plugin
     /**
      * Actions to perform after deleting an offering
      *
-     * @param      object  $model \Components\Courses\Models\Section
+     * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
      * @return     void
      */
     public function onSectionDelete($model)

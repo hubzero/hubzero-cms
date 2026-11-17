@@ -136,7 +136,7 @@ class Members extends Plugin
      *
      * @param   \Components\Search\Models\Basic\Request  $request   \Components\Search\Models\Basic\Request
      * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
-     * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+     * @param   \Components\Search\Models\Basic\Authorization  $authz     \Components\Search\Models\Basic\Authorization
      * @return  void
      */
     public static function onSearch($request, &$results, $authz)
@@ -339,7 +339,7 @@ class Members extends Plugin
      * Generate an <img> tag with the user's picture, if set
      * Otherwise, use default image
      *
-     * @param   object  $res  \Components\Search\Models\Basic\Result
+     * @param   \Components\Search\Models\Basic\Result  $res  \Components\Search\Models\Basic\Result
      * @return  string
      */
     public function onBeforeSearchRenderMembers($res)
