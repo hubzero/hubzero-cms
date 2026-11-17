@@ -31,7 +31,7 @@ class Redis extends Store
     /**
      * Redis database connection
      *
-     * @var  object|null
+     * @var  \Predis\Client|null
      */
     private $database = null;
 
@@ -188,7 +188,8 @@ class Redis extends Store
         // loop through all session keys and get data
         foreach ($sessions as $k => $v) {
             // get session data for key
-            $sessions[$k] = $this->database->hgetall($v);
+            // The hash comes back as an array; the filters below read it as an object
+            $sessions[$k] = (object) $this->database->hgetall($v);
             $userid       = $sessions[$k]->userid;
             $guest        = $sessions[$k]->guest;
             $client       = $sessions[$k]->client_id;
