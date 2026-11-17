@@ -126,7 +126,7 @@ class Period
 
             default:
                 if (substr($this->period, 0, 2) == 'c_') {
-                    $tokens = preg_split('/_/', $this->period);
+                    $tokens = preg_split('/_/', $this->period) ?: [];
                     $this->period = $tokens[1];
 
                     $end   = (int) strtotime('12/31/' . $this->period);

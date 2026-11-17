@@ -2837,7 +2837,7 @@ class Files extends Plugin
 
         // Handle authentication request for service
         if ($service) {
-            $configs = $this->connect->getConfigs($service, false);
+            $configs = $this->connect->getConfigs($service, false) ?: [];
 
             if ($this->task == 'disconnect') {
                 // Require POST to prevent accidental disconnect by crawlers

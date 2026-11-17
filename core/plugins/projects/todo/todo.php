@@ -698,7 +698,7 @@ class Todo extends Plugin
         if ($todoid && $objTD->loadTodo($this->model->get('id'), $todoid)) {
             // Get associated commenting activities
             $objC = new \Components\Projects\Tables\Comment($this->database);
-            $activities = $objC->collectActivities($todoid, "todo");
+            $activities = $objC->collectActivities($todoid, "todo") ?: [];
             $activities[] = $objTD->activityid;
 
             // Store list name (for redirect)
@@ -732,7 +732,7 @@ class Todo extends Plugin
                         if ($objTD->loadTodo($this->model->get('id'), $todo->id)) {
                             // Get associated commenting activities
                             $objC = new \Components\Projects\Tables\Comment($this->database);
-                            $activities = $objC->collectActivities($todo->id, "todo");
+                            $activities = $objC->collectActivities($todo->id, "todo") ?: [];
                             $activities[] = $objTD->activityid;
 
                             // Delete todo

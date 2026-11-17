@@ -116,7 +116,7 @@ class Tools extends Plugin
                     $html .= "\t" . '</tfoot>' . "\n";
                     $html .= "\t" . '<tbody>' . "\n";
                 } else {
-                    $name = preg_split('/ ~ /', $row->name);
+                    $name = preg_split('/ ~ /', $row->name) ?: [];
                     if ($s_top == "6" || $s_top == "7" || $s_top == "8") {
                         $value = $this->timeUnits($row->value);
                     } else {

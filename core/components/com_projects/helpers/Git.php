@@ -908,7 +908,8 @@ class Git extends Obj
 
                         if ($n == 'f') {
                             // First file in repository
-                            $finfo = $this->callGit('log --pretty=oneline --name-status ' . escapeshellarg($hash));
+                            $finfo = $this->callGit('log --pretty=oneline --name-status ' . escapeshellarg($hash))
+                                ?: [];
                             $status = 'A';
                             $filename = trim(substr($finfo[1], 1));
                             break;

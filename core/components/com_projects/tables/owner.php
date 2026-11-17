@@ -587,7 +587,7 @@ class Owner extends Table
         }
 
         // Does the project include any groups in its team?
-        $groups = $this->getProjectGroups($projectid, 'o.groupid, o.native');
+        $groups = $this->getProjectGroups($projectid, 'o.groupid, o.native') ?: [];
         $array_groups_native = [];
         $deleted = 0;
         $added = 0;

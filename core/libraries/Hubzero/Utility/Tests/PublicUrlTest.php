@@ -80,13 +80,13 @@ class PublicUrlTest extends Basic
      */
     public function testPublicLiterals()
     {
-        $target = PublicUrl::check('https://1.1.1.1/a/b?c=d#frag');
+        $target = (PublicUrl::check('https://1.1.1.1/a/b?c=d#frag')) ?: [];
         $this->assertEquals('https://1.1.1.1/a/b?c=d', $target['url']);
         $this->assertEquals(['1.1.1.1'], $target['addresses']);
         $this->assertEquals([], $target['pins']);
         $this->assertEquals(443, $target['port']);
 
-        $target = PublicUrl::check('http://[2606:4700:4700::1111]:8080');
+        $target = PublicUrl::check('http://[2606:4700:4700::1111]:8080') ?: [];
         $this->assertEquals('http://[2606:4700:4700::1111]:8080/', $target['url']);
         $this->assertEquals(['2606:4700:4700::1111'], $target['addresses']);
     }

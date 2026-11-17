@@ -159,7 +159,7 @@ class Checkout extends ComponentController
         // Get the eula text for the product or EULA (EULAs are assigned to products, and if needed, SKUS)
 
         $warehouse = new Warehouse();
-        $skuInfo = $warehouse->getSkuInfo($sId);
+        $skuInfo = $warehouse->getSkuInfo($sId) ?: [];
 
         $this->view->set('productInfo', $skuInfo['info']);
 

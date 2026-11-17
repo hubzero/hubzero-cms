@@ -97,7 +97,7 @@ class Download extends ComponentController
 
         // Check if the product is valid and downloadable; find the file
         $warehouse = new Warehouse();
-        $sku = $warehouse->getSkuInfo($sId);
+        $sku = $warehouse->getSkuInfo($sId) ?: [];
         $productType = $warehouse->getProductTypeInfo($sku['info']->ptId);
         $downloadFile = $sku['meta']['downloadFile'];
 

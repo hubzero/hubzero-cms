@@ -82,7 +82,7 @@ class Mysql implements
         $created = with(new Date('now'))->toSql();
 
         // get the id for th client
-        $client = $this->getClientDetails($client_id);
+        $client = $this->getClientDetails($client_id) ?: [];
 
         // create access token
         $model = new \Components\Developer\Models\Accesstoken();
@@ -249,7 +249,7 @@ class Mysql implements
         $expires = with(new Date($expires))->toSql();
 
         // get the id for th client
-        $client = $this->getClientDetails($client_id);
+        $client = $this->getClientDetails($client_id) ?: [];
 
         // create authorization code
         $model = new \Components\Developer\Models\Authorizationcode();
@@ -393,7 +393,7 @@ class Mysql implements
         $created = with(new Date('now'))->toSql();
 
         // get the id for th client
-        $client = $this->getClientDetails($client_id);
+        $client = $this->getClientDetails($client_id) ?: [];
 
         // create refresh token
         $model = new \Components\Developer\Models\Refreshtoken();

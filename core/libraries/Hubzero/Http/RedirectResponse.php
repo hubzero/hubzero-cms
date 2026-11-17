@@ -129,7 +129,7 @@ class RedirectResponse extends BaseRedirectResponse
             }
 
             // Strip out any line breaks.
-            $url = preg_split("/[\r\n]/", (string) $url);
+            $url = preg_split("/[\r\n]/", (string) $url) ?: [];
             $url = $url[0];
 
             // If we don't start with a http we need to fix this before we proceed.

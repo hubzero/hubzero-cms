@@ -86,7 +86,7 @@ class Slider extends WikiMacro
                     $final_slides[] = $base_url . DS . $slide;
                 }
             } else {
-                $headers = get_headers($slide);
+                $headers = get_headers($slide) ?: [];
                 if (strpos($headers[0], "OK") !== false) {
                     $final_slides[] = $slide;
                 }

@@ -134,7 +134,7 @@ class PublicUrl
      */
     protected static function pin($host, $port, $addresses)
     {
-        $curl = curl_version();
+        $curl = curl_version() ?: [];
 
         usort($addresses, function ($a, $b) {
             return (strpos($a, ':') !== false) - (strpos($b, ':') !== false);

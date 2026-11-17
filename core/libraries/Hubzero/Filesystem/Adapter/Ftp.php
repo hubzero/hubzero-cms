@@ -570,7 +570,7 @@ class Ftp implements AdapterInterface
     protected function createActualDirectory($directory, $connection)
     {
         // List the current directory
-        $listing = ftp_nlist($connection, '.');
+        $listing = ftp_nlist($connection, '.') ?: [];
 
         foreach ($listing ?: [] as $key => $item) {
             if (preg_match('~^\./.*~', $item)) {

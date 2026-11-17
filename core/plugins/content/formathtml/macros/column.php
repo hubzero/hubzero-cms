@@ -107,7 +107,7 @@ class Column extends Macro
             $atts = [];
             if (!empty($attribs)) {
                 foreach ($attribs as $a) {
-                    $a = preg_split('/=/', $a);
+                    $a = preg_split('/=/', $a) ?: [];
                     $key = strtolower(trim($a[0]));
                     $val = trim(end($a));
                     $val = trim($val, '"');

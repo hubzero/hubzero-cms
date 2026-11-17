@@ -1055,7 +1055,7 @@ class Sync extends \Hubzero\Base\Obj
         // Get records listed on remote directory related to this project's directory
         $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
         $projectId = $this->model->get('id');
-        $remotes = $objRFile->getRemoteConnections($projectId, $service);
+        $remotes = $objRFile->getRemoteConnections($projectId, $service) ?: [];
         // Get local directory repo information
         $fileParams = ['showAll' => $showAll,'subdir' => ""];
         $localFiles = $this->model->repo()->filelist($fileParams);

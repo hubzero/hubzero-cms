@@ -674,7 +674,7 @@ class Quotas extends AdminController
                 continue;
             }
 
-            $args = preg_split('/\s+/', $line);
+            $args = preg_split('/\s+/', $line) ?: [];
             switch ($args[0]) {
                 case 'class':
                     $class = Category::all()

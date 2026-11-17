@@ -105,7 +105,7 @@ class Column extends WikiMacro
             $atts = [];
             if (!empty($attribs)) {
                 foreach ($attribs as $a) {
-                    $a = preg_split('/=/', $a);
+                    $a = preg_split('/=/', $a) ?: [];
                     $key = strtolower(trim($a[0]));
                     if (
                         !in_array(

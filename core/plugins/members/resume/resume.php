@@ -651,7 +651,7 @@ class Resume extends Plugin
             if ($ajax) {
                 // get seeker info
                 $js = new \Components\Jobs\Tables\Seeker($database);
-                $seeker = $js->getSeeker($oid, User::get('id'));
+                $seeker = $js->getSeeker($oid, User::get('id')) ?: [];
 
                 $view = $this->view('seeker', 'resume');
                 $view->set('seeker', $seeker[0]);

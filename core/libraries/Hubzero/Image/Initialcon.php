@@ -163,7 +163,7 @@ class Initialcon
 
         $fontsize = round($this->size * 0.4); //ceil(($this->size / 3) + $rnd);
 
-        $tb = imagettfbbox($fontsize, 0, $this->getFontPath(), $string);
+        $tb = imagettfbbox($fontsize, 0, $this->getFontPath(), $string) ?: [];
 
         // Calculate x baseline
         /*if ($tb[0] >= -1)

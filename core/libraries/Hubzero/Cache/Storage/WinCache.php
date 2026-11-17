@@ -129,7 +129,7 @@ class WinCache extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = wincache_ucache_info();
+        $allinfo = wincache_ucache_info() ?: [];
 
         foreach ($allinfo['cache_entries'] as $key) {
             if (strpos($key['key_name'], $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
@@ -149,7 +149,7 @@ class WinCache extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = wincache_ucache_info();
+        $allinfo = wincache_ucache_info() ?: [];
 
         foreach ($allinfo['cache_entries'] as $key) {
             if (strpos($key['key_name'], $hash . '-cache-')) {
@@ -169,7 +169,7 @@ class WinCache extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = wincache_ucache_info();
+        $allinfo = wincache_ucache_info() ?: [];
 
         $data = [];
 

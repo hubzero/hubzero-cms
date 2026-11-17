@@ -140,7 +140,7 @@ class Apc extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
+        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
 
         foreach ($allinfo['cache_list'] as $key) {
             if (strpos($key['info'], $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
@@ -159,7 +159,7 @@ class Apc extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
+        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
 
         $keys = $allinfo['cache_list'];
 
@@ -179,7 +179,7 @@ class Apc extends None
      */
     public function all()
     {
-        $allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
+        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
 
         $keys = $allinfo['cache_list'];
 

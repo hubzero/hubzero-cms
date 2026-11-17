@@ -71,7 +71,7 @@ class MetadataTest extends Basic
      **/
     public function testParsePrefersPostAcs()
     {
-        $fields = Metadata::parse($this->xml);
+        $fields = Metadata::parse($this->xml) ?: [];
 
         $this->assertEquals('https://sp.example.com/acs', $fields['acs_url']);
     }
@@ -85,7 +85,7 @@ class MetadataTest extends Basic
      **/
     public function testParseTakesOnlyRedirectSlo()
     {
-        $fields = Metadata::parse($this->xml);
+        $fields = Metadata::parse($this->xml) ?: [];
 
         $this->assertEquals('https://sp.example.com/slo', $fields['slo_url']);
 
@@ -117,7 +117,7 @@ class MetadataTest extends Basic
             $this->xml,
         );
 
-        $fields = Metadata::parse($xml);
+        $fields = Metadata::parse($xml) ?: [];
 
         $this->assertEquals('urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress', $fields['nameid_format']);
         $this->assertEquals('email', $fields['nameid_source']);
@@ -175,7 +175,7 @@ class MetadataTest extends Basic
     {
         $xml = str_replace('AuthnRequestsSigned="true"', 'AuthnRequestsSigned="false"', $this->xml);
 
-        $fields = Metadata::parse($xml);
+        $fields = Metadata::parse($xml) ?: [];
 
         $this->assertEquals(0, $fields['want_requests_signed']);
     }
