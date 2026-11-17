@@ -1780,7 +1780,7 @@ class FirebirdDriver extends BaseSqlDriver
                 continue;
             }
 
-            $newIndexName = str_replace($oldTable, $newTable, $index->name);
+            $newIndexName = str_replace($oldTable, $newTable, (string) $index->name);
             $indexCols = array_map([$this, 'quoteName'], $index->columns);
             $unique = $index->unique ? 'UNIQUE ' : '';
 

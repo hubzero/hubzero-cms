@@ -394,7 +394,7 @@ class Spreadsheet
                                 $prop['label'] = $id;
                             }
                             $col_label = str_replace('<br />', ' ', $prop['label']);
-                            $col_label = str_replace('<hr />', '&nbsp/&nbsp', $col_label);
+                            $col_label = str_replace('<hr />', '&nbsp/&nbsp', (string) $col_label);
 
                             if (isset($prop['units']) && $prop['units'] != '') {
                                 $col_label = $col_label . ' <small>[' . $prop['units'] . ']</small>';

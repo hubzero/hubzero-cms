@@ -77,7 +77,7 @@ class Opensearch extends Base
         foreach ($dirs as $dir) {
             if (file_exists($dir . DS . 'favicon.ico')) {
                 $path = str_replace(PATH_ROOT . DS, '', $dir);
-                $path = str_replace('\\', '/', $path);
+                $path = str_replace('\\', '/', (string) $path);
 
                 $favicon = new Image();
                 $favicon->data   = Request::root() . $path . '/favicon.ico';

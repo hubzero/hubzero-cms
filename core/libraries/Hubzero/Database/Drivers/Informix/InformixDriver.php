@@ -1157,7 +1157,7 @@ class InformixDriver extends BaseSqlDriver
      */
     protected function getTableDdl(string $table): ?array
     {
-        $rawTable = strtolower(str_replace('"', '', $table));
+        $rawTable = strtolower(str_replace('"', '', (string) $table));
 
         // Get tabid
         $this->setQuery(

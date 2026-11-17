@@ -371,7 +371,7 @@ class Usage extends Plugin
 
         foreach ($results as $result) {
             // $point = new stdClass;
-            $result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+            $result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime))
                 . ' 00:00:00';
             // $point->users = $result->users;
             // $point->users = $result->users;

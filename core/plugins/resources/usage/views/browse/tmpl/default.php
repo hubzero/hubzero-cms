@@ -101,14 +101,11 @@ if ($results) {
 
     $c = count($results);
     foreach ($results as $result) {
-        $users[]       = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
-            . "')," . $result->users . "]";
-        $interactive[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
-            . "')," . $result->sessions . "]";
-        $sessions[]    = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
-            . "')," . $result->simulations . "]";
-        $runs[]        = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
-            . "')," . $result->jobs . "]";
+        $date          = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $result->datetime));
+        $users[]       = "[new Date('" . $date . "')," . $result->users . "]";
+        $interactive[] = "[new Date('" . $date . "')," . $result->sessions . "]";
+        $sessions[]    = "[new Date('" . $date . "')," . $result->simulations . "]";
+        $runs[]        = "[new Date('" . $date . "')," . $result->jobs . "]";
 
         $usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
         $runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
