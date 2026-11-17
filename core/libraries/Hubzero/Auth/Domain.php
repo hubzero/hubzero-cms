@@ -13,6 +13,12 @@ use Date;
 
 /**
  * Authentication Domain
+ *
+ * @property  int|null     $id
+ * @property  string|null  $authenticator
+ * @property  string|null  $domain
+ * @property  string|null  $params
+ * @property  string|null  $type
  */
 class Domain extends Relational
 {
@@ -223,7 +229,7 @@ class Domain extends Relational
      * Find a record by ID
      *
      * @param   integer  $id
-     * @return  mixed    Object on success, False on failure
+     * @return  static|false  False when there is no such domain
      */
     public static function findById($id)
     {

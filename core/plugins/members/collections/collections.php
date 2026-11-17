@@ -2269,9 +2269,8 @@ class Collections extends Plugin
                 ->set('params', $this->params)
                 ->set('collection', $collection)
                 ->set('no_html', $no_html)
-                ->setErrors($this->getErrors());
-
-            $view->task       = $this->action;
+                ->setErrors($this->getErrors())
+                ->set('task', $this->action);
 
             return $view->loadTemplate();
         }

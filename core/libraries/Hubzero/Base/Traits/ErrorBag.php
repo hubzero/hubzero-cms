@@ -96,7 +96,7 @@ trait ErrorBag
      * Set the list of errors
      *
      * @param   array<mixed>   $errors  List of Error message.
-     * @return  object
+     * @return  $this
      */
     public function setErrors($errors)
     {

@@ -602,7 +602,7 @@ class Register extends SiteController
                         if (is_object($hzal) && !$profileRow->get('orcid')) {
                             $domain = \Hubzero\Auth\Domain::findById($hzal->auth_domain_id);
 
-                            if ($domain && is_object($domain) && $domain->get('authenticator') == 'orcid') {
+                            if ($domain && $domain->get('authenticator') == 'orcid') {
                                 $profileRow->set('orcid', $hzal->username);
                                 $profileUpdate = true;
                             }

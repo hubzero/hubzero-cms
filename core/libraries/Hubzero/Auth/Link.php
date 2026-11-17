@@ -13,6 +13,15 @@ use Date;
 
 /**
  * Authentication Link
+ *
+ * @property  int|null     $id
+ * @property  int|null     $auth_domain_id
+ * @property  string|null  $email
+ * @property  string|null  $params
+ * @property  string|null  $password
+ * @property  int|null     $user_id
+ * @property  string|null  $username
+ * @property  string|null  $linked_on
  */
 class Link extends Relational
 {
@@ -236,7 +245,7 @@ class Link extends Relational
      * Find a record by ID
      *
      * @param   integer  $id
-     * @return  mixed    Object on success, False on failure
+     * @return  static|false  False when there is no such link
      */
     public static function findById($id)
     {
