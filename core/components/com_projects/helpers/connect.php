@@ -405,7 +405,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   boolean  $force
-     * @return  object|false
+     * @return  \Google\Client|false
      */
     public function startClient($service = 'google', $uid = 0, $force = false)
     {
@@ -477,7 +477,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @return  object|false
+     * @return  \Google\Service\Drive|false|null
      */
     public function getAPI($service = 'google', $uid = 0)
     {
@@ -722,7 +722,7 @@ class Connect extends Obj
         }
 
         if ($service == 'google') {
-            $resource = Google::loadFile($apiService, $id);
+            $resource = Google::loadFile($apiService, (string) $id);
         }
 
         return $resource;
@@ -918,11 +918,11 @@ class Connect extends Obj
                 $success = Google::updateFile(
                     $apiService,
                     $this->client[$service],
-                    $remoteid,
+                    (string) $remoteid,
                     $title,
                     $localPath,
                     $mimeType,
-                    $parentId,
+                    (string) $parentId,
                     $metadata,
                     $convert,
                 );
@@ -1004,7 +1004,7 @@ class Connect extends Obj
         if ($service == 'google') {
             $success = Google::patchFile(
                 $apiService,
-                $remoteid,
+                (string) $remoteid,
                 $newTitle,
                 '',
                 $metadata,
@@ -1085,7 +1085,7 @@ class Connect extends Obj
 
         // Perform request
         if ($service == 'google') {
-            $success = Google::patchFile($apiService, $remoteid, '', $parentId, $metadata);
+            $success = Google::patchFile($apiService, (string) $remoteid, '', (string) $parentId, $metadata);
         }
 
         if (!$success) {
@@ -1776,7 +1776,7 @@ class Connect extends Obj
             // Get remote content via the authorized Guzzle client (Google API v2)
             $httpClient = $client->authorize();
             try {
-                $response = $httpClient->get($url);
+                $response = $httpClient->request('GET', $url);
                 if ($response->getStatusCode() == 200) {
                     return (string) $response->getBody();
                 }
@@ -1825,7 +1825,7 @@ class Connect extends Obj
         // Download to file via the authorized Guzzle client (Google API v2)
         $httpClient = $client->authorize();
         try {
-            $response = $httpClient->get($url, ['sink' => $path]);
+            $response = $httpClient->request('GET', $url, ['sink' => $path]);
             return $response->getStatusCode() == 200;
         } catch (\Exception $e) {
             return false;

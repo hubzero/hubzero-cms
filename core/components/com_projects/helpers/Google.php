@@ -24,7 +24,7 @@ class Google extends Obj
     /**
      * Load file metadata
      *
-     * @param   object|null  $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService  Drive API service instance
      * @param   string  $id          Remote id
      * @return  mixed   array or false
      */
@@ -49,7 +49,7 @@ class Google extends Obj
      *
      * Written for Drive v3 and not yet run against a Drive account.
      *
-     * @param   object|null  $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService  Drive API service instance
      * @param   string  $fileId      Remote id
      * @param   string  $value       Who it is for: an e-mail address (user, group) or a domain (domain)
      * @param   string  $type        user, group, domain or anyone
@@ -80,7 +80,7 @@ class Google extends Obj
     /**
      * Clear permission for user
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   array<mixed>    $shared
      * @param   string|int   $itemId
      * @return  boolean
@@ -121,7 +121,7 @@ class Google extends Obj
     /**
      * Patch file metadata (SYNC)
      *
-     * @param   object|null  $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService  Drive API service instance
      * @param   string  $id          Remote id
      * @param   string  $title       File title
      * @param   string  $parentId    Parent id
@@ -159,7 +159,7 @@ class Google extends Obj
     /**
      * Insert new file in remote (SYNC)
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   mixed  $client
      * @param   string   $title       File title
      * @param   mixed  $localPath
@@ -281,7 +281,7 @@ class Google extends Obj
     /**
      * Update remote file with local change (SYNC)
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   mixed  $client
      * @param   string   $id          Remote id
      * @param   string   $title       File title
@@ -395,7 +395,7 @@ class Google extends Obj
     /**
      * Untrash remote item
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @return  boolean
      */
@@ -418,7 +418,7 @@ class Google extends Obj
     /**
      * Delete parent
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @param   int  $folderId
      * @return  boolean
@@ -444,7 +444,7 @@ class Google extends Obj
     /**
      * Delete all parents
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @return  boolean
      */
@@ -481,7 +481,7 @@ class Google extends Obj
     /**
      * Delete remote item
      *
-     * @param   object|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @param   boolean  $permanent   Delete permanently? (or trash)
      * @return  boolean
@@ -509,7 +509,7 @@ class Google extends Obj
     /**
      * Create remote folder
      *
-     * @param   object|null  $apiService  Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService  Drive API service instance
      * @param   string  $title       Folder name
      * @param   string|mixed  $parentId    Parent id
      * @param   array<mixed>   &$metadata   Collector array
@@ -546,7 +546,7 @@ class Google extends Obj
     /**
      * Get and sort through remote changes since last sync
      *
-     * @param   object|null  $apiService     Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService     Drive API service instance
      * @param   string  $folderID       Folder ID
      * @param   array<mixed>   &$remotes       Collector array for active items
      * @param   array<mixed>   &$deletes       Collector array for deleted items
@@ -819,7 +819,7 @@ class Google extends Obj
     /**
      * Get folders
      *
-     * @param   object|null  $apiService      Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService      Drive API service instance
      * @param   string  $folderID        Folder ID
      * @param   array<mixed>   &$remoteFolders  Collector array for remote folders
      * @param   string  $path            Path
@@ -927,7 +927,7 @@ class Google extends Obj
     /**
      * Get remote folder content
      *
-     * @param   object|null  $apiService   Drive API service instance
+     * @param   \Google\Service\Drive|null  $apiService   Drive API service instance
      * @param   string  $folderID     Folder ID
      * @param   array<mixed>   $remotes      Array of remote items
      * @param   string  $path         Path

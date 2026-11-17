@@ -39,9 +39,9 @@ class Permissions extends Obj
     private $managers = null;
 
     /**
-     * \Components\Courses\Models\Member
+     * The course manager record
      *
-     * @var object|null
+     * @var Manager|null
      */
     private $manager = null;
 
@@ -53,9 +53,9 @@ class Permissions extends Obj
     private $students = null;
 
     /**
-     * \Components\Courses\Models\Member
+     * The student record
      *
-     * @var object|null
+     * @var Student|null
      */
     private $student = null;
 
@@ -180,7 +180,7 @@ class Permissions extends Obj
      * Check if the current user is enrolled
      *
      * @param   integer|null $user_id
-     * @return  object|null  The course manager record for the user, if there is one
+     * @return  Manager|null  The course manager record for the user, if there is one
      */
     public function manager($user_id = null)
     {
@@ -299,7 +299,7 @@ class Permissions extends Obj
      * Check if the current user is enrolled
      *
      * @param   integer|null $user_id
-     * @return  object|null  The student record for the user, if there is one
+     * @return  Student|null  The student record for the user, if there is one
      */
     public function student($user_id = null)
     {
