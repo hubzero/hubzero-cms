@@ -35,7 +35,7 @@ class JSON extends Base
      *
      * @param   string  $data     JSON formatted string to convert.
      * @param   array|mixed   $options  Options used by the formatter.
-     * @return  object  Data object.
+     * @return  object|null  Data object; null when the input does not parse
      */
     public function stringToObject($data, $options = ['processSections' => false])
     {

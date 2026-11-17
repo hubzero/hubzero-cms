@@ -21,7 +21,7 @@ abstract class Format
      * if it doesn't already exist.
      *
      * @param   string  $type  The format to load
-     * @return  object  Registry format handler
+     * @return  Format  Registry format handler
      */
     public static function getInstance($type)
     {
@@ -39,7 +39,7 @@ abstract class Format
         if (!isset($instances[$type])) {
             // Only load the file the class does not exist.
             $class = __NAMESPACE__ . '\\Format\\' . $type;
-            if (!class_exists($class)) {
+            if (!is_a($class, Format::class, true)) {
                 throw new Exception(Lang::txt('Format not found.'), 500);
             }
 
@@ -62,7 +62,7 @@ abstract class Format
      *
      * @param   string  $data     Formatted string
      * @param   array<mixed>|null   $options  An array of options for the formatter.
-     * @return  object  Data Object
+     * @return  object|null  Data object; null when the input does not parse
      */
     abstract public function stringToObject($data, $options = null);
 }

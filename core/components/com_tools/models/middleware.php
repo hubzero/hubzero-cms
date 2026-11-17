@@ -66,7 +66,7 @@ class Middleware extends Obj
      *
      * @param   integer|null $sessnum
      * @param   mixed  $permissions
-     * @return  object
+     * @return  Session
      */
     public function session($sessnum = null, $permissions = null)
     {
@@ -126,7 +126,7 @@ class Middleware extends Obj
      *
      * @param      string|null $ip
      * @param      array<mixed>  $allowed List of zone IDs to check against
-     * @return     object
+     * @return     Zone
      */
     public function zoning($ip = null, $allowed = [])
     {

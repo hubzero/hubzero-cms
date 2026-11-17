@@ -179,7 +179,7 @@ class Xml extends Base
     /**
      * Method to build a level of the XML string -- called recursively
      *
-     * @param   object  &$node     SimpleXMLElement object to attach children.
+     * @param   \SimpleXMLElement  &$node     SimpleXMLElement object to attach children.
      * @param   object  $var       Object that represents a node of the XML document.
      * @param   string  $nodeName  The name to use for node elements.
      * @return  void

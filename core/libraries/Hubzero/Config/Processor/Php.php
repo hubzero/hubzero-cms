@@ -88,10 +88,10 @@ class Php extends Base
             if (is_scalar($v)) {
                 switch ($format) {
                     case 'object':
-                        $vars .= "\tvar $" . $k . " = '" . addcslashes($v, '\\\'') . "';\n";
+                        $vars .= "\tvar $" . $k . " = '" . addcslashes((string) $v, '\\\'') . "';\n";
                         break;
                     case 'array':
-                        $vars .= "\t'" . $k . "' => '" . addcslashes($v, '\\\'') . "',\n";
+                        $vars .= "\t'" . $k . "' => '" . addcslashes((string) $v, '\\\'') . "',\n";
                         break;
                 }
             } elseif (is_array($v) || is_object($v)) {

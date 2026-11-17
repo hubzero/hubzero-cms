@@ -30,7 +30,7 @@ class PHP extends Base
         $vars = '';
         foreach (get_object_vars($object) as $k => $v) {
             if (is_scalar($v)) {
-                $vars .= "\tpublic $" . $k . " = '" . addcslashes($v, '\\\'') . "';\n";
+                $vars .= "\tpublic $" . $k . " = '" . addcslashes((string) $v, '\\\'') . "';\n";
             } elseif (is_array($v)) {
                 $vars .= "\tpublic $" . $k . " = " . $this->getArrayString($v) . ";\n";
             }
