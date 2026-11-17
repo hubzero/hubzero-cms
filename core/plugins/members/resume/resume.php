@@ -92,7 +92,7 @@ class Resume extends Plugin
 
         // determine who is veiwing the page
         $emp = 0;
-        $emp = $employer->isEmployer(User::get('id'));
+        $emp = (int) $employer->isEmployer(User::get('id'));
 
         // check if they belong to a dedicated admin group
         if ($this->config->get('admingroup') && User::get('id') != 0) {

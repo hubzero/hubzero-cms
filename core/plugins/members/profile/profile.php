@@ -289,7 +289,7 @@ class Profile extends Plugin
         }
 
         // return percentage
-        return ($num_fields ? number_format(($num_filled_fields / $num_fields) * 100, 0) : 100);
+        return ($num_fields ? (int) round(($num_filled_fields / $num_fields) * 100) : 100);
     }
 
     /**

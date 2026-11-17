@@ -204,7 +204,7 @@ class File extends Obj
      */
     public function isDeclaration()
     {
-        return $this->declaration;
+        return (bool) $this->declaration;
     }
 
     /**

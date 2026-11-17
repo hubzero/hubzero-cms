@@ -541,7 +541,7 @@ abstract class Driver implements LoggerAwareInterface
             $lastUsed = self::$instanceLastUsed[$signature] ?? 0.0;
             if ($oldestTimestamp === null || $lastUsed < $oldestTimestamp) {
                 $oldestTimestamp = $lastUsed;
-                $oldestSignature = $signature;
+                $oldestSignature = (string) $signature;
             }
         }
 

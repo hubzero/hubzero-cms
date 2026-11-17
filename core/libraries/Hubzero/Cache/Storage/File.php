@@ -381,7 +381,7 @@ class File extends None
      *
      * @param   string  $filename
      * @param   array<string, mixed>  $data
-     * @return  string|bool
+     * @return  bool
      */
     protected function writeCacheFile($filename, $data)
     {

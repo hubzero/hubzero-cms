@@ -186,7 +186,7 @@ class Mozify extends Obj
      */
     public function getMosaicSize()
     {
-        return $this->mosaicSize;
+        return (string) $this->mosaicSize;
     }
 
     /**

@@ -132,7 +132,7 @@ class Curl
     /**
      * Executes the request
      *
-     * @return  string
+     * @return  string|bool
      **/
     public function execute()
     {

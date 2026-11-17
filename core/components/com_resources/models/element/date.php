@@ -253,7 +253,7 @@ class Date extends Base
                 $monthname = Lang::txt('December');
                 break;
             default:
-                $monthname = $month;
+                $monthname = (string) $month;
                 break;
         }
         return $monthname;
