@@ -25,7 +25,10 @@ class Migration20160907104300ComCart extends Base
     {
         $schema = $this->db->schema();
 
-        if ($schema->tableExists('#__cart_meta') && strtolower($schema->getEngine('#__cart_meta')) != 'myisam') {
+        if (
+            $schema->tableExists('#__cart_meta')
+            && strtolower((string) $schema->getEngine('#__cart_meta')) != 'myisam'
+        ) {
             $schema->setTableEngine('#__cart_meta', 'MyISAM');
         }
     }

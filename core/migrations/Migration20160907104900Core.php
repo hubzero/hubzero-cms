@@ -25,7 +25,7 @@ class Migration20160907104900Core extends Base
     {
         $schema = $this->db->schema();
 
-        if ($schema->tableExists($table) && strtolower($schema->getEngine($table)) != strtolower($engine)) {
+        if ($schema->tableExists($table) && strtolower((string) $schema->getEngine($table)) != strtolower($engine)) {
             $schema->setTableEngine($table, $engine);
         }
     }

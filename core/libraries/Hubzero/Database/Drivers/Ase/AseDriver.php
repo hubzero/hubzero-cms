@@ -1062,7 +1062,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $table  The table name
      * @param   string|null  $field  Optional field name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {

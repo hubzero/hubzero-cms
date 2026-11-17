@@ -795,7 +795,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set (ignored)
      * @param   string|null       $field  The field to check (ignored)
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet($table, $field = null)
     {

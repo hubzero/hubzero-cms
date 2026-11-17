@@ -790,7 +790,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Fetch table engine via SHOW TABLE STATUS.
      *
      * @param   string  $table
-     * @return  string|bool
+     * @return  string|false
      */
     protected function getEngineFromShowTableStatus($table)
     {
@@ -1048,7 +1048,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Gets the database engine of the given table
      *
      * @param   string  $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      */
     abstract public function getEngine($table);
 
@@ -1098,7 +1098,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $table  The table for which to retrieve the character set
      * @param   string|null  $field  The field to check (optional)
-     * @return  string|bool
+     * @return  string|false
      */
     abstract public function getCharacterSet($table, $field = null);
 

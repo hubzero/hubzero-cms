@@ -26,11 +26,11 @@ class Migration20141114195247ComHubgraph extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('hg_update_queue')) {
-            if (strtolower($schema->getEngine('hg_update_queue')) != 'myisam') {
+            if (strtolower((string) $schema->getEngine('hg_update_queue')) != 'myisam') {
                 $schema->setTableEngine('hg_update_queue', 'MyISAM');
             }
 
-            if (strtolower($schema->getCharacterSet('hg_update_queue')) != 'utf8') {
+            if (strtolower((string) $schema->getCharacterSet('hg_update_queue')) != 'utf8') {
                 $schema->setTableCharset('hg_update_queue', 'utf8');
             }
         }

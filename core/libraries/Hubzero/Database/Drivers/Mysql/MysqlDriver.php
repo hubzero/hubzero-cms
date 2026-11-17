@@ -1476,7 +1476,7 @@ class MysqlDriver extends BaseSqlDriver
      * Gets the database engine of the given table
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      **/
     public function getEngine($table)
     {

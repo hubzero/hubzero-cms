@@ -3566,7 +3566,7 @@ abstract class Driver implements LoggerAwareInterface
      * Gets the database engine of the given table
      *
      * @param   string       $table  The table for which to retrieve the engine type
-     * @return  string|bool
+     * @return  string|false
      **/
     abstract public function getEngine($table);
 
@@ -3584,7 +3584,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $table  The table for which to retrieve the character set
      * @param   string|null  $field  The field to check (optional)
-     * @return  string|bool
+     * @return  string|false
      **/
     abstract public function getCharacterSet($table, $field = null);
 

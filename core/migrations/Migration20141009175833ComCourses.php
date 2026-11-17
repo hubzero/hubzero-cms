@@ -27,55 +27,55 @@ class Migration20141009175833ComCourses extends Base
 
         if (
             $schema->tableExists('#__courses_form_answers')
-            && strtolower($schema->getEngine('#__courses_form_answers')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_answers')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_answers', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_form_deployments')
-            && strtolower($schema->getEngine('#__courses_form_deployments')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_deployments')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_deployments', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_form_questions')
-            && strtolower($schema->getEngine('#__courses_form_questions')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_questions')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_questions', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_form_respondent_progress')
-            && strtolower($schema->getEngine('#__courses_form_respondent_progress')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_respondent_progress')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_respondent_progress', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_form_respondents')
-            && strtolower($schema->getEngine('#__courses_form_respondents')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_respondents')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_respondents', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_form_responses')
-            && strtolower($schema->getEngine('#__courses_form_responses')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_form_responses')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_form_responses', 'MyISAM');
         }
 
         if (
             $schema->tableExists('#__courses_forms')
-            && strtolower($schema->getEngine('#__courses_forms')) != 'myisam'
+            && strtolower((string) $schema->getEngine('#__courses_forms')) != 'myisam'
         ) {
             $schema->setTableEngine('#__courses_forms', 'MyISAM');
         }
 
         if ($schema->tableExists('#__courses_offering_section_badge_criteria')) {
-            if (strtolower($schema->getCharacterSet('#__courses_offering_section_badge_criteria')) != 'utf8') {
+            if (strtolower((string) $schema->getCharacterSet('#__courses_offering_section_badge_criteria')) != 'utf8') {
                 $schema->convertToCharset('#__courses_offering_section_badge_criteria', 'utf8');
             }
         }

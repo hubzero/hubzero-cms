@@ -711,7 +711,7 @@ class SchemaManager
      * Get the storage engine for a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getEngine(string $table)
     {
@@ -749,7 +749,7 @@ class SchemaManager
      *
      * @param   string       $table  The table name
      * @param   string|null  $field  Optional column name
-     * @return  string|bool
+     * @return  string|false
      */
     public function getCharacterSet(string $table, ?string $field = null)
     {
