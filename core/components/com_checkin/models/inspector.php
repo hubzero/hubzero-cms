@@ -32,7 +32,7 @@ class Inspector extends Obj
     /**
      * A state object
      *
-     * @var  object
+     * @var  \Hubzero\Base\Obj
      */
     protected $state;
 

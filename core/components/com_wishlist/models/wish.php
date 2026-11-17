@@ -536,6 +536,9 @@ class Wish extends Relational
 
                 // Derive the class name from the type
                 $cls = __NAMESPACE__ . '\\Adapters\\' . str_ireplace('.php', '', ucfirst(trim($file)));
+                if (!is_a($cls, Adapters\Base::class, true)) {
+                    continue;
+                }
 
                 $adapter = new $cls($this->get('referenceid'));
 
