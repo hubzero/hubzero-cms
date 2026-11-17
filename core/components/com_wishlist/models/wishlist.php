@@ -628,7 +628,7 @@ class Wishlist extends Relational
     private function userId($user)
     {
         if (is_numeric($user)) {
-            return $user;
+            return (int) $user;
         }
 
         $row = User::getInstance($user);
@@ -645,7 +645,7 @@ class Wishlist extends Relational
     private function groupId($group)
     {
         if (is_numeric($group)) {
-            return $group;
+            return (int) $group;
         }
 
         $g = Group::getInstance($group);

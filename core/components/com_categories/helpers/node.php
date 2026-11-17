@@ -524,7 +524,7 @@ class Node extends Obj
     public function getNumItems($recursive = false)
     {
         if ($recursive) {
-            $count = $this->numitems;
+            $count = (int) $this->numitems;
 
             foreach ($this->getChildren() as $child) {
                 $count = $count + $child->getNumItems(true);
@@ -533,6 +533,6 @@ class Node extends Obj
             return $count;
         }
 
-        return $this->numitems;
+        return (int) $this->numitems;
     }
 }

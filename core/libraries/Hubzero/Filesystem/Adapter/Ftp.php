@@ -913,7 +913,7 @@ class Ftp implements AdapterInterface
         };
 
         // get the sum of the groups
-        return array_sum(array_map($mapper, $parts));
+        return (int) array_sum(array_map($mapper, $parts));
     }
 
     /**

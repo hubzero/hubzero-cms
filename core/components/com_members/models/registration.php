@@ -747,7 +747,7 @@ class Registration
      *
      * @param   string  $password
      * @param   string  $username
-     * @return  integer
+     * @return  int|float  0 to 100; repeated characters count fractions
      */
     public function scorePassword($password, $username = '')
     {

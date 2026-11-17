@@ -1118,7 +1118,7 @@ class SecurityGuard
     {
         $data = $this->loadChallengeData();
         $generated = $data['token_generated'] ?? time();
-        $elapsed = time() - $generated;
+        $elapsed = time() - (int) $generated;
         return max(0, self::MAX_FILE_AGE - $elapsed);
     }
 
