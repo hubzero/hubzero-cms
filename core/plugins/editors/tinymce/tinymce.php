@@ -72,7 +72,10 @@ class Tinymce extends Plugin
         $langPrefix      = $this->params->def('lang_code', 'en');
 
         if ($langMode) {
-            $langPrefix = substr(Lang::getTag(), 0, strpos(Lang::getTag(), '-'));
+            // The language part of the tag; a tag with no region is all language
+            $tag        = Lang::getTag();
+            $dash       = strpos($tag, '-');
+            $langPrefix = $dash === false ? $tag : substr($tag, 0, $dash);
         }
 
         $text_direction = 'ltr';

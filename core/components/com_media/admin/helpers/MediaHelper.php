@@ -428,7 +428,9 @@ class MediaHelper
      */
     public static function getParent($folder)
     {
-        $parent = substr($folder, 0, strrpos($folder, '/'));
+        // A top-level folder's parent is the root
+        $slash  = strrpos($folder, '/');
+        $parent = $slash === false ? '' : substr($folder, 0, $slash);
         return $parent;
     }
 

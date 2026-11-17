@@ -536,9 +536,11 @@ class Publications extends SiteController
 
         // Retrieves the ID from alias
         if (substr(strtolower($this->_alias), -4) == '.rdf') {
+            // Between the last slash and .rdf, as the generator reads it
             $lastSlash = strrpos($this->_alias, '/');
-            $lastDot = strrpos($this->_alias, '.rdf');
-            $id = substr($this->_alias, $lastSlash, $lastDot);
+            $start = $lastSlash === false ? 0 : $lastSlash + 1;
+            $lastDot = (int) strrpos($this->_alias, '.rdf');
+            $id = substr($this->_alias, $start, $lastDot - $start);
         }
 
         // Create download headers

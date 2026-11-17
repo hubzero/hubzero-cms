@@ -409,8 +409,10 @@ class Screenshots extends SiteController
         $file['name'] = Filesystem::clean($file['name']);
         $file['name'] = str_replace(' ', '_', $file['name']);
         $file['name'] = str_replace('-tn', '', $file['name']);
-        $file_basename = substr($file['name'], 0, strripos($file['name'], '.')); // strip extention
-        $file_ext      = substr($file['name'], strripos($file['name'], '.'));
+        // Strip the extension; a name with no dot has none
+        $dot           = strripos($file['name'], '.');
+        $file_basename = $dot === false ? $file['name'] : substr($file['name'], 0, $dot);
+        $file_ext      = $dot === false ? '' : substr($file['name'], $dot);
 
         // Make sure we have an allowed format
         if (!in_array(strtolower($file_ext), $allowed)) {

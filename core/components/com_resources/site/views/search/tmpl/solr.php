@@ -102,8 +102,9 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                 if (!empty($this->result['issuenomonth_s'])) {
                     $issueNumber = $this->result['issuenomonth_s'];
                     if (!is_numeric($issueNumber)) {
+                        // The number before a slash, or all of it when there is none
                         $subStrNum = strpos($issueNumber, '/');
-                        $issueNum = substr($issueNumber, 0, $subStrNum);
+                        $issueNum = $subStrNum === false ? $issueNumber : substr($issueNumber, 0, $subStrNum);
                     }
                     $issueNumber = !empty($issueNum) ? $issueNum : $issueNumber;
                     $issueNumber = '(' . $issueNumber . ').';

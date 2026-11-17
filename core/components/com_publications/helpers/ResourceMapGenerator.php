@@ -415,10 +415,13 @@ class ResourceMapGenerator
 
         $this->id = '';
         if (substr($alias, -4) == '.rdf') {
+            // The id is what is between the last slash and .rdf; substr()
+            // was given the slash's position and the extension's as a length
             $lastSlash = strrpos($alias, '/');
-            $lastDot   = strrpos($alias, '.rdf');
+            $start     = $lastSlash === false ? 0 : $lastSlash + 1;
+            $lastDot   = (int) strrpos($alias, '.rdf');
 
-            $this->id = substr($alias, $lastSlash, $lastDot);
+            $this->id = substr($alias, $start, $lastDot - $start);
         }
 
         $rdfa = $this->getResourceMap();

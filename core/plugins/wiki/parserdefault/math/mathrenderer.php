@@ -240,7 +240,7 @@ class MathRenderer
                 }
                 $outdata = substr($contents, 33);
 
-                $i = strpos($outdata, "\000");
+                $i = (int) strpos($outdata, "\000");
 
                 $this->html = substr($outdata, 0, $i);
                 $this->mathml = substr($outdata, $i + 1);

@@ -80,7 +80,7 @@ class Unit extends Relational
         $alias = trim($alias);
         if (strlen($alias) > 100) {
             $alias = substr($alias . ' ', 0, 100);
-            $alias = substr($alias, 0, strrpos($alias, ' '));
+            $alias = substr($alias, 0, strrpos($alias, ' ') ?: strlen($alias));
         }
         $alias = str_replace(' ', '_', $alias);
 

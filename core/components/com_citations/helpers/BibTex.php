@@ -420,7 +420,7 @@ class BibTex
                     $proceed = $this->checkEqualSign($entry, $position);
                 }
                 while (!$proceed) {
-                    $substring = substr($entry, 0, $position);
+                    $substring = substr($entry, 0, (int) $position);
                     $position  = strrpos($substring, '=');
                     $proceed   = true;
                     if (substr($entry, $position - 1, 1) == '\\') {
@@ -432,7 +432,7 @@ class BibTex
                 }
 
                 $value = trim(substr($entry, $position + 1));
-                $entry = substr($entry, 0, $position);
+                $entry = substr($entry, 0, (int) $position);
 
                 if (',' == substr($value, strlen($value) - 1, 1)) {
                     $value = substr($value, 0, -1);
@@ -452,7 +452,7 @@ class BibTex
                 $position    = strrpos($entry, ',');
                 $field       = strtolower(trim(substr($entry, $position + 1)));
                 $ret[$field] = $value;
-                $entry       = substr($entry, 0, $position);
+                $entry       = substr($entry, 0, (int) $position);
             }
             //Parsing cite and type
             $arr = preg_split('#{#', $entry);
@@ -574,7 +574,7 @@ class BibTex
                 $proceed = false;
             }
             while (!$proceed) {
-                $substring = substr($entry, 0, $position);
+                $substring = substr($entry, 0, (int) $position);
                 $position  = strrpos($substring, '=');
                 $proceed   = true;
                 if (substr($entry, $position - 1, 1) == '\\') {

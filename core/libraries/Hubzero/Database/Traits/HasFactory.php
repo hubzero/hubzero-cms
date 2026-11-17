@@ -142,8 +142,10 @@ trait HasFactory
         }
 
         // Try namespace\Factories\ModelNameFactory
-        $namespace = substr($modelClass, 0, strrpos($modelClass, '\\'));
-        $shortName = substr($modelClass, strrpos($modelClass, '\\') + 1);
+        // A class with no namespace keeps its whole name
+        $slash     = strrpos($modelClass, '\\');
+        $namespace = $slash === false ? '' : substr($modelClass, 0, $slash);
+        $shortName = $slash === false ? $modelClass : substr($modelClass, $slash + 1);
         $factoryClass = $namespace . '\\Factories\\' . $shortName . 'Factory';
 
         if (class_exists($factoryClass)) {

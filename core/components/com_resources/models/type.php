@@ -85,7 +85,7 @@ class Type extends Relational
         $alias = trim($alias);
         if (strlen($alias) > 70) {
             $alias = substr($alias . ' ', 0, 70);
-            $alias = substr($alias, 0, strrpos($alias, ' '));
+            $alias = substr($alias, 0, strrpos($alias, ' ') ?: strlen($alias));
         }
         $alias = str_replace(' ', '-', $alias);
 

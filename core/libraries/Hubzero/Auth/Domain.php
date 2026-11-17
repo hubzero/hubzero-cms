@@ -79,7 +79,7 @@ class Domain extends Relational
         $alias = trim($alias);
         if (strlen($alias) > 255) {
             $alias = substr($alias . ' ', 0, 255);
-            $alias = substr($alias, 0, strrpos($alias, ' '));
+            $alias = substr($alias, 0, strrpos($alias, ' ') ?: strlen($alias));
         }
 
         return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($alias));

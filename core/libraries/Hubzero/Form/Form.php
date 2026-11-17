@@ -1096,15 +1096,15 @@ class Form
                     $result = '1.' . $number;
                 } elseif (preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $value) == 1) {
                     // If not, does it match ITU-T?
-                    $countrycode = substr($value, 0, strpos($value, ' '));
+                    $countrycode = substr($value, 0, (int) strpos($value, ' '));
                     $countrycode = (string) preg_replace('/[^\d]/', '', $countrycode);
                     $number = strstr($value, ' ');
                     $number = (string) preg_replace('/[^\d]/', '', $number);
                     $result = $countrycode . '.' . $number;
                 } elseif (preg_match('/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/', $value) == 1) {
                     // If not, does it match EPP?
-                    if (strstr($value, 'x')) {
-                        $xpos = strpos($value, 'x');
+                    $xpos = strpos($value, 'x');
+                    if ($xpos !== false) {
                         $value = substr($value, 0, $xpos);
                     }
                     $result = str_replace('+', '', $value);

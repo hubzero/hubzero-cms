@@ -31,7 +31,7 @@ if ($this->quote) {
                 <?php
                 $text = stripslashes($this->escape($this->quote->get('quote'))) . ' ';
                 $text = substr($text, 0, $this->charlimit);
-                $text = substr($text, 0, strrpos($text, ' '));
+                $text = substr($text, 0, strrpos($text, ' ') ?: strlen($text));
 
                 echo $text;
                 ?>

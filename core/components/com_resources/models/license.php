@@ -109,7 +109,7 @@ class License extends Relational
 
         if (strlen($title) > 70) {
             $title  = substr($title . ' ', 0, 70);
-            $title  = substr($title, 0, strrpos($title, ' '));
+            $title  = substr($title, 0, strrpos($title, ' ') ?: strlen($title));
             $title .= '...';
         }
 
@@ -129,7 +129,7 @@ class License extends Relational
         $alias = trim($alias);
         if (strlen($alias) > 70) {
             $alias = substr($alias . ' ', 0, 70);
-            $alias = substr($alias, 0, strrpos($alias, ' '));
+            $alias = substr($alias, 0, strrpos($alias, ' ') ?: strlen($alias));
         }
         $alias = str_replace(' ', '-', $alias);
 

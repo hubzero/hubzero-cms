@@ -108,9 +108,10 @@ class DayOfMonthField extends AbstractField
         }
 
         // Check to see if this is the nearest weekday to a particular value
-        if (strpos($value, 'W')) {
+        $w = strpos($value, 'W');
+        if ($w) {
             // Parse the target day
-            $targetDay = substr($value, 0, strpos($value, 'W'));
+            $targetDay = substr($value, 0, $w);
             // Find out if the current day is the nearest day of the week
             $nearestDay = self::getNearestWeekday($date->format('Y'), $date->format('m'), $targetDay);
             return $date->format('j') == $nearestDay->format('j');

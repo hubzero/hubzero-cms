@@ -193,8 +193,8 @@ class Offering extends Base
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
-                if (strstr($oid, ':')) {
-                    $dot = strpos($oid, ':');
+                $dot = strpos($oid, ':');
+                if ($dot !== false) {
                     $section = substr($oid, $dot + 1);
                     $oid = substr($oid, 0, $dot);
                 }

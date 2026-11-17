@@ -769,7 +769,8 @@ class Translator extends Obj
             }
 
             // Check that the key is not in the reserved constants list.
-            $key = strtoupper(trim(substr($line, 0, strpos($line, '='))));
+            // The pattern above makes sure there is an =
+            $key = strtoupper(trim(substr($line, 0, (int) strpos($line, '='))));
 
             if (in_array($key, $reservedWord)) {
                 $errors[] = $realNumber;
