@@ -511,7 +511,7 @@ class RelationalTest extends AbstractDriverTestCase
 
         // Use an existing seeded user to avoid cascade delete issues
         // User 3 (Bob Smith) has no posts, so can be safely deleted
-        $user = User::one(3);
+        $user = User::oneOrFail(3);
         $this->assertFalse($user->isNew(), "[$dbName] User 3 should exist");
         $this->assertEquals(3, $user->get('id'), "[$dbName] Should be user ID 3");
 

@@ -94,6 +94,9 @@ class Resources extends SiteController
             }
 
             $hztv = \Components\Tools\Helpers\Version::getToolRevision($this->_toolid, $version);
+            if (!$hztv) {
+                App::abort(404, Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
+            }
 
             $objV = new \Components\Tools\Tables\Version($this->database);
             if (!$objV->bind($_POST)) {

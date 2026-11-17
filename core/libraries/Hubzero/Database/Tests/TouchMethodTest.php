@@ -100,7 +100,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $this->assertNull($item->get('last_viewed_at'));
 
         $result = $item->touch('last_viewed_at');

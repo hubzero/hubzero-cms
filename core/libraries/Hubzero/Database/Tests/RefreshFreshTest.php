@@ -173,7 +173,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Original Title');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $item->set('title', 'Local Unsaved Change');
         $item->set('content', 'Modified Content');
 
@@ -262,7 +262,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Original Title');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Simulate external change
         $this->updateRecordDirectly($driver, $id, 'title', 'External Change');

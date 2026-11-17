@@ -281,11 +281,14 @@ class Admin extends SiteController
             $commitHash = '';
             $nRead = sscanf($this->getMessage(), "installed revision: %s commitHash: %s", $rev, $commitHash);
 
+            // The version to record it on; none when the tool has no development version
+            $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->toolid);
             if (!isset($rev) || !intval($rev)) {
                 $this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
+            } elseif (!$hztv) {
+                $this->setError(Lang::txt('COM_TOOLS_ERROR_SAVING_REVISION_UPDATE'));
             } else {
                 // Update the revision number
-                $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->toolid);
                 $hztv->revision = intval($rev);
                 if ($status['repohost'] == 'gitLocal' || $status['repohost'] == 'gitExternal') {
                     if ($commitHash != '') {

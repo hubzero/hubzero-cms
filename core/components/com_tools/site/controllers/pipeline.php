@@ -527,6 +527,9 @@ class Pipeline extends SiteController
         }
 
         $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
+        if (!$hztv) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         // Replace the default values
         $license = Request::getString('license', '');

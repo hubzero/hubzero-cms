@@ -785,7 +785,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
 
         // No changes yet
         $this->assertFalse($article->hasChangedSinceLastRevision());

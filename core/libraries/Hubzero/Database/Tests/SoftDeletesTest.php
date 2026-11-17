@@ -148,7 +148,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
         $this->assertNull($post->get('deleted_at'));
 
         $result = $post->destroy();
@@ -177,7 +177,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
         $this->assertFalse($post->trashed());
 
         $post->destroy();
@@ -440,7 +440,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $driver->insertid();
 
-        $post = CustomDeleteColumnPost::one($id);
+        $post = CustomDeleteColumnPost::oneOrFail($id);
         $this->assertFalse($post->trashed());
 
         $post->destroy();
@@ -533,7 +533,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
 
         // First cycle
         $post->destroy();

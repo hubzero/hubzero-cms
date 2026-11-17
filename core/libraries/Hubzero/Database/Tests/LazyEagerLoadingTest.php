@@ -146,7 +146,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         // Relationship should not be loaded initially
         $this->assertNull($user->getRelationship('posts'));
@@ -169,7 +169,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         $this->assertNull($user->getRelationship('posts'));
         $this->assertNull($user->getRelationship('profile'));
@@ -205,7 +205,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         // Pre-load posts
         $user->load('posts');

@@ -1210,7 +1210,7 @@ class Files extends Plugin
                 $params['type'] = $type;
 
                 // Build metadata object
-                $params['file'] = $this->repo->getMetadata($item, $type, $params);
+                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
 
                 // Is this a remote edited item?
                 if ($params['file']->get('converted')) {
@@ -1496,7 +1496,7 @@ class Files extends Plugin
         } else {
             // Get selected item
             foreach ($items[0] as $type => $item) {
-                $params['file'] = $this->repo->getMetadata($item, $type, $params);
+                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
                 break;
             }
         }
@@ -1625,7 +1625,7 @@ class Files extends Plugin
         } else {
             // Get selected item
             foreach ($items[0] as $type => $item) {
-                $params['file'] = $this->repo->getMetadata($item, $type, $params);
+                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
                 break;
             }
         }
@@ -2399,6 +2399,9 @@ class Files extends Plugin
 
             // Build metadata object
             $file = $this->repo->getMetadata($item, $type, $params);
+            if (!$file) {
+                $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
+            }
         }
 
         // Build return url
@@ -2461,8 +2464,9 @@ class Files extends Plugin
             return $view->loadTemplate();
         }
 
-        // Send file for remote editing on Google
-        if ($this->task == 'shareit') {
+        // Send file for remote editing on Google (the error above returned
+        // when there was no file)
+        if ($this->task == 'shareit' && $file) {
             // Get convertable formats
             $formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
 

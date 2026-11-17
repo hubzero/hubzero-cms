@@ -335,7 +335,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $this->assertFalse($original->isNew());
 
@@ -376,7 +376,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['content' => null]);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $this->assertNull($original->get('content'));
 

@@ -85,7 +85,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
         $this->assertNull($article->get('checked_out'));
         $this->assertNull($article->get('checked_out_time'));
 
@@ -119,7 +119,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
         $this->assertEquals(42, $article->get('checked_out'));
 
         $result = $article->checkin();
@@ -581,7 +581,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = CustomLockableArticle::one($id);
+        $article = CustomLockableArticle::oneOrFail($id);
 
         $article->checkout(42);
 
