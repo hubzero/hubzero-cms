@@ -75,7 +75,7 @@ $definedKeys = function ($root) {
             if ($file->getExtension() !== 'ini' || strpos($file->getPathname(), '/language/') === false) {
                 continue;
             }
-            foreach (file($file->getPathname(), FILE_IGNORE_NEW_LINES) as $line) {
+            foreach (file($file->getPathname(), FILE_IGNORE_NEW_LINES) ?: [] as $line) {
                 if (preg_match('/^([A-Z][A-Z0-9_]*)\s*=/', trim($line), $m)) {
                     $keys[$m[1]] = true;
                 }

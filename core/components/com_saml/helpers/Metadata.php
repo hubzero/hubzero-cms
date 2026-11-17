@@ -175,7 +175,7 @@ class Metadata
         // NameID format: take the first one we can actually issue. An SP that
         // publishes only emailAddress will reject (or mis-key) a username, so
         // the matching source is selected too rather than left at the default.
-        foreach ($xpath->query('.//md:NameIDFormat', $descriptor) as $format) {
+        foreach ($xpath->query('.//md:NameIDFormat', $descriptor) ?: [] as $format) {
             $value = trim($format->nodeValue);
 
             if (!isset(self::$nameIdSources[$value])) {
@@ -191,7 +191,7 @@ class Metadata
         // An SP publishing no POST endpoint cannot be served, so the import
         // fails rather than registering an address we would never reach.
         $best = null;
-        foreach ($xpath->query('.//md:AssertionConsumerService', $descriptor) as $acs) {
+        foreach ($xpath->query('.//md:AssertionConsumerService', $descriptor) ?: [] as $acs) {
             if (!$acs instanceof \DOMElement) {
                 continue;
             }
@@ -220,7 +220,7 @@ class Metadata
         // SLO: only the HTTP-Redirect binding, which is the one we respond
         // over. Storing a SOAP or POST endpoint here would look configured
         // while every logout response silently went nowhere.
-        foreach ($xpath->query('.//md:SingleLogoutService', $descriptor) as $slo) {
+        foreach ($xpath->query('.//md:SingleLogoutService', $descriptor) ?: [] as $slo) {
             if (!$slo instanceof \DOMElement) {
                 continue;
             }
@@ -232,7 +232,7 @@ class Metadata
         }
 
         // Signing certificate: use="signing" wins, use-less descriptors apply to both
-        foreach ($xpath->query('.//md:KeyDescriptor', $descriptor) as $key) {
+        foreach ($xpath->query('.//md:KeyDescriptor', $descriptor) ?: [] as $key) {
             if (!$key instanceof \DOMElement) {
                 continue;
             }

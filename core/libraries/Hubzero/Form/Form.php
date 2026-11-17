@@ -1357,7 +1357,7 @@ class Form
                 $children = $element->xpath('descendant::fields[@name="' . (string) $group[$i] . '"]');
 
                 // For the found fields elements validate that they are in the correct groups.
-                foreach ($children as $fields) {
+                foreach ($children ?: [] as $fields) {
                     // Get the group names as strings for ancestor fields elements.
                     $attrs = $fields->xpath('ancestor-or-self::fields[@name]/@name');
                     $names = array_map('strval', $attrs ? $attrs : []);

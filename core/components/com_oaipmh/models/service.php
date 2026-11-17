@@ -140,7 +140,7 @@ class Service extends Obj
      */
     private function loadSchemas()
     {
-        foreach (glob(__DIR__ . DS . 'schemas' . DS . '*.php') as $schema) {
+        foreach (glob(__DIR__ . DS . 'schemas' . DS . '*.php') ?: [] as $schema) {
             require_once $schema;
         }
 

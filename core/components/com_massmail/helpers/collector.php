@@ -235,7 +235,7 @@ class PostfixCollector
             // Rotation: read the tail of the previous file (matched by inode),
             // then all of the new current file.
             $result['mode'] = 'rotated';
-            foreach (glob(dirname($path) . '/' . basename($path) . '*') as $f) {
+            foreach (glob(dirname($path) . '/' . basename($path) . '*') ?: [] as $f) {
                 if (!is_file($f) || !is_readable($f) || substr($f, -3) === '.gz') {
                     continue;
                 }

@@ -269,7 +269,7 @@ class SafePath
         // actually is one
         $separators = (DS == '\\' ? '#[\\\\/]+#' : '#/+#');
 
-        foreach (preg_split($separators, $relative) as $component) {
+        foreach (preg_split($separators, $relative) ?: [] as $component) {
             // Empty components come from leading, trailing or doubled separators
             if ($component === '') {
                 continue;

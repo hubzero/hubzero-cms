@@ -123,7 +123,7 @@ class Endnote extends Plugin
             $citation = [];
 
             // Build array of citation data
-            foreach ($citation_data as $cd) {
+            foreach ($citation_data ?: [] as $cd) {
                 if (!empty($cd[0])) {
                     // $key = substr($raw_citations[$i], ($cd[1]-3), 2);
                     $key = substr($raw_citations[$i], ($cd[1] - 2), 2);

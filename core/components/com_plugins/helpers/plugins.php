@@ -40,7 +40,7 @@ class Plugins
 
         $actions = Access::getActionsFromFile(Component::path($assetName) . '/config/access.xml');
 
-        foreach ($actions as $action) {
+        foreach ($actions ?: [] as $action) {
             $result->set($action->name, User::authorise($action->name, $assetName));
         }
 

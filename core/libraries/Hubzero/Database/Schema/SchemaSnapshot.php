@@ -233,7 +233,7 @@ class SchemaSnapshot
         $snapshots = [];
         $pattern = $this->snapshotDir . '/*' . $this->extension;
 
-        foreach (glob($pattern) as $filepath) {
+        foreach (glob($pattern) ?: [] as $filepath) {
             $json = file_get_contents($filepath);
             $data = json_decode((string) $json, true);
 

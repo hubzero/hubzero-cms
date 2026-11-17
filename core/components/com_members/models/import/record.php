@@ -624,7 +624,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      */
     public function handlers()
     {
-        foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'handler' . DIRECTORY_SEPARATOR . '*.php') as $path) {
+        foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'handler' . DIRECTORY_SEPARATOR . '*.php') ?: [] as $path) {
             $type = basename($path, '.php');
 
             if (!isset(self::$handlers[$type])) {

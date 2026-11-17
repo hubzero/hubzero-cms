@@ -31,7 +31,7 @@ class Html
             if (is_dir(DvConfig::$html_dir . DS . $script)) {
                 $path = $script;
                 chdir(DvConfig::$html_dir . DS . $path);
-                foreach (glob("*.js") as $file) {
+                foreach (glob("*.js") ?: [] as $file) {
                     $document->addScript(
                         DvConfig::$html_path . '/' . $path . '/' . $file . '?mt='
                         . filemtime(DvConfig::$html_dir . DS . $path . DS . $file),
@@ -64,7 +64,7 @@ class Html
             if (is_dir(DvConfig::$html_dir . DS . $css)) {
                 $path = $css;
                 chdir(DvConfig::$html_dir . DS . $path);
-                foreach (glob("*.css") as $file) {
+                foreach (glob("*.css") ?: [] as $file) {
                     $document->addStyleSheet(
                         DvConfig::$html_path . '/' . $path . '/' . $file . '?mt='
                         . filemtime(DvConfig::$html_dir . DS . $path . DS . $file),

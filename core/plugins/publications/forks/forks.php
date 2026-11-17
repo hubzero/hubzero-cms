@@ -138,7 +138,7 @@ class Forks extends Plugin
         $versions = $objV->getVersions($publication->id, $filters = ['public' => 1]);
 
         $sources = [];
-        foreach ($versions as $version) {
+        foreach ($versions ?: [] as $version) {
             $sources[] = $version->id;
         }
 
@@ -193,7 +193,7 @@ class Forks extends Plugin
         $versions = $objV->getVersions($publication->id, $filters = ['public' => 1]);
 
         $forks = [];
-        foreach ($versions as $version) {
+        foreach ($versions ?: [] as $version) {
             // Now find all the forks for each version
             $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`="
                     . $db->quote($version->id)

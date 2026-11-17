@@ -475,7 +475,7 @@ class Html extends Obj
         $urlPattern = '#\b((?<!href=")(https?://www[.]|[\w-]+://?|(?<!://)www[.])[^\s()<>]+'
             . '(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
         $parts = preg_split('#(<a\s[^>]*>.*?</a>)#is', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
-        foreach ($parts as $i => &$part) {
+        foreach ($parts ?: [] as $i => &$part) {
             // Only process parts that are NOT existing <a> tags (odd indices are captured delimiters)
             if ($i % 2 === 0) {
                 $part = preg_replace($urlPattern, "<a rel=\"{$rel}\" href=\"$1\">$1</a>", $part);

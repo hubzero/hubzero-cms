@@ -1770,7 +1770,7 @@ class Publications extends SiteController
         }
         $ownrs = $objO->getOwners($project->get('id'));
         $owners = [];
-        foreach ($ownrs as $owner) {
+        foreach ($ownrs ?: [] as $owner) {
             $owners[$owner->userid] = $owner->id;
         }
 

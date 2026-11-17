@@ -70,7 +70,7 @@ abstract class Processor
      */
     public static function all()
     {
-        foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'Processor' . DIRECTORY_SEPARATOR . '*.php') as $path) {
+        foreach (glob(__DIR__ . DIRECTORY_SEPARATOR . 'Processor' . DIRECTORY_SEPARATOR . '*.php') ?: [] as $path) {
             $type = strtolower(basename($path, '.php'));
 
             if (!isset(self::$instances[$type])) {

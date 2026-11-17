@@ -54,7 +54,7 @@ class Cache extends Base implements CommandInterface
         $cacheDir = PATH_APP . DS . 'cache' . DS . '*';
 
         // Remove recursively
-        foreach (glob($cacheDir) as $cacheFileOrDir) {
+        foreach (glob($cacheDir) ?: [] as $cacheFileOrDir) {
             $readable = str_replace(PATH_APP . DS, '', $cacheFileOrDir);
             if (is_dir($cacheFileOrDir)) {
                 if (!Filesystem::deleteDirectory($cacheFileOrDir)) {

@@ -59,7 +59,7 @@ class Sql
      */
     public function read($path)
     {
-        foreach (file($path, FILE_IGNORE_NEW_LINES) as $line) {
+        foreach (file($path, FILE_IGNORE_NEW_LINES) ?: [] as $line) {
             $line = trim($line);
 
             if ($line === '' || substr($line, 0, 2) === '--' || substr($line, 0, 2) === '/*') {

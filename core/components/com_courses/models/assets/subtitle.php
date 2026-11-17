@@ -284,7 +284,7 @@ class Subtitle extends Handler
         $subText = '';
         $subTime = '';
 
-        foreach ($lines as $line) {
+        foreach ($lines ?: [] as $line) {
             switch ($state) {
                 case SRT_STATE_SUBNUMBER:
                     $subNum = trim($line);

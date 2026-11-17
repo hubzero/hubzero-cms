@@ -267,7 +267,7 @@ class Local implements AdapterInterface
         }
 
         $ret = 0;
-        foreach (glob($path . DIRECTORY_SEPARATOR . "*") as $fn) {
+        foreach (glob($path . DIRECTORY_SEPARATOR . "*") ?: [] as $fn) {
             $ret += $this->size($fn);
         }
         return $ret;

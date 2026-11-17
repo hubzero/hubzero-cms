@@ -55,7 +55,7 @@ class Utilities
 
         $actions = Access::getActionsFromFile(dirname(__DIR__) . DS . 'config' . DS . 'access.xml');
 
-        foreach ($actions as $action) {
+        foreach ($actions ?: [] as $action) {
             $result->set($action->name, User::authorise($action->name, 'com_messages'));
         }
 

@@ -69,7 +69,7 @@ class Importer
     private function bootAdapters()
     {
         // include all adapters
-        foreach (glob(__DIR__ . DS . 'adapters' . DS . '*.php') as $adapter) {
+        foreach (glob(__DIR__ . DS . 'adapters' . DS . '*.php') ?: [] as $adapter) {
             require_once $adapter;
         }
 

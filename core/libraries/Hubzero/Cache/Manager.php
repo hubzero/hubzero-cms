@@ -234,7 +234,7 @@ class Manager
         $types = glob(__DIR__ . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . '*.php');
 
         // Loop through the types and find the ones that are available
-        foreach ($types as $type) {
+        foreach ($types ?: [] as $type) {
             // Get just the file name
             $type = basename($type);
 

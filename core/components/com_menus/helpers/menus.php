@@ -48,7 +48,7 @@ class Menus
 
         $actions = Access::getActionsFromFile(Component::path('com_menus') . '/config/access.xml');
 
-        foreach ($actions as $action) {
+        foreach ($actions ?: [] as $action) {
             $result->set($action->name, User::authorise($action->name, $assetName));
         }
 

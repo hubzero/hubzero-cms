@@ -56,7 +56,7 @@ class Utilities
 
         $actions = Access::getActionsFromFile(Component::path('com_templates') . '/config/access.xml');
 
-        foreach ($actions as $action) {
+        foreach ($actions ?: [] as $action) {
             $result->set($action->name, User::authorise($action->name, 'com_templates'));
         }
 

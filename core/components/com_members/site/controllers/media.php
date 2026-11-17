@@ -635,7 +635,7 @@ class Media extends SiteController
         // Keep any subdirectory the caller legitimately addresses by cleaning
         // each segment rather than flattening the whole path.
         $parts = [];
-        foreach (preg_split('#[\\\\/]+#', (string) $file) as $seg) {
+        foreach (preg_split('#[\\\\/]+#', (string) $file) ?: [] as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {
                 continue;
             }

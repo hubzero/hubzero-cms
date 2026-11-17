@@ -1726,7 +1726,7 @@ class WikiParser
         $text = preg_split("@(<[\w/!?].*>)@Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         $i = 0;
         $glyph_out = [];
-        foreach ($text as $line) {
+        foreach ($text ?: [] as $line) {
             // text tag text tag text ...
             if (++$i % 2) {
                 $line = $this->encodeHtml($line, 0);
@@ -2233,7 +2233,7 @@ class WikiParser
         $rows = [];
         $rowMeta = []; // Track cell types per row for thead/tbody
 
-        foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) as $row) {
+        foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) ?: [] as $row) {
             if (preg_match("/^({$ac}\.)(.*)/m", ltrim($row), $rmtch)) {
                 $ratts = $this->pba($rmtch[1], 'tr');
                 $row = $rmtch[2];
@@ -3009,7 +3009,7 @@ class WikiParser
         $blocks = preg_split('/<H[1-6].*?' . '>.*?<\/H[1-6]>/i', $text ?: '');
         $i = 0;
 
-        foreach ($blocks as $block) {
+        foreach ($blocks ?: [] as $block) {
             $full .= $block;
 
             if (!empty($head[$i])) {

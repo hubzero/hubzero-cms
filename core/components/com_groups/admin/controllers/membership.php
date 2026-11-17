@@ -266,7 +266,7 @@ class Membership extends AdminController
         $m = Request::getString('usernames', '', 'post');
         $mbrs = preg_split("/[,;]/", $m);
 
-        foreach ($mbrs as $mbr) {
+        foreach ($mbrs ?: [] as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);
             $uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');

@@ -1057,7 +1057,7 @@ class SecurityGuard
 
         // Remove all files in the directory
         $files = glob($dir . '/*');
-        foreach ($files as $file) {
+        foreach ($files ?: [] as $file) {
             if (is_file($file)) {
                 // Securely delete secret file
                 if (basename($file) === 'secret.php') {
@@ -1072,7 +1072,7 @@ class SecurityGuard
 
         // Remove hidden files (.htaccess, etc.)
         $hiddenFiles = glob($dir . '/.*');
-        foreach ($hiddenFiles as $file) {
+        foreach ($hiddenFiles ?: [] as $file) {
             if (is_file($file)) {
                 @unlink($file);
             }
@@ -1100,7 +1100,7 @@ class SecurityGuard
         $maxAge = 86400; // 24 hours
         $now = time();
 
-        foreach (glob($dir . '/challenge-*.json') as $file) {
+        foreach (glob($dir . '/challenge-*.json') ?: [] as $file) {
             if ($now - filemtime($file) > $maxAge) {
                 @unlink($file);
             }

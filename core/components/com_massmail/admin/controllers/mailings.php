@@ -473,7 +473,7 @@ class Mailings extends AdminController
         // emails: one per line
         $emailsRaw = Request::getString('emails', '');
         $emails = [];
-        foreach (preg_split('/[\r\n,;]+/', $emailsRaw) as $e) {
+        foreach (preg_split('/[\r\n,;]+/', $emailsRaw) ?: [] as $e) {
             $e = trim($e);
             if ($e !== '') {
                 $emails[] = $e;

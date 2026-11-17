@@ -141,7 +141,7 @@ if ($this->comment->isReported()) {
                                 <?php
                                     $nameArray = preg_split("#/#", $userNameLikesArray);
                                     $links = [];
-                                foreach ($nameArray as $nameString) {
+                                foreach ($nameArray ?: [] as $nameString) {
                                     // Records are "percentEncodedName#id": the name is encoded
                                     // where the list is built above, so neither '#' nor '/' can
                                     // appear in it and the split is unambiguous. Decode for

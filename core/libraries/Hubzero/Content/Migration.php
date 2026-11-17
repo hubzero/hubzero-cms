@@ -380,7 +380,7 @@ class Migration
         }
 
         $suffix = '';
-        foreach (preg_split('/[_-]/', $extension) as $part) {
+        foreach (preg_split('/[_-]/', $extension) ?: [] as $part) {
             $suffix .= ucfirst($part);
         }
 
@@ -856,7 +856,7 @@ class Migration
             // Make sure we have a hooks directroy
             if (is_dir($path . DS . 'migrations' . DS . 'hooks')) {
                 $found = [];
-                foreach (glob($path . DS . 'migrations' . DS . 'hooks' . DS . '*.php') as $hook) {
+                foreach (glob($path . DS . 'migrations' . DS . 'hooks' . DS . '*.php') ?: [] as $hook) {
                     // We just want the filename, so strip the path off
                     $hook = str_replace($path . DS . 'migrations' . DS . 'hooks' . DS, '', $hook);
 

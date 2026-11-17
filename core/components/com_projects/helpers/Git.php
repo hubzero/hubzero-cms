@@ -535,7 +535,7 @@ class Git extends Obj
         $entry     = [];
         $i = 0;
 
-        foreach ($out as $line) {
+        foreach ($out ?: [] as $line) {
             if (substr($line, 0, 3) == '>>>') {
                 $line = str_replace('>>>', '', $line);
                 $data = explode("||", $line);
@@ -713,7 +713,7 @@ class Git extends Obj
         $results = $this->exec($cmd);
         $return  = [];
 
-        foreach ($results as $result) {
+        foreach ($results ?: [] as $result) {
             $return[] = trim($subdir, DS) . DS . $result;
         }
 
@@ -734,7 +734,7 @@ class Git extends Obj
         $results = $this->exec($cmd);
         $return  = [];
 
-        foreach ($results as $result) {
+        foreach ($results ?: [] as $result) {
             $return[] = trim($subdir, DS) . DS . $result;
         }
 

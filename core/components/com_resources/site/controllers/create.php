@@ -1172,7 +1172,7 @@ class Create extends SiteController
         }
         $push = $filtered;
 
-        foreach ($tags as $tag) {
+        foreach ($tags ?: [] as $tag) {
             $norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag));
 
             if (!$norm_tag || isset($map[$norm_tag])) {

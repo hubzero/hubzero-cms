@@ -807,7 +807,7 @@ class Tag extends Relational
         $raw_tags = preg_split("/(,|;)/", $raw_tags);
 
         $tags = [];
-        foreach ($raw_tags as $raw_tag) {
+        foreach ($raw_tags ?: [] as $raw_tag) {
             $nrm = $this->normalize($raw_tag);
 
             $tags[] = $nrm;

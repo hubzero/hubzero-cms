@@ -28,7 +28,7 @@ $xml->registerXPathNamespace('shib', 'urn:oasis:names:tc:SAML:2.0:metadata');
 
 $curl = curl_init();
 $rv = [];
-foreach ($xml->xpath('//shib:EntityDescriptor') as $idp) {
+foreach ($xml->xpath('//shib:EntityDescriptor') ?: [] as $idp) {
     print (string) $idp->Organization->OrganizationDisplayName;
     print "\n";
 }

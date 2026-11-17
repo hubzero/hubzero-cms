@@ -31,7 +31,7 @@ class DispatchTest extends TestCase
     {
         $manifest = simplexml_load_file(dirname(__DIR__) . '/captcha.xml');
         $values   = [];
-        foreach ($manifest->xpath('//field[@name="' . $field . '"]/option') as $option) {
+        foreach ($manifest->xpath('//field[@name="' . $field . '"]/option') ?: [] as $option) {
             $values[] = (string) $option['value'];
         }
         $this->assertNotEmpty($values, "the form offers no $field");

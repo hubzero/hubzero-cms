@@ -74,7 +74,7 @@ class Importer
     {
         $this->adapters = [];
 
-        foreach (glob(__DIR__ . DS . 'Import' . DS . 'Adapter' . DS . '*.php') as $adapter) {
+        foreach (glob(__DIR__ . DS . 'Import' . DS . 'Adapter' . DS . '*.php') ?: [] as $adapter) {
             $class = __NAMESPACE__ . '\\Import\\Adapter\\' . basename($adapter, '.php');
 
             if (class_exists($class) && in_array('Hubzero\Content\Import\Adapter', class_implements($class))) {

@@ -595,7 +595,7 @@ class Quotas extends AdminController
 
                 $tokens = preg_split('/,/', $msg);
 
-                foreach ($tokens as $token) {
+                foreach ($tokens ?: [] as $token) {
                     if (!empty($token)) {
                         $t = preg_split('#=#', $token);
                         $info[$t[0]] = (isset($t[1])) ? $t[1] : '';

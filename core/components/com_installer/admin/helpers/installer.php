@@ -63,7 +63,7 @@ class Installer
 
         $actions = \Hubzero\Access\Access::getActionsFromFile(dirname(dirname(__DIR__)) . '/config/access.xml');
 
-        foreach ($actions as $action) {
+        foreach ($actions ?: [] as $action) {
             $result->set($action->name, User::authorise($action->name, $assetName));
         }
 

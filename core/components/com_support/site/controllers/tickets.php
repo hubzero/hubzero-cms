@@ -1442,7 +1442,7 @@ class Tickets extends SiteController
         // Check the user's IP against the blacklist, as addresses rather than
         // strings: 2001:DB8::1, 2001:db8:0:0::1 and ::ffff:192.0.2.1 are each
         // the same address as their usual form
-        foreach ($bl as $entry) {
+        foreach ($bl ?: [] as $entry) {
             $network = \Hubzero\Utility\Network::parse($entry);
 
             if ($network && $network->contains($ip)) {

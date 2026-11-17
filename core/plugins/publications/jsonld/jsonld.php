@@ -91,7 +91,7 @@ class Jsonld extends Plugin
         }
 
         $keywords = [];
-        foreach ($publication->getTags() as $tag) {
+        foreach ($publication->getTags() ?: [] as $tag) {
             $keywords[] = $tag->raw_tag;
         }
 

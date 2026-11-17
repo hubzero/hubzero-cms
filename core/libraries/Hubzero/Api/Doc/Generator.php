@@ -171,7 +171,7 @@ class Generator
 
         // group by component
         foreach ($roots as $base) {
-            foreach (glob($base . DS . 'components' . DS . 'com_*' . DS . 'api') as $path) {
+            foreach (glob($base . DS . 'components' . DS . 'com_*' . DS . 'api') ?: [] as $path) {
                 // get component
                 $pieces = explode(DS, $path);
                 array_pop($pieces);

@@ -92,7 +92,7 @@ class Toolsv1r0 extends ApiController
         exec($cmd, $results, $status);
 
         $results = [];
-        foreach ($sessions as $session) {
+        foreach ($sessions ?: [] as $session) {
             $r = [
                 'id'         => $session->sessnum,
                 'app'        => $session->appname,

@@ -1390,7 +1390,7 @@ class Citations extends Plugin
                     $collection = [];
                     $columns = ['author', 'title', 'isbn', 'doi', 'publisher', 'abstract'];
                     foreach ($columns as $column) {
-                        foreach ($terms as $term) {
+                        foreach ($terms ?: [] as $term) {
                             // copy the original item
                             $cite = clone($citations);
 

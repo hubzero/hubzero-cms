@@ -214,7 +214,7 @@ class Wishlist extends Relational
             $files = glob(__DIR__ . '/adapters/*.php');
 
             // Loop through the types and find the ones that are available
-            foreach ($files as $file) {
+            foreach ($files ?: [] as $file) {
                 // Get just the file name
                 $file = basename($file);
 
