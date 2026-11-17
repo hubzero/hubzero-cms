@@ -208,7 +208,7 @@ class ImgHandler extends Obj
         ini_set('memory_limit', $this->memoryTOALLOCATE);
 
         // Set up a blank canvas for our resized image (destination)
-        $dst = imagecreatetruecolor((int) $tnWidth, (int) $tnHeight);
+        $dst = imagecreatetruecolor(max(1, (int) $tnWidth), max(1, (int) $tnHeight));
 
         // Set up the appropriate image handling functions based on the original image's mime type
         switch ($size['mime']) {

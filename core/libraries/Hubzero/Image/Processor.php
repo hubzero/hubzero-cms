@@ -329,6 +329,10 @@ class Processor extends Obj
         $height     = imagesy($this->resource);
         $new_width  = $width - ($left + $right);
         $new_height = $height - ($top + $bottom);
+        if ($new_width < 1 || $new_height < 1) {
+            // Cropped away entirely
+            return false;
+        }
 
         $resource = imagecreatetruecolor($new_width, $new_height);
         imagecopy($resource, $this->resource, 0, 0, $left, $top, $new_width, $new_height);
@@ -405,6 +409,10 @@ class Processor extends Obj
                 $new_w = floor($width * ($new_h / $height));
             }
         }
+
+        // Whole pixels, at least one each way
+        $new_w = max(1, (int) $new_w);
+        $new_h = max(1, (int) $new_h);
 
         $resource = imagecreatetruecolor($new_w, $new_h);
 

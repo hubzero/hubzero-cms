@@ -32,6 +32,7 @@ class RulesTest extends TestCase
         $fail = Rules::validate(['name' => ''], ['name' => 'notempty']);
 
         $this->assertTrue($pass, 'Rule (notempty) should have validated with a name of "Me"');
+        $this->assertIsArray($fail);
         $this->assertCount(1, $fail, 'Rule (notempty) should have returned one error for empty name');
     }
 
@@ -47,6 +48,7 @@ class RulesTest extends TestCase
         $fail = Rules::validate(['age' => -1], ['age' => 'positive']);
 
         $this->assertTrue($pass, 'Rule (positive) should have validated with an age of 25');
+        $this->assertIsArray($fail);
         $this->assertCount(1, $fail, 'Rule (positive) should have returned one error for an age of -1');
     }
 
@@ -64,6 +66,7 @@ class RulesTest extends TestCase
 
         $this->assertTrue($passPos, 'Rule (nonzero) should have validated with a score of 1');
         $this->assertTrue($passNeg, 'Rule (nonzero) should have validated with a score of -1');
+        $this->assertIsArray($fail);
         $this->assertCount(1, $fail, 'Rule (nonzero) should have returned one error for a score of 0');
     }
 
@@ -79,6 +82,7 @@ class RulesTest extends TestCase
         $fail = Rules::validate(['name' =>  "MI6"], ['name' => 'alpha']);
 
         $this->assertTrue($pass, 'Rule (alpha) should have validated with a name of "John Awesome"');
+        $this->assertIsArray($fail);
         $this->assertCount(1, $fail, 'Rule (alpha) should have returned one error for a name of "MI6"');
     }
 
@@ -99,7 +103,9 @@ class RulesTest extends TestCase
         $this->assertTrue($pass1, 'Rule (phone) should have validated with a phone of "765-494-4000"');
         $this->assertTrue($pass2, 'Rule (phone) should have validated with a phone of "(765) 494-4000"');
         $this->assertTrue($pass3, 'Rule (phone) should have validated with a phone of "7654944000"');
+        $this->assertIsArray($fail1);
         $this->assertCount(1, $fail1, 'Rule (phone) should have returned one error for a phone of "12345"');
+        $this->assertIsArray($fail2);
         $this->assertCount(1, $fail2, 'Rule (phone) should have returned one error for a phone of "123-456-7890"');
     }
 
@@ -135,6 +141,7 @@ class RulesTest extends TestCase
         $fail = Rules::validate(['email' =>  "me.com"], ['email' => 'email']);
 
         $this->assertTrue($pass, 'Rule (email) should have validated with a email of "you@gmail.com"');
+        $this->assertIsArray($fail);
         $this->assertCount(1, $fail, 'Rule (email) should have returned one error for a email of "me.com"');
     }
 
@@ -172,6 +179,7 @@ class RulesTest extends TestCase
         $fail = Rules::validate(['name' => ""], ['name' => 'notempty|alpha']);
 
         $this->assertTrue($pass, 'Rule (notempty|alpha) should have validated with a name of "mr cool"');
+        $this->assertIsArray($fail);
         $this->assertCount(2, $fail, 'Rules (notempty|alpha) should have returned two errors for a name of ""');
     }
 
@@ -185,6 +193,7 @@ class RulesTest extends TestCase
     {
         $fail = Rules::validate(['name' => "Mr. Awesome"], ['name' => 'notempty|alpha']);
 
+        $this->assertIsArray($fail);
         $this->assertCount(
             1,
             $fail,
@@ -213,6 +222,7 @@ class RulesTest extends TestCase
 
         $pass = Rules::validate(['height' => 5, 'width' => 5], ['width' => $beSquare]);
 
+        $this->assertIsArray($fail);
         $this->assertCount(
             1,
             $fail,
