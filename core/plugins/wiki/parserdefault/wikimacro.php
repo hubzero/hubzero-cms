@@ -171,11 +171,12 @@ class WikiMacro
      * Render macro output
      * this should be overriden by extended classes
      *
-     * @return  void
+     * @return  string|null  The macro's output; subclasses give it
      */
     public function render()
     {
         // Abstract function for overloading
+        return null;
     }
 
     /**

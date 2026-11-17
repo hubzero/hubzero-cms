@@ -67,9 +67,9 @@ class Parser
     private $macroPaths = [];
 
     /**
-     * List of used macros
+     * List of used macros, false for a name that is not one
      *
-     * @var  array<mixed>
+     * @var  array<string, Macro|false>
      */
     private static $macros = [];
 
@@ -445,6 +445,10 @@ class Parser
 
                 if (class_exists($macroname)) {
                     $macro = new $macroname();
+                    // A macro is one of ours; anything else has none of what is used below
+                    if (!($macro instanceof \Plugins\Content\Formathtml\Macro)) {
+                        return '';
+                    }
 
                     if (!$this->get('fullparse') && !$macro->allowPartial) {
                         return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';

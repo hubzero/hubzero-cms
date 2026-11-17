@@ -1585,6 +1585,10 @@ class WikiParser
 
                 if (class_exists($macroname)) {
                     $macro = new $macroname();
+                    // A macro is one of ours; anything else has none of what is used below
+                    if (!($macro instanceof \Plugins\Wiki\Parserdefault\WikiMacro)) {
+                        return '';
+                    }
 
                     if (!$this->get('fullparse') && !$macro->allowPartial) {
                         return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
