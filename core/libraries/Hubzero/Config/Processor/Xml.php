@@ -100,6 +100,10 @@ class Xml extends Base
 
         // Create the root node.
         $root = simplexml_load_string('<' . $rootName . ' />');
+        if ($root === false) {
+            // Not a usable element name
+            return '';
+        }
 
         // Iterate over the object members.
         $this->getXmlChildren($root, $object, $nodeName);
@@ -123,6 +127,10 @@ class Xml extends Base
         $obj = new stdClass();
 
         $xml = simplexml_load_string($data);
+        if ($xml === false) {
+            // Not XML: nothing in it
+            return $obj;
+        }
 
         foreach ($xml->children() as $node) {
             $obj->{$node['name']} = $this->getValueFromNode($node);

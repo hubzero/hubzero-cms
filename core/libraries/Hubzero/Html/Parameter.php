@@ -276,6 +276,9 @@ class Parameter extends Registry
             }
 
             $xml = simplexml_load_file($path);
+            if ($xml === false) {
+                return $result;
+            }
 
             if ($params = $xml->params) {
                 foreach ($params as $param) {

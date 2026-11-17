@@ -89,7 +89,7 @@ class Debug
             if (is_file($filename)) {
                 $xml = simplexml_load_file($filename);
 
-                foreach ($xml->children()->fieldset as $fieldset) {
+                foreach (($xml !== false ? $xml->children()->fieldset : []) as $fieldset) {
                     if ('permissions' == (string) $fieldset['name']) {
                         foreach ($fieldset->children() as $field) {
                             if ('rules' == (string) $field['name']) {

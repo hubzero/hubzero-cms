@@ -30,6 +30,10 @@ class Hubpresenter extends Obj
             return '';
         }
         $manifest = simplexml_load_file($xml_path);
+        if ($manifest === false) {
+            // Not readable XML: as good as missing
+            return '';
+        }
 
         // Set the media
         $old_media = $manifest->media;
