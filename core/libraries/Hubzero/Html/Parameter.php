@@ -326,7 +326,7 @@ class Parameter extends Registry
                 $type,
             )
                 . '.php', $matches);
-            $file = @ (string) $matches[0];
+            $file = (string) ($matches[0] ?? '');
 
             if ($elementFile = App::get('filesystem')->find($dirs, $file)) {
                 include_once $elementFile;

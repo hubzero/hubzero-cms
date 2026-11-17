@@ -422,7 +422,7 @@ class SiteSettings
             return self::promptCustomTimezone($ansi, $existingTimezone);
         }
 
-        $tz = $keys[$selected];
+        $tz = $keys[$selected] ?? 'UTC';
         self::output("\n", $ansi);
         self::output("  Selected: {$tz}\n", $ansi);
         return $tz;

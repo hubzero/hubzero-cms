@@ -538,16 +538,16 @@ class Database
             $selected = self::interactiveMenu($options, 0, $ansi, true);
 
             // Handle backspace (go back)
-            if ($selected === -1 || $options[$selected] === 'Back') {
+            if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                 return self::selectMySqlConnection($ansi, $existing);
             }
 
-            if ($options[$selected] === 'Try the connection again...') {
+            if (($options[$selected] ?? '') === 'Try the connection again...') {
                 // Loop will retry the test
                 continue;
             }
 
-            if ($options[$selected] === 'Try a new MySQL connection...') {
+            if (($options[$selected] ?? '') === 'Try a new MySQL connection...') {
                 return self::selectMySqlConnection($ansi, $existing);
             }
 
@@ -659,12 +659,12 @@ class Database
         }
 
         // Handle "back" option
-        if ($options[$selected] === 'back') {
+        if (($options[$selected] ?? '') === 'back') {
             return null;
         }
 
         // Handle "exit" option
-        if ($options[$selected] === 'exit') {
+        if (($options[$selected] ?? '') === 'exit') {
             self::output("\n", $ansi);
             self::output("Exiting...\n", $ansi);
             self::output("\n", $ansi);
@@ -673,7 +673,7 @@ class Database
 
         self::output("\n", $ansi);
 
-        if ($options[$selected] === 'hostname') {
+        if (($options[$selected] ?? '') === 'hostname') {
             return self::promptHostnameConnection($ansi);
         } else {
             return self::promptSocketConnection($ansi);
@@ -798,18 +798,18 @@ class Database
         $selected = self::interactiveMenu($options, $defaultIndex, $ansi, true);
 
         // Handle backspace (go back)
-        if ($selected === -1 || $options[$selected] === 'Back') {
+        if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
             return null;
         }
 
-        if ($options[$selected] === 'Exit') {
+        if (($options[$selected] ?? '') === 'Exit') {
             self::output("\n", $ansi);
             self::output("Exiting...\n", $ansi);
             self::output("\n", $ansi);
             return false;
         }
 
-        if ($options[$selected] === 'Enter credentials for an existing MySQL account') {
+        if (($options[$selected] ?? '') === 'Enter credentials for an existing MySQL account') {
             self::output("\n", $ansi);
             return self::promptCredentials($connection, $ansi, $existing);
         }
@@ -879,18 +879,18 @@ class Database
                     ];
                     $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-                    if ($selected === -1 || $options[$selected] === 'Back') {
+                    if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                         return null;
                     }
 
-                    if ($options[$selected] === 'Exit') {
+                    if (($options[$selected] ?? '') === 'Exit') {
                         self::output("\n", $ansi);
                         self::output("Exiting...\n", $ansi);
                         self::output("\n", $ansi);
                         return false;
                     }
 
-                    if ($options[$selected] === 'Use this account for Hubzero instead') {
+                    if (($options[$selected] ?? '') === 'Use this account for Hubzero instead') {
                         // Use these credentials directly
                         $connection['username'] = $adminUser;
                         $connection['password'] = $adminPass;
@@ -947,18 +947,18 @@ class Database
                 $selected = self::interactiveMenu($options, 0, $ansi, true);
 
                 // Handle backspace (go back)
-                if ($selected === -1 || $options[$selected] === 'Back') {
+                if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                     return null;
                 }
 
-                if ($options[$selected] === 'Exit') {
+                if (($options[$selected] ?? '') === 'Exit') {
                     self::output("\n", $ansi);
                     self::output("Exiting...\n", $ansi);
                     self::output("\n", $ansi);
                     return false;
                 }
 
-                if ($options[$selected] === 'Use existing account instead') {
+                if (($options[$selected] ?? '') === 'Use existing account instead') {
                     self::output("\n", $ansi);
                     return self::promptCredentials($connection, $ansi);
                 }
@@ -1418,18 +1418,18 @@ class Database
         $selected = self::interactiveMenu($options, $defaultIndex, $ansi, true);
 
         // Handle backspace (go back)
-        if ($selected === -1 || $options[$selected] === 'Back') {
+        if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
             return null;
         }
 
-        if ($options[$selected] === 'Exit') {
+        if (($options[$selected] ?? '') === 'Exit') {
             self::output("\n", $ansi);
             self::output("Exiting...\n", $ansi);
             self::output("\n", $ansi);
             return false;
         }
 
-        if ($options[$selected] === 'Enter existing database name and credentials') {
+        if (($options[$selected] ?? '') === 'Enter existing database name and credentials') {
             self::output("\n", $ansi);
             return self::promptCredentials($connection, $ansi, $existing);
         }
@@ -1591,22 +1591,22 @@ class Database
         ];
         $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-        if ($selected === -1 || $options[$selected] === 'Back') {
+        if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
             return null; // Go back to username prompt
         }
 
-        if ($options[$selected] === 'Exit') {
+        if (($options[$selected] ?? '') === 'Exit') {
             self::output("\n", $ansi);
             self::output("Exiting...\n", $ansi);
             self::output("\n", $ansi);
             return false;
         }
 
-        if ($options[$selected] === 'Choose a different username') {
+        if (($options[$selected] ?? '') === 'Choose a different username') {
             return null; // Go back to username prompt
         }
 
-        if ($options[$selected] === 'Reset password for this user') {
+        if (($options[$selected] ?? '') === 'Reset password for this user') {
             // Prompt for new password
             self::output("\n", $ansi);
             $newPassword = self::promptPassword("New password for '{$username}': ", $ansi);
@@ -1687,22 +1687,22 @@ class Database
             ];
             $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-            if ($selected === -1 || $options[$selected] === 'Back') {
+            if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                 return null;
             }
 
-            if ($options[$selected] === 'Exit') {
+            if (($options[$selected] ?? '') === 'Exit') {
                 self::output("\n", $ansi);
                 self::output("Exiting...\n", $ansi);
                 self::output("\n", $ansi);
                 return false;
             }
 
-            if ($options[$selected] === 'Choose a different username') {
+            if (($options[$selected] ?? '') === 'Choose a different username') {
                 return null; // Go back to username prompt
             }
 
-            if ($options[$selected] === 'Reset password for this user') {
+            if (($options[$selected] ?? '') === 'Reset password for this user') {
                 // Prompt for new password
                 self::output("\n", $ansi);
                 $newPassword = self::promptPassword("New password for '{$username}': ", $ansi);
@@ -1833,18 +1833,18 @@ class Database
             $options = ['Try again with this user', 'Create a different user', 'Back', 'Exit'];
             $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-            if ($selected === -1 || $options[$selected] === 'Back') {
+            if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                 return null;
             }
 
-            if ($options[$selected] === 'Exit') {
+            if (($options[$selected] ?? '') === 'Exit') {
                 self::output("\n", $ansi);
                 self::output("Exiting...\n", $ansi);
                 self::output("\n", $ansi);
                 return false;
             }
 
-            if ($options[$selected] === 'Create a different user') {
+            if (($options[$selected] ?? '') === 'Create a different user') {
                 return null; // Go back
             }
 
@@ -1869,11 +1869,11 @@ class Database
                 $options = ['Try a different password', 'Back', 'Exit'];
                 $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-                if ($selected === -1 || $options[$selected] === 'Back') {
+                if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                     return null;
                 }
 
-                if ($options[$selected] === 'Exit') {
+                if (($options[$selected] ?? '') === 'Exit') {
                     self::output("\n", $ansi);
                     self::output("Exiting...\n", $ansi);
                     self::output("\n", $ansi);
@@ -1902,18 +1902,18 @@ class Database
             $options = ['Try again', 'Enter existing credentials', 'Back', 'Exit'];
             $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-            if ($selected === -1 || $options[$selected] === 'Back') {
+            if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                 return null;
             }
 
-            if ($options[$selected] === 'Exit') {
+            if (($options[$selected] ?? '') === 'Exit') {
                 self::output("\n", $ansi);
                 self::output("Exiting...\n", $ansi);
                 self::output("\n", $ansi);
                 return false;
             }
 
-            if ($options[$selected] === 'Enter existing credentials') {
+            if (($options[$selected] ?? '') === 'Enter existing credentials') {
                 return self::promptCredentials($connection, $ansi);
             }
 
@@ -2054,11 +2054,11 @@ class Database
                     $options = ['Try again with different database/credentials', 'Back', 'Exit'];
                     $selected = self::interactiveMenu($options, 0, $ansi, true);
 
-                    if ($selected === -1 || $options[$selected] === 'Back') {
+                    if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                         return null;
                     }
 
-                    if ($options[$selected] === 'Exit') {
+                    if (($options[$selected] ?? '') === 'Exit') {
                         self::output("\n", $ansi);
                         self::output("Exiting...\n", $ansi);
                         self::output("\n", $ansi);
@@ -2103,11 +2103,11 @@ class Database
                 $selected = self::interactiveMenu($options, 0, $ansi, true);
 
                 // Handle backspace (go back)
-                if ($selected === -1 || $options[$selected] === 'Back') {
+                if ($selected === -1 || ($options[$selected] ?? '') === 'Back') {
                     return null;
                 }
 
-                if ($options[$selected] === 'Exit') {
+                if (($options[$selected] ?? '') === 'Exit') {
                     self::output("\n", $ansi);
                     self::output("Exiting...\n", $ansi);
                     self::output("\n", $ansi);

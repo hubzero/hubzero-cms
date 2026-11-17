@@ -194,7 +194,7 @@ foreach ($this->getErrors() as $error) {
                                 $path = PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->plugin;
                             }
                             $param = new \Hubzero\Html\Parameter(
-                                (is_object($data) ? $data->toString() : $data),
+                                ($data instanceof \Hubzero\Config\Registry ? $data->toString() : $data),
                                 $path . DS . $plugin->plugin . '.xml',
                             );
                             $param->addElementPath($path);

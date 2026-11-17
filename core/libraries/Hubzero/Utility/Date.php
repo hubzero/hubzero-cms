@@ -222,9 +222,9 @@ class Date extends DateTime
                     'Undefined property via __get(): '
                         . $name
                         . ' in '
-                        . $trace[0]['file']
+                        . ($trace[0]['file'] ?? '')
                         . ' on line '
-                        . $trace[0]['line'],
+                        . ($trace[0]['line'] ?? ''),
                     E_USER_NOTICE,
                 );
                 break;

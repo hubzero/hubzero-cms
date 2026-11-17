@@ -546,20 +546,20 @@ class Sanitize
                 // so digits are never scavenged from mid-string -- otherwise a
                 // value like "jesus1993coral@gmail.com" would yield 1993.
                 preg_match('/^-?[0-9]+/', trim((string) $source), $matches);
-                $result = @ (int) $matches[0];
+                $result = (int) ($matches[0] ?? 0);
                 break;
 
             case 'UINT':
                 // Only use a LEADING integer value (whitespace trimmed).
                 preg_match('/^-?[0-9]+/', trim((string) $source), $matches);
-                $result = @ abs((int) $matches[0]);
+                $result = abs((int) ($matches[0] ?? 0));
                 break;
 
             case 'FLOAT':
             case 'DOUBLE':
                 // Only use the first floating point value
                 preg_match('/-?[0-9]+(\.[0-9]+)?/', (string) $source, $matches);
-                $result = @ (float) $matches[0];
+                $result = (float) ($matches[0] ?? 0);
                 break;
 
             case 'BOOL':
@@ -599,7 +599,7 @@ class Sanitize
             case 'PATH':
                 $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
                 preg_match($pattern, (string) $source, $matches);
-                $result = @ (string) $matches[0];
+                $result = (string) ($matches[0] ?? '');
                 break;
 
             case 'USERNAME':

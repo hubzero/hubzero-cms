@@ -52,7 +52,7 @@ if ($plugins = Event::trigger('courses.onAssetgroupEdit')) {
         $default = new \Hubzero\Config\Registry($p->params);
 
         $param = new \Hubzero\Html\Parameter(
-            (is_object($data) ? $data->toString() : $data),
+            ($data instanceof \Hubzero\Config\Registry ? $data->toString() : $data),
             PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml',
         );
         foreach ($default->toArray() as $k => $v) {

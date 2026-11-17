@@ -65,7 +65,7 @@ class Cli implements ClientInterface
         // Say no to infinite nesting!
         $backtrace = debug_backtrace();
         $previous  = $backtrace[1];
-        $prevClass = $previous['class'];
+        $prevClass = $previous['class'] ?? '';
         $prevTask  = $previous['function'];
 
         // Namespace class

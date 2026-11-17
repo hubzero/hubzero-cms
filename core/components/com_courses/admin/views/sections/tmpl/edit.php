@@ -665,7 +665,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                         foreach ($plugins as $plugin) {
                             $param = new \Hubzero\Html\Parameter(
-                                (is_object($data) ? $data->toString() : $data),
+                                ($data instanceof \Hubzero\Config\Registry ? $data->toString() : $data),
                                 PATH_CORE . DS . 'plugins' . DS . 'courses'
                                 . DS . $plugin['name'] . DS . $plugin['name'] . '.xml',
                             );

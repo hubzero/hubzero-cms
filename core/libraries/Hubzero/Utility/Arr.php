@@ -212,14 +212,14 @@ class Arr
                 // so digits are never scavenged from mid-string -- otherwise a
                 // value like "jesus1993coral@gmail.com" would yield 1993.
                 @preg_match('/^-?[0-9]+/', trim((string) $result), $matches);
-                $result = @(int) $matches[0];
+                $result = (int) ($matches[0] ?? 0);
                 break;
 
             case 'FLOAT':
             case 'DOUBLE':
                 // Only use the first floating point value
                 @preg_match('/-?[0-9]+(\.[0-9]+)?/', $result, $matches);
-                $result = @(float) $matches[0];
+                $result = (float) ($matches[0] ?? 0);
                 break;
 
             case 'BOOL':

@@ -202,7 +202,7 @@ class Error extends Base
                 $html[] = '			<td><span class="cls">'
                     . htmlspecialchars((string) $backtrace[$i]['class'], ENT_QUOTES, 'UTF-8')
                     . '</span><span class="opn">'
-                    . htmlspecialchars((string) $backtrace[$i]['type'], ENT_QUOTES, 'UTF-8')
+                    . htmlspecialchars((string) ($backtrace[$i]['type'] ?? ''), ENT_QUOTES, 'UTF-8')
                     . '</span><span class="mtd">'
                     . htmlspecialchars((string) $backtrace[$i]['function'], ENT_QUOTES, 'UTF-8')
                     . '</span>()</td>';
@@ -215,7 +215,7 @@ class Error extends Base
                 $html[] = '			<td><span class="fl">'
                     . $this->rooted($backtrace[$i]['file'])
                     . '</span>:<span class="ln">'
-                    . $backtrace[$i]['line']
+                    . ($backtrace[$i]['line'] ?? '')
                     . '</span></td>';
             } else {
                 $html[] = '			<td>&#160;</td>';

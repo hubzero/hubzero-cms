@@ -745,7 +745,7 @@ class Elements
             $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*'
                 . '([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
             preg_match($pattern, (string) $source, $matches);
-            $file = @ (string) $matches[0];
+            $file = (string) ($matches[0] ?? '');
 
             if ($elementFile = Filesystem::find($dirs, $file)) {
                 include_once $elementFile;
