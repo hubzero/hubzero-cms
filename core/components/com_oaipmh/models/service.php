@@ -38,7 +38,7 @@ class Service extends Obj
     /**
      * Schema to use
      *
-     * @var  object|null
+     * @var  Schema|null
      */
     protected $schema = null;
 
@@ -181,11 +181,11 @@ class Service extends Obj
             }
         }
 
-        $this->schema = $type;
-
-        if (!($this->schema instanceof Schema)) {
+        if (!($type instanceof Schema)) {
             return $this->error(self::ERROR_BAD_FORMAT, Lang::txt('Invalid or missing metadataPrefix'));
         }
+
+        $this->schema = $type;
 
         $this->schema->setService($this);
         $this->schema->setResponse($this->response);
