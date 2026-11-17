@@ -516,6 +516,11 @@ class Local implements AdapterInterface
         $items = new FilesystemIterator($directory, $options);
 
         foreach ($items as $item) {
+            // Without CURRENT_AS_PATHNAME the iterator gives file info objects
+            if (!$item instanceof \SplFileInfo) {
+                continue;
+            }
+
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
@@ -561,6 +566,11 @@ class Local implements AdapterInterface
         $items = new FilesystemIterator($directory);
 
         foreach ($items as $item) {
+            // Without CURRENT_AS_PATHNAME the iterator gives file info objects
+            if (!$item instanceof \SplFileInfo) {
+                continue;
+            }
+
             // A symlink is removed, never followed. isDir() below reports true for a
             // link to a directory, so without this the recursion would delete the
             // contents of the target - which may well live in another account.
@@ -608,6 +618,11 @@ class Local implements AdapterInterface
             $items = new FilesystemIterator($path, FilesystemIterator::SKIP_DOTS);
 
             foreach ($items as $item) {
+                // Without CURRENT_AS_PATHNAME the iterator gives file info objects
+                if (!$item instanceof \SplFileInfo) {
+                    continue;
+                }
+
                 if ($item->isDir()) {
                     if ($this->setPermissions($item->getPathname(), $filemode, $foldermode)) {
                         $success = false;

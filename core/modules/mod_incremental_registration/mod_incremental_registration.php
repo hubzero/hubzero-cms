@@ -391,8 +391,11 @@ class IncrementalRegistration extends Module
                                 );
                                 $dbh->execute();
                             }
-                            if ($k == 'countryorigin' || $k == 'countryresident') {
-                                $$k = strtoupper($$k);
+                            if ($k == 'countryorigin' && isset($countryorigin)) {
+                                $countryorigin = strtoupper($countryorigin);
+                            }
+                            if ($k == 'countryresident' && isset($countryresident)) {
+                                $countryresident = strtoupper($countryresident);
                             }
                             if (isset($row[$k])) {
                                 $aw_update .= ($first ? '' : ', ') . $k . ' = 1';

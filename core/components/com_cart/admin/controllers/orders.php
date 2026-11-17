@@ -103,6 +103,9 @@ class Orders extends AdminController
         // update with total and items ordered
         foreach ($this->view->get('rows') as $r) {
             $tInfo = Cart::getTransactionInfo($r->tId);
+            if (!$tInfo) {
+                continue;
+            }
             $r->tiTotal = $tInfo->tiTotal;
             $tiItemsQty = count(unserialize($tInfo->tiItems));
             $r->tiItemsQty = $tiItemsQty;
@@ -125,6 +128,9 @@ class Orders extends AdminController
         // Get transaction info
         $transactionItems = Cart::getTransactionItems($id, false);
         $transactionInfo = Cart::getTransactionInfo($id);
+        if (!$transactionInfo) {
+            App::abort(404, Lang::txt('COM_CART_ORDER_NOT_FOUND'));
+        }
 
         //print_r($transactionItems); die;
 
@@ -231,6 +237,9 @@ class Orders extends AdminController
         // Get transaction info
         $transactionItems = Cart::getTransactionItems($id, false);
         $transactionInfo = Cart::getTransactionInfo($id);
+        if (!$transactionInfo) {
+            App::abort(404, Lang::txt('COM_CART_ORDER_NOT_FOUND'));
+        }
 
         //print_r($transactionItems); die;
 
@@ -449,7 +458,11 @@ class Orders extends AdminController
         $this->view->set('filters', $filters);
 
         foreach ($orders as $order) {
-            $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+            $orderInfo = Cart::getTransactionInfo($order->tId);
+            if (!$orderInfo) {
+                continue;
+            }
+            $orderItems = unserialize($orderInfo->tiItems);
             $order->itemInfo = $orderItems[$order->sId];
         }
 
@@ -522,6 +535,9 @@ class Orders extends AdminController
             //continue;
 
             $transactionInfo = Cart::getTransactionInfo($row['tId']);
+            if (!$transactionInfo) {
+                continue;
+            }
             $transactionInfoItems = unserialize($transactionInfo->tiItems);
 
             $notes = [];
@@ -640,7 +656,11 @@ class Orders extends AdminController
         $orders = OrdersHelper::getItemsOrdered('list', $filters);
 
         foreach ($orders as $order) {
-            $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+            $orderInfo = Cart::getTransactionInfo($order->tId);
+            if (!$orderInfo) {
+                continue;
+            }
+            $orderItems = unserialize($orderInfo->tiItems);
             $order->itemInfo = $orderItems[$order->sId];
         }
         $rowsRaw = $orders;
