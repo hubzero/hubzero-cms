@@ -100,7 +100,8 @@ class Module extends Relational
                 ->delete('#__modules_menu')
                 ->whereEquals('moduleid', (int) $pk);
             $db->setQuery((string) $query);
-            $result = $db->query();
+            // A failed query throws
+            $db->query();
         }
 
         return $result;

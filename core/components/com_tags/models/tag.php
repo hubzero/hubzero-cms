@@ -552,7 +552,7 @@ class Tag extends Relational
     /**
      * Save entry
      *
-     * @return  object|bool
+     * @return  bool
      */
     public function save()
     {
