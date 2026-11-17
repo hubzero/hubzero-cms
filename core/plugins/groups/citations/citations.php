@@ -1063,7 +1063,7 @@ class Citations extends Plugin
             $format  = Request::getString('citation-format', '');
 
             $params = json_decode($this->group->get('params'));
-            if (!is_object($params)) {
+            if (!$params instanceof \stdClass) {
                 $params = new \stdClass();
             }
 

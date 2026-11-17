@@ -31,7 +31,7 @@ class ActivityLogPresenter
         if ($comments) {
             $decodedComments = json_decode($comments);
 
-            if (!is_object($decodedComments)) {
+            if (!$decodedComments instanceof \stdClass) {
                 $decodedComments = new stdClass();
             }
 

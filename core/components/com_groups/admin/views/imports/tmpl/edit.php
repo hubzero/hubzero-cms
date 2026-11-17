@@ -91,7 +91,7 @@ $this->js();
             <?php
                 // parse our hooks
                 $hooks              = json_decode($this->import->get('hooks'));
-            if (!is_object($hooks)) {
+            if (!$hooks instanceof \stdClass) {
                 $hooks = new stdClass();
             }
                 $hooks->postparse   = (isset($hooks->postparse)) ? $hooks->postparse : [];

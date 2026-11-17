@@ -685,17 +685,17 @@ class Account extends Plugin
         $hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 
         // Check to see if password expiration is even enforced
-        if (empty($hzup->passhash) || $hzup->shadowMax === null) {
+        if (!$hzup || empty($hzup->get('passhash')) || $hzup->get('shadowMax') === null) {
             return false;
         }
 
         $chgtime = time();
         $chgtime = intval($chgtime / 86400);
-        $diff    = ($hzup->shadowLastChange + $hzup->shadowMax) - $chgtime;
+        $diff    = ($hzup->get('shadowLastChange') + $hzup->get('shadowMax')) - $chgtime;
 
-        if ($diff > $hzup->shadowWarning) {
+        if ($diff > $hzup->get('shadowWarning')) {
             $message_style = 'info';
-        } elseif ($diff <= $hzup->shadowWarning && $diff > 0) {
+        } elseif ($diff <= $hzup->get('shadowWarning') && $diff > 0) {
             $message_style = 'warning';
         } else {
             $message_style = 'error';
@@ -703,9 +703,9 @@ class Account extends Plugin
 
         return [
             'diff'          => $diff,
-            'warning'       => $hzup->shadowWarning,
+            'warning'       => $hzup->get('shadowWarning'),
             // New passwords get the hub's default lifetime, not this user's current one
-            'max'           => \Component::params('com_members')->get('shadowMax', $hzup->shadowMax),
+            'max'           => \Component::params('com_members')->get('shadowMax', $hzup->get('shadowMax')),
             'message_style' => $message_style,
         ];
     }
@@ -964,7 +964,7 @@ class Account extends Plugin
         $db     = App::get('db');
         $params = json_decode((string) $this->user->get('params'));
 
-        if (empty($params) || !is_object($params)) {
+        if (empty($params) || !$params instanceof \stdClass) {
             $params = new \stdClass();
         }
 
