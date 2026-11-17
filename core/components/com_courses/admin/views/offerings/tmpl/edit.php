@@ -301,7 +301,7 @@ $stateSelected = function ($value) use ($view) {
                                 </tr>
                                 <tr>
                                     <th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-                                    <?php $val = \Hubzero\Utility\Number::formatBytes($fsize); ?>
+                                    <?php $val = \Hubzero\Utility\Number::formatBytes((int) $fsize); ?>
                                     <td><span id="img-size"><?php echo $val; ?></span></td>
                                     <td></td>
                                 </tr>

@@ -669,7 +669,7 @@ class BibTex
     {
         $entry       = $this->unwrap($entry);
         $authorarray = [];
-        $authorarray = preg_split('# and #', $entry);
+        $authorarray = preg_split('# and #', $entry) ?: [];
 
         for ($i = 0; $i < count($authorarray); $i++) {
             $author = trim($authorarray[$i]);
@@ -682,7 +682,7 @@ class BibTex
             if (strpos($author, ',') === false) {
                 $tmparray = [];
                 //$tmparray = explode(' ', $author);
-                $tmparray = preg_split('# |~#', $author);
+                $tmparray = preg_split('# |~#', $author) ?: [];
                 $size     = count($tmparray);
                 if (1 == $size) { //There is only a last
                     $last = $tmparray[0];

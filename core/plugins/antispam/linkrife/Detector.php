@@ -184,7 +184,7 @@ class Detector implements DetectorInterface
                 $parsed['host'] = implode('.', array_reverse(explode('.', $parsed['host']), false));
             }
             $domain = $parsed['host'] . '.' . $blacklist . '.';
-            $record = dns_get_record($domain);
+            $record = dns_get_record($domain) ?: [];
 
             if (count($record) > 0) {
                 return true;

@@ -122,7 +122,7 @@ class Parameter extends Registry
             return false;
         }
 
-        $params = $this->getParams($name, $group);
+        $params = $this->getParams($name, $group) ?: [];
         $html = [];
 
         if ($description = $this->xml[$group]['description']) {

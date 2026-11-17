@@ -255,7 +255,7 @@ $aliasValue = $this->escape(stripslashes($this->row->getAlias()));
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-                    <?php $formattedSize = \Hubzero\Utility\Number::formatBytes($this_size); ?>
+                    <?php $formattedSize = \Hubzero\Utility\Number::formatBytes((int) $this_size); ?>
                             <td><span id="img-size"><?php echo $formattedSize; ?></span></td>
                             <td></td>
                         </tr>

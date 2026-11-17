@@ -570,7 +570,7 @@ class Team extends Plugin
                     $validUser = User::getInstance($cid);
                     $uid = $validUser->get('id');
                     // By ID with format of Name (ID)
-                    $parts =  preg_split("/[(]/", $cid);
+                    $parts =  preg_split("/[(]/", $cid) ?: [];
                     if (count($parts) == 2) {
                         $name = $parts[0];
                         $uid = preg_replace('/[)]/', '', $parts[1]);

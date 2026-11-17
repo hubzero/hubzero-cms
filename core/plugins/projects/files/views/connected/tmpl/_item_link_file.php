@@ -35,7 +35,7 @@ $handlerPath = str_replace(
     [$model->get('alias'), $this->itemPath],
     $this->handlerBase,
 );
-$handlers = Handler::getLaunchUrlsForFile($handlerPath);
+$handlers = Handler::getLaunchUrlsForFile($handlerPath) ?: [];
 $urlEncodedItemName = urlencode($this->itemName);
 $itemDropdownClass = $handlers ? ' hasMultiple' : '';
 $itemFileNameShort = Html::shortenFileName($this->itemFileName, 60);
@@ -89,7 +89,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {
     <?php if ($linkUrl) : ?>
         </a>
     <?php endif; ?>
-    <?php if ($handlers && count($handlers) > 0) : ?>
+    <?php if ($handlers) : ?>
         <?php foreach ($handlers as $handler) : ?>
         <a href="<?php echo Route::url($handler['url']); ?>">
             <?php echo $this->escape($handler['prompt']); ?>

@@ -361,7 +361,7 @@ class Jobs extends SiteController
 
         // Get jobs
         $adminoptions = ($this->task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
-        $jobs = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode);
+        $jobs = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode) ?: [];
 
         $total = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);
 
@@ -1095,7 +1095,7 @@ class Jobs extends SiteController
         }
 
         $js = new Seeker($this->database);
-        $seeker = $js->getSeeker(User::get('id'), User::get('id'));
+        $seeker = $js->getSeeker(User::get('id'), User::get('id')) ?: [];
         $seeker = count($seeker) > 0 ? $seeker[0] : null;
 
         // Output HTML

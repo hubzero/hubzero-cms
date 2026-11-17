@@ -454,7 +454,7 @@ class Zones extends AdminController
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $id,
-            'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+            'size'      => \Hubzero\Utility\Number::formatBytes((int) $this_size),
             'width'     => $width,
             'height'    => $height,
         ]);

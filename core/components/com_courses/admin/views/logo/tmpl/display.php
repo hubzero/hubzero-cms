@@ -84,7 +84,7 @@ if ($this->file && file_exists($this->path . DS . $this->file)) {
                 </tr>
                 <tr>
                     <td><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</td>
-                    <td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
+                    <td><?php echo \Hubzero\Utility\Number::formatBytes((int) $this_size); ?></td>
                 </tr>
                 <tr>
                     <td><?php echo Lang::txt('COM_COURSES_PICTURE_WIDTH'); ?>:</td>

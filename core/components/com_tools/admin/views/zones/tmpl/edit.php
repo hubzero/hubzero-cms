@@ -332,7 +332,7 @@ $locIframeUrl = Route::url(
                                     <tr>
                                         <td><?php echo Lang::txt('COM_TOOLS_IMAGE_SIZE'); ?>:</td>
                                         <td><span id="img-size">
-                                            <?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?>
+                                            <?php echo \Hubzero\Utility\Number::formatBytes((int) $this_size); ?>
                                         </span></td>
                                     </tr>
                                     <tr>

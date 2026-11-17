@@ -151,7 +151,7 @@ class Publications extends Plugin
 
             // Get pub stats for each author
             $pubLog = new \Components\Publications\Tables\Log($database);
-            $pubstats = $pubLog->getAuthorStats($author->user_id);
+            $pubstats = $pubLog->getAuthorStats($author->user_id) ?: [];
 
             if (!count($pubstats)) {
                 // Nothing to send

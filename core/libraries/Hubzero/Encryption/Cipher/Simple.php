@@ -75,7 +75,7 @@ class Simple implements Cipher
         $tmp = $key->private;
 
         // Split up the input into a character array and get the number of characters.
-        $chars = preg_split('//', $data, -1, PREG_SPLIT_NO_EMPTY);
+        $chars = preg_split('//', $data, -1, PREG_SPLIT_NO_EMPTY) ?: [];
         $charCount = count($chars);
 
         // Repeat the key as many times as necessary to ensure that the key is at least as long as the input.

@@ -466,9 +466,9 @@ class Pages extends AdminController
             if (!isset($issues->$lang)) {
                 $issues->$lang = new stdClass();
             }
-            $issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : [];
-            $issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : [];
-            $issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : [];
+            $issues->$lang->severe   = ($severe != '') ? (preg_grep("/$severe/i", $content) ?: []) : [];
+            $issues->$lang->elevated = ($elevated != '') ? (preg_grep("/$elevated/i", $content) ?: []) : [];
+            $issues->$lang->minor    = ($minor != '') ? (preg_grep("/$minor/i", $content) ?: []) : [];
 
             // add to issues count
             $issues->count += count(

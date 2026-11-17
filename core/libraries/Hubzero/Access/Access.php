@@ -383,7 +383,7 @@ class Access
      *
      * @param   string  $file   The path to the XML file.
      * @param   string  $xpath  An optional xpath to search for the fields.
-     * @return  boolean|array<mixed>   False if case of error or the list of actions available.
+     * @return  array<mixed>|false   False if case of error or the list of actions available.
      */
     public static function getActionsFromFile($file, $xpath = "/access/section[@name='component']/")
     {
@@ -401,7 +401,7 @@ class Access
      *
      * @param   string|SimpleXMLElement|mixed  $data   The XML string or an XML element.
      * @param   string                   $xpath  An optional xpath to search for the fields.
-     * @return  boolean|array<mixed>   False if case of error or the list of actions available.
+     * @return  array<mixed>|false   False if case of error or the list of actions available.
      */
     public static function getActionsFromData($data, $xpath = "/access/section[@name='component']/")
     {

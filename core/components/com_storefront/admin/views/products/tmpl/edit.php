@@ -491,7 +491,7 @@ $activeStatusSelected = function ($value) use ($view) {
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-                        <td><span id="img-size"><?= \Hubzero\Utility\Number::formatBytes($this_size) ?></span></td>
+                        <td><span id="img-size"><?= Hubzero\Utility\Number::formatBytes((int) $this_size) ?></span></td>
                         <td></td>
                     </tr>
                     <tr>

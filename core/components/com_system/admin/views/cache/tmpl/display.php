@@ -44,7 +44,7 @@ $this->view('_submenu')->display(); ?>
                 <?php
                     $mem = $opcache['memory_usage'];
                     $stats = $opcache['opcache_statistics'];
-                    $total = $mem['used_memory'] + $mem['free_memory'];
+                    $total = (int) $mem['used_memory'] + (int) $mem['free_memory'];
                     $usedPct = $total > 0 ? round($mem['used_memory'] / $total * 100, 1) : 0;
                     $hitRate = round($stats['opcache_hit_rate'], 1);
                 ?>

@@ -358,7 +358,7 @@ class File extends Base
                 $list .= '<span class="item-title" id="file-' . $attach->id . '">' . trim($where, DS) . '</span>';
                 //$list .= '<span class="item-details">' . $attach->path . '</span>';
                 $list .= '<span class="item-details">'
-                    . trim(\Hubzero\Utility\Number::formatBytes(filesize($filePath)))
+                    . trim(\Hubzero\Utility\Number::formatBytes((int) filesize($filePath)))
                     . '</span>';
                 $list .= '</li>';
             }
@@ -666,8 +666,8 @@ class File extends Base
 
                     if (file_exists($path)) {
                         $size = filesize($path);
-                        $label .= ' (' . \Hubzero\Utility\Number::formatBytes($size) . ')';
-                        $title .= ' (' . \Hubzero\Utility\Number::formatBytes($size) . ')';
+                        $label .= ' (' . \Hubzero\Utility\Number::formatBytes((int) $size) . ')';
+                        $title .= ' (' . \Hubzero\Utility\Number::formatBytes((int) $size) . ')';
 
                         // Convert to MB
                         $size = (($size / 1024) / 1024);

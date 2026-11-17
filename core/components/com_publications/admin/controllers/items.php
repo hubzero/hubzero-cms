@@ -1581,7 +1581,7 @@ class Items extends AdminController
             $row = new Tables\Version($this->database);
 
             // Get versions
-            $versions = $row->getVersions($id, $filters = ['withdev' => 1]);
+            $versions = $row->getVersions($id, $filters = ['withdev' => 1]) ?: [];
 
             if ($version != 'all' && count($versions) > 1) {
                 // Check that version exists

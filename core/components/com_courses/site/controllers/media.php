@@ -459,7 +459,7 @@ class Media extends SiteController
             'success'   => true,
             'file'      => rtrim(Request::root(true), DS) . str_replace(PATH_ROOT, '', $file),
             'id'        => $listdir,
-            'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+            'size'      => \Hubzero\Utility\Number::formatBytes((int) $this_size),
             'width'     => $width,
             'height'    => $height,
         ]);

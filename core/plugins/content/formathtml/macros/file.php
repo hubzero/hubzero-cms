@@ -683,7 +683,7 @@ class File extends Macro
                         . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false)
                         . '</a>';
                     if ($size !== null && $attr['details']) {
-                        $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
+                        $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes((int) $size);
                         if (isset($attr['created_by'])) {
                             $user = User::getInstance($attr['created_by']);
                             $html .= ', ' . Lang::txt('uploaded by %s ', stripslashes($user->get('name')));

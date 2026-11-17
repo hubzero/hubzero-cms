@@ -691,7 +691,7 @@ class Databases extends Plugin
 
             // Check if expert mode CSV
             $expert_mode = false;
-            $col_labels = fgetcsv($handle);
+            $col_labels = fgetcsv($handle) ?: [];
             $col_prop = fgetcsv($handle);
             $data_start = fgetcsv($handle);
 
@@ -710,7 +710,7 @@ class Databases extends Plugin
                     echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
                     return;
                 }
-                $col_labels = fgetcsv($handle);
+                $col_labels = fgetcsv($handle) ?: [];
 
                 $type_info = [];
                 while ($r = fgetcsv($handle)) {
@@ -958,7 +958,7 @@ class Databases extends Plugin
         if (is_file($targetReal) && ($handle = fopen($targetReal, "r")) !== false) {
             // Check if expert mode CSV
             $expert_mode = false;
-            $col_labels = fgetcsv($handle);
+            $col_labels = fgetcsv($handle) ?: [];
             $col_prop = fgetcsv($handle);
             $data_start = fgetcsv($handle);
 
@@ -973,7 +973,7 @@ class Databases extends Plugin
                     echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
                     return;
                 }
-                $col_labels = fgetcsv($handle);
+                $col_labels = fgetcsv($handle) ?: [];
             }
 
             $dd = [];

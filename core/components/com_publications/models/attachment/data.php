@@ -935,7 +935,7 @@ class Data extends Base
         if (file_exists($csv) && ($handle = fopen($csv, "r")) !== false) {
             // Check if expert mode CSV
             $expert_mode = false;
-            $col_labels = fgetcsv($handle);
+            $col_labels = fgetcsv($handle) ?: [];
             $col_prop = fgetcsv($handle);
             $data_start = fgetcsv($handle);
 

@@ -66,7 +66,7 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><?php echo Lang::txt('SIZE'); ?>:</td>
-                    <td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
+                    <td><?php echo \Hubzero\Utility\Number::formatBytes((int) $this_size); ?></td>
                 </tr>
                 <tr>
                     <td><?php echo Lang::txt('WIDTH'); ?>:</td>

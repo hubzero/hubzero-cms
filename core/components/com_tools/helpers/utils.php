@@ -522,7 +522,7 @@ class Utils
 
         //get recent tools
         $recentTool = new \Components\Tools\Tables\Recent($database);
-        $rows = $recentTool->getRecords($userid);
+        $rows = $recentTool->getRecords($userid) ?: [];
 
         //check to see if any recently used tools are this one
         $thisapp = 0;

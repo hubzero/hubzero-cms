@@ -181,7 +181,7 @@ class Images extends AdminController
             'directory' => str_replace(PATH_ROOT, '', $path),
             'id'        => $id,
             'imgId'     => $imgId,
-            'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+            'size'      => \Hubzero\Utility\Number::formatBytes((int) $this_size),
             'width'     => $width,
             'height'    => $height,
         ]);

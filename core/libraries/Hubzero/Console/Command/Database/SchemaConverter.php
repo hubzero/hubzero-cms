@@ -157,7 +157,7 @@ class SchemaConverter
         $output[] = '';
 
         // Split by CREATE TABLE
-        $tables = preg_split('/(CREATE TABLE)/', $contentNoViews, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $tables = preg_split('/(CREATE TABLE)/', $contentNoViews, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
         $tableCount = 0;
 
         for ($i = 1; $i < count($tables); $i += 2) {

@@ -79,7 +79,7 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <th><?php echo Lang::txt('COM_TOOLS_IMAGE_SIZE'); ?>:</th>
-                    <td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
+                    <td><?php echo \Hubzero\Utility\Number::formatBytes((int) $this_size); ?></td>
                 </tr>
                 <tr>
                     <th><?php echo Lang::txt('COM_TOOLS_IMAGE_WIDTH'); ?>:</th>

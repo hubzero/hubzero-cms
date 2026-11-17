@@ -92,7 +92,7 @@ class FileIndex extends WikiMacro
                     . '</a> ('
                     . (
                         file_exists($fpath)
-                        ? \Hubzero\Utility\Number::formatBytes(filesize($fpath))
+                        ? \Hubzero\Utility\Number::formatBytes((int) filesize($fpath))
                         : '-- file not found --'
                     )
                     . ') ';

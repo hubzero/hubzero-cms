@@ -558,7 +558,7 @@ class Sessionsv1r0 extends ApiController
         if (!$xpath) {
             echo $xml->asXML();
         } else {
-            $matches = $xml->xpath($xpath);
+            $matches = $xml->xpath($xpath) ?: [];
             if (count($matches) === 0) {
                 throw new Exception(Lang::txt('Path not found.'), 404);
             }

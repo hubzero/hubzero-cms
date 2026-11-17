@@ -64,7 +64,7 @@ class Tools extends Plugin
     public function onQuestionNotify($row)
     {
         $tags = $row->tags('string');
-        $tags = preg_split("/[,;]/", $tags);
+        $tags = preg_split("/[,;]/", $tags) ?: [];
 
         if (!count($tags)) {
             return null;

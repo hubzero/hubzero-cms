@@ -637,7 +637,7 @@ class Account extends Plugin
     {
         // Determine what type of password change the user needs
         $hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
-        if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::findByUserId($this->member->get('id'))) <= 1) {
+        if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::findByUserId($this->member->get('id')) ?: []) <= 1) {
             Notify::warning(Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'));
 
             App::redirect(

@@ -129,7 +129,7 @@ $this
                                 <span class="icon-file"><?php echo $name; ?></span>
                             </td>
                             <td class="file-size">
-                                <?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
+                                <?php echo \Hubzero\Utility\Number::formatBytes((int) filesize($fullpath)); ?>
                             </td>
                             <td>
                                 <?php

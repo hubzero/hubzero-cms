@@ -483,7 +483,7 @@ class User extends Base implements CommandInterface
             $this->output->error('Please provide the person\'s name with --name=');
         }
         // Given and surname, unless given: the last word is the surname
-        $parts   = preg_split('/\s+/', $name);
+        $parts   = preg_split('/\s+/', $name) ?: [];
         $surname = trim((string) $this->arguments->getOpt('surname')) ?: (count($parts) > 1 ? array_pop($parts) : '');
         $given   = trim((string) $this->arguments->getOpt('given')) ?: implode(' ', $parts);
 

@@ -182,7 +182,7 @@ class Logo extends AdminController
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_ROOT, '', $path),
             'id'        => $id,
-            'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+            'size'      => \Hubzero\Utility\Number::formatBytes((int) $this_size),
             'width'     => $width,
             'height'    => $height,
         ]);

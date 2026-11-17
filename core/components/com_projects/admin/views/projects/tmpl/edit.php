@@ -628,7 +628,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                             </tr>
                             <tr>
                                 <th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
-                                <td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+                                <td><?php echo Hubzero\Utility\Number::formatBytes((int) $size); ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -659,7 +659,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
-                                <td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+                                <td><?php echo Hubzero\Utility\Number::formatBytes((int) $size); ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -690,7 +690,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
-                                <td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
+                                <td><?php echo Hubzero\Utility\Number::formatBytes((int) $size); ?></td>
                             </tr>
                         </tbody>
                     </table>

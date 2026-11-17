@@ -1847,7 +1847,7 @@ class Curation extends Obj
 					<ul class="bundle-info">
 						<li>' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT') . '</li>
 						<li><span class="bundle-size">'
-                . \Hubzero\Utility\Number::formatBytes(filesize($bundle))
+                . \Hubzero\Utility\Number::formatBytes((int) filesize($bundle))
                 . '</span></li>
 					</ul>
 				</div>

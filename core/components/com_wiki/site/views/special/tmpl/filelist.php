@@ -117,7 +117,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                     $fsize = Lang::txt('COM_WIKI_UNKNOWN');
                     $filePath = $row->filespace() . DS . $row->get('page_id') . DS . $row->get('filename');
                     if (is_file($filePath)) {
-                        $fsize = \Hubzero\Utility\Number::formatBytes(filesize($filePath));
+                        $fsize = \Hubzero\Utility\Number::formatBytes((int) filesize($filePath));
                     }
 
                     $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';

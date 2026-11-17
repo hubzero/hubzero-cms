@@ -949,7 +949,7 @@ class Sessions extends SiteController
         }
 
         $mv = new \Components\Tools\Tables\Viewperm($mwdb);
-        $rows = $mv->loadViewperm($sess, $owner);
+        $rows = $mv->loadViewperm($sess, $owner) ?: [];
         if (count($rows) != 1) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
         }
@@ -982,7 +982,7 @@ class Sessions extends SiteController
 
             //load current view perm
             $mwViewperm = new \Components\Tools\Tables\Viewperm($mwdb);
-            $currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username'));
+            $currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username')) ?: [];
 
             // If there are no matching entries in viewperm, add a new entry,
             // Otherwise, update the existing entry (e.g. readonly).
@@ -1729,7 +1729,7 @@ class Sessions extends SiteController
         // Get a list of all their recent tools
 
         $rt = new \Components\Tools\Tables\Recent($this->database);
-        $rows = $rt->getRecords($uid);
+        $rows = $rt->getRecords($uid) ?: [];
 
         $thisapp = 0;
         for ($i = 0, $n = count($rows); $i < $n; $i++) {

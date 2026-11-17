@@ -158,7 +158,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 }
             }
 
-                $formattedFilesize   = \Hubzero\Utility\Number::formatBytes($filesize);
+                $formattedFilesize   = \Hubzero\Utility\Number::formatBytes((int) $filesize);
                 $formattedDimensions = $dimensions ? $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px' : '';
                 $formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
 

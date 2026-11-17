@@ -528,7 +528,7 @@ class Elements
             return false;
         }
 
-        $fields = $this->getElements($name);
+        $fields = $this->getElements($name) ?: [];
 
         $html = [];
 

@@ -223,6 +223,15 @@ class Sync extends \Hubzero\Base\Obj
             // Via List feed
             $remotes = $this->connect->getRemoteItems($service, $projectOwner, '', $connections);
             $newSyncId = 1;
+
+            // The connector failed and said why: stop before taking that for
+            // a remote with nothing in it, as the error check below does
+            if ($remotes === false) {
+                $this->writeToFile('');
+                $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR_OUPS') . ' ' . $this->connect->getError());
+                $this->lockSync($service, true);
+                return false;
+            }
         }
 
         // Record sync status

@@ -235,7 +235,7 @@ class Session extends Base
 
             //load current view perm
             $mwViewperm = new \Components\Tools\Tables\Viewperm($this->db);
-            $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username'));
+            $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username')) ?: [];
 
             // If there are no matching entries in viewperm, add a new entry,
             // Otherwise, update the existing entry (e.g. readonly).

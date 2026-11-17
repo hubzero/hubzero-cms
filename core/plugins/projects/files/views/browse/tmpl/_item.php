@@ -110,7 +110,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
         <?php echo $this->item->drawIcon($ext); ?>
         <?php if ($this->item->get('type') == 'file') { ?>
             <?php
-            $handlers = Handler::getLaunchUrlsForFile($handlerBase);
+            $handlers = Handler::getLaunchUrlsForFile($handlerBase) ?: [];
             ?>
             <div class="file-action-dropdown<?= $handlers ? ' hasMultiple' : '' ?>">
                 <?php
@@ -121,7 +121,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
                 <a href="<?= $link ?>" class="preview file:<?= urlencode($name) ?>"<?= $attributes ?>>
                     <?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
                 </a>
-                <?php if ($handlers && count($handlers) > 0) : ?>
+                <?php if ($handlers) : ?>
                     <?php foreach ($handlers as $handler) : ?>
                     <a href="<?php echo Route::url($handler['url']); ?>">
                         <?php echo $handler['prompt']; ?>

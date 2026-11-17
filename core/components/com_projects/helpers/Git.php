@@ -369,7 +369,7 @@ class Git extends Obj
             return false;
         }
 
-        $oCount = $this->callGit('diff --name-status ' . escapeshellarg($old['hash'] . '^'));
+        $oCount = $this->callGit('diff --name-status ' . escapeshellarg($old['hash'] . '^')) ?: [];
         $nCount = $this->callGit('diff --name-status ' . escapeshellarg($new['hash'] . '^'));
 
         // Get file content
@@ -1401,7 +1401,7 @@ class Git extends Obj
         $content = '';
 
         // Get non-binary object content
-        $out = $this->callGit(' show  HEAD:' . escapeshellarg($fpath));
+        $out = $this->callGit(' show  HEAD:' . escapeshellarg($fpath)) ?: [];
 
         // Reformat text content
         if (count($out) > 0) {

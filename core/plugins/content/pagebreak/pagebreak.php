@@ -104,7 +104,7 @@ class Pagebreak extends Plugin
         }
 
         // Split the text around the plugin.
-        $text = preg_split($regex, $row->text);
+        $text = preg_split($regex, $row->text) ?: [];
 
         // Count the number of pages.
         $n = count($text);

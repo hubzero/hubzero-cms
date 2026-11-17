@@ -569,7 +569,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             <th><?php echo $sizeTxt; ?>:</th>
                                             <td>
                                                 <span id="img-size">
-                                                    <?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?>
+                                                    <?= Hubzero\Utility\Number::formatBytes((int) $this_size) ?>
                                                 </span>
                                             </td>
                                             <td></td>
