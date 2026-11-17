@@ -1442,7 +1442,7 @@ class Curation extends Obj
     /**
      * Show curator notice
      *
-     * @param   object  $curatorStatus  Status object
+     * @param   \stdClass  $curatorStatus  Status object
      * @param   string  $props          Pointer to block/element in question
      * @param   string  $viewer         Author or curator
      * @param   string  $elName         Element name

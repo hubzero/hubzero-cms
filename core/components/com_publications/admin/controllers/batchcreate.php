@@ -758,7 +758,7 @@ class Batchcreate extends AdminController
     /**
      * Process author data
      *
-     * @param   object   $author
+     * @param   \Components\Publications\Tables\Author   $author
      * @param   integer  $pid
      * @param   integer  $vid
      * @return  void
