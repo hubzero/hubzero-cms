@@ -114,7 +114,7 @@ $spanStyle = 'display:none !important; visibility:hidden; opacity:0; color:trans
 </table>
 
 <?php foreach ($this->posts as $group => $posts) : ?>
-    <?php $group = Hubzero\User\Group::getInstance($group); ?>
+    <?php $group = Hubzero\User\Group::getInstance($group) ?: new \Hubzero\User\Group(); ?>
     <table id="group-discussions" width="650" cellpadding="0" cellspacing="0" border="0"
         style="border-collapse: collapse;">
         <tr>

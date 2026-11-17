@@ -69,7 +69,7 @@ class Slider extends Macro
         switch ($option) {
             case 'com_groups':
                 $cn = Request::getString('cn');
-                $group = Group::getInstance($cn);
+                $group = Group::getInstance($cn) ?: new \Hubzero\User\Group();
 
                 $base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;
                 $base_url .= $group->get('gidNumber') . DS . 'uploads';

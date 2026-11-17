@@ -44,7 +44,7 @@ class Group extends Base
      */
     public function __construct($oid = null)
     {
-        $this->obj = \Hubzero\User\Group::getInstance($oid);
+        $this->obj = \Hubzero\User\Group::getInstance($oid) ?: new \Hubzero\User\Group();
 
         $this->baselink = 'index.php?option=com_groups&cn=' . $this->obj->get('cn') . '&active=collections';
     }

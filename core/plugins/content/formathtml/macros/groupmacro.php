@@ -30,7 +30,7 @@ class GroupMacro extends Macro
     public function __construct()
     {
         $cname = Request::getString('cn', Request::getString('gid', ''));
-        $this->group = Group::getInstance($cname);
+        $this->group = Group::getInstance($cname) ?: new \Hubzero\User\Group();
     }
 
     /**

@@ -149,7 +149,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                     if (count($groups) > 0) {
                         $k = 1;
                         for ($i = 0, $n = count($groups); $i < $n; $i++) {
-                            $instance = \Hubzero\User\Group::getInstance($groups[$i]);
+                            $instance = \Hubzero\User\Group::getInstance($groups[$i]) ?: new \Hubzero\User\Group();
 
                             $members  = $instance->get('members');
 

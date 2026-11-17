@@ -142,6 +142,12 @@ class Groups extends AdminController
 
         // Load the group
         $group = Group::getInstance($gid);
+        if (!$group) {
+            $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NOT_FOUND'));
+            $this->displayTask($id);
+
+            return;
+        }
 
         // Remove the user from any other lists they may be apart of
         $group->remove('invitees', [$id]);

@@ -238,6 +238,11 @@ class Groups extends Plugin
                 // get all group members
                 $group = \Hubzero\User\Group::getInstance($announcement->get('scope_id'));
 
+                // The group is gone: there is no one to send it to
+                if (!$group) {
+                    continue;
+                }
+
                 if (plgGroupsAnnouncements::send($announcement, $group)) {
                     // mark as sent
                     $announcement->set('sent', 1);

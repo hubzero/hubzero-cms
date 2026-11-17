@@ -36,7 +36,7 @@ echo "You have {$posts} new {$postLabel} across {$groups} of your groups";
 
 =======================
 <?php foreach ($this->posts as $group => $posts) : ?>
-    <?php $group = Hubzero\User\Group::getInstance($group); ?>
+    <?php $group = Hubzero\User\Group::getInstance($group) ?: new \Hubzero\User\Group(); ?>
     <?php echo $group->get('description'); ?>
     <?php foreach ($posts as $post) : ?>
         <?php $inst = $post; ?>

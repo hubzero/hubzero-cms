@@ -192,7 +192,7 @@ class Memberoptions extends Plugin
     public function onGroupUserEnrollment($gidNumber, $userid)
     {
         // get group
-        $group = \Hubzero\User\Group::getInstance($gidNumber);
+        $group = \Hubzero\User\Group::getInstance($gidNumber) ?: new \Hubzero\User\Group();
 
         // is auto-subscribe on for discussion forum
         $autosubscribe = $group->get('discussion_email_autosubscribe');

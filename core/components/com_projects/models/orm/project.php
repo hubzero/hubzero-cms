@@ -841,7 +841,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                     break;
 
                 case 'reports':
-                    $group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'));
+                    $group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'))
+                        ?: new \Hubzero\User\Group();
                     break;
             }
 

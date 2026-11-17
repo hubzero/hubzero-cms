@@ -198,7 +198,8 @@ $this
                 <?php if ($this->course->get('group_id')) { ?>
                     <div class="course-group">
                         <?php
-                        $group = \Hubzero\User\Group::getInstance($this->course->get('group_id'));
+                        $group = \Hubzero\User\Group::getInstance($this->course->get('group_id'))
+                            ?: new \Hubzero\User\Group();
 
                         list($width, $height) = $group->getLogo('size');
                         $atts = ($width > $height ? 'height="50"' : 'width="50"');

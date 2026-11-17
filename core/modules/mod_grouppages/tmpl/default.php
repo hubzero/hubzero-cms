@@ -52,7 +52,7 @@ foreach ($this->unapprovedModules as $unapprovedModule) {
                     <tr>
                         <td>
                             <?php
-                                $group = \Hubzero\User\Group::getInstance($gidNumber);
+                                $group = \Hubzero\User\Group::getInstance($gidNumber) ?: new \Hubzero\User\Group();
                                 echo $group->get('description');
                             ?>
                         </td>

@@ -79,7 +79,7 @@ class Wiki extends GenericItem
             $scope_id = 0;
 
             if ($group = Request::getString('cn', '')) {
-                $group = Group::getInstance($group);
+                $group = Group::getInstance($group) ?: new \Hubzero\User\Group();
 
                 $scope = 'group';
                 $scope_id = $group->get('gidNumber');

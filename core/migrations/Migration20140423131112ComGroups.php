@@ -56,7 +56,9 @@ class Migration20140423131112ComGroups extends Base
             // delete group
             // also deletes membership related stuff
             $hzGroup = \Hubzero\User\Group::getInstance($duplicateGroup->gidNumber);
-            $hzGroup->delete();
+            if ($hzGroup) {
+                $hzGroup->delete();
+            }
         }
 
         // // Add unique index to cn column

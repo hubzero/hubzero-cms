@@ -916,7 +916,7 @@ class Sessions extends SiteController
 
         //do we want to share with a group
         if ($group != 0) {
-            $hg = \Hubzero\User\Group::getInstance($group);
+            $hg = \Hubzero\User\Group::getInstance($group) ?: new \Hubzero\User\Group();
             $members = $hg->get('members');
 
             //merge group members with any passed in username field

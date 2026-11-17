@@ -57,7 +57,7 @@ use Hubzero\Facades\Request;
  * @property  string                               $_bundlePath              Its bundle's path, by bundlePath()
  * @property  Tables\Category                      $_category                By category()
  * @property  \Components\Projects\Models\Project  $_project                 By project()
- * @property  \Hubzero\User\Group|null             $_groupOwner              By groupOwner()
+ * @property  \Hubzero\User\Group|false|null       $_groupOwner              By groupOwner()
  * @property  mixed                                $_owner                   The user's project membership, by owner()
  * @property  \Hubzero\User\User|null              $_creator                 By creator()
  * @property  string|null                          $title                    Column of publication_versions, when loaded

@@ -179,7 +179,7 @@ class Mycontributions extends Module
                     if ($show_tickets) {
                         // Get open tickets
                         $group = $rows[$i]->devgroup;
-                        $g = \Hubzero\User\Group::getInstance($group);
+                        $g = \Hubzero\User\Group::getInstance($group) ?: new \Hubzero\User\Group();
                         $group = $g->get('gidNumber');
 
                         // Find support tickets on the user's contributions

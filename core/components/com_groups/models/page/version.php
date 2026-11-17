@@ -121,7 +121,8 @@ class Version extends Model
                 $content = $this->get('content_parsed', null);
                 if ($content == null) {
                     // Get group
-                    $group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')));
+                    $group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')))
+                        ?: new \Hubzero\User\Group();
 
                     // Get base path
                     $basePath = Component::params('com_groups')->get('uploadpath');
@@ -216,7 +217,7 @@ class Version extends Model
     public function url($to = 'raw')
     {
         $page  = new Page($this->get('pageid'));
-        $group = \Hubzero\User\Group::getInstance($page->get('gidNumber'));
+        $group = \Hubzero\User\Group::getInstance($page->get('gidNumber')) ?: new \Hubzero\User\Group();
 
         $url = 'index.php?option=com_groups&cn=' . $group->get('cn');
         $pageId = $page->get('id');

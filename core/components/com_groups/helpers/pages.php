@@ -124,7 +124,7 @@ class Pages
     {
         // get group
         $cn = Request::getString('cn', '');
-        $group = \Hubzero\User\Group::getInstance($cn);
+        $group = \Hubzero\User\Group::getInstance($cn) ?: new \Hubzero\User\Group();
 
         // use Route so in case the hub is /members/groups/... instead of top level /groups
         $root = trim(Request::base(true), '/');
@@ -342,7 +342,8 @@ class Pages
         }
 
         // get \Hubzero\User\Group object
-        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')))
+            ?: new \Hubzero\User\Group();
 
         // array to hold manager emails
         $managers = [];
@@ -809,7 +810,7 @@ class Pages
     {
         // get groups
         $gidNumber = $page->get('gidNumber');
-        $group     = \Hubzero\User\Group::getInstance($gidNumber);
+        $group     = \Hubzero\User\Group::getInstance($gidNumber) ?: new \Hubzero\User\Group();
 
         //get config
         $config = Component::params('com_groups');

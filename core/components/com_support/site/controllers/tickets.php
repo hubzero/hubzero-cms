@@ -2502,7 +2502,7 @@ class Tickets extends SiteController
         if (strstr($group, ',')) {
             $groups = explode(',', $group);
             foreach ($groups as $g) {
-                $hzg = \Hubzero\User\Group::getInstance(trim($g));
+                $hzg = \Hubzero\User\Group::getInstance(trim($g)) ?: new \Hubzero\User\Group();
 
                 if ($hzg->get('gidNumber')) {
                     $members = $hzg->get('members');

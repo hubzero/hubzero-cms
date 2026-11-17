@@ -68,7 +68,7 @@ class Forum extends Plugin
                         break;
 
                     case 'group':
-                        $group = \Hubzero\User\Group::getInstance($row->scope_id);
+                        $group = \Hubzero\User\Group::getInstance($row->scope_id) ?: new \Hubzero\User\Group();
                         $url = 'index.php?option=com_groups&cn='
                             . $group->get('cn')
                             . '&active=forum&scope='

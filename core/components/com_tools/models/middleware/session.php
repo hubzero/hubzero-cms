@@ -190,7 +190,7 @@ class Session extends Base
         }
 
         if ($group) {
-            $hg = Group::getInstance($group);
+            $hg = Group::getInstance($group) ?: new \Hubzero\User\Group();
             $members = $hg->get('members');
 
             // merge group members with any passed in username field

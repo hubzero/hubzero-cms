@@ -765,6 +765,11 @@ class Owner extends Table
                 $group->create();
                 $group = \Hubzero\User\Group::getInstance($cn);
             }
+
+            // Nothing to sync with when the group could not be made
+            if (!$group) {
+                return;
+            }
             $members  = $this->getIds($alias, $role = '0', 1);
             $authors  = $this->getIds($alias, $role = '2', 1);
             $managers = $this->getIds($alias, $role = '1', 1);

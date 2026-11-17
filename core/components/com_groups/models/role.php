@@ -100,7 +100,7 @@ class Role extends Relational
     /**
      * Get parent group
      *
-     * @return  \Hubzero\User\Group
+     * @return  \Hubzero\User\Group|false  False when there is no such group
      */
     public function group()
     {

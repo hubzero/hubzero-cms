@@ -52,7 +52,8 @@ $formAction = Route::url(
                     <tr>
                         <td class="merge-success">
                             <?php
-                                $group = \Hubzero\User\Group::getInstance($success['group']);
+                                $group = \Hubzero\User\Group::getInstance($success['group'])
+                                    ?: new \Hubzero\User\Group();
                                 echo '<strong>'
                                     . $group->get('description')
                                     . ' (' . $group->get('cn')
@@ -100,7 +101,8 @@ $formAction = Route::url(
                     <tr>
                         <td>
                             <?php
-                                $group = \Hubzero\User\Group::getInstance($failed['group']);
+                                $group = \Hubzero\User\Group::getInstance($failed['group'])
+                                    ?: new \Hubzero\User\Group();
                                 echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>';
                             ?>
                             <br />

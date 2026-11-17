@@ -92,7 +92,7 @@ class Event extends Model
      */
     public function link()
     {
-        $group = Group::getInstance($this->get('scope_id'));
+        $group = Group::getInstance($this->get('scope_id')) ?: new \Hubzero\User\Group();
         return Route::url(
             'index.php?option=com_groups&cn='
                 . $group->get('cn')

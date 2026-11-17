@@ -230,7 +230,7 @@ class ConfigHelper
      */
     private function groupCn($id, $row)
     {
-        $group = Group::getInstance($id);
+        $group = Group::getInstance($id) ?: new \Hubzero\User\Group();
         return $group->get('cn');
     }
 

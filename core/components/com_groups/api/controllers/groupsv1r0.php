@@ -101,7 +101,7 @@ class Groupsv1r0 extends ApiController
         $base = rtrim(Request::base(), '/');
 
         foreach ($response as $i => $r) {
-            $group = \Hubzero\User\Group::getInstance($r->gidNumber);
+            $group = \Hubzero\User\Group::getInstance($r->gidNumber) ?: new \Hubzero\User\Group();
 
             $response[$i]->url  = str_replace(
                 '/api',

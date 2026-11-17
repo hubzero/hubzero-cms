@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
  */
 
 // get the group
-$group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id'));
+$group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id')) ?: new \Hubzero\User\Group();
 $groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
 
 // define color
