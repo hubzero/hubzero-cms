@@ -20,7 +20,11 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, pagination: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     filters: mixed,
+ *     items: array<int, \Components\Content\Models\Article>,
+ *     pagination: mixed,
+ * } $this
  */
 
 $canDo = \Components\Content\Admin\Helpers\Permissions::getActions($this->filters['category_id']);
@@ -234,7 +238,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         echo Html::grid(
                             'checkedout',
                             $i,
-                            (is_object($item->editor) ? $item->editor->get('name') : $item->editor),
+                            $item->editor->get('name'),
                             $item->checked_out_time,
                             'featured.',
                             $canCheckin,
@@ -271,7 +275,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     ?>
                 </td>
                 <td class="center priority-2">
-                    <?php echo $this->escape($item->category_title); ?>
+                    <?php echo $this->escape($item->category->title); ?>
                 </td>
                 <td class="order priority-3">
                     <?php if ($canChange) : ?>
@@ -332,11 +336,16 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     <?php endif; ?>
                 </td>
                 <td class="center priority-4">
-                    <?php echo $this->escape($item->access_level); ?>
+                    <?php echo $this->escape($item->accessLevel->title); ?>
                 </td>
                 <td class="center priority-6">
+                    <?php
+                    $authorName = $this->escape(
+                        $item->author->get('name', Lang::txt('JUNKNOWN')),
+                    );
+                    ?>
                     <?php if ($item->created_by_alias) : ?>
-                        <?php echo $this->escape($item->author_name); ?>
+                        <?php echo $authorName; ?>
                         <p class="smallsub">
                             <?php
                             echo Lang::txt(
@@ -346,7 +355,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                             ?>
                         </p>
                     <?php else : ?>
-                        <?php echo $this->escape($item->author_name); ?>
+                        <?php echo $authorName; ?>
                     <?php endif; ?>
                 </td>
                 <td class="center nowrap priority-5">
