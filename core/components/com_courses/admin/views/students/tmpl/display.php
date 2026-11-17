@@ -71,25 +71,6 @@ Html::behavior('tooltip');
                                     . $offering->get('alias');
                                 ?>
                                 <?php $val = $this->escape(stripslashes($offering->get('id'))); ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
                                 <?php
                                 $selected = ($offering->get('id') == $this->offering->get('id'))
                                 ? ' selected="selected"'
@@ -118,25 +99,6 @@ Html::behavior('tooltip');
                             foreach ($this->offering->sections() as $section) {
                                 ?>
                                 <?php $val = $this->escape(stripslashes($section->get('id'))); ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
-                                <?php $val = $val; ?>
                                 <?php
                                 $selected = ($section->get('id') == $this->filters['section_id'])
                                     ? ' selected="selected"'

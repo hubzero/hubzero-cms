@@ -328,23 +328,8 @@ class Publications extends Plugin
         $rparams = new \Hubzero\Config\Registry($row->get('params'));
         $params->merge($rparams);
 
-        $show_date = 3;
-
-        // Set the display date
-        switch ($show_date) {
-            case 0:
-                $thedate = '';
-                break;
-            case 1:
-                $thedate = $row->get('created');
-                break;
-            case 2:
-                $thedate = $row->get('modified');
-                break;
-            case 3:
-                $thedate = $row->get('published_up');
-                break;
-        }
+        // Display the publish date
+        $thedate = $row->get('published_up');
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 

@@ -177,7 +177,6 @@ class Router extends Base
                     return $vars;
 
                 case 'editoutline':
-                case 'offerings':
                     //case 'managemodules':
                 case 'ajaxupload':
                     $vars['task'] = $segments[1];

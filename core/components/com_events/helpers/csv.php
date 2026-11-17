@@ -139,15 +139,6 @@ class Csv
                 switch ($field) {
                     case 'name':
                         break;
-                    case 'position':
-                        $row[] = $respondent->get('position_description');
-                        break;
-                    case 'comments':
-                        $row[] = $respondent->get('comment');
-                        break;
-                    case 'degree':
-                        $row[] = $respondent->get('highest_degree');
-                        break;
                     case 'disability':
                         $row[] = $respondent->get('disability_needs') ? 'Yes' : 'No';
                         break;

@@ -325,17 +325,11 @@ class Articles extends AdminController
         }
 
         // Set message
-        switch ($state) {
-            case '-1':
-                $message = Lang::txt('COM_KB_ARCHIVED', count($ids));
-                break;
-            case '1':
-                $message = Lang::txt('COM_KB_ITEMS_PUBLISHED', count($ids));
-                break;
-            default:
-                // Every task other than publish set the state to 0
-                $message = Lang::txt('COM_KB_ITEMS_UNPUBLISHED', count($ids));
-                break;
+        if ($state == 1) {
+            $message = Lang::txt('COM_KB_ITEMS_PUBLISHED', count($ids));
+        } else {
+            // Every task other than publish set the state to 0
+            $message = Lang::txt('COM_KB_ITEMS_UNPUBLISHED', count($ids));
         }
 
         // Set the redirect
