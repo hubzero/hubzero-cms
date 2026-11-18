@@ -1190,7 +1190,10 @@ abstract class Cart
             foreach ($tItems as $sId => $itemInfo) {
                 $qty = $itemInfo['transactionInfo']->qty;
                 $sku = \Components\Storefront\Models\Sku::getInstance($sId);
-                $sku->releaseInventory($qty);
+                // A SKU since deleted holds no inventory to release
+                if ($sku) {
+                    $sku->releaseInventory($qty);
+                }
             }
         }
         // update status

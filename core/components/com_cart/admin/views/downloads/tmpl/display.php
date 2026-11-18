@@ -134,7 +134,8 @@ $this
                         echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
                         $sku = Sku::getInstance($this->filters['sId']);
 
-                        echo $sku->getName();
+                        // A SKU since deleted has no name to show
+                        echo $sku ? $sku->getName() : '';
                         ?>
                             <button type="button"
                                 id="filter_sId-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>

@@ -141,6 +141,10 @@ class Skus extends AdminController
                 // create new SKU
                 $row = Sku::newInstance($pId);
             } else {
+                $row = false;
+            }
+
+            if (!$row) {
                 throw new \Exception('SKU was not found');
             }
             $this->view->set('row', $row);
@@ -214,6 +218,10 @@ class Skus extends AdminController
             // create new SKU
             $sku = Sku::newInstance($pId);
         } else {
+            $sku = false;
+        }
+
+        if (!$sku) {
             Notify::error(Lang::txt('COM_STOREFRONT_NO_ID'));
             $this->cancelTask();
             return;
@@ -304,6 +312,9 @@ class Skus extends AdminController
                         // Delete SKU
                         try {
                             $sku = Sku::getInstance($sId);
+                            if (!$sku) {
+                                throw new \Exception('SKU was not found');
+                            }
                             $sku->delete();
                         } catch (\Exception $e) {
                             $url = 'index.php?option=' . $this->option . '&controller='
@@ -382,6 +393,9 @@ class Skus extends AdminController
             // Save SKU
             try {
                 $sku = Sku::getInstance($sId);
+                if (!$sku) {
+                    throw new \Exception('SKU was not found');
+                }
                 $obj->updateSku($sku, ['state' => $state]);
             } catch (\Exception $e) {
                 $error = true;

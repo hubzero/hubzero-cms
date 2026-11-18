@@ -1931,6 +1931,9 @@ class CurrentCart extends Cart
             // Reserve/lock items
 
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);
+            if (!$sku) {
+                throw new \RuntimeException('There is no SKU ' . $sId . ' to reserve');
+            }
 
             $sku->reserveInventory($skuInfo['cartInfo']->qty);
         }
@@ -2011,6 +2014,9 @@ class CurrentCart extends Cart
 
         foreach ($tItems as $sId => $item) {
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);
+            if (!$sku) {
+                throw new \RuntimeException('There is no SKU ' . $sId . ' to reserve');
+            }
             $sku->reserveInventory($item['transactionInfo']->qty);
             //$warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
         }

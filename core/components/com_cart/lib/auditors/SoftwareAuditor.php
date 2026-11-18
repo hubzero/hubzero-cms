@@ -43,7 +43,7 @@ class SoftwareAuditor extends BaseAuditor
             if ($sId = $this->getSku()) {
                 // Check if the current user reached the max count of downloads for this SKU
                 $sku = Sku::getInstance($sId);
-                $skuDownloadLimit = $sku->getMeta('downloadLimit');
+                $skuDownloadLimit = $sku ? $sku->getMeta('downloadLimit') : 0;
                 if ($skuDownloadLimit > 0) {
                     // Get SKU download count
                     $skuDownloadCount = Download::countUserSkuDownloads($this->sId, (int) $this->uId);
@@ -66,7 +66,7 @@ class SoftwareAuditor extends BaseAuditor
         if ($sId = $this->getSku()) {
             // Check if SKU is reached the download max count
             $sku = Sku::getInstance($sId);
-            $skuDownloadLimit = $sku->getMeta('globalDownloadLimit');
+            $skuDownloadLimit = $sku ? $sku->getMeta('globalDownloadLimit') : 0;
             if ($skuDownloadLimit > 0) {
                 // Get SKU download count
                 $skuDownloadCount = Download::countSkuDownloads($this->sId);
