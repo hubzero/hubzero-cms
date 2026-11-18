@@ -34,7 +34,7 @@ $projectUrl = $link;
 $title = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Get the actual message
-$comment = $this->message;
+$comment = (string) $this->message;
 
 
 if ($comment) {

@@ -31,7 +31,7 @@ $sef  = Route::url($this->publication->link('version'));
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 // Get the actual message
-$comment = $this->message;
+$comment = (string) $this->message;
 
 // Parse admin comment
 if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) {

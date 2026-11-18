@@ -32,7 +32,7 @@ $browseLink = rtrim($base, '/') . '/' . trim($sef_browse, '/');
 $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.6em; text-align: left;';
 
 // Get the actual message
-$comment = $this->message;
+$comment = (string) $this->message;
 
 // Parse admin comment
 if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) {

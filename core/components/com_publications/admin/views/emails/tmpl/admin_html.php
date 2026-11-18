@@ -30,7 +30,7 @@ $link = $base . '/projects/' . $this->model->project()->get('alias') . '/publica
 $pubLink = $base . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number');
 
 // Get the actual message
-$comment = $this->message;
+$comment = (string) $this->message;
 
 // Parse admin comment
 if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) {

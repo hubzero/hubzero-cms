@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
 
 $attachments = 0;
 $authors = 0;
-$tags = [];
+$tags = 0;
 $state = 'pending';
 $type = '';
 if ($this->resource->get('id')) {

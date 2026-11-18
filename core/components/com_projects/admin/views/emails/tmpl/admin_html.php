@@ -25,7 +25,7 @@ $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $link = $base . '/projects/' . $this->project->get('alias');
 
 // Get the actual message
-$comment = $this->message;
+$comment = (string) $this->message;
 
 // Parse admin comment
 if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) {
