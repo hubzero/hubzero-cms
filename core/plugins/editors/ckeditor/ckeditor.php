@@ -278,8 +278,12 @@ class Ckeditor extends Plugin
         // Sets up inserting into the editor; it gives nothing to show
         $this->onGetInsertMethod($name);
 
-        if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
-            $results = $this->subject->getButtons($name, $buttons, $asset, $author);
+        // The buttons come from the editor that loaded this plugin
+        if (
+            $this->subject instanceof \Hubzero\Html\Editor
+            && (is_array($buttons) || (is_bool($buttons) && $buttons))
+        ) {
+            $results = $this->subject->getButtons($name, $buttons);
 
             // This will allow plugins to attach buttons or change the behavior on the fly using AJAX
             $return .= "\n<div id=\"editor-xtd-buttons\">\n";
