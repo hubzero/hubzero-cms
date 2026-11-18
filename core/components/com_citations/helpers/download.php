@@ -41,7 +41,7 @@ class Download
     /**
      * List of formatters
      *
-     * @var array<mixed>
+     * @var array<string, \Components\Citations\Download\Downloadable>
      */
     protected $formatters = [];
 
@@ -62,7 +62,7 @@ class Download
     /**
      * Constructor
      *
-     * @param   object|null  $reference
+     * @param   \Components\Citations\Models\Citation|null  $reference
      * @param   string  $format
      * @return  void
      */
@@ -174,7 +174,7 @@ class Download
      * Get the formatter object, if set
      *
      * @param   string  $format  Format to get
-     * @return  mixed
+     * @return  \Components\Citations\Download\Downloadable|null
      */
     public function getFormatter($format = '')
     {
@@ -203,7 +203,7 @@ class Download
 
         $formatter = $this->getFormatter($format);
 
-        if (!$formatter || !is_object($formatter)) {
+        if (!$formatter) {
             $cls = '\\Components\\Citations\\Download\\' . $format;
 
             if (!class_exists($cls)) {

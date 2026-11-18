@@ -170,14 +170,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                     <?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
                                         <?php
                                         $fmtClass = \Components\Citations\Helpers\Format::class;
-                                        echo $fmtClass::citationBadges($cite, $this->database);
+                                        echo $fmtClass::citationBadges($cite);
                                         ?>
                                     <?php endif; ?>
 
                                     <?php if ($this->config->get('citation_show_tags', 'no') == 'yes') : ?>
                                         <?php
                                         $fmtClass = \Components\Citations\Helpers\Format::class;
-                                        echo $fmtClass::citationTags($cite, $this->database);
+                                        echo $fmtClass::citationTags($cite);
                                         ?>
                                     <?php endif; ?>
                                 </div>

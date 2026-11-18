@@ -800,7 +800,7 @@ class Format
      * Output a tagcloud of tags associated with a citation
      *
      * @param   \Components\Citations\Models\Citation  $cite  Citation
-     * @param   object|bool $includeHtml  Database
+     * @param   bool  $includeHtml  Whether to give HTML (else the raw tags)
      * @return  ($includeHtml is false ? array<mixed> : string)  HTML, or the raw tags when $includeHtml is false
      */
     public static function citationTags(&$cite, $includeHtml = true)

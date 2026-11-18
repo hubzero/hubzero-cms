@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -526,7 +525,7 @@ $area = Request::getString('area', 'about');
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_TAGS'); ?></th>
                         <td>
-                            <?php echo \Components\Citations\Helpers\Format::citationTags($citation, App::get('db')); ?>
+                            <?php echo \Components\Citations\Helpers\Format::citationTags($citation); ?>
                         </td>
                     </tr>
                 <?php endif; ?>

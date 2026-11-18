@@ -129,20 +129,14 @@ if (count($this->citations) > 0) :
                     <?php $showBadges = $this->config->get("citation_show_badges", "no") == "yes"; ?>
                             <?php if ($showBadges) : ?>
                                 <?php
-                                echo \Components\Citations\Helpers\Format::citationBadges(
-                                    $cite,
-                                    $this->database,
-                                );
+                                echo \Components\Citations\Helpers\Format::citationBadges($cite);
                                 ?>
                             <?php endif; ?>
 
                     <?php $showTags = $this->config->get("citation_show_tags", "no") == "yes"; ?>
                             <?php if ($showTags) : ?>
                                 <?php
-                                echo \Components\Citations\Helpers\Format::citationTags(
-                                    $cite,
-                                    $this->database,
-                                );
+                                echo \Components\Citations\Helpers\Format::citationTags($cite);
                                 ?>
                             <?php endif; ?>
                         </td>
