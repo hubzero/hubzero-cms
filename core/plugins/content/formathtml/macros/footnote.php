@@ -40,7 +40,7 @@ class FootNote extends Macro
     {
         static $wm;
 
-        if (!is_object($wm)) {
+        if (!($wm instanceof \stdClass)) {
             $wm = new \stdClass();
             $wm->footnotes = [];
             $wm->footnotes_notes = [];

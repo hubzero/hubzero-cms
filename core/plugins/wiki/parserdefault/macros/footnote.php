@@ -60,7 +60,7 @@ Examples:
     {
         static $wm;
 
-        if (!is_object($wm)) {
+        if (!($wm instanceof \stdClass)) {
             $wm = new \stdClass();
             $wm->footnotes = [];
             $wm->footnotes_stubs = [];

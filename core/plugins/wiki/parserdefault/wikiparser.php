@@ -1596,8 +1596,8 @@ class WikiParser
 
                     $_macros[$matches[1]] = & $macro;
                 } else {
-                    // No such macro: remember that, and leave $macro unset so
-                    // the is_object() check below returns an empty string
+                    // No such macro: remember that, so the check below
+                    // returns an empty string
                     $macro = false;
                     $_macros[$matches[1]] = false;
                 }
@@ -1605,7 +1605,7 @@ class WikiParser
                 $macro = & $_macros[$matches[1]];
             }
 
-            if (!is_object($macro)) {
+            if (!($macro instanceof \Plugins\Wiki\Parserdefault\WikiMacro)) {
                 return '';
             }
 
