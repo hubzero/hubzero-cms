@@ -23,7 +23,7 @@ class Reader implements Iterator
     /**
      * CSV file
      *
-     * @var  resource|false|null
+     * @var  resource
      */
     private $file;
 
@@ -57,7 +57,11 @@ class Reader implements Iterator
      */
     public function __construct($file, $delimiter)
     {
-        $this->file = fopen($file, 'r');
+        $handle = fopen($file, 'r');
+        if ($handle === false) {
+            throw new \RuntimeException('Unable to read the import file.');
+        }
+        $this->file = $handle;
 
         ini_set('auto_detect_line_endings', false);
 

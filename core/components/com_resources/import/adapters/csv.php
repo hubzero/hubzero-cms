@@ -124,10 +124,11 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
     /**
      * Run Callbacks on Record
      *
-     * @param   object  $record     Resource Record
+     * @template T of object
+     * @param   T       $record     Resource Record (each callback returns it)
      * @param   array<mixed>   $callbacks  Array of Callbacks
      * @param   bool|int    $dryRun     Dry Run mode?
-     * @return  object              Record object
+     * @return  T              Record object
      */
     public function map($record, $callbacks, $dryRun)
     {

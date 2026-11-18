@@ -5331,7 +5331,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Finds the named class, checking a handful of scopes
      *
      * @param   string  $name  The name of the relationship to resolve
-     * @return  object
+     * @return  Relational
      * @throws  \Hubzero\Database\Exception\RuntimeException  If a class of name cannot be found
      **/
     private function resolve($name)
@@ -5343,6 +5343,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if (!class_exists($name)) {
                 throw new RuntimeException("Relationship '{$name}' not found");
             }
+        }
+
+        if (!is_a($name, self::class, true)) {
+            throw new RuntimeException("Relationship '{$name}' is not a model");
         }
 
         return new $name();

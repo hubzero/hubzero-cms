@@ -84,6 +84,11 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
 
         // loop through each item
         foreach ($iterator as $index => $record) {
+            // make sure we have a record
+            if ($record === null) {
+                continue;
+            }
+
             // do we have a post parse callback ?
             $record = $this->map($record, $callbacks['postparse'], $dryRun);
 
@@ -118,10 +123,11 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
     /**
      * Run Callbacks on Record
      *
-     * @param   object  $record     Resource Record
+     * @template T of object
+     * @param   T       $record     Resource Record (each callback returns it)
      * @param   array<mixed>   $callbacks  Array of Callbacks
      * @param   bool|int    $dryRun     Dry Run mode?
-     * @return  object              Record object
+     * @return  T              Record object
      */
     public function map($record, $callbacks, $dryRun)
     {

@@ -11,14 +11,14 @@ namespace Components\Resources\Import\Iterators;
 /**
  *  CSV Iterator Class implemeting interator
  *
- * @implements \Iterator<mixed, mixed>
+ * @implements \Iterator<int, \stdClass|null>
  */
 class Csv implements \Iterator
 {
     public const ROW_LENGTH = 0;
 
     /**
-     * @var  resource|false|null
+     * @var  resource
      */
     private $file;
     /**
@@ -42,7 +42,11 @@ class Csv implements \Iterator
      */
     public function __construct($file, $delimiter)
     {
-        $this->file      = fopen($file, 'r');
+        $handle = fopen($file, 'r');
+        if ($handle === false) {
+            throw new \RuntimeException('Unable to read the import file.');
+        }
+        $this->file = $handle;
         $this->delimiter = $delimiter;
     }
 
