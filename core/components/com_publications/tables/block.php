@@ -30,7 +30,7 @@ class Block extends Table
      * Get record by name
      *
      * @param   string  $name
-     * @return  mixed   object or false
+     * @return  \stdClass|false   object or false
      */
     public function getBlock($name = '')
     {

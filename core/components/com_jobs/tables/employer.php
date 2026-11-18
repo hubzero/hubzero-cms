@@ -80,7 +80,7 @@ class Employer extends Table
      *
      * @param   integer|null  $uid               User ID
      * @param   string|null   $subscriptionCode  Subscription code
-     * @return  mixed    False if errors, Array upon success
+     * @return  \stdClass|false    The row, or false
      */
     public function getEmployer($uid = null, $subscriptionCode = null)
     {

@@ -1822,7 +1822,7 @@ class Publication extends Obj
      * @param   mixed  $pageid
      * @param   string|null  $masterscope
      * @param   string|null  $versionid
-     * @return  mixed
+     * @return  \stdClass|false|null
      */
     public function getWikiPage($pageid = null, $masterscope = null, $versionid = null)
     {

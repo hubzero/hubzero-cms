@@ -87,7 +87,7 @@ class ToolLog extends Table
      * @param   string|null   $parent_name
      * @param   integer|null  $parent_id
      * @param   int|bool  $status_changed  Only status changes?
-     * @return  mixed    object or null
+     * @return  \stdClass|null    object or null
      */
     public function getLastUpdate($instance_id = 0, $parent_name = null, $parent_id = null, $status_changed = 1)
     {

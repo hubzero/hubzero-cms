@@ -120,7 +120,7 @@ class Category extends Table
      * Get record by alias name
      *
      * @param   string  $alias
-     * @return  mixed   object or false
+     * @return  \stdClass|false   object or false
      */
     public function getCategory($alias = '')
     {

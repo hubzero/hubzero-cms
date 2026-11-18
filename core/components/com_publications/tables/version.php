@@ -485,7 +485,7 @@ class Version extends Table
      *
      * @param   integer|null  $pid      Pub ID
      * @param   string   $version  Version number or name
-     * @return  mixed    object or False
+     * @return  \stdClass|false    object or False
      */
     public function getVersion($pid, $version = 'dev')
     {

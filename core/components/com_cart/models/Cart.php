@@ -292,7 +292,7 @@ abstract class Cart
      * Get a single item in the cart
      *
      * @param   int    $sId  SKU ID
-     * @return  mixed  SKU cart info
+     * @return  \stdClass|false|null  SKU cart info
      */
     protected function getCartItem($sId)
     {

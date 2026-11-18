@@ -683,7 +683,7 @@ class Project extends Table
      * @param   string|null   $identifier
      * @param   integer  $uid
      * @param   integer  $pubid
-     * @return  mixed    (array or false)
+     * @return  \stdClass|false|null    The row, or false or null
      */
     public function getProject($identifier = null, $uid = 0, $pubid = 0)
     {
