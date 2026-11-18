@@ -118,7 +118,7 @@ class Date extends DateTime
     /**
      * The DateTimeZone object for usage in rending dates as strings.
      *
-     * @var  object
+     * @var  DateTimeZone
      */
     protected $tz;
 
@@ -291,7 +291,7 @@ class Date extends DateTime
      *
      * @param   mixed   $tz    Time zone in either string, offset number, or a TimeZone object.
      * @param   boolean $ignoreDst  if set to true, will prevent the date from converting to DST.
-     * @return  object
+     * @return  DateTimeZone
      */
     public static function getTimeZoneObject($tz, $ignoreDst = false)
     {
@@ -319,12 +319,16 @@ class Date extends DateTime
             });
 
             if (!empty($offsets)) {
-                $offset = $offsets[0];
-                if (abs($offset) > 0) {
-                    // convert seconds to hours
-                    $offset = $offset / 3600;
-                }
-                $tz = new DateTimeZone($offset);
+                // A fixed offset, as "+HH:MM": DateTimeZone takes a bare
+                // number of hours only when it is negative and whole
+                $seconds = (int) $offsets[0];
+                $abs     = abs($seconds);
+                $tz = new DateTimeZone(sprintf(
+                    '%s%02d:%02d',
+                    $seconds < 0 ? '-' : '+',
+                    intdiv($abs, 3600),
+                    intdiv($abs % 3600, 60),
+                ));
             }
         }
         return $tz;
