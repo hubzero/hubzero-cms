@@ -81,7 +81,7 @@ class Json implements Adapter
         $headers = [];
 
         $row = $iterator->current();
-        foreach ($row as $key => $val) {
+        foreach ((array) $row as $key => $val) {
             $headers[] = $key;
         }
 
@@ -143,10 +143,11 @@ class Json implements Adapter
     /**
      * Run Callbacks on Record
      *
-     * @param   object  $record    Resource Record
+     * @template T of object
+     * @param   T  $record    Resource Record (each callback returns it)
      * @param   array<mixed>   $callbacks Array of Callbacks
      * @param   bool    $dryRun    Dry Run mode?
-     * @return  object  Record object
+     * @return  T  Record object
      */
     public function map($record, $callbacks, $dryRun)
     {

@@ -14,7 +14,7 @@ use stdClass;
 /**
  *  CSV Iterator Class implemeting interator
  *
- * @implements Iterator<mixed, mixed>
+ * @implements Iterator<int, \stdClass|null>
  */
 class Reader implements Iterator
 {
@@ -107,7 +107,7 @@ class Reader implements Iterator
 
         // store headers for later
         if ($this->position == 1) {
-            $this->headers = $row;
+            $this->headers = $row ?: [];
         }
 
         // return null for the first row and last row if empty

@@ -13,7 +13,7 @@ use Iterator;
 /**
  *  JSON Reader Iterator Class
  *
- * @implements Iterator<mixed, mixed>
+ * @implements Iterator<int, \stdClass|null>
  */
 class Reader implements Iterator
 {
@@ -48,7 +48,7 @@ class Reader implements Iterator
     /**
      * Get the current XML node
      *
-     * @return  object|null  XML node as a stdClass
+     * @return  \stdClass|null  XML node as a stdClass
      */
 
     #[\ReturnTypeWillChange]

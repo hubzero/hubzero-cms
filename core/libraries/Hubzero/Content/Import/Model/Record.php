@@ -122,7 +122,7 @@ class Record extends Obj
     /**
      * Store Data
      *
-     * @param   integer  $dryRun  Dry Run mode
+     * @param   bool|int  $dryRun  Dry Run mode
      * @return  $this   Current object
      */
     public function store($dryRun = 1)

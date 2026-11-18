@@ -14,7 +14,7 @@ use stdClass;
 /**
  *  Excel Reader Iterator Class implemeting interator
  *
- * @implements Iterator<mixed, mixed>
+ * @implements Iterator<int, \stdClass>
  */
 class Reader implements Iterator
 {

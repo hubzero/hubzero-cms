@@ -15,7 +15,7 @@ use DOMDocument;
 /**
  *  XML Reader Iterator Class implemeting interator
  *
- * @implements Iterator<mixed, mixed>
+ * @implements Iterator<int, \stdClass|null>
  */
 class Reader implements Iterator
 {
@@ -65,15 +65,22 @@ class Reader implements Iterator
     /**
      * Get the current XML node
      *
-     * @return  object|null  XML node as a stdClass; null when the node cannot be converted
+     * @return  \stdClass|null  XML node as a stdClass; null when the node cannot be converted
      */
 
     #[\ReturnTypeWillChange]
     public function current()
     {
+        $node = $this->reader->expand();
+        if ($node === false) {
+            return null;
+        }
+
         $doc = new DOMDocument();
-        $object = simplexml_import_dom($doc->importNode($this->reader->expand(), true));
-        return json_decode((string) json_encode($object));
+        $object = simplexml_import_dom($doc->importNode($node, true));
+        $record = json_decode((string) json_encode($object));
+
+        return $record instanceof \stdClass ? $record : null;
     }
 
     /**
