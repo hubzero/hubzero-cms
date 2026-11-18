@@ -235,100 +235,108 @@ class Store extends Plugin
         }
     }
 
-    /**
-     * Actions to perform after saving an offering
-     *
-     * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
-     * @param      boolean $isNew Is this a newly created entry?
-     * @return     void
-     */
-    public function onSectionSave($model, $isNew = false)
-    {
-        // Saved courses only (both course models fire this event)
-        if ((int) $model->get('id') <= 0) {
-            return;
-        }
-    }
-
-    /**
-     * Actions to perform after deleting an offering
-     *
-     * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
-     * @return     void
-     */
-    public function onSectionDelete($model)
-    {
-        // Saved courses only (both course models fire this event)
-        if ((int) $model->get('id') <= 0) {
-            return;
-        }
-    }
-
-    /**
-     * Actions to perform after deleting an offering
-     *
-     * @param      object  $model \Components\Courses\Models\Section
-     * @param      boolean $isNew Is this a newly created entry?
-     * @return     void
-     */
-    public function onAfterSaveCoupon($model, $isNew = false)
-    {
-        // Saved courses only (both course models fire this event)
-        if ((int) $model->get('id') <= 0) {
-            return;
-        }
-        if ($isNew && Request::getInt('store_product', 0)) {
-            try {
-                // Constructor take the coupon code
-                $coupon = new \Components\Storefront\Models\Coupon($model->get('code'));
-                // Couponn description (shows up in the cart)
-                $coupon->setDescription(Request::getString('description', 'Test coupon, 10% off product with ID 111'));
-                // Expiration date
-                $coupon->setExpiration($model->get('created'));
-                // Number of times coupon can be used (unlimited by default)
-                $coupon->setUseLimit(1);
-
-                // Product the coupon will be applied to:
-                // first parameter: product ID
-                // second parameter [optional, unlimited by default]: max quantity of products coupon
-                // will be applied to (if buying multiple)
-                //$section = new CorusesModelSection($model->get('section_id'));
-
-                $product = new \Components\Storefront\Models\Course();
-                $product->setCourseId($model->find('course'));
-
-                $coupon->addObject($product->getId());
-                // Action, only 'discount' for now
-                // second parameter either percentage ('10%') or absolute dollar value ('20')
-                $coupon->setAction('discount', '100%');
-                // Add coupon
-                $coupon->add();
-            } catch (\Exception $e) {
-                echo 'ERROR: ' . $e->getMessage();
-            }
-            return;
-        }
-    }
-
-    /**
-     * Actions to perform after deleting an offering
-     *
-     * @param      object  $model \Components\Courses\Models\Section
-     * @return     void
-     */
-    public function onAfterDeleteCoupon($model)
-    {
-        // Saved courses only (both course models fire this event)
-        if ((int) $model->get('id') <= 0) {
-            return;
-        }
-
-        $warehouse = new \Components\Storefront\Models\Warehouse();
-        try {
-            $warehouse->deleteCoupon($model->get('code'));
-        } catch (\Exception $e) {
-            echo 'ERROR: ' . $e->getMessage();
-        }
-        return;
-    }
+    // Commented out: nothing triggers these four handlers. Course sections
+    // fire onAfterSaveSection/onAfterDeleteSection (not onSectionSave or
+    // onSectionDelete), and no code fires onAfterSaveCoupon or
+    // onAfterDeleteCoupon. The section ones did nothing; the coupon ones
+    // would create and delete storefront coupons for section codes.
+    //
+    // /**
+    //  * Actions to perform after saving an offering
+    //  *
+    //  * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
+    //  * @param      boolean $isNew Is this a newly created entry?
+    //  * @return     void
+    //  */
+    // public function onSectionSave($model, $isNew = false)
+    // {
+    //     // Saved courses only (both course models fire this event)
+    //     if ((int) $model->get('id') <= 0) {
+    //         return;
+    //     }
+    // }
+    //
+    // /**
+    //  * Actions to perform after deleting an offering
+    //  *
+    //  * @param      \Components\Courses\Models\Section  $model \Components\Courses\Models\Section
+    //  * @return     void
+    //  */
+    // public function onSectionDelete($model)
+    // {
+    //     // Saved courses only (both course models fire this event)
+    //     if ((int) $model->get('id') <= 0) {
+    //         return;
+    //     }
+    // }
+    //
+    // /**
+    //  * Actions to perform after deleting an offering
+    //  *
+    //  * @param      object  $model \Components\Courses\Models\Section
+    //  * @param      boolean $isNew Is this a newly created entry?
+    //  * @return     void
+    //  */
+    // public function onAfterSaveCoupon($model, $isNew = false)
+    // {
+    //     // Saved courses only (both course models fire this event)
+    //     if ((int) $model->get('id') <= 0) {
+    //         return;
+    //     }
+    //     if ($isNew && Request::getInt('store_product', 0)) {
+    //         try {
+    //             // Constructor take the coupon code
+    //             $coupon = new \Components\Storefront\Models\Coupon($model->get('code'));
+    //             // Couponn description (shows up in the cart)
+    //             $coupon->setDescription(
+    //                 Request::getString('description', 'Test coupon, 10% off product with ID 111'),
+    //             );
+    //             // Expiration date
+    //             $coupon->setExpiration($model->get('created'));
+    //             // Number of times coupon can be used (unlimited by default)
+    //             $coupon->setUseLimit(1);
+    //
+    //             // Product the coupon will be applied to:
+    //             // first parameter: product ID
+    //             // second parameter [optional, unlimited by default]: max quantity of products coupon
+    //             // will be applied to (if buying multiple)
+    //             //$section = new CorusesModelSection($model->get('section_id'));
+    //
+    //             $product = new \Components\Storefront\Models\Course();
+    //             $product->setCourseId($model->find('course'));
+    //
+    //             $coupon->addObject($product->getId());
+    //             // Action, only 'discount' for now
+    //             // second parameter either percentage ('10%') or absolute dollar value ('20')
+    //             $coupon->setAction('discount', '100%');
+    //             // Add coupon
+    //             $coupon->add();
+    //         } catch (\Exception $e) {
+    //             echo 'ERROR: ' . $e->getMessage();
+    //         }
+    //         return;
+    //     }
+    // }
+    //
+    // /**
+    //  * Actions to perform after deleting an offering
+    //  *
+    //  * @param      object  $model \Components\Courses\Models\Section
+    //  * @return     void
+    //  */
+    // public function onAfterDeleteCoupon($model)
+    // {
+    //     // Saved courses only (both course models fire this event)
+    //     if ((int) $model->get('id') <= 0) {
+    //         return;
+    //     }
+    //
+    //     $warehouse = new \Components\Storefront\Models\Warehouse();
+    //     try {
+    //         $warehouse->deleteCoupon($model->get('code'));
+    //     } catch (\Exception $e) {
+    //         echo 'ERROR: ' . $e->getMessage();
+    //     }
+    //     return;
+    // }
 }
