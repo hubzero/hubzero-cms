@@ -472,7 +472,7 @@ class Items extends AdminController
         // Save via block
         $blocksModel = new Models\Blocks($this->database);
         $block = $blocksModel->loadBlock('authors');
-        if (!$block) {
+        if (!$block instanceof \Components\Publications\Models\Block\Authors) {
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 'error');
         }
 
@@ -555,7 +555,7 @@ class Items extends AdminController
         // Save via block
         $blocksModel = new Models\Blocks($this->database);
         $block = $blocksModel->loadBlock('authors');
-        if (!$block) {
+        if (!$block instanceof \Components\Publications\Models\Block\Authors) {
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 'error');
         }
 

@@ -63,7 +63,8 @@ class BlockElements extends Obj
         // Load attachment type
         $element = $this->loadElement($name);
 
-        if ($element === false || !$pub || !$pub->id) {
+        // Elements without a status of their own (the data selector) get a blank one
+        if ($element === false || !$pub || !$pub->id || !method_exists($element, 'getStatus')) {
             $status = new \Components\Publications\Models\Status();
         } else {
             $status = $element->getStatus($manifest, $pub);

@@ -170,7 +170,7 @@ class View extends AbstractView
                 $callback = new $invokable2();
             }
 
-            if (is_callable($callback)) {
+            if ($callback instanceof \Hubzero\View\Helper\HelperInterface && is_callable($callback)) {
                 $callback->setView($this);
 
                 $this->helper($method, $callback);

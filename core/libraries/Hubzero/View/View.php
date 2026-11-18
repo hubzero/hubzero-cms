@@ -747,7 +747,7 @@ class View extends Obj
         if (class_exists($invokable)) {
             $callback = new $invokable();
 
-            if (is_callable($callback)) {
+            if ($callback instanceof \Hubzero\View\Helper\HelperInterface && is_callable($callback)) {
                 $callback->setView($this);
 
                 $this->helper($method, $callback);
