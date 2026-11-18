@@ -20,6 +20,11 @@ class Spreadsheet
      */
     public static function render($dd = false)
     {
+        // Nothing to show without a data definition
+        if (!is_array($dd)) {
+            return;
+        }
+
         $name = $dd['dv_id'];
 
         $document = App::get('document');

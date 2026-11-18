@@ -141,7 +141,7 @@ class Encrypter
 
             if ($urandom) {
                 stream_set_read_buffer($handle, 0);
-                $entropy .= @fread($handle, $bytes);
+                $entropy .= @fread($handle, max(1, $bytes));
             } else {
                 // There is no external source of entropy so we repeat calls
                 // to mt_rand until we are assured there's real randomness in

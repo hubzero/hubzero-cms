@@ -92,8 +92,8 @@ class Asset extends Table
     /**
      * Load a record
      *
-     * @param   integer|null  $oid      ID
-     * @param   integer|null  $item_id  Item ID
+     * @param   int|string|null  $oid      ID, or the asset's file name
+     * @param   integer|null     $item_id  Item ID
      * @return  boolean  True upon success, False if errors
      */
     public function loadForItem($oid = null, $item_id = null)

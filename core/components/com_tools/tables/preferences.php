@@ -76,7 +76,7 @@ class Preferences extends Table
      */
     public function param($key = '', $default = null)
     {
-        if (!is_object($this->params)) {
+        if (!($this->params instanceof \Hubzero\Config\Registry)) {
             $this->params = new \Hubzero\Config\Registry($this->params);
         }
 
@@ -98,7 +98,7 @@ class Preferences extends Table
      */
     public function store($updateNulls = false)
     {
-        if (is_object($this->params)) {
+        if ($this->params instanceof \Hubzero\Config\Registry) {
             $this->params = $this->params->toString();
         }
 

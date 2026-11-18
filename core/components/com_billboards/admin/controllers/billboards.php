@@ -76,7 +76,7 @@ class BillBoards extends AdminController
         // Hide the menu, force users to save or cancel
         Request::setVar('hidemainmenu', 1);
 
-        if (!isset($billboard) || !is_object($billboard)) {
+        if (!($billboard instanceof Billboard)) {
             // Incoming - expecting an array
             $cid = Request::getArray('cid', [0]);
             $uid = $cid[0];

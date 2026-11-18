@@ -66,9 +66,14 @@ class Loadmodule extends Plugin
         $style = $this->params->def('style', 'none');
         $title = null;
 
+        // Without text there is no position to load
+        if (!isset($article->text)) {
+            return true;
+        }
+
         // Find all instances of plugin and put in $matches for loadposition
         // $matches[0] is full pattern match, $matches[1] is the position
-        preg_match_all($regex, $article->text == null ? "" : $article->text, $matches, PREG_SET_ORDER);
+        preg_match_all($regex, (string) $article->text, $matches, PREG_SET_ORDER);
 
         // No matches, skip this
         if ($matches) {

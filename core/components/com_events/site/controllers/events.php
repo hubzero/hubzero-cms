@@ -1959,7 +1959,7 @@ class Events extends SiteController
             $fields = array_map('trim', $fields);
 
             // Wrap up the content of the field and attach it to the event content
-            $fs = $this->config->fields;
+            $fs = is_array($this->config->fields) ? $this->config->fields : [];
             foreach ($fields as $param => $value) {
                 if (trim($value) != '') {
                     $row->content .= '<ef:' . $param . '>' . $this->clean($value) . '</ef:' . $param . '>';

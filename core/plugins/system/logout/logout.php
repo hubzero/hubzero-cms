@@ -71,7 +71,7 @@ class Logout extends Plugin
     /**
      * Handle an error
      *
-     * @param   object  $error
+     * @param   \Throwable  $error
      * @return  void
      */
     public static function handleError(&$error)

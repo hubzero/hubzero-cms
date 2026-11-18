@@ -1956,7 +1956,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   array<mixed>    $remote   Remote resource array
-     * @param   object|array{}|null  $config  Component configuration
+     * @param   \Hubzero\Config\Registry|array{}|null  $config  Component configuration
      * @param   string|null   $alias    Project alias name
      * @return  bool
      */

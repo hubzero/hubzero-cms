@@ -33,6 +33,10 @@ class Emailcloak extends Plugin
         }
 
         if (is_object($row)) {
+            // An object without text has nothing to cloak
+            if (!isset($row->text)) {
+                return true;
+            }
             return $this->cloakText($row->text, $params);
         }
 

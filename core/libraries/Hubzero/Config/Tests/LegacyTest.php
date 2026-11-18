@@ -83,10 +83,11 @@ class LegacyTest extends TestCase
         $this->assertSame('JConfig', get_class($file));
 
         // Verify paths are present and valid strings
-        $this->assertIsString($file->tmp_path);
-        $this->assertIsString($file->log_path);
-        $this->assertNotEmpty($file->tmp_path);
-        $this->assertNotEmpty($file->log_path);
+        $vars = get_object_vars($file);
+        $this->assertIsString($vars['tmp_path'] ?? null);
+        $this->assertIsString($vars['log_path'] ?? null);
+        $this->assertNotEmpty($vars['tmp_path']);
+        $this->assertNotEmpty($vars['log_path']);
     }
 
     /**
@@ -105,7 +106,8 @@ class LegacyTest extends TestCase
 
         $config = $loader->readConfiguration($path . '/Legacy/configuration.php');
 
-        $this->assertEquals('/custom/app/path/logs', $config->log_path);
-        $this->assertEquals('/custom/app/path/tmp', $config->tmp_path);
+        $vars = get_object_vars($config);
+        $this->assertEquals('/custom/app/path/logs', $vars['log_path'] ?? null);
+        $this->assertEquals('/custom/app/path/tmp', $vars['tmp_path'] ?? null);
     }
 }

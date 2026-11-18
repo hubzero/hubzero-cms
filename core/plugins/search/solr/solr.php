@@ -136,7 +136,7 @@ class Solr extends Plugin
         $indexResultModel = $model;
         if ($searchModel === false) {
             $searchModel = $searchComponent->getSearchableModel();
-            if (!$searchModel) {
+            if (!$searchModel || !is_a($searchModel, \Hubzero\Database\Relational::class, true)) {
                 return false;
             }
             $searchModelBlank = new $searchModel();

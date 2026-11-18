@@ -37,15 +37,21 @@ class Xhubtags extends Plugin
             return null;
         }
 
+        // Without text there is nothing to fix or expand
+        if (!isset($article->text)) {
+            return true;
+        }
+
         // Fix asset paths
-        $text = $article->text == null ? '' : $article->text;
-        $article->text = str_replace('src="/media/system/', 'src="/core/assets/', $text);
+        $text = (string) $article->text;
+        $text = str_replace('src="/media/system/', 'src="/core/assets/', $text);
         $appPath = substr(PATH_APP, strlen(PATH_ROOT));
-        $article->text = str_replace('src="/site', 'src="' . $appPath . '/site', $article->text);
-        $article->text = str_replace("src='/site", "src='" . $appPath . "/site", $article->text);
+        $text = str_replace('src="/site', 'src="' . $appPath . '/site', $text);
+        $text = str_replace("src='/site", "src='" . $appPath . "/site", $text);
+        $article->text = $text;
 
         // simple performance check to determine whether bot should process further
-        if (strpos($article->text, '{xhub') === false) {
+        if (strpos($text, '{xhub') === false) {
             return true;
         }
 
@@ -53,7 +59,7 @@ class Xhubtags extends Plugin
         $regex = "/\{xhub:\s*[^\}]*\}/i";
 
         // find all instances of plugin and put in $matches
-        preg_match_all($regex, $article->text, $matches, PREG_SET_ORDER);
+        preg_match_all($regex, $text, $matches, PREG_SET_ORDER);
 
         if ($matches) {
             foreach ($matches as $match) {

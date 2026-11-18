@@ -255,7 +255,7 @@ class Geocode
     /**
      * Get the geo database
      *
-     * @return  mixed  Database object upon success, null if error
+     * @return  \Hubzero\Database\Driver|null  Database object upon success, null if error
      */
     public static function getGeoDBO()
     {
@@ -284,7 +284,7 @@ class Geocode
             }
         }
 
-        if (!$instance || ($instance instanceof \Exception) || !$instance->getConnection()) {
+        if (!($instance instanceof \Hubzero\Database\Driver) || !$instance->getConnection()) {
             return null;
         }
 

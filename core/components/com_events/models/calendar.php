@@ -257,7 +257,7 @@ class Calendar extends Model
 
         //test to see if this calendar is valid
         $calendarHeaders = get_headers($calendarUrl, true);
-        $statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
+        $statusCode      = (isset($calendarHeaders[0]) && is_string($calendarHeaders[0])) ? $calendarHeaders[0] : '';
 
         // if we got a 301, lets update the location
         if (stristr($statusCode, '301 Moved Permanently')) {

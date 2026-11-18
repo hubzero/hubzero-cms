@@ -70,7 +70,7 @@ class Session extends Base
             }
             $this->table = $table;
 
-            if (is_numeric($oid) || is_string($oid)) {
+            if (is_int($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {

@@ -121,7 +121,7 @@ class Pagebreak extends Plugin
                 if ($page) {
                     $page_text = $page + 1;
 
-                    if (@$matches[$page - 1][2]) {
+                    if (!empty($matches[$page - 1][2])) {
                         $attrs = self::parseAttributes($matches[$page - 1][1]);
 
                         if (@$attrs['title']) {

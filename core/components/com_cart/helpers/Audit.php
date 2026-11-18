@@ -14,7 +14,7 @@ class Audit
 {
     /**
      * Constructor
-     * @param   object  $pInfo  Product info
+     * @param   \stdClass  $pInfo  Product info
      * @param   int     $crtId  Cart ID
      * @return  \Components\Cart\Lib\Auditors\BaseAuditor
      */

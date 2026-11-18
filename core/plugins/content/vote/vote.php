@@ -40,8 +40,8 @@ class Vote extends Plugin
         $html = '';
 
         if ($params->get('show_vote')) {
-            $rating = intval(@$row->rating);
-            $rating_count = intval(@$row->rating_count);
+            $rating = intval($row->rating ?? 0);
+            $rating_count = intval($row->rating_count ?? 0);
 
             $view = Request::getString('view', '');
             $img = '';
@@ -60,7 +60,7 @@ class Vote extends Plugin
             $html .= Lang::txt('PLG_VOTE_USER_RATING', $img, $rating_count);
             $html .= "</span>\n<br />\n";
 
-            if ($view == 'article' && $row->state == 1) {
+            if ($view == 'article' && ($row->state ?? 0) == 1) {
                 $uri = \Hubzero\Utility\Uri::getInstance();
                 $uri->setQuery($uri->getQuery() . '&hitcount=0');
 

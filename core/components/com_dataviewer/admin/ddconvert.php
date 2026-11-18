@@ -103,6 +103,10 @@ if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSI
 
     require_once $ip;
     $func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
+    if (!is_callable($func)) {
+        echo 'Error: ' . $ip . ' has no ' . $func . '() function' . "\n";
+        exit(1);
+    }
     $dd_arr = $func();
 
     file_put_contents($op, $json_format(json_encode($dd_arr)));

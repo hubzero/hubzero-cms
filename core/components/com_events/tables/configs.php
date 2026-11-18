@@ -100,9 +100,11 @@ class Configs
             }
         }
 
+        // Until here the fields are the configured "name=label" lines
         $fields = [];
-        if (trim($this->fields) != '') {
-            $fs = explode("\n", trim($this->fields));
+        $lines  = is_string($this->fields) ? trim($this->fields) : '';
+        if ($lines != '') {
+            $fs = explode("\n", $lines);
             foreach ($fs as $f) {
                 $fields[] = explode('=', $f);
             }

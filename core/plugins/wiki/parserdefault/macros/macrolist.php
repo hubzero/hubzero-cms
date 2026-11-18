@@ -74,7 +74,7 @@ class Macrolist extends WikiMacro
                 $cls = '\\Plugins\\Wiki\\Parserdefault\\Macros\\' . implode('\\', array_map('ucfirst', $pieces));
             }
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, \Plugins\Wiki\Parserdefault\WikiMacro::class, true)) {
                 continue;
             }
 

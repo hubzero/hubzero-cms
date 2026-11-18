@@ -139,7 +139,7 @@ if ($this->page->get('id')) {
 
                             // only allow super groups to use php & scrips
                             // strip out php and scripts if somehow it made it through
-                        if (!is_object($this->group->params)) {
+                        if (!($this->group->params instanceof \Hubzero\Config\Registry)) {
                             $this->group->params = new \Hubzero\Config\Registry($this->group->params);
                         }
                         if (!$this->group->params->get('page_trusted', 0)) {

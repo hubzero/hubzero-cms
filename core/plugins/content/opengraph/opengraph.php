@@ -69,8 +69,8 @@ class Opengraph extends Plugin
 
         // We need help variables as we cannot change the $article variable - such then will influence global settings
         $suffix    = '';
-        $thisDesc  = $article->metadesc;
-        $thisTitle = $article->title;
+        $thisDesc  = $article->metadesc ?? '';
+        $thisTitle = $article->title ?? '';
 
         if ($view == 'featured' && $this->pluginNr == 0) {
             // Data from first article will be set

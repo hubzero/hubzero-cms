@@ -75,14 +75,14 @@ class DataDefinitionNew
         // These land inside single-quoted PHP literals, where only backslash and
         // the quote itself need escaping (addslashes would also leave a stray
         // backslash before every double quote in the title)
-        $sq = function ($s) {
+        $sq = function ($s): string {
             return str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $s);
         };
         $dd_text .= "\t" . '$dd[\'title\'] = \'' . $sq($title) . '\';' . "\n";
         $dd_text .= "\t" . '$dd[\'table\'] = \'' . $sq($dd['table']) . '\';' . "\n";
         $dd_text .= "\t" . '$dd[\'pk\'] = \'' . $sq($pk) . '\';' . "\n\n";
 
-        foreach ($dd['cols'] as $col => $val) {
+        foreach ($dd['cols'] ?? [] as $col => $val) {
             $dd_text .= "\t"
                 . '$dd[\'cols\'][\''
                 . $sq($col)

@@ -138,7 +138,8 @@ class RenderedMarkerTest extends TestCase
     private function prepare($content)
     {
         $plugin  = new Formathtml(null, ['name' => 'formathtml', 'type' => 'content']);
-        $article = (object) ['content' => $content];
+        $article = new \stdClass();
+        $article->content = $content;
         $params  = ['option' => 'com_blog'];
 
         $plugin->onContentPrepare('com_blog.entry.content', $article, $params);

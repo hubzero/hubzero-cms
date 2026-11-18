@@ -43,7 +43,7 @@ class Geshi extends Plugin
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
-        if ($context != 'com_content.article') {
+        if ($context != 'com_content.article' || !isset($article->text)) {
             return true;
         }
 

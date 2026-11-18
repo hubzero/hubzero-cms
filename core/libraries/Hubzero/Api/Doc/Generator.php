@@ -307,6 +307,9 @@ class Generator
                 ],
             ];
 
+            // The endpoint's parameters, attached once the tags are read
+            $parameters = [];
+
             // Loop through each tag
             foreach ($phpdoc->getTags() as $tag) {
                 $name    = strtolower(str_replace('api', '', $tag->getName()));
@@ -334,7 +337,7 @@ class Generator
                         }
                     }
 
-                    $endpoint['parameters'][] = (array) $parameter;
+                    $parameters[] = (array) $parameter;
                     continue;
                 }
 
@@ -356,6 +359,8 @@ class Generator
                 }
                 $endpoint[$name] = $content;
             }
+
+            $endpoint['parameters'] = $parameters;
 
             // Add endpoint to output
             // We always want indexTask to be first in the list

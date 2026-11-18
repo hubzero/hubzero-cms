@@ -68,11 +68,12 @@ class HubType extends Relational
             $model = new $classpath($database);
         }
         $modelStructure = null;
-        if (get_parent_class($model) == 'Hubzero\Database\Relational') {
+        // A model further down either family is read the same way
+        if ($model instanceof \Hubzero\Database\Relational) {
             $modelStructure = $model->getStructure()->getTableColumns($model->getTableName());
-        } elseif (get_parent_class($model) == 'Hubzero\Base\Model') {
+        } elseif ($model instanceof \Hubzero\Base\Model) {
             $modelStructure = $model->toArray();
-        } elseif (isset($database)) {
+        } elseif (isset($database) && method_exists($model, 'getFields')) {
             $modelStructure = $model->getFields();
         }
 

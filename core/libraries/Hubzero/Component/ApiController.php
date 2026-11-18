@@ -388,6 +388,9 @@ class ApiController implements ControllerInterface
                 'parameters'  => [],
             ];
 
+            // The endpoint's parameters, attached once the tags are read
+            $parameters = [];
+
             // loop through each tag
             foreach ($phpdoc->getTags() as $tag) {
                 // get tag name and content
@@ -408,7 +411,7 @@ class ApiController implements ControllerInterface
                         continue;
                     }
 
-                    $endpoint['parameters'][] = (array) $parameter;
+                    $parameters[] = (array) $parameter;
                     continue;
                 }
 
@@ -445,16 +448,17 @@ class ApiController implements ControllerInterface
                         $parameter['required'] = true;
 
                         if (in_array($endpoint['name'], ['read', 'delete'])) {
-                            $endpoint['parameters'] = [$parameter];
+                            $parameters = [$parameter];
                             break;
                         }
                     }
 
-                    $endpoint['parameters'][] = $parameter;
+                    $parameters[] = $parameter;
                 }
             }
 
             // add endpoint to output
+            $endpoint['parameters'] = $parameters;
             $output->tasks[] = $endpoint;
         }
 
