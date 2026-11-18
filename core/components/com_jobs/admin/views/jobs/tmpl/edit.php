@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
  *     isnew: mixed,
  *     job: mixed,
  *     row: mixed,
- *     subscription: mixed,
+ *     subscription: \Components\Services\Models\Subscription,
  *     types: mixed,
  * } $this
  */

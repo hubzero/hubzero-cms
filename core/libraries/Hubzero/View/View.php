@@ -8,6 +8,7 @@
 
 namespace Hubzero\View;
 
+use Hubzero\Html\Editor as HtmlEditor;
 use Hubzero\Template\Overrides;
 use Hubzero\Base\Obj;
 use Hubzero\View\Exception\InvalidLayoutException;
@@ -25,7 +26,7 @@ use Hubzero\Facades\App;
  * @method string  autolink(string $text = null)
  * @method string  clean(string $text = null)
  * @method $this   css(string $stylesheet = '', string $extension = null, string $element = null)
- * @method ($name is '' ? object : string)  editor(string $name = '', string $content = '', mixed ...$args)
+ * @method ($name is '' ? HtmlEditor : string)  editor(string $name = '', string $content = '', mixed ...$args)
  *                 The editor's HTML; with no arguments, the editor itself
  * @method mixed   grid(string $method, mixed ...$args)
  * @method string  highlight(string $text = null, mixed $phrase = null, array<mixed> $options = [])

@@ -41,8 +41,13 @@ defined('_HZEXEC_') or die();
 <?php
 if ($this->condition->expressions) {
     foreach ($this->condition->expressions as $expression) {
-        // A stored field name the condition builder no longer knows
-        if (!isset($expression->fldval) || !isset($this->conditions->{$expression->fldval})) {
+        // Not a decoded expression, or a stored field name the condition
+        // builder no longer knows
+        if (
+            !$expression instanceof \stdClass
+            || !isset($expression->fldval)
+            || !isset($this->conditions->{$expression->fldval})
+        ) {
             continue;
         }
         $operators = $this->conditions->{$expression->fldval}->operators;

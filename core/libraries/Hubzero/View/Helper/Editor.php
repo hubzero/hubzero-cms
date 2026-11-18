@@ -71,7 +71,7 @@ class Editor extends AbstractHelper
     /**
      * Get the editor object.
      *
-     * @return  object
+     * @return  \Hubzero\Html\Editor
      */
     public function instance()
     {
