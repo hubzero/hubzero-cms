@@ -41,7 +41,7 @@ class Collection
         $this->data = new \stdClass();
 
         if ($cId && is_numeric($cId)) {
-            $this->setId($cId);
+            $this->setId((int) $cId);
             $this->load();
         }
     }

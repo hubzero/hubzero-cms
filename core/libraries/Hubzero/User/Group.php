@@ -964,7 +964,7 @@ class Group extends Obj
         }
 
         if ($check_system) {
-            if (is_numeric($group) && posix_getgrgid($group)) {
+            if (is_numeric($group) && posix_getgrgid((int) $group)) {
                 return true;
             }
 

@@ -1334,7 +1334,7 @@ class Query
      *   })
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable|self  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1354,7 +1354,7 @@ class Query
      * Accepts either an array of values or a closure for subqueries.
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable|self  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1379,7 +1379,7 @@ class Query
      *   })
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable|self  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1399,7 +1399,7 @@ class Query
      * Accepts either an array of values or a closure for subqueries.
      *
      * @param   string          $column  The column to which the clause will apply
-     * @param   array<mixed>|callable  $values  The values or a closure that builds a subquery
+     * @param   array<mixed>|callable|self  $values  The values or a closure that builds a subquery
      * @param   int             $depth   The depth level of the clause, for sub clauses
      * @return  $this
      **/

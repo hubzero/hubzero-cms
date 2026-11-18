@@ -102,7 +102,7 @@ class Coupon
             throw new \Exception(Lang::txt('Use limit must be a positive number'));
         }
 
-        $this->data->useLimit = floor($limit);
+        $this->data->useLimit = floor((float) $limit);
         return true;
     }
 
@@ -129,7 +129,7 @@ class Coupon
             throw new \Exception(Lang::txt('Use limit must be a non-negative number'));
         }
 
-        $this->data->objectLimit = floor($limit);
+        $this->data->objectLimit = floor((float) $limit);
         return true;
     }
 
@@ -289,7 +289,7 @@ class Coupon
 
         $obj = new \stdClass();
         $obj->id = $object;
-        $obj->objectLimit = ceil($objectLimit);
+        $obj->objectLimit = ceil((float) $objectLimit);
 
         $this->data->objects[] = $obj;
         return true;

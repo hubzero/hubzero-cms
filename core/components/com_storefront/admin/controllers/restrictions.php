@@ -173,7 +173,7 @@ class Restrictions extends AdminController
             } else {
                 // Are we adding by username?
                 if ($user) {
-                    RestrictionsHelper::addPermittedSkuUser($uId, $sId, $user);
+                    RestrictionsHelper::addPermittedSkuUser((int) $uId, $sId, $user);
                     $matched++;
                 } else {
                     $noHubUserMatch[] = $user;

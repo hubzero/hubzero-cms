@@ -40,7 +40,7 @@ class OptionGroup
         $this->db = App::get('db');
 
         if (isset($ogId) && is_numeric($ogId) && $ogId) {
-            $this->load($ogId);
+            $this->load((int) $ogId);
         }
     }
 

@@ -40,7 +40,7 @@ class Option
         $this->db = App::get('db');
 
         if (isset($oId) && is_numeric($oId) && $oId) {
-            $this->load($oId);
+            $this->load((int) $oId);
         }
     }
 

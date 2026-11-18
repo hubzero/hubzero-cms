@@ -103,7 +103,7 @@ class Mysql implements
     public function getClientDetails($clientId)
     {
         // create model
-        $application = \Components\Developer\Models\Application::oneByClientid($clientId);
+        $application = \Components\Developer\Models\Application::oneByClientid((string) $clientId);
 
         // load application by client id
         if (!$application->get('id')) {

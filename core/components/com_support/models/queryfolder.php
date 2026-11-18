@@ -204,11 +204,11 @@ class QueryFolder extends Relational
                     switch ($f->get('alias')) {
                         case 'common':
                             $type = ($iscore == 1 ? 'common' : 'commonnotacl');
-                            $j = Query::populateDefaults($type, $f->id);
+                            $j = Query::populateDefaults($type, (int) $f->id);
                             break;
 
                         case 'mine':
-                            Query::populateDefaults('mine', $f->id);
+                            Query::populateDefaults('mine', (int) $f->id);
                             break;
 
                         default:

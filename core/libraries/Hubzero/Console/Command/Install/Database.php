@@ -1340,7 +1340,7 @@ class Database
             $hasCreateDb = false;
 
             foreach ($grants as $grant) {
-                $grantUpper = strtoupper($grant);
+                $grantUpper = strtoupper((string) $grant);
 
                 // ALL PRIVILEGES includes everything
                 if (strpos($grantUpper, 'ALL PRIVILEGES') !== false) {

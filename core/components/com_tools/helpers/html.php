@@ -147,7 +147,7 @@ class Html
         if (strstr((string) $timestamp, '-')) {
             $timestamp = self::mkt((string) $timestamp);
         }
-        $text = self::timeAgoo($timestamp);
+        $text = self::timeAgoo((int) $timestamp);
 
         $parts = explode(' ', $text);
 

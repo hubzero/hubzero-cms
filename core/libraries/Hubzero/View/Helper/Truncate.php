@@ -34,6 +34,6 @@ class Truncate extends AbstractHelper
             throw new \InvalidArgumentException(__METHOD__ . '(); Length must be an integer');
         }
 
-        return Str::truncate($text, $length, $options);
+        return Str::truncate($text, (int) $length, $options);
     }
 }

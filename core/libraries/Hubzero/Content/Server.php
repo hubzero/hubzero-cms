@@ -422,7 +422,7 @@ class Server extends Obj
 
             $buffer_size = 8096;
 
-            fseek($fp, $first);
+            fseek($fp, (int) $first);
 
             if (($last + 1) == $filesize) {
                 fpassthru($fp);
