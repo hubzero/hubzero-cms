@@ -155,8 +155,8 @@ class Access extends Table
             if (!$gid or $this->existsEntry($vid, $gid)) {
                 continue;
             } else {
-                $query = "INSERT INTO $this->tableName (publication_version_id,group_id)
-				          VALUES($this->db->quote($vid), $this->db->quote($gid))";
+                $query = "INSERT INTO $this->tableName (publication_version_id,group_id) VALUES ("
+                    . $this->db->quote($vid) . ", " . $this->db->quote($gid) . ")";
                 $this->db->setQuery($query);
                 $this->db->query();
 

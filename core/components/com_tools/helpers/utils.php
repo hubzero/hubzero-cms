@@ -574,6 +574,7 @@ class Utils
      *
      * @param   string  $comm       Command to run on middleware
      * @param   mixed  $output     Output to be returned from middleware
+     * @param-out  \stdClass|null  $output  The JSON object it reported, if any
      *
      * @return     mixed
      */
@@ -603,15 +604,17 @@ class Utils
         $output = null;
         foreach ($results as $line) {
             $decoded = json_decode(trim($line));
-            if ($decoded !== null) {
+            if ($decoded instanceof \stdClass) {
                 $output = $decoded;
                 break;
             }
         }
         if ($output === null) {
             // Fall back to concatenated output in case the JSON spans lines.
-            $results = trim(implode('', $results));
-            $output = json_decode($results);
+            $decoded = json_decode(trim(implode('', $results)));
+            if ($decoded instanceof \stdClass) {
+                $output = $decoded;
+            }
         }
 
         if ($execFailed) {
@@ -668,7 +671,7 @@ class Utils
                 . (isset($output->stack_dump) ? ' stack_dump=' . $output->stack_dump : ''));
         }
 
-        if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0)) {
+        if ($output === null || count(get_object_vars($output)) <= 0) {
             $retval = false;
         }
 

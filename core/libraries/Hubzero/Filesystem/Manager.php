@@ -139,11 +139,11 @@ class Manager
 
         // Make sure we got the mounts we need
         if (!$sourceMount) {
-            throw new \Exception("'{$sourceMount}' has not been mounted", 500);
+            throw new \Exception("'{$sourceName}' has not been mounted", 500);
         }
 
         if (!$destMount) {
-            throw new \Exception("'{$destMount}' has not been mounted", 500);
+            throw new \Exception("'{$destName}' has not been mounted", 500);
         }
 
         // Check to see if destination already exists

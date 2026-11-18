@@ -1150,7 +1150,7 @@ class Pipeline extends SiteController
         if ($id && $oldgroups !== $newgroups) {
             $out = '';
             if (!\Components\Tools\Helpers\Utils::middleware('resetfacl', $out)) {
-                Log::debug(__FUNCTION__ . "() resetfacl failed for " . $tool['toolname'] . ": $out");
+                Log::debug(__FUNCTION__ . "() resetfacl failed for " . $tool['toolname'] . ": " . json_encode($out));
             }
         }
 

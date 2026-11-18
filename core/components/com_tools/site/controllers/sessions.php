@@ -1302,7 +1302,7 @@ class Sessions extends SiteController
             $output->debug = trim($app->params->get('vncDebug', ''), '"');
         }
 
-        foreach ($output as $key => $value) {
+        foreach (get_object_vars($output) as $key => $value) {
             $output->$key = strval($value);
         }
 

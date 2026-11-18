@@ -684,8 +684,7 @@ class Elements
      *                                 The default is 'params' if not supplied.
      * @param   string  $group         An optional group to render.
      *                                 The default group is used if not supplied.
-     * @return  string|object          HTML of the options; an object describing
-     *                                 the element if its type is unknown.
+     * @return  string  HTML of the options, or a note that the type is unknown
      */
     public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
     {
@@ -696,16 +695,7 @@ class Elements
 
         // Check for an error.
         if ($element === false) {
-            $result = new stdClass();
-            $result->label   = $node->label;
-            $result->element = Lang::txt('Element not defined for type') . ' = ' . $type;
-            $result->description = '';
-            $result->text    = $result->label;
-            $result->name    = $result->label;
-            $result->default = '';
-            $result->type    = $type;
-
-            return $result;
+            return Lang::txt('Element not defined for type') . ' = ' . $type;
         }
 
         // Get value.
