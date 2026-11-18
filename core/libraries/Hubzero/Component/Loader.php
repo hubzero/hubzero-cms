@@ -465,7 +465,7 @@ class Loader
      * @param   string  $option  Name of the component
      * @param   string|null  $client  Client to load the router for
      * @param   mixed  $version
-     * @return  object  Component router
+     * @return  \Hubzero\Component\Router\RouterInterface  Component router
      */
     public function router($option, $client = null, $version = null)
     {

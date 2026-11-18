@@ -8,6 +8,8 @@
 
 namespace Hubzero\Facades;
 
+use Hubzero\Component\Router\RouterInterface;
+
 /**
  * Component loader facade
  *
@@ -16,8 +18,8 @@ namespace Hubzero\Facades;
  * @method static string path(string $option)
  * @method static string canonical(string $option)
  * @method static string render(string $option, array<mixed> $params = [])
- * @method static object router(string $option, string $client = null, string $version = null)
- * @method static object load(string $option, bool $strict = false)
+ * @method static RouterInterface router(string $option, string $client = null, string $version = null)
+ * @method static \stdClass load(string $option, bool $strict = false)
  *
  * @codeCoverageIgnore
  */

@@ -440,28 +440,24 @@ class Blog extends Plugin
      */
     private function entry()
     {
-        if (isset($this->entry) && is_object($this->entry)) {
-            $row = $this->entry;
-        } else {
-            $path = Request::path();
-            $alias = '';
-            if (strstr($path, '/')) {
-                $bits = $this->parseUrl();
+        $path = Request::path();
+        $alias = '';
+        if (strstr($path, '/')) {
+            $bits = $this->parseUrl();
 
-                $alias = end($bits);
-            }
-
-            $row = \Components\Blog\Models\Entry::all()
-                ->whereEquals('alias', $alias)
-                ->whereEquals('scope', $this->model->get('scope'))
-                ->whereEquals('scope_id', $this->model->get('scope_id'))
-                ->whereIn(
-                    'state',
-                    [\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED],
-                )
-                ->order('state', 'desc')
-                ->row();
+            $alias = end($bits);
         }
+
+        $row = \Components\Blog\Models\Entry::all()
+            ->whereEquals('alias', $alias)
+            ->whereEquals('scope', $this->model->get('scope'))
+            ->whereEquals('scope_id', $this->model->get('scope_id'))
+            ->whereIn(
+                'state',
+                [\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED],
+            )
+            ->order('state', 'desc')
+            ->row();
 
         if (!$row->get('id') || $row->isDeleted()) {
             App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));

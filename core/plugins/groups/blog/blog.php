@@ -579,23 +579,19 @@ class Blog extends Plugin
      */
     private function entry()
     {
-        if (isset($this->entry) && is_object($this->entry)) {
-            $row = $this->entry;
-        } else {
-            $alias = '';
-            $path = Request::path();
-            if (strstr($path, '/')) {
-                $bits = $this->parseUrl();
+        $alias = '';
+        $path = Request::path();
+        if (strstr($path, '/')) {
+            $bits = $this->parseUrl();
 
-                $alias = end($bits);
-            }
-
-            $row = \Components\Blog\Models\Entry::oneByScope(
-                $alias,
-                $this->model->get('scope'),
-                $this->model->get('scope_id'),
-            );
+            $alias = end($bits);
         }
+
+        $row = \Components\Blog\Models\Entry::oneByScope(
+            $alias,
+            $this->model->get('scope'),
+            $this->model->get('scope_id'),
+        );
 
         if (!$row->get('id') || $row->isDeleted()) {
             App::abort(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));

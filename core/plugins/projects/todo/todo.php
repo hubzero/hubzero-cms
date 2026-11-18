@@ -368,11 +368,7 @@ class Todo extends Plugin
         $objO = $this->model->table('Owner');
         $view->set('team', $objO->getOwners($this->model->get('id'), $tfilters = ['status' => 1]));
 
-        if (isset($this->entry) && is_object($this->entry)) {
-            $view->set('row', $this->entry);
-        } else {
-            $view->set('row', $this->todo->entry($todoid));
-        }
+        $view->set('row', $this->todo->entry($todoid));
 
         if (!$view->get('row')->exists() && $this->task != 'new') {
             return $this->page();

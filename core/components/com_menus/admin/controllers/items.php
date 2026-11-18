@@ -293,7 +293,8 @@ class Items extends AdminController
 
                         parse_str($item->get('link'), $vars);
 
-                        if (isset($vars['view'])) {
+                        // A link may name view[] as an array; that names no view
+                        if (isset($vars['view']) && is_string($vars['view'])) {
                             // Attempt to load the view xml file.
                             $file = Component::path($compName) . '/site/views/'
                                 . $vars['view'] . '/metadata.xml';

@@ -29,7 +29,7 @@ class Guide extends Plugin
     /**
      * View object
      *
-     * @var object|null
+     * @var \Hubzero\Plugin\View|null
      */
     public $view = null;
 
@@ -158,7 +158,7 @@ class Guide extends Plugin
     {
         $this->view->setLayout('mark');
 
-        $member = $this->view->offering->member(User::get('id'));
+        $member = $this->view->get('offering')->member(User::get('id'));
         if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00') {
             return;
         } elseif (!$member->get('id')) {

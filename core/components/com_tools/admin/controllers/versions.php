@@ -135,7 +135,7 @@ class Versions extends AdminController
     /**
      * Edit an entry version
      *
-     * @param   mixed  $row
+     * @param   Version|null  $row
      *
      * @return  void
      */
@@ -348,7 +348,7 @@ class Versions extends AdminController
     /**
      * Edit a zone
      *
-     * @param   object|null  $row
+     * @param   Zone|null  $row
      * @return  void
      */
     public function editZoneTask($row = null)
@@ -393,7 +393,7 @@ class Versions extends AdminController
 
         if (!$row->save()) {
             Notify::error($row->getError());
-            $this->editTask($row);
+            $this->editZoneTask($row);
 
             return;
         }

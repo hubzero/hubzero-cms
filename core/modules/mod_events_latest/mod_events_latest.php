@@ -143,12 +143,12 @@ class EventsLatest extends Module
                 // Begin of today - $days
                 $beginDate = date(
                     'Y-m-d',
-                    mktime(0, 0, 0, (int) date('m'), date('d') - $days, (int) date('Y')),
+                    (int) mktime(0, 0, 0, (int) date('m'), date('d') - $days, (int) date('Y')),
                 ) . ' 00:00:00';
                 // End of today + $days
                 $endDate = date(
                     'Y-m-d',
-                    mktime(0, 0, 0, (int) date('m'), date('d') + $days, (int) date('Y')),
+                    (int) mktime(0, 0, 0, (int) date('m'), date('d') + $days, (int) date('Y')),
                 ) . ' 23:59:59';
                 break;
             case 4:
@@ -158,7 +158,7 @@ class EventsLatest extends Module
                 //start today
                 $beginDate = date(
                     'Y-m-d',
-                    mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y')),
+                    (int) mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y')),
                 ) . ' 00:00:00';
                 // end of this month
                 //$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y'))) . ' 23:59:59';
@@ -300,8 +300,8 @@ class EventsLatest extends Module
     /**
      * This custom sort compare function compares the start times of events that are refernced by the a & b vars
      *
-     * @param   object   &$a  Parameter description (if any) ...
-     * @param   object   &$b  Parameter description (if any) ...
+     * @param   \stdClass  &$a  An event row
+     * @param   \stdClass  &$b  An event row
      * @return  integer  Return description (if any) ...
      */
     public function cmpByStartTime(&$a, &$b)

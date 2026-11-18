@@ -216,7 +216,7 @@ class Archive extends Obj
      *
      * @param   string|null  $property  Param to return
      * @param   mixed   $default   Value to return if property not found
-     * @return  object  Registry
+     * @return  ($property is null ? \Hubzero\Config\Registry : mixed)  The config, or the param asked for
      * @since   1.3.1
      */
     public function config($property = null, $default = null)

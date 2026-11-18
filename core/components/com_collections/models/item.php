@@ -102,8 +102,8 @@ class Item extends Base
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
-                if (substr($oid, 0, 3) == 'tmp') {
-                    $this->table->loadByTitle($oid);
+                if (substr((string) $oid, 0, 3) == 'tmp') {
+                    $this->table->loadByTitle((string) $oid);
                 } else {
                     $this->table->load($oid);
                 }
