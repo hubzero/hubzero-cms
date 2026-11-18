@@ -168,8 +168,8 @@ class Quickicon extends Module
     /**
      * Get the alternate title for the module
      *
-     * @param   object  $params  The module parameters.
-     * @param   object  $module  The module.
+     * @param   \Hubzero\Config\Registry  $params  The module parameters.
+     * @param   \stdClass  $module  The module.
      * @return  string  The alternate title for the module.
      */
     public static function getTitle($params, $module)

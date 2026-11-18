@@ -24,7 +24,7 @@ class Login extends Module
     /**
      * Get the redirect URL
      *
-     * @param   object  $params  Registry The module options.
+     * @param   \Hubzero\Config\Registry  $params  The module options.
      * @param   string  $type    Type
      * @return  string
      */

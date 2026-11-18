@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die;
  * Set by the code that includes this file.
  *
  * @var mixed $count
- * @var mixed $list
+ * @var array<int, \stdClass> $list
  * @var mixed $moduleclass_sfx
  * @var mixed $params
  * @var mixed $separator

@@ -46,7 +46,7 @@ class Breadcrumbs extends Module
     /**
      * Get the list of crumbs
      *
-     * @return  array<mixed>
+     * @return  array<int, \stdClass>
      */
     public function getList()
     {

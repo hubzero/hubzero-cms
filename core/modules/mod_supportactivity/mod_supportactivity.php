@@ -74,7 +74,7 @@ class Supportactivity extends Module
      * - created
      * - category (comment|change|ticket)
      *
-     * @param   object  $query
+     * @param   \Hubzero\Database\Query  $query
      * @param   \Hubzero\Database\Driver  $database
      * @return  void
      */
