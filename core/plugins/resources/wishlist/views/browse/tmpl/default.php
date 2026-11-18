@@ -74,7 +74,7 @@ $this->css();
                 if ($item->status == 7) {
                     $status = 'outstanding';
                 } elseif (
-                    isset($item->ranked)
+                    $item->get('ranked') !== null
                     && !$item->ranked
                     && $item->status != 1
                     && $item->status != 3
@@ -87,7 +87,7 @@ $this->css();
                 }
 
                 $state  = (
-                    isset($item->ranked)
+                    $item->get('ranked') !== null
                     && !$item->ranked
                     && $item->status != 1
                     && ($this->admin == 2 or $this->admin == 3)
@@ -172,7 +172,9 @@ $this->css();
                         <span class="entry-reward">
                         <?php
                         if (
-                            isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)
+                            $item->get('bonus') !== null
+                            && $item->bonus > 0
+                            && ($item->status == 0 or $item->status == 6)
                         ) { ?>
                             <?php
                             $wishUrl = Route::url(
@@ -240,14 +242,18 @@ $this->css();
                         $html = '';
                     switch ($item->status) {
                         case 0:
-                            if (isset($item->ranked) && !$item->ranked && ($this->admin == 2 or $this->admin == 3)) {
+                            if (
+                                $item->get('ranked') !== null
+                                && !$item->ranked
+                                && ($this->admin == 2 or $this->admin == 3)
+                            ) {
                                 $html .= '<a class="rankit" href="index.php?option=' . $this->option
                                     . '&task=wish&category=' . $this->wishlist->category . '&rid='
                                     . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby='
                                     . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags='
                                     . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS')
                                     . '</a>' . "\n";
-                            } elseif (isset($item->ranked) && $item->ranked) {
+                            } elseif ($item->get('ranked') !== null && $item->ranked) {
                                 $percent = ($item->ranking / 50) * 100;
                                 $levelClass = 'priority-level priority-level' . $item->id;
                                 $this->css('

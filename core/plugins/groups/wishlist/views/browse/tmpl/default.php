@@ -88,7 +88,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                 if ($item->status == 7) {
                     $status = 'outstanding';
                 } elseif (
-                    isset($item->ranked)
+                    $item->get('ranked') !== null
                     && !$item->ranked
                     && $item->status != 1
                     && $item->status != 3
@@ -101,7 +101,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                 }
 
                 $state  = (
-                    isset($item->ranked)
+                    $item->get('ranked') !== null
                     && !$item->ranked
                     && $item->status != 1
                     && ($this->admin == 2 or $this->admin == 3)
@@ -189,7 +189,9 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                             <span class="entry-reward">
                             <?php
                             if (
-                                isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)
+                                $item->get('bonus') !== null
+                                && $item->bonus > 0
+                                && ($item->status == 0 or $item->status == 6)
                             ) { ?>
                                 <?php
                                 $wishUrl = Route::url(
@@ -261,7 +263,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                             switch ($item->status) {
                                 case 0:
                                     if (
-                                        isset($item->ranked)
+                                        $item->get('ranked') !== null
                                         && !$item->ranked
                                         && ($this->admin == 2 or $this->admin == 3)
                                     ) {
@@ -273,7 +275,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                             . $this->escape($this->filters['sortby']) . '&tags='
                                             . $this->escape($this->filters['tag']) . '">'
                                             . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
-                                    } elseif (isset($item->ranked) && $item->ranked) {
+                                    } elseif ($item->get('ranked') !== null && $item->ranked) {
                                         //$html .= Lang::txt('WISH_PRIORITY').': <span
                                         //    class="priority">'.$item->ranking.'</span>'."\n";
                                         $percent = ($item->ranking / 50) * 100;

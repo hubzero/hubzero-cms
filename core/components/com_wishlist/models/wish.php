@@ -839,6 +839,50 @@ class Wish extends Relational
     }
 
     /**
+     * Select the figures the wish lists show for each wish
+     *
+     * The lists read these off each row, as they did before the ORM rewrite
+     * dropped them from the query: whether the viewer has ranked the wish
+     * (only for a signed-in viewer), how many published comments it has,
+     * and the bonus points held for it and how many members offered them.
+     *
+     * @param   \Hubzero\Database\Relational  $entries  A query on wishes
+     * @param   int  $userId  The viewer, or 0 for a guest
+     * @return  void
+     */
+    public static function selectListFigures($entries, $userId)
+    {
+        $wishes   = $entries->getTableName();
+        $rankings = Rank::blank()->getTableName();
+        $comments = Comment::blank()->getTableName();
+
+        if ($userId) {
+            $entries->select(
+                '(SELECT COUNT(*) FROM `' . $rankings . '` AS wv'
+                    . ' WHERE wv.wishid=' . $wishes . '.id AND wv.userid=' . (int) $userId . ')',
+                'ranked',
+            );
+        }
+
+        $entries
+            ->select(
+                '(SELECT COUNT(*) FROM `' . $comments . '` AS cc'
+                    . ' WHERE cc.item_id=' . $wishes . ".id AND cc.state=1 AND cc.item_type='wish')",
+                'numreplies',
+            )
+            ->select(
+                "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold'"
+                    . ' AND referenceid=' . $wishes . '.id)',
+                'bonus',
+            )
+            ->select(
+                "(SELECT COUNT(DISTINCT uid) FROM `#__users_transactions` WHERE category='wish' AND type='hold'"
+                    . ' AND referenceid=' . $wishes . '.id)',
+                'bonusgivenby',
+            );
+    }
+
+    /**
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *

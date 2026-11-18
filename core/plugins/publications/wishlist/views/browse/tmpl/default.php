@@ -62,7 +62,7 @@ if ($this->rows->count() > 0) {
         if ($item->status == 7) {
             $status = 'outstanding';
         } elseif (
-            isset($item->ranked) && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status
+            $item->get('ranked') !== null && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status
             != 4 && ($this->admin == 2 or $this->admin == 3)
         ) {
             $status = 'unranked';
@@ -70,8 +70,12 @@ if ($this->rows->count() > 0) {
             $status = 'outstanding';
         }
 
-        $state = (isset($item->ranked) && !$item->ranked && $item->status != 1 && ($this->admin == 2 or $this->admin
-        == 3)) ? 'new' : '';
+        $state = (
+            $item->get('ranked') !== null
+            && !$item->ranked
+            && $item->status != 1
+            && ($this->admin == 2 or $this->admin == 3)
+        ) ? 'new' : '';
         $state .= ($item->private) ? ' private' : '';
         switch ($item->status) {
             case 3:
@@ -165,7 +169,7 @@ if ($this->rows->count() > 0) {
                     <td class="reward">
                         <span class="entry-reward">
                         <?php
-                        $hasBonus = isset($item->bonus) && $item->bonus > 0;
+                        $hasBonus = $item->get('bonus') !== null && $item->bonus > 0;
                         $isActiveStatus = $item->status == 0 || $item->status == 6;
                         $bonusUrl = Route::url(
                             $wishBaseUrl . '&action=addbonus'
@@ -237,7 +241,7 @@ if ($this->rows->count() > 0) {
                     switch ($item->status) {
                         case 0:
                             if (
-                                isset($item->ranked)
+                                $item->get('ranked') !== null
                                 && !$item->ranked
                                 && ($this->admin == 2 or $this->admin == 3)
                             ) {
@@ -259,7 +263,7 @@ if ($this->rows->count() > 0) {
                                     . Lang::txt('COM_WISHLIST_WISH_RANK_THIS')
                                     . '</a>'
                                     . "\n";
-                            } elseif (isset($item->ranked) && $item->ranked) {
+                            } elseif ($item->get('ranked') !== null && $item->ranked) {
                                 $this->css('
 										.priority-level-base .priority-level-' . $item->id . ' {
 											width: ' . (($item->ranking / 50) * 100) . '%;

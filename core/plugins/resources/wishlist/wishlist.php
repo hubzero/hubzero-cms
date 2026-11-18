@@ -280,6 +280,9 @@ class Wishlist extends Plugin
                         'negative',
                     );
 
+                // Whether the viewer ranked each wish, its comments, and its bonus
+                \Components\Wishlist\Models\Wish::selectListFigures($entries, (int) User::get('id'));
+
                 // list sorting
                 if ($filters['sortby']) {
                     switch ($filters['sortby']) {
@@ -309,11 +312,6 @@ class Wishlist extends Plugin
                             break;
                         case 'bonus':
                             $entries
-                                ->select(
-                                    "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish'"
-                                        . " AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)",
-                                    'bonus',
-                                )
                                 ->order('status', 'asc')
                                 ->order('bonus', 'desc')
                                 ->order('positive', 'desc')
