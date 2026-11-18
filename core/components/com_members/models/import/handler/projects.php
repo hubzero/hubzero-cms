@@ -150,7 +150,7 @@ class Projects extends Obj
 
             $objO = $project->table('Owner');
 
-            if (!$objO->removeOwners($project->get('id'), $id, 1)) {
+            if (!$objO->removeOwners($project->get('id'), [$id])) {
                 $this->setError(Lang::txt('COM_MEMBERS_IMPORT_ERROR_UNABLE_TO_REMOVE_FROM_PROJECT', $pid));
                 continue;
             }

@@ -911,7 +911,7 @@ class Projects extends AdminController
 
         // Erase all owners
         $objO = new Tables\Owner($this->database);
-        $objO->removeOwners($id, '', 0, $permanent, '', $all = 1);
+        $objO->removeOwners($id, [], 0, $permanent, '', $all = 1);
 
         // Erase owner group
         $group = new \Hubzero\User\Group();
