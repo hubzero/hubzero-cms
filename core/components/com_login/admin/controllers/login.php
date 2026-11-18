@@ -52,7 +52,7 @@ class Login extends AdminController
                     continue;
                 }
 
-                if (method_exists($className, 'display')) {
+                if (method_exists($myplugin, 'display')) {
                     $this->view->set('return', Request::getString('return', null));
 
                     $result = $myplugin->display($this->view, null);

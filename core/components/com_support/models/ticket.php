@@ -668,7 +668,7 @@ class Ticket extends Relational
     /**
      * Get a record count
      *
-     * @param   object|string  $query  The saved query, or its SQL
+     * @param   Query|string  $query  The saved query, or its SQL
      * @param   array<mixed>    $filters
      * @return  integer
      */
@@ -735,7 +735,7 @@ class Ticket extends Relational
     /**
      * Get a record count
      *
-     * @param   object|string  $query  The saved query, or its SQL
+     * @param   Query|string  $query  The saved query, or its SQL
      * @param   array<mixed>    $filters
      * @return  array<mixed>
      */

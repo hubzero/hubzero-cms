@@ -48,7 +48,7 @@ class Certificate extends Base
     /**
      * Properties object
      *
-     * @var object|null
+     * @var \stdClass|null
      */
     protected $properties = null;
 
@@ -196,7 +196,7 @@ class Certificate extends Base
     /**
      * Process the PDF pages to images
      *
-     * @param   object $fun Closure
+     * @param   \Closure $fun Called with each page image's path and number
      * @return  void
      */
     public function eachPage($fun)
@@ -273,7 +273,7 @@ class Certificate extends Base
      * string and decodes it or creates an object with base values if
      * no stored value is found.
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function properties()
     {
