@@ -78,7 +78,8 @@ class Comment extends Table
      * @param   integer  $activityid
      * @param   string|int $lastvisit
      * @param   integer  $parent_activity
-     * @return  array<\stdClass>|\stdClass|false  The comments, or the one row when an activity id is given
+     * @return  ($activityid is 0 ? array<\stdClass>|false : array<\stdClass>|\stdClass|false)
+     *          The comments, or the first row when an activity id is given
      */
     public function getComments($itemid = null, $tbl = 'blog', $activityid = 0, $lastvisit = 0, $parent_activity = 0)
     {
