@@ -511,7 +511,7 @@ class Wish extends Relational
      * Return the adapter for this entry's scope,
      * instantiating it if it doesn't already exist
      *
-     * @return  object
+     * @return  \Components\Wishlist\Models\Adapters\Base
      */
     private function adapter()
     {

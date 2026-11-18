@@ -589,7 +589,7 @@ class Link extends Base
      * Draw attachment
      *
      * @param   object  $data
-     * @param   object  $params
+     * @param   \stdClass|null  $params
      * @return  string
      */
     public function drawAttachment($data, $params)

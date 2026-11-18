@@ -23,14 +23,14 @@ class Editor extends Obj
     /**
      * Handler object
      *
-     * @var  object|null
+     * @var  \Components\Publications\Models\Handler|null
      */
     public $handler = null;
 
     /**
      * Constructor
      *
-     * @param   object  $handler
+     * @param   \Components\Publications\Models\Handler  $handler
      * @param   \stdClass  $configs
      * @return  void
      */

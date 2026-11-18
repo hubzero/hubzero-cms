@@ -67,7 +67,7 @@ class Blocks extends Obj
      * @param   string|null   $manifest
      * @param   integer  $blockId
      * @param   integer|null  $elementId
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($name, $pub = null, $manifest = null, $blockId = 0, $elementId = null)
     {

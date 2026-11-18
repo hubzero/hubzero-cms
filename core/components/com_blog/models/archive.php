@@ -192,7 +192,7 @@ class Archive extends Obj
      * Return the adapter for this entry's scope,
      * instantiating it if it doesn't already exist
      *
-     * @return  object
+     * @return  \Components\Blog\Models\Adapters\Base
      * @since   1.3.1
      */
     private function adapter()

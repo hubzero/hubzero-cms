@@ -723,7 +723,7 @@ class Form
      * the field will be set whether it already exists or not.  If it isn't set, then the field
      * will not be replaced if it already exists.
      *
-     * @param   object   &$element  The XML element object representation of the form field.
+     * @param   mixed   &$element  The XML element object representation of the form field (anything else is refused).
      * @param   string|null   $group     The optional dot-separated form group path on which to set the field.
      * @param   boolean  $replace   True to replace an existing field if one already exists.
      * @return  boolean  True on success.

@@ -349,9 +349,9 @@ class Html
     /**
      * Display certain supporting docs and/or link to more
      *
-     * @param      object  $publication  Publication object
+     * @param      \Components\Resources\Models\Entry  $publication  Publication object
      * @param      string  $option       Component name
-     * @param      object|mixed  $children     Publication attachments
+     * @param      \Hubzero\Database\Rows|mixed  $children     Publication attachments
      * @return     string HTML
      */
     public static function sortSupportingDocs($publication, $option, $children)

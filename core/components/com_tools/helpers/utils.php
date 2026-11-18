@@ -685,7 +685,7 @@ class Utils
      * session's redirect_url when this cookie is present, so every path that
      * hands the browser that URL must call this first.
      *
-     * @param   object|mixed  $output  Output of a middleware "view" command
+     * @param   \stdClass|mixed|null  $output  Output of a middleware "view" command
      * @return  void
      */
     public static function setWeberAuthCookie($output)

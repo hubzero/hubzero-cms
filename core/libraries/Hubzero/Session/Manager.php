@@ -164,7 +164,7 @@ class Manager extends Obj
     /**
      * Get session store object
      *
-     * @return  object  The session store object
+     * @return  \Hubzero\Session\Store  The session store object
      */
     public function getStore()
     {

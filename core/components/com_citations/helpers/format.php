@@ -877,7 +877,7 @@ class Format
      * Check if a property of an object exist and is filled in
      *
      * @param   string   $key  Property name
-     * @param   object   $row  Object to look in
+     * @param   \Components\Citations\Models\Citation|\stdClass   $row  Object to look in
      * @return  boolean  True if exists, false if not
      */
     public static function keyExistsOrIsNotEmpty($key, $row)

@@ -1909,8 +1909,8 @@ class File extends Base
      * Draw attachment
      *
      * @param   array<mixed>|object  $data
-     * @param   object  $params
-     * @param   object|null  $handler
+     * @param   \stdClass|null  $params
+     * @param   \Components\Publications\Models\Handler|null  $handler
      * @return  string  HTML
      */
     public function drawAttachment($data, $params, $handler = null)

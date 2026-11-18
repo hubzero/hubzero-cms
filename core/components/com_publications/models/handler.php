@@ -68,4 +68,29 @@ abstract class Handler extends Obj
      * @return  bool
      */
     abstract public function checkRequired($attachments);
+
+    /**
+     * Draw an attachment the handler's way
+     *
+     * @param   mixed  $data
+     * @param   mixed  $params
+     * @return  mixed  Its HTML, if the handler has a view of its own
+     */
+    abstract public function drawAttachment($data, $params);
+
+    /**
+     * Draw the handler's status in the editor
+     *
+     * @param   Editor  $editor
+     * @return  mixed
+     */
+    abstract public function drawStatus($editor);
+
+    /**
+     * Draw the handler's editor
+     *
+     * @param   Editor  $editor
+     * @return  mixed
+     */
+    abstract public function drawEditor($editor);
 }

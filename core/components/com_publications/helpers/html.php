@@ -127,7 +127,7 @@ class Html
     /**
      * Draw supporting docs quick links
      *
-     * @param   object|null  $publication
+     * @param   \Components\Publications\Models\Publication|null  $publication
      * @return  string|false  HTML
      */
     public static function drawSupportingItems($publication = null)
