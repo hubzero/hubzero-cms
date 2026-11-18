@@ -381,20 +381,20 @@ class Support extends Plugin
                     $html = str_replace("\n", "\r\n", $html);
 
                     // Build message
-                    $message = new \Hubzero\Mail\Message();
-                    $message
+                    $mail = new \Hubzero\Mail\Message();
+                    $mail
                         ->setSubject($subject)
                         ->addFrom($from['email'], $from['name'])
                         ->addTo($email, $name)
                         ->addHeader('X-Component', 'com_support')
                         ->addHeader('X-Component-Object', 'support_ticket_comment');
 
-                    $message->addPart($plain, 'text/plain');
+                    $mail->addPart($plain, 'text/plain');
 
-                    $message->addPart($html, 'text/html');
+                    $mail->addPart($html, 'text/html');
 
                     // Send mail
-                    if (!$message->send()) {
+                    if (!$mail->send()) {
                         echo 'CRON email failed: ' . Lang::txt('Failed to mail %s', $email);
                         //$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
                         Log::error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
