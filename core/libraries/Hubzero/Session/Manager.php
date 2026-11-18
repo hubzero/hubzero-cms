@@ -40,7 +40,7 @@ class Manager extends Obj
     /**
      * The session store object.
      *
-     * @var  object|null
+     * @var  \Hubzero\Session\Store|null
      */
     protected $store = null;
 

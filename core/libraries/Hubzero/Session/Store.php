@@ -41,7 +41,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      *
      * @param   string  $name     The session store to instantiate
      * @param   array<mixed>   $options  Array of options
-     * @return  object
+     * @return  self
      */
     public static function getInstance($name = 'none', $options = [])
     {
@@ -50,7 +50,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
         if (empty(self::$instances[$name])) {
             $class = __NAMESPACE__ . '\\Storage\\' . ucfirst($name);
 
-            if (!class_exists($class)) {
+            if (!is_a($class, self::class, true)) {
                 // No attempt to die gracefully here, as it tries to close the non-existing session
                 exit('Unable to load session storage class: ' . $name);
             }

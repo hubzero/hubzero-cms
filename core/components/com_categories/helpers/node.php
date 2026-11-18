@@ -216,7 +216,7 @@ class Node extends Obj
     /**
      * Parent Category object
      *
-     * @var  object|null
+     * @var  Node|null
      */
     protected $parent = null;
 

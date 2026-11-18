@@ -26,7 +26,7 @@ class Oauth
     /**
      * The http tranport object
      *
-     * @var  object|null
+     * @var  Curl|null
      **/
     private $http = null;
 
