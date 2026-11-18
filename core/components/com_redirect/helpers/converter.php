@@ -17,8 +17,8 @@ use Hubzero\Facades\Route;
 class Converter
 {
     /**
-     * @param   mixed  $html
-     * @return  array<string>|string|null
+     * @param   string  $html  HTML whose links to convert
+     * @return  string|null  Null if the pattern failed
      */
     public static function convert($html)
     {
@@ -57,7 +57,7 @@ class Converter
                         $matches[0],
                     );
                 }
-                return $newTag;
+                return $newTag ?? $matches[0];
             },
             $html,
         );

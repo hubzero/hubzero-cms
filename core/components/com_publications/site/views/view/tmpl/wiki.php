@@ -26,7 +26,7 @@ $this
 $html = $this->page->pagehtml;
 
 // Com_wiki adds /projects - strip it out
-$html = str_replace('projects/projects/', 'projects/', $html);
+$html = str_replace('projects/projects/', 'projects/', (string) $html);
 
 // Fix up images
 $html = str_replace($this->page->scope . DS . $this->page->pagename, 'wiki/' . $this->page->id, $html);

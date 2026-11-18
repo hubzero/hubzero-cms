@@ -60,7 +60,7 @@ class Html
      *
      * @param   int      $pid
      * @param   int      $versionid
-     * @param   object|null    $config
+     * @param   \Hubzero\Config\Registry|null    $config
      * @param   boolean  $force
      * @param   string   $cat
      * @return  string   HTML

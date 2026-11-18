@@ -327,7 +327,7 @@ $this
                 foreach ($this->filters as $k => $v) {
                     $f .= ($v && ($k == 'tag' || $k == 'category')) ? '&amp;' . $k . '=' . $v : '';
                 }
-                $pn = str_replace('?', '?' . $f . '&amp;', $pn);
+                $pn = str_replace('?', '?' . $f . '&amp;', (string) $pn);
                 echo $pn;
                 ?>
             <?php } else { ?>

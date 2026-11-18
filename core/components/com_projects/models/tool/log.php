@@ -141,8 +141,8 @@ class Log extends Model
     /**
      * Determine changes
      *
-     * @param   object  $old  Tool model
-     * @param   object  $new  Tool model
+     * @param   \Components\Projects\Models\Tool  $old  Tool model
+     * @param   \Components\Projects\Models\Tool  $new  Tool model
      * @return  string
      */
     public function whatChanged($old, $new)
