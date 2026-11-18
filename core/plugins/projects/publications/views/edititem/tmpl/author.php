@@ -36,6 +36,10 @@ $database = $this->database;
 $pAuthor    = new \Components\Publications\Tables\Author($database);
 
 $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this->row->project_owner_id);
+if (!$author) {
+    echo '<p class="error">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR') . '</p>';
+    return;
+}
 
 // Get profile thumb image
 $profile = User::getInstance($this->row->user_id);

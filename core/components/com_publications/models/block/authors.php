@@ -159,6 +159,9 @@ class Authors extends Base
                 }
             } else {
                 $profile = $pAuthor->getProfileInfoByOwner($owner);
+                if (!$profile) {
+                    continue;
+                }
                 $invited = $profile->invited_name ? $profile->invited_name : $profile->invited_email;
 
                 $pAuthor->project_owner_id       = $owner;
@@ -167,7 +170,7 @@ class Authors extends Base
                 $pAuthor->ordering               = $order;
                 $pAuthor->status                 = 1;
                 $pAuthor->organization           = $profile->organization ? $profile->organization : '';
-                $pAuthor->name                   = $profile && $profile->name ? $profile->name : $invited;
+                $pAuthor->name                   = $profile->name ? $profile->name : $invited;
                 $pAuthor->firstName              = $profile->givenName ? $profile->givenName : '';
                 $pAuthor->lastName               = $profile->surname ? $profile->surname : '';
                 $pAuthor->created                = Date::toSql();

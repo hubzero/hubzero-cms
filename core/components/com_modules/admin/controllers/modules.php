@@ -527,7 +527,7 @@ class Modules extends AdminController
 
             $item->name = Lang::txt($item->name);
 
-            if (isset($item->xml) && $text = trim($item->xml->description)) {
+            if ($item->xml instanceof \SimpleXMLElement && $text = trim($item->xml->description)) {
                 $item->desc = Lang::txt($text);
             } else {
                 $item->desc = Lang::txt('COM_MODULES_NODESCRIPTION');

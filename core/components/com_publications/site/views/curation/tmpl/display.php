@@ -152,10 +152,13 @@ $this
                                     . '</span> ';
 
                                 // Get submitter
-                                $submitter  = $pa->getSubmitter($row->version_id, $row->created_by);
-                                $submitter->name = $submitter->name ?: Lang::txt('JUNKNOWN');
+                                $submitter     = $pa->getSubmitter($row->version_id, $row->created_by);
+                                $submitterName = Lang::txt('JUNKNOWN');
+                                if ($submitter && $submitter->name) {
+                                    $submitterName = $submitter->name;
+                                }
                                 $submitted .= ' <span class="block">'
-                                    . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($submitter->name))
+                                    . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($submitterName))
                                     . '</span>';
 
                                 $reviewed = null;
