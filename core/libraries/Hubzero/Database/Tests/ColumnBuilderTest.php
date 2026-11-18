@@ -53,16 +53,11 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     /**
      * Test class that uses the trait for isolated unit testing
      *
-     * @return  object
+     * @return  ColumnDefinitionTester
      */
     protected function createTraitTester()
     {
-        return new class {
-            use ColumnDefinitionTrait {
-                hasAbstractType as public;
-                compileAbstractTypeToSql as public;
-            }
-        };
+        return new ColumnDefinitionTester();
     }
 
     // =========================================================================

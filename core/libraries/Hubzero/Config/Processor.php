@@ -20,7 +20,7 @@ abstract class Processor
     /**
      * Registry instances container
      *
-     * @var  array<mixed>
+     * @var  array<string, Processor>
      */
     protected static $instances = [];
 
@@ -29,7 +29,7 @@ abstract class Processor
      * if it doesn't already exist.
      *
      * @param   string  $type  The format to load
-     * @return  object  Registry format handler
+     * @return  Processor  Registry format handler
      * @throws  \Exception
      */
     public static function instance($type)
@@ -42,14 +42,14 @@ abstract class Processor
             // Only load the file if the class does not exist.
             $class = __NAMESPACE__ . '\\Processor\\' . ucfirst($type);
 
-            if (!class_exists($class)) {
+            if (!is_a($class, self::class, true)) {
                 foreach (self::all() as $inst) {
                     if (in_array($type, $inst->getSupportedExtensions())) {
                         $class = get_class($inst);
                     }
                 }
 
-                if (!class_exists((string) $class)) {
+                if (!is_a($class, self::class, true)) {
                     throw new \InvalidArgumentException(
                         sprintf('Unable to load format class for format "%s"', $type),
                         500,
@@ -66,7 +66,7 @@ abstract class Processor
     /**
      * Return a list of all available processors.
      *
-     * @return  array<mixed>
+     * @return  array<string, Processor>
      */
     public static function all()
     {
@@ -76,7 +76,7 @@ abstract class Processor
             if (!isset(self::$instances[$type])) {
                 $class = __NAMESPACE__ . '\\Processor\\' . ucfirst($type);
 
-                if (!class_exists($class)) {
+                if (!is_a($class, self::class, true)) {
                     continue;
                 }
 

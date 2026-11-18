@@ -60,7 +60,6 @@ class ProcessorTest extends TestCase
         $processor = Processor::instance('json');
         $extensions = $processor->getSupportedExtensions();
 
-        $this->assertIsArray($extensions);
         $this->assertContains('json', $extensions);
     }
 
@@ -74,7 +73,7 @@ class ProcessorTest extends TestCase
         $processor = Processor::instance('json');
         $result = $processor->stringToObject('{"foo": "bar"}');
 
-        $this->assertIsObject($result);
+        $this->assertInstanceOf(\stdClass::class, $result);
         $this->assertEquals('bar', $result->foo);
     }
 }

@@ -19,7 +19,7 @@ class ServiceTest extends Basic
     /**
      * Get the stub object
      *
-     * @return  object
+     * @return  Service  A Service with nothing of its own
      **/
     protected function getStub()
     {
@@ -49,7 +49,7 @@ class ServiceTest extends Basic
     {
         $stub = $this->getStub();
 
-        $this->assertFalse($stub->detect('foo'));
+        $this->assertFalse($stub->detect(['text' => 'foo']));
     }
 
     /**

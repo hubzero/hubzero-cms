@@ -775,7 +775,7 @@ trait ColumnDefinitionTrait
      * Resolve and validate a syntax class for expression compilation.
      *
      * @param  Driver $driver
-     * @return string
+     * @return class-string<\Hubzero\Database\Drivers\Base\BaseSqlSyntax>
      */
     protected function resolveSyntaxClassForExpressions(Driver $driver): string
     {
@@ -794,7 +794,8 @@ trait ColumnDefinitionTrait
             );
         }
 
-        if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax')) {
+        // BaseSqlSyntax is abstract, so only its subclasses pass
+        if (!is_a($syntaxClass, \Hubzero\Database\Drivers\Base\BaseSqlSyntax::class, true)) {
             throw new \InvalidArgumentException(
                 'Invalid syntax class "' . $syntaxClass
                 . '" for expression compilation. Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.',

@@ -31,7 +31,7 @@ class ScopedTableTest extends TestCase
     /**
      * Parsers under test
      *
-     * @return  array<mixed>
+     * @return  array<string, array{class-string<\cebe\markdown\Parser>}>
      */
     public static function parsers(): array
     {
@@ -41,6 +41,9 @@ class ScopedTableTest extends TestCase
         ];
     }
 
+    /**
+     * @param   class-string<\cebe\markdown\Parser>  $class  The flavour to parse with
+     */
     #[DataProvider('parsers')]
     public function testHeaderCellsCarryScope(string $class): void
     {
@@ -51,6 +54,9 @@ class ScopedTableTest extends TestCase
         $this->assertStringNotContainsString('<th align', $html);
     }
 
+    /**
+     * @param   class-string<\cebe\markdown\Parser>  $class  The flavour to parse with
+     */
     #[DataProvider('parsers')]
     public function testDataCellsAndStructureAreUnchanged(string $class): void
     {
