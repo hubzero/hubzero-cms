@@ -1199,7 +1199,7 @@ class InformixDriver extends BaseSqlDriver
                 if ($partVal == 0) {
                     break;
                 }
-                $colNum = abs($partVal);
+                $colNum = (int) abs($partVal);
                 if (isset($columns[$colNum - 1])) {
                     $pkColumns[] = $columns[$colNum - 1]->colname;
                 }
@@ -1265,7 +1265,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Add composite PK if not already inline
         if (!empty($pkColumns)) {
-            $quotedPkCols = array_map([$this, 'quoteName'], $pkColumns);
+            $quotedPkCols = $this->quoteNames($pkColumns);
             $colDefs[] = 'PRIMARY KEY (' . implode(', ', $quotedPkCols) . ')';
         }
 
@@ -1282,7 +1282,7 @@ class InformixDriver extends BaseSqlDriver
                 if ($partVal == 0) {
                     break;
                 }
-                $colNum = abs($partVal);
+                $colNum = (int) abs($partVal);
                 if (isset($columns[$colNum - 1])) {
                     $cols[] = trim($columns[$colNum - 1]->colname);
                 }
@@ -1296,7 +1296,7 @@ class InformixDriver extends BaseSqlDriver
             $idxCols = $resolveIndexCols($uc);
             if (!empty($idxCols)) {
                 $idxName = trim($uc->constrname);
-                $colList = implode(', ', array_map([$this, 'quoteName'], $idxCols));
+                $colList = implode(', ', $this->quoteNames($idxCols));
                 $statements[] = "CREATE UNIQUE INDEX {$idxName} ON {$rawTable}({$colList})";
             }
         }
@@ -1308,7 +1308,7 @@ class InformixDriver extends BaseSqlDriver
                 $idxName = trim($idx->idxname);
                 $isUnique = (trim($idx->idxtype ?? '') === 'U');
                 $uniqueKw = $isUnique ? 'UNIQUE ' : '';
-                $colList = implode(', ', array_map([$this, 'quoteName'], $idxCols));
+                $colList = implode(', ', $this->quoteNames($idxCols));
                 $statements[] = "CREATE {$uniqueKw}INDEX {$idxName} ON {$rawTable}({$colList})";
             }
         }
@@ -1489,7 +1489,7 @@ class InformixDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $uniqueStr = $unique ? 'UNIQUE ' : '';
 
-        $columnList = implode(', ', array_map([$this, 'quoteName'], (array) $columns));
+        $columnList = implode(', ', $this->quoteNames((array) $columns));
 
         // Informix index names are database-wide. Drop any stale index with the same name first.
         $this->setQuery(
@@ -2197,8 +2197,8 @@ class InformixDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $foreignTable = $this->replacePrefix($foreignTable);
 
-        $columnList = implode(', ', array_map([$this, 'quoteName'], (array) $columns));
-        $foreignColumnList = implode(', ', array_map([$this, 'quoteName'], (array) $foreignColumns));
+        $columnList = implode(', ', $this->quoteNames((array) $columns));
+        $foreignColumnList = implode(', ', $this->quoteNames((array) $foreignColumns));
 
         // Informix syntax: constraint name goes at the end
         $sql = 'ALTER TABLE ' . $this->quoteName($table)
@@ -2367,7 +2367,7 @@ class InformixDriver extends BaseSqlDriver
     public function addPrimaryKey(string $table, $columns): bool
     {
         $table = $this->replacePrefix($table);
-        $columnList = implode(', ', array_map([$this, 'quoteName'], (array) $columns));
+        $columnList = implode(', ', $this->quoteNames((array) $columns));
 
         // Informix requires ADD CONSTRAINT ... CONSTRAINT name syntax
         $constraintName = 'pk_' . strtolower(str_replace('"', '', $table));
@@ -3277,10 +3277,10 @@ class InformixDriver extends BaseSqlDriver
     public function buildForeignKeyDefinition(array $fk, string $tableName): string
     {
         $refTable = $this->replacePrefix($fk['referencedTable']);
-        $fkName = !empty($fk['name']) ? $fk['name'] : "fk_{$tableName}_{$fk['column']}";
-        $fkColumn = $this->quoteName($fk['column']);
+        $fkName = !empty($fk['name']) ? (string) $fk['name'] : "fk_{$tableName}_{$fk['column']}";
+        $fkColumn = $this->quoteName((string) $fk['column']);
         $refTableQuoted = $this->quoteName($refTable);
-        $refColumn = $this->quoteName($fk['referencedColumn']);
+        $refColumn = $this->quoteName((string) $fk['referencedColumn']);
 
         // Informix syntax: FOREIGN KEY (...) REFERENCES ... ON DELETE ... CONSTRAINT name
         $sql = "FOREIGN KEY ($fkColumn) REFERENCES $refTableQuoted ($refColumn)";

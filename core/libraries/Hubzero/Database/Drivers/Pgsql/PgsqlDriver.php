@@ -1998,7 +1998,7 @@ class PgsqlDriver extends BaseSqlDriver
             $columns = [$columns];
         }
 
-        $quotedCols = array_map([$this, 'quoteName'], $columns);
+        $quotedCols = $this->quoteNames($columns);
         $colList = implode(', ', $quotedCols);
 
         // PostgreSQL uses GIN index on tsvectors for fulltext.
@@ -2048,7 +2048,7 @@ class PgsqlDriver extends BaseSqlDriver
             $columns = [$columns];
         }
 
-        $quotedCols = array_map([$this, 'quoteName'], $columns);
+        $quotedCols = $this->quoteNames($columns);
         $colList = implode(', ', $quotedCols);
 
         $this->setQuery("ALTER TABLE $quotedTable ADD PRIMARY KEY ($colList)");
@@ -2147,7 +2147,7 @@ class PgsqlDriver extends BaseSqlDriver
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
+        $columnList = implode(', ', $this->quoteNames($columns));
         $uniqueStr = $unique ? 'UNIQUE ' : '';
         return "CREATE {$uniqueStr}INDEX " . $this->quoteName($name)
             . " ON " . $this->quoteName($table) . " ($columnList)";

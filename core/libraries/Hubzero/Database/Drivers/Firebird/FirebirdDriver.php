@@ -1714,7 +1714,7 @@ class FirebirdDriver extends BaseSqlDriver
         // Step 6: Create new table with column definitions
         $columnDefs = [];
         foreach ($columns as $col) {
-            $def = $this->quoteName($col->name) . ' ' . $col->fullType;
+            $def = $this->quoteName((string) $col->name) . ' ' . $col->fullType;
             if (!$col->nullable) {
                 $def .= ' NOT NULL';
             }
@@ -1726,7 +1726,7 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Add primary key constraint if exists
         if (!empty($pkColumns)) {
-            $pkColNames = array_map([$this, 'quoteName'], $pkColumns);
+            $pkColNames = $this->quoteNames($pkColumns);
             $columnDefs[] = 'PRIMARY KEY (' . implode(', ', $pkColNames) . ')';
         }
 
@@ -1736,7 +1736,7 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Step 7: Copy data from old table to new table
         $colNames = array_map(function ($col) {
-            return $this->quoteName($col->name);
+            return $this->quoteName((string) $col->name);
         }, $columns);
         $copySql = 'INSERT INTO ' . $this->quoteName($newTable) . ' (' . implode(', ', $colNames) . ') '
             . 'SELECT ' . implode(', ', $colNames) . ' FROM ' . $this->quoteName($oldTable);
@@ -1757,7 +1757,7 @@ class FirebirdDriver extends BaseSqlDriver
 
                 // Create trigger for auto-increment on new table
                 $triggerName = 'TRG_' . $newTable . '_BI';
-                $pkCol = !empty($pkColumns) ? $pkColumns[0] : 'ID';
+                $pkCol = !empty($pkColumns) ? (string) $pkColumns[0] : 'ID';
                 $this->setQuery(
                     "CREATE TRIGGER " . $this->quoteName($triggerName)
                     . " FOR " . $this->quoteName($newTable)
@@ -1784,7 +1784,7 @@ class FirebirdDriver extends BaseSqlDriver
             }
 
             $newIndexName = str_replace($oldTable, $newTable, (string) $index->name);
-            $indexCols = array_map([$this, 'quoteName'], $index->columns);
+            $indexCols = $this->quoteNames($index->columns);
             $unique = $index->unique ? 'UNIQUE ' : '';
 
             try {
@@ -1798,15 +1798,15 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Step 10: Recreate foreign keys on new table
         foreach ($foreignKeys as $fk) {
-            $newFkName = str_replace($oldTable, $newTable, $fk->name);
-            $fkCols = array_map([$this, 'quoteName'], $fk->columns);
-            $refCols = array_map([$this, 'quoteName'], $fk->foreign_columns);
+            $newFkName = str_replace($oldTable, $newTable, (string) $fk->name);
+            $fkCols = $this->quoteNames($fk->columns);
+            $refCols = $this->quoteNames($fk->foreign_columns);
 
             try {
                 $this->setQuery('ALTER TABLE ' . $this->quoteName($newTable)
                     . ' ADD CONSTRAINT ' . $this->quoteName($newFkName)
                     . ' FOREIGN KEY (' . implode(', ', $fkCols) . ')'
-                    . ' REFERENCES ' . $this->quoteName($fk->foreign_table)
+                    . ' REFERENCES ' . $this->quoteName((string) $fk->foreign_table)
                     . ' (' . implode(', ', $refCols) . ')');
                 $this->execute();
             } catch (\Exception $e) {

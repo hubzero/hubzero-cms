@@ -3027,7 +3027,7 @@ class SqliteDriver extends BaseSqlDriver
         $statements[] = "ALTER TABLE " . $this->quoteName($tempTable) . " RENAME TO " . $this->quoteName($table);
 
         foreach ($indexesToRecreate as $index) {
-            $columns = array_map([$this, 'quoteName'], $index['columns']);
+            $columns = $this->quoteNames($index['columns']);
             $columnList = implode(', ', $columns);
             $unique = $index['unique'] ? 'UNIQUE ' : '';
             $statements[] = "CREATE {$unique}INDEX IF NOT EXISTS "
@@ -3037,7 +3037,7 @@ class SqliteDriver extends BaseSqlDriver
         }
 
         foreach ($builder->getAddIndexes() as $name => $info) {
-            $columns = array_map([$this, 'quoteName'], $info['columns']);
+            $columns = $this->quoteNames($info['columns']);
             $columnList = implode(', ', $columns);
             $unique = $info['unique'] ? 'UNIQUE ' : '';
             $statements[] = "CREATE {$unique}INDEX IF NOT EXISTS "

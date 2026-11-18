@@ -338,7 +338,7 @@ class InformixGrammar extends BaseSchemaGrammar
             return 'CURRENT YEAR TO SECOND';
         }
 
-        return $this->driver->quote($value);
+        return $this->driver->quote((string) $value);
     }
 
     /**

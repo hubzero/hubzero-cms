@@ -1405,6 +1405,22 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Quote each of a list of identifiers, as quoteName() quotes one
+     *
+     * @param   array<mixed>  $names  Identifier names (column names, say)
+     * @return  list<string>
+     */
+    public function quoteNames(array $names)
+    {
+        $quoted = [];
+        foreach ($names as $name) {
+            $quoted[] = $this->quoteName((string) $name);
+        }
+
+        return $quoted;
+    }
+
+    /**
      * @param   mixed  $name
      * @param   mixed  $as
      * @return  string

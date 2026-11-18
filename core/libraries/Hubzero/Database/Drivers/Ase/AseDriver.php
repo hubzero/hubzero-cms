@@ -2874,7 +2874,7 @@ class AseDriver extends BaseSqlDriver
             }
         }
 
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
+        $columnList = implode(', ', $this->quoteNames($columns));
         $this->setQuery("ALTER TABLE {$qt} ADD PRIMARY KEY ($columnList)");
         $this->execute();
 
@@ -2983,7 +2983,7 @@ class AseDriver extends BaseSqlDriver
             return false;
         }
 
-        $colList = implode(', ', array_map([$this, 'quoteName'], $joinCols));
+        $colList = implode(', ', $this->quoteNames($joinCols));
         $orderClause = $orderBy ? $this->quoteName($orderBy) : $colList;
 
         // Create temp table with IDENTITY + all non-target columns
@@ -3026,7 +3026,7 @@ class AseDriver extends BaseSqlDriver
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
+        $columnList = implode(', ', $this->quoteNames($columns));
         $uniqueStr = $unique ? 'UNIQUE ' : '';
         return "CREATE " . $uniqueStr . "INDEX " . $this->quoteName($name)
             . " ON " . $this->quoteName($table) . " (" . $columnList . ")";

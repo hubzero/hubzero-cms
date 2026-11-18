@@ -63,7 +63,7 @@ abstract class BaseSqlSyntax
      */
     protected $distinct = false;
     /**
-     * @var  string|array<mixed>
+     * @var  string  The table to insert into
      */
     protected $insert = '';
     /**

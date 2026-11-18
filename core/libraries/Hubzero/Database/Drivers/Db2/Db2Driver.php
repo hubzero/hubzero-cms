@@ -514,7 +514,7 @@ class Db2Driver extends BaseSqlDriver
 
         // Add primary key constraint
         if ($pkColumns) {
-            $pkList = implode(', ', array_map([$this, 'quoteName'], $pkColumns));
+            $pkList = implode(', ', $this->quoteNames($pkColumns));
             $columnDefs[] = 'PRIMARY KEY (' . $pkList . ')';
         }
 
@@ -2376,8 +2376,8 @@ class Db2Driver extends BaseSqlDriver
         $table        = strtoupper($this->replacePrefix($table));
         $foreignTable = strtoupper($this->replacePrefix($foreignTable));
 
-        $columnList        = implode(', ', array_map([$this, 'quoteName'], (array) $columns));
-        $foreignColumnList = implode(', ', array_map([$this, 'quoteName'], (array) $foreignColumns));
+        $columnList        = implode(', ', $this->quoteNames((array) $columns));
+        $foreignColumnList = implode(', ', $this->quoteNames((array) $foreignColumns));
 
         $sql = 'ALTER TABLE ' . $this->quoteName($table)
             . ' ADD CONSTRAINT ' . $this->quoteName(strtoupper($constraint))

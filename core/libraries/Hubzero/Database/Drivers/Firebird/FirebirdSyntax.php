@@ -378,7 +378,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             // Also check if the table has an 'id' column by querying the table name from the query
             // The insert table name is stored in $this->insert
             if (!$hasIdField && !empty($this->insert)) {
-                $tableName = is_array($this->insert) ? $this->insert[0] : $this->insert;
+                $tableName = $this->insert;
                 $hasIdField = $this->connection->tableHasField($tableName, 'id');
             }
 

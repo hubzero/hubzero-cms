@@ -580,7 +580,7 @@ class OciDriver extends BaseSqlDriver
 
         // Add primary key constraint
         if ($pkColumns) {
-            $pkList = implode(', ', array_map([$this, 'quoteName'], $pkColumns));
+            $pkList = implode(', ', $this->quoteNames($pkColumns));
             $columnDefs[] = 'PRIMARY KEY (' . $pkList . ')';
         }
 
@@ -3398,11 +3398,11 @@ class OciDriver extends BaseSqlDriver
     public function buildForeignKeyDefinition(array $fk, string $tableName): string
     {
         $refTable = $this->replacePrefix($fk['referencedTable']);
-        $fkName = !empty($fk['name']) ? $fk['name'] : "fk_{$tableName}_{$fk['column']}";
+        $fkName = !empty($fk['name']) ? (string) $fk['name'] : "fk_{$tableName}_{$fk['column']}";
         $constraintName = $this->quoteName($fkName);
-        $fkColumn = $this->quoteName($fk['column']);
+        $fkColumn = $this->quoteName((string) $fk['column']);
         $refTableQuoted = $this->quoteName($refTable);
-        $refColumn = $this->quoteName($fk['referencedColumn']);
+        $refColumn = $this->quoteName((string) $fk['referencedColumn']);
 
         $sql = "CONSTRAINT $constraintName ";
         $sql .= "FOREIGN KEY ($fkColumn) ";

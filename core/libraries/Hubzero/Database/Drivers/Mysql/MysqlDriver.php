@@ -1263,7 +1263,17 @@ class MysqlDriver extends BaseSqlDriver
      */
     public function getTableKeys($table)
     {
-        return $this->getTableKeysFromShowKeys((string) $table, 'Key_name');
+        if (!is_array($table)) {
+            return $this->getTableKeysFromShowKeys($table, 'Key_name');
+        }
+
+        // A list of tables: each one's keys, together
+        $keys = [];
+        foreach ($table as $name) {
+            $keys = array_merge($keys, $this->getTableKeysFromShowKeys((string) $name, 'Key_name'));
+        }
+
+        return $keys;
     }
 
     /**

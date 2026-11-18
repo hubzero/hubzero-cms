@@ -2211,7 +2211,7 @@ class SqlsrvDriver extends BaseSqlDriver
             }
         }
 
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
+        $columnList = implode(', ', $this->quoteNames($columns));
         $this->setQuery("ALTER TABLE $qt ADD PRIMARY KEY ($columnList)");
         $this->execute();
 
@@ -2326,7 +2326,7 @@ class SqlsrvDriver extends BaseSqlDriver
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
+        $columnList = implode(', ', $this->quoteNames($columns));
         $uniqueStr = $unique ? 'UNIQUE ' : '';
         return "CREATE " . $uniqueStr . "INDEX " . $this->quoteName($name)
             . " ON " . $this->quoteName($table) . " (" . $columnList . ")";
