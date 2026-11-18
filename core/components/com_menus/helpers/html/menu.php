@@ -160,7 +160,7 @@ class HtmlMenu
     /**
      * Build the select list for Menu Ordering
      *
-     * @param   object   &$row  The row object
+     * @param   \stdClass  &$row  The menu item row
      * @param   integer  $id    The id for the row. Must exist to enable menu ordering
      * @return  string
      */

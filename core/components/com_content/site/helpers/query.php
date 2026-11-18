@@ -134,7 +134,7 @@ class Query
     /**
      * Get join information for the voting query.
      *
-     * @param   object|null  $params  An options object for the article.
+     * @param   \Hubzero\Config\Registry|null  $params  The article's options.
      * @return  array<mixed>   A named array with "select" and "join" keys.
      */
     public static function buildVotingQuery($params = null)

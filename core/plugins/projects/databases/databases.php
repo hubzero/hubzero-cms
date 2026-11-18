@@ -833,9 +833,9 @@ class Databases extends Plugin
      * Guess data type
      *
      * @param   string   $data
-     * @param   string   $type
-     * @param   integer  $max_len
-     * @return  string
+     * @param   string|false  $type     False until a value has been seen
+     * @param   integer       $max_len
+     * @return  string|false
      */
     protected function guessDataType($data, $type, $max_len)
     {
@@ -1380,7 +1380,7 @@ class Databases extends Plugin
      * Function to be called outside of the databases plugin
      *
      * @param   integer  $identifier  Database ID or name
-     * @param   object|null   $project     Project object
+     * @param   \Components\Projects\Models\Project|null  $project  Project object
      * @param   string|null   $base_path   File-repository base path
      * @return  integer|false
      */
@@ -1452,7 +1452,7 @@ class Databases extends Plugin
      * Remove databases used in a draft publications
      *
      * @param   integer  $identifier  Database ID or name
-     * @param   object|null   $project     Project object
+     * @param   \Components\Projects\Models\Project|null  $project  Project object
      * @param   integer|string|null  $version  Database version
      * @return  bool
      */

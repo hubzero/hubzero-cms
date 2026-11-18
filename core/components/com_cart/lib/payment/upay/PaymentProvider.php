@@ -119,6 +119,7 @@ class PaymentProvider
         if (empty($tId) || !is_numeric($tId)) {
             return false;
         }
+        $tId = (int) $tId;
 
         // Extract the post back action (if different from payment)
         if ($postBack['pmt_status'] == 'cancelled') {

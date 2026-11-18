@@ -174,54 +174,51 @@ class Reviews extends Plugin
         return $arr;
     }
 
-    // Commented out: nothing calls getComments() (its own recursive call was
-    // already commented out) or getAbuseReports(), which only it used.
-    //
-    // /**
-    //  * Get all replies for an item
-    //  *
-    //  * @param   integer  $id        Item id
-    //  * @param   object   $item      Item to look for reports on
-    //  * @param   string   $category  Item type
-    //  * @param   integer  $level     Depth
-    //  * @param   boolean  $abuse     Abuse flag
-    //  * @return  \Hubzero\Database\Rows
-    //  */
-    // public function getComments($id, $item, $category, $level, $abuse = false)
-    // {
-    //     $level++;
-    //
-    //     $comments = \Hubzero\Item\Comment::all()
-    //         ->whereEquals('parent', ($level == 1 ? 0 : $item->id))
-    //         ->whereEquals('item_id', $id)
-    //         ->whereEquals('item_type', $category)
-    //         ->ordered()
-    //         ->rows();
-    //
-    //     if (count($comments)) {
-    //         foreach ($comments as $comment) {
-    //             //$comment->replies = self::getComments($id, $comment, 'pubreview', $level, $abuse);
-    //
-    //             if ($abuse) {
-    //                 $comment->set('reports', self::getAbuseReports($comment->get('id'), 'pubreview'));
-    //             }
-    //         }
-    //     }
-    //     return $comments;
-    // }
-    //
-    // /**
-    //  * Get abuse reports for a comment
-    //  *
-    //  * @param   integer  $item      Item to look for reports on
-    //  * @param   string   $category  Item type
-    //  * @return  integer
-    //  */
-    // public function getAbuseReports($item, $category)
-    // {
-    //     return \Components\Support\Models\Report::all()
-    //         ->whereEquals('referenceid', $item)
-    //         ->whereEquals('category', $category)
-    //         ->total();
-    // }
+    /**
+     * Get all replies for an item
+     *
+     * @param   integer  $id        Item id
+     * @param   \Hubzero\Item\Comment  $item  The comment whose replies to get (unused at level 1)
+     * @param   string   $category  Item type
+     * @param   integer  $level     Depth
+     * @param   boolean  $abuse     Abuse flag
+     * @return  \Hubzero\Database\Rows
+     */
+    public function getComments($id, $item, $category, $level, $abuse = false)
+    {
+        $level++;
+
+        $comments = \Hubzero\Item\Comment::all()
+            ->whereEquals('parent', ($level == 1 ? 0 : $item->get('id')))
+            ->whereEquals('item_id', $id)
+            ->whereEquals('item_type', $category)
+            ->ordered()
+            ->rows();
+
+        if (count($comments)) {
+            foreach ($comments as $comment) {
+                //$comment->replies = self::getComments($id, $comment, 'pubreview', $level, $abuse);
+
+                if ($abuse) {
+                    $comment->set('reports', self::getAbuseReports($comment->get('id'), 'pubreview'));
+                }
+            }
+        }
+        return $comments;
+    }
+
+    /**
+     * Get abuse reports for a comment
+     *
+     * @param   integer  $item      Item to look for reports on
+     * @param   string   $category  Item type
+     * @return  integer
+     */
+    public function getAbuseReports($item, $category)
+    {
+        return \Components\Support\Models\Report::all()
+            ->whereEquals('referenceid', $item)
+            ->whereEquals('category', $category)
+            ->total();
+    }
 }

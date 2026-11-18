@@ -22,7 +22,7 @@ class Source extends Obj
     /**
      * Cache for the template information.
      *
-     * @var  object|false|null
+     * @var  \stdClass|false|null
      */
     private $template = null;
 
@@ -84,7 +84,7 @@ class Source extends Obj
 
             $result = $db->loadObject();
 
-            if (empty($result)) {
+            if (!($result instanceof \stdClass)) {
                 $this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
                 $this->template = false;
             } else {

@@ -33,6 +33,11 @@ class Categories extends Plugin
             return true;
         }
 
+        // The checks below walk the nested set of the categories model
+        if (!($data instanceof \Components\Categories\Models\Category)) {
+            return true;
+        }
+
         // Check if this function is enabled.
         if (!$this->params->def('check_categories', 1)) {
             return true;
@@ -67,24 +72,19 @@ class Categories extends Plugin
 
                     App::abort(403, $msg);
                 }
-                // Commented out: the child-category check calls isLeaf() and
-                // getTree(), Joomla nested-table methods no HUBzero category
-                // has, so it could only fatal. (Nothing triggers this plugin's
-                // 'com_categories.category' context at present.)
-                //
-                // // Check for items in any child categories (if it is a leaf, there are no child categories)
-                // if (!$data->isLeaf()) {
-                //     $count = $this->countItemsInChildren($table, $data->get('id'), $data);
-                //
-                //     if ($count === false) {
-                //         $result = false;
-                //     } elseif ($count > 0) {
-                //         $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'));
-                //         $msg .= Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
-                //
-                //         App::abort(403, $msg);
-                //     }
-                // }
+                // Check for items in any child categories (a leaf of the nested set has none)
+                if ($data->get('rgt') - $data->get('lft') > 1) {
+                    $count = $this->countItemsInChildren($table, $data->get('id'), $data);
+
+                    if ($count === false) {
+                        $result = false;
+                    } elseif ($count > 0) {
+                        $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'));
+                        $msg .= Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
+
+                        App::abort(403, $msg);
+                    }
+                }
             }
 
             return $result;
@@ -117,48 +117,41 @@ class Categories extends Plugin
         return $count;
     }
 
-    // Commented out with the child-category check above, its only caller:
-    // getTree() is a Joomla nested-table method no HUBzero category has.
-    //
-    // /**
-    //  * Get count of items in a category's child categories
-    //  *
-    //  * @param   string  $table  table name of component table (column is catid)
-    //  * @param   int     $catid  id of the category to check
-    //  * @param   object  $data
-    //  * @return  mixed   Count of items found or false if db error
-    //  */
-    // private function countItemsInChildren($table, $catid, $data)
-    // {
-    //     $db = App::get('db');
-    //
-    //     // Create subquery for list of child categories
-    //     $childCategoryTree = $data->getTree();
-    //
-    //     // First element in tree is the current category, so we can skip that one
-    //     unset($childCategoryTree[0]);
-    //     $childCategoryIds = [];
-    //     foreach ($childCategoryTree as $node) {
-    //         $childCategoryIds[] = $node->id;
-    //     }
-    //
-    //     // Make sure we only do the query if we have some categories to look in
-    //     if (count($childCategoryIds)) {
-    //         // Count the items in this category
-    //         $query = $db
-    //             ->getQuery()
-    //             ->select('COUNT(id)')
-    //             ->from($table)
-    //             ->whereIn('catid', $childCategoryIds);
-    //         $db->setQuery($query->toString());
-    //         $count = $db->loadResult();
-    //
-    //         // Check for DB error.
-    //
-    //         return $count;
-    //     }
-    //
-    //     // If we didn't have any categories to check, return 0
-    //     return 0;
-    // }
+    /**
+     * Get count of items in a category's child categories
+     *
+     * @param   string  $table  table name of component table (column is catid)
+     * @param   int     $catid  id of the category to check
+     * @param   \Components\Categories\Models\Category  $data  The category
+     * @return  mixed   Count of items found or false if db error
+     */
+    private function countItemsInChildren($table, $catid, $data)
+    {
+        $db = App::get('db');
+
+        // The child categories, at every depth
+        $childCategoryIds = [];
+        foreach ($data->getDescendants() as $node) {
+            $childCategoryIds[] = $node->get('id');
+        }
+
+        // Make sure we only do the query if we have some categories to look in
+        if (count($childCategoryIds)) {
+            // Count the items in this category
+            $query = $db
+                ->getQuery()
+                ->select('COUNT(id)')
+                ->from($table)
+                ->whereIn('catid', $childCategoryIds);
+            $db->setQuery($query->toString());
+            $count = $db->loadResult();
+
+            // Check for DB error.
+
+            return $count;
+        }
+
+        // If we didn't have any categories to check, return 0
+        return 0;
+    }
 }
