@@ -241,7 +241,7 @@ class Group extends Table
      * Get an object list of members
      *
      * @param   array<mixed>   $filters
-     * @return  array<mixed>  Return course units
+     * @return  array<\stdClass>  The members' rows, by account number
      */
     public function findMembers($filters = [])
     {

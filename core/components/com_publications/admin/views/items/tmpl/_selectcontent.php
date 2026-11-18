@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{pub: mixed} $this
+ * @var \Hubzero\Component\View&object{pub: \Components\Publications\Models\Publication} $this
  */
 
 $pub = $this->pub;

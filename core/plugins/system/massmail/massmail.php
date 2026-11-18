@@ -35,7 +35,7 @@ class Massmail extends Plugin
      */
     public function onConfigurationAfterSave($context, $table, $isNew)
     {
-        if ($context != 'com_config.component' || !is_object($table)) {
+        if ($context != 'com_config.component' || !$table instanceof \Hubzero\Database\Relational) {
             return;
         }
 

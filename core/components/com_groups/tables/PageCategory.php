@@ -120,7 +120,7 @@ class PageCategory extends Table
         $categories = [];
 
         // make sure we have a valid group
-        if (!is_object($group) || $group->get('gidNumber') == '') {
+        if (!$group instanceof \Hubzero\User\Group || $group->get('gidNumber') == '') {
             return $categories;
         }
 

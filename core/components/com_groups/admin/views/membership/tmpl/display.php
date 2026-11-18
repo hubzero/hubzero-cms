@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die();
  *     expirations: mixed,
  *     filters: mixed,
  *     group: mixed,
- *     rows: mixed,
+ *     rows: array<\stdClass>,
  *     total: mixed,
  * } $this
  */
