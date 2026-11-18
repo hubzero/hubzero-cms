@@ -25,6 +25,9 @@ use Hubzero\Facades\Component;
  *
  * @property-read  mixed  $title  What transformTitle() gives
  * @property-read  mixed  $version  What version() gives
+ * @property  string  $pagename
+ * @property  \Hubzero\User\User  $creator  The author, through creator()
+ * @property  \stdClass  $event  Plugin output around the page, set by the pages controller
  */
 class Page extends Relational
 {

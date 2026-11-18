@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{
  *     config: mixed,
  *     mycomment: mixed,
- *     page: mixed,
+ *     page: \Components\Wiki\Models\Page,
  *     parents: mixed,
  *     sub: mixed,
  *     version: mixed,

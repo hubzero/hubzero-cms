@@ -15,7 +15,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{page: mixed, parents: mixed, revision: mixed, sub: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     page: \Components\Wiki\Models\Page,
+ *     parents: mixed,
+ *     revision: mixed,
+ *     sub: mixed,
+ * } $this
  */
 
 if (!$this->sub) {

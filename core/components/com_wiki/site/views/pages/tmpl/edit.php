@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Component\View&object{
  *     book: mixed,
- *     page: mixed,
+ *     page: \Components\Wiki\Models\Page,
  *     parents: mixed,
  *     preview: mixed,
  *     revision: mixed,

@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{page: mixed, sub: mixed} $this
+ * @var \Hubzero\Component\View&object{page: \Components\Wiki\Models\Page, sub: mixed} $this
  */
 
 $tmpl = Request::getWord('tmpl');

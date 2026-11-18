@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{page: mixed} $this
+ * @var \Hubzero\Component\View&object{page: \Components\Wiki\Models\Page} $this
  */
 
 if ($this->page->isStatic()) {

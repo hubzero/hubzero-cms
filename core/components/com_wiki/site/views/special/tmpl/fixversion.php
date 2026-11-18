@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{book: mixed, page: mixed} $this
+ * @var \Hubzero\Component\View&object{book: mixed, page: \Components\Wiki\Models\Page} $this
  */
 
 // This page repairs stored data as it renders (on a plain GET), so it is a

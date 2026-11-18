@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
  *     comment: mixed,
  *     config: mixed,
  *     depth: mixed,
- *     page: mixed,
+ *     page: \Components\Wiki\Models\Page,
  *     version: mixed,
  * } $this
  */

@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
  *     content: mixed,
  *     dr: mixed,
  *     or: mixed,
- *     page: mixed,
+ *     page: \Components\Wiki\Models\Page,
  *     parents: mixed,
  *     sub: mixed,
  * } $this
