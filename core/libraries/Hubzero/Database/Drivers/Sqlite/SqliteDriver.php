@@ -1468,8 +1468,15 @@ class SqliteDriver extends BaseSqlDriver
      */
     public function registerRegexp()
     {
-        if (!$this->regexpRegistered && $this->connection) {
-            $this->connection->sqliteCreateFunction('REGEXP', function ($pattern, $value) {
+        // The connection may be a wrapper; the function goes on its PDO
+        $pdo = $this->connection instanceof \PDO ? $this->connection : null;
+        if (!$pdo && $this->connection) {
+            $native = $this->connection->getNativeConnection();
+            $pdo    = $native instanceof \PDO ? $native : null;
+        }
+
+        if (!$this->regexpRegistered && $pdo) {
+            $pdo->sqliteCreateFunction('REGEXP', function ($pattern, $value) {
                 if ($pattern === null || $value === null) {
                     return null;
                 }
