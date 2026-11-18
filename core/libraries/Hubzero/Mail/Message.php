@@ -32,7 +32,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Message transporters
      *
-     * @var  array<mixed>
+     * @var  array<string, \Symfony\Component\Mailer\Transport\TransportInterface>
      */
     private static $transporters = [];
 
@@ -158,25 +158,20 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Send the message
      *
-     * @param   mixed  $transport
+     * @param   \Symfony\Component\Mailer\Transport\TransportInterface|string  $transport  A transport or its name
      * @param   array<mixed>  $options
      * @return  boolean  Whether the message was handed to the transport
      */
     public function send($transport = '', $options = [])
     {
-        if (is_subclass_of($transport, '\Symfony\Component\Mailer\Transport\AbstractTransport')) {
+        if ($transport instanceof \Symfony\Component\Mailer\Transport\TransportInterface) {
             // We have our transport
-        } elseif (is_string($transport) && self::hasTransporter($transport)) {
+        } elseif (self::hasTransporter($transport)) {
             // Use the registered custom HUBzero transport
             $transport = self::getTransporter($transport);
         } else {
-            $dsn = self::transportDsn();
-
-            $transport = \Symfony\Component\Mailer\Transport::fromDsn($dsn);
-
-            if (!is_subclass_of($transport, '\Symfony\Component\Mailer\Transport\AbstractTransport')) {
-                throw new \InvalidArgumentException('Invalid transport specified');
-            }
+            // Any transport the DSN describes, failover and round-robin included
+            $transport = \Symfony\Component\Mailer\Transport::fromDsn(self::transportDsn());
         }
 
         $mailer = new \Symfony\Component\Mailer\Mailer($transport);
@@ -635,7 +630,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Adds a transport mechanisms to the known list
      *
      * @param   string  $name        the mechanism name
-     * @param   object  $transporter the transporter object
+     * @param   \Symfony\Component\Mailer\Transport\TransportInterface  $transporter  the transporter object
      * @return  void
      */
     public static function addTransporter($name, $transporter)
@@ -658,7 +653,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Gets the named transporter
      *
      * @param   string  $name  The transporter name
-     * @return  object
+     * @return  \Symfony\Component\Mailer\Transport\TransportInterface
      */
     public static function getTransporter($name)
     {
