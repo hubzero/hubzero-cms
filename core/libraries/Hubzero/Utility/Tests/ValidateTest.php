@@ -257,7 +257,7 @@ class ValidateTest extends Basic
         ];
 
         foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::orcid($value), $result);
+            $this->assertEquals(Validate::orcid((string) $value), $result);
         }
     }
 
@@ -313,7 +313,7 @@ class ValidateTest extends Basic
         ];
 
         foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::group($value), $result);
+            $this->assertEquals(Validate::group((string) $value), $result);
         }
 
         $tests = [
@@ -348,7 +348,7 @@ class ValidateTest extends Basic
         ];
 
         foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::username($value), $result);
+            $this->assertEquals(Validate::username((string) $value), $result);
         }
     }
 
@@ -648,7 +648,7 @@ class ValidateTest extends Basic
         ];
 
         foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::alphaNumeric($value), $result);
+            $this->assertEquals(Validate::alphaNumeric((string) $value), $result);
         }
 
         $value = '0';

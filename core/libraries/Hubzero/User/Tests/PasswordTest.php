@@ -67,7 +67,7 @@ class PasswordTest extends Basic
     {
         foreach ([20000, '20000'] as $lastChange) {
             foreach (range(20001, 21500, 7) as $day) {
-                $max = Password::shadowMaxForExpiryDay($lastChange, $day);
+                $max = Password::shadowMaxForExpiryDay((int) $lastChange, $day);
 
                 $this->assertSame($day, Password::passwordExpiryDay($lastChange, $max));
             }

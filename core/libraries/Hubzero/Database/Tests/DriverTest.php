@@ -468,7 +468,7 @@ class DriverTest extends AbstractDriverTestCase
         $pk = $driver->getPrimaryKey($table);
 
         $this->assertNotEmpty($pk, 'Table should have a primary key');
-        $this->assertEquals('id', strtolower($pk), 'Primary key should be id');
+        $this->assertEquals('id', strtolower((string) $pk), 'Primary key should be id');
     }
 
     // =========================================================================

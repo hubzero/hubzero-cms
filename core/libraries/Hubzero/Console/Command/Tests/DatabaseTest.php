@@ -53,7 +53,7 @@ class DatabaseTest extends TestCase
     {
         $reflection = new ReflectionClass('\\Hubzero\\Console\\Command\\Database');
         $method = $reflection->getMethod('cli');
-        $docComment = $method->getDocComment();
+        $docComment = (string) $method->getDocComment();
 
         $this->assertStringContainsString(
             '@museDescription',
@@ -76,7 +76,7 @@ class DatabaseTest extends TestCase
     {
         $reflection = new ReflectionClass('\\Hubzero\\Console\\Command\\Database');
         $method = $reflection->getMethod('query');
-        $docComment = $method->getDocComment();
+        $docComment = (string) $method->getDocComment();
 
         $this->assertStringContainsString(
             '@museDescription',
