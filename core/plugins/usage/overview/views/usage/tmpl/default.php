@@ -150,8 +150,8 @@ if ($this->message) { ?>
         }
     }
 
-    $from = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $startSelection));
-    $to   = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $currentDownload->datetime));
+    $from = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $startSelection));
+    $to   = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $currentDownload->datetime));
     ?>
     <div class="chart-wrap">
         <div id="chart-users" class="chart line multi-line" role="img"

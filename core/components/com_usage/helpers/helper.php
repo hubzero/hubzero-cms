@@ -22,7 +22,7 @@ class Helper
     /**
      * Return a usage database object
      *
-     * @return     mixed
+     * @return     \Hubzero\Database\Driver|null
      */
     public static function getUDBO()
     {
@@ -57,7 +57,7 @@ class Helper
             }
         }
 
-        if ($instance instanceof \Throwable) {
+        if (!($instance instanceof \Hubzero\Database\Driver)) {
             return null;
         }
 

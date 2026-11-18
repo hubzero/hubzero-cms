@@ -111,10 +111,10 @@ if ($results) {
         $runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
     }
 
-    $min = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $results[0]->datetime));
+    $min = str_replace('-', '/', str_replace('-00 00:00:00', '-01', (string) $results[0]->datetime));
 
     $current = end($results);
-    $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
+    $current->datetime =  str_replace('-00 00:00:00', '-01', (string) $current->datetime);
 }
 
 $sparklines = [];

@@ -116,7 +116,7 @@ class Migration20261104160100ComUsage extends Base
      * stats database is configured and when the configured one cannot be
      * reached. Only the first is the metrics database.
      *
-     * @return  object|null
+     * @return  \Hubzero\Database\Driver|null
      **/
     protected function statsDb()
     {

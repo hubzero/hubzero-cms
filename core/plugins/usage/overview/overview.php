@@ -349,7 +349,7 @@ class Overview extends Plugin
         $result = $db->loadResult();
 
         $data->downloads = new \stdClass();
-        $data->downloads->total        = number_format($result ?? 0.0);
+        $data->downloads->total        = number_format((float) ($result ?? 0.0));
         $data->downloads->residence    = !isset($residence) ? '' : $residence;
         $data->downloads->organization = !isset($organization) ? '' : $organization;
         ;
@@ -362,7 +362,7 @@ class Overview extends Plugin
 			AND `datetime`=" . $db->quote($datetime) . "
 			ORDER BY `datetime` ASC",
         );
-        $data->simulation_users = number_format($db->loadResult() ?? 0.0);
+        $data->simulation_users = number_format((float) ($db->loadResult() ?? 0.0));
 
         $db->setQuery(
             "SELECT value
@@ -372,7 +372,7 @@ class Overview extends Plugin
 			AND `datetime`=" . $db->quote($datetime) . "
 			ORDER BY `datetime` ASC",
         );
-        $data->simulation_jobs = number_format($db->loadResult() ?? 0.0);
+        $data->simulation_jobs = number_format((float) ($db->loadResult() ?? 0.0));
 
         $db->setQuery(
             "SELECT a.label,b.value,b.valfmt,a.plot,a.id

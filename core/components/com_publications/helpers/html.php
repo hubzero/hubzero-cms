@@ -870,7 +870,7 @@ class Html
     /**
      * Include status bar - publication steps/sections/version navigation
      *
-     * @param   object   $item
+     * @param   \stdClass  $item  The status bar data: row, version, panels, positions, url
      * @param   string|null   $step
      * @param   boolean  $showSubSteps
      * @param   integer  $review
