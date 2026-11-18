@@ -46,6 +46,8 @@ use Hubzero\Facades\Route;
  *
  * @property  \Hubzero\User\User  $creator         The author, through creator() (a Member when com_members has one)
  * @property  string              $_contentParsed  The parsed content, cached by transformContent()
+ *
+ * @method string content(string $as = 'parsed') The content, raw or parsed, through Relational::parse()
  */
 class Entry extends Relational implements \Hubzero\Search\Searchable
 {
