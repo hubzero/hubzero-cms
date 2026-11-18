@@ -1014,7 +1014,7 @@ class Behavior
                     : "'" . $v . "'";
                 $object .= ',';
             } else {
-                $object .= ' ' . $k . ': ' . self::getJSObject($v) . ',';
+                $object .= ' ' . $k . ': ' . self::getJSObject((array) $v) . ',';
             }
         }
 

@@ -180,7 +180,7 @@ class Sku
     /**
      * Get publishing times
      *
-     * @return  object
+     * @return  \stdClass  With publish_up and publish_down
      */
     public function getPublishTime()
     {

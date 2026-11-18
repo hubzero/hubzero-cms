@@ -799,7 +799,7 @@ class TableBuilderTest extends AbstractDriverTestCase
 
         // Ensure DDL commits before next operation
         $connection = $driver->getConnection();
-        if ($connection && method_exists($connection, 'commit')) {
+        if (is_object($connection) && method_exists($connection, 'commit')) {
             try {
                 $connection->commit();
             } catch (\Exception $e) {

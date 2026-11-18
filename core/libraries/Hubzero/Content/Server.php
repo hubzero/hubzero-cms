@@ -438,7 +438,8 @@ class Server extends Obj
 
                     $bytes_left -= $bytes_to_read;
 
-                    echo fread($fp, (int) $bytes_to_read);
+                    // More than nothing is left, so at least a byte is read
+                    echo fread($fp, max(1, (int) $bytes_to_read));
 
                     flush();
                 }

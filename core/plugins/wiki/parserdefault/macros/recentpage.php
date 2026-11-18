@@ -65,7 +65,7 @@ class RecentPage extends WikiMacro
                 $limit = $args[0];
             }
             if (isset($args[1])) {
-                $cls = preg_replace('/[^A-Za-z0-9_\- ]/', '', $args[1]);
+                $cls = preg_replace('/[^A-Za-z0-9_\- ]/', '', (string) $args[1]);
             }
             if (isset($args[2])) {
                 $args[2] = intval($args[2]);

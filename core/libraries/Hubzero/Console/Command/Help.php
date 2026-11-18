@@ -210,7 +210,11 @@ class Help extends Base implements CommandInterface
             $ind += 2;
 
             // Get this command's methods
-            $reflection = new \ReflectionClass(__NAMESPACE__ . $path . '\\' . $entry);
+            $class = __NAMESPACE__ . $path . '\\' . $entry;
+            if (!class_exists($class)) {
+                return;
+            }
+            $reflection = new \ReflectionClass($class);
             $methods    = $reflection->getMethods();
 
             foreach ($methods as $method) {

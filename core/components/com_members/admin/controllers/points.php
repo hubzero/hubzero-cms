@@ -488,11 +488,11 @@ class Points extends AdminController
 
             switch ($data['type']) {
                 case 'withdraw':
-                    $row->balance  -= $data['amount'];
+                    $row->balance  = (int) $row->balance - $data['amount'];
                     break;
                 case 'deposit':
-                    $row->balance  += $data['amount'];
-                    $row->earnings += $data['amount'];
+                    $row->balance  = (int) $row->balance + $data['amount'];
+                    $row->earnings = (int) $row->earnings + $data['amount'];
                     break;
                 case 'creation':
                     $row->balance  = $data['amount'];

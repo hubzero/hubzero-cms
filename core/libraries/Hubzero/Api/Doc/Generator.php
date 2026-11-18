@@ -34,7 +34,7 @@ class Generator
     /**
      * Var to hold output
      *
-     * @var  array<mixed>|string|false
+     * @var  array<mixed>
      */
     private $output = [];
 
@@ -65,7 +65,7 @@ class Generator
      *
      * @param   string  $format  Output format: 'array', 'php' (serialized) or 'json'
      * @param   bool    $force   Force new version
-     * @return  array<mixed>|string  The documentation array for 'array', else a string
+     * @return  ($format is 'array' ? array<mixed> : string)  The documentation array for 'array', else a string
      */
     public function output($format = 'json', $force = false)
     {
@@ -74,20 +74,16 @@ class Generator
             $this->generate();
         }
 
-        // option to switch formats
+        // option to switch formats; the documentation itself stays an array
         switch ($format) {
             case 'array':
-                break;
+                return $this->output;
             case 'php':
-                $this->output = serialize($this->output);
-                break;
+                return serialize($this->output);
             case 'json':
             default:
-                $this->output = (string) json_encode($this->output);
-                break;
+                return (string) json_encode($this->output);
         }
-
-        return $this->output;
     }
 
     /**
@@ -117,8 +113,13 @@ class Generator
             // check if its still valid
             $cacheMakeTime = @filemtime($cacheFile);
             if (time() - $cacheExpiration < $cacheMakeTime) {
-                $this->output = json_decode((string) file_get_contents($cacheFile), true);
-                return true;
+                $cached = json_decode((string) file_get_contents($cacheFile), true);
+
+                // An unreadable cache is regenerated
+                if (is_array($cached)) {
+                    $this->output = $cached;
+                    return true;
+                }
             }
         }
 
@@ -349,7 +350,10 @@ class Generator
                     $content .= $component;
                 }
 
-                // Add data to endpoint data
+                // Add data to endpoint data; a tag can't replace the parameter list or metadata
+                if ($name == 'parameters' || $name == '_metadata') {
+                    continue;
+                }
                 $endpoint[$name] = $content;
             }
 

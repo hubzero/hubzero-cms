@@ -237,7 +237,9 @@ class Feedback extends SiteController
         // Only the story form's own fields; everything else on the row (notes,
         // admin_rating, short_quote, notable_quote, ...) is set by an admin
         $fields = array_intersect_key($fields, array_flip(['fullname', 'org', 'quote', 'publish_ok', 'contact_ok']));
-        $fields = array_map('trim', array_filter($fields, 'is_scalar'));
+        $fields = array_map(function ($value) {
+            return trim((string) $value);
+        }, array_filter($fields, 'is_scalar'));
 
         $fields['user_id'] = User::get('id');
 

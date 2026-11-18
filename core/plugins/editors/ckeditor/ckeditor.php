@@ -803,7 +803,7 @@ class Ckeditor extends Plugin
 
         // Page templates
         if ($this->params->get('templates_files') && is_object($this->params->get('templates_files'))) {
-            foreach ($this->params->get('templates_files') as $name => $template) {
+            foreach ((array) $this->params->get('templates_files') as $name => $template) {
                 // Make sure templates exists
                 if (file_exists(PATH_ROOT . $template)) {
                     // Do we want to replace original ones

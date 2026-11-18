@@ -486,7 +486,7 @@ class Idp extends SiteController
      * that produced it at SSO time — so a persistent-ID SP cannot log out a
      * session by guessing a username.
      *
-     * @param   object  $sp      ServiceProvider
+     * @param   \Components\Saml\Models\ServiceProvider  $sp  ServiceProvider
      * @param   string  $nameId
      * @return  mixed   SamlSession or null
      */

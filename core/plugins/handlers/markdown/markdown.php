@@ -65,6 +65,9 @@ class Markdown extends Plugin
 
         $cls = '\\cebe\\markdown\\' . $this->params->get('style', 'Markdown');
 
+        if (!is_a($cls, \cebe\markdown\Parser::class, true)) {
+            $cls = \cebe\markdown\Markdown::class;
+        }
         $parser = new $cls();
 
         $rendered = $parser->parse($source);

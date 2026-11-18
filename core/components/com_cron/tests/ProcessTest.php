@@ -85,7 +85,8 @@ class ProcessTest extends Basic
             $this->markTestSkipped('/proc not available on this platform');
         }
 
-        $expected = (string) preg_split('/\s+/', trim(substr($stat, strrpos($stat, ')') + 1)))[19];
+        $fields   = preg_split('/\s+/', trim(substr($stat, strrpos($stat, ')') + 1))) ?: [];
+        $expected = (string) ($fields[19] ?? '');
 
         $this->assertEquals($expected, Process::startTime((int) $pid));
     }

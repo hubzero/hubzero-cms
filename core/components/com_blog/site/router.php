@@ -117,7 +117,7 @@ class Router extends Base
                 $vars['task'] = $segments[3];
             }
         }
-        if (in_array($vars['task'], ['deletefile', 'deletefolder', 'upload', 'download'])) {
+        if (in_array($vars['task'] ?? '', ['deletefile', 'deletefolder', 'upload', 'download'])) {
             $vars['controller'] = 'media';
         }
 

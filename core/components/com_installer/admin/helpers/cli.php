@@ -244,7 +244,7 @@ class Cli
         if (!isset($processUser)) {
             $processUser = posix_geteuid();
             $processUser = posix_getpwuid($processUser) ?: [];
-            $processUser = $processUser['name'];
+            $processUser = $processUser['name'] ?? '';
         }
 
         if ($user == 'apache') {

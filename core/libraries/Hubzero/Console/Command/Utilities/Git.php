@@ -141,7 +141,9 @@ class Git
             ];
             foreach ($lines as $line) {
                 $line  = trim($line);
-                preg_match('/([A|D|M|U|R|C|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts);
+                if (!preg_match('/([A|D|M|U|R|C|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts)) {
+                    continue;
+                }
 
                 if (strlen($parts[1]) == 2 && $parts[1] != '??' && $parts[1] != 'UU') {
                     $parts[1] = 'merged';

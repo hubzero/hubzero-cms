@@ -155,11 +155,11 @@ class Solr extends SiteController
         }
         if ($typeComponent) {
             foreach (($typeComponent->filters ?? []) as $filter) {
-                if (method_exists($filter, 'addCounts')) {
+                if (is_object($filter) && method_exists($filter, 'addCounts')) {
                     $filter->addCounts($multifacet);
                 }
 
-                if (method_exists($filter, 'applyFilters') && !empty(array_filter($filters))) {
+                if (is_object($filter) && method_exists($filter, 'applyFilters') && !empty(array_filter($filters))) {
                     $filter->applyFilters($query, $filters);
                 }
             }

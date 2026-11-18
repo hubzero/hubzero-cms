@@ -323,7 +323,7 @@ class Container implements ArrayAccess
     /**
      * Registers a service provider.
      *
-     * @param   object  $provider  A ServiceProviderInterface instance
+     * @param   ServiceProviderInterface  $provider  The provider
      * @param   array<mixed>   $options   An array of values that customizes the provider
      * @return  static
      */

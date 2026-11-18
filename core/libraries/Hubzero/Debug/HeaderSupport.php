@@ -59,7 +59,7 @@ class HeaderSupport
     public static function isDebugLogEnabled(): bool
     {
         $config = \App::get('config');
-        if ($config && method_exists($config, 'get')) {
+        if (is_object($config) && method_exists($config, 'get')) {
             return (bool) $config->get('debug');
         }
 

@@ -1120,7 +1120,7 @@ class Entriesv1r0 extends ApiController
     /**
      * A model's errors as one message
      *
-     * @param   object  $model
+     * @param   \Hubzero\Database\Relational  $model
      * @return  string
      */
     private function errors($model)

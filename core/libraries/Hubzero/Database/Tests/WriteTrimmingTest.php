@@ -161,7 +161,9 @@ class WriteTrimmingTest extends TestCase
      */
     public function testReadsLegacyWritesAndRawSqlKeepWhitespace()
     {
-        $object = (object) ['title' => ' kept ', 'body' => self::PADDED];
+        $object = new \stdClass();
+        $object->title = ' kept ';
+        $object->body  = self::PADDED;
         $this->assertNotFalse($this->db->insertObject('notes', $object, 'id'));
         $this->assertSame([' kept ', self::PADDED], $this->row());
 

@@ -56,6 +56,11 @@ class ClientManager
 
                 $obj = new $cls();
 
+                // Every client names its ID
+                if (!property_exists($obj, 'id')) {
+                    throw new \InvalidArgumentException(sprintf('Client type "%s" has no ID.', $client));
+                }
+
                 self::$clients[$obj->id] = $obj;
             }
             ksort(self::$clients);
@@ -109,7 +114,8 @@ class ClientManager
             $client = (object) $client;
         }
 
-        if (!is_object($client)) {
+        // Client information is a plain object (or an array made into one)
+        if (!($client instanceof \stdClass)) {
             return false;
         }
 

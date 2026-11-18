@@ -100,7 +100,7 @@ class Handler extends Table
         if ($entry) {
             $output = [];
             $output['params'] = [];
-            foreach ($entry as $field => $value) {
+            foreach (get_object_vars($entry) as $field => $value) {
                 if ($field == 'params') {
                     $params = json_decode($value, true);
                     if (is_array($params)) {

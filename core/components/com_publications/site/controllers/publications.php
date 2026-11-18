@@ -1641,7 +1641,7 @@ class Publications extends SiteController
             // Save the user as member and owner of the project
             $objO = $project->table('Owner');
 
-            if (!$objO->saveOwners($project->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1, '', 0)) {
+            if (!$objO->saveOwners((int) $project->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1, '', 0)) {
                 App::abort(500, $objO->getError());
             }
 

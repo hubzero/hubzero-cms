@@ -187,7 +187,7 @@ class Router extends Base
                 default:
                     $pagefound = false;
 
-                    $course = \Components\Courses\Models\Course::getInstance($vars['gid']);
+                    $course = \Components\Courses\Models\Course::getInstance($vars['gid'] ?? '');
                     if ($course->exists()) {
                         $pages = $course->pages(['active' => 1]);
 
@@ -228,7 +228,7 @@ class Router extends Base
                 if (isset($segments[4])) {
                     $vars['file'] = $segments[4];
                 }
-            } elseif ($vars['controller'] == 'course' && isset($vars['active'])) {
+            } elseif (($vars['controller'] ?? '') == 'course' && isset($vars['active'])) {
                 $vars['task'] = 'download';
                 $vars['file'] = $segments[2];
             } else {

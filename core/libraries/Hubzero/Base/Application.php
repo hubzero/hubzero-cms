@@ -486,7 +486,7 @@ class Application extends Container
         // Start handling errors before doing anything else
         if ($this->has('error')) {
             array_walk($this->serviceProviders, function ($p) {
-                if (method_exists($p, 'startHandling')) {
+                if (is_object($p) && method_exists($p, 'startHandling')) {
                     return $p->startHandling();
                 }
             });

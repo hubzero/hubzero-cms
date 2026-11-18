@@ -190,7 +190,7 @@ class Router extends Base
                         'refreshcalendar',
                         'subscribe',
                     ];
-                    if (in_array($vars['action'], $calendarActions)) {
+                    if (in_array($vars['action'] ?? '', $calendarActions)) {
                         $vars['calendar_id'] = $segments[3];
                     } else {
                         $vars['event_id'] = $segments[3];

@@ -146,7 +146,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 $modified   = @filemtime($filePath);
 
                 // formatted results
-            if (isset($fileinfo['extension'])) {
+            if (isset($fileInfo['extension'])) {
                 $extension = $fileInfo['extension'];
             } else {
                 $extension = Filesystem::extension($file);

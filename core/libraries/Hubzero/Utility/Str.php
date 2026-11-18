@@ -457,7 +457,8 @@ class Str
 
         if (is_numeric($value) && $value < 0) {
             $pre = 'n';
-            $value = abs($value);
+            // Adding 0 turns a numeric string into its number
+            $value = abs($value + 0);
         }
 
         while (strlen($value == null ? '' : $value) < $length) {

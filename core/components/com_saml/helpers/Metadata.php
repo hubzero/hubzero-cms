@@ -268,7 +268,9 @@ class Metadata
     private static function first(\DOMXPath $xpath, $expression, $context = null)
     {
         $list = $xpath->query($expression, $context);
+        $node = $list ? $list->item(0) : null;
 
-        return $list ? $list->item(0) : null;
+        // A namespace node is no DOMNode, and no element the metadata asks for
+        return $node instanceof \DOMNode ? $node : null;
     }
 }

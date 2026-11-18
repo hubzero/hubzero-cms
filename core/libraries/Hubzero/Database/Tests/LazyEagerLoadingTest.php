@@ -337,7 +337,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
 
         // Posts should be loaded
         $posts = $user->getRelationship('posts');
-        $this->assertNotNull($posts);
+        $this->assertInstanceOf(\Hubzero\Database\Rows::class, $posts);
 
         // First post should have comments loaded
         $firstPost = $posts->first();

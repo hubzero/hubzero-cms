@@ -454,7 +454,7 @@ class Shibboleth extends Plugin
                 } elseif (isset($attrs['eduPersonUniqueId'])) {
                     $attrs['eppn'] = $attrs['eduPersonUniqueId'];
                 } else {
-                    $attrs['eppn'] = $attrs['eduPersonPrincipalName'];
+                    $attrs['eppn'] = $attrs['eduPersonPrincipalName'] ?? null;
                 }
             }
             $attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);

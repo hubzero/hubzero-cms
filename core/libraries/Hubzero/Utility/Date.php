@@ -470,7 +470,7 @@ class Date extends DateTime
      * Gets the date as an SQL datetime string.
      *
      * @param   boolean  $local  True to return the date string in the local time zone, false to return it in GMT.
-     * @param   object|null   $dbo    The database driver or null to use global driver
+     * @param   \Hubzero\Database\Driver|null  $dbo  The database driver or null to use global driver
      * @return  string   The date string in SQL datetime format.
      */
     public function toSql($local = false, $dbo = null)

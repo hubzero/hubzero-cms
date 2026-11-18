@@ -162,7 +162,7 @@ class Activity extends Plugin
         $user = User::oneOrNew($user);
 
         if (!$user->get('id')) {
-            $this->setError('PLG_CRON_ACTIVITY_USER_NOT_FOUND', $user->get('id'));
+            $this->setError('PLG_CRON_ACTIVITY_USER_NOT_FOUND', (int) $user->get('id'));
             return false;
         }
 

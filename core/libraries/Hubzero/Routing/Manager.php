@@ -30,7 +30,7 @@ class Manager
     /**
      * The array of created "drivers".
      *
-     * @var  array<mixed>
+     * @var  array<string, \Hubzero\Routing\Router>
      */
     protected $routers = [];
 
@@ -61,7 +61,7 @@ class Manager
      * Get a client instance.
      *
      * @param   string|null  $client
-     * @return  object
+     * @return  \Hubzero\Routing\Router
      */
     public function client($client = null)
     {

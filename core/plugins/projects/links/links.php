@@ -544,7 +544,7 @@ class Links extends Plugin
                         $citation->set('type', $validTypes[$dType]);
                     } elseif (!intval($citation->type)) {
                         // Default to article
-                        $citation->set('type', $validTypes['journal-article']);
+                        $citation->set('type', $validTypes['journal-article'] ?? null);
                     }
                 }
 
@@ -890,7 +890,7 @@ class Links extends Plugin
 
             if ($citation == false && is_object($data)) {
                 $output['data'] = [];
-                foreach ($data as $key => $value) {
+                foreach (get_object_vars($data) as $key => $value) {
                     $output['data'][$key] = $value;
                 }
             }

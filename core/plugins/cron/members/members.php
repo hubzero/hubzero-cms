@@ -130,8 +130,8 @@ class Members extends Plugin
             $reviews = $RE->getReviews();
 
             // do we have ratings on reviews enabled?
-            $param = \Plugin::byType('resources', 'reviews');
-            $plparam = new \Hubzero\Config\Registry($param->params);
+            // byType() gives [] for an unpublished plugin; params() always gives a Registry
+            $plparam = \Plugin::params('resources', 'reviews');
             $voting = $plparam->get('voting');
 
             $accumulated = 0;

@@ -199,7 +199,8 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
             $fill_new = !isset($added_new_focus_area);
             $type_ids = [];
             if ($fill_new) {
-                $type_ids = array_flip(array_filter(Request::getArray('types-new', [], 'post'), 'is_scalar'));
+                $types_new = array_filter(Request::getArray('types-new', [], 'post'), 'is_scalar');
+                $type_ids  = array_flip(array_map('strval', $types_new));
             }
             ?>
             </div><!-- / #fas -->

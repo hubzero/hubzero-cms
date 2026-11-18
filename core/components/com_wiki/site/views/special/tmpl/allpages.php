@@ -87,7 +87,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
             }
             $rows = $data;
 
-            $columns = array_chunk($rows, (int) ceil(count($rows) / 3), true /* preserve keys */);
+            $columns = array_chunk($rows, max(1, (int) ceil(count($rows) / 3)), true /* preserve keys */);
 
             $index = '';
             $i = 0;

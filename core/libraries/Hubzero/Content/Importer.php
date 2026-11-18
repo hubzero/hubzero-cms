@@ -29,7 +29,7 @@ class Importer
     /**
      * Array of Import Adapters
      *
-     * @var array<mixed>|null
+     * @var list<class-string<\Hubzero\Content\Import\Adapter>>|null
      */
     private $adapters;
 
@@ -77,7 +77,7 @@ class Importer
         foreach (glob(__DIR__ . DS . 'Import' . DS . 'Adapter' . DS . '*.php') ?: [] as $adapter) {
             $class = __NAMESPACE__ . '\\Import\\Adapter\\' . basename($adapter, '.php');
 
-            if (class_exists($class) && in_array('Hubzero\Content\Import\Adapter', class_implements($class))) {
+            if (is_a($class, \Hubzero\Content\Import\Adapter::class, true)) {
                 $this->adapters[] = $class;
             }
         }

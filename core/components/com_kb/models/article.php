@@ -584,7 +584,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     public function save()
     {
         $params = $this->get('params');
-        if (is_object($params)) {
+        if ($params instanceof \Hubzero\Config\Registry) {
             $this->set('params', $params->toString());
         }
 

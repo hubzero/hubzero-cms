@@ -224,7 +224,7 @@ class Db2Driver extends BaseSqlDriver
     {
         parent::connect();
 
-        if ($this->connection && $this->connection->isConnected()) {
+        if ($this->connection instanceof \Hubzero\Database\ConnectionInterface && $this->connection->isConnected()) {
             $this->setDb2Options();
         }
     }

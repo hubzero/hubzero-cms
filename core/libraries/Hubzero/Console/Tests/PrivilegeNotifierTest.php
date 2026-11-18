@@ -48,7 +48,9 @@ class PrivilegeNotifierTest extends Basic
         $this->argv = $_SERVER['argv'] ?? null;
         $_SERVER['argv'] = array_merge((array) $this->argv, ['--no-interaction']);
 
-        $this->stream = fopen('php://memory', 'w+');
+        $stream = fopen('php://memory', 'w+');
+        $this->assertNotFalse($stream);
+        $this->stream = $stream;
     }
 
     /**
@@ -207,7 +209,9 @@ class PrivilegeNotifierTest extends Basic
      */
     public function testSudoOnYourOwnCheckoutKeepsSudoHandling()
     {
-        $me = posix_getpwuid((int) fileowner(__DIR__))['name'];
+        $owner = posix_getpwuid((int) fileowner(__DIR__));
+        $this->assertNotFalse($owner);
+        $me = $owner['name'];
 
         /** @var PrivilegeManager&\Mockery\MockInterface $privileges */
         $privileges = m::mock(PrivilegeManager::class);

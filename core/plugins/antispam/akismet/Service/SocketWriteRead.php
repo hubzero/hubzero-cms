@@ -119,7 +119,7 @@ class SocketWriteRead
             @fwrite($fs, $this->request);
 
             while (!feof($fs)) {
-                $this->response .= fgets($fs, $this->responseLength);
+                $this->response .= fgets($fs, max(0, $this->responseLength));
             }
 
             fclose($fs);

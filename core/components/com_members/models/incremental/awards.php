@@ -196,7 +196,7 @@ class Awards
                 . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = '
                 . $this->uid . ')), 0)';
             self::$dbh->setQuery($sql);
-            $newAmount = self::$dbh->loadResult() + $alreadyComplete;
+            $newAmount = (int) self::$dbh->loadResult() + $alreadyComplete;
 
             $BTL = new Teller($this->uid);
             $BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0);

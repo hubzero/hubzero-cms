@@ -314,7 +314,7 @@ class Html extends Base
         $args = func_get_args();
 
         // The following code is just for backward compatibility.
-        if (!is_array($args[1]) && func_num_args() > 1) {
+        if (!is_array($options)) {
             $options = [];
             $options['type'] = $args[1];
             $options['name'] = (isset($args[2])) ? $args[2] : null;

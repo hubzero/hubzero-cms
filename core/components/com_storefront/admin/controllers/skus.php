@@ -37,7 +37,9 @@ class Skus extends AdminController
         // Get product ID
         $pId = Request::getInt('id');
         if (empty($pId)) {
-            $pId = Request::getArray('pId', [0]);
+            // The list form posts the product as pId[]
+            $pIds = Request::getArray('pId', [0]);
+            $pId  = (int) ($pIds[0] ?? 0);
         }
         $this->view->set('pId', $pId);
 

@@ -2296,7 +2296,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         }
 
         if (is_object($value)) {
-            foreach ($value as $key => $prop) {
+            foreach (get_object_vars($value) as $key => $prop) {
                 $value->$key = $this->stripMilliseconds($prop);
             }
         }

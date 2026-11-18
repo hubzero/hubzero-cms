@@ -296,7 +296,7 @@ class Stats extends Table
             $fDSpace  = $repo->getStats($validProjects, 'diskspace');
             $pDSpace  = $repo->getStats($validProjects, 'pubspace');
 
-            $perc = round(($fUsage * 100) / $active) . '%';
+            $perc = round(($fUsage * 100) / (int) $active) . '%';
 
             $stats['files'] = [
                 'total'     => $fTotal,

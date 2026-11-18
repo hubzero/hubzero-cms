@@ -25,7 +25,7 @@ class Importer
     /**
      * Array of Resource Import Adapters
      *
-     * @var  array<mixed>
+     * @var  list<class-string<Interfaces\Adapter>>
      */
     private $adapters;
 
@@ -73,13 +73,13 @@ class Importer
             require_once $adapter;
         }
 
-        // anonymous function to get adapters
-        $isAdapterClass = function ($class) {
-            return (in_array('Components\Resources\Import\Interfaces\Adapter', (class_implements($class) ?: [])));
-        };
-
-        // set our adapters (any declared class implementing the ResourcesImportInterface)
-        $this->adapters = array_values(array_filter(get_declared_classes(), $isAdapterClass));
+        // set our adapters (any declared class implementing the adapter interface)
+        $this->adapters = [];
+        foreach (get_declared_classes() as $class) {
+            if (is_a($class, Interfaces\Adapter::class, true)) {
+                $this->adapters[] = $class;
+            }
+        }
     }
 
     /**

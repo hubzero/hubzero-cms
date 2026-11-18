@@ -49,7 +49,7 @@ class UriBase extends Middleware
     /**
      * Look for keys in data and convert found values
      *
-     * @param   object  $request
+     * @param   \Hubzero\Http\Request  $request
      * @param   mixed   $data
      * @return  mixed
      */
@@ -71,7 +71,7 @@ class UriBase extends Middleware
     /**
      * Convert a URI
      *
-     * @param   object  $request
+     * @param   \Hubzero\Http\Request  $request
      * @param   string  $key
      * @param   mixed   $value
      * @return  mixed

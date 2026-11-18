@@ -1056,7 +1056,7 @@ class Warehouse extends \Hubzero\Base\Obj
     {
         $sqlIn = '(0';
         if (is_array($skus) || is_object($skus)) {
-            foreach ($skus as $sId) {
+            foreach ((array) $skus as $sId) {
                 // SKU ids are integers; cast to prevent SQL injection through the IN() list.
                 $sqlIn .= ', ' . (int) $sId;
             }

@@ -34,26 +34,8 @@ class DayOfMonthField extends AbstractField
      */
     public static function getLastDayOfMonth(DateTime $date)
     {
-        $month = $date->format('n');
-        if ($month == 2) {
-            return (bool) $date->format('L') ? 29 : 28;
-        } else {
-            $dates = [
-                1  => 31,
-                3  => 31,
-                4  => 30,
-                5  => 31,
-                6  => 30,
-                7  => 31,
-                8  => 31,
-                9  => 30,
-                10 => 31,
-                11 => 30,
-                12 => 31,
-            ];
-
-            return $dates[$month];
-        }
+        // 't' is the number of days in the date's month, leap years included
+        return (int) $date->format('t');
     }
 
     /**
@@ -81,7 +63,7 @@ class DayOfMonthField extends AbstractField
         $lastDayOfMonth = self::getLastDayOfMonth($target);
 
         foreach ([-1, 1, -2, 2] as $i) {
-            $adjusted = $targetDay + $i;
+            $adjusted = (int) $targetDay + $i;
             if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
                 $target->setDate((int) $currentYear, (int) $currentMonth, $adjusted);
                 if ($target->format('N') < 6 && $target->format('m') == $currentMonth) {

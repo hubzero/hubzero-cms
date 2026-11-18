@@ -108,7 +108,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
         $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 
         // Append current position to redirect
-        $redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
+        $redirect .= $delimeter . 'time=' . gmdate("H:i:s", (int) $tracking->current_position);
 
         // Redirect
         App::redirect(Route::url($redirect, false), '', '');

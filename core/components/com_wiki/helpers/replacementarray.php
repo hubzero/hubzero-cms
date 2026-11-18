@@ -122,7 +122,7 @@ class ReplacementArray
      *
      * Long description (if any) ...
      *
-     * @param      object $other Parameter description (if any) ...
+     * @param      self $other The replacements to add
      * @return     void
      */
     public function merge($other)

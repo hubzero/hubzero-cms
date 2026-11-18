@@ -1913,7 +1913,7 @@ class AseDriver extends BaseSqlDriver
         // those positions, we must add the column list and enable IDENTITY_INSERT.
         $patternSelect = '/INSERT\s+INTO\s+' . $ident . '\s+SELECT\s+/i';
         if (preg_match($patternSelect, $sql, $matches)) {
-            $table = $matches[1] ?: ($matches[2] ?: $matches[3]);
+            $table = $matches[1] ?: (($matches[2] ?? '') ?: ($matches[3] ?? ''));
             $identityCol = $this->getIdentityColumn($table);
 
             if ($identityCol) {

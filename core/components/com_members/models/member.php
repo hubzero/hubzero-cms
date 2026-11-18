@@ -213,7 +213,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 
             $this->set('params', $params);
         }
-        if (is_object($this->get('params'))) {
+        if ($this->get('params') instanceof \Hubzero\Config\Registry) {
             $this->set('params', $this->get('params')->toString());
         }
 

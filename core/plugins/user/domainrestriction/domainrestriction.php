@@ -395,8 +395,8 @@ class Domainrestriction extends Plugin
             }
 
             if ($groupchange) {
-                $user->set('groups', \Hubzero\Access\Access::getGroupsByUser($user->id));
-                $user->set('authlevels', \Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
+                $user->set('groups', \Hubzero\Access\Access::getGroupsByUser((int) $user->id));
+                $user->set('authlevels', \Hubzero\Access\Access::getAuthorisedViewLevels((int) $user->id));
             }
         }
         return true;

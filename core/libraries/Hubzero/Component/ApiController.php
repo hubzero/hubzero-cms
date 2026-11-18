@@ -420,7 +420,10 @@ class ApiController implements ControllerInterface
                     }
                 }
 
-                // add data to endpoint data
+                // add data to endpoint data; a tag can't replace the parameter list
+                if ($name == 'parameters') {
+                    continue;
+                }
                 $endpoint[$name] = $content;
             }
 
@@ -595,7 +598,7 @@ class ApiController implements ControllerInterface
                         unset($obj->$property);
                     }
                 }
-                if (method_exists($row, 'link')) {
+                if (is_object($row) && method_exists($row, 'link')) {
                     $obj->url = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
                 }
 

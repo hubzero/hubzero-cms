@@ -136,16 +136,19 @@ class Router
      * Function to convert an internal URI to a route
      *
      * @param   string  $uri  The internal URL
-     * @return  object  The absolute search engine friendly URL, as a URI
+     * @return  \Hubzero\Utility\Uri  The absolute search engine friendly URL, as a URI
      */
     public function build($uri)
     {
         // Create the URI object
         $uri = $this->createUri($uri);
 
-        // Process the uri information based on custom defined rules
+        // Process the uri information based on custom defined rules; each hands the URI back
         foreach ($this->rules['build'] as $rule) {
-            $uri = $rule($uri);
+            $built = $rule($uri);
+            if ($built instanceof \Hubzero\Utility\Uri) {
+                $uri = $built;
+            }
         }
 
         return $uri;

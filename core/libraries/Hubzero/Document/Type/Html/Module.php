@@ -23,7 +23,7 @@ class Module extends Renderer
     /**
      * Renders a module script and returns the results as a string
      *
-     * @param   string|object  $module   The name of the module to render
+     * @param   string|\stdClass  $module   The name of the module to render, or its row
      * @param   array<mixed>   $attribs  Associative array of values
      * @param   string|null  $content  If present, module information from the buffer will be used
      * @return  string  The output of the script

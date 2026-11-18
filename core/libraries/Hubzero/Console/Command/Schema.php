@@ -1274,6 +1274,9 @@ class Schema extends Base implements CommandInterface
 
         // Introspect database
         $filterCallback = $filter ? $this->buildTableFilterCallback($filter) : null;
+        if ($filterCallback === false) {
+            $this->output->error('Error: the filter is not a valid pattern.');
+        }
         $databaseInfo = $db->schema()->introspectDatabase($prefix, $filterCallback);
 
         // Get statistics

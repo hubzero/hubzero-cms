@@ -1272,7 +1272,7 @@ class CurrentCart extends Cart
 
                 // calculate total generic discounts, the final correct value will be calculated on the last iteration
                 // of the parent loop
-                foreach ($perks['generic'] as $perkDiscount) {
+                foreach ($perks['generic'] ?? [] as $perkDiscount) {
                     $genericDiscountsTotal += $perkDiscount->discount;
                 }
             } elseif ($couponObjectType == 'shipping') {
@@ -1646,7 +1646,7 @@ class CurrentCart extends Cart
             echo "<br>Lifting user cart";
         }
 
-        $crtId = $this->getUserCartId($uId);
+        $crtId = $this->getUserCartId((int) $uId);
 
         if ($crtId) {
             if ($this->liftCart($crtId)) {

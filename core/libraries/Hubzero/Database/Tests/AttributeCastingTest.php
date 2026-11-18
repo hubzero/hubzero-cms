@@ -139,7 +139,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
         $data = array_merge($defaults, $data);
 
         $query = new Query($driver);
-        return $query->push(self::$testTable, $data);
+        return (int) $query->push(self::$testTable, $data);
     }
 
     // =========================================================================

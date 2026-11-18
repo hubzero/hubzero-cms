@@ -137,7 +137,7 @@ class ResourceMapGenerator
             '',
             $publication->secret,
             1,
-        );
+        ) ?: '';
     }
 
     /**

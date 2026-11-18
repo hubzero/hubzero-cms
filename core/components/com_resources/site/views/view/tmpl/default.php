@@ -109,7 +109,7 @@ if ($mode != 'preview') {
 
                     $firstchild = $children->first();
 
-                    $html .= $this->tab != 'play' && is_object($firstchild)
+                    $html .= $this->tab != 'play' && $firstchild instanceof \Components\Resources\Models\Entry
                         ? \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstchild, '')
                         : '';
 

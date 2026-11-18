@@ -254,7 +254,7 @@ abstract class BaseSqlSyntax
     /**
      * Constructs query syntax class, setting database connection
      *
-     * @param   object  $connection  The database connection to use
+     * @param   BaseSqlDriver  $connection  The database connection to use
      * @return  void
      */
     public function __construct($connection)

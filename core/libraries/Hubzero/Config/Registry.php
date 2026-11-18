@@ -342,7 +342,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         // If the source isn't already a Registry
         // we'll turn it into one
         if (!is_array($source)) {
-            if (!($source instanceof Registry) && !method_exists($source, 'toArray')) {
+            if (!($source instanceof Registry) && !(is_object($source) && method_exists($source, 'toArray'))) {
                 $source = new self($source);
             }
 

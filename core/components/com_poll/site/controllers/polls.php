@@ -167,7 +167,7 @@ class Polls extends SiteController
             $vote = & $votes[$i];
 
             if ($maxval > 0 && $sumval > 0) {
-                $vote->width   = ceil($vote->hits * $graphwidth / $maxval);
+                $vote->width   = ceil($vote->hits * $graphwidth / (int) $maxval);
                 $vote->percent = round(100 * $vote->hits / $sumval, 1);
             } else {
                 $vote->width   = 0;

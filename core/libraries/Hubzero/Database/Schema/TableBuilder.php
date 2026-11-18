@@ -966,7 +966,7 @@ class TableBuilder
 
                 case 'primary':
                     if ($value && ($column = array_key_last($this->columns)) !== null) {
-                        $this->primaryKey($column);
+                        $this->primaryKey((string) $column);
                     }
                     break;
 

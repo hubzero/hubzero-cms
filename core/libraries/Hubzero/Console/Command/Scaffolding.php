@@ -82,7 +82,10 @@ class Scaffolding extends Base implements CommandInterface
     {
         if ($this->type) {
             $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst($this->type);
-            $obj   = new $class($this->output, $this->arguments);
+            if (!is_a($class, self::class, true)) {
+                $this->output->error('Error: Sorry, scaffolding doesn\'t know how to create a ' . $this->type);
+            }
+            $obj = new $class($this->output, $this->arguments);
 
             // Call the help method
             $obj->help();
@@ -107,7 +110,7 @@ class Scaffolding extends Base implements CommandInterface
     {
         $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst((string) $this->type);
 
-        if (class_exists($class)) {
+        if (is_a($class, self::class, true)) {
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {
@@ -150,8 +153,10 @@ class Scaffolding extends Base implements CommandInterface
             ->addReplacement('author_name', $user_name)
             ->addReplacement('author_email', $user_email);
 
-        // Call the construct method
-        $obj->construct();
+        // Call the construct method, which each kind of scaffolding has
+        if (method_exists($obj, 'construct')) {
+            $obj->construct();
+        }
     }
 
     /**
@@ -163,7 +168,7 @@ class Scaffolding extends Base implements CommandInterface
     {
         $class = __NAMESPACE__ . '\\Scaffolding\\' . ucfirst((string) $this->type);
 
-        if (class_exists($class)) {
+        if (is_a($class, self::class, true)) {
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {

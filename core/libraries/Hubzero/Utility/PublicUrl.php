@@ -95,7 +95,7 @@ class PublicUrl
     /**
      * Point a curl handle at a checked URL, pinned to its checked addresses
      *
-     * @param   resource|\CurlHandle  $ch
+     * @param   \CurlHandle  $ch
      * @param   array<mixed>                 $target  From check()
      * @return  void
      */
@@ -111,7 +111,7 @@ class PublicUrl
     /**
      * Whether curl connected to one of the checked addresses
      *
-     * @param   resource|\CurlHandle  $ch
+     * @param   \CurlHandle  $ch
      * @param   array<mixed>                 $target  From check()
      * @return  bool
      */

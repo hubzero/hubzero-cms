@@ -144,10 +144,10 @@ class Migration extends Scaffolding
         $prefix = App::get('db')->getPrefix();
 
         $create = App::get('db')->getTableCreate($tableName);
-        $create = $create[$tableName];
+        $create = (string) $create[$tableName];
         $create = str_replace("CREATE TABLE `{$prefix}", 'CREATE TABLE `#__', $create);
         $create = str_replace("\n", "\n\t\t\t\t", $create);
-        $create = preg_replace('/(AUTO_INCREMENT=)([0-9]*)/', '${1}0', $create);
+        $create = (string) preg_replace('/(AUTO_INCREMENT=)([0-9]*)/', '${1}0', $create);
 
         return $create;
     }

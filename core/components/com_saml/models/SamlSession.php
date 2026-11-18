@@ -73,7 +73,7 @@ class SamlSession extends Relational
      * silently doing nothing. The audit row that records the answer is the
      * same row that proves the request was used.
      *
-     * @param   object  $sp         ServiceProvider
+     * @param   ServiceProvider  $sp  ServiceProvider
      * @param   string  $requestId
      * @return  boolean
      */
@@ -97,7 +97,7 @@ class SamlSession extends Relational
      * paginated listing of this model.
      *
      * @param   \Hubzero\User\User  $user       \Hubzero\User\User
-     * @param   object  $sp         ServiceProvider
+     * @param   ServiceProvider  $sp  ServiceProvider
      * @param   string  $requestId  The AuthnRequest this answers
      * @return  static  SamlSession
      */

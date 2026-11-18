@@ -940,6 +940,10 @@ class Group extends Obj
 
         $result = $db->loadColumn();
 
+        if (!is_callable($func)) {
+            return false;
+        }
+
         foreach ($result as $row) {
             call_user_func($func, $row);
         }

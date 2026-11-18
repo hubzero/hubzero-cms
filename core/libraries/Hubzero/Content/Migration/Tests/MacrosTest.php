@@ -59,7 +59,7 @@ class MacrosTest extends TestCase
     /**
      * Every $this->method() a macro calls is a method it has
      *
-     * @param   string  $class
+     * @param   class-string  $class
      * @return  void
      */
     #[Test]
@@ -98,7 +98,7 @@ class MacrosTest extends TestCase
     /**
      * Every macro can be invoked - it is what a migration calls
      *
-     * @param   string  $class
+     * @param   class-string  $class
      * @return  void
      */
     #[Test]

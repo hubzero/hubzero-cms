@@ -231,7 +231,7 @@ class IdPBindingTest extends Basic
 
         $this->assertMatchesRegularExpression('/name="SAMLResponse" value="([^"]+)"/', $html);
         preg_match('/name="SAMLResponse" value="([^"]+)"/', $html, $field);
-        $xml = base64_decode(html_entity_decode($field[1]));
+        $xml = base64_decode(html_entity_decode($field[1] ?? ''));
         $this->assertStringContainsString('InResponseTo="request-1"', $xml);
         $this->assertStringContainsString('ds:SignatureValue', $xml);
 
@@ -367,9 +367,9 @@ class IdPBindingTest extends Basic
         $query = isset($parts['query']) ? $parts['query'] : '';
 
         $_SERVER['REQUEST_METHOD'] = $method;
-        $_SERVER['HTTP_HOST']      = $parts['host'];
+        $_SERVER['HTTP_HOST']      = $parts['host'] ?? '';
         $_SERVER['HTTPS']          = 'on';
-        $_SERVER['REQUEST_URI']    = $parts['path'] . ($query !== '' ? '?' . $query : '');
+        $_SERVER['REQUEST_URI']    = ($parts['path'] ?? '') . ($query !== '' ? '?' . $query : '');
         $_SERVER['QUERY_STRING']   = $query;
         parse_str($query, $_GET);
         $_POST = $post;
@@ -387,7 +387,9 @@ class IdPBindingTest extends Basic
     {
         $key  = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
         $csr  = openssl_csr_new(['commonName' => $name . '.example.org'], $key);
+        $this->assertInstanceOf(\OpenSSLCertificateSigningRequest::class, $csr);
         $cert = openssl_csr_sign($csr, null, $key, 1, ['digest_alg' => 'sha256']);
+        $this->assertNotFalse($cert);
 
         openssl_x509_export_to_file($cert, $this->dir . '/' . $name . '.crt');
         openssl_pkey_export_to_file($key, $this->dir . '/' . $name . '.pem');

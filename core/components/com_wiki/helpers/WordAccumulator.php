@@ -23,9 +23,9 @@ if (!defined('NBSP')) {
 class WordAccumulator
 {
     /**
-     * @var  array<mixed>|string
+     * @var  array<mixed>
      */
-    public $lines = '';
+    public $lines = [];
     /**
      * @var  string
      */

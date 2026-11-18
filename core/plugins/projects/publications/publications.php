@@ -1766,7 +1766,7 @@ class Publications extends Plugin
                 $new->state          = 3;
                 $new->main           = 0;
                 $new->version_label  = $label;
-                $new->version_number = $pub->versionCount() + 1;
+                $new->version_number = (int) $pub->versionCount() + 1;
                 $new->secret         = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
                 if ($new->store()) {

@@ -67,7 +67,9 @@ class ProductHandler
         $modelHandlerFqcn = '\\Components\\Cart\\Lib\\Handlers\\Model\\' . $modelHandlerClass;
         if (class_exists($modelHandlerFqcn)) {
             $modelHandler = new $modelHandlerFqcn($this->item, $this->crtId, $this->tId);
-            $modelHandler->handle();
+            if (method_exists($modelHandler, 'handle')) {
+                $modelHandler->handle();
+            }
         }
 
         // TYPE HANDLER
@@ -76,7 +78,9 @@ class ProductHandler
         $typeHandlerFqcn = '\\Components\\Cart\\Lib\\Handlers\\Type\\' . $typeHandlerClass;
         if (class_exists($typeHandlerFqcn)) {
             $typeHandler = new $typeHandlerFqcn($this->item, $this->crtId);
-            $typeHandler->handle();
+            if (method_exists($typeHandler, 'handle')) {
+                $typeHandler->handle();
+            }
         }
 
         // CUSTOM HANDLERS (if any)
@@ -88,7 +92,9 @@ class ProductHandler
 
             if (class_exists($customHandlerFqcn)) {
                 $handler = new $customHandlerFqcn($this->item, $this->crtId);
-                $handler->handle();
+                if (method_exists($handler, 'handle')) {
+                    $handler->handle();
+                }
             }
         }
     }

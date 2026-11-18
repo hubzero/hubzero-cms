@@ -67,7 +67,9 @@ class IdPResponseTest extends Basic
         ]);
 
         $csr  = openssl_csr_new(['commonName' => 'test-idp.example.org'], $key);
+        $this->assertInstanceOf(\OpenSSLCertificateSigningRequest::class, $csr);
         $cert = openssl_csr_sign($csr, null, $key, 1);
+        $this->assertNotFalse($cert);
 
         openssl_x509_export_to_file($cert, $this->dir . '/saml.crt');
         openssl_pkey_export_to_file($key, $this->dir . '/saml.pem');

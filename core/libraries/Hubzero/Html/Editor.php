@@ -80,7 +80,7 @@ class Editor extends Obj
      * if it doesn't already exist.
      *
      * @param   string  $editor  The editor to use.
-     * @return  object  The Editor object.
+     * @return  self  The Editor object.
      */
     public static function getInstance($editor = 'none')
     {

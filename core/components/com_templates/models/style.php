@@ -146,7 +146,7 @@ class Style extends Relational
                 $params = new Registry($params);
             }
 
-            if (is_object($params)) {
+            if ($params instanceof Registry) {
                 $params = $params->toString();
             }
 

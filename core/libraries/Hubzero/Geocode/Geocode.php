@@ -522,7 +522,7 @@ class Geocode
      * compares a quoted number with a DECIMAL as a double, which cannot tell
      * neighbouring IPv6 addresses apart.
      *
-     * @param   object      $gdb    Geo database
+     * @param   \Hubzero\Database\Driver  $gdb  Geo database
      * @param   string      $ip     Address
      * @param   string      $table  ipcountry or iplocation
      * @return  array<mixed>|null  array(table, SQL value), or null when there is no lookup

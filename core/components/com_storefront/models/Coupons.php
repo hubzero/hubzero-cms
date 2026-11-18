@@ -47,7 +47,7 @@ class Coupons
     {
         $sqlCnIds = '0';
         if (is_array($cnIds) || is_object($cnIds)) {
-            foreach ($cnIds as $cnId) {
+            foreach ((array) $cnIds as $cnId) {
                 $sqlCnIds .= ',' . $cnId;
             }
         }
@@ -69,7 +69,7 @@ class Coupons
 
         // $cnIds are orderd by time applied
         if (is_array($cnIds) || is_object($cnIds)) {
-            foreach ($cnIds as $cnId) {
+            foreach ((array) $cnIds as $cnId) {
                 // Skip deleted or inactive coupons
                 if (empty($couponsInfo[$cnId])) {
                     continue;

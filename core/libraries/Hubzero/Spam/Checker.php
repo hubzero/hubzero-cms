@@ -45,7 +45,7 @@ class Checker
     /**
      * Constructor
      *
-     * @param   object|null  $stringProcessor
+     * @param   StringProcessor\StringProcessorInterface|null  $stringProcessor
      * @return  void
      */
     public function __construct($stringProcessor = null)

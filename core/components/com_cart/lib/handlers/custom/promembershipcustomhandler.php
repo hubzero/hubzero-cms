@@ -34,7 +34,8 @@ class ProMembershipCustomHandler extends CustomHandler
         if (!empty($this->item['meta']['addPoints']) && is_numeric($this->item['meta']['addPoints'])) {
             // Update points account
             $BTL = new \Hubzero\Bank\Teller((int) $userId);
-            $BTL->deposit($this->item['meta']['addPoints'], 'PRO Membership Bonus', 'PRO', $this->item['info']->sId);
+            $points = (int) $this->item['meta']['addPoints'];
+            $BTL->deposit($points, 'PRO Membership Bonus', 'PRO', $this->item['info']->sId);
         }
     }
 }

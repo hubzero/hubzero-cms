@@ -27,7 +27,7 @@ class Equals extends Rule
      *                              container for the field.
      *                              For example if the field has name="foo" and the group value is set to "bar" then the
      *                              full field name would end up being "bar[foo]".
-     * @param   object|null   &$input    An optional Registry object with the entire data set to
+     * @param   \Hubzero\Config\Registry|null  &$input  An optional Registry object with the entire data set to
      * validate against the entire form.
      * @param   object|null   &$form     The form object for which the field is being tested.
      * @return  bool|\Exception     True if the value is valid, false otherwise.

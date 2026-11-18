@@ -1328,7 +1328,7 @@ class SqlsrvDriver extends BaseSqlDriver
         // Pattern 2: INSERT INTO table SELECT ... (no column list)
         $pattern2 = '/INSERT\s+INTO\s+' . $ident . '\s+SELECT\b/i';
         if (preg_match($pattern2, $sql, $matches)) {
-            $table = $matches[1] ?: ($matches[2] ?: $matches[3]);
+            $table = $matches[1] ?: (($matches[2] ?? '') ?: ($matches[3] ?? ''));
             // If the table has an IDENTITY column, toggle is needed
             // since SELECT will include data for that column
             if ($this->getIdentityColumn($table)) {

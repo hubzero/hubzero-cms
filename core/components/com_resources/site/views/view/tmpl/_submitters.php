@@ -84,7 +84,7 @@ if ($this->contributors) {
             if ($xuser->get('name')) {
                 // get users groups
                 // in reverse to get the highest levels first
-                $groupIds = Hubzero\Access\Access::getGroupsByUser($xuser->id, false);
+                $groupIds = Hubzero\Access\Access::getGroupsByUser((int) $xuser->id, false);
                 $database->setQuery(
                     "SELECT title FROM `#__usergroups` WHERE `id` IN (" . implode(',', $groupIds)
                         . ") ORDER BY lft ASC",
