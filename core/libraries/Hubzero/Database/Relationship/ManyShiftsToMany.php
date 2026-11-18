@@ -23,8 +23,8 @@ class ManyShiftsToMany extends ManyToMany
     /**
      * Constructs a new object instance
      *
-     * @param   \Hubzero\Database\Relational|static  $model              The primary model
-     * @param   \Hubzero\Database\Relational|static  $related            The related model
+     * @param   \Hubzero\Database\Relational  $model              The primary model
+     * @param   \Hubzero\Database\Relational  $related            The related model
      * @param   string                               $associativeTable   The associative entity
      * @param   string                               $localKey           The local key
      * @param   string                               $relatedKey         The related key

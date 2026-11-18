@@ -47,16 +47,16 @@ class ManyToMany extends OneToManyThrough
     /**
      * Associates the model provided back to the model by way of their proper keys
      *
-     * @param   object   $model     The model to associate
+     * @param   \Hubzero\Database\Relational   $model     The model to associate
      * @param   \Closure|null  $callback  A callback to potentially append additional data
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      **/
     public function associate($model, $callback = null)
     {
         $relationship = $this;
         Event::listen(
             function ($event) use ($model, $relationship) {
-                $relationship->connect([$model->id]);
+                $relationship->connect([$model->getPkValue()]);
             },
             $model->getTableName() . '_new',
         );

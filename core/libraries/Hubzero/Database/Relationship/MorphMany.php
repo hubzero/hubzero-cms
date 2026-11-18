@@ -309,7 +309,7 @@ class MorphMany extends MorphOne
     /**
      * Group results by related key
      *
-     * @param  \Hubzero\Database\Rows  $relations  The relations to group
+     * @param  \Hubzero\Database\Relational|\Hubzero\Database\Rows  $relations  The relations to group
      * @return array<mixed>
      */
     protected function getResultsByRelatedKey($relations)

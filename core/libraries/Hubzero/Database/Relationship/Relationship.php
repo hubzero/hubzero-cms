@@ -49,14 +49,14 @@ class Relationship
     /**
      * The primary model
      *
-     * @var  \Hubzero\Database\Relational|static|null
+     * @var  \Hubzero\Database\Relational|null
      **/
     protected $model = null;
 
     /**
      * The related model
      *
-     * @var  \Hubzero\Database\Relational|static|null
+     * @var  \Hubzero\Database\Relational|null
      **/
     protected $related = null;
 
@@ -128,8 +128,8 @@ class Relationship
     /**
      * Constructs a new object instance
      *
-     * @param   \Hubzero\Database\Relational|static  $model       The primary model
-     * @param   \Hubzero\Database\Relational|static  $related     The related model
+     * @param   \Hubzero\Database\Relational  $model       The primary model
+     * @param   \Hubzero\Database\Relational  $related     The related model
      * @param   string  $localKey    The local key
      * @param   string  $relatedKey  The related key
      * @return  void
@@ -190,7 +190,7 @@ class Relationship
      * This method applies both the base relationship constraint (foreign key match)
      * and any default conditions defined via onCondition().
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      **/
     public function constrain()
     {
@@ -296,9 +296,9 @@ class Relationship
      * Because this is a singular relationship, we never expect to have more than one
      * model at at time.
      *
-     * @param   object   $model     The model to associate
+     * @param   \Hubzero\Database\Relational   $model     The model to associate
      * @param   \Closure|null|mixed  $callback  A callback to potentially append additional data
-     * @return  object
+     * @return  \Hubzero\Database\Relational|static  The model (morphTo gives the relationship)
      **/
     public function associate($model, $callback = null)
     {
@@ -393,7 +393,7 @@ class Relationship
     /**
      * Sorts the relations into arrays keyed by the related key
      *
-     * @param   object  $relations  The relations to sort
+     * @param   \Hubzero\Database\Relational  $relations  The relations to sort
      * @return  array<mixed>|\Hubzero\Database\Rows
      **/
     protected function getResultsByRelatedKey($relations)
@@ -574,7 +574,7 @@ class Relationship
     /**
      * Get the related model instance
      *
-     * @return  \Hubzero\Database\Relational|static
+     * @return  \Hubzero\Database\Relational|null
      **/
     public function getRelated()
     {
@@ -584,7 +584,7 @@ class Relationship
     /**
      * Get the parent model instance
      *
-     * @return  \Hubzero\Database\Relational|static
+     * @return  \Hubzero\Database\Relational|null
      **/
     public function getModel()
     {
@@ -793,8 +793,9 @@ class Relationship
      *
      * Called internally by constrain() and getRelations().
      *
-     * @param   object  $query  The query/model to apply conditions to
-     * @return  object
+     * @template  T of \Hubzero\Database\Relational|\Hubzero\Database\Query
+     * @param   T  $query  The query/model to apply conditions to
+     * @return  T
      **/
     protected function applyDefaultConditions($query)
     {

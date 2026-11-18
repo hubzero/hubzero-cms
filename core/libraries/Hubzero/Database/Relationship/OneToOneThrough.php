@@ -62,8 +62,8 @@ class OneToOneThrough extends Relationship
     /**
      * Constructs a new object instance
      *
-     * @param   \Hubzero\Database\Relational|static  $model             The local model
-     * @param   \Hubzero\Database\Relational|static  $related           The related model
+     * @param   \Hubzero\Database\Relational  $model             The local model
+     * @param   \Hubzero\Database\Relational  $related           The related model
      * @param   string                               $throughTable      The intermediate table name
      * @param   string  $throughLocalKey   The key on intermediate
      *                                      table linking to local model
@@ -95,7 +95,7 @@ class OneToOneThrough extends Relationship
     /**
      * Loads the relationship content and returns the related side of the model
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      **/
     public function constrain()
     {

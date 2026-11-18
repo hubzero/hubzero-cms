@@ -32,9 +32,9 @@ class OneToMany extends Relationship
      * or many items on the related side at a given time.  We must then be prepared
      * to loop over the items.
      *
-     * @param   object|array<mixed>   $models    A single model or array of models to associate
+     * @param   \Hubzero\Database\Relational|\Hubzero\Database\Rows|array<mixed>   $models    One model or several
      * @param   \Closure|null        $callback  A callback to potentially append additional data
-     * @return  object|array<mixed>
+     * @return  \Hubzero\Database\Relational|\Hubzero\Database\Rows|array<mixed>
      **/
     public function associate($models, $callback = null)
     {

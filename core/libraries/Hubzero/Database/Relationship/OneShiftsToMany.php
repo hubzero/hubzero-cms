@@ -23,8 +23,8 @@ class OneShiftsToMany extends OneToMany
     /**
      * Constructs a new object instance
      *
-     * @param   \Hubzero\Database\Relational|static  $model       The primary model
-     * @param   \Hubzero\Database\Relational|static  $related     The related model
+     * @param   \Hubzero\Database\Relational  $model       The primary model
+     * @param   \Hubzero\Database\Relational  $related     The related model
      * @param   string                               $localKey    The local key
      * @param   string                               $relatedKey  The related key
      * @param   string                               $shifter     The field identifying model type
@@ -42,9 +42,9 @@ class OneShiftsToMany extends OneToMany
      *
      * We use this time to also set a callback where we define our shifter.
      *
-     * @param   object|array<mixed>  $models    A single model or array of models to associate
+     * @param   \Hubzero\Database\Relational|array<mixed>  $models    A single model or array of models to associate
      * @param   \Closure|null       $callback  A callback to potentially append additional data
-     * @return  object|array<mixed>
+     * @return  \Hubzero\Database\Relational|array<mixed>
      **/
     public function associate($models, $callback = null)
     {
@@ -61,7 +61,7 @@ class OneShiftsToMany extends OneToMany
     /**
      * Constrains the relationship content to the applicable rows on the related model
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      **/
     public function constrain()
     {

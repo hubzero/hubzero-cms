@@ -42,8 +42,8 @@ class OneToManyThrough extends OneToMany
     /**
      * Constructs a new object instance
      *
-     * @param   \Hubzero\Database\Relational|static  $model               The local model
-     * @param   \Hubzero\Database\Relational|static  $related             The related model
+     * @param   \Hubzero\Database\Relational  $model               The local model
+     * @param   \Hubzero\Database\Relational  $related             The related model
      * @param   string                               $associativeTable    The associative entity
      * @param   string                               $associativeLocal    The local key on the associative table
      * @param   string                               $associativeRelated  The related key on the associative table
@@ -61,7 +61,7 @@ class OneToManyThrough extends OneToMany
     /**
      * Loads the relationship content and returns the related side of the model
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      **/
     public function constrain()
     {
