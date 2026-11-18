@@ -337,9 +337,11 @@ class Editor extends Obj
             Plugin::import('editors-xtd', $plugin->name, false);
             $className = 'Plugins\\EditorsXtd\\' . ucfirst($plugin->name) . '\\' . ucfirst($plugin->name);
 
-            if (class_exists($className)) {
-                $plugin = new $className($this, (array) $plugin);
+            // An enabled button whose files are gone has nothing to display
+            if (!class_exists($className)) {
+                continue;
             }
+            $plugin = new $className($this, (array) $plugin);
 
             // Try to authenticate
             if ($temp = $plugin->onDisplay($editor, $this->asset, $this->author)) {

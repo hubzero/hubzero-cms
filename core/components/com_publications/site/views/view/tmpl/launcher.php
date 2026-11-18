@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  *     contributable: mixed,
  *     database: mixed,
  *     lastPubRelease: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     sections: mixed,
  *     version: mixed,
  * } $this

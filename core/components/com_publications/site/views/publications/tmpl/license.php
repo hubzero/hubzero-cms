@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{publication: mixed, title: mixed} $this
+ * @var \Hubzero\Component\View&object{publication: \Components\Publications\Models\Publication, title: mixed} $this
  */
 
 $text = $this->publication->version->get('license_text')

@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die();
  *     contributable: mixed,
  *     database: mixed,
  *     lastPubRelease: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     restricted: mixed,
  *     sections: mixed,
  *     tab: mixed,
@@ -161,7 +161,7 @@ if ($this->config->get('launcher_layout', 0)) {
 
                 $p = $db->loadResult();
 
-                $ancestor = new Components\Publications\Models\Publication($p, 'default', $v);
+                $ancestor = new Components\Publications\Models\Publication($p, 'default', (int) $v);
 
                 $from = '';
                 if (

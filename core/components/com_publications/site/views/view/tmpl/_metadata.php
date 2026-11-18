@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
  *     lastPubRelease: mixed,
  *     launcherLayout: mixed,
  *     params: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     sections: mixed,
  * } $this
  */
@@ -76,7 +76,7 @@ if (
     <?php
 
     if ($this->params->get('show_ranking', 0)) {
-        $rank = round($this->publication->ranking, 1);
+        $rank = round((float) $this->publication->ranking, 1);
         $r = (10 * $rank);
 
         $this->css('

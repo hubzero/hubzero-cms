@@ -17,7 +17,11 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{config: mixed, database: mixed, publication: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     database: mixed,
+ *     publication: \Components\Publications\Models\Publication,
+ * } $this
  */
 
 // The models below take the database by reference
@@ -221,13 +225,14 @@ if ($this->publication->params->get('show_metadata')) {
         <?php echo $citeinstruct; ?>
     </div>
 <?php } ?>
-<?php if ($this->publication->params->get('show_submitter') && $this->publication->submitter()) { ?>
+<?php $pubSubmitter = $this->publication->params->get('show_submitter') ? $this->publication->submitter() : null; ?>
+<?php if ($pubSubmitter) { ?>
     <h3><?php echo Lang::txt('COM_PUBLICATIONS_SUBMITTER'); ?></h3>
     <div class="pub-content">
         <?php
-            $submitter  = $this->publication->_submitter->name;
-            $submitter .= $this->publication->_submitter->organization
-                    ? ', ' . $this->publication->_submitter->organization
+            $submitter  = $pubSubmitter->name;
+            $submitter .= $pubSubmitter->organization
+                    ? ', ' . $pubSubmitter->organization
                     : '';
             echo $this->escape($submitter);
         ?>

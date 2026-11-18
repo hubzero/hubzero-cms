@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  *     message: mixed,
  *     permissionTxt: mixed,
  *     permissionURL: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     subject: mixed,
  * } $this
  */

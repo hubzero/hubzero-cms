@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Component\View&object{
  *     message: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     subject: mixed,
  *     unsubscribeLink: mixed,
  *     url: mixed,

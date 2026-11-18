@@ -247,7 +247,7 @@ class Html
      * Output tab controls for resource plugins (sub views)
      *
      * @param   string  $option   Component name
-     * @param   string  $id       Publication ID
+     * @param   int|string  $id   Publication ID
      * @param   array<mixed>   $cats     Active plugins' names
      * @param   string  $active   Current plugin name
      * @param   string  $alias    Publication alias

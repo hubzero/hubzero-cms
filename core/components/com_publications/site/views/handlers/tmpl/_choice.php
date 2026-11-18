@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  *     handler: mixed,
  *     item: mixed,
  *     props: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  * } $this
  */
 

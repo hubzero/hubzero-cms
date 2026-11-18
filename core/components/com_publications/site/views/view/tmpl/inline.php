@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
  *     googleView: mixed,
  *     mimetype: mixed,
  *     primary: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     type: mixed,
  *     url: mixed,
  * } $this
