@@ -11,15 +11,15 @@ namespace Hubzero\Pathway;
 /**
  * Pathway trail class
  *
- * @implements \ArrayAccess<mixed, mixed>
- * @implements \Iterator<mixed, mixed>
+ * @implements \ArrayAccess<int, Item>
+ * @implements \Iterator<int, Item>
  */
 class Trail implements \Iterator, \ArrayAccess, \Countable
 {
     /**
      * Container for items
      *
-     * @var  array<mixed>
+     * @var  array<int, Item>
      */
     private $items = [];
 
@@ -152,7 +152,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Return current item
      *
-     * @return  object
+     * @return  Item|false
      */
 
     #[\ReturnTypeWillChange]

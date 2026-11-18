@@ -15,14 +15,14 @@ use Iterator;
 /**
  * Iterator class for Rules
  *
- * @implements Iterator<mixed, mixed>
+ * @implements Iterator<string, \Closure>
  */
 class Rules implements Countable, Iterator
 {
     /**
      * Container for data
      *
-     * @var  array<mixed>
+     * @var  array<string, \Closure>
      */
     protected $data = [];
 
@@ -271,7 +271,7 @@ class Rules implements Countable, Iterator
     /**
      * Get current item in the array
      *
-     * @return  object
+     * @return  \Closure|false
      */
 
     #[\ReturnTypeWillChange]
