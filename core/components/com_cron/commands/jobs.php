@@ -238,7 +238,7 @@ class Jobs extends Base implements CommandInterface
         // Count the jobs the endpoint reported running (legacy hzcms-tick format).
         $count = '-';
 
-        if ($body !== false && ($p = strpos($body, '{')) !== false) {
+        if (is_string($body) && ($p = strpos($body, '{')) !== false) {
             $data = json_decode(substr($body, $p), true);
 
             if (isset($data['jobs']) && is_array($data['jobs'])) {

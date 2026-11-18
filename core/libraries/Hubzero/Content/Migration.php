@@ -177,10 +177,12 @@ class Migration
         }
 
         // Setup the database connection
-        if (!$this->db = $this->getDBO()) {
+        $db = $this->getDBO();
+        if (!$db) {
             $this->log('Error: database connection failed.', 'error');
             return;
         }
+        $this->db = $db;
 
         // This is the database that migrations will run against
         // This is used for super group migrations, that don't run against
@@ -619,6 +621,11 @@ class Migration
                 }
             }
 
+            if (!is_a($classname, Migration\Base::class, true)) {
+                $this->log("{$info['filename']} is not a migration", 'warning');
+                continue;
+            }
+
             // We've made it this far, add this file to list of affected files
             $this->affectedFiles[] = $info['filename'];
 
@@ -656,7 +663,7 @@ class Migration
                         $executionTime = (int) round((microtime(true) - $startTime) * 1000);
 
                         // Loop through errors if we have them
-                        if ($errors && count($errors) > 0) {
+                        if ($errors) {
                             foreach ($errors as $error) {
                                 if ($error['type'] == 'fatal') {
                                     // Completely failed...rollback and stop immediately
@@ -899,6 +906,10 @@ class Migration
                     } else {
                         continue;
                     }
+                }
+
+                if (!is_a($classname, Migration\Base::class, true)) {
+                    continue;
                 }
 
                 // Instantiate our class
@@ -1546,7 +1557,7 @@ class Migration
      * Register a callback
      *
      * @param   string   $name      The callback name
-     * @param   callable  $callback  The function to run
+     * @param   callable|object  $callback  The function to run, or an object whose methods migrations call
      * @return  void
      **/
     public function registerCallback($name, $callback)

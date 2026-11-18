@@ -40,7 +40,7 @@ if (file_exists($cache)) {
     $xml = curl_exec($ch);
 }
 
-if (!$xml) {
+if (!is_string($xml) || !$xml) {
     echo '[]';
     exit();
 }

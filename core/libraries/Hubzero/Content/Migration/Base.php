@@ -130,7 +130,7 @@ class Base
      *
      * @param   \Hubzero\Database\Driver  $db         Database object (primary)
      * @param   array<mixed>   $callbacks  Callbacks
-     * @param   object|null  $altDb      Alternate db
+     * @param   \Hubzero\Database\Driver|null  $altDb  Alternate db
      * @return  void
      **/
     public function __construct($db, $callbacks = [], $altDb = null)

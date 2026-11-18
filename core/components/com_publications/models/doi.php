@@ -978,14 +978,13 @@ class Doi extends Obj
 
         $response = curl_exec($ch);
 
-        if (!$response) {
+        if (!is_string($response) || !$response) {
             return false;
         }
 
         if (!$doi) {
             $pattern = '/\((.*?)\)/';
-            $ret = preg_match($pattern, $response, $match);
-            if ($ret != 1) {
+            if (!preg_match($pattern, $response, $match)) {
                 return false;
             }
 
@@ -1477,7 +1476,7 @@ class Doi extends Obj
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
      *
-     * @return  string|null|bool
+     * @return  ($regUrl is true ? ($regMetadata is true ? string|false|null : bool|null) : string|false|null)
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {

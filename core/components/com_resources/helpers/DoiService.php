@@ -430,7 +430,7 @@ class DoiService extends Obj
 
         $response = curl_exec($ch);
 
-        if (!$response) {
+        if (!is_string($response) || !$response) {
             $this->setError('Failed to register DOI metadata: ' . curl_error($ch));
             curl_close($ch);
             return false;
@@ -441,8 +441,7 @@ class DoiService extends Obj
         curl_close($ch);
 
         $pattern = '/\((.*?)\)/';
-        $ret = preg_match($pattern, $response, $match);
-        if ($ret != 1) {
+        if (!preg_match($pattern, $response, $match)) {
             $this->setError('DOI metadata registration returned unexpected response: ' . $response);
             return false;
         }
@@ -842,7 +841,7 @@ class DoiService extends Obj
      * @param   string|null   $doi
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
-     * @return  string|null|bool
+     * @return  ($regUrl is true ? ($regMetadata is true ? string|false|null : bool|null) : string|false|null)
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {
