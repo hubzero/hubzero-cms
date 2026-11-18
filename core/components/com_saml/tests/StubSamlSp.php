@@ -9,27 +9,30 @@
 namespace Components\Saml\Tests;
 
 /**
- * Stand-in for a registered Service Provider
+ * Stand-in for a registered Service Provider: a real ServiceProvider whose
+ * columns and attribute map come from the test, not the database
  */
-class StubSamlSp
+class StubSamlSp extends \Components\Saml\Models\ServiceProvider
 {
     /**
-     * @var  array<string, mixed>|null
+     * @var  array<string, mixed>
      */
-    private $data;
+    private $stubData;
     /**
      * @var  array<int, array<string, string>>|null
      */
-    private $map;
+    private $stubMap;
 
     /**
      * @param   array<string, mixed>  $data
      * @param   array<int, array<string, string>>|null  $map  Attribute map, one entry per attribute
      */
-    public function __construct($data, $map = null)
+    public function __construct($data = [], $map = null)
     {
-        $this->data = $data;
-        $this->map  = $map;
+        parent::__construct();
+
+        $this->stubData = $data;
+        $this->stubMap  = $map;
     }
 
     /**
@@ -39,7 +42,7 @@ class StubSamlSp
      */
     public function get($key, $default = null)
     {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
+        return array_key_exists($key, $this->stubData) ? $this->stubData[$key] : $default;
     }
 
     /**
@@ -47,6 +50,6 @@ class StubSamlSp
      */
     public function attributeMap()
     {
-        return $this->map;
+        return $this->stubMap;
     }
 }

@@ -320,14 +320,19 @@ class IdP
      * registered signing certificate.
      *
      * @param   object  $message  \LightSaml\Model\Protocol\SamlMessage
-     * @param   object  $sp       ServiceProvider
+     * @param   ServiceProvider  $sp       The service provider
      * @return  boolean
      */
     public function validateRequestSignature($message, $sp)
     {
+        if (!$message instanceof \LightSaml\Model\Protocol\SamlMessage) {
+            return false;
+        }
+
         $signature = $message->getSignature();
 
-        if (!$signature) {
+        // Only a signature read off the message can be validated
+        if (!$signature instanceof \LightSaml\Model\XmlDSig\AbstractSignatureReader) {
             return false;
         }
 
@@ -349,8 +354,8 @@ class IdP
     /**
      * The NameID value for a user under an SP's policy
      *
-     * @param   object  $sp    ServiceProvider
-     * @param   object  $user  \Hubzero\User\User
+     * @param   ServiceProvider  $sp    The service provider
+     * @param   \Hubzero\User\User  $user  The member
      * @return  string
      */
     public function getNameIdValue($sp, $user)
@@ -392,7 +397,7 @@ class IdP
      * array for the group sources, which are multi-valued by nature.
      *
      * @param   \Components\Saml\Models\ServiceProvider  $sp      ServiceProvider
-     * @param   object  $user    \Hubzero\User\User
+     * @param   \Hubzero\User\User  $user    The member
      * @param   string  $source
      * @return  string|array<mixed>|null
      */
@@ -448,7 +453,7 @@ class IdP
      * SPs reject an assertion carrying an empty one.
      *
      * @param   \Components\Saml\Models\ServiceProvider  $sp    ServiceProvider
-     * @param   object  $user  \Hubzero\User\User
+     * @param   \Hubzero\User\User  $user  The member
      * @return  \LightSaml\Model\Assertion\AttributeStatement|null
      */
     protected function buildAttributeStatement($sp, $user)
@@ -524,8 +529,8 @@ class IdP
      * request-supplied one (DESIGN.md §7.2). Callers must have already
      * resolved and authorized the SP.
      *
-     * @param   object  $sp            ServiceProvider
-     * @param   object  $user          \Hubzero\User\User
+     * @param   ServiceProvider  $sp            The service provider
+     * @param   \Hubzero\User\User  $user          The member
      * @param   string  $inResponseTo  The AuthnRequest ID
      * @param   string  $sessionIndex  Opaque session index (SamlSession)
      * @return  \LightSaml\Model\Protocol\Response
@@ -600,7 +605,7 @@ class IdP
      *
      * The destination is always the SP's registered SLO URL.
      *
-     * @param   object  $sp            ServiceProvider
+     * @param   ServiceProvider  $sp            The service provider
      * @param   string  $inResponseTo  The LogoutRequest ID
      * @param   string  $status        A \LightSaml\SamlConstants::STATUS_* value
      * @return  \LightSaml\Model\Protocol\LogoutResponse

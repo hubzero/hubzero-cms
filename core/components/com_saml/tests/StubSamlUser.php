@@ -9,21 +9,23 @@
 namespace Components\Saml\Tests;
 
 /**
- * Stand-in for a user record
+ * Stand-in for a user record: a real User whose fields come from the test
  */
-class StubSamlUser
+class StubSamlUser extends \Hubzero\User\User
 {
     /**
-     * @var  array<string, mixed>|null
+     * @var  array<string, mixed>
      */
-    private $data;
+    private $stubData;
 
     /**
      * @param   array<string, mixed>  $data
      */
-    public function __construct($data)
+    public function __construct($data = [])
     {
-        $this->data = $data;
+        parent::__construct();
+
+        $this->stubData = $data;
     }
 
     /**
@@ -33,6 +35,6 @@ class StubSamlUser
      */
     public function get($key, $default = '')
     {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
+        return array_key_exists($key, $this->stubData) ? $this->stubData[$key] : $default;
     }
 }
