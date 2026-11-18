@@ -28,14 +28,14 @@ class Toolbar extends Obj
     /**
      * Toolbar array
      *
-     * @var  array<mixed>
+     * @var  array<int, array<int, mixed>>  Each button's type and arguments
      */
     protected $bar = [];
 
     /**
      * Loaded buttons
      *
-     * @var  array<mixed>
+     * @var  array<string, Toolbar\Button>
      */
     protected $buttons = [];
 
@@ -149,7 +149,7 @@ class Toolbar extends Obj
     /**
      * Render a button.
      *
-     * @param   object  &$node  A toolbar node.
+     * @param   array<int, mixed>  &$node  A toolbar node: the button type and its arguments
      * @return  string
      */
     public function renderButton(&$node)
@@ -166,7 +166,7 @@ class Toolbar extends Obj
      *
      * @param   string   $type  Button Type
      * @param   boolean  $new   False by default
-     * @return  object
+     * @return  Toolbar\Button
      */
     public function loadButtonType($type, $new = false)
     {
@@ -195,7 +195,7 @@ class Toolbar extends Obj
             }
         }
 
-        if (!class_exists($buttonClass)) {
+        if (!is_a($buttonClass, Toolbar\Button::class, true)) {
             throw new \InvalidArgumentException(
                 Lang::txt(
                     'JLIB_HTML_BUTTON_NO_LOAD',

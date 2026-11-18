@@ -65,7 +65,7 @@ class Form
     /**
      * The form XML definition.
      *
-     * @var object|null
+     * @var \SimpleXMLElement|null
      */
     protected $xml;
 
@@ -816,7 +816,7 @@ class Form
      * the fields will be set whether they already exists or not.  If it isn't set, then the fields
      * will not be replaced if they already exist.
      *
-     * @param   object   &$elements  The array of XML element object representations of the form fields.
+     * @param   array<mixed>   &$elements  The form fields' XML elements; anything else is refused.
      * @param   string|null   $group      The optional dot-separated form group path on which to set the fields.
      * @param   boolean  $replace    True to replace existing fields if they already exist.
      * @return  boolean  True on success.
@@ -1452,7 +1452,7 @@ class Form
      *
      * @param   string   $type  The field type.
      * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
-     * @return  mixed    Field object on success, false otherwise.
+     * @return  Field|false  Field object on success, false otherwise.
      */
     protected function loadFieldType($type, $new = true)
     {
@@ -1464,7 +1464,7 @@ class Form
      *
      * @param   string   $type  The rule type.
      * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
-     * @return  mixed    Rule object on success, false otherwise.
+     * @return  Rule|false  Rule object on success, false otherwise.
      */
     protected function loadRuleType($type, $new = true)
     {

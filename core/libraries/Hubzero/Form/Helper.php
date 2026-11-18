@@ -53,11 +53,13 @@ class Helper
      *
      * @param   string   $type  The field type.
      * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
-     * @return  mixed    Field object on success, false otherwise.
+     * @return  Field|false  Field object on success, false otherwise.
      */
     public static function loadFieldType($type, $new = true)
     {
-        return self::loadType('field', $type, $new);
+        $field = self::loadType('field', $type, $new);
+
+        return $field instanceof Field ? $field : false;
     }
 
     /**
@@ -65,11 +67,13 @@ class Helper
      *
      * @param   string   $type  The rule type.
      * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
-     * @return  mixed    Rule object on success, false otherwise.
+     * @return  Rule|false  Rule object on success, false otherwise.
      */
     public static function loadRuleType($type, $new = true)
     {
-        return self::loadType('rule', $type, $new);
+        $rule = self::loadType('rule', $type, $new);
+
+        return $rule instanceof Rule ? $rule : false;
     }
 
     /**

@@ -19,28 +19,28 @@ class Document extends Obj
     /**
      * Document
      *
-     * @var  object|null
+     * @var  string|null  The page source to parse
      */
     public $document     = null;
 
     /**
      * Group
      *
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     public $group        = null;
 
     /**
      * Content
      *
-     * @var  object|null
+     * @var  string|null  What parsing and rendering produced
      */
     public $content      = null;
 
     /**
      * Page
      *
-     * @var  object|null
+     * @var  \Components\Groups\Models\Page|null
      */
     public $page         = null;
 
@@ -168,7 +168,7 @@ class Document extends Obj
             . ucfirst($type);
 
         // if we dont have a class return null
-        if (!class_exists($renderClass)) {
+        if (!is_a($renderClass, Document\Renderer::class, true)) {
             return null;
         }
 

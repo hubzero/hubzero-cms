@@ -28,14 +28,14 @@ abstract class Button extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object|null  Button
+     * @var  \Hubzero\Html\Toolbar|null  The toolbar the button is on
      */
     protected $parent = null;
 
     /**
      * Constructor
      *
-     * @param   object|null  $parent  The parent
+     * @param   \Hubzero\Html\Toolbar|null  $parent  The toolbar the button is on
      * @return  void
      */
     public function __construct($parent = null)
@@ -56,7 +56,7 @@ abstract class Button extends Obj
     /**
      * Get the HTML to render the button
      *
-     * @param   array<mixed>  &$definition  Parameters to be passed
+     * @param   array<int, mixed>  &$definition  The button type and its arguments
      * @return  string
      */
     public function render(&$definition)

@@ -8,14 +8,14 @@
 
 namespace Components\Groups\Helpers\Document;
 
-class Renderer
+abstract class Renderer
 {
     /**
-     * @var  mixed
+     * @var  \Hubzero\User\Group|null
      */
     public $group   = null;
     /**
-     * @var  mixed
+     * @var  \Components\Groups\Models\Page|null
      */
     public $page    = null;
     /**
@@ -27,7 +27,7 @@ class Renderer
      */
     public $name    = null;
     /**
-     * @var  mixed
+     * @var  \stdClass|null  The include's attributes
      */
     public $params  = null;
     /**
@@ -36,4 +36,11 @@ class Renderer
     public $allMods = null;
 
     public function __construct() {}
+
+    /**
+     * Render the include
+     *
+     * @return  mixed  Its markup; script and stylesheet includes add to the document instead
+     */
+    abstract public function render();
 }

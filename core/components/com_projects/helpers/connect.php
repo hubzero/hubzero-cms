@@ -734,7 +734,7 @@ class Connect extends Obj
      * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
-     * @param   object|null   $file       Models\File
+     * @param   \Components\Projects\Models\File|array<string, mixed>|null  $file  The file, or its sync record
      * @param   int|false  $parentId
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  false|string|null

@@ -52,7 +52,7 @@ class Rule
      * @param   object|null   &$input    An optional Registry object with the entire data set to
      * validate against the entire form.
      * @param   object|null   &$form     The form object for which the field is being tested.
-     * @return  bool     True if the value is valid, false otherwise.
+     * @return  bool|\Exception  True if the value is valid, false otherwise; an exception if the rule is misconfigured
      * @throws  Exception on invalid rule.
      */
     public function test(&$element, $value, $group = null, &$input = null, &$form = null)
