@@ -69,7 +69,7 @@ class Rows implements Iterator, Countable
     /**
      * Calls the given array function on the rows object and attaches itself to the model
      *
-     * @param   string $function
+     * @param   'current'|'reset'|'prev'|'next'|'end'  $function  The array function to move or read with
      * @return  mixed
      **/
     private function callArrayFunc($function)
@@ -404,7 +404,7 @@ class Rows implements Iterator, Countable
      * Retrieves only the most recent applicable row
      *
      * @param   string  $limiter  The column name to use to determine the latest row
-     * @return  \Hubzero\Database\Relational|static
+     * @return  TModel|false  False when there are no rows
      **/
     public function latest($limiter = 'created')
     {

@@ -143,9 +143,9 @@ class MorphOne extends Relationship
     /**
      * Associate a related model with this parent
      *
-     * @param  \Hubzero\Database\Relational|array<mixed>|\Hubzero\Database\Rows  $model     The related model
+     * @param  \Hubzero\Database\Relational  $model     The related model
      * @param  \Closure|null|mixed                 $callback  Optional callback
-     * @return \Hubzero\Database\Relational|array<mixed>|\Hubzero\Database\Rows
+     * @return \Hubzero\Database\Relational|array<mixed>|\Hubzero\Database\Rows  The model (several, for MorphMany)
      */
     public function associate($model, $callback = null)
     {
@@ -169,8 +169,9 @@ class MorphOne extends Relationship
     {
         $related = $this->related;
         $model   = $related::newFromResults($data);
+        $this->associate($model);
 
-        return $this->associate($model)->save();
+        return $model->save();
     }
 
     /**
@@ -188,7 +189,8 @@ class MorphOne extends Relationship
             $model->set($key, $value);
         }
 
-        $this->associate($model)->save();
+        $this->associate($model);
+        $model->save();
 
         return $model;
     }

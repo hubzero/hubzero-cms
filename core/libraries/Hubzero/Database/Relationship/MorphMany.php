@@ -131,7 +131,8 @@ class MorphMany extends MorphOne
     public function saveAll($models)
     {
         foreach ($models as $model) {
-            if (!$this->associate($model)->save()) {
+            $this->associate($model);
+            if (!$model->save()) {
                 return false;
             }
         }
@@ -154,7 +155,8 @@ class MorphMany extends MorphOne
             $model->set($key, $value);
         }
 
-        parent::associate($model)->save();
+        parent::associate($model);
+        $model->save();
 
         return $model;
     }
