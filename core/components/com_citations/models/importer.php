@@ -27,7 +27,7 @@ class Importer extends Obj
     /**
      * Filesystem
      *
-     * @var  object|null
+     * @var  \Hubzero\Filesystem\Filesystem|null
      */
     protected $filesystem = null;
 
@@ -63,7 +63,7 @@ class Importer extends Obj
      * Defines a one to one relationship with citation
      *
      * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver|mixed   $database
-     * @param   object|mixed   $filesystem
+     * @param   \Hubzero\Filesystem\Filesystem|null  $filesystem  Default: the application's
      * @param   string   $path
      * @param   string|null   $hash
      * @param   boolean  $tags
@@ -204,8 +204,8 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @param   object  $data
-     * @return  array<mixed>
+     * @param   array<mixed>  $data
+     * @return  int|bool  Bytes written, or false
      */
     public function writeRequiresAttention($data)
     {
@@ -245,8 +245,8 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @param   object  $data
-     * @return  array<mixed>
+     * @param   array<mixed>  $data
+     * @return  int|bool  Bytes written, or false
      */
     public function writeRequiresNoAttention($data)
     {

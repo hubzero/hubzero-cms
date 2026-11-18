@@ -18,7 +18,7 @@ class RecommendedTags
      */
     private $tags = [];
     /**
-     * @var  array<mixed>
+     * @var  array<int, string>  The raw tags the resource has
      */
     private $existing_tags = [];
     /**

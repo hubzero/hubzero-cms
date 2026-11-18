@@ -15,6 +15,13 @@ use DirectoryIterator;
 
 /**
  * Hubzero class for manipulating and reading the filesystem.
+ *
+ * The macros the service providers add:
+ *
+ * @method array<int, mixed> files(string $path, mixed ...$options)        Files in a folder (Macro\Files)
+ * @method array<int, mixed> directories(string $path, mixed ...$options)  Folders in a folder (Macro\Directories)
+ * @method array<mixed> directoryTree(string $path, mixed ...$options)     A folder's tree (Macro\DirectoryTree)
+ * @method bool emptyDirectory(string $path)                               Delete a folder's contents
  */
 class Filesystem
 {

@@ -241,7 +241,7 @@ class ResourceMapGenerator
 
         // Get attachments
         $pubAttach = new \Components\Publications\Tables\Attachment($database);
-        $attachments = $pubAttach->getAttachments($this->version_id);
+        $attachments = $pubAttach->getAttachments($this->version_id) ?: [];
 
         foreach ($attachments as $child) {
             $this->aggregates[$child->id]['parent_id'] = $this->id;
