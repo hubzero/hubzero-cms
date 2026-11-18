@@ -58,7 +58,7 @@ class Manager
      * Get a user instance
      *
      * @param   mixed  $id  Integer or string
-     * @return  object
+     * @return  User  An empty User when there is no such user
      */
     public function getInstance($id = null)
     {

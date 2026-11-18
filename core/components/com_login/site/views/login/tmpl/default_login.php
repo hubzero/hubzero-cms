@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 /**
  * Set by the code that includes this file.
  *
- * @var mixed $user
+ * @var \Hubzero\User\User|null $user  Set when a login cookie remembers who signed in last
  */
 
 // Get and add the js and extra css to the page
@@ -140,7 +140,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
     <?php else : ?>
         <div class="auth">
             <div class="person">
-                <?php if (isset($user_img) && is_object($user) && file_exists($user_img)) : ?>
+                <?php if (isset($user_img) && file_exists($user_img)) : ?>
                     <?php $image = $user->picture(0, false, false); ?>
                     <?php $img_properties = getimagesize(PATH_CORE . DS . $image) ?: [0, 0]; ?>
                     <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
@@ -176,7 +176,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <div class="input-wrap">
                         <?php
                         if (
-                            isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != ''
+                            isset($user) && !$user->get('block') && $user->get('username') != ''
                         ) : ?>
                             <input type="hidden" name="username" value="<?= $this->escape($user->get('username')) ?>" />
                             <div class="existing-name"><?php echo $this->escape($user->get('name')); ?></div>
@@ -236,7 +236,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             </div>
         </div>
     <?php endif; ?>
-    <?php if (isset($user) && is_object($user)) : ?>
+    <?php if (isset($user)) : ?>
         <div class="others">
             <a href="<?php echo Route::url('index.php?option=com_login&reset=1' . $this->returnQueryString); ?>">
                 <?php echo Lang::txt('COM_LOGIN_LOGIN_SIGN_IN_WITH_DIFFERENT_ACCOUNT'); ?>
