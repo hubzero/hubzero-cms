@@ -60,7 +60,7 @@ class Kb extends Plugin
         }
 
         // Do we have a search term?
-        if (!is_object($period)) {
+        if (!($period instanceof \Components\Whatsnew\Helpers\Period)) {
             return [];
         }
 
@@ -81,7 +81,7 @@ class Kb extends Plugin
 				ON c.id = f.category
 			WHERE f.state=1
 				AND c.published = 1
-				AND f.created > " . $database->quote($period->cStartDat) . "
+				AND f.created > " . $database->quote($period->cStartDate) . "
 				AND f.created < " . $database->quote($period->cEndDate) . "
 				AND f.access IN ("
             . implode(',', User::getAuthorisedViewLevels()) . ")";
