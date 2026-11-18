@@ -740,7 +740,7 @@ class AdminUser
     /**
      * Generate a random salt
      *
-     * @param   int  $length  Salt length
+     * @param   positive-int  $length  Salt length
      * @return  string  Random salt
      **/
     private static function generateSalt($length)
