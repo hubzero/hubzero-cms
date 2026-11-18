@@ -1175,7 +1175,7 @@ abstract class BaseSqlSyntax
      *
      * @param   string  $column  The column to select
      * @param   string|null  $as      What to call the return val
-     * @param   bool    $count   Whether or not to count column
+     * @param   bool|string  $count   Whether or not to count column ('distinct' counts distinct values)
      * @param   bool  $replaceStar
      * @return  void
      */

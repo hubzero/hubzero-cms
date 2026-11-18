@@ -21,7 +21,7 @@ use Hubzero\Facades\User;
 class Mytools extends Module
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<string, App>|null
      */
     public $alltools;
     /**
@@ -35,7 +35,7 @@ class Mytools extends Module
      */
     public $favs;
     /**
-     * @var  array<mixed>|null
+     * @var  array<string, App>|null
      */
     public $favtools;
     /** @var bool|null */
@@ -43,7 +43,7 @@ class Mytools extends Module
     /** @var int|null */
     public $no_html;
     /**
-     * @var  array<mixed>|null
+     * @var  array<string, App>|null
      */
     public $rectools;
     /** @var \Components\Resources\Helpers\Tags|null */
@@ -61,7 +61,7 @@ class Mytools extends Module
      * Get a list of applications that the user might invoke.
      *
      * @param   array<mixed>|null  $lst  List of tools
-     * @return  array<mixed>  List of tools
+     * @return  array<string, App>  List of tools, by instance
      */
     private function getToollist($lst = null)
     {
@@ -140,7 +140,7 @@ class Mytools extends Module
     /**
      * Build the HTML for a list of tools
      *
-     * @param   array<mixed>   &$toollist  List of tools to format
+     * @param   array<App>   $toollist  List of tools to format
      * @param   string  $type       Type of list being formatted
      * @return  string  HTML
      */

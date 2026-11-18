@@ -69,8 +69,8 @@ class Nested extends Relational
     /**
      * Establishes the model as a proper object as needed
      *
-     * @param   object|int  $model  The model to resolve
-     * @param-out  object  $model
+     * @param   \Hubzero\Database\Relational|int  $model  The model to resolve
+     * @param-out  \Hubzero\Database\Relational  $model
      * @return  $this
      **/
     private function establishIsModel(&$model)
@@ -86,13 +86,13 @@ class Nested extends Relational
     /**
      * Sets the default scopes on the model
      *
-     * @param   object      $parent  The parent of the child being created
+     * @param   \Hubzero\Database\Relational  $parent  The parent of the child being created
      * @return  $this
      **/
     private function establishBaseParametersFromParent($parent)
     {
-        $this->set('parent_id', $parent->id);
-        $this->set('level', $parent->level + 1);
+        $this->set('parent_id', $parent->get('id'));
+        $this->set('level', $parent->get('level') + 1);
 
         return $this->applyScopes($parent);
     }
@@ -100,7 +100,7 @@ class Nested extends Relational
     /**
      * Applies the scopes of the given model to the current
      *
-     * @param   object      $parent  The parent from which to inherit
+     * @param   \Hubzero\Database\Relational  $parent  The parent from which to inherit
      * @param   string      $method  The way in which scopes are applied
      * @return  $this
      **/
@@ -128,7 +128,7 @@ class Nested extends Relational
     /**
      * Saves the current model to the database as the nth child of the given parent
      *
-     * @param   object|int  $parent  The parent of the child being created
+     * @param   \Hubzero\Database\Relational|int  $parent  The parent of the child being created
      * @return  bool
      **/
     public function saveAsChildOf($parent)
@@ -138,8 +138,8 @@ class Nested extends Relational
             ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
-        $this->set('lft', $parent->rgt);
-        $this->set('rgt', $parent->rgt + 1);
+        $this->set('lft', $parent->get('rgt'));
+        $this->set('rgt', $parent->get('rgt') + 1);
 
         // Save
         if (!$this->save()) {
@@ -147,7 +147,7 @@ class Nested extends Relational
         }
 
         // Reposition new values of displaced items
-        $this->resolveTrailing($parent->rgt);
+        $this->resolveTrailing($parent->get('rgt'));
 
         return true;
     }
@@ -155,7 +155,7 @@ class Nested extends Relational
     /**
      * Saves the current model to the database as the first child of the given parent
      *
-     * @param   object|int  $parent  The parent of the child being created
+     * @param   \Hubzero\Database\Relational|int  $parent  The parent of the child being created
      * @return  bool
      **/
     public function saveAsFirstChildOf($parent)
@@ -165,8 +165,8 @@ class Nested extends Relational
             ->establishBaseParametersFromParent($parent);
 
         // Compute the location where the item should reside
-        $this->set('lft', $parent->lft + 1);
-        $this->set('rgt', $parent->lft + 2);
+        $this->set('lft', $parent->get('lft') + 1);
+        $this->set('rgt', $parent->get('lft') + 2);
 
         // Save
         if (!$this->save()) {
@@ -174,7 +174,7 @@ class Nested extends Relational
         }
 
         // Reposition new values of displaced items
-        $this->resolveTrailing($parent->lft + 1);
+        $this->resolveTrailing($parent->get('lft') + 1);
 
         return true;
     }
@@ -182,7 +182,7 @@ class Nested extends Relational
     /**
      * Saves the current model to the database as the last child of the given parent
      *
-     * @param   object|int  $parent  The parent of the child being created
+     * @param   \Hubzero\Database\Relational|int  $parent  The parent of the child being created
      * @return  bool
      **/
     public function saveAsLastChildOf($parent)

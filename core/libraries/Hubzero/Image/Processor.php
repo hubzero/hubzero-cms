@@ -365,19 +365,21 @@ class Processor extends Obj
         $x       = 0;
         $y       = 0;
 
-        if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height)) {
-            return null;
-        }
-
-        if ($new_dimension < 1) {
-            $percent = $new_dimension;
-        } elseif (substr($new_dimension, -1) == '%') {
+        if (is_string($new_dimension) && substr($new_dimension, -1) == '%') {
             $percent = ((float) substr($new_dimension, 0, -1) / 100);
+        } elseif ((float) $new_dimension < 1) {
+            $percent = (float) $new_dimension;
         }
 
         if ($percent !== false) {
             $new_dimension = $use_height ? ($height * $percent) : ($width * $percent);
             $new_dimension = round($new_dimension);
+        } else {
+            // A size in pixels: never enlarge the image
+            $new_dimension = (float) $new_dimension;
+            if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height)) {
+                return null;
+            }
         }
 
         if ($squared) {
@@ -531,13 +533,13 @@ class Processor extends Obj
      * Convert fractions to decimals
      *
      * @param   array<mixed>    $fracs  Fractions to convert
-     * @return  integer
+     * @return  float
      */
     private function geoSingleFracs2dec($fracs)
     {
-        return $this->geoFrac2dec($fracs[0])
-            + $this->geoFrac2dec($fracs[1]) / 60
-            + $this->geoFrac2dec($fracs[2]) / 3600;
+        return (float) $this->geoFrac2dec($fracs[0])
+            + (float) $this->geoFrac2dec($fracs[1]) / 60
+            + (float) $this->geoFrac2dec($fracs[2]) / 3600;
     }
 
     /**

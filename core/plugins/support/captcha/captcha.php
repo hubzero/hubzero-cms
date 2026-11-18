@@ -759,7 +759,7 @@ class Captcha extends Plugin
                 $angle,
                 $x + (int) ($size / 15),
                 $y,
-                $white,
+                (int) $white,
                 __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF',
                 $security_code[$i],
             );

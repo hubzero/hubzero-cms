@@ -351,7 +351,14 @@ class Loader
             eval("namespace {$namespace}; class {$class} extends \\Hubzero\\Component\\DefaultSiteController\n{\n}\n");
         }
 
-        (new ($namespace . '\\' . $class)($config))->execute();
+        $controllerClass = $namespace . '\\' . $class;
+        $controller = new $controllerClass($config);
+
+        if (!method_exists($controller, 'execute')) {
+            throw new \RuntimeException($controllerClass . ' is not a controller: it has no execute()');
+        }
+
+        $controller->execute();
     }
 
     /**
@@ -370,6 +377,10 @@ class Loader
             $component = new $namespace($params);
         } else {
             $component = new $namespace();
+        }
+
+        if (!method_exists($component, 'start')) {
+            throw new \RuntimeException($namespace . ' cannot run the component: it has no start()');
         }
 
         $component->start();
@@ -549,7 +560,8 @@ class Loader
      *
      * @param   string   $option  The element value for the extension
      * @param   boolean  $strict  If set and the component does not exist, the enabled attribute will be set to false.
-     * @return  object
+     * @return  \stdClass  The extension's id, option, enabled and params (a Registry),
+     *                     and its path once path() finds it
      */
     public function load($option, $strict = false)
     {

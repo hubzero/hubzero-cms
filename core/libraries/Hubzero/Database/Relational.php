@@ -165,7 +165,7 @@ use Hubzero\Facades\User;
  * Query methods most often reached through __call() and __callStatic(); each
  * adds to the model's query and returns the model. Query has the rest.
  *
- * @method static static select(string $column, string $as = null, bool $count = false)
+ * @method static static select(string $column, string $as = null, bool|string $count = false)
  * @method static static deselect()
  * @method static static from(string $table, string $as = null)
  * @method static static delete(string $table)
@@ -298,7 +298,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Whether or not we're caching query results
      *
-     * @var string|bool
+     * @var bool
      **/
     private $noCache = false;
 
@@ -1133,7 +1133,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             // Call the boot method if it exists and hasn't been called
             if (method_exists($class, $method) && !in_array($method, $booted)) {
-                forward_static_call([$class, $method]);
+                static::$method();
                 $booted[] = $method;
             }
         }
@@ -1149,6 +1149,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     protected static function classUsesRecursive($class, $autoload = true)
     {
         $results = [];
+
+        // An object stands for its class: an object is no array key
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
 
         // Get traits for the class and all its parents
         foreach (array_reverse(class_parents($class) ?: []) + [$class => $class] as $class) {
@@ -1666,7 +1671,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Register each method that exists on the observer
         foreach ($events as $event) {
-            if (method_exists($instance, $event)) {
+            if (method_exists($instance, $event) && is_callable([$instance, $event])) {
                 static::registerModelEvent($event, [$instance, $event]);
             }
         }
@@ -2100,7 +2105,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function set($key, $value = null)
     {
         if (is_array($key) || is_object($key)) {
-            foreach ($key as $k => $v) {
+            foreach (self::pairsOf($key) as $k => $v) {
                 $this->setAttribute($k, $v);
             }
         } else {
@@ -2141,6 +2146,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * The key/value pairs of an array or object, as foreach gives them
+     *
+     * @param   array<mixed>|object  $data
+     * @return  iterable<mixed, mixed>
+     **/
+    private static function pairsOf($data)
+    {
+        if (is_array($data) || $data instanceof \Traversable) {
+            return $data;
+        }
+
+        return get_object_vars($data);
+    }
+
+    /**
      * Construct a new object instance, setting the passed in results on the object
      *
      * This method creates a model instance from database results and fires the
@@ -2155,7 +2175,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Set attributes directly without casting - database values are already in storage format
         // Applying storage casts here would double-encode JSON, double-hash encrypted data, etc.
-        foreach ($results as $key => $value) {
+        foreach (self::pairsOf($results) as $key => $value) {
             $instance->attributes[$key] = $value;
         }
 
@@ -4053,7 +4073,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function offsetSet($offset, $value)
     {
         if (is_array($offset) || is_object($offset)) {
-            foreach ($offset as $k => $v) {
+            foreach (self::pairsOf($offset) as $k => $v) {
                 $this->attributes[$k] = $v;
             }
         } else {

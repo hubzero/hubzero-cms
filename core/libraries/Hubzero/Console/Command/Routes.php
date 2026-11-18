@@ -149,9 +149,11 @@ class Routes extends Base implements CommandInterface
             ->fetch();
 
         foreach ($rows as $row) {
-            $element = is_object($row) ? $row->element : $row['element'];
-            $enabled = (int) (is_object($row) ? $row->enabled : $row['enabled']);
-            $id      = (int) (is_object($row) ? $row->extension_id : $row['extension_id']);
+            // A row comes as an object or an array, by the driver's fetch mode
+            $row = (array) $row;
+            $element = $row['element'];
+            $enabled = (int) $row['enabled'];
+            $id      = (int) $row['extension_id'];
 
             if (substr($element, 0, 4) !== 'com_') {
                 continue;
@@ -185,8 +187,10 @@ class Routes extends Base implements CommandInterface
             ->fetch();
 
         foreach ($entries as $row) {
-            $alias = is_object($row) ? $row->alias : $row['alias'];
-            $link  = is_object($row) ? $row->link : $row['link'];
+            // A row comes as an object or an array, by the driver's fetch mode
+            $row = (array) $row;
+            $alias = $row['alias'];
+            $link  = $row['link'];
 
             $routed[$alias] = preg_match('/option=(com_\w+)/', (string) $link, $m)
                 ? $m[1]
@@ -381,12 +385,14 @@ class Routes extends Base implements CommandInterface
         $found = [];
 
         foreach ($query->fetch() as $row) {
-            $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
+            // A row comes as an object or an array, by the driver's fetch mode
+            $row = (array) $row;
+            $kind = $ranked ? $row['kind'] : 'display';
 
             $found[] = [
-                'id'        => (int) (is_object($row) ? $row->id : $row['id']),
-                'menutype'  => is_object($row) ? $row->menutype : $row['menutype'],
-                'published' => (int) (is_object($row) ? $row->published : $row['published']),
+                'id'        => (int) $row['id'],
+                'menutype'  => $row['menutype'],
+                'published' => (int) $row['published'],
                 'generated' => ($kind == 'component'),
             ];
         }

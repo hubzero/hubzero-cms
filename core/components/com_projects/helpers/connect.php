@@ -1754,7 +1754,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @param   string   $url      Request URL
+     * @param   string|false  $url  Request URL (none, and nothing is fetched)
      * @return  string|false|null
      */
     public function sendHttpRequest($service = 'google', $uid = 0, $url = '')
@@ -1910,7 +1910,7 @@ class Connect extends Obj
 
         // Clean up data from Windows characters - important!
         if ($ext == 'tex') {
-            $fc = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $fc);
+            $fc = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', (string) $fc);
         }
 
         if ($this->fetchFile((string) $fc, $fpath, $path)) {

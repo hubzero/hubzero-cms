@@ -146,7 +146,7 @@ class Initialcon
         }
 
         // Prepare the image
-        $image = imagecreatetruecolor($this->pixelRatio * 5, $this->pixelRatio * 5);
+        $image = imagecreatetruecolor(max(1, $this->pixelRatio * 5), max(1, $this->pixelRatio * 5));
         $background = imagecolorallocate($image, 0, 0, 0);
 
         // Prepage the color

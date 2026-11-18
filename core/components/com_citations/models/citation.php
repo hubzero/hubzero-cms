@@ -208,9 +208,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         if (!empty($filters['sort'])) {
             $sortValues = explode(' ', $filters['sort']);
-            $columnSort = !empty($sortValues[0]) ? $sortValues[0] : $sortValues;
             $direction = !empty($sortValues[1]) ? $sortValues[1] : 'ASC';
-            $records->order($columnSort, $direction);
+            // A sort with no column (' DESC', say) leaves the order alone
+            if (!empty($sortValues[0])) {
+                $records->order($sortValues[0], $direction);
+            }
         }
 
         if (!empty($filters['filter'])) {
@@ -410,8 +412,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                         }
                         $query .= " `ref_type` LIKE ?) ";
                     } else {
-                        $comboType1 = $refTypes[$reftype][0];
-                        $comboType2 = $refTypes[$reftype][1];
+                        // Only eduresearch combines: research with education
+                        [$comboType1, $comboType2] = $refTypes['eduresearch'];
                         $firstValue = true;
                         foreach ($refTypes[$comboType1] as $type1) {
                             foreach ($refTypes[$comboType2] as $type2) {
@@ -535,7 +537,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
             // Set count for affiliation
             if ($year == $emptyLabel) {
-                $groupCitations[$emptyLabel][$affLabel] += $cite->totalcite;
+                $groupCitations[$emptyLabel][$affLabel] = ($groupCitations[$emptyLabel][$affLabel] ?? 0)
+                    + $cite->totalcite;
             } else {
                 $groupCitations[$year][$affLabel] = $cite->totalcite;
             }
@@ -997,15 +1000,16 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
                                 // add author coins
                                 $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
-                            } elseif (is_object($author)) { // the ORM form; above was the legacy string
-                                if ($author->uidNumber > 0) {
+                            } elseif ($author instanceof Author) { // the ORM form; above was the legacy string
+                                $authorName = (string) $author->get('author');
+                                if ($author->get('uidNumber') > 0) {
                                     $a[] = '<a rel="external" href="'
-                                        . Route::url('index.php?option=com_members&id=' . $author->uidNumber)
+                                        . Route::url('index.php?option=com_members&id=' . $author->get('uidNumber'))
                                         . '">'
-                                        . htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8')
+                                        . htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8')
                                         . '</a>';
                                 } else {
-                                    $a[] = htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8');
+                                    $a[] = htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8');
                                 }
                             } else {
                                 //new ORM method

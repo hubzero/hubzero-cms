@@ -87,7 +87,7 @@ class Asset
 
         // Specify how a new or moved node asset is inserted into the tree
         if (!$this->model->get('asset_id', null) || $asset->parent_id != $parentId) {
-            $parent = Model::one($parentId);
+            $parent = Model::oneOrFail($parentId);
 
             if (!$asset->saveAsLastChildOf($parent)) {
                 return false;

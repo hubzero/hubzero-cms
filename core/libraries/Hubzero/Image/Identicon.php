@@ -176,7 +176,7 @@ class Identicon
         $this->setSize($size);
 
         // prepare the image
-        $image = imagecreatetruecolor($this->pixelRatio * 5, $this->pixelRatio * 5);
+        $image = imagecreatetruecolor(max(1, $this->pixelRatio * 5), max(1, $this->pixelRatio * 5));
         $background = imagecolorallocate($image, 0, 0, 0);
         imagecolortransparent($image, (int) $background);
 
@@ -196,7 +196,7 @@ class Identicon
                         $lineKey * $this->pixelRatio,
                         ($colKey + 1) * $this->pixelRatio,
                         ($lineKey + 1) * $this->pixelRatio,
-                        $color,
+                        (int) $color,
                     );
                 }
             }

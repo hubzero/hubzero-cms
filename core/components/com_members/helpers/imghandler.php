@@ -263,12 +263,12 @@ class ImgHandler extends Obj
                     $r = hexdec($color[0] . $color[1]);
                     $g = hexdec($color[2] . $color[3]);
                     $b = hexdec($color[4] . $color[5]);
-                    $background = imagecolorallocate($dst, (int) $r, (int) $g, (int) $b);
+                    $background = imagecolorallocate($dst, $this->channel($r), $this->channel($g), $this->channel($b));
                 } elseif (strlen($color) == 3) {
                     $r = hexdec($color[0] . $color[0]);
                     $g = hexdec($color[1] . $color[1]);
                     $b = hexdec($color[2] . $color[2]);
-                    $background = imagecolorallocate($dst, (int) $r, (int) $g, (int) $b);
+                    $background = imagecolorallocate($dst, $this->channel($r), $this->channel($g), $this->channel($b));
                 }
                 if ($background) {
                     imagefill($dst, 0, 0, $background);
@@ -277,7 +277,18 @@ class ImgHandler extends Obj
         }
 
         // Resample the original image into the resized canvas we set up earlier
-        ImageCopyResampled($dst, $src, 0, 0, $offsetX, $offsetY, $tnWidth, $tnHeight, $width, $height);
+        ImageCopyResampled(
+            $dst,
+            $src,
+            0,
+            0,
+            (int) $offsetX,
+            (int) $offsetY,
+            (int) $tnWidth,
+            (int) $tnHeight,
+            (int) $width,
+            (int) $height,
+        );
 
         if ($doSharpen) {
             // Sharpen the image based on two things:
@@ -298,7 +309,7 @@ class ImgHandler extends Obj
         }
 
         // Write the resized image to the cache
-        $outputFunction($dst, $resized, $quality);
+        $outputFunction($dst, $resized, (int) $quality);
 
         // Yes - remove it
         $overwrite = $this->overwrite;
@@ -367,5 +378,16 @@ class ImgHandler extends Obj
         $result = $a + $b * $final + $c * $final * $final;
 
         return (int) (max(round($result), 0));
+    }
+
+    /**
+     * A colour channel from hexdec(), as the 0-255 GD takes
+     *
+     * @param   int|float  $value
+     * @return  int<0, 255>
+     */
+    private function channel($value)
+    {
+        return max(0, min(255, (int) $value));
     }
 }

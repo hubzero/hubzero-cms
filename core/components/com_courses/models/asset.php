@@ -106,11 +106,7 @@ class Asset extends Base
         } elseif (strpos($property, '.') !== false) {
             $parts = explode('.', $property);
             if (array_key_exists($parts[0], self::$auxTablekeys)) {
-                $key = str_replace('_', ' ', $parts[0]);
-                $key = ucwords($key);
-                $key = str_replace(' ', '', $key);
-                $tbl = "Components\\Courses\\Tables\\{$key}";
-                $tbl = new $tbl($this->db);
+                $tbl = $this->auxTable($parts[0]);
                 $aux = [];
                 foreach (self::$auxTablekeys[$parts[0]] as $item) {
                     $k = $item;
@@ -199,12 +195,7 @@ class Asset extends Base
         foreach ($properties as $k => $v) {
             $kname = substr($k, 2);
             if (!empty($kname) && array_key_exists($kname, self::$auxTablekeys)) {
-                $key = $kname;
-                $key = str_replace('_', ' ', $key);
-                $key = ucwords($key);
-                $key = str_replace(' ', '', $key);
-                $tbl = "Components\\Courses\\Tables\\{$key}";
-                $tbl = new $tbl($this->db);
+                $tbl = $this->auxTable($kname);
 
                 if ($v == 'delete') {
                     $aux = [];
@@ -263,6 +254,24 @@ class Asset extends Base
     }
 
     /**
+     * The table an auxiliary key links to: progress_factors gives Tables\ProgressFactors
+     *
+     * @param   string  $name  A key of $auxTablekeys
+     * @return  \Hubzero\Database\Table
+     */
+    private function auxTable($name)
+    {
+        $class = 'Components\\Courses\\Tables\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+        $table = new $class($this->db);
+
+        if (!$table instanceof \Hubzero\Database\Table) {
+            throw new \UnexpectedValueException($class . ' is not a table');
+        }
+
+        return $table;
+    }
+
+    /**
      * Track asset views
      *
      * @param   \Components\Courses\Models\Course|null|mixed $course \Components\Courses\Models\Course
@@ -270,7 +279,7 @@ class Asset extends Base
      */
     public function logView($course = null)
     {
-        if (!$course || !is_object($course)) {
+        if (!$course instanceof Course) {
             $gid      = Request::getString('gid');
             $offering = Request::getString('offering');
             $section  = Request::getString('section');
@@ -286,7 +295,7 @@ class Asset extends Base
             $member = $course->offering()->member(User::get('id'));
         }
 
-        if (!$member || !is_object($member) || !$member->get('id')) {
+        if (!$member->get('id')) {
             return false;
         }
 

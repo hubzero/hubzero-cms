@@ -299,7 +299,10 @@ class Files extends Plugin
 
             foreach (['asset', 'folder', 'file'] as $key) {
                 foreach (Request::getArray($key, []) as $item) {
-                    if (!is_scalar($item) || !AccessHelper::isPublicPath($this->subdir . DS . urldecode($item))) {
+                    if (
+                        !is_scalar($item)
+                        || !AccessHelper::isPublicPath($this->subdir . DS . urldecode((string) $item))
+                    ) {
                         App::abort(403, Lang::txt('ALERTNOTAUTH'));
                     }
                 }
@@ -1524,7 +1527,7 @@ class Files extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
         }
 
-        if ($this->getError()) {
+        if ($this->getError() || empty($params['file'])) {
             // Output error
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -1665,7 +1668,7 @@ class Files extends Plugin
 
         $view->set('url', Route::url($this->model->link('files')));
         $view->set('config', $this->model->config());
-        $view->set('file', $params['file']);
+        $view->set('file', $params['file'] ?? null);
         $view->set('option', $this->componentOption);
         $view->set('model', $this->model);
         $view->set('repo', $this->repo);
@@ -1799,9 +1802,12 @@ class Files extends Plugin
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } else {
-            $error = $this->repo->getError()
-                ? $this->repo->getError()
-                : $this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
+            // setError() gives back the plugin, not the message
+            $error = $this->repo->getError();
+            if (!$error) {
+                $error = Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED');
+                $this->setError($error);
+            }
             Notify::message($error, 'error', 'projects');
         }
 
@@ -1995,7 +2001,7 @@ class Files extends Plugin
                 );
 
                 // Clean up data from Windows characters - important!
-                $data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $data) : $data;
+                $data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/', '', (string) $data) : $data;
 
                 $ftname = \Components\Projects\Helpers\Google::getImportFilename($file->get('remoteTitle'), $cExt);
                 $serveas = $ftname;
@@ -2544,7 +2550,7 @@ class Files extends Plugin
                         $this->connect->savePairing(
                             $this->model->get('id'),
                             $this->remoteService,
-                            $created,
+                            $created ?: null,
                             $file->get('localPath'),
                             $file->get('recordId'),
                             $file->get('originalPath'),

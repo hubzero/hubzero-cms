@@ -119,6 +119,11 @@ class Loader extends Base
             'name'       => substr($option, 4),
             'controller' => $controller,
         ]);
+
+        if (!method_exists($action, 'execute')) {
+            throw new \RuntimeException($controllerClass . ' is not a controller: it has no execute()');
+        }
+
         $action->execute();
 
         // Revert the scope

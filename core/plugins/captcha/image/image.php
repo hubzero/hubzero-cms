@@ -339,9 +339,9 @@ class Image extends Plugin
                     $newblue  = $newcolor0 * $foreground_color[2] + $newcolor * $background_color[2];
                 }
 
-                $newred   = (int) round($newred);
-                $newgreen = (int) round($newgreen);
-                $newblue  = (int) round($newblue);
+                $newred   = max(0, min(255, (int) round($newred)));
+                $newgreen = max(0, min(255, (int) round($newgreen)));
+                $newblue  = max(0, min(255, (int) round($newblue)));
 
                 imagesetpixel($img2, $x, $y, (int) imagecolorallocate($img2, $newred, $newgreen, $newblue));
             }
@@ -418,7 +418,7 @@ class Image extends Plugin
                 $angle,
                 $x + (int) ($size / 15),
                 $y,
-                $white,
+                (int) $white,
                 __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF',
                 $security_code[$i],
             );

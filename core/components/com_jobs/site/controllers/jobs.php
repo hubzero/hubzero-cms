@@ -361,12 +361,15 @@ class Jobs extends SiteController
 
         // Get jobs
         $adminoptions = ($this->task != 'browse' && $this->_allowSubscriptions) ? 0 : $this->_admin;
-        $jobs = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode) ?: [];
+        $jobs = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode);
+        if (!is_array($jobs)) {
+            $jobs = [];
+        }
 
         $total = $obj->getOpenings($filters, User::get('id'), $adminoptions, $subscriptionCode, 1);
 
         // Initiate paging
-        $jtotal = ($this->task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : $total;
+        $jtotal = ($this->task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : (int) $total;
         $pageNav = new \Hubzero\Pagination\Paginator(
             $jtotal,
             $filters['start'],
@@ -606,7 +609,7 @@ class Jobs extends SiteController
         }
 
         // check available user funds (if paying with points)
-        $BTL = new \Hubzero\Bank\Teller($subscription->uid);
+        $BTL = new \Hubzero\Bank\Teller((int) $subscription->uid);
         $balance = $BTL->summary();
         $credit  = $BTL->creditSummary();
         $funds   = $balance;
@@ -705,11 +708,11 @@ class Jobs extends SiteController
 
         $units      = Request::getInt('units_' . $serviceid, 0);
         $contact    = Request::getString('contact', '');
-        $total      = $service->unitprice * $units;
+        $total      = (float) $service->unitprice * $units;
         $now        = Date::toSql();
         $new        = 0;
         $credit     = 0;
-        $months     = $units * $service->unitsize;
+        $months     = $units * (int) $service->unitsize;
         $newexprire = Date::of(strtotime('+' . $months . ' month'))->toSql();
 
         // we got an order
@@ -719,7 +722,7 @@ class Jobs extends SiteController
                 throw new Exception(Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_NO_PHONE'), 500);
             }
 
-            $newunitcost  = $service->unitprice;
+            $newunitcost  = (float) $service->unitprice;
 
             if ($subid) {
                 // get cost per unit (to compute required refund)
@@ -732,10 +735,14 @@ class Jobs extends SiteController
                 // we are upgrading / downgrading - or replacing cancelled subscription
                 if ($serviceid != $subscription->serviceid or $subscription->status == 2) {
                     if ($prevunitcost > 0 && $subscription->status != 2) {
-                        $unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
+                        $unitsleft = $subscription->getRemaining(
+                            'unit',
+                            (int) $service->maxunits,
+                            $service->unitsize,
+                        );
                         $refund = (
                             $subscription->totalpaid > 0
-                            && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0
+                            && ((float) $subscription->totalpaid - $unitsleft * $prevunitcost) < 0
                         )
                                 ? $unitsleft * $prevunitcost
                                 : 0;
@@ -759,12 +766,12 @@ class Jobs extends SiteController
                     $subscription->status = $autoapprove && !$total ? 1 : $subscription->status;
                     $subscription->status = $subscription->status == 2 ? 1 : $subscription->status;
                     $subscription->units = $autoapprove && !$total
-                        ? $subscription->units + $units
+                        ? (int) $subscription->units + $units
                         : $subscription->units;
                     $subscription->pendingunits = $autoapprove && !$total ? 0 : $units;
                     $subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
                     $newexprire = Date::of(
-                        strtotime('+' . $subscription->units * $service->unitsize . ' month'),
+                        strtotime('+' . (int) $subscription->units * (int) $service->unitsize . ' month'),
                     )->toSql();
                     $subscription->expires = $newexprire;
                     $subscription->updated = $now;
@@ -878,7 +885,7 @@ class Jobs extends SiteController
         }
 
         $refund    = 0;
-        $unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
+        $unitsleft = $subscription->getRemaining('unit', (int) $service->maxunits, $service->unitsize);
 
         // get cost per unit (to compute required refund)
         $unitcost     = $service->unitprice;
@@ -2045,7 +2052,7 @@ class Jobs extends SiteController
             $zipname = Lang::txt('Resumes') . '_' . $pile . '.zip';
 
             $mconfig = Component::params('com_members');
-            $base_path = $mconfig->get('webpath', '/site/members');
+            $base_path = (string) $mconfig->get('webpath', '/site/members');
 
             if ($base_path) {
                 $base_path = DS . trim($base_path, DS);

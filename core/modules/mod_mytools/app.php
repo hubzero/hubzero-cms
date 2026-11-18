@@ -52,7 +52,7 @@ class App
     /**
      * owner of a running session
      *
-     * @var integer
+     * @var integer|string
      */
     public $owner;
 
