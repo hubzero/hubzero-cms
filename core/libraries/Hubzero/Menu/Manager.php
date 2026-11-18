@@ -16,7 +16,7 @@ class Manager
     /**
      * The array of created "menus".
      *
-     * @var  array<mixed>
+     * @var  array<string, Type\Base>
      */
     protected $menus = [];
 
@@ -45,7 +45,7 @@ class Manager
      *
      * @param   string|null  $menu
      * @param   array<mixed>  $options
-     * @return  mixed
+     * @return  Type\Base
      */
     public function menu($menu = null, $options = [])
     {
@@ -66,14 +66,14 @@ class Manager
      *
      * @param   string  $menu
      * @param   mixed  $options
-     * @return  mixed
+     * @return  Type\Base
      * @throws  \InvalidArgumentException
      */
     protected function createMenu($menu, $options = [])
     {
         $cls = __NAMESPACE__ . '\\Type\\' . ucfirst($menu);
 
-        if (class_exists($cls)) {
+        if (is_a($cls, Type\Base::class, true)) {
             return new $cls($options);
         }
 
@@ -83,7 +83,7 @@ class Manager
     /**
      * Get all of the created "menus".
      *
-     * @return  array<mixed>
+     * @return  array<string, Type\Base>
      */
     public function getMenus()
     {

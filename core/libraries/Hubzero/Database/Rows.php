@@ -14,7 +14,8 @@ use Countable;
 /**
  * Database Iterable class
  *
- * @implements Iterator<mixed, mixed>
+ * @template TModel = mixed  The models in the set (a template may name them, e.g. Rows<Entry>)
+ * @implements Iterator<mixed, TModel>
  */
 class Rows implements Iterator, Countable
 {
@@ -198,7 +199,7 @@ class Rows implements Iterator, Countable
     /**
      * Gets current row in array of rows
      *
-     * @return  mixed
+     * @return  TModel|false
      **/
 
     #[\ReturnTypeWillChange]
@@ -241,7 +242,7 @@ class Rows implements Iterator, Countable
     /**
      * Gets first item from rows property, if set
      *
-     * @return  mixed
+     * @return  TModel|false
      **/
     public function first()
     {
@@ -251,7 +252,7 @@ class Rows implements Iterator, Countable
     /**
      * Gets previous item in iterable list
      *
-     * @return  mixed
+     * @return  TModel|false
      **/
     public function prev()
     {
@@ -259,9 +260,9 @@ class Rows implements Iterator, Countable
     }
 
     /**
-     * Gets next item in iterable list
+     * Moves to the next item in the list
      *
-     * @return  mixed
+     * @return  void
      **/
 
     #[\ReturnTypeWillChange]
@@ -285,7 +286,7 @@ class Rows implements Iterator, Countable
     /**
      * Fast-forwards to the end of the iterable list
      *
-     * @return  mixed
+     * @return  TModel|false
      **/
     public function last()
     {
@@ -351,7 +352,7 @@ class Rows implements Iterator, Countable
      * Seeks to the given key
      *
      * @param   mixed  $offset
-     * @return  mixed
+     * @return  TModel|false
      **/
     public function seek($offset)
     {
