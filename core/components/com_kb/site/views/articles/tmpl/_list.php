@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
  * What this template is given.
  *
  * @var \Hubzero\Component\View&object{
- *     article: mixed,
+ *     article: \Components\Kb\Models\Article,
  *     base: mixed,
  *     cls: mixed,
  *     comments: mixed,

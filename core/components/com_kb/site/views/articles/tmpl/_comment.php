@@ -17,7 +17,13 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{article: mixed, base: mixed, cls: mixed, comment: mixed, depth: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     article: \Components\Kb\Models\Article,
+ *     base: mixed,
+ *     cls: mixed,
+ *     comment: mixed,
+ *     depth: mixed,
+ * } $this
  */
 
 $cls = isset($this->cls) ? $this->cls : 'odd';

@@ -25,6 +25,7 @@ use Hubzero\Facades\User;
  *
  * @property-read  mixed  $assignee  What assignee() gives
  * @property-read  mixed  $attachments  What attachments() gives
+ * @property-read  string  $content  The report, through transformContent()
  * @property  int|string|null  $id
  * @property  string|null  $login
  * @property  string|null  $name

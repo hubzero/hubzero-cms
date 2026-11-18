@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{no_html: mixed, ticket: mixed, title: mixed} $this
+ * @var \Hubzero\Component\View&object{no_html: mixed, ticket: int|string, title: mixed} $this
  */
 ?>
 <?php if ($this->no_html) { ?>

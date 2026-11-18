@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{config: mixed, delimiter: mixed, ticket: mixed} $this
+ * @var \Hubzero\Component\View&object{config: mixed, delimiter: mixed, ticket: \Components\Support\Models\Ticket} $this
  */
 
 $base = rtrim(Request::base(), '/');
