@@ -66,6 +66,9 @@ if ($attributes) {
         }
     }
     $attributes = implode(' ', $bits);
+} else {
+    // None (an attribs value of '0' would otherwise land in the tag)
+    $attributes = '';
 }
 
 // Formats that can be previewed via Google viewer

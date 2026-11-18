@@ -51,7 +51,7 @@ class Parents extends WikiMacro
             foreach ($args as $arg) {
                 $arg = trim($arg);
                 if (substr($arg, 0, 6) == 'depth=') {
-                    $bits = preg_split('#=#', $arg);
+                    $bits = explode('=', $arg);
                     $depth = intval(trim(end($bits)));
                     continue;
                 }

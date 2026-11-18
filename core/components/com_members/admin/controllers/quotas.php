@@ -593,11 +593,11 @@ class Quotas extends AdminController
                 }
                 fclose($fp);
 
-                $tokens = preg_split('/,/', $msg);
+                $tokens = explode(',', $msg);
 
-                foreach ($tokens ?: [] as $token) {
+                foreach ($tokens as $token) {
                     if (!empty($token)) {
-                        $t = preg_split('#=#', $token);
+                        $t = explode('=', $token);
                         $info[$t[0]] = (isset($t[1])) ? $t[1] : '';
                     }
                 }

@@ -53,12 +53,12 @@ class Children extends WikiMacro
             foreach ($args as $arg) {
                 $arg = trim($arg);
                 if (substr($arg, 0, 6) == 'depth=') {
-                    $bits = preg_split('#=#', $arg);
+                    $bits = explode('=', $arg);
                     $depth = intval(trim(end($bits)));
                     continue;
                 }
                 if (substr($arg, 0, 12) == 'description=') {
-                    $bits = preg_split('#=#', $arg);
+                    $bits = explode('=', $arg);
                     $description = intval(trim(end($bits)));
                     continue;
                 }

@@ -61,6 +61,9 @@ $formSuffix = (Search::$instances > 1) ? $this->module->id : '';
                 . ' class="' . $moduleclass_sfx . 'searchsubmit"'
                 . ' id="submitquery' . $sfx . '"'
                 . ' value="' . $button_text . '" />';
+        else :
+            // No button (a setting of '0' would otherwise be printed)
+            $button = '';
         endif;
 
         switch ($button_pos) :

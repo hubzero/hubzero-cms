@@ -455,7 +455,7 @@ class BibTex
                 $entry       = substr($entry, 0, (int) $position);
             }
             //Parsing cite and type
-            $arr = preg_split('#{#', $entry);
+            $arr = explode('{', $entry);
             $ret['cite'] = trim($arr[1]);
             $ret['type'] = strtolower(trim($arr[0]));
             if ('@' == $ret['type'][0]) {

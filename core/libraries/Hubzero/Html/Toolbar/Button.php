@@ -73,6 +73,8 @@ abstract class Button extends Obj
         // Build id attribute
         if ($id) {
             $id = 'id="' . $id . '"';
+        } else {
+            $id = '';
         }
 
         // Build the HTML Button

@@ -39,12 +39,15 @@ if ($attributes) {
     $bits = [];
     foreach ($a as $b) {
         if (strstr($b, ':')) {
-            $b = preg_split('#:#', $b);
+            $b = explode(':', $b);
             // attribute name and value both come from the stored attribs string
             $bits[] = preg_replace('/[^a-zA-Z0-9_-]/', '', trim($b[0])) . '="' . $this->escape(trim($b[1])) . '"';
         }
     }
     $attributes = implode(' ', $bits);
+} else {
+    // None (an attribs value of '0' would otherwise land in the tag)
+    $attributes = '';
 }
 
 $type = '';

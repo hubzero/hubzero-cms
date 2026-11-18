@@ -54,7 +54,7 @@ class Span extends Macro
         $atts = [];
         if (!empty($attribs)) {
             foreach ($attribs as $a) {
-                $a = preg_split('/=/', $a) ?: [];
+                $a = explode('=', $a);
                 $key = $a[0];
                 $val = end($a);
 

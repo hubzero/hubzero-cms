@@ -99,7 +99,7 @@ class Utils
                 $tokens = explode(',', $msg);
                 foreach ($tokens as $token) {
                     if (!empty($token)) {
-                        $t = preg_split('/=/', $token);
+                        $t = explode('=', $token);
                         $info[$t[0]] = (isset($t[1])) ? $t[1] : '';
                     }
                 }
