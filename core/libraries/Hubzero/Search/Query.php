@@ -101,7 +101,7 @@ class Query
      *
      * @param   mixed   $name
      * @param   array<mixed>|string   $query  Clauses, or a query string as it is
-     * @param   string  $tag
+     * @param   string|array<string>  $tag  The filter's tag, or tags
      * @return  $this
      */
     public function addFilter($name, $query = [], $tag = 'root_type')

@@ -344,7 +344,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $name
      * @param mixed $query
-     * @param   string  $tag
+     * @param   string|array<string>  $tag  The filter's tag, or tags
      * @access public
      * @return static
      */

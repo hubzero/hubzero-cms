@@ -64,7 +64,7 @@ class Daterangefilter extends Filter
     /**
      * Add selected filters to solr query
      *
-     * @param   object   $query  Solarium object that builds the solr query
+     * @param   \Hubzero\Search\Query   $query  The search query being built
      * @param   array<mixed>   $selectedFilters  list of options currently selected
      * @return  string|bool
      */
