@@ -833,7 +833,7 @@ class Course extends SiteController
     /**
      * Get a course's availability
      *
-     * @param   object|null  $course  CoursesCourse
+     * @param   string|null  $course  Course alias (default: the course request variable)
      * @return  string|null|bool
      */
     public function courseavailabilityTask($course = null)

@@ -383,7 +383,7 @@ class Member extends Table
     /**
      * Get a count of course offerings
      *
-     * @param  int|array<mixed> $section_id
+     * @param  int|string  $section_id
      * @return object|bool Return course units
      */
     public function deleteBySection($section_id)
