@@ -2195,6 +2195,11 @@ abstract class BaseSqlDriver extends PdoDriver
      */
     public function connected()
     {
+        // A raw PDO (set directly, as tests do) is connected by being there
+        if ($this->connection instanceof \PDO) {
+            return true;
+        }
+
         return $this->connection && $this->connection->isConnected();
     }
 

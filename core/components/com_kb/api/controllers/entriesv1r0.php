@@ -1157,7 +1157,7 @@ class Entriesv1r0 extends ApiController
      * The response shape for one article
      *
      * @param   Article        $article
-     * @param   Category|Node  $category
+     * @param   Category       $category
      * @param   boolean        $detailed  Include the fields too costly to gather per row in a listing
      * @return  \stdClass
      */
@@ -1198,7 +1198,7 @@ class Entriesv1r0 extends ApiController
     /**
      * The response shape for one category
      *
-     * @param   Category|Node  $category
+     * @param   Category       $category
      * @param   boolean        $detailed  Include the counts too costly to gather per row in a listing
      * @return  \stdClass
      */
