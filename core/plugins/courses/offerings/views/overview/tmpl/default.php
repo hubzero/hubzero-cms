@@ -70,7 +70,7 @@ $this->css();
             <?php if ($offering->sections()->total() <= 1) { ?>
                 <?php
                 $section = $offering->sections()->fetch('first');
-                if (is_object($section)) {
+                if ($section instanceof \Components\Courses\Models\Section) {
                     $offering->section($section->get('id'));
                 }
                 ?>

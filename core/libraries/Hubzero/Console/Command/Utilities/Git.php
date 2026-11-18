@@ -245,7 +245,7 @@ class Git
                 unset($args['upcoming']);
             }
             $args['length'] = '-' . ($length - $upcomingCount);
-            $args['skip']   = '--skip=' . ((($start - $upcomingTotal) >= 0) ? ($start - $upcomingTotal) : 0);
+            $args['skip']   = '--skip=' . max(0, (int) $start - (int) $upcomingTotal);
             $currentLog     = $this->call('log', $args);
             $currentLogs    = (!empty($currentLog)) ? explode("\n", $currentLog) : [];
         }

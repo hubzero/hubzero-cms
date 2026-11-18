@@ -170,7 +170,7 @@ class InertiaService
             $this->versionResolver = $resolver;
         }
 
-        if ($this->isLazyValue($this->versionResolver)) {
+        if ($this->isLazyValue($this->versionResolver) && is_callable($this->versionResolver)) {
             return (string) call_user_func($this->versionResolver);
         }
 

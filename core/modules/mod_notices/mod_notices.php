@@ -227,7 +227,7 @@ class Notices extends Module
             $this->moduleid   = $this->params->get('moduleid', 'sitenotice');
             $this->alertlevel = $this->params->get('alertlevel', 'medium');
             $timezone         = $this->params->get('timezone', '');
-            $message          = $this->params->get('message', '');
+            $message          = (string) $this->params->get('message', '');
 
             // Convert start time
             $start = $this->mkt($start);
@@ -261,8 +261,7 @@ class Notices extends Module
             $message = str_replace('<notice:countdowntostart>', $time_cd_tostart, $message);
             $message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
             $timezoneVal = $timezone == null ? '' : $timezone;
-            $messageVal = $message == null ? '' : $message;
-            $message = str_replace('<notice:timezone>', $timezoneVal, (string) $messageVal);
+            $message = str_replace('<notice:timezone>', $timezoneVal, $message);
 
             // auto link?
             if ($this->params->get('autolink', 1)) {

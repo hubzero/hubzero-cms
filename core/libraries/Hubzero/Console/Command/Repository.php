@@ -171,7 +171,8 @@ class Repository extends Base implements CommandInterface
 
         if ($mode != 'minimal') {
             $output = [];
-            foreach ($logs as $log) {
+            // Without a count, the log is a list of lines
+            foreach ((array) $logs as $log) {
                 $output[] = ['message' => $log];
             }
 
