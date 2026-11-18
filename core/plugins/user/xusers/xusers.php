@@ -189,7 +189,7 @@ class Xusers extends Plugin
 
         $username = $xuser->get('username');
 
-        if (isset($user['auth_link']) && is_object($user['auth_link'])) {
+        if (isset($user['auth_link']) && $user['auth_link'] instanceof \Hubzero\Auth\Link) {
             $hzal = $user['auth_link'];
         } else {
             $hzal = null;

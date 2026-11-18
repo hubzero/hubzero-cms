@@ -39,7 +39,7 @@ class Authors extends Base
     /**
      * Default manifest
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     protected $manifest = null;
 
@@ -752,7 +752,7 @@ class Authors extends Base
      * Get default manifest for the block
      *
      * @param   boolean  $new
-     * @return  object
+     * @return  \stdClass
      */
     public function getManifest($new = false)
     {

@@ -31,7 +31,7 @@ class Block extends Obj
      * This has to be set in the final
      * renderer classes.
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     protected $manifest = null;
 

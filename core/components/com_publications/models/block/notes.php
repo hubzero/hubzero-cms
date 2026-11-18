@@ -33,7 +33,7 @@ class Notes extends Base
     /**
   * Default manifest
   *
-  * @var        object|null
+  * @var        \stdClass|null
   */
     protected $manifest          = null;
 

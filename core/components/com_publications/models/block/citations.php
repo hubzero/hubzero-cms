@@ -37,7 +37,7 @@ class Citations extends Base
     /**
      * Default manifest
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     protected $manifest = null;
 
@@ -369,7 +369,7 @@ class Citations extends Base
      * Get default manifest for the block
      *
      * @param   bool  $new
-     * @return  object
+     * @return  \stdClass
      */
     public function getManifest($new = false)
     {

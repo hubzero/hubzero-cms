@@ -235,7 +235,7 @@ class Blocks extends Obj
         $block = $this->loadBlock($name);
 
         $html = '';
-        if ($block === false || !$pub || !is_object($pub)) {
+        if ($block === false || !$pub instanceof Publication) {
             $this->setError('Error rendering block');
             return false;
         } else {
