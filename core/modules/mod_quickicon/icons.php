@@ -34,7 +34,7 @@ class Icons
     /**
      * Method to generate html code for a list of buttons
      *
-     * @param   array<mixed>|object   $button  Button properties
+     * @param   array<mixed>   $button  Button properties
      * @return  string
      */
     public static function button($button)

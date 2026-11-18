@@ -891,18 +891,18 @@ class Translator extends Obj
         // Search through the backtrace to our caller
         $continue = true;
         while ($continue && next($backtrace)) {
-            $step  = current($backtrace);
-            $class = @ $step['class'];
+            $step  = current($backtrace) ?: [];
+            $class = $step['class'] ?? null;
 
             // We're looking for something outside of language.php
             if ($class != '\\Hubzero\\Language\\Translator' && $class != '\\Lang') {
-                $info['function'] = @ $step['function'];
+                $info['function'] = $step['function'] ?? null;
                 $info['class'] = $class;
                 $info['step'] = prev($backtrace);
 
                 // Determine the file and name of the file
-                $info['file'] = @ $step['file'];
-                $info['line'] = @ $step['line'];
+                $info['file'] = $step['file'] ?? null;
+                $info['line'] = $step['line'] ?? null;
 
                 $continue = false;
             }
