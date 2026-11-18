@@ -794,9 +794,11 @@ class Base extends Obj
     /**
      * Outputs the document
      *
+     * Each document type returns what it renders; this sets the headers they share.
+     *
      * @param   boolean  $cache   If true, cache the output
      * @param   array<mixed>    $params  Associative array of attributes
-     * @return  void
+     * @return  string|null  The rendered data (none here)
      */
     public function render($cache = false, $params = [])
     {
@@ -808,5 +810,7 @@ class Base extends Obj
         App::get('response')->headers->set('Content-Type', $this->mime
             . ($this->charset ? '; charset='
             . $this->charset : ''));
+
+        return null;
     }
 }

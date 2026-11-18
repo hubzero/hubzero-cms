@@ -87,12 +87,12 @@ class Supergroup extends Plugin
                     $router = new $name();
 
                     // get segments from router
-                    $vars = $router->parse($segments);
+                    $vars = method_exists($router, 'parse') ? $router->parse($segments) : [];
                 } elseif (class_exists($alt)) {
                     $router = new $alt();
 
                     // get segments from router
-                    $vars = $router->parse($segments);
+                    $vars = method_exists($router, 'parse') ? $router->parse($segments) : [];
                 }
                 // if we have a build route functions, run it
                 if (function_exists($parseRouteFunction)) {
@@ -199,12 +199,12 @@ class Supergroup extends Plugin
                         $router = new $name();
 
                         // get segments from router
-                        $routeParts = $router->build($query);
+                        $routeParts = method_exists($router, 'build') ? $router->build($query) : [];
                     } elseif (class_exists($alt)) {
                         $router = new $alt();
 
                         // get segments from router
-                        $routeParts = $router->build($query);
+                        $routeParts = method_exists($router, 'build') ? $router->build($query) : [];
                     } elseif (function_exists($buildRouteFunction)) {
                         // if we have a build route functions, run it
                         // run segments from router

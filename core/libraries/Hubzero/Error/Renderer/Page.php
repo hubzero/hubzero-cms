@@ -22,14 +22,14 @@ class Page implements RendererInterface
     /**
      * Document instance; none on the command line
      *
-     * @var  object|null
+     * @var  \Hubzero\Document\Manager|null
      */
     protected $document;
 
     /**
      * Template loader
      *
-     * @var  object
+     * @var  \Hubzero\Template\Loader
      */
     protected $template;
 
@@ -43,8 +43,8 @@ class Page implements RendererInterface
     /**
      * Create a new exception renderer.
      *
-     * @param   object|null  $document  Document instance; none on the command line
-     * @param   object|null  $template  Template loader
+     * @param   \Hubzero\Document\Manager|null  $document  Document instance; none on the command line
+     * @param   \Hubzero\Template\Loader|null    $template  Template loader
      * @param   bool    $debug     Debugging turned on?
      * @return  void
      */

@@ -22,7 +22,7 @@ class Handler
     /**
      * A logger to log errors.
      *
-     * @var  object|null
+     * @var  \Monolog\Logger|null
      */
     protected $logger;
 
@@ -49,7 +49,7 @@ class Handler
     /**
      * Set the logger for the handler.
      *
-     * @param   object  $logger
+     * @param   \Monolog\Logger  $logger
      * @return  $this  Chainable.
      */
     public function setLogger($logger)

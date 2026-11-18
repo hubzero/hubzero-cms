@@ -1019,12 +1019,13 @@ class Publication extends Obj
     /**
      * Get publication attachments count
      *
-     * @return  int|array<mixed>
+     * @return  int
      */
     public function attachmentsCount()
     {
+        // A publication that does not exist has no attachments
         if (!$this->exists()) {
-            return [];
+            return 0;
         }
         if (!isset($this->_tblContent)) {
             $this->_tblContent = new Tables\Attachment($this->db);
@@ -1039,12 +1040,12 @@ class Publication extends Obj
     /**
      * Get publication license
      *
-     * @return  mixed
+     * @return  \stdClass|false  False when there is none (or no publication)
      */
     public function license()
     {
         if (!$this->exists()) {
-            return [];
+            return false;
         }
         if (!isset($this->_tblLicense)) {
             $this->_tblLicense = new Tables\License($this->db);

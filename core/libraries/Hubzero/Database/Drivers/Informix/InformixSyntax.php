@@ -542,7 +542,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     /**
      * Build a function expression with Informix-specific overrides
      *
-     * @param   object  $expression  The expression object
+     * @param   \Hubzero\Database\Expression  $expression  The expression object
      * @return  string
      */
     protected function buildFunctionExpression($expression): string

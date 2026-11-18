@@ -83,13 +83,6 @@ class Notes extends Plugin
     protected $pagename = null;
 
     /**
-     * Tool record (tool wiki)
-     *
-     * @var  object|null
-     */
-    protected $tool = null;
-
-    /**
      * Controller name
      *
      * @var  string|null
@@ -349,7 +342,8 @@ class Notes extends Plugin
         Request::setVar('scope', $scope);
         Request::setVar('group_cn', $this->group);
 
-        Request::setVar('tool', $this->tool);
+        // Notes are no tool's wiki: clear any tool the request names
+        Request::setVar('tool', null);
         Request::setVar('project', $this->model);
         Request::setVar('candelete', $canDelete);
 
@@ -594,54 +588,16 @@ class Notes extends Plugin
             );
         }
 
-        if ($this->tool && $this->tool->id) {
-            Pathway::append(
-                ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
-                Route::url(
-                    'index.php?option='
-                        . $this->componentOption
-                        . '&alias='
-                        . $this->model->get('alias')
-                        . '&active=tools',
-                ),
-            );
-
-            Pathway::append(
-                \Hubzero\Utility\Str::truncate($this->tool->title, 50),
-                Route::url(
-                    'index.php?option='
-                        . $this->componentOption
-                        . '&alias='
-                        . $this->model->get('alias')
-                        . '&active=tools&tool='
-                        . $this->tool->id,
-                ),
-            );
-
-            Pathway::append(
-                ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
-                Route::url(
-                    'index.php?option='
-                        . $this->componentOption
-                        . '&alias='
-                        . $this->model->get('alias')
-                        . '&active=tools&tool='
-                        . $this->tool->id
-                        . '&action=wiki',
-                ),
-            );
-        } else {
-            Pathway::append(
-                ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
-                Route::url(
-                    'index.php?option='
-                        . $this->componentOption
-                        . '&alias='
-                        . $this->model->get('alias')
-                        . '&active=notes',
-                ),
-            );
-        }
+        Pathway::append(
+            ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
+            Route::url(
+                'index.php?option='
+                    . $this->componentOption
+                    . '&alias='
+                    . $this->model->get('alias')
+                    . '&active=notes',
+            ),
+        );
     }
 
     /**

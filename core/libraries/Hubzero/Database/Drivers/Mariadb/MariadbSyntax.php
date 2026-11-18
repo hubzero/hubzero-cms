@@ -32,7 +32,7 @@ class MariadbSyntax extends \Hubzero\Database\Drivers\Mysql\MysqlSyntax
     /**
      * Build a function expression with MariaDB-specific overrides
      *
-     * @param   object  $expression  The expression object
+     * @param   \Hubzero\Database\Expression  $expression  The expression object
      * @return  string
      */
     protected function buildFunctionExpression($expression): string

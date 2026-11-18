@@ -544,7 +544,7 @@ class User extends \Hubzero\Database\Relational
      *
      * @param   array<mixed>|string|object  $key    The key to set, or array (or object) of key/value pairs
      * @param   mixed         $value  The value to set if key is string
-     * @return  object        $this   Chainable
+     * @return  ($key is 'guest' ? mixed : static)  Chainable, except that setting guest gives the value
      * @since   2.1.0
      */
     public function set($key, $value = null)
