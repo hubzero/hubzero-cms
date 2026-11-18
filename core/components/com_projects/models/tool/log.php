@@ -64,7 +64,7 @@ class Log extends Model
     /**
      * Returns a reference to a log model
      *
-     * @param   mixed  $oid  object ID
+     * @param   int|string|\stdClass|array<string,mixed>|null  $oid  object ID
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -75,7 +75,7 @@ class Log extends Model
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        if ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];

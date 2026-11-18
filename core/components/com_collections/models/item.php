@@ -116,7 +116,7 @@ class Item extends Base
     /**
      * Returns a reference to a collections item instance
      *
-     * @param   mixed   $oid  Integer or string
+     * @param   int|string|\stdClass|array<string,mixed>|null   $oid  Integer or string
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -129,7 +129,7 @@ class Item extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } elseif (is_object($oid)) {
+        } elseif ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];
@@ -677,18 +677,19 @@ class Item extends Base
                     require_once $collectible;
                 }
 
-                // Filter available classes to just our collectibles
-                $collectibles = array_values(array_filter(get_declared_classes(), function ($class) {
-                    return (in_array('Components\\Collectionss\\Models\\Item', class_parents($class)));
-                }));
+                // One of each collectible. The class name was misspelled
+                // (Collectionss) until 2.5, so none was ever found and every
+                // collected item but the built-in types showed as a link.
+                $collectibles = [];
+                foreach (get_declared_classes() as $class) {
+                    if (is_subclass_of($class, self::class)) {
+                        $collectibles[] = new $class();
+                    }
+                }
             }
 
             // Find a collectible that responds to this type
-            foreach ($collectibles as $key => $collectible) {
-                if (!is_object($collectible)) {
-                    $collectibles[$key] = new $collectible();
-                    $collectible = $collectibles[$key];
-                }
+            foreach ($collectibles as $collectible) {
                 if ($collectible->is($type)) {
                     return $collectible->type($as);
                 }

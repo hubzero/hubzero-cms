@@ -138,12 +138,12 @@ class Tool extends Model
     /**
      * Returns a reference to a tool model
      *
-     * @param   \stdClass|mixed  $result
-     * @return  object|false
+     * @param   \stdClass|mixed  $result  A row of the tools table
+     * @return  static|false
      */
     public static function mapInstance($result)
     {
-        if (!is_object($result)) {
+        if (!($result instanceof \stdClass)) {
             return false;
         }
 
@@ -156,7 +156,7 @@ class Tool extends Model
 
         if (!isset($instances[$oid])) {
             $instances[$oid] = new static();
-            foreach ($result as $key => $value) {
+            foreach (get_object_vars($result) as $key => $value) {
                 $instances[$oid]->set($key, $value);
             }
         }

@@ -62,7 +62,7 @@ class Post extends Base
     /**
      * Returns a reference to this model
      *
-     * @param   mixed   $oid  Integer, string, object or array
+     * @param   int|string|\stdClass|array<string,mixed>|null   $oid  Integer, string, object or array
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -75,7 +75,7 @@ class Post extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } elseif (is_object($oid)) {
+        } elseif ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];

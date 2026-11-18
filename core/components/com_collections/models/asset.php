@@ -71,7 +71,7 @@ class Asset extends Base
     /**
      * Returns a reference to an asset object
      *
-     * @param   mixed    $oid      ID, string, array, or object
+     * @param   int|string|\stdClass|array<string,mixed>|null    $oid      ID, string, array, or object
      * @param   integer|null  $item_id  ID of the item asset is attached
      * @return  self
      */
@@ -85,7 +85,7 @@ class Asset extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid . '_' . $item_id;
-        } elseif (is_object($oid)) {
+        } elseif ($oid instanceof \stdClass) {
             $key = $oid->id . '_' . $item_id;
         } elseif (is_array($oid)) {
             $key = $oid['id'] . '_' . $item_id;

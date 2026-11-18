@@ -74,7 +74,7 @@ class Instance extends Model
     /**
      * Returns a reference to the model
      *
-     * @param      mixed $oid object ID
+     * @param      int|string|\stdClass|array<string,mixed>|null $oid object ID
      * @param   int|null  $parent
      * @return     self
      */
@@ -86,7 +86,7 @@ class Instance extends Model
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        if ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];

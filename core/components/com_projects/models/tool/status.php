@@ -89,7 +89,7 @@ class Status extends Model
     /**
      * Returns a reference to the model
      *
-     * @param   mixed  $oid  status ID
+     * @param   int|null  $oid  status ID
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -100,13 +100,8 @@ class Status extends Model
             $instances = [];
         }
 
-        if (is_object($oid)) {
-            $key = $oid->id;
-        } elseif (is_array($oid)) {
-            $key = $oid['id'];
-        } else {
-            $key = $oid;
-        }
+        // The constructor loads a status by its ID only
+        $key = (int) $oid;
 
         if (!isset($instances[$key])) {
             $instances[$key] = new self($oid);

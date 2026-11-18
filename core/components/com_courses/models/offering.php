@@ -215,7 +215,7 @@ class Offering extends Base
      * This method must be invoked as:
      *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
      *
-     * @param   mixed  $oid  ID (int) or alias (string)
+     * @param   int|string|\Hubzero\Database\Table|\stdClass|array<string,mixed>|null  $oid  ID (int) or alias (string)
      * @param   mixed  $course_id
      * @return  self
      */
@@ -231,8 +231,10 @@ class Offering extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } elseif (is_object($oid)) {
+        } elseif ($oid instanceof \Hubzero\Database\Table) {
             $key = $oid->get('id');
+        } elseif ($oid instanceof \stdClass) {
+            $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];
         }

@@ -190,7 +190,7 @@ class Project extends Model
     /**
      * Returns a reference to an article model
      *
-     * @param   mixed  $oid  ID or alias
+     * @param   int|string|\stdClass|array<string,mixed>|null  $oid  ID or alias
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -201,7 +201,7 @@ class Project extends Model
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        if ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];

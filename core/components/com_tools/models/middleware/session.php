@@ -88,7 +88,7 @@ class Session extends Base
     /**
      * Returns a reference to an session model
      *
-     * @param   mixed   $oid         Session ID or object
+     * @param   int|string|\stdClass|array<string,mixed>|null   $oid         Session ID or object
      * @param   string|null  $authorized  Authorization level
      * @return  self
      */
@@ -100,7 +100,7 @@ class Session extends Base
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        if ($oid instanceof \stdClass) {
             $key = $oid->sessnum;
         } elseif (is_array($oid)) {
             $key = $oid['sessnum'];

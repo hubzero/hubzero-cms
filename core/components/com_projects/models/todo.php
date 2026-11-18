@@ -62,7 +62,7 @@ class Todo extends Model
     /**
      * Returns a reference to a todo model
      *
-     * @param   mixed   $oid  TODO ID
+     * @param   int|string|\stdClass|array<string,mixed>|null   $oid  TODO ID
      * @return  self  Todo
      */
     public static function &getInstance($oid = null)
@@ -73,7 +73,7 @@ class Todo extends Model
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        if ($oid instanceof \stdClass) {
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];

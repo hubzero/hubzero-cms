@@ -240,7 +240,7 @@ class Publication extends Obj
     /**
      * Returns a reference to an article model
      *
-     * @param   mixed   $oid  ID or alias
+     * @param   int|string|\stdClass|null  $oid  ID, alias, or a row of a listing
      * @return  self
      */
     public static function &getInstance($oid = null)
@@ -251,10 +251,9 @@ class Publication extends Obj
             $instances = [];
         }
 
-        if (is_object($oid)) {
+        // The constructor binds a row object, but has no case for an array
+        if ($oid instanceof \stdClass) {
             $key = $oid->id;
-        } elseif (is_array($oid)) {
-            $key = $oid['id'];
         } else {
             $key = $oid;
         }
