@@ -284,7 +284,7 @@ class Collection extends ItemList
 
             $zip->close();
 
-            $local = Manager::getTempPath($tarname);
+            $local = Manager::getTempFile($tarname);
 
             if ($upload) {
                 // @FIXME: use manager copy?

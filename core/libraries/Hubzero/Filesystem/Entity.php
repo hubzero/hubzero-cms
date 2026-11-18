@@ -246,7 +246,7 @@ class Entity extends Obj
         if ($this->isLocal() || $remote) {
             if (!$this->isLocal()) {
                 // Copy to tmp
-                $temp = Manager::getTempPath(uniqid('', true) . '.tmp');
+                $temp = Manager::getTempFile(uniqid('', true) . '.tmp');
                 $this->copy($temp);
                 $path = $temp->getAbsolutePath();
             } else {

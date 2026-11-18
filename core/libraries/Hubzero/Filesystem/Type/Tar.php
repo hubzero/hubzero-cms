@@ -25,7 +25,7 @@ class Tar extends Expandable
     public function expand($cleanup = true)
     {
         // Create local tmp copy of the archive that's being expanded
-        $temp = Manager::getTempPath($this->getName());
+        $temp = Manager::getTempFile($this->getName());
         $this->copy($temp);
 
         $archive = new \PharData($temp->getAbsolutePath());
@@ -35,7 +35,7 @@ class Tar extends Expandable
             $path   = substr($file, strlen($temp->getAbsolutePath()) + 7);
             $entity = Entity::fromPath($this->getParent() . $path, $this->getAdapter());
 
-            if ($entity->isFile()) {
+            if ($entity instanceof \Hubzero\Filesystem\File) {
                 // Open
                 $item = fopen($file, 'r');
                 if ($item === false) {

@@ -267,7 +267,7 @@ class Tool extends Content
     private function writeRemoteTempFile($conFile)
     {
         // Create a temp file and write to it
-        $tempFile = Manager::getTempPath($conFile->getFilename());
+        $tempFile = Manager::getTempFile($conFile->getFilename());
         if ($tempFile->write($conFile->read())) {
             return $tempFile;
         }

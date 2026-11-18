@@ -1334,7 +1334,7 @@ class File extends Base
                 // Remote file
                 if (!$conFile->isLocal()) {
                     // Create a temp file and write to it
-                    $tempFile = Manager::getTempPath($conFile->getFilename());
+                    $tempFile = Manager::getTempFile($conFile->getFilename());
                     $tempFile->write($conFile->read());
 
                     // Rebuild identifier

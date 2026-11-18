@@ -25,7 +25,7 @@ class Zip extends Expandable
     public function expand($cleanup = true)
     {
         // Create local tmp copy of the archive that's being expanded
-        $temp = Manager::getTempPath($this->getName());
+        $temp = Manager::getTempFile($this->getName());
         $this->copy($temp);
 
         $zip = new \ZipArchive();
@@ -48,7 +48,7 @@ class Zip extends Expandable
 
                 $entity   = Entity::fromPath($this->getParent() . '/' . $filename, $this->getAdapter());
 
-                if ($entity->isFile()) {
+                if ($entity instanceof \Hubzero\Filesystem\File) {
                     // Open
                     $item = fopen('zip://' . $temp->getAbsolutePath() . '#' . $filename, 'r');
                     if ($item === false) {

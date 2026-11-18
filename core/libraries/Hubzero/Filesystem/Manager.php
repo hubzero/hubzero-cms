@@ -181,4 +181,26 @@ class Manager
     {
         return Entity::fromPath($path, self::adapter('local', ['path' => sys_get_temp_dir()], 'temp'));
     }
+
+    /**
+     * Creates a handle to a file in the PHP temp directory
+     *
+     * getTempPath() guesses from the name, so a name without an extension
+     * would come back as a directory; this is always a file.
+     *
+     * @param   string  $path  The relative path within the temp dir to use
+     * @return  \Hubzero\Filesystem\File
+     **/
+    public static function getTempFile($path)
+    {
+        $entity = self::getTempPath($path);
+        if ($entity instanceof File) {
+            return $entity;
+        }
+
+        return new File(
+            ['type' => 'file', 'path' => trim($path, '/')],
+            self::adapter('local', ['path' => sys_get_temp_dir()], 'temp'),
+        );
+    }
 }
