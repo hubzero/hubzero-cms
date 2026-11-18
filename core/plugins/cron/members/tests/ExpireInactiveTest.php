@@ -67,6 +67,7 @@ class ExpireInactiveTest extends Basic
         );
 
         $xml    = simplexml_load_file($file);
+        $this->assertNotFalse($xml);
         $legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name'));
         $config = array_map(
             'strval',

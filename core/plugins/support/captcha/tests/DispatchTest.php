@@ -30,6 +30,7 @@ class DispatchTest extends TestCase
     private function options(string $field): array
     {
         $manifest = simplexml_load_file(dirname(__DIR__) . '/captcha.xml');
+        $this->assertNotFalse($manifest);
         $values   = [];
         foreach ($manifest->xpath('//field[@name="' . $field . '"]/option') ?: [] as $option) {
             $values[] = (string) $option['value'];

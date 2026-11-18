@@ -26,6 +26,7 @@ class DispatchTest extends TestCase
     public function testEveryImageFunctionTheFormOffersHasAMethod(): void
     {
         $manifest = simplexml_load_file(dirname(__DIR__) . '/image.xml');
+        $this->assertNotFalse($manifest);
         $values   = [];
         foreach ($manifest->xpath('//field[@name="imageFunction"]/option') as $option) {
             $values[] = (string) $option['value'];

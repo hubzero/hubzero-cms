@@ -291,6 +291,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $item = RefreshTestItem::oneOrFail($id);
         $fresh = $item->fresh();
+        $this->assertNotFalse($fresh);
 
         $this->assertNotSame($item, $fresh);
         $this->assertInstanceOf(RefreshTestItem::class, $fresh);
@@ -315,6 +316,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         Query::purgeCache();
 
         $fresh = $item->fresh();
+        $this->assertNotFalse($fresh);
 
         // Original should still have local change
         $this->assertEquals('Local Change', $item->get('title'));
@@ -415,6 +417,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $item = RefreshTestItem::oneOrFail($id);
         $fresh = $item->fresh();
+        $this->assertNotFalse($fresh);
 
         $this->assertFalse($fresh->isDirty());
     }
@@ -479,7 +482,9 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $item = RefreshTestItem::oneOrFail($id);
 
         // Should be able to chain after refresh
-        $title = $item->refresh()->get('title');
+        $refreshed = $item->refresh();
+        $this->assertNotFalse($refreshed);
+        $title = $refreshed->get('title');
 
         $this->assertEquals('Test Item', $title);
     }
