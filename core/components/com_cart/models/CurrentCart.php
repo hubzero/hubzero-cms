@@ -26,7 +26,7 @@ class CurrentCart extends Cart
 {
     // Session cart
     /**
-     * @var  mixed
+     * @var  \stdClass|null
      */
     public $cart = null;
 
@@ -167,7 +167,7 @@ class CurrentCart extends Cart
      * Get session info about cart
      *
      * @param bool $sync Flag whether the session cart should be synced with DB first
-     * @return object  the cart, with its items
+     * @return \stdClass  the cart, with its items
      */
     public function getCartInfo($sync = false)
     {
@@ -1382,7 +1382,7 @@ class CurrentCart extends Cart
                 $subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject(
                     $type,
                     $itemInfo->pId,
-                    $user->id,
+                    (int) $user->id,
                 );
                 // Get the expiration for the current subscription (if any)
                 $currentExpiration = $subscription->getExpiration();
@@ -1542,7 +1542,7 @@ class CurrentCart extends Cart
         $session = App::get('session');
         $cart = $session->get('cart');
 
-        if ($cart && !empty($cart->crtId)) {
+        if ($cart instanceof \stdClass && !empty($cart->crtId)) {
             $this->cart = $cart;
             $this->crtId = $cart->crtId;
             return true;
@@ -1745,7 +1745,7 @@ class CurrentCart extends Cart
         }
 
         // Get user's cart
-        $userCartId = $this->getUserCartId($user->id);
+        $userCartId = $this->getUserCartId((int) $user->id);
 
         // Get coupons
         $coupons = $this->getCoupons();

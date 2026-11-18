@@ -28,7 +28,7 @@ class Radio extends Base
      *
      * @param   string  $label         Display name of the field
      * @param   string  $description   Description for the field
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @param   string  $name          Name of the field
      * @return  string  HTML
@@ -43,7 +43,7 @@ class Radio extends Base
      *
      * @param   string  $name          Name of the field
      * @param   string|array<mixed>  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */
@@ -74,7 +74,7 @@ class Radio extends Base
                 $sel = '';
                 if (is_array($value)) {
                     foreach ($value as $val) {
-                        $k2 = is_object($val) ? $val->value : $val;
+                        $k2 = $val instanceof \stdClass ? $val->value : $val;
                         if ($value == $k2) {
                             $sel .= ' selected="selected"';
                             break;
@@ -102,9 +102,9 @@ class Radio extends Base
     /**
      * Return any options this element may have
      *
-     * @param   string  $name          Name of the field
+     * @param   string|int  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */

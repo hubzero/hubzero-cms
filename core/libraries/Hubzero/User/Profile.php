@@ -574,7 +574,7 @@ class Profile extends Obj
     /**
      * Bind registration data
      *
-     * @param   object|mixed  $registration
+     * @param   mixed  $registration  A \Components\Members\Models\Registration
      * @return  boolean
      */
     private function xregistrationLoad($registration)
@@ -607,7 +607,7 @@ class Profile extends Obj
             'surname' => 'surname',
         ];
 
-        if (!is_object($registration)) {
+        if (!($registration instanceof \Components\Members\Models\Registration)) {
             $this->setError("Invalid XRegistration object");
             return false;
         }
@@ -630,12 +630,12 @@ class Profile extends Obj
     /**
      * Load registration data
      *
-     * @param   object|mixed  &$registration
+     * @param   mixed  &$registration  A \Components\Members\Models\Registration
      * @return  boolean
      */
     public function loadRegistration(&$registration)
     {
-        if (!is_object($registration)) {
+        if (!($registration instanceof \Components\Members\Models\Registration)) {
             return false;
         }
 
@@ -1382,7 +1382,7 @@ class Profile extends Obj
     /**
      * Set parameters
      *
-     * @param   object  $params  Parameters object to set
+     * @param   \Hubzero\Config\Registry  $params  Parameters object to set
      * @return  void
      */
     public function setParameters($params)

@@ -29,7 +29,7 @@ class Select extends Base
      *
      * @param   string  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */
@@ -65,9 +65,9 @@ class Select extends Base
     /**
      * Return any options this element may have
      *
-     * @param   string  $name          Name of the field
+     * @param   string|int  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */

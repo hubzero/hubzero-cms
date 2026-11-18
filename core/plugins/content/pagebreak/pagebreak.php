@@ -35,8 +35,8 @@ class Pagebreak extends Plugin
      * Prepares page?
      *
      * @param   string   $context  The context of the content being passed to the plugin.
-     * @param   object   $row      The article object.  Note $article->text is also available
-     * @param   object   $params   The article params
+     * @param   \stdClass   $row      The article object.  Note $article->text is also available
+     * @param   \Hubzero\Config\Registry   $params   The article params
      * @param   integer  $page     The 'page' number
      * @return  bool
      */
@@ -205,7 +205,7 @@ class Pagebreak extends Plugin
     /**
      * Create Table Of Contents
      *
-     * @param   object   $row
+     * @param   \stdClass   $row
      * @param   array<mixed>    $matches
      * @param   integer  $page
      * @return  void
@@ -284,7 +284,7 @@ class Pagebreak extends Plugin
     /**
      * Create navigation elements
      *
-     * @param   object   $row
+     * @param   \stdClass   $row
      * @param   integer  $page
      * @param   integer  $n
      * @return  void

@@ -16,7 +16,7 @@ class Audit
      * Constructor
      * @param   object  $pInfo  Product info
      * @param   int     $crtId  Cart ID
-     * @return  object
+     * @return  \Components\Cart\Lib\Auditors\BaseAuditor
      */
     public static function getAuditor($pInfo, $crtId)
     {
@@ -31,7 +31,7 @@ class Audit
 
         // Find if there are auditors for this product's type and model
         $className = self::auditorClass($model);
-        if (class_exists($className)) {
+        if (is_a($className, \Components\Cart\Lib\Auditors\BaseAuditor::class, true)) {
             return new $className($type, $pId, $crtId);
         } else {
             return new \Components\Cart\Lib\Auditors\BaseAuditor($type);

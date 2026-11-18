@@ -227,13 +227,14 @@ class Groups extends Base
         }
 
         // Load the group object
-        $this->view->set('group', Group::getInstance($this->cn));
+        $group = Group::getInstance($this->cn);
+        $this->view->set('group', $group);
 
         // Check to make sure we were able to load group
         if (
-            !is_object($this->view->get('group'))
-            || !$this->view->get('group')->get('gidNumber')
-            || !$this->view->get('group')->get('cn')
+            !($group instanceof Group)
+            || !$group->get('gidNumber')
+            || !$group->get('cn')
         ) {
             $this->suggestNonExistingGroupTask();
             return;
@@ -243,7 +244,7 @@ class Groups extends Base
         // not-found check above: Group::getInstance() returns false for an
         // unknown cn, and this block has been moved above that check before
         // now, which turned every hit on a missing group into a warning.
-        $gparams       = new Registry($this->view->get('group')->get('params'));
+        $gparams       = new Registry($group->get('params'));
         $page_template = $gparams->get('page_template');
 
         if ($page_template) {
@@ -251,21 +252,21 @@ class Groups extends Base
         }
 
         // Ensure it's an allowable group type to display
-        if (!in_array($this->view->get('group')->get('type'), [1, 3])) {
+        if (!in_array($group->get('type'), [1, 3])) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Ensure the group is published
-        if (!$this->view->get('group')->get('published')) {
+        if (!$group->get('published')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Ensure the group has been published or has been approved
-        if (!$this->view->get('group')->get('approved')) {
+        if (!$group->get('approved')) {
             // Get list of members & managers & invitees
-            $managers = $this->view->get('group')->get('managers');
-            $members  = $this->view->get('group')->get('members');
-            $invitees = $this->view->get('group')->get('invitees');
+            $managers = $group->get('managers');
+            $members  = $group->get('members');
+            $invitees = $group->get('invitees');
             $members_invitees = array_merge($members, $invitees);
             $managers_members_invitees = array_merge($managers, $members, $invitees);
 
@@ -286,49 +287,49 @@ class Groups extends Base
         }
 
         // Get the group params
-        $this->view->set('gparams', new \Hubzero\Config\Registry($this->view->get('group')->get('params')));
+        $this->view->set('gparams', new \Hubzero\Config\Registry($group->get('params')));
 
         // Check authorization
-        $this->view->set('authorized', Helpers\View::authorize($this->view->get('group')));
+        $this->view->set('authorized', Helpers\View::authorize($group));
 
         // Get active tab
-        $this->view->set('tab', Helpers\View::getTab($this->view->get('group')));
+        $this->view->set('tab', Helpers\View::getTab($group));
         $this->view->set('trueTab', strtolower(Request::getString('active', 'overview')));
-        if ($this->view->get('group')->get('approved') != 1 && $this->view->get('trueTab') != 'overview') {
+        if ($group->get('approved') != 1 && $this->view->get('trueTab') != 'overview') {
             $this->unapprovedGroupTask();
 
             return;
         }
 
         // Record the user
-        if (!User::isGuest() && in_array(User::get('id'), $this->view->get('group')->get('members'))) {
-            Recent::hit(User::get('id'), $this->view->get('group')->get('gidNumber'));
+        if (!User::isGuest() && in_array(User::get('id'), $group->get('members'))) {
+            Recent::hit(User::get('id'), $group->get('gidNumber'));
         }
 
         // Get group pages if any
         $pageArchive = Page\Archive::getInstance();
         $pages = $pageArchive->pages('list', [
-            'gidNumber' => $this->view->get('group')->get('gidNumber'),
+            'gidNumber' => $group->get('gidNumber'),
             'state'     => [0,1],
             'orderby'   => 'lft ASC',
         ]);
 
         // Custom error handling for super groups
-        Helpers\View::attachCustomErrorHandler($this->view->get('group'));
+        Helpers\View::attachCustomErrorHandler($group);
 
         // Add the overview content
         $overviewContent = '';
         $activePage      = null;
         if ($this->view->get('tab') == 'overview') {
             // Add home page to pages list
-            $pages = Helpers\Pages::addHomePage($this->view->get('group'), $pages);
+            $pages = Helpers\Pages::addHomePage($group, $pages);
 
             // Fetch the active page
-            $activePage = Helpers\Pages::getActivePage($this->view->get('group'), $pages);
+            $activePage = Helpers\Pages::getActivePage($group, $pages);
 
             // Are we on the login?
             if ($this->view->get('trueTab') == 'login') {
-                $overviewContent = Helpers\View::superGroupLogin($this->view->get('group'));
+                $overviewContent = Helpers\View::superGroupLogin($group);
             }
 
             // Check to see if we have super group component or PHP page
@@ -337,19 +338,19 @@ class Groups extends Base
                 && $this->config->get('super_components', 0)
             ) {
                 $overviewContent = Helpers\View::superGroupComponents(
-                    $this->view->get('group'),
+                    $group,
                     $this->view->get('trueTab'),
                 );
             }
 
             // Do we have group PHP pages?
             if ($overviewContent == null) {
-                $overviewContent = Helpers\View::superGroupPhpPages($this->view->get('group'));
+                $overviewContent = Helpers\View::superGroupPhpPages($group);
             }
 
             // Set overview content
             if ($overviewContent == null) {
-                $overviewContent = Helpers\Pages::displayPage($this->view->get('group'), $activePage);
+                $overviewContent = Helpers\Pages::displayPage($group, $activePage);
             }
         }
 
@@ -361,7 +362,7 @@ class Groups extends Base
 
         // Set some vars for view
         $this->view->set('title', $this->_title);
-        $this->view->set('content', Helpers\View::displaySectionsContent($this->view->get('group'), $overviewContent));
+        $this->view->set('content', Helpers\View::displaySectionsContent($group, $overviewContent));
         $this->view->set('activePage', $activePage);
         $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
@@ -373,7 +374,7 @@ class Groups extends Base
         }
 
         // Is this a super group?
-        if ($this->view->get('group')->isSuperGroup()) {
+        if ($group->isSuperGroup()) {
             // Use group template file if we have it
             Request::setVar('tmpl', 'group');
 
@@ -384,7 +385,7 @@ class Groups extends Base
             // parse & render
             $superGroupTemplate = new Helpers\Template();
             $superGroupTemplate
-                ->set('group', $this->view->get('group'))
+                ->set('group', $group)
                 ->set('tab', $this->view->get('trueTab'))
                 ->set('content', $this->view->get('content'))
                 ->set('page', $this->view->get('activePage'))
@@ -1437,7 +1438,7 @@ class Groups extends Base
     /**
      * Get a group's availability
      *
-     * @param   object|null  $group  Group
+     * @param   string|null  $group  Group cn (default: the group request variable)
      * @return  string|null|bool
      */
     public function groupavailabilityTask($group = null)

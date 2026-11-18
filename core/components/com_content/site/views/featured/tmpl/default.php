@@ -18,8 +18,8 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Component\View&object{
  *     columns: mixed,
- *     intro_items: mixed,
- *     lead_items: mixed,
+ *     intro_items: array<int, \stdClass>,
+ *     lead_items: array<int, \stdClass>,
  *     link_items: mixed,
  *     pageclass_sfx: mixed,
  *     pagination: mixed,

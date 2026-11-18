@@ -28,7 +28,7 @@ class HtmlIcon
      * Display a 'create article' icon
      *
      * @param   object  $category
-     * @param   object  $params    The article parameters
+     * @param   \Hubzero\Config\Registry  $params    The article parameters
      * @return  string  The HTML for the article edit icon.
      */
     public static function create($category, $params)
@@ -46,8 +46,8 @@ class HtmlIcon
     /**
      * Display an email icon
      *
-     * @param   object  $article  The article in question.
-     * @param   object  $params   The article parameters
+     * @param   \stdClass  $article  The article in question.
+     * @param   \Hubzero\Config\Registry  $params   The article parameters
      * @param   array<mixed>   $attribs  Not used??
      * @return  string  The HTML for the article edit icon.
      */
@@ -85,8 +85,8 @@ class HtmlIcon
      * This icon will not display in a popup window, nor if the article is trashed.
      * Edit access checks must be performed in the calling code.
      *
-     * @param   object  $article  The article in question.
-     * @param   object|mixed  $params   The article parameters
+     * @param   \stdClass  $article  The article in question.
+     * @param   \Hubzero\Config\Registry  $params   The article parameters
      * @param   array<mixed>   $attribs  Not used??
      * @return  string|null  The HTML for the article edit icon.
      */
@@ -96,7 +96,7 @@ class HtmlIcon
         $userId = User::get('id');
 
         // Ignore if in a popup window.
-        if ($params && $params->get('popup')) {
+        if ($params->get('popup')) {
             return null;
         }
 
@@ -157,8 +157,8 @@ class HtmlIcon
     /**
      * Icon for print popup
      *
-     * @param   object  $article
-     * @param   object  $params
+     * @param   \stdClass  $article
+     * @param   \Hubzero\Config\Registry  $params
      * @param   array<mixed>   $attribs
      * @return  string
      */
@@ -188,8 +188,8 @@ class HtmlIcon
     /**
      * Icon for printing the page
      *
-     * @param   object  $article
-     * @param   object  $params
+     * @param   \stdClass  $article
+     * @param   \Hubzero\Config\Registry  $params
      * @param   array<mixed>   $attribs
      * @return  string
      */

@@ -80,7 +80,7 @@ class Memberships
      * @param   string  $type  Product type
      * @param   int     $pId   Product ID
      * @param   int     $uId   User ID
-     * @return  object  Subscription Object. If not found returns a generic subscription object
+     * @return  ProductTypes\Subscriptions\BaseSubscription  If not found, a generic subscription object
      */
     public static function getSubscriptionObject($type, $pId, $uId)
     {
@@ -89,8 +89,8 @@ class Memberships
 
         $fqcn = '\Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\' . $objectClass;
 
-        if (!class_exists($fqcn)) {
-            $fqcn = '\Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\BaseSubscription';
+        if (!is_a($fqcn, ProductTypes\Subscriptions\BaseSubscription::class, true)) {
+            $fqcn = ProductTypes\Subscriptions\BaseSubscription::class;
         }
 
         return new $fqcn($pId, $uId);

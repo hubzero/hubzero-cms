@@ -130,7 +130,7 @@ class ImageViewer extends Base
     /**
      * Make image default for publication
      *
-     * @param   object  $row
+     * @param   \Components\Publications\Tables\Attachment  $row
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @return  bool
@@ -295,7 +295,7 @@ class ImageViewer extends Base
      * Draw list of included files
      *
      * @param   array<mixed>    $attachments
-     * @param   object   $attConfigs
+     * @param   \stdClass   $attConfigs
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   boolean|mixed  $authorized
      * @param   integer  $elementId
@@ -383,7 +383,7 @@ class ImageViewer extends Base
     /**
      * Make thumb
      *
-     * @param   object  $row
+     * @param   \Components\Publications\Tables\Attachment  $row
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass  $configs
      * @return  bool|null
@@ -504,7 +504,7 @@ class ImageViewer extends Base
     /**
      * Draw handler status in editor
      *
-     * @param   object  $editor
+     * @param   \Components\Publications\Models\Editor  $editor
      * @return  void
      */
     public function drawStatus($editor)
@@ -515,7 +515,7 @@ class ImageViewer extends Base
     /**
      * Draw handler editor content
      *
-     * @param   object  $editor
+     * @param   \Components\Publications\Models\Editor  $editor
      * @return  string
      */
     public function drawEditor($editor)

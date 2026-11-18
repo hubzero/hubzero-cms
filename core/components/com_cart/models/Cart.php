@@ -766,7 +766,7 @@ abstract class Cart
     /**
      * Complete the transaction, mark it as completed, done, success...
      *
-     * @param   object  $tInfo  Transaction info
+     * @param   \stdClass  $tInfo  Transaction info
      * @param   mixed  $paymentInfo
      * @return  void
      */
@@ -1088,7 +1088,7 @@ abstract class Cart
     /**
      * Remove transaction items from the cart associated with it
      *
-     * @param   object  $tInfo  transaction info
+     * @param   \stdClass  $tInfo  transaction info
      * @return  void
      */
     private static function removeTransactionItemsFromCart($tInfo)
@@ -1102,7 +1102,7 @@ abstract class Cart
     /**
      * Remove transaction coupons from the cart associated with it
      *
-     * @param   object  $tInfo  transaction info
+     * @param   \stdClass  $tInfo  transaction info
      * @return  bool
      */
     private static function removeTransactionCouponsFromCart($tInfo)

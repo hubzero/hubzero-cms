@@ -41,7 +41,7 @@ class Product extends \Hubzero\Component\SiteController
         $this->warehouse->addAccessLevels(User::getAuthorisedViewLevels());
         $this->warehouse->addAccessGroups(User::getAuthorisedGroups());
         if (is_numeric(User::get('id'))) {
-            $this->warehouse->addUserScope(User::get('id'));
+            $this->warehouse->addUserScope((int) User::get('id'));
         }
         parent::execute();
     }

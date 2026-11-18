@@ -400,7 +400,7 @@ class Checkout extends ComponentController
             );
         }
 
-        $savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
+        $savedShippingAddresses = $cart->getSavedShippingAddresses((int) $this->user->id);
         $this->view->set('savedShippingAddresses', $savedShippingAddresses);
         $this->view->display();
     }

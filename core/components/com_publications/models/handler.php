@@ -13,7 +13,7 @@ use Hubzero\Base\Obj;
 /**
  * Publication handler model class
  */
-class Handler extends Obj
+abstract class Handler extends Obj
 {
     /**
      * Handler name
@@ -52,4 +52,20 @@ class Handler extends Obj
     {
         return $this->name;
     }
+
+    /**
+     * Get the handler's configuration, merged with what was saved
+     *
+     * @param   array<mixed>  $savedConfig
+     * @return  mixed
+     */
+    abstract public function getConfig($savedConfig = []);
+
+    /**
+     * Check that the attachments meet the handler's requirements
+     *
+     * @param   array<mixed>  $attachments
+     * @return  bool
+     */
+    abstract public function checkRequired($attachments);
 }

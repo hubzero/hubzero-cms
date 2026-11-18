@@ -27,7 +27,7 @@ class Text extends Base
      *
      * @param   string  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */

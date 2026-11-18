@@ -22,7 +22,7 @@ class Helper
     /**
      * Run a callback across all profiles
      *
-     * @param   object   $func  Anonymous function
+     * @param   callable  $func  Callback given each profile's uidNumber
      * @return  boolean
      */
     public static function iterateProfiles($func)
@@ -105,7 +105,7 @@ class Helper
         // If not anonymous
         if (!$anonymous) {
             // If we have a member
-            if (is_object($member)) {
+            if ($member instanceof Profile) {
                 if (!$member->get('picture')) {
                     // Do we auto-generate a picture?
                     if ($config->get('identicon')) {

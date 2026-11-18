@@ -44,7 +44,7 @@ class PaymentProvider
     /**
      * Set transaction details
      *
-     * @param   object  $transactionDetails
+     * @param   \stdClass  $transactionDetails
      * @return  void
      */
     public function setTransactionDetails($transactionDetails)
@@ -101,7 +101,7 @@ class PaymentProvider
     /**
      * Verify the payment -- make sure it matches the transaction awaiting payment
      *
-     * @param   object  $tInfo  transaction info
+     * @param   \stdClass  $tInfo  transaction info
      * @return  bool
      */
     public function verifyPayment($tInfo)

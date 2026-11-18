@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{item: mixed, pageclass_sfx: mixed, params: mixed, print: mixed} $this
+ * @var \Hubzero\Component\View&object{item: \stdClass, pageclass_sfx: mixed, params: mixed, print: mixed} $this
  */
 
 Html::addIncludePath(Component::path('com_content') . '/site/helpers');
@@ -223,11 +223,11 @@ if (
                 ?>
                 <div class="img-fulltext-<?php echo htmlspecialchars($imgfloat); ?>">
                     <img
-                        <?= $images->image_fulltext_caption
-                            ? 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption) . '"'
+                        <?= ($images->image_fulltext_caption ?? '')
+                            ? 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption ?? '') . '"'
                             : '' ?>
                         src="<?php echo htmlspecialchars($images->image_fulltext); ?>"
-                        alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"
+                        alt="<?php echo htmlspecialchars($images->image_fulltext_alt ?? ''); ?>"
                     />
                 </div>
             <?php endif; ?>

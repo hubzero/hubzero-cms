@@ -28,7 +28,7 @@ class Handlers extends Obj
     /**
      * Loaded elements
      *
-     * @var  array<mixed>
+     * @var  array<string, Handler>
      */
     protected $types = [];
 
@@ -71,7 +71,7 @@ class Handlers extends Obj
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementid
      * @param   array<mixed>    $handlers
-     * @param   object|mixed   $handler
+     * @param   Handler|string|null   $handler  A handler, or the name of one
      * @param   array<mixed>    $attachments
      * @param   string|null   $props  Block element key (not used)
      * @return  string
@@ -85,12 +85,14 @@ class Handlers extends Obj
 
         // We have a forced handler
         if ($handler) {
-            if (!is_object($handler)) {
+            if (!($handler instanceof Handler)) {
                 $handler = $this->ini($handler);
             }
-            $html  = '<div class="handler-controls">';
-            $html .= $this->drawSelectedHandler($handler);
-            $html .= '</div>';
+            if ($handler) {
+                $html  = '<div class="handler-controls">';
+                $html .= $this->drawSelectedHandler($handler);
+                $html .= '</div>';
+            }
         } elseif ($handlers) {
             // TEMP
             return '';
@@ -102,7 +104,7 @@ class Handlers extends Obj
     /**
      * Update handler status / perform handler action
      *
-     * @param   object   $handler
+     * @param   Handler   $handler
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementId
      * @param   string   $action
@@ -120,7 +122,7 @@ class Handlers extends Obj
     /**
      * Load content editor for handler
      *
-     * @param   object   $handler
+     * @param   Handler   $handler
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementId
      * @return  \Components\Publications\Models\Editor
@@ -171,7 +173,7 @@ class Handlers extends Obj
     /**
      * Check if handler applies to selection
      *
-     * @param   object   $handler
+     * @param   Handler   $handler
      * @param   array<mixed>    $attachments
      * @return  boolean
      */
@@ -207,7 +209,7 @@ class Handlers extends Obj
      * Check for allowed formats
      *
      * @param   array<mixed>    $attachments
-     * @param   object   $params
+     * @param   \stdClass   $params
      * @return  boolean
      */
     public function checkAllowed($attachments, $params)
@@ -252,7 +254,7 @@ class Handlers extends Obj
      * Check for required formats
      *
      * @param   array<mixed>    $attachments
-     * @param   object   $params
+     * @param   \stdClass   $params
      * @return  boolean
      */
     public function checkRequired($attachments, $params)
@@ -286,7 +288,7 @@ class Handlers extends Obj
     /**
      * Side controls for handler
      *
-     * @param   object   $handler
+     * @param   Handler   $handler
      * @param   boolean|null  $assigned
      * @return  string   HTML
      */
@@ -312,7 +314,7 @@ class Handlers extends Obj
      * Initialize
      *
      * @param   string  $name
-     * @return  object|false
+     * @return  Handler|false
      */
     public function ini($name)
     {
@@ -331,22 +333,18 @@ class Handlers extends Obj
      *
      * @param   string   $name
      * @param   boolean  $new
-     * @return  object|false
+     * @return  Handler|false
      */
     public function loadHandler($name, $new = false)
     {
         $signature = md5($name);
 
-        if (
-            (isset($this->types[$signature])
-            && !($this->types[$signature] instanceof \__PHP_Incomplete_Class))
-            && $new === false
-        ) {
+        if (isset($this->types[$signature]) && $new === false) {
             return $this->types[$signature];
         }
 
         $elementClass = '\Components\Publications\Models\Handlers\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
+        if (!is_a($elementClass, Handler::class, true)) {
             return false;
         }
 

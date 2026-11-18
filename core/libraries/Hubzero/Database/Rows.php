@@ -148,7 +148,7 @@ class Rows implements Iterator, Countable
     /**
      * Transforms rows into an object array
      *
-     * @return  array<mixed>
+     * @return  list<\stdClass>
      **/
     public function toObject()
     {
@@ -158,7 +158,7 @@ class Rows implements Iterator, Countable
     /**
      * Transforms rows into an array of arrays
      *
-     * @return  array<mixed>
+     * @return  list<array<string, mixed>>
      **/
     public function toArray()
     {
@@ -169,7 +169,7 @@ class Rows implements Iterator, Countable
      * Outputs rows as given type
      *
      * @param   string  $type
-     * @return  array<int, mixed>
+     * @return  ($type is 'object' ? list<\stdClass> : ($type is 'array' ? list<array<string, mixed>> : list<mixed>))
      **/
     public function to($type = 'array')
     {

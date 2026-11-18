@@ -37,7 +37,7 @@ class Geo extends Base
      *
      * @param   string  $label         Display name of the field
      * @param   string  $description   Description for the field
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @param   string  $name          Name of the field
      * @return  string  HTML
@@ -68,7 +68,7 @@ class Geo extends Base
      *
      * @param   string  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */

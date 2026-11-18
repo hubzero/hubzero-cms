@@ -60,7 +60,8 @@ $schema = $metaElements->getSchema();
     $modelHandler = new \Components\Publications\Models\Handlers($database);
 
     // Load image handler
-if ($handler = $modelHandler->ini('imageviewer')) {
+$handler = $modelHandler->ini('imageviewer');
+if ($handler instanceof \Components\Publications\Models\Handlers\ImageViewer) {
     echo $handler->showImageBand($this->publication);
 }
 ?>

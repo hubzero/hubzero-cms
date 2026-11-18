@@ -26,8 +26,8 @@ class Pagenavigation extends Plugin
      * Prepare the content for display
      *
      * @param   string   $context  The context of the content being passed to the plugin.
-     * @param   object   $row      The article object.  Note $article->text is also available
-     * @param   object   $params   The article params
+     * @param   \stdClass   $row      The article object.  Note $article->text is also available
+     * @param   \Hubzero\Config\Registry   $params   The article params
      * @param   integer  $page     The 'page' number
      * @return  bool|null
      */

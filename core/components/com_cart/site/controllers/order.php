@@ -225,7 +225,7 @@ class Order extends ComponentController
     /**
      * Complete transaction
      *
-     * @param   object   $tInfo
+     * @param   \stdClass   $tInfo
      * @param   boolean  $paymentInfo
      * @return  bool
      */

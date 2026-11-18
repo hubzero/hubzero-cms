@@ -35,9 +35,9 @@ class Page extends Model
     protected $tableClass = '\\Components\\Groups\\Tables\\Page';
 
     /**
-     * \Hubzero\Base\ItemList
+     * \Hubzero\Base\Model\ItemList
      *
-     * @var object|null
+     * @var ItemList|null
      */
     protected $versions = null;
 
@@ -82,7 +82,7 @@ class Page extends Model
      * Get Page Versions
      *
      * @param   array<mixed>   $opt
-     * @return  object  \Hubzero\Base\ItemList
+     * @return  ItemList
      */
     public function versions($opt = [])
     {
@@ -115,7 +115,7 @@ class Page extends Model
             if ($vid == null || $vid == 0 || $vid == 'current') {
                 $version = $this->versions()->first();
             } elseif (is_numeric($vid)) {
-                $version = $this->versions()->fetch('version', $vid);
+                $version = $this->versions()->fetch('version', (int) $vid);
             }
         }
 

@@ -28,7 +28,7 @@ class Elements
     /**
      * The XML params element
      *
-     * @var  array<string, object>|null
+     * @var  array<string, \stdClass>|null
      */
     protected $schema = null;
 
@@ -308,7 +308,7 @@ class Elements
                 $this->schema[$group] = $obj;
             } else {
                 $handler = Format::getInstance('JSON');
-                if ($obj = $handler->stringToObject($setup, [])) {
+                if (($obj = $handler->stringToObject($setup, [])) instanceof stdClass) {
                     $this->schema[$group] = $obj;
                 }
             }
@@ -562,7 +562,7 @@ class Elements
     {
         // Get the type of the parameter.
         $type = '';
-        if (is_object($node)) {
+        if ($node instanceof stdClass) {
             $type = $node->type;
         } elseif (is_array($node)) {
             $type = $node['type'];
@@ -606,7 +606,7 @@ class Elements
      * Return the schema
      *
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getSchema($group = '_default')
     {
@@ -642,12 +642,12 @@ class Elements
     /**
      * Render a parameter type.
      *
-     * @param   object  $node          A parameter XML element.
+     * @param   \stdClass  $node          A parameter XML element.
      * @param   string  $control_name  An optional name of the HTML form control.
      *                                 The default is 'params' if not supplied.
      * @param   string  $group         An optional group to render.
      *                                 The default group is used if not supplied.
-     * @return  object   The label, the form element and the tooltip.
+     * @return  \stdClass   The label, the form element and the tooltip.
      */
     public function getElement(&$node, $control_name = 'nbtag', $group = '_default')
     {
@@ -663,7 +663,7 @@ class Elements
             $result->element     = Lang::txt('Element not defined for type') . ' = ' . $type;
             $result->description = '';
             $result->text        = $result->label;
-            $result->name        = $result->name;
+            $result->name        = $node->name;
             $result->default     = '';
             $result->type        = $type;
             return $result;
@@ -679,7 +679,7 @@ class Elements
      * Render a parameter type.
      *
      * @param   string|int  $name
-     * @param   object  $node          A parameter XML element.
+     * @param   \stdClass  $node          A parameter XML element.
      * @param   string  $control_name  An optional name of the HTML form control.
      *                                 The default is 'params' if not supplied.
      * @param   string  $group         An optional group to render.
@@ -720,7 +720,7 @@ class Elements
      * @param   string $type   The element type.
      * @param   boolean $new  False (default) to reuse parameter elements; true to load the parameter element type
      *                        again.
-     * @return  object|false
+     * @return  Element|false
      */
     public function loadElement($type, $new = false)
     {
@@ -755,6 +755,10 @@ class Elements
         }
 
         if (!class_exists($elementClass)) {
+            return false;
+        }
+
+        if (!is_a($elementClass, Element::class, true)) {
             return false;
         }
 

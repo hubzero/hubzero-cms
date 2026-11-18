@@ -58,7 +58,7 @@ class Element extends Obj
     /**
      * Return any options this element may have
      *
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $value         Selected value for the element
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  \stdClass  An object populated with all the data and HTML for an element
@@ -89,7 +89,7 @@ class Element extends Obj
      *
      * @param   string  $label         Display name of the field
      * @param   string  $description   Description for the field
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @param   string  $name          Name of the field
      * @return  string  HTML
@@ -116,7 +116,7 @@ class Element extends Obj
      *
      * @param   string  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */
@@ -128,9 +128,9 @@ class Element extends Obj
     /**
      * Return any options this element may have
      *
-     * @param   string  $name          Name of the field
+     * @param   string|int  $name          Name of the field
      * @param   string  $value         Value to check against
-     * @param   object  $element       Data Source Object.
+     * @param   \stdClass  $element       Data Source Object.
      * @param   string  $control_name  Control name (eg, control[fieldname])
      * @return  string  HTML
      */

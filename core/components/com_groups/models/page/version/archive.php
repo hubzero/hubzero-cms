@@ -53,7 +53,7 @@ class Archive extends Model
      * @param      string  $rtrn    What data to return
      * @param      array<mixed>   $filters Filters to apply to data retrieval
      * @param      boolean $clear Clear cached data?
-     * @return     mixed
+     * @return     ($rtrn is 'count' ? int : ItemList)
      */
     public function versions($rtrn = 'list', $filters = [], $clear = false)
     {

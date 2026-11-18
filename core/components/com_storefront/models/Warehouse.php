@@ -213,7 +213,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   string  $rtrn
      * @param   mixed  $filters
-     * @return array<mixed>|int
+     * @return ($rtrn is 'count' ? int : array<mixed>)
      */
     public function getCategories($rtrn = 'list', $filters = [])
     {
@@ -224,7 +224,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * @param   string  $rtrn
      * @param   mixed  $filters
-     * @return  array<mixed>|int
+     * @return  ($rtrn is 'count' ? int : array<mixed>)
      */
     public function getCollections($rtrn = 'list', $filters = [])
     {
@@ -504,7 +504,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   string  $return
      * @param   bool  $showOnlyActive
      * @param   mixed  $filters
-     * @return array<mixed>|int
+     * @return ($return is 'count' ? int : array<mixed>)
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -870,7 +870,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * @param   string  $rtrn
      * @param   mixed  $filters
-     * @return  int|array<mixed>
+     * @return  ($rtrn is 'count' ? int : array<mixed>)
      */
     public function getOptionGroups($rtrn = 'list', $filters = [])
     {
@@ -932,7 +932,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   string  $return
      * @param   bool  $showOnlyActive
      * @param   mixed  $filters
-     * @return  array<mixed>       options IDs
+     * @return  ($return is 'count' ? int : array<\stdClass>)
      */
     public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -1212,7 +1212,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   string  $return
      * @param   bool  $showOnlyActive
      * @param   mixed  $filters
-     * @return  array<mixed>       SKU IDs
+     * @return  ($return is 'count' ? int : array<mixed>|null)
      */
     public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -1576,7 +1576,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   mixed  $return
      * @param   mixed  $filters
      * @param  $collectionType -- type of collection, category by default
-     * @return array<mixed>|int
+     * @return ($return is 'count' ? int : array<mixed>)
      */
     private function getAllCollections($return = 'list', $filters = [])
     {

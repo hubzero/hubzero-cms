@@ -74,7 +74,7 @@ class Pages
     /**
      * Get Default Home Page
      *
-     * @param    Object    $group    \Hubzero\User\Group Object
+     * @param    \Hubzero\User\Group    $group    \Hubzero\User\Group Object
      * @return   String
      */
     public static function getDefaultHomePage($group)
@@ -171,11 +171,11 @@ class Pages
      * php pages, group login, or group components, this allows us to get the true active tab
      * for use with displaying the correct content
      *
-     * @param    mixed  $group    \Hubzero\User\Group Object
-     * @param   mixed  $pages
-     * @return   object|null  The page
+     * @param    \Hubzero\User\Group  $group    \Hubzero\User\Group Object
+     * @param   \Hubzero\Base\Model\ItemList  $pages  The group's pages
+     * @return   \Components\Groups\Models\Page|null  The page
      */
-    public static function getActivePage($group, $pages = [])
+    public static function getActivePage($group, $pages)
     {
         // get path segments
         $segments = self::getCurrentPathSegments();
@@ -571,8 +571,8 @@ class Pages
     /**
      * Display Group Page
      *
-     * @param    Object    $group    \Hubzero\User\Group Object
-     * @param    Object|null    $page     \Components\Groups\Models\Page Object
+     * @param    \Hubzero\User\Group    $group    \Hubzero\User\Group Object
+     * @param    \Components\Groups\Models\Page|null    $page     \Components\Groups\Models\Page Object
      * @param   bool  $markHit
      * @return   String
      */
@@ -662,7 +662,7 @@ class Pages
     /**
      * Parse Wiki content
      *
-     * @param    Object    $group        \Hubzero\User\Group Object
+     * @param    \Hubzero\User\Group    $group        \Hubzero\User\Group Object
      * @param    String    $content      Content to parse
      * @param    BOOL      $fullparse    Fully parse wiki content
      * @return   String
@@ -736,8 +736,8 @@ class Pages
     /**
      *  Parse Page Includes & php
      *
-     * @param   object  $group
-     * @param   object  $page
+     * @param   \Hubzero\User\Group  $group
+     * @param   \Components\Groups\Models\Page  $page
      * @param   mixed  $document
      * @return      string
      */

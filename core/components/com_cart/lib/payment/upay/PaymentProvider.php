@@ -142,7 +142,7 @@ class PaymentProvider
     /**
      * Verify the payment -- make sure it matches the transaction awaiting payment
      *
-     * @param   object $tInfo transaction info
+     * @param   \stdClass $tInfo transaction info
      * @return  bool
      */
     public function verifyPayment($tInfo)

@@ -1485,7 +1485,7 @@ class File extends Base
             // Load image handler
             $handler = $modelHandler->ini('imageviewer');
 
-            if (!$handler) {
+            if (!($handler instanceof \Components\Publications\Models\Handlers\ImageViewer)) {
                 return false;
             }
 
