@@ -15,7 +15,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{option: mixed, publication: mixed, totalDownloads: mixed, totalViews: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     option: mixed,
+ *     publication: \Components\Publications\Models\Publication,
+ *     totalDownloads: mixed,
+ *     totalViews: mixed,
+ * } $this
  */
 
 $url = 'index.php?option='

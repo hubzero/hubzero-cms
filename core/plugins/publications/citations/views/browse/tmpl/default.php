@@ -15,7 +15,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{citations: mixed, format: mixed, option: mixed, publication: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     citations: mixed,
+ *     format: mixed,
+ *     option: mixed,
+ *     publication: \Components\Publications\Models\Publication,
+ * } $this
  */
 
 $numaff = 0;

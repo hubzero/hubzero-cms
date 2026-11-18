@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
  *     banking: mixed,
  *     funds: mixed,
  *     option: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     row: mixed,
  *     tag: mixed,
  * } $this

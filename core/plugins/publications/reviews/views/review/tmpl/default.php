@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
  *     banking: mixed,
  *     infolink: mixed,
  *     option: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     review: mixed,
  * } $this
  */

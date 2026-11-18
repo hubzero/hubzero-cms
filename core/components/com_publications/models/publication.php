@@ -69,6 +69,8 @@ use Hubzero\Facades\Request;
  * @property  int|string|null                      $forked_from              Column of publication_versions, when loaded
  * @property  float|string|null                    $ranking                  Column of publications, when loaded
  * @property  string|null                          $project_alias            Joined in from projects, when loaded
+ * @property  int|string|null                      $project_provisioned      Joined in from projects, when loaded
+ * @property  string|null                          $master_doi               Column of publications, when loaded
  * @property  int|string|null                      $version_number           Column of publication_versions, when loaded
  * @property  string|null                          $created                  Column of publications, when loaded
  * @property  int|string|null                      $created_by               Column of publications, when loaded

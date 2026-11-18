@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{option: mixed, publication: mixed} $this
+ * @var \Hubzero\Plugin\View&object{option: mixed, publication: \Components\Publications\Models\Publication} $this
  */
 
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews');

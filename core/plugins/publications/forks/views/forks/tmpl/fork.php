@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{projects: mixed, publication: mixed} $this
+ * @var \Hubzero\Plugin\View&object{projects: mixed, publication: \Components\Publications\Models\Publication} $this
  */
 ?>
 <form class="fork-options"

@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
  *     config: mixed,
  *     depth: mixed,
  *     option: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  * } $this
  */
 

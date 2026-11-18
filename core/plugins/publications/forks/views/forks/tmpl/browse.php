@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{forks: mixed, publication: mixed} $this
+ * @var \Hubzero\Plugin\View&object{forks: mixed, publication: \Components\Publications\Models\Publication} $this
  */
 
 $this->css();

@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  *     authorized: mixed,
  *     contributable: mixed,
  *     option: mixed,
- *     publication: mixed,
+ *     publication: \Components\Publications\Models\Publication,
  *     versions: mixed,
  * } $this
  */

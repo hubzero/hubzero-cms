@@ -16,7 +16,11 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{option: mixed, publication: mixed, results: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     option: mixed,
+ *     publication: \Components\Publications\Models\Publication,
+ *     results: mixed,
+ * } $this
  */
 
 $this
