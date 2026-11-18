@@ -392,7 +392,7 @@ class Entity extends Obj
      * Grabs the parent element, if applicable
      *
      * @param   bool  $raw  Whether or not to return raw string or applicable object
-     * @return  ($raw is true ? string : object)  The parent's path, or the parent itself
+     * @return  ($raw is true ? string : Directory|File)  The parent's path, or the parent itself
      **/
     public function getParent($raw = true)
     {

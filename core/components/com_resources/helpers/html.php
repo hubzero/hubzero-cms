@@ -172,7 +172,7 @@ class Html
     /**
      * Generate a type select list
      *
-     * @param      iterable<object>  $arr      Values to populate list
+     * @param      iterable<\Components\Resources\Models\Type>  $arr  Values to populate list
      * @param      string $name     Name of the field
      * @param      mixed  $value    Value to select
      * @param   string  $id
@@ -1331,7 +1331,7 @@ class Html
      * or null when none exist / middleware is unavailable.
      *
      * @param   \Components\Resources\Models\Entry  $resource  Tool resource
-     * @return  object|null
+     * @return  \stdClass|null
      */
     protected static function findExistingToolSession($resource)
     {

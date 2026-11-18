@@ -83,6 +83,11 @@ class Util
             throw new \InvalidArgumentException('$path is not a string.');
         }
 
+        if (!is_string($path)) {
+            // Only an empty value gets here: null, false, 0 or an empty array
+            $path = is_scalar($path) ? (string) $path : '';
+        }
+
         $path = trim($path);
 
         // Remove any kind of funky unicode whitespace

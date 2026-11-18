@@ -9,7 +9,6 @@
 namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Type\Feed\Item;
-use Hubzero\Document\Renderer;
 use Hubzero\Document\Base;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
@@ -36,7 +35,7 @@ class Feed extends Base
    *
    * optional
    *
-   * @var  object|null
+   * @var  \Hubzero\Document\Type\Feed\Image|null
    */
     public $image = null;
 
@@ -236,9 +235,10 @@ class Feed extends Base
         $type = Request::getCmd('type', 'Rss');
 
         // Instantiate feed renderer and set the mime encoding
-        $renderer = $this->loadRenderer(($type) ? $type : 'rss');
-
-        if (!($renderer instanceof Renderer)) {
+        try {
+            $renderer = $this->loadRenderer(($type) ? $type : 'rss');
+        } catch (\InvalidArgumentException $e) {
+            // No such feed type, or a class of that name that is no renderer
             App::abort(404, Lang::txt('Resource Not Found'));
         }
 

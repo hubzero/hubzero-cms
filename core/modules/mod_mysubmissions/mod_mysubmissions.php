@@ -31,7 +31,7 @@ class Mysubmissions extends Module
     /**
      * Check if the type selection step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepTypeCheck($row)
@@ -42,7 +42,7 @@ class Mysubmissions extends Module
     /**
      * Check if the compose step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepComposeCheck($row)
@@ -53,7 +53,7 @@ class Mysubmissions extends Module
     /**
      * Check if the attach step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepAttachCheck($row)
@@ -69,7 +69,7 @@ class Mysubmissions extends Module
     /**
      * Check if the authors step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepAuthorsCheck($row)
@@ -86,7 +86,7 @@ class Mysubmissions extends Module
     /**
      * Check if the tags step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepTagsCheck($row)
@@ -103,7 +103,7 @@ class Mysubmissions extends Module
     /**
      * Check if the review step is completed
      *
-     * @param   object   $row  Resource
+     * @param   Entry    $row  Resource
      * @return  boolean  True if step completed
      */
     public function stepReviewCheck($row)

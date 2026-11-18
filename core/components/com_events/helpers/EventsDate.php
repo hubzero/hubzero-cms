@@ -16,21 +16,21 @@ class EventsDate
     /**
      * Year
      *
-     * @var number|null
+     * @var int|null
      */
     public $year   = null;
 
     /**
      * Month
      *
-     * @var number|null
+     * @var int|null
      */
     public $month  = null;
 
     /**
      * Day
      *
-     * @var mixed
+     * @var int|null
      */
     public $day    = null;
 
@@ -246,7 +246,7 @@ class EventsDate
     public function addMonths($n = 0)
     {
         $an = abs($n);
-        $years = floor($an / 12);
+        $years = (int) floor($an / 12);
         $months = $an % 12;
 
         if ($n < 0) {
@@ -349,8 +349,9 @@ class EventsDate
             }
         }
 
-        $this->day   = $day;
-        $this->month = $month;
-        $this->year  = $century * 100 + $year;
+        // floor() gives whole floats
+        $this->day   = (int) $day;
+        $this->month = (int) $month;
+        $this->year  = (int) ($century * 100 + $year);
     }
 }

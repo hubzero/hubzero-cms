@@ -77,8 +77,8 @@ class DublinCore implements Schema
     /**
      * Constructor
      *
-     * @param   object|null  $service
-     * @param   object|null  $response
+     * @param   Service|null   $service
+     * @param   Response|null  $response
      * @return  void
      */
     public function __construct($service = null, $response = null)

@@ -76,9 +76,9 @@ class Translator extends Obj
     protected $metadata = null;
 
     /**
-     * Array holding the language locale or boolean null if none.
+     * Array holding the language locale, false if it has none, or null until read.
      *
-     * @var array<mixed>|boolean|null
+     * @var array<mixed>|false|null
      */
     protected $locale = null;
 
@@ -134,7 +134,7 @@ class Translator extends Obj
     /**
      * Name of the transliterator function for this language.
      *
-     * @var callable|array<mixed>|null
+     * @var callable|null
      */
     protected $transliterator = null;
 
@@ -224,8 +224,9 @@ class Translator extends Obj
             // -a getLowerLimitSearchWord method
             // -a getUpperLimitSearchWord method
             // -a getSearchDisplayCharactersNumber method
-            if (method_exists($class, 'transliterate')) {
-                $this->transliterator = [$class, 'transliterate'];
+            $transliterator = [$class, 'transliterate'];
+            if (is_callable($transliterator)) {
+                $this->transliterator = $transliterator;
             }
 
             foreach ($this->callbacks as $callback => $value) {
@@ -368,7 +369,7 @@ class Translator extends Obj
     /**
      * Set the transliteration function.
      *
-     * @param   mixed  $function  Function name (string) or the actual function for PHP 5.3 (function).
+     * @param   callable  $function  Function name (string) or the actual function for PHP 5.3 (function).
      * @return  mixed
      */
     public function setTransliterator($function)
@@ -735,6 +736,9 @@ class Translator extends Obj
 
         foreach ($file as $lineNumber => $line) {
             // Avoid BOM error as BOM is OK when using parse_ini.
+            if (!is_string($line)) {
+                continue;
+            }
             if ($lineNumber == 0) {
                 $line = str_replace("\xEF\xBB\xBF", '', $line);
             }
@@ -1378,6 +1382,8 @@ class Translator extends Obj
         static $languages;
 
         if (empty($languages)) {
+            $languages = [];
+
             // Installation uses available languages
             if (App::get('client')->id == 2) {
                 $languages[$key] = [];
@@ -1389,7 +1395,10 @@ class Translator extends Obj
                 }
             } else {
                 $cache = App::get('cache.store');
-                if (!$languages = $cache->get('com_languages.languages')) {
+                $languages = $cache->get('com_languages.languages');
+                if (!$languages) {
+                    // A cache miss gives false or null, which is no array to fill
+                    $languages = [];
                     $db = App::get('db');
                     $query = $db
                         ->getQuery()

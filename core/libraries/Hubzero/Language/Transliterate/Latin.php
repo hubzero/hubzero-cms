@@ -22,7 +22,9 @@ class Latin
      */
     public static function toAscii($string, $case = 0)
     {
+        /** @var array<string, string>|null $lower */
         static $lower = null;
+        /** @var array<string, string>|null $upper */
         static $upper = null;
 
         if ($case <= 0) {

@@ -946,6 +946,95 @@ class Ftp implements AdapterInterface
     }
 
     /**
+     * Upload a file PHP received to the server
+     *
+     * @param   string  $path    The uploaded file
+     * @param   string  $target  Where it goes on the server
+     * @return  bool
+     */
+    public function upload($path, $target)
+    {
+        if (!is_uploaded_file($path)) {
+            return false;
+        }
+
+        $stream = fopen($path, 'rb');
+        if ($stream === false) {
+            return false;
+        }
+
+        $result = $this->writeStream($target, $stream);
+        fclose($stream);
+
+        return $result;
+    }
+
+    /**
+     * A path without its extension, as the local adapter gives it
+     *
+     * @param   string  $path
+     * @return  string
+     */
+    public function name($path)
+    {
+        return (string) preg_replace('#\.[^.]*$#', '', $path);
+    }
+
+    /**
+     * The extension of a path, as the local adapter gives it
+     *
+     * @param   string  $path
+     * @return  string
+     */
+    public function extension($path)
+    {
+        $dot = strrpos($path, '.') + 1;
+
+        return substr($path, $dot);
+    }
+
+    /**
+     * What is at a path on the server: 'dir' or 'file'
+     *
+     * @param   string  $path
+     * @return  string|false  False when nothing is there
+     */
+    public function type($path)
+    {
+        if ($this->isDirectory($path)) {
+            return 'dir';
+        }
+
+        return ftp_size($this->getConnection(), $path) >= 0 ? 'file' : false;
+    }
+
+    /**
+     * The size of a file on the server
+     *
+     * @param   string  $path
+     * @return  int|false  False when the server cannot say
+     */
+    public function size($path)
+    {
+        $size = ftp_size($this->getConnection(), $path);
+
+        return $size < 0 ? false : $size;
+    }
+
+    /**
+     * When a file on the server last changed
+     *
+     * @param   string  $path
+     * @return  int|false  A Unix timestamp, or false when the server cannot say
+     */
+    public function lastModified($path)
+    {
+        $time = ftp_mdtm($this->getConnection(), $path);
+
+        return $time < 0 ? false : $time;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function copy($path, $target)

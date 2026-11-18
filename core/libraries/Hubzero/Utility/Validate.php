@@ -42,7 +42,7 @@ class Validate
         if (is_array($check)) {
             $vars = self::defaults($check);
 
-            extract($vars);
+            $check = $vars['check'];
         }
 
         if (empty($check) && $check != '0') {
@@ -67,7 +67,7 @@ class Validate
         if (is_array($check)) {
             $vars = self::defaults($check);
 
-            extract($vars);
+            $check = $vars['check'];
         }
 
         if (empty($check) && $check != '0') {
@@ -107,7 +107,7 @@ class Validate
         if (is_array($check)) {
             $vars = self::defaults($check);
 
-            extract($vars);
+            $check = $vars['check'];
         }
 
         return !self::check($check, '/[^\\s]/');
@@ -143,7 +143,7 @@ class Validate
         if (isset($lower) && isset($upper)) {
             return ($check > $lower && $check < $upper);
         }
-        return is_finite($check);
+        return is_finite((float) $check);
     }
 
     /**
@@ -568,7 +568,9 @@ class Validate
         if (is_array($check)) {
             $vars = self::defaults($check);
 
-            extract($vars);
+            $check = $vars['check'];
+            $deep  = $vars['deep'];
+            $regex = $vars['regex'];
         }
 
         if ($regex === null) {
@@ -663,7 +665,9 @@ class Validate
         if (is_array($check)) {
             $vars = self::defaults($check);
 
-            extract($vars);
+            $check   = $vars['check'];
+            $regex   = $vars['regex'];
+            $country = $vars['country'];
         }
 
         if ($regex === null) {

@@ -34,7 +34,7 @@ class Renderer extends Obj
     /**
      * Class constructor
      *
-     * @param   object  &$doc  A reference to the Document object that instantiated the renderer
+     * @param   Base  &$doc  A reference to the Document object that instantiated the renderer
      * @return  void
      */
     public function __construct(&$doc)
@@ -45,7 +45,7 @@ class Renderer extends Obj
     /**
      * Renders a script and returns the results as a string
      *
-     * @param   string|null  $name  The name of the element to render
+     * @param   string|object|null  $name  The name of the element to render, or (for a module) the module itself
      * @param   array<mixed>|null   $params   Array of values
      * @param   string|null  $content  Override the output of the renderer
      * @return  string  The output of the script

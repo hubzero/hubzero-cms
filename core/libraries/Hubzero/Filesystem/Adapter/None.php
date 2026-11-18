@@ -110,12 +110,12 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
-     * @param   mixed  $path
-     * @return  array<string>|string|null
+     * @param   string  $path
+     * @return  string
      */
     public function name($path)
     {
-        return preg_replace('#\.[^.]*$#', '', $path);
+        return (string) preg_replace('#\.[^.]*$#', '', $path);
     }
 
     /**

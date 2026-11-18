@@ -156,7 +156,7 @@ class Editor extends Obj
         $document->addScript($base . '/core/assets/js/editor.js');
 
         $return = '';
-        $results[] = $this->editor->onInit();
+        $results[] = $this->callEditor('onInit');
 
         foreach ($results as $result) {
             if (trim($result ? $result : '')) {
@@ -216,7 +216,7 @@ class Editor extends Obj
         // Initialise variables.
         $return = null;
 
-        $results[] = $this->editor->onDisplay(
+        $results[] = $this->callEditor('onDisplay', [
             $name,
             $html,
             $width,
@@ -228,7 +228,7 @@ class Editor extends Obj
             $asset,
             $author,
             $params,
-        );
+        ]);
 
         foreach ($results as $result) {
             if (trim((string) $result)) {
@@ -254,7 +254,7 @@ class Editor extends Obj
         }
 
         $return = '';
-        $results[] = $this->editor->onSave($editor);
+        $results[] = $this->callEditor('onSave', [$editor]);
 
         foreach ($results as $result) {
             if (trim((string) $result)) {
@@ -276,7 +276,7 @@ class Editor extends Obj
         $this->load();
 
         $return = '';
-        $results[] = $this->editor->onGetContent($editor);
+        $results[] = $this->callEditor('onGetContent', [$editor]);
 
         foreach ($results as $result) {
             if (trim((string) $result)) {
@@ -299,7 +299,7 @@ class Editor extends Obj
         $this->load();
 
         $return = '';
-        $results[] = $this->editor->onSetContent($editor, $html);
+        $results[] = $this->callEditor('onSetContent', [$editor, $html]);
 
         foreach ($results as $result) {
             if (trim((string) $result)) {
@@ -343,6 +343,10 @@ class Editor extends Obj
             }
             $plugin = new $className($this, (array) $plugin);
 
+            if (!method_exists($plugin, 'onDisplay')) {
+                continue;
+            }
+
             // Try to authenticate
             if ($temp = $plugin->onDisplay($editor, $this->asset, $this->author)) {
                 $result[] = $temp;
@@ -350,6 +354,30 @@ class Editor extends Obj
         }
 
         return $result;
+    }
+
+    /**
+     * Run a hook of the editor plugin, if it has that hook
+     *
+     * Not every editor has every hook: the wiki toolbars have no onSave(),
+     * onGetContent() or onSetContent().
+     *
+     * @param   string        $hook       The hook's name (onInit, onDisplay, ...)
+     * @param   array<mixed>  $arguments  What to pass it
+     * @return  mixed  What the hook gives, or null when there is no such hook
+     */
+    private function callEditor($hook, array $arguments = [])
+    {
+        if ($this->editor === null) {
+            return null;
+        }
+
+        $callback = [$this->editor, $hook];
+        if (!is_callable($callback)) {
+            return null;
+        }
+
+        return call_user_func_array($callback, $arguments);
     }
 
     /**

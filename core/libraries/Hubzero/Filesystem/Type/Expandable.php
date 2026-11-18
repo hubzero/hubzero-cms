@@ -8,6 +8,7 @@
 
 namespace Hubzero\Filesystem\Type;
 
+use Hubzero\Filesystem\Directory;
 use Hubzero\Filesystem\File;
 
 /**
@@ -37,7 +38,13 @@ class Expandable extends File
      **/
     protected function cleanup()
     {
-        $items = $this->getParent(false)->listContents();
+        // What the archive expanded into is the directory it sits in
+        $parent = $this->getParent(false);
+        if (!$parent instanceof Directory) {
+            return false;
+        }
+
+        $items = $parent->listContents();
 
         foreach ($items as $item) {
             if (in_array($item->getName(), ['.svn', 'CVS', '.DS_Store', '__MACOSX'])) {

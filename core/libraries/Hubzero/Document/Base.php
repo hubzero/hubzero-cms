@@ -766,13 +766,14 @@ class Base extends Obj
      * Load a renderer
      *
      * @param   string  $type  The renderer type
-     * @return  object  Object or null if class does not exist
+     * @return  Renderer
+     * @throws  \InvalidArgumentException  When there is no such renderer
      */
     public function loadRenderer($type)
     {
         $class = __NAMESPACE__ . '\\Type\\' . ucfirst($this->type) . '\\' . ucfirst($type);
 
-        if (!class_exists($class)) {
+        if (!is_a($class, Renderer::class, true)) {
             throw new \InvalidArgumentException(Lang::txt('Unable to load renderer class'), 500);
         }
 

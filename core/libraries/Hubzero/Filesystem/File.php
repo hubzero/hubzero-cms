@@ -357,7 +357,7 @@ class File extends Entity
             // Create a temp file and write to it
             $temp = tmpfile();
             fwrite($temp, $this->read());
-            $server->filename(stream_get_meta_data($temp)['uri']);
+            $server->filename(stream_get_meta_data($temp)['uri'] ?? '');
         } else {
             $server->filename($this->getAbsolutePath());
         }

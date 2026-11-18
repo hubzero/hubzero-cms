@@ -254,7 +254,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (string) $this->adapter->name($path);
+        return $this->adapter->name($path);
     }
 
     /**

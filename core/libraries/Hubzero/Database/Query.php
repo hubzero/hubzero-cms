@@ -387,6 +387,12 @@ class Query
             return;
         }
 
+        // 'apcu' is the only store named by a string; any other would be
+        // called as an object on the first cached query
+        if (is_string($store)) {
+            throw new \InvalidArgumentException('Unknown query cache store "' . $store . '".');
+        }
+
         self::$cacheStore = $store;
     }
 
@@ -2791,8 +2797,12 @@ class Query
      **/
     public function set($data, $value = null)
     {
-        if (func_num_args() > 1) {
+        if (func_num_args() > 1 && !is_array($data)) {
             $data = [$data => $value];
+        }
+
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException('set() takes an array of columns, or a column and its value');
         }
 
         $this->syntax->setSet($data);
