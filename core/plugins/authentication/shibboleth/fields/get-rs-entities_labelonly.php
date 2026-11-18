@@ -48,7 +48,7 @@ foreach (
 				saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or '
             . 'text()="http://refeds.org/category/research-and-scholarship"]
 	]',
-    ) as $entity
+    ) ?: [] as $entity
 ) {
     // easier to work with as an array, the SimpleXMLElement class is bizarre
     $entity = (array) $entity;
@@ -60,7 +60,7 @@ foreach (
         continue;
     }
     preg_match('/([^.:]+[.][^.]+?)(?:[\/]|$)/', $id, $ma);
-    $host = $ma[1];
+    $host = $ma[1] ?? null;
     // logos no longer fetched b/c the result was ugly. if you want to experiment, go for it
     //          $logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
     //          $logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';

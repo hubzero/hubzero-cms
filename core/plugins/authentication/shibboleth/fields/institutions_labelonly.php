@@ -15,8 +15,11 @@ $mdSource = 'https://md.incommon.org/InCommon/InCommon-metadata.xml';
 $cache = '/www/tmp/incommon-rs-entities.json';
 
 
-if (!($xml = simplexml_load_file($mdPath))) {
+// A document with no children is falsy too, so test for the failure itself
+$xml = simplexml_load_file($mdPath);
+if ($xml === false) {
     print "Failed to parse XML from this path\n";
+    exit(1);
 }
 
 // $xml->registerXPathNamespace('shib', 'urn:mace:shibboleth:2.0:native:sp:config');
