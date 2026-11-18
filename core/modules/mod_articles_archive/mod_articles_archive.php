@@ -73,7 +73,8 @@ class ArticlesArchive extends Module
 
         $menu   = App::get('menu');
         $item   = $menu->getItems('link', 'index.php?option=com_content&view=archive', true);
-        $itemid = (isset($item) && !empty($item->id)) ? '&Itemid=' . $item->id : '';
+        // getItems() gives an empty array when no menu item links there
+        $itemid = ($item instanceof \stdClass && !empty($item->id)) ? '&Itemid=' . $item->id : '';
 
         $i     = 0;
         $lists = [];

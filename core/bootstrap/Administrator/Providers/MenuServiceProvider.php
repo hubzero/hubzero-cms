@@ -44,7 +44,7 @@ class MenuServiceProvider extends ServiceProvider
 
             $menu = $app['menu']->getActive();
 
-            if (is_object($menu)) {
+            if ($menu instanceof \stdClass) {
                 $params->parse($menu->params);
             } elseif ($app->has('component')) {
                 $temp = clone($app['component']->params('com_menus'));

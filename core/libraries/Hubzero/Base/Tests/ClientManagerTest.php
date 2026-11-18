@@ -55,12 +55,12 @@ class ClientManagerTest extends Basic
 
         $client = ClientManager::client(1);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\Hubzero\Base\Client\Administrator::class, $client);
         $this->assertEquals($client->name, 'administrator');
 
         $client = ClientManager::client('api', true);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\Hubzero\Base\Client\Api::class, $client);
         $this->assertEquals($client->name, 'api');
         $this->assertEquals($client->id, 4);
 
@@ -80,7 +80,7 @@ class ClientManagerTest extends Basic
 
         $client = ClientManager::client(1);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\Hubzero\Base\Client\Administrator::class, $client);
         $this->assertEquals($client->name, 'adminstuff');
 
         ClientManager::modify(1, 'name', 'administrator');
@@ -120,23 +120,23 @@ class ClientManagerTest extends Basic
 
         $client = ClientManager::client('tur', true);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\stdClass::class, $client);
         $this->assertEquals($client->name, 'tur');
         $this->assertEquals($client->id, count($clients));
 
         $client = ClientManager::client(9);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\stdClass::class, $client);
         $this->assertEquals($client->name, 'foo');
 
         $client = ClientManager::client(10);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\stdClass::class, $client);
         $this->assertEquals($client->name, 'bar');
 
         $client = ClientManager::client('foo', true);
 
-        $this->assertTrue(is_object($client));
+        $this->assertInstanceOf(\stdClass::class, $client);
         $this->assertEquals($client->name, 'foo');
         $this->assertEquals($client->id, 9);
     }

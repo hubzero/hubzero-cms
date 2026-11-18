@@ -195,7 +195,7 @@ $speaksFor = function ($option) {
     $foundBare = false;
 
     foreach (App::get('menu.manager')->menu('site')->getMenu() as $item) {
-        if (!is_object($item) || $item->component != $option || $item->type == 'alias') {
+        if (!$item instanceof \stdClass || $item->component != $option || $item->type == 'alias') {
             continue;
         }
 
@@ -256,7 +256,7 @@ $router->rules('build')->append('component', function ($uri) use ($speaksFor) {
     if (!empty($query['Itemid']) && !is_array($query['Itemid']) && App::has('menu.manager')) {
         $menu = App::get('menu.manager')->menu('site');
         $item = $menu->getItem($query['Itemid']);
-        if (is_object($item) && $query['option'] == $item->component) {
+        if ($item instanceof \stdClass && $query['option'] == $item->component) {
             if (!$item->home || $item->language != '*') {
                 $tmp = !empty($tmp) ? $item->route . '/' . $tmp : $item->route;
             }
@@ -826,8 +826,10 @@ if (Config::get('debug')) {
             return;
         }
 
-        $id      = (int) (is_object($extension) ? $extension->extension_id : $extension['extension_id']);
-        $enabled = (int) (is_object($extension) ? $extension->enabled : $extension['enabled']);
+        // A row comes as an object or an array, by the driver's fetch mode
+        $extension = (array) $extension;
+        $id        = (int) $extension['extension_id'];
+        $enabled   = (int) $extension['enabled'];
 
         if (!$enabled) {
             return;

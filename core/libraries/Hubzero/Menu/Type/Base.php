@@ -259,7 +259,7 @@ class Base extends Obj
      * Gets the parameter object for a certain menu item
      *
      * @param   integer  $id  The item id
-     * @return  object   A Registry object
+     * @return  Registry
      */
     public function getParams($id)
     {

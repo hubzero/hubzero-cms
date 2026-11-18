@@ -193,10 +193,10 @@ class Offering extends Base
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
-                $dot = strpos($oid, ':');
+                $dot = strpos((string) $oid, ':');
                 if ($dot !== false) {
-                    $section = substr($oid, $dot + 1);
-                    $oid = substr($oid, 0, $dot);
+                    $section = substr((string) $oid, $dot + 1);
+                    $oid = substr((string) $oid, 0, $dot);
                 }
                 $this->table->loadForCourse($oid, $course_id);
             } elseif (is_object($oid) || is_array($oid)) {

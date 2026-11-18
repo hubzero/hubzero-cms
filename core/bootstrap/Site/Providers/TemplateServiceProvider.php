@@ -44,7 +44,7 @@ class TemplateServiceProvider extends ServiceProvider
                     $item = $menu->getItem($app['request']->getInt('Itemid', 0));
                 }
 
-                if (is_object($item)) {
+                if ($item instanceof \stdClass) {
                     $loader->setStyle($item->template_style_id);
                 }
 

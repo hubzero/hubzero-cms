@@ -46,8 +46,8 @@ class Categories extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object|null  $section
-     * @param   object|null  $category
+     * @param   Section|null   $section
+     * @param   Category|null  $category
      * @return  void
      */
     protected function buildPathway($section = null, $category = null)
@@ -80,8 +80,8 @@ class Categories extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object|null  $section
-     * @param   object|null  $category
+     * @param   Section|null   $section
+     * @param   Category|null  $category
      * @return  void
      */
     protected function buildTitle($section = null, $category = null)

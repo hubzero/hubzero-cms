@@ -174,7 +174,7 @@ class GradeBook extends Table
     /**
      * Query to sync form scores with gradebook
      *
-     * @param      object   $course
+     * @param      \Components\Courses\Models\Course  $course
      * @param      array|null|mixed $member_id
      * @return     void
      */
@@ -475,7 +475,7 @@ class GradeBook extends Table
      */
     public function clearGrades($member_id, $course)
     {
-        if (!is_object($course) || empty($member_id)) {
+        if (!$course instanceof \Components\Courses\Models\Course || empty($member_id)) {
             return false;
         }
 

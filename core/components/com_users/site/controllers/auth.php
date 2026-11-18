@@ -130,7 +130,7 @@ class Auth extends SiteController
         // Get the default return value
         $defaultReturn = Route::url('index.php?option=com_members&task=myaccount');
         $description   = '';
-        if ($menu && isset($menu->params) && is_object($menu->params)) {
+        if ($menu && isset($menu->params) && $menu->params instanceof Registry) {
             $defaultReturn = $menu->params->get('login_redirect_url', $defaultReturn);
             // Assume redirect URLs that start with a slash are internal
             // As such, we want to make sure the path has the appropriate root
@@ -289,7 +289,7 @@ class Auth extends SiteController
             if (class_exists($className)) {
                 $myplugin = new $className($this, (array) $plugin);
 
-                if (method_exists($className, 'status')) {
+                if (method_exists($myplugin, 'status')) {
                     $status[$plugin->name] = $myplugin->status();
                     //$this->status = $status;
                 }
@@ -298,7 +298,7 @@ class Auth extends SiteController
                     continue;
                 }
 
-                if (method_exists($className, 'display')) {
+                if (method_exists($myplugin, 'display')) {
                     return $myplugin->display($this, $tpl);
                 }
             }

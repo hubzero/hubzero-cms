@@ -54,7 +54,7 @@ class ComponentServiceProvider extends Middleware
                 // for anything and should say so.
                 $menu   = $this->app->has('menu') ? $this->app['menu'] : null;
                 $active = $menu ? $menu->getActive() : null;
-                $drawn  = is_object($active) && (!empty($active->home) || $active->type == 'none');
+                $drawn  = $active instanceof \stdClass && (!empty($active->home) || $active->type == 'none');
 
                 if (!$drawn) {
                     $this->app->abort(404, 'Component not found.');

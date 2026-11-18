@@ -33,7 +33,7 @@ class PathwayServiceProvider extends ServiceProvider
                     $menus = $menu->getMenu();
                     $home  = $menu->getDefault();
 
-                    if (is_object($home) && ($item->id != $home->id)) {
+                    if ($home instanceof \stdClass && ($item->id != $home->id)) {
                         foreach ($item->tree as $menupath) {
                             $url = '';
                             $link = $menu->getItem($menupath);

@@ -419,9 +419,11 @@ class ComponentRoute
         $rightId = $leftId + 1;
 
         foreach ($children as $node) {
-            $id    = is_object($node) ? $node->id : $node['id'];
-            $alias = is_object($node) ? $node->alias : $node['alias'];
-            $route = $declares ? (is_object($node) ? $node->route : $node['route']) : '';
+            // A row comes as an object or an array, by the driver's fetch mode
+            $node  = (array) $node;
+            $id    = $node['id'];
+            $alias = $node['alias'];
+            $route = $declares ? $node['route'] : '';
 
             // An item that declares its address keeps it through a rebuild, or
             // installing anything at all would quietly undo it.
