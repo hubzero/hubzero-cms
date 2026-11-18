@@ -267,11 +267,16 @@ final class BackendRegistry
      * Resolve a canonical syntax class by syntax/backend name.
      *
      * @param  string $name
-     * @return string|null
+     * @return class-string<Drivers\Base\BaseSqlSyntax>|null
      */
     public static function resolveSyntaxClassFor(string $name): ?string
     {
-        return self::classIfExists(self::syntaxClassFor($name));
+        $class = self::classIfExists(self::syntaxClassFor($name));
+        if ($class === null || !is_a($class, Drivers\Base\BaseSqlSyntax::class, true)) {
+            return null;
+        }
+
+        return $class;
     }
 
     /**

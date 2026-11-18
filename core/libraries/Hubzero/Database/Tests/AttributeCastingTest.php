@@ -444,7 +444,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
         $item = CastTestItem::oneOrFail($id);
 
         $metadata = $item->get('metadata');
-        $this->assertIsObject($metadata);
+        $this->assertInstanceOf(\stdClass::class, $metadata);
         $this->assertEquals('Jane', $metadata->author);
         $this->assertEquals(2, $metadata->version);
     }

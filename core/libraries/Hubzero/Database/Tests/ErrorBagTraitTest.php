@@ -9,7 +9,6 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Hubzero\Database\Traits\ErrorBag;
 use Exception;
 
 /**
@@ -20,7 +19,7 @@ class ErrorBagTraitTest extends TestCase
     /**
      * The object under test.
      *
-     * @var  object
+     * @var  ErrorBagSubject
      */
     private $traitObject;
 
@@ -31,9 +30,7 @@ class ErrorBagTraitTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->traitObject = new class {
-            use ErrorBag;
-        };
+        $this->traitObject = new ErrorBagSubject();
 
         parent::setUp();
     }
@@ -45,11 +42,9 @@ class ErrorBagTraitTest extends TestCase
      **/
     public function testErrorBag()
     {
-        // Test that an array is returned
+        // getErrors() returns an array (by its type); it starts empty
         $errors = $this->traitObject->getErrors();
 
-        // Test that the array is empty
-        $this->assertTrue(is_array($errors));
         $this->assertCount(0, $errors);
 
         // Set some errors

@@ -303,7 +303,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $columns = $driver->getTableColumns('ss_categories', false);
 
         $this->assertArrayHasKey('name', $columns);
-        $this->assertIsObject($columns['name']);
+        $this->assertInstanceOf(\stdClass::class, $columns['name']);
         $this->assertEquals('name', $columns['name']->Field);
         $this->assertEquals('NO', $columns['name']->Null);
     }

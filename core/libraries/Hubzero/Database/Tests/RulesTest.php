@@ -245,6 +245,7 @@ class RulesTest extends TestCase
     public function errorsAreValidationErrorInstances(): void
     {
         $fail = Rules::validate(['name' => ''], ['name' => 'notempty']);
+        $this->assertIsArray($fail);
 
         $this->assertInstanceOf(ValidationError::class, $fail[0]);
     }
@@ -259,6 +260,7 @@ class RulesTest extends TestCase
     public function validationErrorStringifies(): void
     {
         $fail = Rules::validate(['title' => ''], ['title' => 'notempty']);
+        $this->assertIsArray($fail);
 
         // Can be cast to string (BC)
         $this->assertStringContainsString('cannot be empty', (string) $fail[0]);
