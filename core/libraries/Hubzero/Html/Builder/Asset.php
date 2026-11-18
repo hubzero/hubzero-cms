@@ -204,7 +204,7 @@ class Asset
      * @param   string   $file       The relative or absolute URL to use for the src attribute
      * @param   string   $alt        The alt text.
      * @param   string|array<mixed>|null   $attribs    The target attribute to use
-     * @param   array<mixed>|false $relative   An associative array of attributes to add
+     * @param   boolean  $relative   Path to file is relative to the /core folder
      * @param   boolean  $path_only  If set to true, it tries to find an override for the file in the template
      * @return  string|null
      */
