@@ -24,8 +24,8 @@ $json_format = function ($json) {
         return false;
     }
 
-    $json = json_encode($json_obj);
-    $len = strlen((string) $json);
+    $json = (string) json_encode($json_obj);
+    $len = strlen($json);
 
     for ($c = 0; $c < $len; $c++) {
         $char = $json[$c];

@@ -303,7 +303,7 @@ class GradeBook extends Base
                             break;
                     }
 
-                    $counts[$unit_id] = $asset->count($filters);
+                    $counts[$unit_id] = (int) $asset->count($filters);
                     $counts[$unit_id] = $counts[$unit_id] ? $counts[$unit_id] : 1; // Enforce 1. Can't divide by zero.
                 }
 

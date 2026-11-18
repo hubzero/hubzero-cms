@@ -44,7 +44,7 @@ class Number
 
         foreach ($quant as $unit => $mag) {
             if (doubleval($bytes) >= $mag) {
-                return sprintf('%01.' . $decimals . 'f', ($bytes / $mag)) . ' ' . $unit;
+                return sprintf('%01.' . $decimals . 'f', (doubleval($bytes) / $mag)) . ' ' . $unit;
             }
         }
 
