@@ -18,14 +18,14 @@ class Session implements MessageStore
     /**
      * Session handler
      *
-     * @var  object
+     * @var  \Hubzero\Session\Manager
      */
     private $session;
 
     /**
      * Constructor
      *
-     * @param   object  $session
+     * @param   \Hubzero\Session\Manager  $session
      * @return  void
      */
     public function __construct($session)

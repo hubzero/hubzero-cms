@@ -145,14 +145,14 @@ class Detector implements DetectorInterface
     /**
      * Compare token
      *
-     * @param   object   $token1
-     * @param   object   $token2
+     * @param   \Plugins\Antispam\Bayesian\Models\TokenProb  $token1
+     * @param   \Plugins\Antispam\Bayesian\Models\TokenProb  $token2
      * @return  integer
      */
     protected function compareToken($token1, $token2)
     {
-        $interest1 = 0.5 - abs(0.5 - $token1->prob);
-        $interest2 = 0.5 - abs(0.5 - $token2->prob);
+        $interest1 = 0.5 - abs(0.5 - (float) $token1->get('prob'));
+        $interest2 = 0.5 - abs(0.5 - (float) $token2->get('prob'));
 
         if ($interest1 < $interest2) {
             return -1;

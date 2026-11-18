@@ -45,7 +45,7 @@ class Remote
     /**
      * Parses SpamAssassin output ($header and $message)
      *
-     * @param  object $report  The decoded response
+     * @param  \stdClass $report  The decoded response
      * @param  string $message Output message
      * @return Result Object containing the result
      */
@@ -139,7 +139,7 @@ class Remote
         }
 
         $result = json_decode((string) $result);
-        if (!isset($result->success) || !$result->success) {
+        if (!$result instanceof \stdClass || !isset($result->success) || !$result->success) {
             throw new Exception(
                 'Postmark Error: ' . (isset($result->message) && $result->message ? $result->message : 'unknown'),
             );

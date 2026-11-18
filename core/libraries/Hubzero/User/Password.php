@@ -761,7 +761,10 @@ class Password
             return false;
         }
 
-        preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/", $passhash, $matches);
+        // Any one-line hash matches; one with a line break is no hash we stored
+        if (!preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/", $passhash, $matches)) {
+            return false;
+        }
 
         $encryption = strtolower($matches[2]);
 
