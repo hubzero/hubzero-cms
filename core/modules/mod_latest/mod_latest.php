@@ -421,7 +421,7 @@ class Latest extends Module
      *
      * @param   array|mixed   $list
      * @param   string  $fieldName
-     * @param   string  $article_grouping_direction
+     * @param   'ksort'|'krsort'|'asort'|'arsort'  $article_grouping_direction
      * @param   string|null  $fieldNameToKeep
      * @return  array<mixed>
      */
@@ -461,7 +461,7 @@ class Latest extends Module
      *
      * @param   array|mixed   $list
      * @param   string  $type
-     * @param   string  $article_grouping_direction
+     * @param   'ksort'|'krsort'|'asort'|'arsort'  $article_grouping_direction
      * @param   string  $month_year_format
      * @return  array<mixed>
      */
