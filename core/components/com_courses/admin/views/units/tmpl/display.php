@@ -249,7 +249,7 @@ $stateSelected = function ($value) use ($view) {
                     <?php
                     $prv = $this->rows->fetch('prev');
                     $prev = 0;
-                    if (is_object($prv)) {
+                    if ($prv instanceof \Components\Courses\Models\Unit) {
                         $prev = $prv->get('ordering');
                     }
                     echo $pageNav->orderUpIcon($i, ($row->get('ordering') != $prev)); ?>
@@ -258,7 +258,7 @@ $stateSelected = function ($value) use ($view) {
                     <?php
                     $nxt = $this->rows->fetch('next');
                     $next = 0;
-                    if (is_object($nxt)) {
+                    if ($nxt instanceof \Components\Courses\Models\Unit) {
                         $next = $nxt->get('ordering');
                     }
                     echo $pageNav->orderDownIcon($i, $n, ($row->get('ordering') != $next)); ?>

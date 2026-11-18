@@ -505,7 +505,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     $this_size = filesize(PATH_APP . $path . DS . $logo);
                                     list($width, $height, $type, $attr) = getimagesize(
                                         PATH_APP . $path . DS . $logo,
-                                    );
+                                    ) ?: [0, 0, 0, ''];
                                     $pic = $logo;
                                 } else {
                                     $pic  = 'blank.png';

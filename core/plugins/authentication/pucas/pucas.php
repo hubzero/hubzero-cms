@@ -117,7 +117,7 @@ class Pucas extends Plugin
     /**
      * Method to setup Purdue CAS params and redirect to pucas auth URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
@@ -127,8 +127,8 @@ class Pucas extends Plugin
 
         $return = '';
 
-        if ($view->return) {
-            $return = '&return=' . $view->return;
+        if ($view->get('return')) {
+            $return = '&return=' . $view->get('return');
         }
 
         phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);

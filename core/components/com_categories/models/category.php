@@ -645,8 +645,8 @@ class Category extends Nested
      * Update position of an entry
      *
      * @param   integer  $iterator
-     * @param   object|null   $storage
-     * @return  object
+     * @param   \Hubzero\Database\Rows|null  $storage
+     * @return  \Hubzero\Database\Rows
      */
     public function updatePositionWithChildren($iterator, $storage = null)
     {

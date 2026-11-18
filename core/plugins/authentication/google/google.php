@@ -158,7 +158,7 @@ class Google extends \Hubzero\Plugin\OauthClient
     /**
      * Method to setup google params and redirect to google auth URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
@@ -170,7 +170,7 @@ class Google extends \Hubzero\Plugin\OauthClient
         $client->setClientSecret($this->params->get('app_secret'));
         $client->setRedirectUri(self::getRedirectUri('google'));
         $client->setAccessType('online');
-        $client->setState($view->return);
+        $client->setState($view->get('return'));
         $client->setApprovalPrompt('auto');
         $client->setScopes(
             'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',

@@ -177,7 +177,8 @@ class Editor extends Obj
      * @param   string   $height   The height of the text area (px or %).
      * @param   integer  $col      The number of columns for the textarea.
      * @param   integer  $row      The number of rows for the textarea.
-     * @param   boolean  $buttons  True and the editor buttons will be displayed.
+     * @param   bool|array<string>  $buttons  True to show the editor buttons, false for none, or the buttons
+     *                                       not to show
      * @param  string|null  $id  An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
      * @param   string|null   $asset    The object asset
      * @param   object|null   $author   The author.

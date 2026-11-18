@@ -495,14 +495,14 @@ class Shibboleth extends Plugin
      * Method to display login prompt
      *
      * @access  public
-     * @param   object  $view  View object
+     * @param   \Hubzero\Component\View  $view  View object
      * @param   object  $tpl   Template object
      * @return  void
      */
     public function display($view, $tpl)
     {
         list($service, $com_user, $task) = self::getLoginParams();
-        $return = $view->return ? '&return=' . $view->return : '';
+        $return = $view->get('return') ? '&return=' . $view->get('return') : '';
 
         // Discovery service for mod_shib to feed back the appropriate id provider
         // entityID. See below for more info

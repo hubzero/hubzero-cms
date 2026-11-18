@@ -18,7 +18,7 @@ namespace Hubzero\Facades;
  * @method static string toRFC822(bool $local = false)
  * @method static int    toUnix()
  * @method static string relative(string $unit = null, string $time = null)
- * @method static object modify(string $modifier)
+ * @method static \Hubzero\Utility\Date modify(string $modifier)
  *
  * @codeCoverageIgnore
  */

@@ -258,7 +258,7 @@ class Node extends Obj
     /**
      * Constructor of this tree
      *
-     * @var object|null
+     * @var \Components\Categories\Helpers\Categories|null
      */
     protected $constructor = null;
 

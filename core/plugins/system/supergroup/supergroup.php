@@ -228,7 +228,7 @@ class Supergroup extends Plugin
     /**
      * Get the file upload path for a group
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  string
      */
     protected function filespace($group)

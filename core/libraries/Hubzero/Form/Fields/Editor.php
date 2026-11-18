@@ -81,7 +81,7 @@ class Editor extends Field
     /**
      * Method to get a Editor object based on the form field.
      *
-     * @return  object  The Editor object.
+     * @return  \Hubzero\Html\Editor  The Editor object.
      */
     protected function getEditor()
     {

@@ -275,13 +275,13 @@ $inspect = function ($path, array $facades) {
  */
 $addImports = function ($path, array $missing) {
     $source = (string) file_get_contents($path);
-    $lines  = preg_split('/\R/', $source);
+    $lines  = preg_split('/\R/', $source) ?: [];
     $eol    = strpos($source, "\r\n") !== false ? "\r\n" : "\n";
 
     $lastUse   = null;
     $namespace = null;
     $depth     = 0;
-    foreach ($lines ?: [] as $index => $line) {
+    foreach ($lines as $index => $line) {
         if ($namespace === null && preg_match('/^\s*namespace\s+[^;]+;/', $line)) {
             $namespace = $index;
         }

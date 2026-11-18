@@ -81,15 +81,15 @@ class Certificate extends Plugin
     /**
      * Method to setup and redirect to certificate auth URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
     public function display($view, $tpl)
     {
         $return = '';
-        if ($view->return) {
-            $return = '&return=' . $view->return;
+        if ($view->get('return')) {
+            $return = '&return=' . $view->get('return');
         }
 
         // Get the hub url

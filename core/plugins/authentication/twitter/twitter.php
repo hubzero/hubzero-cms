@@ -119,7 +119,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     /**
      * Method to setup twitter params and redirect to twitter auth URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
@@ -134,7 +134,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         Session::set('oauth2state', $this->provider->getState(), $this->name);
         Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
-        Session::set('returnUrl', $view->return, $this->name);
+        Session::set('returnUrl', $view->get('return'), $this->name);
 
         App::redirect($loginUrl);
     }

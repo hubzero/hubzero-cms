@@ -200,7 +200,7 @@ class PdfForm
     /**
      * Process the PDF pages to images
      *
-     * @param   object   $fun      Closure
+     * @param   \Closure  $fun      Called with each image's path and number
      * @param   integer|null  $version
      * @return  void
      **/

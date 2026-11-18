@@ -110,7 +110,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     /**
      * Sets up ORCID params and redirects to ORCID authorize URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
@@ -135,7 +135,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         $oauth
             ->setClientId($this->params->get('client_id'))
-            ->setState($view->return)
+            ->setState($view->get('return'))
             ->showLogin()
             ->setRedirectUri(self::getRedirectUri('orcid'));
 

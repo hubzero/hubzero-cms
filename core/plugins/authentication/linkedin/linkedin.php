@@ -120,7 +120,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
     /**
      * Method to setup LinkedIn params and redirect to LinkedIn auth URL
      *
-     * @param   object  $view  view object
+     * @param   \Hubzero\Component\View  $view  view object
      * @param   object  $tpl   template object
      * @return  void
      */
@@ -134,7 +134,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
         $loginUrl = $this->provider->getAuthorizationUrl($params);
 
         Session::set('oauth2state', $this->provider->getState(), $this->name);
-        Session::set('returnUrl', $view->return, $this->name);
+        Session::set('returnUrl', $view->get('return'), $this->name);
 
         App::redirect($loginUrl);
     }
