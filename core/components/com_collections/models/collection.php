@@ -87,7 +87,7 @@ class Collection extends Base
     /**
      * Adapter
      *
-     * @var object|null
+     * @var Adapters\Base|null
      */
     private $adapter = null;
 
@@ -605,7 +605,7 @@ class Collection extends Base
      * Return the adapter for this entry's scope,
      * instantiating it if it doesn't already exist
      *
-     * @return  object
+     * @return  Adapters\Base
      */
     private function adapter()
     {
@@ -615,7 +615,7 @@ class Collection extends Base
 
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
-            if (!class_exists($cls)) {
+            if (!is_a($cls, Adapters\Base::class, true)) {
                 throw new \InvalidArgumentException(Lang::txt(
                     'Invalid scope of "%s" for collection #%s',
                     $scope,

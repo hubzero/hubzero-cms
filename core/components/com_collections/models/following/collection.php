@@ -17,7 +17,9 @@ use Hubzero\Facades\User;
 class Collection extends Base
 {
     /**
-     * @var  mixed
+     * The collection's owner: a group, or a member
+     *
+     * @var  \Hubzero\User\Group|\Hubzero\User\User|null
      */
     protected $creator;
 
@@ -80,7 +82,7 @@ class Collection extends Base
     {
         switch ($this->obj->get('object_type')) {
             case 'group':
-                if (!isset($this->creator) || !is_object($this->creator)) {
+                if (!isset($this->creator)) {
                     // A blank group when it no longer exists, as a blank user is below
                     $this->creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'))
                         ?: new \Hubzero\User\Group();
@@ -99,7 +101,7 @@ class Collection extends Base
 
             case 'member':
             default:
-                if (!isset($this->creator) || !is_object($this->creator)) {
+                if (!isset($this->creator)) {
                     $this->creator = User::getInstance($this->obj->get('created_by'));
                 }
                 if ($property) {

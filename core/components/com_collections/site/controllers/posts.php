@@ -122,7 +122,7 @@ class Posts extends SiteController
      * in that gap, or an edit that never touched the select would relocate the
      * post to whatever option came first.
      *
-     * @param   object|null  $current  The post's current board, or null
+     * @param   Collection|null  $current  The post's current board, or null
      * @return  \Hubzero\Base\ItemList
      */
     protected function postableBoards($current = null)
