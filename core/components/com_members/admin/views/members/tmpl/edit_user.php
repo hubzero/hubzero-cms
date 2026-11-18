@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{password: mixed, profile: mixed} $this
+ * @var \Hubzero\Component\View&object{password: \Hubzero\User\Password|false, profile: mixed} $this
  */
 
 $name       = stripslashes($this->profile->get('name', '') == null ? '' : $this->profile->get('name', ''));

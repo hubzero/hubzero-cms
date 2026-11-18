@@ -456,7 +456,7 @@ class Version extends Table
     /**
      * Create new version
      *
-     * @param   object   $dev             Version to duplicate
+     * @param   self     $dev             Version to duplicate; it is stored as the new version
      * @param   integer  $state           New version status
      * @param   string   $secret          New version secret
      * @param   integer  $version_number  New version number
@@ -465,7 +465,6 @@ class Version extends Table
      */
     public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
     {
-        $new =  new self($this->db);
         $new = $dev;
         $new->id = 0;
         $new->rating = '0.0';

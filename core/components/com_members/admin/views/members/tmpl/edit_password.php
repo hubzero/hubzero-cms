@@ -15,7 +15,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{password: mixed, password_rules: mixed, profile: mixed, validated: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     password: \Hubzero\User\Password|false,
+ *     password_rules: mixed,
+ *     profile: mixed,
+ *     validated: mixed,
+ * } $this
  */
 ?>
 <fieldset class="adminform" id="edit_password_fragment">
