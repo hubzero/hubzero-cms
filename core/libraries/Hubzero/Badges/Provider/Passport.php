@@ -46,7 +46,7 @@ class Passport implements ProviderInterface
     /**
      * Credentials
      *
-     * @var  object|false
+     * @var  \stdClass|false
      */
     private $credentials = false;
 
@@ -78,7 +78,7 @@ class Passport implements ProviderInterface
     /**
      * Set credentials
      *
-     * @param   object  $passportCredentials
+     * @param   \stdClass  $passportCredentials
      * @return  void
      */
     public function setCredentials($passportCredentials)
@@ -157,7 +157,7 @@ class Passport implements ProviderInterface
     /**
      * Grant badges to users
      *
-     * @param   object  $badge  Badge info: ID, Evidence URL
+     * @param   \stdClass  $badge  Badge info: ID, Evidence URL
      * @param   mixed   $users  String (for single user) or array (for multiple users) of user email addresses
      * @return  void
      */

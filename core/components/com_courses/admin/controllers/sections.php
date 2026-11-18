@@ -485,13 +485,9 @@ class Sections extends AdminController
                 $badgesHandler  = new \Hubzero\Badges\Wallet($providerNameUpper, $request_type);
                 $badgesProvider = $badgesHandler->getProvider();
 
-                $credentials = new stdClass();
-                $providerName = $badgeObj->get('provider_name');
-                $credentials->client_id = $cconfig->get($providerName . '_consumer_key', 0);
-                $credentials->client_secret = $cconfig->get($providerName . '_consumer_secret', 0);
-                $credentials->username = $cconfig->get($providerName . '_username', 0);
-                $credentials->password = $cconfig->get($providerName . '_password', 0);
-                $credentials->issuerId = $cconfig->get($providerName . '_issuer_id', 0);
+                $credentials = \Components\Courses\Models\Section\Badge::providerCredentials(
+                    $badgeObj->get('provider_name'),
+                );
                 $badgesProvider->setCredentials($credentials);
 
                 $offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));

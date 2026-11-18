@@ -62,9 +62,7 @@ class Courses extends Plugin
         $badgesHandler  = new \Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
         $badgesProvider = $badgesHandler->getProvider();
 
-        $creds = new \stdClass();
-        $creds->consumer_key    = $params->get('passport_consumer_key');
-        $creds->consumer_secret = $params->get('passport_consumer_secret');
+        $creds = \Components\Courses\Models\Section\Badge::providerCredentials('passport');
 
         $badgesProvider->setCredentials($creds);
 
@@ -89,7 +87,7 @@ class Courses extends Plugin
                 if (count($emails) > 0) {
                     $assertions = $badgesProvider->getAssertionsByEmailAddress($emails);
 
-                    if (isset($assertions) && count($assertions) > 0) {
+                    if (count($assertions) > 0) {
                         foreach ($assertions as $assertion) {
                             $status = false;
                             if ($assertion->IsPending) {

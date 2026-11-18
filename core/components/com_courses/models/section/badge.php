@@ -158,6 +158,30 @@ class Badge extends Base
     }
 
     /**
+     * The credentials a badge provider signs in with, from the courses configuration
+     *
+     * Passport reads client_id, client_secret, username and password to sign
+     * in, issuerId to create badges and clientId to grant them.
+     *
+     * @param   string  $providerName  The provider's name, as the configuration prefixes its settings
+     * @return  stdClass
+     */
+    public static function providerCredentials($providerName)
+    {
+        $cconfig = Component::params('com_courses');
+
+        $credentials = new stdClass();
+        $credentials->client_id     = $cconfig->get($providerName . '_consumer_key', 0);
+        $credentials->client_secret = $cconfig->get($providerName . '_consumer_secret', 0);
+        $credentials->username      = $cconfig->get($providerName . '_username', 0);
+        $credentials->password      = $cconfig->get($providerName . '_password', 0);
+        $credentials->issuerId      = $cconfig->get($providerName . '_issuer_id', 0);
+        $credentials->clientId      = $cconfig->get($providerName . '_client_id', 0);
+
+        return $credentials;
+    }
+
+    /**
      * Get url
      *
      * @param   string  $type

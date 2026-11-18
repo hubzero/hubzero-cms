@@ -839,7 +839,7 @@ class GradeBook extends Base
                     // Mark student as having earned badge
                     $badge = MemberBadge::loadByMemberId($m);
                     $sb    = Section\Badge::loadBySectionId($this->course->offering()->section()->get('id'));
-                    if (is_object($badge) && !$badge->hasEarned()) {
+                    if ($badge instanceof MemberBadge && !$badge->hasEarned()) {
                         $badge->set('member_id', $m);
                         $badge->set('section_badge_id', $sb->get('id'));
                         $badge->set('earned', 1);
@@ -856,11 +856,7 @@ class GradeBook extends Base
                         $badgesHandler = new \Hubzero\Badges\Wallet($walletProvider, $request_type);
                         $badgesProvider = $badgesHandler->getProvider();
 
-                        $providerName = $sb->get('provider_name');
-                        $credentials = new \stdClass();
-                        $credentials->consumer_key = $this->config()->get($providerName . '_consumer_key');
-                        $credentials->consumer_secret = $this->config()->get($providerName . '_consumer_secret');
-                        $credentials->clientId = $this->config()->get($providerName . '_client_id');
+                        $credentials = Section\Badge::providerCredentials($sb->get('provider_name'));
                         $badgesProvider->setCredentials($credentials);
 
                         $dbo = App::get('db');
