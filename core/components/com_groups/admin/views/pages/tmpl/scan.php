@@ -39,7 +39,8 @@ $this->js();
 // page version content
 $content = $this->page->version()->get('content');
 $action = Route::url(
-    "index.php?option=$this->option&controller=$this->controller&gid=$this->group->cn&task=markscanned",
+    "index.php?option=$this->option&controller=$this->controller&gid=" . $this->group->get('cn')
+        . "&task=markscanned",
 );
 ?>
 
