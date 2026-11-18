@@ -1098,7 +1098,7 @@ class TableBuilder
      * @param  string      $referencedColumn Referenced column name (default: 'id')
      * @param  string      $onDelete         ON DELETE action (default: 'CASCADE')
      * @param  string      $onUpdate         ON UPDATE action (default: 'CASCADE')
-     * @return ForeignKeyBuilder|$this       ForeignKeyBuilder for fluent usage, or $this for legacy
+     * @return ($referencedTable is null ? ForeignKeyBuilder : $this)  The fluent builder, or $this for legacy
      */
     public function foreign(
         string $column,

@@ -792,6 +792,7 @@ class FactoryTest extends AbstractDriverTestCase
         $this->resetTable($driver);
 
         $user = UserFactory::new()->make(['name' => 'Override Name']);
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals('Override Name', $user->get('name'));
     }
@@ -803,6 +804,7 @@ class FactoryTest extends AbstractDriverTestCase
         $this->resetTable($driver);
 
         $user = UserFactory::new()->inactive()->make();
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals('inactive', $user->get('status'));
     }
@@ -817,6 +819,7 @@ class FactoryTest extends AbstractDriverTestCase
             ->state(['status' => 'pending'])
             ->state(['name' => 'Chained'])
             ->make();
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals('pending', $user->get('status'));
         $this->assertEquals('Chained', $user->get('name'));
@@ -833,6 +836,7 @@ class FactoryTest extends AbstractDriverTestCase
                 return ['name' => strtoupper($attributes['name'])];
             })
             ->make();
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals(strtoupper($user->get('name')), $user->get('name'));
     }
@@ -898,6 +902,7 @@ class FactoryTest extends AbstractDriverTestCase
         $this->resetTable($driver);
 
         $user = UserFactory::new()->create(['name' => 'Custom Name']);
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals('Custom Name', $user->get('name'));
 
@@ -914,6 +919,7 @@ class FactoryTest extends AbstractDriverTestCase
         $this->resetTable($driver);
 
         $user = UserFactory::new()->inactive()->create();
+        $this->assertInstanceOf(Relational::class, $user);
 
         $this->assertEquals('inactive', $user->get('status'));
 
