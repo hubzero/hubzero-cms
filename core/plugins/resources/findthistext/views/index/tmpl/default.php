@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{model: mixed, openurl: mixed} $this
+ * @var \Hubzero\Plugin\View&object{model: \Components\Resources\Models\Entry, openurl: mixed} $this
  */
 
 $this->css();
@@ -90,7 +90,7 @@ if (count($matches) > 0) {
                     $query = '';
                 if (isset($resourceFields['doi']) && $resourceFields['doi'] != '') {
                     $query .= $resourceFields['doi'];
-                } elseif ($this->model->resource && $this->model->resource->title) {
+                } elseif ($this->model->title) {
                     $query .= $this->model->title;
                 }
                 ?>

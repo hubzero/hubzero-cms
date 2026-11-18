@@ -178,15 +178,15 @@ switch ($this->level) {
                 $stats = new \Components\Resources\Helpers\Usage\Tools(
                     $database,
                     $resource->id,
-                    $resource->type,
-                    $resource->rating,
+                    $resource->get('type'),
+                    $resource->get('rating'),
                 );
             } else {
                 $stats = new \Components\Resources\Helpers\Usage\Andmore(
                     $database,
                     $resource->id,
-                    $resource->type,
-                    $resource->rating,
+                    $resource->get('type'),
+                    $resource->get('rating'),
                 );
             }
 

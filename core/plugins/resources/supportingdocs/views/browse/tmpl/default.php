@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{model: mixed, option: mixed} $this
+ * @var \Hubzero\Plugin\View&object{model: \Components\Resources\Models\Entry, option: mixed} $this
  */
 
 $this->css();
@@ -43,7 +43,7 @@ if ($this->model->isTool()) {
 </h3>
 
 <div id="supportingdocs" class="supportingdocs">
-    <?php if ($children) { ?>
+    <?php if ($children->count()) { ?>
         <?php
         $linkAction = 0;
         $base = $this->model->params->get('uploadpath');

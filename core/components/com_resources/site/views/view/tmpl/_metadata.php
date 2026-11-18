@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{model: mixed, sections: mixed} $this
+ * @var \Hubzero\Component\View&object{model: \Components\Resources\Models\Entry, sections: mixed} $this
  */
 
 $data = '';
@@ -56,16 +56,16 @@ if (
                 $stats = new \Components\Resources\Helpers\Usage\Tools(
                     $database,
                     $this->model->id,
-                    $this->model->type,
-                    $this->model->rating,
+                    $this->model->get('type'),
+                    $this->model->get('rating'),
                     $citationCount,
                 );
             } else {
                 $stats = new \Components\Resources\Helpers\Usage\Andmore(
                     $database,
                     $this->model->id,
-                    $this->model->type,
-                    $this->model->rating,
+                    $this->model->get('type'),
+                    $this->model->get('rating'),
                     $citationCount,
                 );
             }

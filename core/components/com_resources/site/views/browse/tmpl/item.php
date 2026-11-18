@@ -94,14 +94,14 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
                                 $database,
                                 $this->line->id,
                                 $this->line->get('type'),
-                                $this->line->rating,
+                                $this->line->get('rating'),
                             );
                         } else {
                             $stats = new \Components\Resources\Helpers\Usage\Andmore(
                                 $database,
                                 $this->line->id,
                                 $this->line->get('type'),
-                                $this->line->rating,
+                                $this->line->get('rating'),
                             );
                         }
                         echo $stats->display();
