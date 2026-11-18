@@ -71,7 +71,7 @@ class Helper
     public static function generateConfirmationToken($emailAddress, $mailinglistObject)
     {
         //we must have valid email address and mailing list object
-        if ($emailAddress == '' || !is_object($mailinglistObject)) {
+        if ($emailAddress == '' || !($mailinglistObject instanceof \Components\Newsletter\Models\Mailinglist)) {
             return false;
         }
 

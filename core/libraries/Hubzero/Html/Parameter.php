@@ -96,7 +96,7 @@ class Parameter extends Registry
      */
     public function setXML(&$xml)
     {
-        if (is_object($xml)) {
+        if ($xml instanceof \SimpleXMLElement) {
             if ($group = $xml['group']) {
                 $this->xml[(string) $group] = $xml;
             } else {

@@ -855,7 +855,7 @@ class Post extends Relational
     protected function getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
     {
         // Make sure the reference is an object with a left and right id.
-        if (!is_object($referenceNode) || !isset($referenceNode->lft) || !isset($referenceNode->rgt)) {
+        if (!($referenceNode instanceof Post) || !isset($referenceNode->lft) || !isset($referenceNode->rgt)) {
             return false;
         }
 

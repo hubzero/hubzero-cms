@@ -287,7 +287,7 @@ class Blocks extends Obj
         // Load block
         $block = $this->loadBlock($name);
 
-        if ($block === false || !$pub || !is_object($pub)) {
+        if ($block === false || !($pub instanceof Publication)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -324,7 +324,7 @@ class Blocks extends Obj
         $block = $this->loadBlock($name);
 
         // Only some blocks have items
-        if ($block === false || !method_exists($block, 'reorder') || !$pub || !is_object($pub)) {
+        if ($block === false || !method_exists($block, 'reorder') || !($pub instanceof Publication)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -361,7 +361,7 @@ class Blocks extends Obj
         $block = $this->loadBlock($name);
 
         // Only some blocks have items
-        if ($block === false || !method_exists($block, 'saveItem') || !$pub || !is_object($pub)) {
+        if ($block === false || !method_exists($block, 'saveItem') || !($pub instanceof Publication)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -398,7 +398,7 @@ class Blocks extends Obj
         $block = $this->loadBlock($name);
 
         // Only some blocks have items
-        if ($block === false || !method_exists($block, 'deleteItem') || !$pub || !is_object($pub)) {
+        if ($block === false || !method_exists($block, 'deleteItem') || !($pub instanceof Publication)) {
             $this->setError('Error saving block');
             return false;
         } else {
@@ -435,7 +435,7 @@ class Blocks extends Obj
         $block = $this->loadBlock($name);
 
         // Only some blocks have items
-        if ($block === false || !method_exists($block, 'addItem') || !$pub || !is_object($pub)) {
+        if ($block === false || !method_exists($block, 'addItem') || !($pub instanceof Publication)) {
             $this->setError('Error saving block');
             return false;
         } else {
