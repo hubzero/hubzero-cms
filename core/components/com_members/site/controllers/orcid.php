@@ -90,7 +90,7 @@ class Orcid extends SiteController
 
         $curlData = curl_exec($initedCurl);
 
-        $xmlStr = htmlentities($curlData);
+        $xmlStr = htmlentities((string) $curlData);
 
         $xmlStr = preg_replace('/[a-zA-Z-]+[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 
@@ -233,7 +233,7 @@ class Orcid extends SiteController
         curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, true);
         $curlData = curl_exec($initedCurl);
 
-        $xmlStr = htmlentities($curlData);
+        $xmlStr = htmlentities((string) $curlData);
         $xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
         $xmlStr = html_entity_decode($xmlStr);
 
@@ -554,7 +554,7 @@ class Orcid extends SiteController
         curl_setopt($initedCurl, CURLOPT_HEADER, true);
         $curl_response = curl_exec($initedCurl);
         curl_close($initedCurl);
-        $parsed_response = $this->httpParseHeaders($curl_response);
+        $parsed_response = $this->httpParseHeaders((string) $curl_response);
 
         $pathComponents = [];
         if (isset($parsed_response['Location'])) {
@@ -567,7 +567,7 @@ class Orcid extends SiteController
         } else {
             $output->success = 0;
             $output->message = Lang::txt('Failed in creating account for %s %s (%s).', $first_name, $last_name, $email);
-            if (preg_match('/\<error\-desc\>(.*?)\<\/error\-desc\>/i', $curl_response, $matches)) {
+            if (preg_match('/\<error\-desc\>(.*?)\<\/error\-desc\>/i', (string) $curl_response, $matches)) {
                 $output->message .= ' ' . $matches[1];
             }
         }

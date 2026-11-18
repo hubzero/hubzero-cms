@@ -91,7 +91,7 @@ class Version extends Model
             }
 
             // Purify content
-            $content = $this->purify($content, $trustedContent);
+            $content = $this->purify((string) $content, $trustedContent);
         }
 
         // Set the purified content
@@ -175,7 +175,7 @@ class Version extends Model
      * Purify the HTML content via HTML Purifier
      *
      * @param   string   $content         Unpurified HTML content
-     * @param   boolean  $trustedContent  Is the content trusted?
+     * @param   bool|int  $trustedContent  Is the content trusted?
      * @return  string
      */
     public static function purify($content, $trustedContent = false)

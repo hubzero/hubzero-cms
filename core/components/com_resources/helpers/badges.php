@@ -102,7 +102,7 @@ class Badges
      *
      * @param   array<mixed>    $rawTagNames   raw_tag attribute list for given tags
      * @param   integer  $taggerId      ID of user who associated tag w/ record
-     * @param   boolean  $admin         Mark tags as admin?
+     * @param   bool|int  $admin         Mark tags as admin?
      * @return  array<mixed>
      */
     protected function translateRawNamesToIds($rawTagNames, $taggerId, $admin)
@@ -130,7 +130,7 @@ class Badges
      * @param   string   $tagName     Name of the tag
      * @param   string   $rawTagName  Display name of tag
      * @param   integer  $taggerId    ID of user who associated tag w/ record
-     * @param   boolean  $admin       Mark tags as admin?
+     * @param   bool|int  $admin       Mark tags as admin?
      * @return  boolean
      */
     protected function createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
@@ -154,7 +154,7 @@ class Badges
      *
      * @param   array<mixed>    $tagIds      IDs of tags
      * @param   integer  $taggerId    ID of user who associated tag w/ record
-     * @param   boolean  $admin       Mark tags as admin?
+     * @param   bool|int  $admin       Mark tags as admin?
      * @param   integer  $strength    Association strength
      * @return  void
      */
@@ -170,7 +170,7 @@ class Badges
      *
      * @param   integer  $tagId       ID of tag record
      * @param   integer  $taggerId    ID of user who associated tag w/ record
-     * @param   boolean  $admin       Mark tags as admin?
+     * @param   bool|int  $admin       Mark tags as admin?
      * @param   integer  $strength    Badge strength
      * @return  void
      */

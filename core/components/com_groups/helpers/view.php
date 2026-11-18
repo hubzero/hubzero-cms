@@ -527,7 +527,7 @@ class View
         curl_close($ch);
 
         // make sure it was a success
-        if ($info['http_code'] != '200') {
+        if ($info['http_code'] != '200' || !is_string($html)) {
             return [];
         }
 

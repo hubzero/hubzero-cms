@@ -1911,7 +1911,7 @@ class Jobs extends SiteController
      * Search filters
      *
      * @param      integer $admin       Administrator?
-     * @param      integer $emp         Employer ID
+     * @param      int|bool $emp         Employer ID
      * @param      integer $checkstored Check internal property?
      * @param      integer $jobs        Are filters for jobs?
      * @return     array<string, mixed>

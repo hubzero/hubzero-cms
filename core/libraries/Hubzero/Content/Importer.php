@@ -191,6 +191,6 @@ class Importer
         $import->markRun($dryRun);
 
         // call process on adapter
-        return $this->getAdapter()->process($import, $callbacks, $dryRun);
+        return $this->getAdapter()->process($import, $callbacks, (bool) $dryRun);
     }
 }

@@ -298,7 +298,7 @@ class Cloud extends \Hubzero\Base\Obj
      *
      * @param   mixed    $tags      Array or string of tags
      * @param   integer  $tagger    ID of user applying the tag
-     * @param   integer  $admin     Is it an admin tag?
+     * @param   bool|int  $admin     Is it an admin tag?
      * @param   integer  $strength  Tag strength
      * @param   string   $label     Label to apply
      * @return  mixed    False if errors, integer on success

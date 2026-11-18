@@ -1225,7 +1225,7 @@ class Doi extends Obj
         $success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($success === 201 || $success === 200) {
+        if (is_string($response) && ($success === 201 || $success === 200)) {
             $out = explode('/', $response);
             $handle = trim(end($out));
             if ($handle) {

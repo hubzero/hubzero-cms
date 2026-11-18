@@ -198,7 +198,7 @@ class Import extends Relational
     /**
      * Mark Import Run
      *
-     * @param   integer  $dryRun  Dry run mode
+     * @param   int|bool  $dryRun  Dry run mode
      * @return  void
      */
     public function markRun($dryRun = 1)
