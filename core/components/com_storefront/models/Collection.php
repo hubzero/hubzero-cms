@@ -375,7 +375,7 @@ class Collection
      * Get collection image
      *
      * @param   bool  $forceReload
-     * @return  object|false|null  Collection image, or false or null when there is none
+     * @return  \stdClass|false|null  Collection image (imgId, imgName), or false or null when there is none
      */
     public function getImage($forceReload = false)
     {

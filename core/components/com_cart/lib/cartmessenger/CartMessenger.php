@@ -148,6 +148,11 @@ class CartMessenger
         $transactionItems = $transaction->items;
         $params = Component::params(Request::getCmd('option'));
 
+        // The transaction's row (getTransactionInfo() gives false for none)
+        if (!$transactionInfo instanceof \stdClass) {
+            return;
+        }
+
         $items = unserialize($transactionInfo->tiItems);
 
         // Build emails
