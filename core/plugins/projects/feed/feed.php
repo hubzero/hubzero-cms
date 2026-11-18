@@ -207,7 +207,7 @@ class Feed extends Plugin
     /**
      * Event call to get side content
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @param   string  $area
      * @return  mixed
      */
@@ -668,7 +668,7 @@ class Feed extends Plugin
      * Activity data in multiple projects (members/groups plugins)
      *
      * @param   string   $area
-     * @param   object   $model
+     * @param   \Components\Projects\Models\Project   $model
      * @param   array<mixed>    $projects
      * @param   integer  $uid
      * @param   array<mixed>    $filters  Query filters

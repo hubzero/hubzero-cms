@@ -151,8 +151,8 @@ class Notes extends Plugin
      * After lecture event
      *
      * @param   \Components\Courses\Models\Course  $course
-     * @param   object  $unit
-     * @param   object  $lecture
+     * @param   \Components\Courses\Models\Unit  $unit
+     * @param   \Components\Courses\Models\Assetgroup  $lecture
      * @return  string|null
      */
     public function onCourseAfterLecture($course, $unit, $lecture)

@@ -212,7 +212,7 @@ class Todo extends Plugin
     /**
      * Event call to get side content for main project page
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  string|false
      */
     public function onProjectMiniList($model)
@@ -248,7 +248,7 @@ class Todo extends Plugin
      * To do in multiple projects (members/groups plugins)
      *
      * @param   string   $area
-     * @param   object   $model
+     * @param   \Components\Projects\Models\Project   $model
      * @param   array<mixed>    $projects
      * @param   integer  $uid
      * @param   array<mixed>    $filters    Query filters

@@ -41,7 +41,7 @@ class Recommendations extends Plugin
     /**
      * Return data on a resource sub view (this will be some form of HTML)
      *
-     * @param   object   $resource   Current resource
+     * @param   \Components\Resources\Models\Entry   $resource   Current resource
      * @param   string   $option     Name of the component
      * @param   integer  $miniview   View style
      * @return  array<mixed>

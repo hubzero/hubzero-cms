@@ -435,7 +435,7 @@ class Files extends Plugin
     /**
      * Event call to get side content for main project page
      *
-     * @param   object  $model
+     * @param   \Components\Projects\Models\Project  $model
      * @return  string|false
      */
     public function onProjectMiniList($model)
