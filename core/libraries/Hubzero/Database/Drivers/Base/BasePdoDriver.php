@@ -72,4 +72,28 @@ abstract class BasePdoDriver extends Driver
     {
         return PdoConnection::isAvailable();
     }
+
+    /**
+     * The PDO behind the connection (the connection itself when it is one)
+     *
+     * For PDO-only calls such as setAttribute(), which the connection
+     * interface does not have.
+     *
+     * @return  \PDO|null
+     */
+    protected function nativePdo()
+    {
+        if ($this->connection instanceof \PDO) {
+            return $this->connection;
+        }
+
+        if ($this->connection) {
+            $native = $this->connection->getNativeConnection();
+            if ($native instanceof \PDO) {
+                return $native;
+            }
+        }
+
+        return null;
+    }
 }

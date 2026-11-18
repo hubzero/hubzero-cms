@@ -269,7 +269,7 @@ class InformixDriver extends BaseSqlDriver
         // Force lowercase column names for ORM compatibility
         // Informix returns UPPERCASE by default, but the ORM expects lowercase
         try {
-            $this->connection->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
             $this->trace('setAttribute ATTR_CASE=CASE_LOWER');
         } catch (\PDOException $e) {
             $this->trace('setAttribute ATTR_CASE failed: ' . $e->getMessage());
@@ -280,7 +280,7 @@ class InformixDriver extends BaseSqlDriver
         // Native ODBC prepared execution can fail with smart-LOB locator errors
         // (e.g. SQLSTATE HY000 / -12014) under repeated CRUD in test flows.
         try {
-            $this->connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
             $this->trace('setAttribute ATTR_EMULATE_PREPARES=true');
         } catch (\PDOException $e) {
             $this->trace('setAttribute ATTR_EMULATE_PREPARES failed: ' . $e->getMessage());
@@ -290,7 +290,7 @@ class InformixDriver extends BaseSqlDriver
         // Force LOB-capable values to be fetched as strings instead of streams.
         // This mirrors known working practice in Doctrine's pdo_informix driver.
         try {
-            $this->connection->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, true);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, true);
             $this->trace('setAttribute ATTR_STRINGIFY_FETCHES=true');
         } catch (\PDOException $e) {
             $this->trace('setAttribute ATTR_STRINGIFY_FETCHES failed: ' . $e->getMessage());
@@ -1792,7 +1792,7 @@ class InformixDriver extends BaseSqlDriver
             }
             $driverVersion = 'Unknown';
             try {
-                $driverVersion = $this->connection->getAttribute(\PDO::ATTR_CLIENT_VERSION);
+                $driverVersion = $this->nativePdo()?->getAttribute(\PDO::ATTR_CLIENT_VERSION);
             } catch (\PDOException $e) {
                 // Ignore
             }

@@ -401,7 +401,7 @@ class FirebirdDriver extends BaseSqlDriver
         // Explicitly set ATTR_CASE on the connection to ensure it takes effect
         // This forces all column names in result sets to lowercase for consistency
         if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
-            $this->connection->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
         }
     }
 
@@ -460,14 +460,15 @@ class FirebirdDriver extends BaseSqlDriver
         }
 
         // Commit any implicit transaction before closing
-        $connection = $this->connection;
-        $native = $connection->getNativeConnection();
+        $native = $this->nativePdo();
         if ($native && $native->inTransaction()) {
             $native->commit();
         }
 
         // Disconnect (drops internal PDO but keeps PdoConnection config for reconnect)
-        $connection->disconnect();
+        if ($this->connection instanceof \Hubzero\Database\ConnectionInterface) {
+            $this->connection->disconnect();
+        }
 
         // PDO_FIREBIRD limitation: Even after reconnecting, Firebird server-side metadata
         // cache may not have flushed. Add a small delay to ensure metadata is visible.
@@ -475,7 +476,9 @@ class FirebirdDriver extends BaseSqlDriver
         usleep(50000); // 50ms delay
 
         // Reconnect — PdoConnection stores DSN/credentials, so connect() creates fresh PDO
-        $connection->connect();
+        if ($this->connection instanceof \Hubzero\Database\ConnectionInterface) {
+            $this->connection->connect();
+        }
     }
 
     /**
@@ -2326,7 +2329,7 @@ class FirebirdDriver extends BaseSqlDriver
         try {
             // For Firebird, we prefer checking an attribute to avoid starting
             // a transaction with a failing 'SELECT 1' query.
-            return (bool) $this->connection->getAttribute(\PDO::ATTR_SERVER_VERSION);
+            return (bool) $this->nativePdo()?->getAttribute(\PDO::ATTR_SERVER_VERSION);
         } catch (\Exception $e) {
             return false;
         }

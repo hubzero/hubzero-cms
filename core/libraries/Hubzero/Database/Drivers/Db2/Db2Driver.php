@@ -198,7 +198,7 @@ class Db2Driver extends BaseSqlDriver
         // may not honor constructor options; setAttribute() ensures it takes effect.
         // Only catch \PDOException from setAttribute itself, not connection failures.
         try {
-            $this->connection->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
         } catch (\PDOException $e) {
             // setAttribute not supported — ATTR_CASE from extras[] will still apply
         }
@@ -206,7 +206,7 @@ class Db2Driver extends BaseSqlDriver
         // Stringify LOBs automatically - pdo_ibm returns CLOB/BLOB columns as resources
         // This converts them to strings automatically when fetching
         try {
-            $this->connection->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, true);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, true);
         } catch (\PDOException $e) {
             // setAttribute not supported
         }
@@ -1416,7 +1416,7 @@ class Db2Driver extends BaseSqlDriver
         if ($this->transactionDepth == 0) {
             // DB2 starts implicit transactions
             // We just need to turn off auto-commit
-            $this->connection->setAttribute(\PDO::ATTR_AUTOCOMMIT, 0);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_AUTOCOMMIT, 0);
         } else {
             $this->setQuery('SAVEPOINT SP_' . $this->transactionDepth . ' ON ROLLBACK RETAIN CURSORS');
             $this->execute();
@@ -1441,7 +1441,7 @@ class Db2Driver extends BaseSqlDriver
         if ($this->transactionDepth == 0) {
             $this->setQuery('COMMIT');
             $this->execute();
-            $this->connection->setAttribute(\PDO::ATTR_AUTOCOMMIT, 1);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_AUTOCOMMIT, 1);
         } else {
             $this->setQuery('RELEASE SAVEPOINT SP_' . $this->transactionDepth);
             $this->execute();
@@ -1464,7 +1464,7 @@ class Db2Driver extends BaseSqlDriver
         if ($this->transactionDepth == 0) {
             $this->setQuery('ROLLBACK');
             $this->execute();
-            $this->connection->setAttribute(\PDO::ATTR_AUTOCOMMIT, 1);
+            $this->nativePdo()?->setAttribute(\PDO::ATTR_AUTOCOMMIT, 1);
         } else {
             $this->setQuery('ROLLBACK TO SAVEPOINT SP_' . $this->transactionDepth);
             $this->execute();
