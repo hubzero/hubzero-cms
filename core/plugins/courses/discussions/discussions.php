@@ -2940,7 +2940,8 @@ class Discussions extends Plugin
      */
     public function onCourseDelete($course)
     {
-        if (!$course->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $course->get('id') <= 0) {
             return '';
         }
 

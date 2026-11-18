@@ -121,7 +121,8 @@ class Store extends Plugin
      */
     public function onOfferingSave($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
 
@@ -192,7 +193,8 @@ class Store extends Plugin
      */
     public function onOfferingDelete($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
 
@@ -213,7 +215,8 @@ class Store extends Plugin
      */
     public function onCourseSave($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
     }
@@ -226,7 +229,8 @@ class Store extends Plugin
      */
     public function onCourseDelete($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
     }
@@ -240,7 +244,8 @@ class Store extends Plugin
      */
     public function onSectionSave($model, $isNew = false)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
     }
@@ -253,7 +258,8 @@ class Store extends Plugin
      */
     public function onSectionDelete($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
     }
@@ -267,7 +273,8 @@ class Store extends Plugin
      */
     public function onAfterSaveCoupon($model, $isNew = false)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
         if ($isNew && Request::getInt('store_product', 0)) {
@@ -311,7 +318,8 @@ class Store extends Plugin
      */
     public function onAfterDeleteCoupon($model)
     {
-        if (!$model->exists()) {
+        // Saved courses only (both course models fire this event)
+        if ((int) $model->get('id') <= 0) {
             return;
         }
 
