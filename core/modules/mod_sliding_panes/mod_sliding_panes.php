@@ -36,8 +36,8 @@ class SlidingPanes extends Module
     /**
      * Constructor
      *
-     * @param   object  $params  Registry
-     * @param   object  $module  Database row
+     * @param   \Hubzero\Config\Registry  $params  The module's parameters
+     * @param   \stdClass  $module  Database row
      * @return  void
      */
     public function __construct($params, $module)

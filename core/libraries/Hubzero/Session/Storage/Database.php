@@ -23,7 +23,7 @@ class Database extends Store
     /**
      * Profiler for debugging
      *
-     * @var  object|null
+     * @var  \Hubzero\Debug\Profiler|null
      */
     private $profiler = null;
 

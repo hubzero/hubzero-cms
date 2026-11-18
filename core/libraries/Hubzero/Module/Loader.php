@@ -30,9 +30,9 @@ class Loader
     protected $app;
 
     /**
-     * A profiler for debugging
+     * A profiler for debugging, when debugging or profiling is on
      *
-     * @var  object
+     * @var  \Hubzero\Debug\Profiler|null
      */
     protected $profiler;
 
@@ -40,7 +40,7 @@ class Loader
      * Constructor
      *
      * @param   \Hubzero\Base\Application $app
-     * @param   mixed  $profiler
+     * @param   \Hubzero\Debug\Profiler|null  $profiler
      * @return  void
      */
     public function __construct(Container $app, $profiler = null)
