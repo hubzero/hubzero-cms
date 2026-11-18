@@ -21,11 +21,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{sId: mixed} $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $canDo
- */
+$canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 $tmpl = Request::getCmd('tmpl', '');
 

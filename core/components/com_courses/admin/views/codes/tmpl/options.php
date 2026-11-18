@@ -22,11 +22,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{section: mixed} $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $canDo
- */
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 $tmpl = Request::getString('tmpl', '');
 

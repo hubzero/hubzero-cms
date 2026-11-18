@@ -16,11 +16,6 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{clusters: mixed, resource: mixed, stats: mixed, url: mixed} $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $clusters
- */
 ?>
 <p class="usage">
     <?php if ($this->resource->type == 7) : ?>
@@ -35,6 +30,8 @@ defined('_HZEXEC_') or die();
 
 <?php if ($this->clusters->users && $this->clusters->classes) : ?>
     <p class="usage">
-        <?php echo Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes); ?>
+        <?php
+        echo Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $this->clusters->users, $this->clusters->classes);
+        ?>
     </p>
 <?php endif;

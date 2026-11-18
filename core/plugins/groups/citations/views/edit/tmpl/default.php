@@ -28,13 +28,6 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $badges
- * @var mixed $tags
- */
-
 $this->css()->js();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
@@ -589,7 +582,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                     if (count($tags_list) > 0) {
                         echo $tags_list[0];
                     } else {
-                        echo '<input type="text" name="tags" value="' . $this->escape($tags) . '" />';
+                        echo '<input type="text" name="tags" value="' . $this->escape(implode(',', $t)) . '" />';
                     }
                     ?>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_HINT'); ?></span>
@@ -604,7 +597,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                     if (count($badges_list) > 0) {
                         echo $badges_list[0];
                     } else {
-                        echo '<input type="text" name="badges" value="' . $this->escape($badges) . '" />';
+                        echo '<input type="text" name="badges" value="' . $this->escape(implode(',', $b)) . '" />';
                     }
                     ?>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES_HINT'); ?></span>
