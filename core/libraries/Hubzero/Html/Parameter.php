@@ -299,7 +299,7 @@ class Parameter extends Registry
      * @param   string   $type  The element type.
      * @param   boolean  $new   False (default) to reuse parameter elements; true to load the
      *                          parameter element type again.
-     * @return  object|false
+     * @return  Parameter\Element|false
      */
     public function loadElement($type, $new = false)
     {
@@ -336,7 +336,7 @@ class Parameter extends Registry
             }
         }
 
-        if (!class_exists($elementClass)) {
+        if (!is_a($elementClass, Parameter\Element::class, true)) {
             $false = false;
             return $false;
         }

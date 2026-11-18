@@ -31,14 +31,14 @@ class Element extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object|null
+     * @var  \Hubzero\Html\Parameter|null
      */
     protected $parent = null;
 
     /**
      * Constructor
      *
-     * @param   object|null  $parent  The parameter set the element belongs to
+     * @param   \Hubzero\Html\Parameter|null  $parent  The parameter set the element belongs to
      * @return  void
      */
     public function __construct($parent = null)

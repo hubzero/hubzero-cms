@@ -36,7 +36,12 @@ class ImageList extends Element
         $filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
         $node->addAttribute('filter', $filter);
 
-        $parameter = $this->parent->loadElement('filelist');
+        $parameter = $this->parent ? $this->parent->loadElement('filelist') : false;
+
+        // No file list element to build on
+        if (!$parameter) {
+            return '';
+        }
 
         return $parameter->fetchElement($name, $value, $node, $control_name);
     }
