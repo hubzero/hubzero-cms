@@ -249,7 +249,7 @@ class Domain extends Relational
      * @param   string  $type
      * @param   string  $authenticator
      * @param   string|null  $domain
-     * @return  mixed
+     * @return  static|false  False when the domain could not be saved
      */
     public static function findOrCreate($type, $authenticator, $domain = null)
     {

@@ -139,7 +139,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             <div class="instructions"><?php echo Lang::txt('MOD_LOGIN_TO', Config::get('sitename')); ?></div>
             <form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
                 <div class="input-wrap">
-                    <?php if (isset($user) && is_object($user)) : ?>
+                    <?php if (isset($user) && $user instanceof \Hubzero\User\User) : ?>
                         <input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
                         <div class="existing-name"><?php echo $user->get('name'); ?></div>
                         <div class="existing-email"><?php echo $user->get('email'); ?></div>
@@ -196,7 +196,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
         </div>
     </div>
 <?php endif; ?>
-<?php if (isset($user) && is_object($user)) : ?>
+<?php if (isset($user) && $user instanceof \Hubzero\User\User) : ?>
     <div class="others">
         <a href="<?php echo Route::url('index.php?option=com_users&view=login&reset=1' . $returnQueryString); ?>">
             <?php echo Lang::txt('MOD_LOGIN_SIGN_IN_WITH_DIFFERENT_ACCOUNT'); ?>

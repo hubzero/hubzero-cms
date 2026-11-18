@@ -1198,7 +1198,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             $params = $filters['params'];
             $filter = isset($filters['filter']) ? $filters['filter'] : '';
 
-            if (is_object($params) && $params->get('filter_field') != 'hide' && $filter) {
+            if ($params instanceof \Hubzero\Config\Registry && $params->get('filter_field') != 'hide' && $filter) {
                 // clean filter variable
                 $filter = strtolower($filter);
                 $hitsFilter = intval($filter);

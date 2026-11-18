@@ -648,7 +648,7 @@ class Pages extends Plugin
     /**
      * Build and return the file path
      *
-     * @param   boolean|object|null  $page
+     * @param   \Components\Courses\Models\Page|null  $page
      * @return  string
      */
     private function path($page = null)
@@ -919,7 +919,7 @@ class Pages extends Plugin
         if (!file_exists($filepath)) {
             if (!$page) {
                 Request::setVar('section_id', $this->view->get('offering')->section()->get('id'));
-                $filepath = $this->path($page) . DS . ltrim($filename, DS);
+                $filepath = $this->path() . DS . ltrim($filename, DS);
                 if (!file_exists($filepath)) {
                     $found = false;
                 }

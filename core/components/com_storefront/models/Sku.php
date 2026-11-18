@@ -822,7 +822,7 @@ class Sku
 
     /**
      * @param   mixed  $sId
-     * @return  mixed
+     * @return  CourseOffering|Sku|SoftwareSku|false  False when there is no such SKU
      */
     public static function getInstance($sId)
     {
@@ -842,7 +842,7 @@ class Sku
 
     /**
      * @param   int  $pId
-     * @return  mixed
+     * @return  CourseOffering|Sku|SoftwareSku
      */
     public static function newInstance($pId)
     {

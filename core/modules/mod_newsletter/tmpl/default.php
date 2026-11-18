@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
 
 $token = Session::getFormToken();
 
-if (is_object($this->mailinglist)) : ?>
+if ($this->mailinglist instanceof \stdClass) : ?>
     <div class="mailinglist-details">
         <span class="name">
             <?php echo $this->mailinglist->name; ?>

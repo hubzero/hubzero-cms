@@ -173,7 +173,7 @@ class Job extends Relational
     public function save()
     {
         $params = $this->get('params');
-        if (is_object($params)) {
+        if ($params instanceof \Hubzero\Config\Registry) {
             $this->set('params', $params->toString());
         }
 
