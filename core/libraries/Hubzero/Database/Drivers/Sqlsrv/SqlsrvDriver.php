@@ -2296,7 +2296,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Reconstructs type with length, e.g. "NVARCHAR(255)" from
      * the column info returned by getTableColumns($table, false).
      *
-     * @param   object  $colInfo  Column info with Type and MaxLength
+     * @param   \stdClass  $colInfo  Column info with Type and MaxLength
      * @return  string  Full SQL type string
      */
     public function buildFullColumnType(object $colInfo): string

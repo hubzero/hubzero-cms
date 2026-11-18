@@ -214,6 +214,16 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     public function getTableKeys($table)
     {
+        // A list of tables: each one's keys, together
+        if (is_array($table)) {
+            $keys = [];
+            foreach ($table as $name) {
+                $keys = array_merge($keys, $this->getTableKeys((string) $name));
+            }
+
+            return $keys;
+        }
+
         $allKeys = $this->getShowKeysRows($table);
 
         if (empty($allKeys)) {
@@ -1877,7 +1887,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $name
      * @param   array<mixed>   $row
-     * @return  object
+     * @return  \stdClass
      */
     protected function createForeignKeyInfoFromSchemaRow(string $name, array $row)
     {
@@ -1901,7 +1911,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Append local/foreign column names from schema row to FK info object.
      *
-     * @param   object  $foreignKeyInfo
+     * @param   \stdClass  $foreignKeyInfo
      * @param   array<mixed>   $row
      * @return  void
      */

@@ -3199,7 +3199,7 @@ abstract class BaseSqlSyntax
                 // has to be parenthesised to read as one
                 $updates[] = $this->connection->quoteName($field)
                     . ' = (' . $value->toString() . ')';
-            } elseif (is_object($value)) {
+            } elseif (is_object($value) && method_exists($value, 'build')) {
                 $updates[] = $this->connection->quoteName($field)
                     . ' = ' . $value->build($this);
             } else {
@@ -3369,7 +3369,7 @@ abstract class BaseSqlSyntax
             return '(' . $value->toString() . ')';
         }
 
-        if (is_object($value)) {
+        if (is_object($value) && method_exists($value, 'build')) {
             return $value->build($this);
         }
 
@@ -3464,7 +3464,7 @@ abstract class BaseSqlSyntax
         $orders = [];
 
         foreach ($this->order as $order) {
-            if (is_object($order['column'])) {
+            if (is_object($order['column']) && method_exists($order['column'], 'build')) {
                 $string = $order['column']->build($this);
             } else {
                 $string = $this->connection->quoteName($order['column']);

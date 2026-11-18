@@ -3143,7 +3143,7 @@ class AseDriver extends BaseSqlDriver
     /**
      * Build a full column type string from column info object
      *
-     * @param   object  $colInfo  Column info
+     * @param   \stdClass  $colInfo  Column info, a row of getTableColumns($table, false)
      * @return  string
      */
     public function buildFullColumnType(object $colInfo): string
