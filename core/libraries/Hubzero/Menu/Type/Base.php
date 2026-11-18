@@ -19,9 +19,9 @@ use Hubzero\Base\Obj;
 class Base extends Obj
 {
     /**
-     * Array to hold the menu items
+     * Array to hold the menu items, the rows of the menu table by id
      *
-     * @var  array<mixed>
+     * @var  array<\stdClass>
      */
     protected $items = [];
 
@@ -101,7 +101,7 @@ class Base extends Obj
      * Get menu item by id
      *
      * @param   integer  $id  The item id
-     * @return  mixed    The item object, or null if not found
+     * @return  \stdClass|null  The item object, or null if not found
      */
     public function getItem($id)
     {
@@ -135,7 +135,7 @@ class Base extends Obj
      * Get the default item by language code.
      *
      * @param   string  $language  The language code, default value of * means all.
-     * @return  mixed   The item object
+     * @return  \stdClass|0  The item object, or 0 when no item is marked home
      */
     public function getDefault($language = '*')
     {
@@ -154,7 +154,7 @@ class Base extends Obj
      * Set the default item by id
      *
      * @param   integer  $id  The item id
-     * @return  mixed    If successful the active item, otherwise null
+     * @return  \stdClass|null  If successful the active item, otherwise null
      */
     public function setActive($id)
     {
@@ -172,7 +172,7 @@ class Base extends Obj
     /**
      * Get menu item by id.
      *
-     * @return  object|null  The item object.
+     * @return  \stdClass|null  The item object.
      */
     public function getActive()
     {
@@ -201,7 +201,7 @@ class Base extends Obj
      * An address that matched no menu item has no active item, which is not
      * the front page either.
      *
-     * @param   object|null  $item  The item to ask about, or the active one
+     * @param   \stdClass|null  $item  The item to ask about, or the active one
      * @return  bool
      */
     public function isHome($item = null)
@@ -218,7 +218,7 @@ class Base extends Obj
      * @param   mixed    $values      The value(s) of the field. If an array, need to match field names
      *                                each attribute may have multiple values to lookup for.
      * @param   boolean  $firstonly   If true, only returns the first item found
-     * @return  array<mixed>|object
+     * @return  ($firstonly is true ? \stdClass|array{} : array<\stdClass>)
      */
     public function getItems($attributes, $values, $firstonly = false)
     {
@@ -227,10 +227,6 @@ class Base extends Obj
         $values     = (array) $values;
 
         foreach ($this->items as $item) {
-            if (!is_object($item)) {
-                continue;
-            }
-
             $test = true;
             for ($i = 0, $count = count($attributes); $i < $count; $i++) {
                 $c = $attributes[$i];
@@ -277,7 +273,7 @@ class Base extends Obj
     /**
      * Getter for the menu array
      *
-     * @return  array<mixed>
+     * @return  array<\stdClass>
      */
     public function getMenu()
     {

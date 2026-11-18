@@ -85,12 +85,13 @@ $modelHandler = new \Components\Publications\Models\Handlers($database);
 $handlers     = $this->manifest->params->typeParams->handlers;
 
 // Is there handler assigned?
-$handler      = $this->manifest->params->typeParams->handler;
-$useHandles   = ($handlers || $handler) ? true : false;
+$handlerName  = $this->manifest->params->typeParams->handler;
+$useHandles   = ($handlers || $handlerName) ? true : false;
 
-if ($handler) {
-    // Load handler
-    $handler = $modelHandler->ini($handler);
+// Load handler
+$handler = null;
+if ($handlerName) {
+    $handler = $modelHandler->ini($handlerName) ?: null;
 }
 
 $multiZip = (isset($this->manifest->params->typeParams->multiZip)

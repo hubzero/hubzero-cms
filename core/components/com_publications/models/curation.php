@@ -60,7 +60,7 @@ class Curation extends Obj
     /**
      * Curation manifest, decoded
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     public $manifest = null;
 

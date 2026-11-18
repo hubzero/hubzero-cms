@@ -127,7 +127,7 @@ class Site extends Base
      * @param   string|array<mixed>  $attributes  The field name, or names
      * @param   mixed         $values      The value of the field, or values; a null value drops that filter
      * @param   boolean  $firstonly   If true, only returns the first item found
-     * @return  array<mixed>
+     * @return  ($firstonly is true ? \stdClass|array{} : array<\stdClass>)
      */
     public function getItems($attributes, $values, $firstonly = false)
     {
