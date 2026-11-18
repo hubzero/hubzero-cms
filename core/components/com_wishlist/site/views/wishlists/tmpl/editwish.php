@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
  *     funds: mixed,
  *     infolink: mixed,
  *     title: mixed,
- *     wish: mixed,
+ *     wish: \Components\Wishlist\Models\Wish,
  *     wishlist: mixed,
  * } $this
  */

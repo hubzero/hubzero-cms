@@ -18,7 +18,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{config: mixed, funds: mixed, question: mixed, tag: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     funds: mixed,
+ *     question: \Components\Answers\Models\Question,
+ *     tag: mixed,
+ * } $this
  */
 
 if (Pathway::count() <= 0) {

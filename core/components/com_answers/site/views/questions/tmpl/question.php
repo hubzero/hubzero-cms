@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{question: mixed} $this
+ * @var \Hubzero\Component\View&object{question: \Components\Answers\Models\Question} $this
  */
 
 if (Pathway::count() <= 0) {
@@ -679,7 +679,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                              ->set('base', $this->question->link())
                              ->display();
                         ?>
-                    <?php } elseif ($this->question->chosen('count')) { ?>
+                    <?php } elseif ($this->question->chosen()->total()) { ?>
                         <div class="subject-wrap">
                             <p><?php echo Lang::txt('No other responses made.'); ?></p>
                         </div>

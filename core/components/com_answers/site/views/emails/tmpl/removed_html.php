@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{question: mixed} $this
+ * @var \Hubzero\Component\View&object{question: \Components\Answers\Models\Question} $this
  */
 
 if ($this->question->isOpen() && !$this->question->isReported()) {

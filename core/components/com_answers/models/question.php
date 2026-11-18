@@ -25,6 +25,19 @@ use Hubzero\Facades\Event;
 /**
  * Question model for Q&A
  *
+ * Columns:
+ *
+ * @property  int     $id
+ * @property  string  $subject
+ * @property  string  $question
+ * @property  string  $created
+ * @property  int     $created_by
+ * @property  int     $state
+ * @property  int     $anonymous
+ * @property  int     $email
+ * @property  int     $helpful
+ * @property  int     $reward
+ *
  * Read through __get():
  *
  * @property  \Hubzero\User\User|null  $creator  The user who asked, through creator()

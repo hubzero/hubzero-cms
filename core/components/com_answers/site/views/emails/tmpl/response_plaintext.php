@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{link: mixed, question: mixed, row: mixed} $this
+ * @var \Hubzero\Component\View&object{link: mixed, question: \Components\Answers\Models\Question, row: mixed} $this
  */
 
 if (!isset($this->link)) {

@@ -16,7 +16,13 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{action: mixed, oldlist: mixed, status: mixed, wish: mixed, wishlist: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     action: mixed,
+ *     oldlist: mixed,
+ *     status: mixed,
+ *     wish: \Components\Wishlist\Models\Wish,
+ *     wishlist: mixed,
+ * } $this
  */
 
 // Build link to wish

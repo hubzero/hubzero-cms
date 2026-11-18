@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
  *     depth: mixed,
  *     item_id: mixed,
  *     parent: mixed,
- *     question: mixed,
+ *     question: \Components\Answers\Models\Question,
  *     thread: mixed,
  * } $this
  */

@@ -27,6 +27,7 @@ use Hubzero\Facades\Request;
  * @property  \Hubzero\Database\Rows                          $votes         The votes, through votes()
  * @property  \Hubzero\Database\Rows                          $comments      The top-level comments, through comments()
  * @property  \Components\Wishlist\Models\Plan                $plan          The plan, through plan()
+ * @property  \Hubzero\User\User                             $assignee      Who it is assigned to, through assignee()
  *
  * @property  int|string|null  $assigned
  * @property-read  mixed  $content  What transformContent() gives

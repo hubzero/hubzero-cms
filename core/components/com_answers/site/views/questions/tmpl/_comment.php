@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die();
  *     config: mixed,
  *     depth: mixed,
  *     item_id: mixed,
- *     question: mixed,
+ *     question: \Components\Answers\Models\Question,
  * } $this
  */
 

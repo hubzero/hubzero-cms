@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
  *     comments: mixed,
  *     depth: mixed,
  *     parent: mixed,
- *     wish: mixed,
+ *     wish: \Components\Wishlist\Models\Wish,
  *     wishlist: mixed,
  * } $this
  */
