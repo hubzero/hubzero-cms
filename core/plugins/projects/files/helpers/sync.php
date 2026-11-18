@@ -183,7 +183,8 @@ class Sync extends \Hubzero\Base\Obj
 
         // Get stored remote connections
         $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
-        $connections = $objRFile->getRemoteConnections($this->model->get('id'), $service);
+        // (false only without a project id)
+        $connections = $objRFile->getRemoteConnections($this->model->get('id'), $service) ?: [];
 
         // Get remote folder structure (to find out remote ids)
         $this->connect->getFolderStructure($service, $projectOwner, $remoteFolders);
@@ -380,6 +381,11 @@ class Sync extends \Hubzero\Base\Obj
                             $remoteFolders,
                         );
 
+                        if ($parentId === false) {
+                            $output .= '## skipped ' . $filename . ': no remote folder for it' . "\n";
+                            continue;
+                        }
+
                         if ($parentId != $local['rParent']) {
                             // Move to new parent
                             $moved = $this->connect->moveRemoteItem(
@@ -471,6 +477,11 @@ class Sync extends \Hubzero\Base\Obj
                                 $local,
                                 $remoteFolders,
                             );
+
+                            if ($parentId === false) {
+                                $output .= '## skipped ' . $filename . ': no remote folder for it' . "\n";
+                                continue;
+                            }
 
                             // Add/update operation
                             if ($local['remoteid']) {

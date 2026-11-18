@@ -735,7 +735,7 @@ class Connect extends Obj
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   \Components\Projects\Models\File|array<string, mixed>|null  $file  The file, or its sync record
-     * @param   int|false  $parentId
+     * @param   string|int|false  $parentId  Parent folder's remote id
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  false|string|null
      */
@@ -1179,7 +1179,8 @@ class Connect extends Obj
      * @param   string   $path            Path to folder
      * @param   string|int $parentId        Parent folder ID
      * @param   array<mixed>    &$remoteFolders  Collector array
-     * @return  integer|false|null (folder ID)
+     * @return  string|false|null  The folder's remote id; false for bad input or no API,
+     *                             null when the folder could not be created
      */
     public function createRemoteFolder(
         $projectid = null,
@@ -1268,7 +1269,9 @@ class Connect extends Obj
      * @param   integer  $uid             User ID
      * @param   array<mixed>    $local           Array of local file info
      * @param   array<mixed>    &$remoteFolders  Collector array
-     * @return  integer|false
+     * @return  string|false  The remote parent folder's id; false when there
+     *                        is none to be had (no record, no remote folder
+     *                        configured, or a folder that could not be made)
      */
     public function prepRemoteParent(
         $projectid = null,
@@ -1293,7 +1296,7 @@ class Connect extends Obj
 
         // No sub directory - parent is home project folder
         if (!$dirname || $dirname == '.') {
-            return $parentId;
+            return $parentId ? (string) $parentId : false;
         }
         $pathBits = explode(DS, $dirname);
 
@@ -1317,7 +1320,8 @@ class Connect extends Obj
             );
         }
 
-        return $parentId;
+        // createRemoteFolder() gives false or null when it cannot make one
+        return $parentId ? (string) $parentId : false;
     }
 
     /**
@@ -1547,7 +1551,7 @@ class Connect extends Obj
      * @param   string   $dir       Directory path
      * @param   string   $action    Action
      * @param   string   $newdir    New directory path
-     * @param   string|int|false   $parentId  Parent ID
+     * @param   string|int   $parentId  Parent folder's remote id
      * @return  bool|null
      */
     public function fixConvertedItems(
@@ -1630,7 +1634,7 @@ class Connect extends Obj
                 $remotes,
                 $deletes,
                 $path,
-                $startChangeId,
+                $startChangeId ? (string) $startChangeId : null,
                 $connections,
             );
         }
