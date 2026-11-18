@@ -319,7 +319,7 @@ class Ckeditor extends Plugin
     /**
      * Build a config object
      *
-     * @param   string $delimiter
+     * @param   non-empty-string $delimiter
      * @param   string|array<mixed> $input
      * @return  array<mixed>
      */

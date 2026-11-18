@@ -30,7 +30,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Path separator
      *
-     * @var  string
+     * @var  non-empty-string
      */
     public $separator = '.';
 
@@ -200,7 +200,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      *
      * @param   string  $path       Registry Path (e.g. config.cache.file)
      * @param   mixed   $value      Value of entry
-     * @param   string|null  $separator  The key separator
+     * @param   non-empty-string|null  $separator  The key separator
      * @return  $this  This method is chainable
      */
     public function set($path, $value, $separator = null)
@@ -298,7 +298,11 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         } elseif (!empty($data) && is_string($data)) {
             // See if it's a file or a string
             if (is_file($data) && is_readable($data)) {
-                $data = $this->read($data);
+                $contents = $this->read($data);
+                if ($contents === false) {
+                    return false;
+                }
+                $data = $contents;
             }
 
             if (!$format) {
@@ -386,7 +390,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Get the list of all available processors
      *
-     * @return  array<mixed>
+     * @return  array<string, Processor>
      */
     public function processors()
     {
@@ -397,7 +401,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Get the processor for a specific format
      *
      * @param   string  $format  Format to return the processor for
-     * @return  object
+     * @return  Processor
      */
     public function processor($format = 'json')
     {

@@ -589,7 +589,7 @@ class Html extends Obj
      *
      * @param      string|null $path
      * @param      string $end
-     * @param      string $delim
+     * @param      non-empty-string $delim
      * @return     string
      */
     public static function cleanFileNum($path = null, $end = '', $delim = '-')

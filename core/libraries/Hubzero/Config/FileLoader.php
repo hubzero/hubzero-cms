@@ -160,7 +160,7 @@ class FileLoader
      * Gets a parser for a given file extension
      *
      * @param   string  $extension
-     * @return  object
+     * @return  Processor
      * @throws  UnsupportedFormatException  If `$extension` is an unsupported file format
      */
     protected function getParser($extension)

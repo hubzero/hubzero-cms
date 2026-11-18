@@ -684,7 +684,7 @@ class Str
      * Make a string's first character uppercase or all words' first character uppercase
      *
      * @param   string  $str           String to be processed
-     * @param   string|null  $delimiter     The words delimiter (null means do not split the string)
+     * @param   non-empty-string|null  $delimiter     The words delimiter (null means do not split the string)
      * @param   string|null  $newDelimiter  The new words delimiter (null means equal to $delimiter)
      *
      * @return  string  If $delimiter is null, return the string with first character as upper case (if applicable)
