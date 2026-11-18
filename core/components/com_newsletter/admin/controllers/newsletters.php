@@ -668,6 +668,11 @@ class Newsletters extends AdminController
             $sendingTest = false,
         );
 
+        // send() has shown the form again if the mailing could not be saved
+        if (!($mailing instanceof Mailing)) {
+            return;
+        }
+
         // get count of emails (the default list also goes to the guest list)
         $guestmailinglist = null;
         $count2 = 0;
@@ -996,7 +1001,7 @@ class Newsletters extends AdminController
     /**
      * Create newsletter mailing recipients
      *
-     * @param   object  $mailing
+     * @param   Mailing  $mailing
      * @param   array<mixed>   $emails
      * @return  void
      */

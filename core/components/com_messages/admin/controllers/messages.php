@@ -266,16 +266,14 @@ class Messages extends AdminController
         }
 
         if ($success) {
-            switch ($this->task) {
-                case 'publish':
-                    $message = Lang::txt('COM_MESSAGES_N_ITEMS_PUBLISHED', $success);
-                    break;
-                case 'unpublish':
-                    $message = Lang::txt('COM_MESSAGES_N_ITEMS_UNPUBLISHED', $success);
-                    break;
+            // Anything but publish unpublished them (see $state above)
+            if ($this->task == 'publish') {
+                $text = Lang::txt('COM_MESSAGES_N_ITEMS_PUBLISHED', $success);
+            } else {
+                $text = Lang::txt('COM_MESSAGES_N_ITEMS_UNPUBLISHED', $success);
             }
 
-            Notify::success($message);
+            Notify::success($text);
         }
 
         // Set the redirect
