@@ -154,8 +154,10 @@ class Shibboleth extends Plugin
     {
         static $inst = null;
         if ($inst === null) {
-            $plugin = \Plugin::byType('authentication', 'shibboleth');
-            $inst = json_decode(json_decode($plugin->params)->institutions, true);
+            // Params, whether the plugin row still holds them as JSON or a
+            // Registry already; the institutions are JSON of their own
+            $params = \Plugin::params('authentication', 'shibboleth');
+            $inst = json_decode((string) $params->get('institutions'), true);
             $inst = isset($inst['activeIdps']) ? $inst['activeIdps'] : [];
         }
         return $inst;

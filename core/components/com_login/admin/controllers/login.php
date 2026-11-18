@@ -43,9 +43,9 @@ class Login extends AdminController
 
         foreach ($plugins as $plugin) {
             $className = 'plg' . $plugin->type . $plugin->name;
-            $params    = json_decode($plugin->params);
+            $params    = Plugin::params('authentication', $plugin->name);
 
-            if (class_exists($className) && isset($params->admin_login) && $params->admin_login) {
+            if (class_exists($className) && $params->get('admin_login')) {
                 $myplugin = new $className($this, (array) $plugin);
 
                 if ($plugin->name != $authenticator) {
