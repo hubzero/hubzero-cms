@@ -114,14 +114,17 @@ class Pages extends AdminController
             }]);
 
         if ($filters['scope']) {
-            if (strstr($filters['scope'], ':')) {
-                $bits = explode(':', $filters['scope']);
+            $bits = explode(':', $filters['scope'], 2);
+            if (count($bits) == 2) {
                 $filters['scope']    = $bits[0];
                 $filters['scope_id'] = $bits[1];
             }
             $results->whereEquals('scope', $filters['scope']);
 
-            $filters['scope'] .= ':' . $filters['scope_id'];
+            // Give the filter back as it came, for the list's scope selector
+            if (isset($filters['scope_id'])) {
+                $filters['scope'] .= ':' . $filters['scope_id'];
+            }
         }
 
         if (isset($filters['scope_id'])) {

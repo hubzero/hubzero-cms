@@ -199,6 +199,7 @@ class Html extends Obj
     public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
     {
         $file_size = (float) str_replace(' ', '', (string) $file_size);
+        $round     = (int) $round;
 
         if ($from == 'b') {
             if ($to == 'GB') {
@@ -535,7 +536,7 @@ class Html extends Obj
     /**
      * Covert param to array of values
      *
-     * @param   string|array<mixed> $array
+     * @param   array<mixed>  $array  Each plugin's counts, as Event::trigger() returns them
      * @return  array<mixed>
      */
     public static function getCountArray($array = [])
@@ -1249,14 +1250,14 @@ class Html extends Obj
     /**
      * Build list html
      *
-     * @param   string|null  $dir
+     * @param   \stdClass|null  $dir  A folder: its depth, path, name and subdirs
      * @param   string  $currentDir
      * @return  string
      */
     public static function listDirHtml($dir = null, $currentDir = '')
     {
-        if ($dir == null) {
-            $dir = new \stdClass();
+        if ($dir === null) {
+            return '';
         }
 
         $leftMargin = ($dir->depth * 15) . 'px';
