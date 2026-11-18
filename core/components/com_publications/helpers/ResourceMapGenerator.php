@@ -127,7 +127,7 @@ class ResourceMapGenerator
 
         $database = App::get('db');
         $pub = new \Components\Publications\Tables\Publication($database);
-        $publication = $pub->getPublication($this->id);
+        $publication = $pub->getPublication((int) $this->id);
         if (!$publication) {
             App::abort(404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
         }
@@ -187,7 +187,7 @@ class ResourceMapGenerator
         // Grabs database object
         $database = App::get('db');
         $resource = new \Components\Publications\Tables\Version($database);
-        $resource = $resource->getLastPubRelease($this->id);
+        $resource = $resource->getLastPubRelease((int) $this->id);
 
         if (!$resource) {
             // Return if ID does not exist
@@ -220,7 +220,7 @@ class ResourceMapGenerator
 
         // Load the $types variable. In the form of array([type_id] => [type_name]).
         $resource = new \Components\Publications\Tables\Publication($database);
-        $pub = $resource->getPublication($this->id);
+        $pub = $resource->getPublication((int) $this->id);
         if (!$pub) {
             App::abort(404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
         }

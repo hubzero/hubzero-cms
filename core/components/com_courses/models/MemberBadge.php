@@ -66,7 +66,7 @@ class MemberBadge extends Base
     {
         if (is_numeric($id)) {
             $obj = new MemberBadge();
-            $obj->table->loadByMemberId($id);
+            $obj->table->loadByMemberId((int) $id);
             return $obj;
         } else {
             return false;

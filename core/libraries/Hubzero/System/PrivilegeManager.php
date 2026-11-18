@@ -226,11 +226,11 @@ class PrivilegeManager
                 && posix_geteuid() === self::ROOT_UID
                 && $this->sudoUser !== null
             ) {
-                $groupsLoaded = posix_initgroups($this->sudoUser, $this->sudoUserInfo['gid']);
+                $groupsLoaded = posix_initgroups($this->sudoUser, (int) $this->sudoUserInfo['gid']);
             }
 
-            $gidChanged = posix_setegid($this->sudoUserInfo['gid']);
-            $uidChanged = posix_seteuid($this->sudoUserInfo['uid']);
+            $gidChanged = posix_setegid((int) $this->sudoUserInfo['gid']);
+            $uidChanged = posix_seteuid((int) $this->sudoUserInfo['uid']);
 
             if ($uidChanged) {
                 $this->elevated = false;

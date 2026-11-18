@@ -660,7 +660,7 @@ abstract class Cart
             return false;
         }
 
-        $items = self::getTransactionItems($tId);
+        $items = self::getTransactionItems((int) $tId);
         if (!$items) {
             return false;
         }
@@ -669,7 +669,7 @@ abstract class Cart
         $transaction = new \stdClass();
         $transaction->items = $items;
 
-        $tInfo = self::getTransactionInfo($tId);
+        $tInfo = self::getTransactionInfo((int) $tId);
 
         $transaction->info = $tInfo;
 

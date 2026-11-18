@@ -48,8 +48,8 @@ class MonthField extends AbstractField
                 $month = 12;
                 $year--;
             }
-            $date->setDate($year, $month, 1);
-            $date->setDate($year, $month, DayOfMonthField::getLastDayOfMonth($date));
+            $date->setDate((int) $year, $month, 1);
+            $date->setDate((int) $year, $month, DayOfMonthField::getLastDayOfMonth($date));
             $date->setTime(23, 59, 0);
         } else {
             $month = $date->format('m') + 1;
@@ -57,7 +57,7 @@ class MonthField extends AbstractField
                 $month = 1;
                 $year++;
             }
-            $date->setDate($year, $month, 1);
+            $date->setDate((int) $year, $month, 1);
             $date->setTime(0, 0, 0);
         }
 

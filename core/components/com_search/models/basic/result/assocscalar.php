@@ -111,12 +111,14 @@ class AssocScalar extends SearchResult
 
         $this->contributors = $this->contributors
             ? array_unique(
-                is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors']),
+                is_array($this->contributors) ? $this->contributors : (preg_split("#\n#", $row['contributors']) ?: []),
             )
             : [];
         $this->contributor_ids = $this->contributor_ids
             ? array_unique(
-                is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids']),
+                is_array($this->contributor_ids)
+                    ? $this->contributor_ids
+                    : (preg_split("#\n#", $row['contributor_ids']) ?: []),
             )
             : [];
 

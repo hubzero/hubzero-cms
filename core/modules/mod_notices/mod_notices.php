@@ -53,7 +53,7 @@ class Notices extends Module
     private function countdown($year, $month, $day, $hour, $minute)
     {
         // Make a unix timestamp for the given date
-        $the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year);
+        $the_countdown_date = mktime((int) $hour, $minute, 0, (int) $month, (int) $day, $year);
 
         // Get current unix timestamp
         $date = new \Hubzero\Utility\Date();

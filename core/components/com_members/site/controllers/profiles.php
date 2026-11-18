@@ -1971,7 +1971,7 @@ class Profiles extends SiteController
         $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
-            $words = preg_split('/\s+/', $term);
+            $words = preg_split('/\s+/', $term) ?: [];
             $words = array_values(array_filter($words, function ($w) {
                 return $w !== '';
             }));

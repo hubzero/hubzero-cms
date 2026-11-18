@@ -57,7 +57,7 @@ class Repo extends Obj
 
     /**
      * Constructor
-     * @param   object|null  $project  Project model
+     * @param   Project|Orm\Project|null  $project  Project model
      * @param   string  $name
      * @return  void
      */
@@ -87,7 +87,8 @@ class Repo extends Obj
      */
     private function ini()
     {
-        if (!is_object($this->get('project'))) {
+        $project = $this->get('project');
+        if (!($project instanceof Project) && !($project instanceof Orm\Project)) {
             return false;
         }
 
@@ -112,12 +113,12 @@ class Repo extends Obj
             if ($engine == 'git') {
                 $helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
                     $this->get('project')->get('alias'),
-                ));
+                ) ?: null);
                 $helper->iniGit();
             } else {
                 $helper = new Helpers\Nogit(Helpers\Html::getProjectRepoPath(
                     $this->get('project')->get('alias'),
-                ));
+                ) ?: null);
             }
 
             // Local Git repo  (/files)
@@ -145,10 +146,11 @@ class Repo extends Obj
         if (!$this->adapter) {
             $engine = 'nogit';
 
-            if (is_object($this->get('project'))) {
+            $project = $this->get('project');
+            if ($project instanceof Project || $project instanceof Orm\Project) {
                 // Use regex to avoid what might be a caching thing with Tables
                 $matches = [];
-                preg_match('/versionTracking=(\d)/', $this->get('project')->get('params', ''), $matches);
+                preg_match('/versionTracking=(\d)/', (string) $project->get('params', ''), $matches);
                 // Only use git adapter if project specifies it - otherwise assume we're not using git
                 if (isset($matches[1]) && $matches[1] == 1) {
                     $engine = 'git';
@@ -174,10 +176,8 @@ class Repo extends Obj
      */
     public function getAdapterName()
     {
-        if (!$this->adapter) {
-            $this->adapter();
-        }
-        $class = get_class($this->adapter);
+        $adapter = $this->adapter ?: $this->adapter();
+        $class = get_class($adapter);
         $lastSlash = strrpos($class, '\\');
         $className = substr($class, $lastSlash + 1);
         return strtolower($className);

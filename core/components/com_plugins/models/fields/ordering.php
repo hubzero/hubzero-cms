@@ -94,7 +94,7 @@ class Ordering extends Field
         for ($i = 0, $n = count($items); $i < $n; $i++) {
             $items[$i]->text = Lang::txt($items[$i]->text);
             if (strlen($items[$i]->text) > $chop) {
-                $text = substr($items[$i]->text, 0, $chop) . '...';
+                $text = substr($items[$i]->text, 0, (int) $chop) . '...';
             } else {
                 $text = $items[$i]->text;
             }

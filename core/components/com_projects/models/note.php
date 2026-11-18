@@ -65,7 +65,7 @@ class Note extends \Components\Wiki\Models\Book
     public function page($id = null, $scope = '')
     {
         $scope = $scope ? $scope : $this->scope;
-        $this->cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', $this->project_id);
+        $this->cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', (int) $this->project_id);
 
         return $this->cache['page'];
     }
