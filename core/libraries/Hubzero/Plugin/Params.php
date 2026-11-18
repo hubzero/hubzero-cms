@@ -111,6 +111,11 @@ class Params extends Relational
     {
         $plugin = \Plugin::byType($folder, $element);
 
+        // No such plugin (byType() gives an empty array), or no plugin named
+        if (!$plugin instanceof \stdClass) {
+            return new Registry();
+        }
+
         return new Registry($plugin->params);
     }
 

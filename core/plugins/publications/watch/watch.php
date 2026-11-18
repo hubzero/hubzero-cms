@@ -285,7 +285,7 @@ class Watch extends Plugin
     /**
      * Handles the actual sending of emails
      *
-     * @param   object  $subscriber
+     * @param   \Hubzero\Item\Watch  $subscriber
      * @param   string  $message
      * @param   string  $subject
      * @param   string  $url
@@ -305,15 +305,15 @@ class Watch extends Plugin
         $eview->set('url', $url);
 
         $name = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBER');
-        $email = $subscriber->email;
+        $email = $subscriber->get('email');
 
         $eview->set('unsubscribeLink', Route::url(
             $this->publication->link() . '&active=watch&action=unsubscribe&confirm=1&email=' . $email,
         ));
 
         // Get profile information
-        if ($subscriber->created_by) {
-            $user  = User::getInstance($subscriber->created_by);
+        if ($subscriber->get('created_by')) {
+            $user  = User::getInstance($subscriber->get('created_by'));
             $name  = $user->get('id') ? $user->get('name') : $name;
             $email = $user->get('id') ? $user->get('email') : $email;
         }

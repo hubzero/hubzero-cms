@@ -109,7 +109,7 @@ class Mygroups extends Module
     /**
      * Get the user's status in the gorup
      *
-     * @param   object  $group  Group to check status in
+     * @param   \stdClass  $group  Group to check status in
      * @return  string
      */
     public function getStatus($group)

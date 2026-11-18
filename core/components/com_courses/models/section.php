@@ -57,7 +57,7 @@ class Section extends Base
     /**
      * Member
      *
-     * @var object|null
+     * @var Member|null
      */
     private $member = null;
 
@@ -85,7 +85,7 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Section\Date
      *
-     * @var object|null
+     * @var Section\Date|null
      */
     private $date = null;
 
@@ -117,7 +117,7 @@ class Section extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             if ($oid) {
-                $this->table->loadForOffering($oid, $offering_id);
+                $this->table->loadForOffering((string) $oid, $offering_id);
             }
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);

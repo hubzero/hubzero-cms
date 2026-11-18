@@ -410,7 +410,13 @@ class Editor extends Obj
         require_once $path;
 
         // Get the plugin
-        $plugin = Plugin::byType('editors', $this->name);
+        $plugin = Plugin::byType('editors', (string) $this->name);
+
+        // Not published (byType() gives an empty array)
+        if (!$plugin instanceof \stdClass) {
+            Notify::error(Lang::txt('JLIB_HTML_EDITOR_CANNOT_LOAD'));
+            return false;
+        }
 
         $params = new Registry($plugin->params);
         $params->merge($config);

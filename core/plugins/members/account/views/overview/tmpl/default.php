@@ -60,8 +60,7 @@ $this
                 echo "<h5>" . Lang::txt('PLG_MEMBERS_ACCOUNT_ACTIVE_PROVIDERS') . ":</h5>";
                 foreach ($this->hzalaccounts as $hzala) {
                     // Get the display name for the current plugin being used
-                    $plugin       = Plugin::byType('authentication', $hzala['auth_domain_name']);
-                    $pparams      = new \Hubzero\Config\Registry($plugin->params);
+                    $pparams      = Plugin::params('authentication', $hzala['auth_domain_name']);
                     $display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
                     ?>
                     <?php
@@ -96,8 +95,7 @@ $this
                 echo '<h5>' . Lang::txt('PLG_MEMBERS_ACCOUNT_AVAILABLE_PROVIDERS') . ':</h5>';
                 foreach ($this->domains_unused as $domain) {
                     // Get the display name for the current plugin being used
-                    $plugin       = Plugin::byType('authentication', $domain->name);
-                    $pparams      = new \Hubzero\Config\Registry($plugin->params);
+                    $pparams      = Plugin::params('authentication', $domain->name);
                     $display_name = $pparams->get('display_name', ucfirst($domain->name));
                     $authName     = ucfirst($domain->name);
                     $authClass    = 'Plugins\\Authentication\\' . $authName . '\\' . $authName;

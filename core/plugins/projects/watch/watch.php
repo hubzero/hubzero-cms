@@ -373,7 +373,7 @@ class Watch extends Plugin
      * Handles the actual sending of emails
      *
      * @param   \Components\Projects\Models\Project|null  $project
-     * @param   object  $subscriber
+     * @param   \Hubzero\Item\Watch  $subscriber
      * @param   array<mixed>|\Hubzero\Database\Rows   $activities
      * @param   string  $subject
      * @return  bool

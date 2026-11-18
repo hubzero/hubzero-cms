@@ -154,7 +154,7 @@ class Feed extends Macro
     /**
      * Render an individual item
      *
-     * @param   object  $item  Feed Item
+     * @param   \SimplePie\Item  $item  Feed Item
      * @return  string
      */
     private function renderItem($item)

@@ -624,11 +624,12 @@ class Auth extends SiteController
         $plugins = Plugin::byType('authentication');
 
         // Get the display name for the current plugin being used
-        Plugin::import('authentication', $hzad->authenticator);
-        $plugin       = Plugin::byType('authentication', $hzad->authenticator);
-        $pparams      = new Registry($plugin->params);
-        $authClass    = 'Plugins\\Authentication\\' . ucfirst($plugin->name) . '\\' . ucfirst($plugin->name);
-        $defaultName  = ucfirst($plugin->name);
+        // (the plugin byType() finds is the one of that name)
+        $pluginName   = (string) $hzad->authenticator;
+        Plugin::import('authentication', $pluginName);
+        $pparams      = Plugin::params('authentication', $pluginName);
+        $authClass    = 'Plugins\\Authentication\\' . ucfirst($pluginName) . '\\' . ucfirst($pluginName);
+        $defaultName  = ucfirst($pluginName);
         if (class_exists($authClass) && method_exists($authClass, 'onGetLinkDescription')) {
             $defaultName = $authClass::onGetLinkDescription();
         }
@@ -727,7 +728,8 @@ class Auth extends SiteController
 
             $plugin = Plugin::byType('authentication', $authenticator);
 
-            $className = 'plg' . $plugin->type . $plugin->name;
+            // No such plugin (byType() gives an empty array): no class to call
+            $className = $plugin instanceof \stdClass ? 'plg' . $plugin->type . $plugin->name : '';
 
             if (class_exists($className)) {
                 if (method_exists($className, 'link')) {
@@ -766,9 +768,9 @@ class Auth extends SiteController
         $sitename = Config::get('sitename');
 
         // Get the display name for the current plugin being used
-        $plugin = Plugin::byType('authentication', $authenticator);
-        $pparams = new Registry($plugin->params);
-        $display_name = $pparams->get('display_name', ucfirst($plugin->name));
+        // (the plugin byType() finds is the one of that name)
+        $pparams = Plugin::params('authentication', (string) $authenticator);
+        $display_name = $pparams->get('display_name', ucfirst((string) $authenticator));
 
         $this->view
             ->set('authenticator', $authenticator)
@@ -934,9 +936,7 @@ class Auth extends SiteController
                 // doesn't lose session info after hub logout)
                 if ($auth_domain_name == 'pucas') {
                     // Get plugin params
-                    $plugin = Plugin::byType('authentication', $auth_domain_name);
-
-                    $pparams = new Registry($plugin->params);
+                    $pparams = Plugin::params('authentication', $auth_domain_name);
                     $auto_logoff = $pparams->get('auto_logoff', false);
 
                     if ($auto_logoff) {

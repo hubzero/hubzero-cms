@@ -48,8 +48,7 @@ if ($plugins = Event::trigger('courses.onAssetgroupEdit')) {
     $data = $ag->get('params');
 
     foreach ($plugins as $plugin) {
-        $p = Plugin::byType('courses', $plugin['name']);
-        $default = new \Hubzero\Config\Registry($p->params);
+        $default = Plugin::params('courses', $plugin['name']);
 
         $param = new \Hubzero\Html\Parameter(
             ($data instanceof \Hubzero\Config\Registry ? $data->toString() : $data),

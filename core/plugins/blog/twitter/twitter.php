@@ -23,7 +23,7 @@ class Twitter extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object  $model   Current model
+     * @param   \Components\Blog\Models\Entry  $model   Current model
      * @return  void
      */
     public function onBlogView($model)

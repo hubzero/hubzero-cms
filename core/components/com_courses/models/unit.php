@@ -52,7 +52,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Assetgroup
      *
-     * @var object|null
+     * @var Assetgroup|null
      */
     public $group = null;
 
@@ -101,7 +101,7 @@ class Unit extends Base
 
             if (is_numeric($oid) || is_string($oid)) {
                 if ($oid) {
-                    $this->table->loadForOffering($oid, $offering_id);
+                    $this->table->loadForOffering((string) $oid, $offering_id);
                 }
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);

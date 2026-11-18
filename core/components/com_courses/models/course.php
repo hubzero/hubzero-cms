@@ -43,7 +43,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object|null
+     * @var Offering|null
      */
     private $offering = null;
 
@@ -64,7 +64,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object|null
+     * @var Manager|null
      */
     private $manager = null;
 
@@ -85,7 +85,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object|null
+     * @var Page|null
      */
     private $page = null;
 

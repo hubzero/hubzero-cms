@@ -92,7 +92,7 @@ class Editor extends Obj
         }
 
         $return = '';
-        $results[] = $this->editor->onInitEditor();
+        $results[] = $this->callEditor('onInitEditor');
 
         foreach ($results as $result) {
             if (trim($result)) {
@@ -146,7 +146,7 @@ class Editor extends Obj
 
         $return = null;
 
-        $results[] = $this->editor->onDisplayEditor($name, $id, $html, $cls, $col, $row);
+        $results[] = $this->callEditor('onDisplayEditor', [$name, $id, $html, $cls, $col, $row]);
 
         foreach ($results as $result) {
             if (trim($result)) {
@@ -171,7 +171,7 @@ class Editor extends Obj
         }
 
         $return = '';
-        $results[] = $this->editor->onSaveEditorContent($editor);
+        $results[] = $this->callEditor('onSaveEditorContent', [$editor]);
 
         foreach ($results as $result) {
             if (trim($result)) {
@@ -197,7 +197,7 @@ class Editor extends Obj
         }
 
         $return = '';
-        $results[] = $this->editor->onGetEditorContent($editor);
+        $results[] = $this->callEditor('onGetEditorContent', [$editor]);
 
         foreach ($results as $result) {
             if (trim($result)) {
@@ -226,13 +226,37 @@ class Editor extends Obj
         ];
 
         $return = '';
-        $results[] = $this->editor->update($args);
+        $results[] = $this->callEditor('update', [$args]);
         foreach ($results as $result) {
             if (trim($result)) {
                 $return .= $result;
             }
         }
         return $return;
+    }
+
+    /**
+     * Run a hook of the editor plugin, if it has that hook
+     *
+     * Neither wiki editor has onSaveEditorContent(), onGetEditorContent() or
+     * update(), so save(), getContent() and setContent() give nothing.
+     *
+     * @param   string        $hook       The hook's name
+     * @param   array<mixed>  $arguments  What to pass it
+     * @return  mixed  What the hook gives, or null when there is no such hook
+     */
+    private function callEditor($hook, array $arguments = [])
+    {
+        if ($this->editor === null) {
+            return null;
+        }
+
+        $callback = [$this->editor, $hook];
+        if (!is_callable($callback)) {
+            return null;
+        }
+
+        return call_user_func_array($callback, $arguments);
     }
 
     /**
@@ -266,7 +290,12 @@ class Editor extends Obj
         require_once $path;
 
         // Get the plugin
-        $plugin = Plugin::byType('wiki', $this->name);
+        $plugin = Plugin::byType('wiki', (string) $this->name);
+
+        // Not published (byType() gives an empty array)
+        if (!$plugin instanceof \stdClass) {
+            throw new \Exception(Lang::txt('Cannot load the editor'), 500);
+        }
 
         $params = new Registry($plugin->params);
         $params->merge($config);

@@ -95,7 +95,7 @@ class Popular extends Module
     /**
      * Get the alternate title for the module
      *
-     * @param   object  $params  The module parameters.
+     * @param   \Hubzero\Config\Registry  $params  The module parameters.
      * @return  string  The alternate title for the module.
      */
     public static function getTitle($params)

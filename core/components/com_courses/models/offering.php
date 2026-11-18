@@ -103,14 +103,14 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var Member|null
      */
     private $member = null;
 
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object|null
+     * @var Manager|null
      */
     private $manager = null;
 
@@ -124,7 +124,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object|null
+     * @var Member|null
      */
     private $student = null;
 

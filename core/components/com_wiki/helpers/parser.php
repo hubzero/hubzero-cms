@@ -261,7 +261,13 @@ class Parser extends Obj
         require_once $path;
 
         // Get the plugin
-        $plugin = Plugin::byType('wiki', $this->name);
+        $plugin = Plugin::byType('wiki', (string) $this->name);
+
+        // Not published (byType() gives an empty array)
+        if (!$plugin instanceof \stdClass) {
+            throw new Exception(Lang::txt('Cannot load the parser'), 500);
+        }
+
         if (is_string($plugin->params)) {
             $plugin->params = new Registry($plugin->params);
         }
