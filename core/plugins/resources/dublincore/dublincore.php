@@ -69,49 +69,23 @@ class Dublincore extends Plugin
             Document::setMetaData('dcterms.license', $view->escape($license));
         }
 
+        // Authors are resource Author models: their name and organization
+        // come from the author row, or the member's profile when it has none
         foreach ($model->contributors('!submitter') as $contributor) {
-            if (strtolower($contributor->role ?? '') == 'submitter') {
+            if (!$contributor instanceof \Components\Resources\Models\Author) {
+                continue;
+            }
+            if (strtolower((string) $contributor->get('role')) == 'submitter') {
                 continue;
             }
 
-            $name = $this->name($contributor);
-
-            if (!$contributor->org) {
-                $contributor->org = $contributor->xorg;
-            }
-            if ($contributor->org) {
-                $contributor->org = stripslashes(trim($contributor->org));
-            }
+            $name = stripslashes((string) $contributor->name);
+            $org  = stripslashes(trim((string) $contributor->organization));
 
             Document::setMetaData(
                 'dcterms.creator',
-                $view->escape($name . ($contributor->org ? ', ' . $contributor->org : '')),
+                $view->escape($name . ($org ? ', ' . $org : '')),
             );
         }
-    }
-
-    /**
-     * Return contributor name
-     *
-     * @param   object  $contributor
-     * @return  string
-     */
-    private function name($contributor)
-    {
-        $name = '';
-
-        if ($contributor->name) {
-            $name = stripslashes($contributor->name);
-        } elseif ($contributor->surname || $contributor->givenName) {
-            $name = stripslashes($contributor->givenName) . ' ';
-            if ($contributor->middleName != null) {
-                $name .= stripslashes($contributor->middleName) . ' ';
-            }
-            $name .= stripslashes($contributor->surname);
-        } else {
-            $name = stripslashes($contributor->xname == null ? '' : $contributor->xname);
-        }
-
-        return $name;
     }
 }
