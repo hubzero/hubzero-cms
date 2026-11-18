@@ -81,7 +81,7 @@ class Migration20260915120000MenuRoute extends Base
 
         foreach ($declared as $row) {
             $this->log(
-                'The address /' . (is_object($row) ? $row->path : $row['path'])
+                'The address /' . ((array) $row)['path']
                 . ' was declared and will now follow the menu again',
                 'warning',
             );

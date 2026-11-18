@@ -58,9 +58,9 @@ class Migration20260915180000ComponentRoutesPublished extends Base
         $ids = [];
 
         foreach ($rows as $row) {
-            $ids[] = (int) (is_object($row) ? $row->id : $row['id']);
+            $ids[] = (int) ((array) $row)['id'];
 
-            $this->log('Published the address /' . (is_object($row) ? $row->path : $row['path'])
+            $this->log('Published the address /' . ((array) $row)['path']
                 . '; whether it answers is now the component\'s business');
         }
 

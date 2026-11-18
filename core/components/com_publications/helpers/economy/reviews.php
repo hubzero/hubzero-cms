@@ -77,7 +77,7 @@ class Reviews extends Obj
      */
     public function calculateMarketvalue($review, $type = 'royalty')
     {
-        if (!is_object($review)) {
+        if (!$review instanceof \stdClass) {
             return false;
         }
 
@@ -105,7 +105,7 @@ class Reviews extends Obj
      */
     public function distributePoints($review, $type = 'royalty')
     {
-        if (!is_object($review)) {
+        if (!$review instanceof \stdClass) {
             return false;
         }
         $cat = 'review';

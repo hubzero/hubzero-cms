@@ -28,7 +28,7 @@ class Loader implements LoaderInterface
     /**
      * A persistent cache of the loaded plugins.
      *
-     * @var  array<mixed>|null
+     * @var  array<int, \stdClass>|null
      */
     protected static $plugins = null;
 
@@ -92,7 +92,8 @@ class Loader implements LoaderInterface
      *
      * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
      * @param   string|null  $plugin  The plugin name.
-     * @return  mixed   An array of plugin data objects, or a plugin data object.
+     * @return  ($plugin is null ? list<\stdClass> : \stdClass|array{})  The type's plugins, or the one named
+     *                                                                  (an empty array when it is not there)
      */
     public function byType($type, $plugin = null)
     {
@@ -265,7 +266,7 @@ class Loader implements LoaderInterface
     /**
      * Loads the published plugins.
      *
-     * @return  array<mixed>  An array of published plugins
+     * @return  array<int, \stdClass>  An array of published plugins
      */
     public function all()
     {

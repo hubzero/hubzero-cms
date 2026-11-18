@@ -62,7 +62,7 @@ class Economy extends Obj
      */
     public function distributePoints($con, $type = 'royalty')
     {
-        if (!is_object($con)) {
+        if (!$con instanceof \stdClass) {
             return false;
         }
         $cat = 'resource';

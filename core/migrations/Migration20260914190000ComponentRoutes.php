@@ -82,9 +82,9 @@ class Migration20260914190000ComponentRoutes extends Base
         $added = 0;
 
         foreach ($rows as $row) {
-            $element = is_object($row) ? $row->element : $row['element'];
-            $id      = (int) (is_object($row) ? $row->extension_id : $row['extension_id']);
-            $enabled = (int) (is_object($row) ? $row->enabled : $row['enabled']);
+            $element = ((array) $row)['element'];
+            $id      = (int) ((array) $row)['extension_id'];
+            $enabled = (int) ((array) $row)['enabled'];
 
             if (!$enabled || substr($element, 0, 4) !== 'com_') {
                 continue;

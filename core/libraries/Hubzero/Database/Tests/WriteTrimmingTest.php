@@ -207,11 +207,17 @@ class WriteTrimmingTest extends TestCase
     /**
      * Title and body of the most recent note
      *
-     * @return  array<mixed>
+     * @return  list<mixed>
      */
     private function row()
     {
-        return $this->pdo()->query('SELECT title, body FROM notes ORDER BY id DESC LIMIT 1')->fetch(PDO::FETCH_NUM);
+        $row = self::select($this->pdo(), 'SELECT title, body FROM notes ORDER BY id DESC LIMIT 1')
+            ->fetch(PDO::FETCH_NUM);
+        if ($row === false) {
+            throw new \RuntimeException('There is no note to read');
+        }
+
+        return $row;
     }
 
     /**
@@ -228,6 +234,23 @@ class WriteTrimmingTest extends TestCase
      */
     private function column($sql)
     {
-        return $this->pdo()->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+        return self::select($this->pdo(), $sql)->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * Run a query the test needs, failing loudly if it cannot
+     *
+     * @param   \PDO    $pdo
+     * @param   string  $sql
+     * @return  \PDOStatement
+     */
+    private static function select($pdo, $sql)
+    {
+        $statement = $pdo->query($sql);
+        if ($statement === false) {
+            throw new \RuntimeException('Query failed: ' . $sql);
+        }
+
+        return $statement;
     }
 }

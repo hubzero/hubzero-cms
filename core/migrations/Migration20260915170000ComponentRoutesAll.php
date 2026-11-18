@@ -101,11 +101,11 @@ class Migration20260915170000ComponentRoutesAll extends Base
             ->fetch();
 
         foreach ($rows as $row) {
-            $element = is_object($row) ? $row->element : $row['element'];
+            $element = ((array) $row)['element'];
 
             $found[$element] = [
-                'id'      => (int) (is_object($row) ? $row->extension_id : $row['extension_id']),
-                'enabled' => (int) (is_object($row) ? $row->enabled : $row['enabled']),
+                'id'      => (int) ((array) $row)['extension_id'],
+                'enabled' => (int) ((array) $row)['enabled'],
             ];
         }
 

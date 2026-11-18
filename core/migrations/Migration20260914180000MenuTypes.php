@@ -123,9 +123,9 @@ class Migration20260914180000MenuTypes extends Base
             ->fetch();
 
         foreach ($rows as $row) {
-            $id    = (int) (is_object($row) ? $row->id : $row['id']);
-            $alias = is_object($row) ? $row->alias : $row['alias'];
-            $link  = (string) (is_object($row) ? $row->link : $row['link']);
+            $id    = (int) ((array) $row)['id'];
+            $alias = ((array) $row)['alias'];
+            $link  = (string) ((array) $row)['link'];
 
             if (preg_match('/option=com_(\w+)/', $link, $m) && $m[1] === $alias) {
                 continue;

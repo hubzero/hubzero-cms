@@ -200,7 +200,7 @@ class Item extends Nested
                 ->fetch();
 
             foreach ($clashes as $clash) {
-                $link = (string) (is_object($clash) ? $clash->link : $clash['link']);
+                $link = (string) ((array) $clash)['link'];
 
                 // Saying which component it belongs to is the useful half: the
                 // answer is nearly always "that is a component's own address".
@@ -756,7 +756,7 @@ class Item extends Nested
                 return true;
             }
 
-            $kind = is_object($row) ? $row->menuKind : $row['menuKind'];
+            $kind = ((array) $row)['menuKind'];
 
             if (self::routeRank($kind) <= $mine) {
                 return true;
@@ -1034,7 +1034,7 @@ class Item extends Nested
         $found = [];
 
         foreach ($rows as $row) {
-            $found[] = (int) (is_object($row) ? $row->id : $row['id']);
+            $found[] = (int) ((array) $row)['id'];
         }
 
         return $found;

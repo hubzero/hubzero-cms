@@ -89,17 +89,16 @@ class ServiceAccountsMigrationTest extends Basic
         $this->assertSame(1, (int) $group[0]['parent_id'], 'directly under Public');
         $this->assertTrue(self::nestedSetIsValid($after), 'nested set consistent after up()');
 
-        $members = $pdo
-            ->query(
-                'SELECT user_id FROM jos_user_usergroup_map WHERE group_id = '
-                    . (int) $group[0]['id']
-                    . ' ORDER BY user_id',
-            )
-            ->fetchAll(PDO::FETCH_COLUMN);
+        $members = self::select(
+            $pdo,
+            'SELECT user_id FROM jos_user_usergroup_map WHERE group_id = '
+                . (int) $group[0]['id']
+                . ' ORDER BY user_id',
+        )->fetchAll(PDO::FETCH_COLUMN);
         $this->assertSame([1001, 1002], array_map('intval', $members));
 
         // A group an admin creates later, to the right of "Service accounts"
-        $rgt = (int) $pdo->query('SELECT rgt FROM jos_usergroups WHERE parent_id = 0')->fetchColumn();
+        $rgt = (int) self::select($pdo, 'SELECT rgt FROM jos_usergroups WHERE parent_id = 0')->fetchColumn();
         $pdo->exec('UPDATE jos_usergroups SET rgt = rgt + 2 WHERE rgt >= ' . $rgt);
         $pdo->exec(
             "INSERT INTO jos_usergroups (id, parent_id, lft, rgt, title) VALUES (50, 1, $rgt, "
@@ -124,7 +123,7 @@ class ServiceAccountsMigrationTest extends Basic
         ];
         $this->assertEquals($expected, self::tree($pdo), 'down() removes the group and closes its gap');
         $this->assertTrue(self::nestedSetIsValid(self::tree($pdo)), 'nested set consistent after down()');
-        $this->assertSame(0, (int) $pdo->query('SELECT COUNT(*) FROM jos_user_usergroup_map')->fetchColumn());
+        $this->assertSame(0, (int) self::select($pdo, 'SELECT COUNT(*) FROM jos_user_usergroup_map')->fetchColumn());
     }
 
     /**
@@ -137,8 +136,7 @@ class ServiceAccountsMigrationTest extends Basic
     {
         $rows = [];
         foreach (
-            $pdo
-                ->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')
+            self::select($pdo, 'SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')
                 ->fetchAll(PDO::FETCH_ASSOC) as $row
         ) {
             $rows[$row['id']] = $row;
@@ -201,5 +199,22 @@ class ServiceAccountsMigrationTest extends Basic
         }
 
         return $m[0];
+    }
+
+    /**
+     * Run a query the test needs, failing loudly if it cannot
+     *
+     * @param   \PDO    $pdo
+     * @param   string  $sql
+     * @return  \PDOStatement
+     */
+    private static function select($pdo, $sql)
+    {
+        $statement = $pdo->query($sql);
+        if ($statement === false) {
+            throw new \RuntimeException('Query failed: ' . $sql);
+        }
+
+        return $statement;
     }
 }

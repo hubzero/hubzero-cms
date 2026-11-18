@@ -163,9 +163,12 @@ class ExpireInactiveTest extends Basic
             $query = Members::inactiveAccountsQuery(
                 $db->quote($cutoff),
                 $cutoffDay,
-                $exemptGroup === null ? null : $db->quote($exemptGroup),
+                $exemptGroup === null ? null : (string) $db->quote($exemptGroup),
             );
-            $ids   = array_map('intval', $db->query(str_replace('#__', 'jos_', $query))->fetchAll(PDO::FETCH_COLUMN));
+            $ids   = array_map(
+                'intval',
+                self::select($db, str_replace('#__', 'jos_', $query))->fetchAll(PDO::FETCH_COLUMN),
+            );
             sort($ids);
             return $ids;
         };
@@ -190,5 +193,22 @@ class ExpireInactiveTest extends Basic
         }
 
         return $m[0];
+    }
+
+    /**
+     * Run a query the test needs, failing loudly if it cannot
+     *
+     * @param   \PDO    $pdo
+     * @param   string  $sql
+     * @return  \PDOStatement
+     */
+    private static function select($pdo, $sql)
+    {
+        $statement = $pdo->query($sql);
+        if ($statement === false) {
+            throw new \RuntimeException('Query failed: ' . $sql);
+        }
+
+        return $statement;
     }
 }
