@@ -307,20 +307,32 @@ class Newsletter extends Plugin
                 );*/
             }
 
-            // if we got a valid result lets update our action with location info
-            if (!empty($location) && $location['latitude'] != '' && $location['longitude'] != '-') {
-                $sql = "UPDATE `#__newsletter_mailing_recipient_actions`
-						SET
-							countrySHORT=" . $database->quote($location['countryCode']) . ",
-							countryLONG=" . $database->quote($location['country']) . ",
-							ipREGION=" . $database->quote($location['region']) . ",
-							ipCITY=" . $database->quote($location['city']) . ",
-							ipLATITUDE=" . $database->quote($location['latitude']) . ",
-							ipLONGITUDE=" . $database->quote($location['longitude']) . "
-						WHERE id=" . $database->quote($action->id);
-                $database->setQuery($sql);
-                $database->query();
+            // locate() gives the places it found, or '' when no geocoder is set up
+            if (!$location instanceof \Geocoder\Collection || $location->isEmpty()) {
+                continue;
             }
+
+            $place       = $location->first();
+            $coordinates = $place->getCoordinates();
+            if (!$coordinates) {
+                continue;
+            }
+
+            $country = $place->getCountry();
+            $regions = $place->getAdminLevels();
+
+            // update our action with the location info
+            $sql = "UPDATE `#__newsletter_mailing_recipient_actions`
+					SET
+						countrySHORT=" . $database->quote($country ? (string) $country->getCode() : '') . ",
+						countryLONG=" . $database->quote($country ? (string) $country->getName() : '') . ",
+						ipREGION=" . $database->quote($regions->count() ? $regions->first()->getName() : '') . ",
+						ipCITY=" . $database->quote((string) $place->getLocality()) . ",
+						ipLATITUDE=" . $database->quote((string) $coordinates->getLatitude()) . ",
+						ipLONGITUDE=" . $database->quote((string) $coordinates->getLongitude()) . "
+					WHERE id=" . $database->quote($action->id);
+            $database->setQuery($sql);
+            $database->query();
         }
         return true;
     }
