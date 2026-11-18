@@ -195,6 +195,7 @@ if (is_object($schema)) {
         if (
             isset($data[$field->name])
             && $elements->display($field->type, $data[$field->name])
+            && $field instanceof \stdClass
             && isset($field->display)
             && $field->display == $tab
         ) {
@@ -212,6 +213,7 @@ if ($hasCustomFields) :
         if (isset($data[$field->name])) {
             if (
                 $elements->display($field->type, $data[$field->name])
+                && $field instanceof \stdClass
                 && isset($field->display)
                 && $field->display == $tab
             ) {

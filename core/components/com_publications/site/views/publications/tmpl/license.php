@@ -15,9 +15,11 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{publication: \Components\Publications\Models\Publication, title: mixed} $this
  */
 
+// The version's own text, else its license's (a publication may have none)
+$license = $this->publication->license();
 $text = $this->publication->version->get('license_text')
     ? $this->publication->version->get('license_text')
-    : $this->publication->license()->text;
+    : ($license ? $license->text : '');
 $text = preg_replace("/\r\n/", "\r", trim($text));
 
 ?>
