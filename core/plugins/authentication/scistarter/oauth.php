@@ -80,7 +80,7 @@ class Oauth
     /**
      * Constructs a new instance
      *
-     * @param   object|null  $http  a request tranport object to inject
+     * @param   Curl|null  $http  a request tranport object to inject
      * @return  void
      * @uses    SciStarter\Http\Curl
      **/
@@ -260,7 +260,7 @@ class Oauth
             ->setPostFields($fields)
             ->setHeader(['Accept' => 'application/json']);
 
-        $data = json_decode($this->http->execute());
+        $data = json_decode((string) $this->http->execute());
 
         if (isset($data->access_token)) {
             $this->setAccessToken($data->access_token);
@@ -311,7 +311,7 @@ class Oauth
             'Authorization' => 'Bearer ' . $this->getAccessToken(),
         ]);
 
-        $account = json_decode($this->http->execute());
+        $account = json_decode((string) $this->http->execute());
         return $account;
     }
 }

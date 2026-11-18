@@ -16,7 +16,7 @@ class Curl
     /**
      * The connection resource
      *
-     * @var  object|null
+     * @var  \CurlHandle|null
      **/
     private $resource = null;
 
@@ -37,7 +37,12 @@ class Curl
      **/
     public function initialize()
     {
-        $this->resource = curl_init();
+        $resource = curl_init();
+        if ($resource === false) {
+            throw new \RuntimeException('Cannot start a curl session');
+        }
+
+        $this->resource = $resource;
         $this->setReturnTransfer();
 
         return $this;

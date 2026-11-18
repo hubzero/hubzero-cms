@@ -540,6 +540,10 @@ class Page extends Relational
                 }
             }
 
+            if (!is_a($cls, Adapters\Base::class, true)) {
+                throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
+            }
+
             $this->adapter = new $cls(
                 $this->get('pagename'),
                 $this->get('path'),

@@ -33,6 +33,11 @@ class Index
         $engine = $config->get('engine');
         if ($engine != 'hubgraph') {
             $adapter = "\\Hubzero\\Search\\Adapters\\" . ucfirst($engine) . 'IndexAdapter';
+
+            if (!is_a($adapter, Adapters\SolrIndexAdapter::class, true)) {
+                throw new \RuntimeException(sprintf('No index adapter for the "%s" search engine', $engine));
+            }
+
             $this->adapter = new $adapter($config);
         }
         return;

@@ -32,7 +32,7 @@ class Query
 
         $adapter = "\\Hubzero\\Search\\Adapters\\" . ucfirst($engine) . 'QueryAdapter';
 
-        if (!class_exists($adapter)) {
+        if (!is_a($adapter, Adapters\SolrQueryAdapter::class, true)) {
             throw new \RuntimeException(sprintf('No query adapter for the "%s" search engine', $engine));
         }
 
