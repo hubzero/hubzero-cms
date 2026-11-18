@@ -288,7 +288,7 @@ class Tool extends Content
 
     /**
      * List of files currently added to asset
-     * @param object    $asset object of current asset
+     * @param \Components\Courses\Models\Asset  $asset  The current asset
      *
      * @return array<mixed> list of files currently included in asset
      */

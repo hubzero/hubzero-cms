@@ -88,7 +88,7 @@ class Url extends Content
     /**
      * Preview method for this handler
      *
-     * @param  object $asset - asset
+     * @param  \Components\Courses\Models\Asset $asset - asset
      * @return array<string, mixed>  (string) type, (string) text
      **/
     public function preview($asset)

@@ -596,7 +596,7 @@ class Course extends Base
      * Check if the current user is enrolled
      *
      * @param   string|null  $url
-     * @return     object
+     * @return     Page
      */
     public function page($url = null)
     {

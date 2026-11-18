@@ -164,7 +164,7 @@ class Unit extends Base
      * Get a specific asset group
      *
      * @param   integer|null $id Asset group ID
-     * @return  object
+     * @return  Assetgroup|null  Null when the unit has no such group
      */
     public function assetgroup($id = null)
     {
