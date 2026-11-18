@@ -17,8 +17,8 @@ class ContributionSorter
     /**
      * Sorting helper
      *
-     * @param   object   $a
-     * @param   object   $b
+     * @param   \Components\Search\Models\Basic\Result   $a
+     * @param   \Components\Search\Models\Basic\Result   $b
      * @return  integer
      */
     public static function sort($a, $b)
@@ -38,8 +38,8 @@ class ContributionSorter
     /**
      * Sort by weight
      *
-     * @param   object   $a
-     * @param   object   $b
+     * @param   \Components\Search\Models\Basic\Result   $a
+     * @param   \Components\Search\Models\Basic\Result   $b
      * @return  integer
      */
     public static function sortWeight($a, $b)
@@ -55,8 +55,8 @@ class ContributionSorter
     /**
      * Sort by title
      *
-     * @param   object  $a
-     * @param   object  $b
+     * @param   \Components\Search\Models\Basic\Result  $a
+     * @param   \Components\Search\Models\Basic\Result  $b
      * @return  int
      */
     public static function sortTitle($a, $b)

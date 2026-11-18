@@ -35,8 +35,8 @@ class PublicationChildSorter
     /**
      * Sort objects
      *
-     * @param   object  $a
-     * @param   object  $b
+     * @param   \Components\Search\Models\Basic\Result  $a
+     * @param   \Components\Search\Models\Basic\Result  $b
      * @return  integer
      */
     public function sort($a, $b)

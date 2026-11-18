@@ -25,7 +25,7 @@ class Events extends Plugin
      * Build search query and add it to the $results
      *
      * @param      \Components\Search\Models\Basic\Request $request  \Components\Search\Models\Basic\Request
-     * @param      object &$results \Components\Search\Models\Basic\Result\Set
+     * @param      \Components\Search\Models\Basic\Result\Set &$results
      * @param      \Components\Search\Models\Basic\Authorization $authz    \Components\Search\Models\Basic\Authorization
      * @return     void
      */
@@ -108,7 +108,7 @@ class Events extends Plugin
      *
      * Long description (if any) ...
      *
-     * @param      object $res Parameter description (if any) ...
+     * @param      \Components\Search\Models\Basic\Result $res Parameter description (if any) ...
      * @return     string Return description (if any) ...
      */
     public static function onBeforeSearchRenderEvents($res)

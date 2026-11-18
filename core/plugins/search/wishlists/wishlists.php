@@ -22,7 +22,7 @@ class Wishlists extends Plugin
      * Basic search
      *
      * @param   \Components\Search\Models\Basic\Request  $request
-     * @param   object  &$results
+     * @param   \Components\Search\Models\Basic\Result\Set  &$results
      * @return  void
      */
     public static function onSearch($request, &$results)

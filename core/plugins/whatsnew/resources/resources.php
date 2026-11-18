@@ -113,7 +113,7 @@ class Resources extends Plugin
         }
 
         // Do we have a time period?
-        if (!is_object($period)) {
+        if (!($period instanceof \Components\Whatsnew\Helpers\Period)) {
             return [];
         }
 

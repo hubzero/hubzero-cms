@@ -61,7 +61,7 @@ class Events extends Plugin
         }
 
         // Do we have a search term?
-        if (!is_object($period)) {
+        if (!($period instanceof \Components\Whatsnew\Helpers\Period)) {
             return [];
         }
 
