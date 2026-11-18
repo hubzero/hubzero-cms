@@ -34,7 +34,7 @@ class Stats extends Table
      * @param   int|string|null  $year
      * @param   int|string|null  $month
      * @param   string   $week
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadLog($year = null, $month = null, $week = '')
     {

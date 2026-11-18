@@ -55,7 +55,7 @@ class HandlerAssoc extends Table
      * @param   integer|null  $vid        Publication Version ID
      * @param   integer|null  $elementid  Element ID
      * @param   string|null   $handler    Handler name
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false|null  The row, or false or null
      */
     public function getAssociation($vid = null, $elementid = null, $handler = null)
     {

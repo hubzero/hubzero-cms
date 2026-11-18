@@ -1510,7 +1510,7 @@ class Connect extends Obj
      * @param   string   $original_path    Original path
      * @param   string   $original_format  Original MIME type
      * @param   string   $original_id      Original ID
-     * @return  mixed False if error, Object on success
+     * @return  bool True when the record was found and loaded
      */
     public function savePairing(
         $projectid = null,

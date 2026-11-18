@@ -31,7 +31,7 @@ class CurationVersion extends Table
      *
      * @param   integer|string $type_id  Publication Master Type ID
      * @param   string   $get
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|null  The row or null
      */
     public function getLatest($type_id = '', $get = '*')
     {
@@ -48,7 +48,7 @@ class CurationVersion extends Table
      * Load last record for type
      *
      * @param   integer|string $type_id  Publication Master Type ID
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadLatest($type_id = '')
     {

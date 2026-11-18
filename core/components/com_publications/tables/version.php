@@ -31,7 +31,7 @@ class Version extends Table
      *
      * @param   integer|null  $pid      Pub ID
      * @param   string|int|null  $version  Version number or name
-     * @return  mixed False if error, Object on success
+     * @return  bool True when the record was found and loaded
      */
     public function loadVersion($pid = null, $version = 'dev')
     {

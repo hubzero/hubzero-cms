@@ -54,7 +54,7 @@ class Author extends Table
      *
      * @param   integer|null  $uid  User ID
      * @param   integer|null  $vid  Pub version ID
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadAssociation($uid = null, $vid = null)
     {
@@ -121,7 +121,7 @@ class Author extends Table
      *
      * @param   int|string|null  $owner_id  Project owner ID
      * @param   integer|null  $vid       Pub version ID
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadAssociationByOwner($owner_id = null, $vid = null)
     {
@@ -456,7 +456,7 @@ class Author extends Table
      *
      * @param   integer|null  $vid  Pub version ID
      * @param   integer  $by   Publication creator
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getSubmitter($vid = null, $by = 0)
     {
@@ -498,7 +498,7 @@ class Author extends Table
      * @param   integer|null  $vid        Pub version ID
      * @param   integer  $by         Publication creator
      * @param   integer  $projectid
-     * @return  mixed    False if error, Object on success
+     * @return  bool  Whether the submitter was saved
      */
     public function saveSubmitter($vid = null, $by = 0, $projectid = 0)
     {
@@ -544,7 +544,8 @@ class Author extends Table
         $this->firstName        = $author->firstName ? $author->firstName : null;
         $this->lastName         = $author->lastName ? $author->lastName : null;
         $this->credit           = 'Submitter';
-        $this->store();
+
+        return $this->store();
     }
 
     /**
@@ -553,7 +554,7 @@ class Author extends Table
      * @param   integer|null  $vid     Pub version ID
      * @param   integer  $uid     User ID
      * @param   integer  $active  Get only active records
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getAuthorByUid($vid = null, $uid = 0, $active = 0)
     {
@@ -592,7 +593,7 @@ class Author extends Table
      *
      * @param   integer|null  $vid       Pub version ID
      * @param   integer  $owner_id  Owner ID
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false|null  The row, or false or null
      */
     public function getAuthorByOwnerId($vid = null, $owner_id = 0)
     {
@@ -650,7 +651,7 @@ class Author extends Table
      * Get record by author ID
      *
      * @param   integer  $id  Author ID
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false|null  The row, or false or null
      */
     public function getAuthorById($id = 0)
     {
@@ -857,7 +858,7 @@ class Author extends Table
      * Get profile info by owner ID
      *
      * @param   int|string  $owner_id  Owner ID
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getProfileInfoByOwner($owner_id)
     {
@@ -922,7 +923,7 @@ class Author extends Table
      * Get neighbor
      *
      * @param   string  $move  Direction
-     * @return  mixed   False if error, Object on success
+     * @return  bool   True when the record was found and loaded
      */
     public function getNeighbor($move)
     {

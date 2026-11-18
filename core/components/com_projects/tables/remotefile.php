@@ -151,7 +151,7 @@ class RemoteFile extends Table
      * @param   int|string|null   $id          Remote ID
      * @param   string   $service     Service name (google)
      * @param   string   $local_path  Local path to file
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadItem($projectid = null, $id = null, $service = '', $local_path = '')
     {
@@ -221,7 +221,7 @@ class RemoteFile extends Table
      * @param   integer  $uid
      * @param   array<mixed>    $item       Remote item information array
      * @param   array<mixed>    $connections
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function checkRemoteRecord(
         $projectid = null,
@@ -273,7 +273,7 @@ class RemoteFile extends Table
      * @param   string   $service    Service name (google)
      * @param   integer  $id
      * @param   string|null   $filename
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function deleteRecord($projectid = null, $service = 'google', $id = 0, $filename = null)
     {
@@ -299,7 +299,7 @@ class RemoteFile extends Table
      * @param   string|null   $filename
      * @param   array<mixed>    $local
      * @param   array<mixed>    $remote
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function updateSyncRecord(
         $projectid = null,
@@ -367,7 +367,7 @@ class RemoteFile extends Table
      * @param   string   $local_format
      * @param   string   $remote_modified
      * @param   string   $remote_author
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function updateRecord(
         $projectid = null,

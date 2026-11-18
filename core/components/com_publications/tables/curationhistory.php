@@ -62,7 +62,7 @@ class CurationHistory extends Table
      *
      * @param   integer|null  $vid  Publication Version ID
      * @param   int  $curator
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false|null  The row, or false or null
      */
     public function getLastRecord($vid = null, $curator = 0)
     {

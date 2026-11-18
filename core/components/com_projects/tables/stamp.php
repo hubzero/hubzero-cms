@@ -86,7 +86,7 @@ class Stamp extends Table
      * @param   integer  $projectid  Project ID
      * @param   string   $reference  Reference string to object (JSON)
      * @param   string   $type
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function checkStamp($projectid = 0, $reference = '', $type = '')
     {

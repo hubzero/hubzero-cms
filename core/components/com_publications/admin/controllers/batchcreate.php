@@ -526,7 +526,7 @@ class Batchcreate extends AdminController
      * Process parsed data
      *
      * @param   array<mixed>  $item
-     * @param   object  $out
+     * @param   string|null  $out  HTML reporting the publications made; this one's line is added
      * @return  boolean
      */
     public function processRecord($item, &$out)

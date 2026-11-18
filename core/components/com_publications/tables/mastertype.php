@@ -284,7 +284,7 @@ class MasterType extends Table
      * Load by ordering
      *
      * @param   mixed  $ordering  Integer or string (alias)
-     * @return  mixed  False if error, Object on success
+     * @return  bool  True when the record was found and loaded
      */
     public function loadByOrder($ordering = null)
     {
@@ -306,7 +306,7 @@ class MasterType extends Table
      * Change order
      *
      * @param   integer  $dir
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function changeOrder($dir)
     {

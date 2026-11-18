@@ -172,7 +172,7 @@ class License extends Table
      * Get licenses
      *
      * @param   object|null  $manifest
-     * @param   object|null  $selected
+     * @param   \stdClass|false|null  $selected  The license chosen, from getPubLicense()
      * @return  array<mixed>|false|null
      */
     public function getBlockLicenses($manifest = null, $selected = null)
@@ -234,7 +234,7 @@ class License extends Table
      * Get license by id
      *
      * @param   integer  $id  License ID
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getLicense($id = 0)
     {
@@ -254,7 +254,7 @@ class License extends Table
      * Load by ordering
      *
      * @param   mixed  $ordering  Integer or string (alias)
-     * @return  mixed  False if error, Object on success
+     * @return  bool  True when the record was found and loaded
      */
     public function loadByOrder($ordering = null)
     {
@@ -276,7 +276,7 @@ class License extends Table
      * Change order
      *
      * @param   integer  $dir
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function changeOrder($dir)
     {
@@ -299,7 +299,7 @@ class License extends Table
      * Get license by name
      *
      * @param   string  $name  License name
-     * @return  mixed   False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getLicenseByName($name = '')
     {
@@ -319,7 +319,7 @@ class License extends Table
      * Get license by title
      *
      * @param   string  $title  License title
-     * @return  mixed   False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getLicenseByTitle($title = '')
     {
@@ -339,7 +339,7 @@ class License extends Table
      * Get license by pub version id
      *
      * @param   integer|null  $vid  Pub version ID
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false  The row, or false
      */
     public function getPubLicense($vid = null)
     {

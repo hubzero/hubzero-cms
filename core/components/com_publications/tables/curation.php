@@ -74,7 +74,7 @@ class Curation extends Table
      * @param   mixed  $block
      * @param   int  $step
      * @param   mixed  $element
-     * @return  mixed    False if error, Object on success
+     * @return  \stdClass|false|null  The row, or false or null
      */
     public function getRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)
     {
@@ -101,7 +101,7 @@ class Curation extends Table
      * @param   mixed  $block
      * @param   int  $step
      * @param   mixed  $element
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)
     {

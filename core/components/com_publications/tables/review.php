@@ -64,7 +64,7 @@ class Review extends Table
      * @param   integer|null  $pid        Pub ID
      * @param   integer  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
-     * @return  mixed    False if error, Object on success
+     * @return  bool    True when the record was found and loaded
      */
     public function loadUserReview($pid, $uid, $versionid = '')
     {

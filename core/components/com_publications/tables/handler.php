@@ -30,7 +30,7 @@ class Handler extends Table
      * Load handler
      *
      * @param   string|null  $name  Alias name of handler
-     * @return  mixed   False if error, Object on success
+     * @return  bool   True when the record was found and loaded
      */
     public function loadRecord($name = null)
     {
