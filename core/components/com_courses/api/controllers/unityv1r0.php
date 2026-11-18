@@ -63,7 +63,9 @@ class Unityv1r0 extends Base
         }
 
         // Get course info...this seems a little wonky
-        preg_match('/\/courses\/([[:alnum:]\-\_]*)\/([[:alnum:]\:\-\_]*)/', $referer, $matches);
+        if (!preg_match('/\/courses\/([[:alnum:]\-\_]*)\/([[:alnum:]\:\-\_]*)/', $referer, $matches)) {
+            App::abort(400, 'Failed to get course info');
+        }
 
         $course_alias   = $matches[1];
         $offering_alias = $matches[2];
@@ -107,7 +109,7 @@ class Unityv1r0 extends Base
         $message = trim((string) $message);
         $message = json_decode($message);
 
-        if (!$message || !is_object($message)) {
+        if (!$message instanceof \stdClass) {
             App::abort(500, 'Failed to decode message');
         }
 

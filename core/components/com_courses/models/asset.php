@@ -633,13 +633,13 @@ class Asset extends Base
     /**
      * Specific child asset handler object of type
      *
-     * @return object|false child asset handler
+     * @return Assets\Handler|false child asset handler
      */
     public function loadHandler()
     {
         $handlerName = $this->get('type');
         $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
-        if (class_exists($handlerClassString)) {
+        if (is_a($handlerClassString, Assets\Handler::class, true)) {
             $handlerModel = new $handlerClassString($this->db);
             return $handlerModel;
         }

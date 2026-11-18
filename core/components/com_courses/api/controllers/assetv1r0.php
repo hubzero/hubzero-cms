@@ -780,7 +780,7 @@ class Assetv1r0 extends Base
         if ($asset->get('type') == 'tool') {
             $toolHandler = $asset->loadHandler();
 
-            if (!$toolHandler) {
+            if (!$toolHandler instanceof \Components\Courses\Models\Assets\Tool) {
                 App::abort(500, 'Asset handler could not be loaded.');
             }
         }

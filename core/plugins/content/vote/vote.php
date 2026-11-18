@@ -31,7 +31,7 @@ class Vote extends Plugin
      *
      * @param   string   $context  The context of the content being passed to the plugin.
      * @param   object   $row      The row object.
-     * @param   object   $params   The article params.
+     * @param   \Hubzero\Config\Registry   $params   The article params.
      * @param   integer  $page     The 'page' number.
      * @return  string
      */
