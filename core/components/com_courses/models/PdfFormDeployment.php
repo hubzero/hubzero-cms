@@ -226,16 +226,20 @@ class PdfFormDeployment
     /**
      * Get form object
      *
-     * @return object
+     * @return PdfForm|null  Null when the deployment names no form
      **/
     public function getForm()
     {
-        static $form;
-        if (!$form && $this->formId) {
-            $form = new PdfForm($this->formId);
+        // Kept per form: a function's static is shared by every deployment
+        static $forms = [];
+        if (!$this->formId) {
+            return null;
+        }
+        if (!isset($forms[$this->formId])) {
+            $forms[$this->formId] = new PdfForm($this->formId);
         }
 
-        return $form;
+        return $forms[$this->formId];
     }
 
     /**

@@ -187,9 +187,11 @@ class GradeBook extends Base
      */
     public function progress($member_id = null)
     {
+        // Kept for the request, per section: a function's static is shared by
+        // every gradebook
         static $instances;
 
-        $key = (!is_null($member_id)) ? serialize($member_id) : 'all';
+        $key = $this->sectionKey() . '|' . ((!is_null($member_id)) ? serialize($member_id) : 'all');
 
         if (isset($instances[$key])) {
             return $instances[$key];
@@ -886,6 +888,18 @@ class GradeBook extends Base
     }
 
     /**
+     * The course, offering and section this gradebook covers, as a cache key
+     *
+     * @return  string
+     */
+    private function sectionKey()
+    {
+        return $this->course->get('id') . ':'
+            . $this->course->offering()->get('id') . ':'
+            . $this->course->offering()->section()->get('id');
+    }
+
+    /**
      * Get grades for this course
      *
      * @param   array<mixed>  $filters
@@ -894,7 +908,7 @@ class GradeBook extends Base
     private function fetchGrades($filters = [])
     {
         static $grades;
-        $key = serialize($filters);
+        $key = $this->sectionKey() . '|' . serialize($filters);
 
         if (!isset($grades[$key])) {
             $asset_ids = [];

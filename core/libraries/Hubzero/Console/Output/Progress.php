@@ -40,6 +40,13 @@ class Progress extends Output
     private $contentLength = 0;
 
     /**
+     * How far advance() has counted since init()
+     *
+     * @var  int
+     */
+    private $current = 0;
+
+    /**
      * Save initial message length
      *
      * @var  int
@@ -153,6 +160,7 @@ class Progress extends Output
         // Store progress type and total
         $this->type = $type;
         $this->total = $total;
+        $this->current = 0;
         $this->startTime = microtime(true);
 
         // Configure display options based on type
@@ -329,9 +337,8 @@ class Progress extends Output
      **/
     public function advance(int $step = 1)
     {
-        static $current = 0;
-        $current += $step;
-        $this->setProgress($current, $this->total);
+        $this->current += $step;
+        $this->setProgress($this->current, $this->total);
     }
 
     /**

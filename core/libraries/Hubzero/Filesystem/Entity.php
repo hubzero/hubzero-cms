@@ -188,19 +188,23 @@ class Entity extends Obj
      **/
     public function __call($name, $arguments)
     {
+        // Since PHP 8.1 a method's static is shared by its subclasses, so
+        // File and Directory each keep their own list
         static $methods = [];
 
-        if (empty($methods)) {
+        $class = static::class;
+        if (!isset($methods[$class])) {
+            $methods[$class] = [];
             $reflection = with(new \ReflectionClass($this))->getMethods(\ReflectionMethod::IS_PUBLIC);
 
             foreach ($reflection as $method) {
-                $methods[] = $method->name;
+                $methods[$class][] = $method->name;
             }
         }
 
         $alt = 'get' . ucfirst($name);
 
-        if (in_array($alt, $methods)) {
+        if (in_array($alt, $methods[$class])) {
             return $this->$alt(...$arguments);
         }
 

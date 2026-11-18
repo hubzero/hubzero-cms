@@ -197,19 +197,16 @@ class Paginator extends Obj
     }
 
     /**
-     * Return the pagination data object, only creating it if it doesn't already exist.
+     * Return the pagination data object
      *
-     * @return  object  Pagination data object.
+     * It is built on each call: a function-level static would be shared by
+     * every paginator, so a second pagination on a page drew the first's links.
+     *
+     * @return  \stdClass  Pagination data object.
      */
     public function getData()
     {
-        static $data;
-
-        if (!is_object($data)) {
-            $data = $this->buildDataObject();
-        }
-
-        return $data;
+        return $this->buildDataObject();
     }
 
     /**

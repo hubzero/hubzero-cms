@@ -1444,9 +1444,11 @@ class Profile extends Obj
      */
     public function getGroups($role = 'all')
     {
-        static $groups;
+        // One set per user: a function's static is shared by every instance
+        static $cache = [];
 
-        if (!isset($groups)) {
+        $key = (int) $this->get('uidNumber');
+        if (!isset($cache[$key])) {
             $groups = [
                 'applicants' => [],
                 'invitees'   => [],
@@ -1473,7 +1475,10 @@ class Profile extends Obj
                     }
                 }
             }
+            $cache[$key] = $groups;
         }
+
+        $groups = $cache[$key];
 
         if ($role) {
             return (isset($groups[$role])) ? $groups[$role] : false;

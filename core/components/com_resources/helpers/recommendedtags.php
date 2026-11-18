@@ -354,11 +354,11 @@ class RecommendedTags
      */
     public function getExistingTagsValueList()
     {
-        static $val_list = [];
-        if (!$val_list) {
-            foreach ($this->existing_tags as $tag) {
-                $val_list[] = str_replace('"', '&quot;', str_replace(',', '&#44;', $tag));
-            }
+        // Built each time: a function's static would hand every resource the
+        // first one's tags
+        $val_list = [];
+        foreach ($this->existing_tags as $tag) {
+            $val_list[] = str_replace('"', '&quot;', str_replace(',', '&#44;', $tag));
         }
         return implode(',', $val_list);
     }
