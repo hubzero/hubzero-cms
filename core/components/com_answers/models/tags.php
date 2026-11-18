@@ -25,7 +25,7 @@ class Tags extends Cloud
     /**
      * Turn a comma-separated string of tags into an array of normalized tags
      *
-     * @param   string   $tag_string  Comma-separated string of tags
+     * @param   string|array<mixed>   $tag_string  Comma-separated string of tags, or a list of them
      * @param   integer  $keep        Use normalized tag as array key
      * @return  array<mixed>
      */

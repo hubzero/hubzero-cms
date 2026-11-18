@@ -153,9 +153,7 @@ class Myquestions extends Module
 
         if ($kind == 'interest') {
             $tags = (count($interests) <= 0) ? $this->getInterests() : $interests;
-        }
-
-        if ($kind == 'assigned') {
+        } elseif ($kind == 'assigned') {
             $database = \Hubzero\Facades\App::get('db');
 
             $TA = new \Components\Tools\Tables\Author($database);

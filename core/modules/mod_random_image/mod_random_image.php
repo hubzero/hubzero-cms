@@ -113,8 +113,8 @@ class RandomImage extends Module
                         $files[] = $file;
                     }
                 }
+                closedir($handle);
             }
-            closedir($handle);
 
             $i = 0;
             foreach ($files as $img) {
