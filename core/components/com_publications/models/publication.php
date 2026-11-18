@@ -799,7 +799,7 @@ class Publication extends Obj
     /**
      * Get the authors of this entry
      *
-     * @return  array<\stdClass>|false  The author rows; false when they cannot be read
+     * @return  array<\stdClass>  The author rows
      */
     public function authors()
     {
@@ -810,7 +810,8 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_authors)) {
-            $this->_authors   = $this->_tblAuthors->getAuthors($this->version->id);
+            // No version to read authors for gives none
+            $this->_authors   = $this->_tblAuthors->getAuthors($this->version->id) ?: [];
             $this->_submitter = $this->_tblAuthors->getSubmitter($this->version->id, $this->version->created_by);
         }
 
