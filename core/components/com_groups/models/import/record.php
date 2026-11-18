@@ -43,7 +43,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      *  Constructor
      *
-     * @param   mixed   $raw      Raw data
+     * @param   \stdClass   $raw      Raw data
      * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void

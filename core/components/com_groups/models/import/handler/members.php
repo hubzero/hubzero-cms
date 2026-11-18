@@ -33,10 +33,10 @@ class Members extends Obj
     /**
      * Bind all raw data
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
-     * @return  object
+     * @return  \stdClass
      */
     public function bind($raw, $record, $mode = 'UPDATE')
     {
@@ -64,8 +64,8 @@ class Members extends Obj
     /**
      * Check Data integrity
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
      * @return  object
      */
@@ -77,10 +77,10 @@ class Members extends Obj
     /**
      * Store data
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
-     * @return  object
+     * @return  \stdClass
      */
     public function store($raw, $record, $mode = 'UPDATE')
     {

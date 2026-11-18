@@ -29,10 +29,10 @@ class Tags extends Obj
     /**
      * Bind all raw data
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
-     * @return  object
+     * @return  \stdClass
      */
     public function bind($raw, $record, $mode = 'UPDATE')
     {
@@ -46,8 +46,8 @@ class Tags extends Obj
     /**
      * Check Data integrity
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
      * @return  object
      */
@@ -59,10 +59,10 @@ class Tags extends Obj
     /**
      * Store data
      *
-     * @param   object  $raw
-     * @param   object  $record
+     * @param   \stdClass  $raw
+     * @param   \stdClass  $record
      * @param   string  $mode
-     * @return  object
+     * @return  \stdClass
      */
     public function store($raw, $record, $mode = 'UPDATE')
     {
