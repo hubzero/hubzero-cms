@@ -104,7 +104,7 @@ class Attachments extends Obj
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   object   $params
+     * @param   \stdClass   $params
      * @param   \Components\Publications\Tables\Version   $oldVersion
      * @param   \Components\Publications\Tables\Version   $newVersion
      * @return  void
@@ -143,7 +143,7 @@ class Attachments extends Obj
      * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $params
+     * @param   \stdClass|null   $params
      * @return  boolean
      */
     public function attach($name, $element = null, $elementId = 0, $pub = null, $params = null)
@@ -174,7 +174,7 @@ class Attachments extends Obj
      * @param   \stdClass|null   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication|null   $pub
-     * @param   object|null   $params
+     * @param   \stdClass|null   $params
      * @param   integer|null  $itemId
      * @return  mixed    string or boolean
      */
@@ -286,8 +286,8 @@ class Attachments extends Obj
      *
      * @param   string  $name
      * @param   array<mixed>|null   $data
-     * @param   object|null  $typeParams
-     * @param   object|null  $handler
+     * @param   \stdClass|null  $typeParams
+     * @param   \Components\Publications\Models\Handler|null  $handler
      * @return  mixed   object or bool
      */
     public function drawAttachment($name, $data = null, $typeParams = null, $handler = null)
@@ -343,7 +343,7 @@ class Attachments extends Obj
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   \stdClass   $element
-     * @param   object   $params
+     * @param   \stdClass   $params
      * @return  boolean
      */
     public function update($name, $row, $pub, $actor, $elementId, $element, $params)
@@ -381,7 +381,7 @@ class Attachments extends Obj
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   \stdClass   $element
-     * @param   object   $params
+     * @param   \stdClass   $params
      * @return  boolean
      */
     public function remove($name, $row, $pub, $actor, $elementId, $element, $params)

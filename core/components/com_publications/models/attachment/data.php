@@ -571,7 +571,7 @@ class Data extends Base
     /**
      * Remove attachment
      *
-     * @param   object   $row
+     * @param   \Components\Publications\Tables\Attachment   $row
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub

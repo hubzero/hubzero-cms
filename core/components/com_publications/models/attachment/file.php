@@ -1323,7 +1323,7 @@ class File extends Base
                 $connection = Connection::oneOrFail($connection);
 
                 // Create file objects
-                $conFile = Entity::fromPath($identifier, $connection->adapter());
+                $conFile = Entity::fileFromPath($identifier, $connection->adapter());
                 $dirParts = explode(DS, $identifier);
 
                 // We need the pretty directory that the file is stored in
@@ -1397,7 +1397,7 @@ class File extends Base
     /**
      * Remove attachment
      *
-     * @param   object   $row
+     * @param   \Components\Publications\Tables\Attachment   $row
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
@@ -1598,7 +1598,7 @@ class File extends Base
      * Check if file with same name exists in directory
      *
      * @param   string   $copyFrom
-     * @param   object   $objPA
+     * @param   \Components\Publications\Tables\Attachment  $objPA
      * @param   \stdClass   $configs
      * @param   integer  $suffix
      * @return  int
@@ -1677,7 +1677,7 @@ class File extends Base
     /**
      * Unpublish file attachment
      *
-     * @param   object   $row
+     * @param   \Components\Publications\Tables\Attachment   $row
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @return  boolean
