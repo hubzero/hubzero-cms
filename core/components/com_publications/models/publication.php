@@ -799,7 +799,7 @@ class Publication extends Obj
     /**
      * Get the authors of this entry
      *
-     * @return  mixed
+     * @return  array<\stdClass>|false  The author rows; false when they cannot be read
      */
     public function authors()
     {

@@ -236,7 +236,7 @@ class Authors extends Base
         if (!isset($pub->_authors)) {
             $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors   = $pAuthors->getAuthors($pub->version_id);
-            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
+            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, (int) $pub->created_by);
         }
 
         if (!$pub->_authors) {
@@ -692,7 +692,7 @@ class Authors extends Base
         if (!isset($pub->_authors)) {
             $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors   = $pAuthors->getAuthors($pub->version_id);
-            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
+            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, (int) $pub->created_by);
         }
 
         // Get creator groups
@@ -734,7 +734,7 @@ class Authors extends Base
         if (!isset($pub->_authors)) {
             $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors = $pAuthors->getAuthors($pub->version_id);
-            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
+            $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, (int) $pub->created_by);
         }
 
         // Are authors required?

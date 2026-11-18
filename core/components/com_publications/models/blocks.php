@@ -134,7 +134,7 @@ class Blocks extends Obj
      *
      * @param   string   $name  Name of block to render
      * @param   boolean  $new
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getManifest($name, $new = false)
     {

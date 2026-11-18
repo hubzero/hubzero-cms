@@ -1504,7 +1504,7 @@ class Curation extends Obj
      * Draw curation checker
      *
      * @param   string  $props         Pointer to block/element in question
-     * @param   object  $reviewStatus  Status object
+     * @param   \stdClass  $reviewStatus  Status object, from getCurationStatus()
      * @param   string  $url           Action URL
      * @param   string  $title
      * @return  void
