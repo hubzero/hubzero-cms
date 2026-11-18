@@ -50,7 +50,8 @@ class Hubpresenter extends Plugin
             },
             'slideVideos' => function ($ext, $files) use ($collection) {
                 // See if we even have a slides directory
-                if ($slides = $collection->find('slides')) {
+                $slides = $collection->find('slides');
+                if ($slides instanceof \Hubzero\Filesystem\Directory) {
                     $slides = $slides->listContents();
 
                     // Array to hold slides with video clips

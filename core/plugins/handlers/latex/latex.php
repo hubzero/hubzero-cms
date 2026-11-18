@@ -58,6 +58,9 @@ class Latex extends Plugin
         }
 
         $file = $collection->findFirstWithExtension('tex');
+        if (!$file) {
+            return false;
+        }
 
         // Create view
         $view = new \Hubzero\Plugin\View([

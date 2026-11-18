@@ -485,7 +485,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   array<mixed>    $filters
      * @param   integer  $setup_complete
-     * @return  string|array<mixed>|null
+     * @return  ($filters is array{count: 1|'1'|true} ? string|null : array<\stdClass>)
      */
     public function getGroupProjects($groupid = 0, $uid = 0, $filters = [], $setup_complete = 3)
     {

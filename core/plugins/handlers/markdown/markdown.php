@@ -57,7 +57,7 @@ class Markdown extends Plugin
 
         $file = $collection->findFirstWithExtension('md');
 
-        if (!$file || !($file instanceof \Hubzero\Filesystem\File)) {
+        if (!$file) {
             return false;
         }
 

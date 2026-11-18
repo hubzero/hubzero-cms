@@ -257,7 +257,7 @@ class Attachment extends Table
      *
      * @param   integer|null  $versionid  pub version id
      * @param   array<mixed>    $filters
-     * @return  array<mixed>|string|false|null
+     * @return  ($filters is array{count: 1|'1'|true} ? string|false|null : array<\stdClass>|false)
      */
     public function getAttachments($versionid, $filters = [])
     {

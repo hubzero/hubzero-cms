@@ -84,7 +84,7 @@ class Collection extends ItemList
      *
      * @param   string  $name    The name of the entity to find
      * @param   bool    $return  Whether or not to return the found entity
-     * @return  \Hubzero\Filesystem\File|\Hubzero\Filesystem\Directory|bool
+     * @return  ($return is false ? bool : \Hubzero\Filesystem\File|\Hubzero\Filesystem\Directory|false)
      **/
     public function find($name, $return = true)
     {
@@ -146,7 +146,7 @@ class Collection extends ItemList
      * Finds the first item with the given extension
      *
      * @param   string  $extension  The extension to look for
-     * @return  \Hubzero\Filesystem\File|bool
+     * @return  \Hubzero\Filesystem\File|false
      **/
     public function findFirstWithExtension($extension)
     {

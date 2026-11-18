@@ -57,7 +57,7 @@ class Ipynb extends Plugin
 
         $file = $collection->findFirstWithExtension('ipynb');
 
-        if (!$file || !($file instanceof \Hubzero\Filesystem\File)) {
+        if (!$file) {
             return false;
         }
 
