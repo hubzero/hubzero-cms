@@ -74,6 +74,11 @@ use Hubzero\Facades\Route;
  * @property  int|string                         $doi_label      Its DOI label, set by compileToolInfo()
  * @property  string                             $doi_shoulder   Its DOI shoulder, set by compileToolInfo()
  * @property  string                             $date           The display date, through transformDate()
+ * @property  \Hubzero\Utility\Date|string        $datetime       The display date and time, transformDatetime()
+ * @property  string|null                        $curversion     The current tool version's label, compileResource()
+ * @property  int|null                           $toolsource     1 when the tool version is open source, likewise
+ * @property  int|null                           $taravailable   1 when its source tarball exists, likewise
+ * @property  int|string|null                    $versionid      The tool version's id, likewise
  * @property  \Hubzero\Database\Rows             $parents        The parent resources, through parents()
  *
  * @method \Components\Resources\Models\Type type() Through __call(), from transformType()

@@ -19,7 +19,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{cats: mixed, model: mixed, sections: mixed, tab: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     cats: mixed,
+ *     model: \Components\Resources\Models\Entry,
+ *     sections: mixed,
+ *     tab: mixed,
+ * } $this
  */
 
 $this
@@ -161,7 +166,7 @@ if ($mode != 'preview') {
                         $firstChild = $children->first();
 
                         // Sort out supporting docs
-                        $html .= $children && count($children) > 1
+                        $html .= count($children) > 1
                                ? \Components\Resources\Helpers\Html::sortSupportingDocs(
                                    $this->model,
                                    $this->option,

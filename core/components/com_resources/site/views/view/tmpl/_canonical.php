@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{model: mixed} $this
+ * @var \Hubzero\Component\View&object{model: \Components\Resources\Models\Entry} $this
  */
 
 if ($canonical = $this->model->attribs->get('canonical', '')) {

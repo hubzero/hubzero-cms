@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{
  *     cats: mixed,
  *     curtool: mixed,
- *     model: mixed,
+ *     model: \Components\Resources\Models\Entry,
  *     revision: mixed,
  *     sections: mixed,
  *     tab: mixed,

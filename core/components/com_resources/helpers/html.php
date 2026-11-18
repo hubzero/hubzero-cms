@@ -666,7 +666,7 @@ class Html
      *
      * @param   string   $option     Component name
      * @param   \stdClass|mixed|null   $cite       Citation data
-     * @param   string   $id         Resource ID
+     * @param   int|string  $id      Resource ID
      * @param   string   $citations  Citations to prepend
      * @param   integer  $type       Resource type
      * @param   string|mixed   $rev        Tool revision

@@ -19,7 +19,12 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{model: mixed, option: mixed, plugin: mixed, tags: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     model: \Components\Resources\Models\Entry,
+ *     option: mixed,
+ *     plugin: mixed,
+ *     tags: mixed,
+ * } $this
  */
 
 $this->css();
@@ -238,7 +243,7 @@ $maintext = $this->model->description;
                     $cite,
                     $this->model->id,
                     $citations,
-                    $this->model->type,
+                    $this->model->get('type'),
                     $revision,
                 );
                 ?>
