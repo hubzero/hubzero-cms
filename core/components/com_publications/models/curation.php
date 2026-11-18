@@ -1732,7 +1732,7 @@ class Curation extends Obj
      * @param   integer  $elementId  Element ID
      * @param   string   $name       Block name
      * @param   integer  $blockId    Numeric block ID
-     * @return  boolean
+     * @return  \stdClass|false|null  The last curation record, if any
      */
     public function getLastUpdate($elementId, $name, $blockId)
     {

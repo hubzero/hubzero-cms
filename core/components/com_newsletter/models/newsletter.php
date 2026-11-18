@@ -429,7 +429,7 @@ class Newsletter extends Relational
         $link = 'https://' . $hub . '/newsletter/' . $campaign->alias;
 
         //replace placeholders in template
-        $campaignParsed = str_replace("{{LINK}}", $link, $campaignTemplate ? $campaignTemplate : '');
+        $campaignParsed = str_replace("{{LINK}}", $link, (string) ($campaignTemplate ?: ''));
         $campaignParsed = str_replace("{{ALIAS}}", $campaign->alias ? $campaign->alias : '', $campaignParsed);
         // The hub's own name, so that a template shipped with a placeholder
         // heading does not send every issue out under it
@@ -514,8 +514,8 @@ class Newsletter extends Relational
 
         // Do we want to strip <html> & <body> tags
         if ($stripHtmlAndBodyTags) {
-            $campaignParsed = preg_replace('/<html[^>]*>/', '', (string) $campaignParsed);
-            $campaignParsed = preg_replace('/<body[^>]*>/', '', $campaignParsed);
+            $campaignParsed = (string) preg_replace('/<html[^>]*>/', '', $campaignParsed);
+            $campaignParsed = (string) preg_replace('/<body[^>]*>/', '', $campaignParsed);
             $campaignParsed = str_replace('</body>', '', $campaignParsed);
             $campaignParsed = str_replace('</html>', '', $campaignParsed);
         }

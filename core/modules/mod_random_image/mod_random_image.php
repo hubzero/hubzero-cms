@@ -140,7 +140,7 @@ class RandomImage extends Module
      */
     public static function getFolder(&$params)
     {
-        $folder = $params->get('folder');
+        $folder = (string) $params->get('folder');
 
         $LiveSite = Request::base();
 

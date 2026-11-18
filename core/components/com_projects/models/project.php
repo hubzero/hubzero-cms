@@ -78,7 +78,9 @@ class Project extends Model
     /** @var \Components\Projects\Tables\Type|null */
     protected $tblType;
     /**
-     * @var  array<mixed>|false|null
+     * The owners' rows, cached by team()
+     *
+     * @var  array<mixed>|null
      */
     protected $team;
     /**
