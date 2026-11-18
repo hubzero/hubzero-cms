@@ -16,6 +16,8 @@ use Hubzero\Facades\Date;
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  string|null  $title
  */
 class Event extends Relational
 {

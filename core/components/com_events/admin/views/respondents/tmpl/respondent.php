@@ -15,7 +15,10 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{event: mixed, resp: mixed} $this
+ * @var \Hubzero\Component\View&object{
+ *     event: \Components\Events\Models\Orm\Event,
+ *     resp: \Components\Events\Models\Orm\Respondent,
+ * } $this
  */
 
 Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANT'), 'user');

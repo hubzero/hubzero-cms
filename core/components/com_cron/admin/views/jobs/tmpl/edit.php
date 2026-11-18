@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{plugins: mixed, row: mixed} $this
+ * @var \Hubzero\Component\View&object{plugins: array<string, \stdClass>, row: mixed} $this
  */
 
 $canDo = Components\Cron\Helpers\Permissions::getActions('component');
@@ -564,7 +564,7 @@ foreach ($this->getErrors() as $error) {
                 // "detach" lives in the job params Registry (saveTask() rebuilds
                 // params from the posted params[...] fields).
                 $jobParams = $this->row->get('params');
-            if (!is_object($jobParams)) {
+            if (!$jobParams instanceof \Hubzero\Config\Registry) {
                 $jobParams = new \Hubzero\Config\Registry($jobParams);
             }
                 $detach = (int) $jobParams->get('detach', 0);

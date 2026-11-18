@@ -169,14 +169,14 @@ class Jobs extends SiteController
     /**
      * Whether a job opts into out-of-process execution via a "detach" param.
      *
-     * @param   object   $job
+     * @param   \Components\Cron\Models\Job  $job
      * @return  boolean
      */
     private function jobWantsDetach($job)
     {
         $params = $job->get('params');
 
-        if (!is_object($params)) {
+        if (!$params instanceof \Hubzero\Config\Registry) {
             $params = new \Hubzero\Config\Registry($params);
         }
 

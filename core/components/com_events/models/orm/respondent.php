@@ -14,6 +14,17 @@ use Hubzero\Database\Relational;
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $attending_dinner
+ * @property  string|null  $city
+ * @property  string|null  $country
+ * @property  int|string|null  $disability_needs
+ * @property  string|null  $first_name
+ * @property  string|null  $last_name
+ * @property-read  \Hubzero\Database\Rows  $racial  The respondent's races, through racial()
+ * @property  string|null  $state
+ * @property  string|null  $telephone
+ * @property  string|null  $zip
  */
 class Respondent extends Relational
 {
