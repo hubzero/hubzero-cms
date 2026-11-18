@@ -51,6 +51,47 @@ class Entity extends Obj
     }
 
     /**
+     * A file at a path, whatever fromPath() would guess from the name
+     *
+     * fromPath() takes a path that does not exist yet to be a directory
+     * unless its last part has a dot; this is always a file.
+     *
+     * @param   string  $path     The path, relative to the adapter root
+     * @param   object|null  $adapter  The filesystem adapter
+     * @return  File
+     **/
+    public static function fileFromPath($path, $adapter = null)
+    {
+        $entity = self::fromPath($path, $adapter);
+        if ($entity instanceof File) {
+            return $entity;
+        }
+
+        return new File(['type' => 'file', 'path' => trim($path, '/')], $adapter);
+    }
+
+    /**
+     * A directory at a path, whatever fromPath() would guess from the name
+     *
+     * fromPath() takes a path that does not exist yet to be a file when
+     * its last part has a dot (a folder named "v1.2"); this is always a
+     * directory.
+     *
+     * @param   string  $path     The path, relative to the adapter root
+     * @param   object|null  $adapter  The filesystem adapter
+     * @return  Directory
+     **/
+    public static function directoryFromPath($path, $adapter = null)
+    {
+        $entity = self::fromPath($path, $adapter);
+        if ($entity instanceof Directory) {
+            return $entity;
+        }
+
+        return new Directory(['type' => 'dir', 'path' => trim($path, '/')], $adapter);
+    }
+
+    /**
      * Creates a new object using a path as our starting point
      *
      * Don't forget, paths are relative to the adapter root

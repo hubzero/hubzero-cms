@@ -599,7 +599,7 @@ class Connections
         // Get directory that we're interested in. A failure here is typically an
         // expired/revoked provider credential; show a notice rather than 500.
         try {
-            $dir   = Entity::fromPath($this->subdir, $this->connection->adapter());
+            $dir   = Entity::directoryFromPath($this->subdir, $this->connection->adapter());
             $items = $dir->listContents()->sort($sortby, $sortasc);
         } catch (\Throwable $e) {
             return $this->connectionUnavailable($e);
@@ -642,7 +642,7 @@ class Connections
         // A failure here is typically an expired/revoked provider credential;
         // show a notice rather than surfacing a raw 401/500.
         try {
-            $dir = Entity::fromPath($subdir, $this->connection->adapter());
+            $dir = Entity::directoryFromPath($subdir, $this->connection->adapter());
             $contents = $dir->listContents()->sort('basename', 'ASC');
         } catch (\Throwable $e) {
             return $this->connectionUnavailable($e);
@@ -1319,7 +1319,7 @@ class Connections
             'layout'  => 'move',
         ]);
 
-        $root = Entity::fromPath('', $this->connection->adapter());
+        $root = Entity::directoryFromPath('', $this->connection->adapter());
         $dirs = $root->getSubDirs();
 
         $view->set('list', $dirs);
@@ -1511,7 +1511,7 @@ class Connections
         }
 
         // Create
-        $entity = Entity::fromPath(
+        $entity = Entity::directoryFromPath(
             trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')),
             $this->connection->adapter(),
         );

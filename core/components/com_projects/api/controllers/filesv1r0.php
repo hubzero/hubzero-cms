@@ -171,7 +171,7 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
 
         if ($this->cid) { //connection specific listing
-            $dir = Entity::fromPath(Request::getString('subdir', ''), $this->ormconn->adapter());
+            $dir = Entity::directoryFromPath(Request::getString('subdir', ''), $this->ormconn->adapter());
 
             try {
                 $files = $dir->listContents();
@@ -309,7 +309,7 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
 
         if ($this->cid) { //connection specific operation
-            $entity  = Entity::fromPath(
+            $entity  = Entity::directoryFromPath(
                 Request::getString('subdir', '', 'post') . DS . $directory,
                 $this->ormconn->adapter(),
             );

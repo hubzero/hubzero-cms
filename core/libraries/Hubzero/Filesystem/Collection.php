@@ -235,7 +235,7 @@ class Collection extends ItemList
      *
      * @param   bool  $structure  Whether or not to retain directory location of files being zipped
      * @param   bool  $upload     Whether or not to reupload compressed to filesystem location
-     * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File|false  False if there was nothing to archive
+     * @return  \Hubzero\Filesystem\File|false  False if there was nothing to archive
      */
     public function compress($structure = false, $upload = false)
     {
@@ -288,7 +288,7 @@ class Collection extends ItemList
 
             if ($upload) {
                 // @FIXME: use manager copy?
-                $entity = Entity::fromPath($tarname, $adapter);
+                $entity = Entity::fileFromPath($tarname, $adapter);
                 $entity->put($local->readAndDelete());
 
                 return $entity;

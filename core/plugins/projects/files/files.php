@@ -717,7 +717,7 @@ class Files extends Plugin
             if ($cid > 0) {
                 // Get directory that we're interested in
                 $con = Connection::oneOrFail($cid);
-                $dir = \Hubzero\Filesystem\Entity::fromPath('', $con->adapter());
+                $dir = \Hubzero\Filesystem\Entity::directoryFromPath('', $con->adapter());
 
                 $fileList = $dir->listContents();
             } else {
@@ -807,7 +807,10 @@ class Files extends Plugin
             if ($cid > 0) {
                 // Get directory that we're interested in
                 $con = Connection::oneOrFail($cid);
-                $dir = \Hubzero\Filesystem\Entity::fromPath(($directory != '.' ? $directory : ''), $con->adapter());
+                $dir = \Hubzero\Filesystem\Entity::directoryFromPath(
+                    ($directory != '.' ? $directory : ''),
+                    $con->adapter(),
+                );
 
                 $items = $dir->listContents();
             } else {

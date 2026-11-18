@@ -71,7 +71,7 @@ class Latex extends Plugin
         $outputDir = PATH_APP . DS . trim($this->params->get('compile_dir', 'site/latex/compiled'), DS);
         $adapter   = Manager::adapter('local', ['path' => $outputDir]);
         $uniqid    = md5(uniqid());
-        $temp      = File::fromPath($uniqid . '.tex', $adapter);
+        $temp      = File::fileFromPath($uniqid . '.tex', $adapter);
 
         // Clean up data from Windows characters - important!
         $data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $file->read());
