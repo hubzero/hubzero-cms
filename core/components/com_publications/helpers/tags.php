@@ -334,7 +334,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Get a count of tags
      *
-     * @param      integer $admin     Show admin tags?
+     * @param      integer|bool $admin  Show admin tags?
      * @return     integer
      */
     public function countAllTags($admin = 0)
@@ -350,7 +350,7 @@ class Tags extends \Hubzero\Base\Obj
      * Get a tag cloud for an object
      *
      * @param      integer $showsizes Show tag size based on use?
-     * @param      integer $admin     Show admin tags?
+     * @param      integer|bool $admin  Show admin tags?
      * @param      integer|null $objectid  Object ID
      * @return     mixed Return description (if any) ...
      */
@@ -851,8 +851,9 @@ class Tags extends \Hubzero\Base\Obj
                 }
                 ksort($retarr);
 
-                $max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
-                $min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
+                $counts  = array_values($retarr);
+                $max_qty = $counts ? max($counts) : 0;  // Get the max qty of tagged objects in the set
+                $min_qty = $counts ? min($counts) : 0;  // Get the min qty of tagged objects in the set
 
                 // For ever additional tagged object from min to max, we add $step to the font size.
                 $spread = $max_qty - $min_qty;

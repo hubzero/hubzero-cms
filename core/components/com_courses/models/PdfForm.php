@@ -365,6 +365,9 @@ class PdfForm
                 $crop[$this->pages]['y']      = $imagePage['y'] - 10;
             }
 
+            // Every page is cropped to the widest one
+            $maxWidth = $widths ? max($widths) : 0;
+
             // Now actually do the image creation and cropping based on min margin
             for ($this->pages = 0; $this->pages < $num; ++$this->pages) {
                 $im = new imagick();
@@ -373,7 +376,7 @@ class PdfForm
                 $im->setImageFormat('png');
                 $im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
                 $im->cropImage(
-                    max($widths),
+                    $maxWidth,
                     $crop[$this->pages]['height'],
                     $crop[$this->pages]['x'],
                     $crop[$this->pages]['y'],

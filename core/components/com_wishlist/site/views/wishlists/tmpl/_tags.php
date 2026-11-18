@@ -17,12 +17,6 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{base: mixed, config: mixed, filters: mixed, tags: mixed} $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $tags
- */
-
 if (!$this->tags->count()) {
     echo '';
     return;
@@ -35,13 +29,14 @@ $min_qty = null;
 $step = null;
 if ($this->config->get('show_sizes', 0) == 1) {
     $retarr = [];
-    foreach ($tags as $tag) {
-        $retarr[$tag->raw_tag] = $tag->count;
+    foreach ($this->tags as $tag) {
+        $retarr[$tag->get('raw_tag')] = $tag->get('count');
     }
     ksort($retarr);
 
-    $max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
-    $min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
+    $counts  = array_values($retarr);
+    $max_qty = $counts ? max($counts) : 0;  // Get the max qty of tagged objects in the set
+    $min_qty = $counts ? min($counts) : 0;  // Get the min qty of tagged objects in the set
 
     // For ever additional tagged object from min to max, we add $step to the font size.
     $spread = $max_qty - $min_qty;
