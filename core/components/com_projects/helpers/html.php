@@ -1123,7 +1123,7 @@ class Html extends Obj
      * @param   string  $url
      * @param   string  $parent
      * @param   bool    $linkit
-     * @param   object  $adapter
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter
      * @param   string  $separator
      * @return  string
      */

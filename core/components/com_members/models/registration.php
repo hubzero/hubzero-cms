@@ -179,7 +179,7 @@ class Registration
     /**
      * Load data from user profile
      *
-     * @param   object|null  $xprofile
+     * @param   \Hubzero\User\User|null  $xprofile
      * @return  void
      */
     public function loadProfile($xprofile = null)

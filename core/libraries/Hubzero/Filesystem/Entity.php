@@ -31,7 +31,7 @@ class Entity extends Obj
     /**
      * The filesystem adapter use for actually interacting with the entity
      *
-     * @var  object|null
+     * @var  \Hubzero\Filesystem\Flysystem|null
      **/
     protected $adapter = null;
 
@@ -57,7 +57,7 @@ class Entity extends Obj
      * unless its last part has a dot; this is always a file.
      *
      * @param   string  $path     The path, relative to the adapter root
-     * @param   object|null  $adapter  The filesystem adapter
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter  The filesystem adapter
      * @return  File
      **/
     public static function fileFromPath($path, $adapter = null)
@@ -78,7 +78,7 @@ class Entity extends Obj
      * directory.
      *
      * @param   string  $path     The path, relative to the adapter root
-     * @param   object|null  $adapter  The filesystem adapter
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter  The filesystem adapter
      * @return  Directory
      **/
     public static function directoryFromPath($path, $adapter = null)
@@ -97,15 +97,18 @@ class Entity extends Obj
      * Don't forget, paths are relative to the adapter root
      *
      * @param   string  $path     The path to use to build a new entity from
-     * @param   object|null  $adapter  The filesystem adapter to use for interaction with the entity
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter  The adapter to work through
      * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     public static function fromPath($path, $adapter = null)
     {
         // If the entity exists, grab its metadata
+        $metadata = false;
         if (isset($adapter) && $adapter->has($path)) {
             $metadata = $adapter->getMetadata($path);
-        } else {
+        }
+
+        if (!$metadata) {
             // Otherwise, we'll make our best guess at the appropriate data
             $path = trim($path, '/');
             $bits = explode('/', $path);
@@ -142,7 +145,7 @@ class Entity extends Obj
      * Gets the most specialized object for a given entity type
      *
      * @param   array<mixed>   $properties  The properties to use to build a new entity from
-     * @param   object  $adapter     The filesystem adapter to use for interaction with the entity
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter  The adapter to work through
      * @return  \Hubzero\Filesystem\Directory|\Hubzero\Filesystem\File
      **/
     protected static function getSpecialized($properties, $adapter)
@@ -207,7 +210,7 @@ class Entity extends Obj
     /**
      * Sets the adapter on the entity
      *
-     * @param   mixed  $adapter
+     * @param   \Hubzero\Filesystem\Flysystem|null  $adapter
      * @return  $this
      **/
     public function setAdapter($adapter)
@@ -220,7 +223,7 @@ class Entity extends Obj
     /**
      * Gets the filesystem adapter
      *
-     * @return  object
+     * @return  \Hubzero\Filesystem\Flysystem|null
      **/
     public function getAdapter()
     {

@@ -172,7 +172,7 @@ class Publication extends Obj
             $this->publication->bind($oid);
 
             // Map values
-            foreach ($oid as $field => $value) {
+            foreach (get_object_vars($oid) as $field => $value) {
                 $this->$field = $value;
             }
             // Some adjustments
@@ -1938,13 +1938,8 @@ class Publication extends Obj
                             is_file(PATH_APP . DS . $path . DS . 'gallery' . DS . $file)
                             && exif_imagetype(PATH_APP . DS . $path . DS . 'gallery' . DS . $file)
                         ) {
-                            list(
-                                $width,
-                                $height,
-                                $type,
-                                $attr,
-                            ) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
-                            if ($width > 200) {
+                            $size = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
+                            if ($size !== false && $size[0] > 200) {
                                 $source = PATH_APP . DS . $path . DS . 'gallery' . DS . $file;
                                 break;
                             }
@@ -2313,7 +2308,7 @@ class Publication extends Obj
     /**
      * Get status date
      *
-     * @param   object|null  $row
+     * @param   \stdClass|null  $row  A version row (a Tables\Version is one), else this version
      * @return  string  HTML
      */
     public function getStatusDate($row = null)
