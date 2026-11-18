@@ -27,7 +27,7 @@ class Groups extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object  $publication  Current publication
+     * @param   \Components\Publications\Models\Publication  $publication  Current publication
      * @return  array<string, mixed>
      */
     public function &onPublicationSubAreas($publication)

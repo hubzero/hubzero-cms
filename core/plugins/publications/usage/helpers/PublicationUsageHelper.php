@@ -22,7 +22,7 @@ class PublicationUsageHelper
     /**
      * Publication
      *
-     * @var object
+     * @var \Components\Publications\Models\Publication
      */
     protected $publication;
 
