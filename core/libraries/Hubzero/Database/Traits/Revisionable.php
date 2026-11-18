@@ -280,7 +280,7 @@ trait Revisionable
      * in Relational which invokes methods with no arguments.
      *
      * @param   int  $number  The revision number (-1 returns null)
-     * @return  object|null  Revision object or null if not found
+     * @return  \stdClass|null  The revision row (data decoded) or null if not found
      */
     public function findRevision(int $number = -1): ?object
     {
@@ -306,7 +306,7 @@ trait Revisionable
     /**
      * Get the latest (most recent) revision
      *
-     * @return  object|null  Revision object or null if none exist
+     * @return  \stdClass|null  The revision row (data decoded) or null if none exist
      */
     public function latestRevision(): ?object
     {

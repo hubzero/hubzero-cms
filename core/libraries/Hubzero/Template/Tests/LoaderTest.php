@@ -466,6 +466,7 @@ class LoaderTest extends TestCase
     private function seed(\PDO $pdo): void
     {
         $dataset = simplexml_load_file(__DIR__ . '/Fixtures/seed.xml');
+        $this->assertNotFalse($dataset, 'The seed fixture is readable XML');
 
         foreach ($dataset->table as $table) {
             $name = (string) $table['name'];

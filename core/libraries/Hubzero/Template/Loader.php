@@ -193,7 +193,7 @@ class Loader
      * Load a template by client
      *
      * @param   integer|null|mixed  $client_id  The client to load the tmeplate for
-     * @return  object
+     * @return  \stdClass  The template: its name, path, params and home flag
      */
     public function load($client_id = null)
     {
@@ -213,7 +213,7 @@ class Loader
     /**
      * Get the system template
      *
-     * @return  object
+     * @return  \stdClass  The template: its name, path, params and home flag
      */
     public function getSystemTemplate()
     {
@@ -280,7 +280,7 @@ class Loader
      *
      * @param   integer  $client_id
      * @param   integer  $id
-     * @return  object
+     * @return  \stdClass  The template: its name, path, params and home flag
      */
     public function getTemplate($client_id = 0, $id = 0)
     {
