@@ -34,7 +34,7 @@ class Format
     /**
      * Description for '_template_keys'
      *
-     * @var  array<mixed>|string
+     * @var  array<string, string>
      */
     protected $templateKeys = [
         "type" => "{TYPE}",
@@ -140,7 +140,7 @@ class Format
     /**
      * Function to set the template keys the formatter will use
      *
-     * @param  string $template_keys  Template keys that will be used to format the citation
+     * @param  array<string, string>  $template_keys  Column => placeholder keys used to format the citation
      *
      * @return  void
      */
@@ -154,7 +154,7 @@ class Format
     /**
      * Function to get the formatter template keys being used
      *
-     * @return  array<mixed>  Template string that is being used to format citations
+     * @return  array<string, string>  Column => placeholder keys used to format citations
      */
     public function getTemplateKeys()
     {
@@ -164,10 +164,10 @@ class Format
     /**
      * Function to format citation based on template
      *
-     * @param   object   $citation       Citation object
+     * @param   \Components\Citations\Models\Citation|\stdClass  $citation  Citation object
      * @param   string|false|null   $highlight      String that we want to highlight
      * @param   boolean  $include_coins  Include COINs?
-     * @param   object   $config         Registry
+     * @param   \Hubzero\Config\Registry  $config  Registry
      * @param   boolean  $coins_only     Only output COINs?
      * @return  string   Formatted citation
      */
@@ -236,7 +236,8 @@ class Format
             } else {
                 // The template is HTML; every column is user-typed. author,
                 // title, doi, pages and version build their own markup below.
-                $replace_values[$v] = htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8');
+                $value = (string) $citation->$k;
+                $replace_values[$v] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 
                 //add to coins data if we can but not authors as that will get processed below
                 if (in_array($k, array_keys($this->coinsKeys)) && $k != 'author') {
@@ -263,13 +264,14 @@ class Format
                     }
                 }
 
-                if ($k == 'doi' && isset($this->$k)) {
-                    $this->$k = str_replace('https://doi.org/', '', $this->$k);
-                    $this->$k = str_replace('https://dx.doi.org/', '', $this->$k);
-                    $this->$k = str_replace('http://doi.org/', '', $this->$k);
-                    $this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
+                if ($k == 'doi') {
+                    $doi = str_replace(
+                        ['https://doi.org/', 'https://dx.doi.org/', 'http://doi.org/', 'http://dx.doi.org/'],
+                        '',
+                        (string) $citation->$k,
+                    );
 
-                    $doiEsc = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
+                    $doiEsc = htmlspecialchars($doi, ENT_QUOTES, 'UTF-8');
                     $replace_values[$v] = '<a rel="external" href="https://doi.org/'
                         . $doiEsc
                         . '">'
@@ -386,9 +388,7 @@ class Format
                 }
 
                 if ($k == 'version') {
-                    $replace_values[$v] = "(Version "
-                        . htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8')
-                        . ")";
+                    $replace_values[$v] = "(Version " . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . ")";
                 }
             }
         }
@@ -498,9 +498,9 @@ class Format
     /**
      * Citation links and badges
      *
-     * @param   object  $citation  Citation record
+     * @param   \Components\Citations\Models\Citation|\stdClass  $citation  Citation record
      * @param   \Hubzero\Database\Driver  $database  Database
-     * @param   object  $config    Registry
+     * @param   \Hubzero\Config\Registry  $config  Registry
      * @param   array<mixed>   $openurl   Data to append
      * @return  string
      */
@@ -553,7 +553,7 @@ class Format
      * Output a citation's OpenURL
      *
      * @param   array<mixed>   $openurl   OpenURL data
-     * @param   object  $citation  Citation
+     * @param   \Components\Citations\Models\Citation|\stdClass  $citation  Citation
      * @return  string  HTML
      */
     public static function citationOpenUrl($openurl, $citation)
@@ -667,8 +667,8 @@ class Format
     /**
      * Output a citation's associations
      *
-     * @param   object  $config    Component config
-     * @param   object  $citation  Citation
+     * @param   \Hubzero\Config\Registry  $config  Component config
+     * @param   \Components\Citations\Models\Citation|\stdClass  $citation  Citation
      * @return  string  HTML
      */
     public function citationAssociation($config, $citation)
