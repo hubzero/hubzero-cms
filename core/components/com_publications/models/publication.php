@@ -234,7 +234,7 @@ class Publication extends Obj
         }
 
         // Set version alias
-        $this->versionAlias($version);
+        $this->versionAlias((string) $version);
     }
 
     /**

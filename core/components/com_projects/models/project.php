@@ -1055,7 +1055,7 @@ class Project extends Model
      */
     public function saveParam($param = '', $value = '')
     {
-        $this->table->saveParam($this->get('id'), trim($param), htmlentities($value));
+        $this->table->saveParam($this->get('id'), trim($param), htmlentities((string) $value));
     }
 
     /**

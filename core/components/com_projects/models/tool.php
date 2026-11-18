@@ -102,7 +102,7 @@ class Tool extends Model
 
         if ($oid) {
             if (is_numeric($oid) || is_string($oid)) {
-                $this->table->loadTool($oid, $projectid);
+                $this->table->loadTool((string) $oid, $projectid);
             }
 
             // Load instance

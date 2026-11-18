@@ -704,7 +704,7 @@ class Html
         }
 
         $format_type = self::$dateFormat;
-        $datestp     = ((int) mktime(0, 0, 0, $month, $day, $year));
+        $datestp     = ((int) mktime(0, 0, 0, $month, (int) $day, $year));
         $jour_fr     = date("j", $datestp);
         $numero_jour = date("w", $datestp);
         $mois_fr     = date("n", $datestp);

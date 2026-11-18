@@ -132,7 +132,7 @@ class XML extends Base
         // Iterate over the object members.
         foreach ((array) $var as $k => $v) {
             if (is_scalar($v)) {
-                $n = $node->addChild($nodeName, $v);
+                $n = $node->addChild($nodeName, (string) $v);
                 $n->addAttribute('name', $k);
                 $n->addAttribute('type', gettype($v));
             } else {

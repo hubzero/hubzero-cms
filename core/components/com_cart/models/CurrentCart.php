@@ -1265,7 +1265,7 @@ class CurrentCart extends Cart
                         $discountAmount = $amountToDiscount * ($couponDiscount / 100);
                     }
 
-                    $perk->discount = round($discountAmount, 2);
+                    $perk->discount = round((float) $discountAmount, 2);
 
                     $perks['generic'][$couponObjectType] = $perk;
                 }

@@ -92,7 +92,7 @@ class Member extends Table
      * Load a record and bind to $this
      *
      * @param   mixed  $uid
-     * @param      string|null $oid Record alias
+     * @param      int|string|null $oid Record alias or id
      * @return     boolean True on success
      */
     public function loadBySection($uid = null, $oid = null)

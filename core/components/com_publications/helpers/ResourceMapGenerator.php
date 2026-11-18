@@ -330,7 +330,7 @@ class ResourceMapGenerator
         // Start main description
         $writer->startElement('rdf:Description');
         $writer->writeAttribute('rdf:about', $this->resourceURL);
-        $writer->writeElement('dc:identifier', $this->id);
+        $writer->writeElement('dc:identifier', (string) $this->id);
         $writer->writeElement('dcterms:title', $this->title);
 
         // Check if the author is an actual human

@@ -881,7 +881,7 @@ class Curation extends SiteController
         }
 
         // Log activity in curation history
-        $pub->_curationModel->saveHistory(User::get('id'), $pub->state, $status, 1);
+        $pub->_curationModel->saveHistory(User::get('id'), (int) $pub->state, $status, 1);
 
         // Add activity
         $activity .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version_label . ' '

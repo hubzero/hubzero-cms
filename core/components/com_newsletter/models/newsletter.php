@@ -435,7 +435,7 @@ class Newsletter extends Relational
         // heading does not send every issue out under it
         $campaignParsed = str_replace("{{SITENAME}}", Config::get('sitename', ''), $campaignParsed);
         $campaignParsed = str_replace("{{TITLE}}", $campaign->name ? $campaign->name : '', $campaignParsed);
-        $campaignParsed = str_replace("{{ISSUE}}", $campaign->issue ? $campaign->issue : '', $campaignParsed);
+        $campaignParsed = str_replace("{{ISSUE}}", $campaign->issue ? (string) $campaign->issue : '', $campaignParsed);
 
         // Handle the AUTOGEN sections
         if (preg_match_all("(\\{.*?\\}\\})", $campaignPrimaryStories, $matches) !== false) {

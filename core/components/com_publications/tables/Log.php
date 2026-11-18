@@ -255,7 +255,7 @@ class Log extends Table
         $field = $type == 'view' ? 'page_views' : 'primary_accesses';
 
         // Load record to update
-        if (!$this->loadMonthLog($pid, $vid, $year, $month)) {
+        if (!$this->loadMonthLog($pid, $vid, (int) $year, (int) $month)) {
             $this->publication_id         = $pid;
             $this->publication_version_id = $vid;
             $this->year                   = $year;

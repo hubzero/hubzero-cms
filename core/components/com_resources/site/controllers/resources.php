@@ -1003,7 +1003,7 @@ class Resources extends SiteController
             }
 
             //append current position to redirect
-            $redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
+            $redirect .= '&time=' . gmdate("H:i:s", (int) $tracking->current_position);
 
             //redirect
             App::redirect(Route::url($redirect, false), '', '');
@@ -1143,7 +1143,7 @@ class Resources extends SiteController
             }
 
             // Append current position to redirect
-            $redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
+            $redirect .= '&time=' . gmdate("H:i:s", (int) $tracking->current_position);
 
             // Redirect
             App::redirect(Route::url($redirect, false), '', '');

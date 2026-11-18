@@ -110,7 +110,7 @@ class Attachment extends Table
         }
 
         // Clean up value
-        $value = preg_replace('/=/', '', $value);
+        $value = preg_replace('/=/', '', (string) $value);
 
         if ($record->params) {
             $params = explode("\n", $record->params);

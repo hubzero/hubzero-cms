@@ -63,7 +63,7 @@ class Following extends Model
 
         if (is_numeric($oid)) {
             if ($oid) {
-                $this->table->loadFollowing($oid, $following_type, $follower_id, $follower_type);
+                $this->table->loadFollowing((string) $oid, $following_type, $follower_id, $follower_type);
             }
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);

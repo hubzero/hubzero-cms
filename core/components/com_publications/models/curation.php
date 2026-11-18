@@ -2480,7 +2480,7 @@ class Curation extends Obj
 
         // Incoming
         $label = trim(Request::getString('label', '', 'post'));
-        $used_labels = $row->getUsedLabels($this->pub->id, $this->pub->version_number);
+        $used_labels = $row->getUsedLabels($this->pub->id, (string) $this->pub->version_number);
 
         if ($label && in_array($label, ($used_labels ?: []))) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));

@@ -364,7 +364,7 @@ class Codes extends AdminController
         }
 
         if (strpos((string) $val, "\n") !== false || strpos((string) $val, ',') !== false) {
-            return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
+            return '"' . str_replace(['\\', '"'], ['\\\\', '""'], (string) $val) . '"';
         }
 
         return (string) $val;

@@ -769,7 +769,7 @@ class Project extends Table
         }
 
         // Clean up value
-        $value = preg_replace('/=/', '', $value);
+        $value = preg_replace('/=/', '', (string) $value);
 
         if ($this->loadProject($projectid)) {
             if ($this->params) {
