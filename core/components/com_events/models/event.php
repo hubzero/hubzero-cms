@@ -104,7 +104,7 @@ class Event extends Model
     /**
      * Returns calendar for event
      *
-     * @return object
+     * @return Calendar
      */
     public function calendar()
     {

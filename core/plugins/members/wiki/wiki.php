@@ -130,7 +130,7 @@ class Wiki extends Plugin
     /**
      * Static method for formatting results
      *
-     * @param  object $row Database row
+     * @param  \Components\Wiki\Models\Page $row A page from this plugin's contributions
      * @return string  HTML
      */
     public static function out($row)

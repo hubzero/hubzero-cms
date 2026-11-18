@@ -430,7 +430,7 @@ class Resources extends Plugin
     /**
      * Static method for formatting results
      *
-     * @param   object  $row  Database row
+     * @param   \Components\Resources\Models\Entry  $row  A resource from this plugin's contributions
      * @return  string  HTML
      */
     public static function out($row)

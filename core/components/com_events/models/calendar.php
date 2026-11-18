@@ -91,7 +91,7 @@ class Calendar extends Model
      * Get Instance this Model
      *
      * @param   mixed  $key   Instance Key
-     * @return   mixed
+     * @return   self
      */
     public static function &getInstance($key = null)
     {

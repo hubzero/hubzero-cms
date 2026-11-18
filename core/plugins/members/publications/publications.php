@@ -310,7 +310,7 @@ class Publications extends Plugin
     /**
      * Static method for formatting results
      *
-     * @param  object $row Database row
+     * @param  \Components\Publications\Models\Orm\Version $row A version from this plugin's contributions
      * @return string  HTML
      */
     public static function out($row)
