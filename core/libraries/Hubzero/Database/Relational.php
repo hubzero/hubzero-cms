@@ -4821,7 +4821,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Add any automatic fields
         $this->parseAutomatics('initiate');
 
-        $data = $this->getTableColumnsOnly();
+        $data = $this->nullEmptyDates($this->getTableColumnsOnly());
 
         if ($this->query === null) {
             $this->newQuery();
@@ -4841,7 +4841,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Only include changed attributes that exist as table columns
         $dirty = $this->getDirty();
-        $data = array_intersect_key($dirty, $this->getTableColumns());
+        $data = $this->nullEmptyDates(array_intersect_key($dirty, $this->getTableColumns()));
 
         // Remove the primary key from SET — it belongs in WHERE only
         $pk = $this->getPrimaryKey();
@@ -4861,6 +4861,40 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $this->getPkValue(),
             $data,
         );
+    }
+
+    /**
+     * Write an empty date as no date
+     *
+     * A form posts a blank date field, or a hidden one holding a date that was
+     * never set, as ''. Strict SQL refuses '' for a date or time column, so the
+     * save failed outright; where the column allows NULL, NULL is what '' means.
+     *
+     * @param   array<string, mixed>  $data  Column values about to be written
+     * @return  array<string, mixed>
+     **/
+    private function nullEmptyDates(array $data): array
+    {
+        $columns = null;
+
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                continue;
+            }
+
+            $columns ??= $this->getTableColumns();
+            $column = $columns[$key] ?? null;
+
+            if (
+                is_array($column)
+                && !empty($column['allownull'])
+                && preg_match('/^(date|datetime|timestamp|time|year)\b/i', (string) ($column['type'] ?? ''))
+            ) {
+                $data[$key] = null;
+            }
+        }
+
+        return $data;
     }
 
     /**
