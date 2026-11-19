@@ -760,6 +760,7 @@ class Questions extends SiteController
 
         // Initiate class and bind posted items to database fields
         $__existing = (!empty($fields['id']) && (int) $fields['id'] > 0);
+        $__row = null;
         if ($__existing) {
             $__row = Question::oneOrFail((int) $fields['id']);
             // core.edit as well as core.manage: the gate that admits the caller
@@ -1142,6 +1143,7 @@ class Questions extends SiteController
 
         // Initiate class and bind posted items to database fields
         $__existing = (!empty($response['id']) && (int) $response['id'] > 0);
+        $__row = null;
         if ($__existing) {
             $__row = Response::oneOrFail((int) $response['id']);
             // core.edit as well as core.manage: the gate that admits the caller

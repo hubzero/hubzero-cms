@@ -12,6 +12,16 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for logging course asset views
+ *
+ * @property  mixed  $asset_id
+ * @property  mixed  $course_id
+ * @property  mixed  $ip
+ * @property  mixed  $referrer
+ * @property  mixed  $session_id
+ * @property  mixed  $url
+ * @property  mixed  $user_agent_string
+ * @property  mixed  $viewed
+ * @property  mixed  $viewed_by
  */
 class AssetViews extends Table
 {

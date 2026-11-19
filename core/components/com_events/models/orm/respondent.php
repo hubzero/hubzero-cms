@@ -25,6 +25,19 @@ use Hubzero\Database\Relational;
  * @property  string|null  $state
  * @property  string|null  $telephone
  * @property  string|null  $zip
+ *
+ * @property  mixed  $abstract
+ * @property  mixed  $affiliation
+ * @property  mixed  $arrival
+ * @property  mixed  $comment
+ * @property  mixed  $departure
+ * @property  mixed  $dietary_needs
+ * @property  mixed  $email
+ * @property  mixed  $fax
+ * @property  mixed  $gender
+ * @property  mixed  $position_description
+ * @property  mixed  $title
+ * @property  mixed  $website
  */
 class Respondent extends Relational
 {

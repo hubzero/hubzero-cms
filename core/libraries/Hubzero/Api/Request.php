@@ -478,6 +478,7 @@ class Request
                 return !empty($request) ? $request : $default;
 
             case 'queryvars': // @FIXME: this work should be cached
+                $queryvars = [];
                 // can add variables to scope, so keep these braces to block out scope
                 parse_str($this->get('query'), $queryvars);
 
@@ -497,6 +498,8 @@ class Request
             default:
                 break;
         }
+
+        return null;
     }
 
     /**

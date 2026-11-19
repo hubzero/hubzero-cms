@@ -119,6 +119,7 @@ class Initialcon
      */
     private function convertHash()
     {
+        $chars = [];
         preg_match_all('/(\w)(\w)/', $this->hash, $chars);
 
         $this->color[0] = hexdec((string) array_pop($chars[1])) * 16;

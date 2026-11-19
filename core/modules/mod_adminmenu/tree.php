@@ -63,6 +63,8 @@ class Tree extends \Hubzero\Base\Obj
         if ($setCurrent) {
             $this->current = $node;
         }
+
+        return null;
     }
 
     /**

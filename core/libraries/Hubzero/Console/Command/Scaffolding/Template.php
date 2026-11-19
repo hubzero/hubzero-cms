@@ -51,7 +51,9 @@ class Template extends Scaffolding
         $pathTo   = PATH_CORE;
         $pathFrom = PATH_CORE;
 
+        $matchesTo = [];
         preg_match('/(core|app)\/([[:alnum:]_-]*)/', $to, $matchesTo);
+        $matchesFrom = [];
         preg_match('/(core|app)\/([[:alnum:]_-]*)/', $from, $matchesFrom);
 
         if (isset($matchesTo[0])) {

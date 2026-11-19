@@ -28,6 +28,7 @@ class Help extends SiteController
      */
     public function displayTask()
     {
+        $pages = [];
         // Force help template
         Request::setVar('tmpl', 'help');
 

@@ -186,6 +186,7 @@ class Routes extends Base implements CommandInterface
             ->whereEquals('menutype', $this->menutype($db))
             ->fetch();
 
+        $m = null;
         foreach ($entries as $row) {
             // A row comes as an object or an array, by the driver's fetch mode
             $row = (array) $row;

@@ -59,6 +59,7 @@ class Sql
      */
     public function read($path)
     {
+        $m = null;
         foreach (file($path, FILE_IGNORE_NEW_LINES) ?: [] as $line) {
             $line = trim($line);
 
@@ -121,6 +122,8 @@ class Sql
         $this->required[$table] = [];
         $this->uniques[$table] = [];
 
+        $k = null;
+        $m = null;
         foreach ($body as $line) {
             // A key the schema says is unique, so the rows can be held to it
             // A column in a key may carry a prefix length - `saAddress`(100) -

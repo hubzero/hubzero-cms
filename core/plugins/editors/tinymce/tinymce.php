@@ -187,6 +187,7 @@ class Tinymce extends Plugin
         $buttons4 = [];
         $plugins  = [];
 
+        $elements = null;
         if ($extended_elements != "") {
             $elements   = explode(',', $extended_elements);
         }

@@ -15,6 +15,16 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for collections
+ *
+ * @property  mixed  $access
+ * @property  mixed  $alias
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $object_id
+ * @property  mixed  $object_type
+ * @property  mixed  $state
+ * @property  mixed  $title
  */
 class Collection extends Table
 {

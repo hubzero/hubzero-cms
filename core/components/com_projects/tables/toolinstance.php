@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Project Tool Instance class
+ *
+ * @property  mixed  $id
+ * @property  mixed  $instance
+ * @property  mixed  $parent_id
+ * @property  mixed  $parent_name
  */
 class ToolInstance extends Table
 {

@@ -22,6 +22,14 @@ use Hubzero\Facades\Filesystem;
  * @deprecated  This is a temporary bandage for the removal
  *              Joomla-based code and should be expected to
  *              be removed in a future release.
+ *
+ * @property  mixed  $access
+ * @property  mixed  $asset_id
+ * @property  mixed  $checked_out
+ * @property  mixed  $checked_out_time
+ * @property  mixed  $hits
+ * @property  mixed  $ordering
+ * @property  mixed  $published
  */
 abstract class Table extends \stdClass
 {

@@ -15,6 +15,15 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course section table class
+ *
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $publish_down
+ * @property  mixed  $publish_up
+ * @property  mixed  $scope
+ * @property  mixed  $scope_id
+ * @property  mixed  $section_id
  */
 class SectionDate extends Table
 {

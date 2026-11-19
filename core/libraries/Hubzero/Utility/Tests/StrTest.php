@@ -261,6 +261,7 @@ class StrTest extends Basic
 
         $this->assertNotEquals($result, $string);
 
+        $matches = [];
         preg_match('/&#/', $result, $matches);
 
         $this->assertTrue(count($matches) > 0);

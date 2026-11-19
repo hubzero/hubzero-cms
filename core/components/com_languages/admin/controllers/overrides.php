@@ -361,6 +361,7 @@ class Overrides extends AdminController
      */
     public function searchTask()
     {
+        $lists = [];
         $results = [];
 
         $limitstart = Request::getInt('more');
@@ -403,7 +404,7 @@ class Overrides extends AdminController
         }
 
         // If messages exist add them to the output
-        if (isset($lists)) {
+        if ($lists) {
             $results['messages'] = $lists;
         }
 
@@ -411,7 +412,7 @@ class Overrides extends AdminController
         $response = new \stdClass();
 
         // If messages exist add them to the output
-        if (isset($lists)) {
+        if ($lists) {
             $response->messages = $lists;
         }
         $response->success = ($this->getError() ? false : true);

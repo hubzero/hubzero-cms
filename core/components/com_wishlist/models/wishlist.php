@@ -27,6 +27,8 @@ use Hubzero\Facades\Component;
  *
  * @property  string|null  $category
  * @property  int|string|null  $public
+ *
+ * @property  mixed  $resource
  */
 class Wishlist extends Relational
 {

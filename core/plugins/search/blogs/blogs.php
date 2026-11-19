@@ -246,5 +246,7 @@ class Blogs extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

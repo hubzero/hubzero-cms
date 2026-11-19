@@ -15,6 +15,13 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for following something
+ *
+ * @property  mixed  $created
+ * @property  mixed  $follower_id
+ * @property  mixed  $follower_type
+ * @property  mixed  $following_id
+ * @property  mixed  $following_type
+ * @property  mixed  $id
  */
 class Following extends Table
 {

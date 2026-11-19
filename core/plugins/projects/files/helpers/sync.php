@@ -53,7 +53,7 @@ class Sync extends \Hubzero\Base\Obj
      * Constructor
      *
      * @param   \Components\Projects\Helpers\Connect|null  $connect
-     * @return  bool
+     * @return  void
      */
     public function __construct($connect = null)
     {
@@ -1017,6 +1017,8 @@ class Sync extends \Hubzero\Base\Obj
         $content = $append ? $content . "\n" : $content;
 
         file_put_contents($sfile, $content, $append ? FILE_APPEND : 0);
+
+        return null;
     }
 
     /**

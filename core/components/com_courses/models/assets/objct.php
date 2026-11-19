@@ -39,6 +39,7 @@ class Objct extends Content
     {
         $object = Request::getString('content', '', 'post');
 
+        $matches = [];
         // Check if valid youtube or kaltura video
         // @FIXME: we need a safer way!
         if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $object, $matches)) {

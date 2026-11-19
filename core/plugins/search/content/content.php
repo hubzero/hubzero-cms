@@ -175,5 +175,7 @@ class Content extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

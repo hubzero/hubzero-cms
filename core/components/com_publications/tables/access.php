@@ -12,6 +12,8 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for publication access
+ *
+ * @property  mixed  $publication_version_id
  */
 class Access extends Table
 {

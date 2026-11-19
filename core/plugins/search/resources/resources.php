@@ -382,5 +382,7 @@ class Resources extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

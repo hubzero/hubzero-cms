@@ -13,6 +13,9 @@ use Hubzero\Facades\Lang;
 
 /**
  * Groups Pages Category table
+ *
+ * @property  mixed  $gidNumber
+ * @property  mixed  $title
  */
 class PageCategory extends Table
 {

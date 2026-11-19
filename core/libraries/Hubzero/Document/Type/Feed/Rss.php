@@ -326,6 +326,7 @@ class Rss extends Renderer
      */
     protected function unwrapCdata($text)
     {
+        $m = [];
         if (preg_match('/^\s*<!\[CDATA\[(.*)\]\]>\s*$/s', $text, $m)) {
             return $m[1];
         }

@@ -807,6 +807,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     protected function parseCorrelation($subquerySql)
     {
+        $matches = [];
         // Extract WHERE clause from subquery
         if (!preg_match('/WHERE\s+(.+?)(?:GROUP BY|ORDER BY|LIMIT|$)/is', $subquerySql, $matches)) {
             return null;
@@ -885,6 +886,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $fromMatches = [];
         // Extract the FROM clause to verify inner table (handle backticks)
         if (!preg_match('/FROM\s+`?(\w+)`?/i', $subquerySql, $fromMatches)) {
             return null;

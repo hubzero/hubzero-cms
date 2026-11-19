@@ -12,6 +12,10 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for job prefs
+ *
+ * @property  mixed  $category
+ * @property  mixed  $filters
+ * @property  mixed  $uid
  */
 class Prefs extends Table
 {

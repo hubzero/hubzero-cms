@@ -377,6 +377,7 @@ class SecurityGuard
 
         $content = (string) file_get_contents($file);
 
+        $matches = [];
         // Extract secret from PHP file format
         // Expected format: return 'SECRET';
         if (preg_match("/return\s+'([a-f0-9]{64})'/", $content, $matches)) {

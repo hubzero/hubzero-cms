@@ -207,6 +207,7 @@ class Detector implements DetectorInterface
         $text = str_replace(['&amp;', '&nbsp;'], ['&', ' '], $text);
         $text = html_entity_decode($text);
 
+        $matches = [];
         preg_match_all(self::URL_REGEX, $text, $matches);
         $linkCount = count($matches[0]);
 

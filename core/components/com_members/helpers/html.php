@@ -34,6 +34,7 @@ class Html
 
         // Extract field name for aria-label
         $fieldName = $name;
+        $m = [];
         if (preg_match('/\[(\w+)\]/', $name, $m)) {
             $fieldName = ucfirst($m[1]);
         }
@@ -149,12 +150,13 @@ class Html
     /**
      * Format a value
      *
-     * @param   number   $value   Value to format
+     * @param   int|float $value   Value to format
      * @param   integer  $format  Format to apply
      * @return  mixed
      */
     public static function valformat($value, $format)
     {
+        $sec = null;
         if ($format == 1) {
             return number_format($value);
         } elseif ($format == 2 || $format == 3) {

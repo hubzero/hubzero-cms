@@ -12,6 +12,9 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project types
+ *
+ * @property  mixed  $_params
+ * @property  mixed  $params
  */
 class Type extends Table
 {

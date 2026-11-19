@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for publication access logs
+ *
+ * @property  mixed  $modified
+ * @property  mixed  $month
+ * @property  mixed  $page_views
+ * @property  mixed  $page_views_unfiltered
+ * @property  mixed  $page_views_unique
+ * @property  mixed  $primary_accesses
+ * @property  mixed  $primary_accesses_unfiltered
+ * @property  mixed  $primary_accesses_unique
+ * @property  mixed  $publication_id
+ * @property  mixed  $publication_version_id
+ * @property  mixed  $support_accesses
+ * @property  mixed  $year
  */
 class Log extends Table
 {
@@ -415,6 +428,12 @@ class Log extends Table
             return false;
         }
 
+        $thisMonthNum = null;
+        $pastYearNum = null;
+        $pastTwoYear = null;
+        $pastTwoMonth = null;
+        $pastThreeYear = null;
+        $pastThreeMonth = null;
         if ($lastmonth == true) {
             $thisYearNum    = intval(Date::of(strtotime("-1 month"))->format('y'));
             $pastMonthNum   = intval(Date::of(strtotime("-1 month"))->format('m'));

@@ -78,6 +78,7 @@ $paths = $paths ?: $defaults;
  */
 $facadeNames = function ($root) {
     $names = [];
+    $m = null;
     foreach (glob($root . '/core/bootstrap/*/aliases.php') ?: [] as $file) {
         if (preg_match_all("/'(\\w+)'\\s*=>\\s*'[\\w\\\\]+'/", (string) file_get_contents($file), $m)) {
             foreach ($m[1] as $name) {

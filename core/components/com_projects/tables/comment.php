@@ -13,6 +13,17 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for project comments
+ *
+ * @property  mixed  $activityid
+ * @property  mixed  $admin
+ * @property  mixed  $comment
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $itemid
+ * @property  mixed  $parent_activity
+ * @property  mixed  $projectid
+ * @property  mixed  $tbl
  */
 class Comment extends Table
 {
@@ -218,6 +229,8 @@ class Comment extends Table
             . " WHERE id =" . $this->db->quote($id);
         $this->db->setQuery($query);
         $this->db->query();
+
+        return null;
     }
 
     /**

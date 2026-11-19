@@ -583,7 +583,9 @@ class Validate
             return $return;
         }
 
+        $regs = [];
         if ($return === true && preg_match('/@(' . self::$pattern['hostname'] . ')$/i', $check, $regs)) {
+            $mxhosts = [];
             if (function_exists('getmxrr') && getmxrr($regs[1], $mxhosts)) {
                 return true;
             }

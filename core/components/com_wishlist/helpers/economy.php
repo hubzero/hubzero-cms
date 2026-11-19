@@ -118,7 +118,7 @@ class Economy extends Obj
      *
      * @param   integer  $wishid  Wish ID
      * @param   string   $type    Transaction type
-     * @param   number   $points  Points to distribute
+     * @param   int|float $points  Points to distribute
      * @return  null
      */
     public function distributePoints($wishid, $type = 'grant', $points = 0)

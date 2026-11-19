@@ -1069,10 +1069,12 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             return null;
         }
 
+        $matches = [];
         if (!preg_match('/^(ENUM|SET)\((.*)\)$/i', $type, $matches)) {
             return 'VARCHAR(255)';
         }
 
+        $valueMatches = [];
         preg_match_all("/'([^']*)'/", $matches[2], $valueMatches);
         $values = $valueMatches[1];
 
@@ -2036,6 +2038,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected function parseEnumValuesFromColumnType($columnType): array
     {
+        $matches = [];
         if (preg_match("/^enum\\('(.*)'\\)$/i", (string) $columnType, $matches)) {
             return explode("','", $matches[1]);
         }

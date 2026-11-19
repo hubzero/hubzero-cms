@@ -12,6 +12,20 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project databases
+ *
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $data_definition
+ * @property  mixed  $database_name
+ * @property  mixed  $description
+ * @property  mixed  $id
+ * @property  mixed  $project
+ * @property  mixed  $source_dir
+ * @property  mixed  $source_file
+ * @property  mixed  $source_revision
+ * @property  mixed  $title
+ * @property  mixed  $updated
+ * @property  mixed  $updated_by
  */
 class Database extends Table
 {

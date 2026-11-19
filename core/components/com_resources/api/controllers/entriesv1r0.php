@@ -342,6 +342,8 @@ class Entriesv1r0 extends ApiController
                 . ' < /dev/null |grep ^!|grep -v Emergency > '
                 . escapeshellarg($dir . DS . $filename . '.error')
                 . ' 2> /dev/null 2>&1';
+            $output_lines = [];
+            $exit_status = 0;
             exec($command, $output_lines, $exit_status);
 
             // execute dvi2png to build png

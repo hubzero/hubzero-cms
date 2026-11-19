@@ -121,6 +121,8 @@ class Domains extends Plugin
         $sql = "SELECT name, valfmt, size FROM tops WHERE top=" . $db->quote($top);
         $db->setQuery($sql);
         $result = $db->loadRow();
+        $valfmt = null;
+        $size = null;
         if ($result) {
             $topname = $result[0];
             $valfmt = $result[1];

@@ -74,6 +74,7 @@ class Resources extends SiteController
 
         $nextstep = $step + 1;
 
+        $status = [];
         // get tool version (dev or current) information
         $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
 
@@ -441,6 +442,7 @@ class Resources extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // Get tool version (dev or current) information
         $obj->getToolStatus($this->_toolid, $this->option, $status, $version);
 

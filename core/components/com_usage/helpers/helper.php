@@ -26,6 +26,7 @@ class Helper
      */
     public static function getUDBO()
     {
+        $options = [];
         static $instance;
 
         if (!is_object($instance)) {
@@ -105,6 +106,8 @@ class Helper
         $sql = "SELECT name, valfmt, size FROM tops WHERE top=" . $db->quote($top);
         $db->setQuery($sql);
         $result = $db->loadRow();
+        $valfmt = null;
+        $size = null;
         if ($result) {
             $topname = $result[0];
             $valfmt = $result[1];
@@ -669,12 +672,13 @@ class Helper
      *
      * Long description (if any) ...
      *
-     * @param   number   $value   Parameter description (if any) ...
+     * @param   int|float $value   Parameter description (if any) ...
      * @param   integer  $format  Parameter description (if any) ...
      * @return  mixed    Return description (if any) ...
      */
     public static function valformat($value, $format)
     {
+        $sec = null;
         if ($format == 1) {
             return number_format($value);
         } elseif ($format == 2 || $format == 3) {

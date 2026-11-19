@@ -13,6 +13,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for course membership reason
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $permissions
+ * @property  mixed  $title
  */
 class Role extends Table
 {

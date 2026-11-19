@@ -103,6 +103,7 @@ class Detector implements DetectorInterface
 
         $score = 0;
 
+        $words = [];
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $words);
 
         $tokens = $this->getTokensProb($words[1]);
@@ -233,6 +234,7 @@ class Detector implements DetectorInterface
         if ($this->isTextCalculated($text)) {
             return false;
         }
+        $matches = [];
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $matches);
         $words = [];
 
@@ -289,6 +291,7 @@ class Detector implements DetectorInterface
             return;
         }
 
+        $matches = [];
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $matches);
         $words = [];
 

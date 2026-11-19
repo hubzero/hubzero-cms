@@ -64,5 +64,7 @@ class Archive extends Model
                 }
                 return $this->categories;
         }
+
+        return null;
     }
 }

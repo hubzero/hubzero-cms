@@ -423,6 +423,8 @@ class Repository extends Base implements CommandInterface
             $files = (isset($status['untracked'])) ? array_merge($files, $status['untracked']) : $files;
         }
 
+        $output = null;
+        $code = null;
         // Did we find any files?
         if ($files) {
             // Base standards directory

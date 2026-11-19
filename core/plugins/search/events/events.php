@@ -255,5 +255,7 @@ class Events extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

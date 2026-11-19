@@ -13,6 +13,13 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication category
+ *
+ * @property  mixed  $_params
+ * @property  mixed  $alias
+ * @property  mixed  $id
+ * @property  mixed  $name
+ * @property  mixed  $params
+ * @property  mixed  $url_alias
  */
 class Category extends Table
 {

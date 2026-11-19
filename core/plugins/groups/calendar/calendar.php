@@ -2193,6 +2193,7 @@ class Calendar extends Plugin
      */
     private function buildRepeatingRule()
     {
+        $rule = [];
         $rules = [];
 
         // get reccurrance

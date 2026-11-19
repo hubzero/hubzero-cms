@@ -199,6 +199,7 @@ class Item extends Nested
                 ->where('id', '!=', (int) $this->get('id'))
                 ->fetch();
 
+            $m = null;
             foreach ($clashes as $clash) {
                 $link = (string) ((array) $clash)['link'];
 
@@ -2111,6 +2112,7 @@ class Item extends Nested
             $newFormat = $oldFormat = $styleSpec[1];
         }
 
+        $matches = [];
         // Check if we are incrementing an existing pattern, or appending a new one.
         if (preg_match($rxSearch, $string, $matches)) {
             $n = empty($n) ? ((int) $matches[1] + 1) : $n;

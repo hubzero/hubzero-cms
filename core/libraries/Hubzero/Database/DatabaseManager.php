@@ -144,6 +144,7 @@ class DatabaseManager
         }
 
         if (isset($parsed['query'])) {
+            $extra = [];
             parse_str($parsed['query'], $extra);
             $config = array_merge($extra, $config);
         }

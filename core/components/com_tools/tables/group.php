@@ -16,6 +16,9 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for tool/group mapping
+ *
+ * @property  mixed  $cn
+ * @property  mixed  $toolid
  */
 class Group extends Table
 {

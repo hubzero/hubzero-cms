@@ -206,6 +206,7 @@ class License extends Base
             if ($objL->text && $objL->customizable == 0) {
                 $row->license_text = $objL->text;
 
+                $substitutes = [];
                 // Do we have template items to replace?
                 preg_match_all('/\[([^\]]*)\]/', $objL->text, $substitutes);
                 foreach ($substitutes[1] as $sub) {
@@ -343,6 +344,7 @@ class License extends Base
             }
 
             if ($pub->license_text) {
+                $bingo = null;
                 preg_replace('/\[([^]]+)\]/', ' ', $pub->license_text, -1, $bingo);
                 if ($bingo) {
                     $status->setError(Lang::txt('Default values need to be substituted'));

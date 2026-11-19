@@ -1478,6 +1478,7 @@ abstract class Driver implements LoggerAwareInterface
             return $value;
         }
 
+        $matches = [];
         // Handle explicit aliases, including derived tables:
         // "(SELECT ... AS x ...) AS alias"
         if (preg_match('/^(.+)\s+as\s+([^\s]+)$/is', $value, $matches)) {

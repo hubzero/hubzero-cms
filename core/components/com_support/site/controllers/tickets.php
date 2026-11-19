@@ -264,11 +264,13 @@ class Tickets extends SiteController
         $startmonth = 1;
 
         $this->view->set('start', Request::getString('start', $first . '-01'));
+        $regs = null;
         if ($this->view->get('start') != $first . '-01') {
             if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->get('start'))) {
                 $this->view->set('start', $first . '-01');
             }
 
+            $regs = [];
             if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->get('start'), $regs)) {
                 $startmonth = date("m", (int) mktime(0, 0, 0, (int) $regs[2], 1, (int) $regs[1]));
                 $startyear = $first = date("Y", (int) mktime(0, 0, 0, (int) $regs[2], 1, (int) $regs[1]));
@@ -1153,6 +1155,7 @@ class Tickets extends SiteController
             ]);
         }
 
+        $encryptor = null;
         if (!User::isGuest() && $this->acl->check('update', 'tickets') > 0) {
             // Only do the following if a comment was posted
             // otherwise, we're only recording a changelog
@@ -1422,6 +1425,7 @@ class Tickets extends SiteController
         // Set the splam flag
         $spam = false;
 
+        $matches = null;
         // Check the text against bad words
         foreach ($patterns as $pattern) {
             preg_match_all($pattern, $text, $matches);
@@ -2442,6 +2446,7 @@ class Tickets extends SiteController
      */
     private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
+        $users = [];
         $query = "SELECT a.id AS value, a.name AS text"
             . " FROM `#__users` AS a"
             . " INNER JOIN `#__support_acl_aros` AS aro ON aro.model='user' AND aro.foreign_key = a.id"

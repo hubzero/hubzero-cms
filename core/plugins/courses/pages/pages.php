@@ -283,6 +283,8 @@ class Pages extends Plugin
         $pages = array_merge($pages, $gpages);
 
         $this->view->set('pages', $pages);
+
+        return null;
     }
 
     /**
@@ -787,6 +789,8 @@ class Pages extends Plugin
 
         // Push through to the media view
         $this->files();
+
+        return null;
     }
 
     /**
@@ -814,7 +818,7 @@ class Pages extends Plugin
     {
         // The file manager is part of the page editor, a section manager tool
         if (!$this->view->get('offering')->access('manage', 'section')) {
-            return App::abort(403, Lang::txt('ALERTNOTAUTH'));
+            App::abort(403, Lang::txt('ALERTNOTAUTH'));
         }
 
         $page = new \Components\Courses\Models\Page(Request::getInt('page', 0));

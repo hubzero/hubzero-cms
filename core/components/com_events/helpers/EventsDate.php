@@ -63,6 +63,7 @@ class EventsDate
      */
     public function __construct($datetime = '')
     {
+        $regs = [];
         if (
             preg_match(
                 "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",
@@ -282,9 +283,9 @@ class EventsDate
      * Calculate the number of days until a date
      *
      * @param      integer $day   Day
-     * @param      number  $month Month
-     * @param      number  $year  Year
-     * @return     number
+     * @param      int|float $month Month
+     * @param      int|float $year  Year
+     * @return     int|float
      */
     public function toDays($day = 0, $month = 0, $year = 0)
     {
@@ -321,7 +322,7 @@ class EventsDate
     /**
      * Calculate the date from the number of days passed
      *
-     * @param      number $days Number of days
+     * @param      int|float $days Number of days
      * @return     void
      */
     public function fromDays($days)

@@ -602,6 +602,7 @@ abstract class Result
         if (!$this->excerpt) {
             $descr = preg_replace('#(?:[{]xhub:.*?[}]|[{}]|[\#][!]html)#ixms', '', $this->description);
             $pattern = '#(?:^|[.?!"])\s*?(.*?' . $this->highlight_regex . '.*?(?:[.?!"]|$))#ims';
+            $excerpt = [];
             if (preg_match_all($pattern, $descr, $excerpt)) {
                 $descr = join('<small>&hellip;</small> ', array_unique($excerpt[1]));
             }

@@ -230,6 +230,7 @@ class Format
         //get the template keys
         $template_keys = $this->getTemplateKeys();
 
+        $matches = null;
         foreach ($template_keys as $k => $v) {
             if (!self::keyExistsOrIsNotEmpty($k, $citation)) {
                 $replace_values[$v] = '';
@@ -921,6 +922,7 @@ class Format
     public static function formatReference(&$row, $link = 'none', $highlight = '')
     {
         $html = "\t" . '<p>';
+        $matches = null;
         if (self::keyExistsOrIsNotEmpty('author', $row)) {
             $auths = explode(';', $row->author);
             $a = [];

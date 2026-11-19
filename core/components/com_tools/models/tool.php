@@ -1517,6 +1517,7 @@ class Tool
      */
     public static function validateLicense($license, $code, &$err)
     {
+        $bingo = null;
         preg_replace('/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo);
 
         $result = 0;

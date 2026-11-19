@@ -91,6 +91,8 @@ namespace Hubzero\Database\Traits;
  * $item->setNewOrdering();
  * $item->save();
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait Orderable
 {

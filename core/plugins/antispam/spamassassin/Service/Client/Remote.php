@@ -55,6 +55,7 @@ class Remote
 
         $result->output = (string) json_encode($report);
 
+        $matches = [];
         if (preg_match('/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/', $report->message, $matches)) {
             if ($matches[1] == 'True' || $matches[1] == 'Yes') {
                 $result->isSpam = true;

@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course asset associations table class
+ *
+ * @property  mixed  $asset_id
+ * @property  mixed  $id
+ * @property  mixed  $ordering
+ * @property  mixed  $scope
+ * @property  mixed  $scope_id
  */
 class AssetAssociation extends Table
 {

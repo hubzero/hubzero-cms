@@ -14,6 +14,12 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for project log history
+ *
+ * @property  mixed  $month
+ * @property  mixed  $processed
+ * @property  mixed  $stats
+ * @property  mixed  $week
+ * @property  mixed  $year
  */
 class Stats extends Table
 {

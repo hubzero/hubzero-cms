@@ -580,6 +580,8 @@ class Quotas extends AdminController
         $host = $config->get('storagehost');
 
         if ($username && $host) {
+            $errno = 0;
+            $errstr = '';
             $fp = @stream_socket_client($host, $errno, $errstr, 30);
 
             if (!$fp) {

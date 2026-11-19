@@ -125,6 +125,7 @@ class Git
         $status    = $this->call('status', $arguments);
         $response  = '';
 
+        $parts = null;
         if (!empty($status)) {
             $status = trim($status);
             $lines  = explode("\n", $status);
@@ -229,6 +230,7 @@ class Git
         // If upcoming is set, we have to pull those commits first
         $upcomingCount = 0;
         $upcomingTotal = 0;
+        $upcomingLogs = null;
         if ($upcoming) {
             $upcomingLog = $this->call('log', $args);
 
@@ -369,6 +371,7 @@ class Git
             $response  = trim((string) $response);
             $return    = [];
 
+            $refusal = [];
             // Newer git puts hints before the line that says it refused, so
             // look for that line anywhere in what it said
             if (preg_match('/^(?:fatal|error): (.*)$/m', $response, $refusal)) {

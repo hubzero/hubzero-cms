@@ -244,6 +244,7 @@ class Migrations
             2 => ['pipe', 'w'],  // stderr
         ];
 
+        $pipes = [];
         $process = proc_open($command, $descriptors, $pipes);
 
         if (!is_resource($process)) {

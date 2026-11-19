@@ -13,6 +13,14 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for logging course actions
+ *
+ * @property  mixed  $action
+ * @property  mixed  $actor_id
+ * @property  mixed  $comments
+ * @property  mixed  $scope
+ * @property  mixed  $scope_id
+ * @property  mixed  $timestamp
+ * @property  mixed  $user_id
  */
 class Log extends Table
 {

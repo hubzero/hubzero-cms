@@ -956,6 +956,7 @@ class PgsqlDriver extends BaseSqlDriver
             return 'DOUBLE PRECISION';
         }
 
+        $m = [];
         // Decimal/Numeric - preserve precision
         if (preg_match('/^(DECIMAL|NUMERIC)(\s*\([^)]+\))?$/i', $upper, $m)) {
             return 'DECIMAL' . ($m[2] ?? '');
@@ -1241,6 +1242,7 @@ class PgsqlDriver extends BaseSqlDriver
 
         // Extract version number
         $driverVersion = null;
+        $matches = [];
         if (preg_match('/PostgreSQL\s+(\d+\.\d+(\.\d+)?)/i', (string) $versionStr, $matches)) {
             $driverVersion = $matches[1];
         } else {

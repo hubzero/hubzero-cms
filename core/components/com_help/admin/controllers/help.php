@@ -30,6 +30,7 @@ class Help extends AdminController
      */
     public function displayTask()
     {
+        $pages = [];
         // Get the page we are trying to access
         $page      = Request::getWord('page', '');
         $component = Request::getWord('component', 'com_help');

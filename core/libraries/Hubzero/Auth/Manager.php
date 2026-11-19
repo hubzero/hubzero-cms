@@ -158,6 +158,7 @@ class Manager
      */
     public function logout($userid = null, $options = [])
     {
+        $parameters = [];
         // Get a user object
         $user = ($userid ? User::getInstance($userid) : User::getInstance());
 

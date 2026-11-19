@@ -14,6 +14,12 @@ use Hubzero\Facades\Lang;
 
 /**
  * Middleware zones table class
+ *
+ * @property  mixed  $is_default
+ * @property  mixed  $master
+ * @property  mixed  $state
+ * @property  mixed  $title
+ * @property  mixed  $zone
  */
 class Zones extends Table
 {

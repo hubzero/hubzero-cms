@@ -23,6 +23,7 @@ if ($canonical = $this->model->attribs->get('canonical', '')) {
     $title = $canonical;
     $url   = $canonical;
 
+    $matches = [];
     if (preg_match('/^(\/?resources\/(.+))/i', $canonical, $matches)) {
         $model = \Components\Resources\Models\Entry::getInstance($matches[2]);
         $title = $model->title;

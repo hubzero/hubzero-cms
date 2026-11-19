@@ -49,7 +49,7 @@ class Billboards extends Module
 
         // Grab all the buildboards associated with the selected collection
         // Make sure we only grab published billboards
-        $rows = Billboard::whereEquals('published', 1)
+        $rows = Billboard::all()->whereEquals('published', 1)
             ->whereEquals('collection_id', $collection)
             ->order('ordering', 'asc')
             ->rows();

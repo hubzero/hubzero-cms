@@ -78,6 +78,8 @@ class Events extends AdminController
      */
     public function displayTask()
     {
+        $categories = [];
+        $groups = [];
         // Incoming
         $filters = [];
         $filters['limit']    = Request::getState(
@@ -379,6 +381,7 @@ class Events extends AdminController
      */
     private function parseTag($text, $tag)
     {
+        $matches = [];
         preg_match("#<ef:" . $tag . ">(.*?)</ef:" . $tag . ">#s", $text, $matches);
         if (count($matches) > 0) {
             $match = $matches[0];

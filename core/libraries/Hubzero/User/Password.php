@@ -761,6 +761,7 @@ class Password
             return false;
         }
 
+        $matches = [];
         // Any one-line hash matches; one with a line break is no hash we stored
         if (!preg_match("/^\s*(\{(.*)\}\s*|)((.*?)\s*:\s*|)(.*?)\s*$/", $passhash, $matches)) {
             return false;
@@ -789,6 +790,7 @@ class Password
         if ($encryption == 'md5') {
             $encryption = "md5-base64";
         } elseif ($encryption == 'crypt') {
+            $parts = [];
             // A stored {CRYPT} hash that is not in $N$salt$ form (DES, or an
             // imported hash with another salt length) leaves $parts empty
             preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);

@@ -128,6 +128,7 @@ class Compiler extends Obj
             . escapeshellarg($outputDir)
             . ' -interaction=batchmode '
             . escapeshellarg($texFile . '.tex');
+        $out = [];
         exec($command, $out);
 
         // Remove temp tex copy

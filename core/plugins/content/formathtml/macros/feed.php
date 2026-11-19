@@ -292,6 +292,7 @@ class Feed extends Macro
      */
     private function getFeedClass(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {
                 $class = $matches[1];

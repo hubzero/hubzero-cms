@@ -13,6 +13,13 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for job employer
+ *
+ * @property  mixed  $companyLocation
+ * @property  mixed  $companyName
+ * @property  mixed  $companyWebsite
+ * @property  mixed  $id
+ * @property  mixed  $subscriptionid
+ * @property  mixed  $uid
  */
 class Employer extends Table
 {

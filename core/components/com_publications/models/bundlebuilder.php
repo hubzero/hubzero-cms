@@ -2811,6 +2811,7 @@ class BundleBuilder
     {
         $line = implode(' ', array_map('escapeshellarg', $cmd));
 
+        $pipes = [];
         $proc = proc_open($line, [
             0 => ($stdin === null ? ['file', '/dev/null', 'r'] : ['pipe', 'r']),
             1 => ['file', '/dev/null', 'w'],

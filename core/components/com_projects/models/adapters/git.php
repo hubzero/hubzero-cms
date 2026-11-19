@@ -747,6 +747,7 @@ class Git extends Models\Adapter
                 return 0;
             }
 
+            $out = [];
             exec('du -sb --exclude=.git ' . $where, $out);
 
             if ($out) {
@@ -791,6 +792,7 @@ class Git extends Models\Adapter
             // cd
             chdir($path);
 
+            $out = [];
             // Wipe out .git directory
             exec('rm -rf .git', $out);
 

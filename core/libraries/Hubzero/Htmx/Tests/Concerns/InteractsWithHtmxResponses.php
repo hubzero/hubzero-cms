@@ -13,6 +13,8 @@ use Hubzero\Tests\Concerns\InteractsWithDebugHeaders;
 
 /**
  * Assertion helpers for HTMX-oriented response testing.
+ *
+ * @phpstan-require-extends \PHPUnit\Framework\TestCase
  */
 trait InteractsWithHtmxResponses
 {

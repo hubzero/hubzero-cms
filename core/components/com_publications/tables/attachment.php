@@ -13,6 +13,29 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for publication attachments
+ *
+ * @property  mixed  $attribs
+ * @property  mixed  $content_hash
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $element_id
+ * @property  mixed  $id
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $object_id
+ * @property  mixed  $object_instance
+ * @property  mixed  $object_name
+ * @property  mixed  $object_revision
+ * @property  mixed  $ordering
+ * @property  mixed  $params
+ * @property  mixed  $path
+ * @property  mixed  $publication_id
+ * @property  mixed  $publication_version_id
+ * @property  mixed  $role
+ * @property  mixed  $title
+ * @property  mixed  $type
+ * @property  mixed  $vcs_hash
+ * @property  mixed  $vcs_revision
  */
 class Attachment extends Table
 {

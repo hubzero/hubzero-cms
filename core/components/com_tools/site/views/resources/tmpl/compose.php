@@ -25,6 +25,7 @@ $this->set('status', $status);
 $type = \Components\Resources\Models\Type::oneOrNew(7);
 
 $data = [];
+$matches = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltxt'], $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

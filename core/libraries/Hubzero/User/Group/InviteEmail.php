@@ -104,6 +104,7 @@ class InviteEmail extends Relational
      */
     public function addInvites($gid, $emails)
     {
+        $return = [];
         $exists = [];
         $added  = [];
 

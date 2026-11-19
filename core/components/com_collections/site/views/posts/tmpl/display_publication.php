@@ -29,6 +29,8 @@ $url = Route::url($resource->link('version'));
 $content = $this->row->description('parsed');
 $content = ($content ?: '<p>' . $resource->get('abstract') . '</p>');
 
+$alt = null;
+$height = null;
 if ($imgPath) {
     list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [null, null];
     $ratio = $originalWidth / $originalHeight;

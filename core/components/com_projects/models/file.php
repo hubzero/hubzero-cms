@@ -96,6 +96,8 @@ class File extends Obj
         if (isset($this->data[$property])) {
             return $this->data[$property];
         }
+
+        return null;
     }
 
     /**

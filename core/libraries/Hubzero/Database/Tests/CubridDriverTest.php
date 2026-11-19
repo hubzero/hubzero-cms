@@ -745,9 +745,11 @@ class CubridDriverTest extends AbstractDriverTestCase
         $setPos = null;
         $fromPos = null;
 
+        $setMatch = [];
         if (preg_match('/\bSET\b/i', $sql, $setMatch, PREG_OFFSET_CAPTURE)) {
             $setPos = $setMatch[0][1];
         }
+        $fromMatch = [];
         if (preg_match('/\bFROM\b/i', $sql, $fromMatch, PREG_OFFSET_CAPTURE)) {
             $fromPos = $fromMatch[0][1];
         }

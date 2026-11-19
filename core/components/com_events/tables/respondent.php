@@ -14,6 +14,18 @@ use Hubzero\Facades\App;
 
 /**
  * Event respondent
+ *
+ * @property  mixed  $arrival
+ * @property  mixed  $attending_dinner
+ * @property  mixed  $departure
+ * @property  mixed  $dietary_needs
+ * @property  mixed  $disability_needs
+ * @property  mixed  $event_id
+ * @property  mixed  $gender
+ * @property  mixed  $highest_degree
+ * @property  mixed  $id
+ * @property  mixed  $position_description
+ * @property  mixed  $registered
  */
 class Respondent extends Table
 {
@@ -130,6 +142,7 @@ class Respondent extends Table
         parent::__construct('#__events_respondents', 'id', App::get('db'));
 
         if (array_key_exists('sortby', $filters)) {
+            $match = [];
             if (preg_match('/^(registered|name|special|id)(?:\ (ASC|DESC))?$/', $filters['sortby'], $match)) {
                 $dir = (isset($match[2]) && strtoupper($match[2]) == 'DESC') ? 'DESC' : 'ASC';
                 if ($match[1] == 'name') {

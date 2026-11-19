@@ -13,6 +13,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Members quota classes db table class
+ *
+ * @property  mixed  $class_id
+ * @property  mixed  $group_id
+ * @property  mixed  $id
  */
 class SessionClassGroup extends Table
 {

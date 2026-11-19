@@ -46,6 +46,7 @@ class MailLog
             // /etc/localtime is a link into the zoneinfo tree on systemd hosts;
             // /etc/timezone is the Debian-style equivalent.
             $link = @readlink('/etc/localtime');
+            $m = [];
             if ($link && preg_match('#zoneinfo/(.+)$#', $link, $m)) {
                 $name = $m[1];
             } elseif (is_readable('/etc/timezone')) {

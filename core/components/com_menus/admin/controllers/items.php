@@ -350,6 +350,7 @@ class Items extends AdminController
                             }
                         }
                     } else {
+                        $result = [];
                         if (preg_match("/^index.php\?option=([a-zA-Z\-0-9_]*)/", $item->get('link'), $result)) {
                             $value = Lang::txt('COM_MENUS_TYPE_UNEXISTING', $result[1]);
                         } else {

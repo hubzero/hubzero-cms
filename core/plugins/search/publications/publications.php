@@ -391,5 +391,7 @@ class Publications extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication curation flow
+ *
+ * @property  mixed  $block
+ * @property  mixed  $element
+ * @property  mixed  $publication_id
+ * @property  mixed  $publication_version_id
+ * @property  mixed  $step
  */
 class Curation extends Table
 {

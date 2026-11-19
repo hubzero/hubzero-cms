@@ -14,6 +14,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for project tools
+ *
+ * @property  mixed  $name
  */
 class Tool extends Table
 {

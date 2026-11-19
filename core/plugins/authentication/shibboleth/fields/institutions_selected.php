@@ -25,6 +25,9 @@ $xml->registerXPathNamespace('shib', 'urn:oasis:names:tc:SAML:2.0:metadata');
 $dname = "";
 $curl = curl_init();
 $done = [];
+$found = null;
+$rc = null;
+$ma = null;
 foreach ($xml->xpath('//shib:EntityDescriptor') ?: [] as $idp) {
     // Is this an institution that was selected?
     $dname = (string) $idp->Organization->OrganizationDisplayName;

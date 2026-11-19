@@ -285,6 +285,7 @@ class Shibboleth extends Plugin
         }
         // Saved id provider? Use it as the default
         $prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : null;
+        $ma = [];
         if (
             !$prefill // no cookie
                 && ($host = self::getHostByAddress(

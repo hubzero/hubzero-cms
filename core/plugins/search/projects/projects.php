@@ -160,5 +160,7 @@ class Projects extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

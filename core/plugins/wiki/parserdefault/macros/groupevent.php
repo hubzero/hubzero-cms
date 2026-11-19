@@ -51,6 +51,8 @@ class GroupEvent extends WikiMacro
      */
     public function render()
     {
+        $kv = [];
+        $arg = [];
         //get the args passed in
         $args = explode(',', (string) $this->args);
 

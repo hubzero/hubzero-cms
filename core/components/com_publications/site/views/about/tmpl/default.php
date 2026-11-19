@@ -39,6 +39,7 @@ $this->publication->attachments();
 $this->publication->license();
 
 $data = [];
+$matches = [];
 preg_match_all(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     $this->publication->metadata == null ? '' : $this->publication->metadata,

@@ -12,6 +12,8 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die;
 
+$match = null;
+
 /**
  * What this template is given.
  *

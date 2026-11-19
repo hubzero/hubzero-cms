@@ -187,5 +187,7 @@ class Courses extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

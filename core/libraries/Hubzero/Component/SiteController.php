@@ -254,6 +254,8 @@ class SiteController extends Obj implements ControllerInterface
         if (isset($this->attributes[$property])) {
             return $this->attributes[$property];
         }
+
+        return null;
     }
 
     /**
@@ -292,6 +294,7 @@ class SiteController extends Obj implements ControllerInterface
         $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
         if (!$this->controller) {
             $cls = get_class($this);
+            $r = [];
             // Attempt to parse the controller name from the class name
             if (
                 (ucfirst($this->name) . 'Controller') != $cls

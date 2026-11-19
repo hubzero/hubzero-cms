@@ -83,6 +83,8 @@ use Hubzero\Facades\Event;
  * // Only soft deleted records
  * $trashedArticles = Article::onlyTrashed()->rows();
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait SoftDeletes
 {

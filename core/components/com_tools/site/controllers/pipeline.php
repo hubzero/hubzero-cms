@@ -178,6 +178,7 @@ class Pipeline extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // get tool status
         $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
@@ -268,6 +269,7 @@ class Pipeline extends SiteController
 
         // Create a Tool Version object
         $objV = new \Components\Tools\Tables\Version($this->database);
+        $versions = [];
         $objV->getToolVersions($this->_toolid, $versions, '');
 
         // Set the page title
@@ -373,6 +375,7 @@ class Pipeline extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // get tool status
         $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
@@ -444,6 +447,7 @@ class Pipeline extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // Create a Tool object
         $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
@@ -741,6 +745,7 @@ class Pipeline extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // get tool status
         $obj->getToolStatus($this->_toolid, $this->option, $status, $this->view->get('editversion'));
 
@@ -892,6 +897,7 @@ class Pipeline extends SiteController
             }
         }
 
+        $err = [];
         if (!\Components\Tools\Models\Tool::validate($tool, $err, $id)) {
             // display form with errors
             //$title = Lang::txt(strtoupper($this->_option)).': '.Lang::txt('COM_TOOLS_EDIT_TOOL');
@@ -901,6 +907,7 @@ class Pipeline extends SiteController
             }
 
             if ($id) {
+                $fstatus = [];
                 // get tool status
                 $obj->getToolStatus($id, $this->option, $fstatus, $editversion);
 
@@ -1111,6 +1118,7 @@ class Pipeline extends SiteController
             $hzt->update();  // Make sure tool exists in database or gensvn won't configure apachce access to it
             $hztv->update(); // Make sure tool exists in database or gensvn won't configure apachce access to it
 
+            $output = [];
             // Run add repo
             $this->addRepo($output, [
                 'toolname'    => $tool['toolname'],
@@ -1664,6 +1672,7 @@ class Pipeline extends SiteController
 
         // Get tool information
         $obj = new \Components\Tools\Tables\Tool($this->database);
+        $status = [];
         $obj->getToolStatus($toolid, $this->option, $status, 'dev');
 
         if (empty($status) && !empty($toolinfo)) {
@@ -1946,6 +1955,8 @@ class Pipeline extends SiteController
                 $email = 0; // do not send email about priority changes
             }
             if ($oldstuff['toolstate'] != $newstuff['toolstate']) {
+                $oldstate = '';
+                $newstate = '';
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_STATUS'),
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['toolstate'], $oldstate),
@@ -2155,6 +2166,8 @@ class Pipeline extends SiteController
                 $email = 0; // do not send email about priority changes
             }
             if ($oldstuff['state'] != $newstuff['state']) {
+                $oldstate = '';
+                $newstate = '';
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM'),
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['state'], $oldstate),
@@ -2296,6 +2309,7 @@ class Pipeline extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
+        $status = [];
         // get tool status
         $obj->getToolStatus($this->_toolid, $this->option, $status, 'dev');
 
@@ -2344,6 +2358,8 @@ class Pipeline extends SiteController
         $output['class'] = 'passed';
         $output['msg']   = '';
 
+        $rawoutput = [];
+        $status = 0;
         exec($command . ' 2>&1 </dev/null', $rawoutput, $status);
 
         if ($status != 0) {

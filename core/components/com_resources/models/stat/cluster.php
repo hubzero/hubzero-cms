@@ -16,6 +16,9 @@ use Hubzero\Facades\Lang;
  * Resource stats clusters model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  mixed  $classes
+ * @property  mixed  $users
  */
 class Cluster extends Relational
 {

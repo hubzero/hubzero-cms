@@ -12,6 +12,37 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for publication version
+ *
+ * @property  mixed  $abstract
+ * @property  mixed  $accepted
+ * @property  mixed  $access
+ * @property  mixed  $archived
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $curation
+ * @property  mixed  $description
+ * @property  mixed  $doi
+ * @property  mixed  $downloadDisabled
+ * @property  mixed  $id
+ * @property  mixed  $license_text
+ * @property  mixed  $license_type
+ * @property  mixed  $main
+ * @property  mixed  $metadata
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $params
+ * @property  mixed  $publication_id
+ * @property  mixed  $published_down
+ * @property  mixed  $published_up
+ * @property  mixed  $rating
+ * @property  mixed  $release_notes
+ * @property  mixed  $secret
+ * @property  mixed  $state
+ * @property  mixed  $submitted
+ * @property  mixed  $title
+ * @property  mixed  $type_params
+ * @property  mixed  $version_label
+ * @property  mixed  $version_number
  */
 class Version extends Table
 {
@@ -602,6 +633,8 @@ class Version extends Table
         if ($get == 'total') {
             return $this->db->loadResult();
         }
+
+        return null;
     }
 
     /**

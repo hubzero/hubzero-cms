@@ -614,6 +614,7 @@ class Geocode
                 . " WHERE ipFROM <= " . $n_ip . ") s ON (ipFROM = s.start)"
                 . " WHERE ipTO >= " . $n_ip;
 
+            $failed = false;
             $result = self::lookupResult($gdb, $table, $sql, $failed);
 
             return $failed ? null : stripslashes((string) $result);
@@ -695,6 +696,7 @@ class Geocode
                 . " AND LOWER(location) = "
                 . $gdb->quote(strtolower($location));
 
+            $failed = false;
             $result = self::lookupResult($gdb, $table, $sql, $failed);
 
             return $failed ? null : $result > 0;

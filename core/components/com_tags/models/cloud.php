@@ -291,6 +291,8 @@ class Cloud extends \Hubzero\Base\Obj
                 }
                 return $this->cache['tags.list'];
         }
+
+        return null;
     }
 
     /**

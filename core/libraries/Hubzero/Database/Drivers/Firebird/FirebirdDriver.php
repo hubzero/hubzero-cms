@@ -591,6 +591,7 @@ class FirebirdDriver extends BaseSqlDriver
                 (string) $query,
             );
 
+            $insertMatch = [];
             // Automatically add RETURNING "ID" for INSERT statements that target
             // tables with an ID column. This makes insertid() work transparently.
             if (
@@ -813,6 +814,7 @@ class FirebirdDriver extends BaseSqlDriver
         $this->lastInsertId = null;
         $this->cachedReturningRow = null;
 
+        $matches = [];
         // Capture table name from INSERT statements (for fallback)
         if (preg_match('/^\s*INSERT\s+INTO\s+"?([^"\s(]+)"?/i', $sql, $matches)) {
             $this->lastInsertTable = strtoupper(trim($matches[1]));
@@ -1106,6 +1108,7 @@ class FirebirdDriver extends BaseSqlDriver
             return null;
         }
 
+        $matches = [];
         // Remove surrounding quotes
         if (preg_match("/^'(.*)'$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);
@@ -2416,6 +2419,7 @@ class FirebirdDriver extends BaseSqlDriver
             return $value;
         }
 
+        $matches = [];
         // Handle explicit aliases, including derived tables:
         // "(SELECT ... AS x ...) AS alias"
         if (preg_match('/^(.+)\s+as\s+([^\s]+)$/is', $value, $matches)) {
@@ -2516,6 +2520,7 @@ class FirebirdDriver extends BaseSqlDriver
             return 'DOUBLE PRECISION';
         }
 
+        $matches = [];
         // DECIMAL/NUMERIC -> DECIMAL
         if (preg_match('/^(DECIMAL|NUMERIC)\s*\(([^)]+)\)$/i', $upper, $matches)) {
             return "DECIMAL({$matches[2]})";
@@ -3190,6 +3195,7 @@ class FirebirdDriver extends BaseSqlDriver
         $notNull = null;
         $defaultValue = null;
 
+        $matches = [];
         // Extract NOT NULL or NULL constraint
         if (preg_match('/\s+(NOT\s+NULL|NULL)\s*$/i', $definition, $matches)) {
             $notNull = strtoupper(trim($matches[1]));

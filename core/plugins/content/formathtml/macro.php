@@ -146,6 +146,8 @@ class Macro
         if (isset($this->data[$property])) {
             return $this->data[$property];
         }
+
+        return null;
     }
 
     /**

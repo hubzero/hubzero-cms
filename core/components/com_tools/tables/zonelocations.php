@@ -14,6 +14,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Middleware zone locations table class
+ *
+ * @property  mixed  $ipFROM
+ * @property  mixed  $ipTO
+ * @property  mixed  $zone_id
  */
 class ZoneLocations extends Table
 {

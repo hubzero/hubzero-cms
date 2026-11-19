@@ -146,7 +146,7 @@ class Usage extends Plugin
     /**
      * Convert negative IDs to n IDS (-15 -> n15)
      *
-     * @param  number $uid User ID
+     * @param  int|float $uid User ID
      * @return mixed
      */
     public function uid($uid)
@@ -261,6 +261,7 @@ class Usage extends Plugin
      */
     public function getClassroomUsage($authorid)
     {
+        $cluster = [];
         $database = App::get('db');
 
         $cluster['classes'] = 0;

@@ -15,6 +15,22 @@ use Hubzero\Facades\Log;
 
 /**
  * Table class for a tool version
+ *
+ * @property  mixed  $codeaccess
+ * @property  mixed  $description
+ * @property  mixed  $exportControl
+ * @property  mixed  $fulltxt
+ * @property  mixed  $hardTimeout
+ * @property  mixed  $id
+ * @property  mixed  $instance
+ * @property  mixed  $params
+ * @property  mixed  $revision
+ * @property  mixed  $state
+ * @property  mixed  $title
+ * @property  mixed  $toolaccess
+ * @property  mixed  $toolid
+ * @property  mixed  $toolname
+ * @property  mixed  $version
  */
 class Version extends Table
 {
@@ -525,6 +541,7 @@ class Version extends Table
      */
     public function validLicense($toolname, $license, $code, &$error, $result = 0)
     {
+        $bingo = null;
         preg_replace('/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo);
 
         if (!$license['text']) {
@@ -605,6 +622,7 @@ class Version extends Table
         }
 
         if ($tool['version']) {
+            $error_v = '';
             $this->validVersion($tool['toolname'], $tool['version'], $error_v, 0);
             if ($error_v) {
                 $err['version'] = $error_v;
@@ -621,6 +639,7 @@ class Version extends Table
         } elseif ($tool['membergroups'] == '' or $tool['exec'] != '@GROUP') {
             $tool['membergroups'] = [];
         } elseif ($tool['exec'] == '@GROUP') {
+            $error_g = '';
             $tool['membergroups'] = $tgObj->writeMemberGroups($tool['membergroups'], $id, $this->db, $error_g);
             if ($error_g) {
                 $err['membergroups'] = $error_g;
@@ -639,6 +658,7 @@ class Version extends Table
             $tool['developers'] = [];
             $err['developers'] =  Lang::txt('ERR_TEAM_EMPTY');
         } else {
+            $error_t = '';
             $tool['developers'] = $tgObj->writeTeam($tool['developers'], $id, $this->db, $error_t);
             if ($error_t) {
                 $err['developers'] = $error_t;
@@ -688,6 +708,7 @@ class Version extends Table
             $result = 0;
             $error = Lang::txt('ERR_VERSION_ILLEGAL');
         } elseif ($required) {
+            $versions = [];
             $this->getToolVersions('', $versions, $toolname, 1);
 
             if ($versions) {

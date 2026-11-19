@@ -383,6 +383,7 @@ class Links extends Plugin
      */
     public function unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
     {
+        $out = [];
 
         if (!$cid || !$vid) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_NO_DOI'));

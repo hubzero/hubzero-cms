@@ -758,6 +758,7 @@ class Members extends AdminController
         }
 
         $done = 0;
+        $ok = null;
         foreach ($ids as $id) {
             // Don't let a super admin demote themselves: removing an admin
             // group, or making a non-admin group their only one
@@ -1006,6 +1007,7 @@ class Members extends AdminController
      */
     protected static function expiryDay($expiresOn)
     {
+        $parts = [];
         if (
             !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $expiresOn, $parts)
             || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])

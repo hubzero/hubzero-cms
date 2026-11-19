@@ -315,6 +315,7 @@ class Posts extends SiteController
         // including the item delete.
         $__iid = isset($fields['id']) ? (int) $fields['id'] : 0;
 
+        $__existing = null;
         if ($__iid) {
             $__existing = new Item($__iid);
 

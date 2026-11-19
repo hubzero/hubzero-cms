@@ -26,6 +26,8 @@ defined('_HZEXEC_') or die();
 $numaff = 0;
 $numnon = 0;
 
+$nonaffiliated = null;
+$affiliated = null;
 // Did we get any results back?
 if ($this->citations) {
     // Set some vars

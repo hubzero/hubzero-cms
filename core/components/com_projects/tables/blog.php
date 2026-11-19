@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for project updates
+ *
+ * @property  mixed  $blogentry
+ * @property  mixed  $id
+ * @property  mixed  $posted_by
+ * @property  mixed  $projectid
  */
 class Blog extends Table
 {

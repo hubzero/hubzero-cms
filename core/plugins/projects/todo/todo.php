@@ -109,6 +109,7 @@ class Todo extends Plugin
      */
     public function &onProjectCount($model, $admin = 0)
     {
+        $counts = [];
         $database = App::get('db');
 
         $objTD = new \Components\Projects\Tables\Todo($database);

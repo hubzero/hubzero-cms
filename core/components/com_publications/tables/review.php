@@ -15,6 +15,17 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for publication review
+ *
+ * @property  mixed  $anonymous
+ * @property  mixed  $comment
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $publication_id
+ * @property  mixed  $publication_version_id
+ * @property  mixed  $rating
+ * @property  mixed  $state
+ * @property  mixed  $tags
  */
 class Review extends Table
 {

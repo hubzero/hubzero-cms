@@ -928,6 +928,8 @@ class Team extends Plugin
         } else {
             App::abort(403, Lang::txt('PLG_PROJECTS_TEAM_NOT_PERMITTED'));
         }
+
+        return null;
     }
 
     /**
@@ -988,6 +990,8 @@ class Team extends Plugin
         } else {
             App::abort(403, Lang::txt('PLG_PROJECTS_TEAM_NOT_PERMITTED'));
         }
+
+        return null;
     }
 
     /**
@@ -1281,6 +1285,7 @@ class Team extends Plugin
         $model = null,
         $option = 'com_projects',
     ) {
+        $message = [];
         $uid   = $uid ? $uid : 0;
         if (!$email && $uid) {
             $email = User::getInstance($uid)->get('email');

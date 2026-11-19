@@ -226,6 +226,7 @@ class Terms extends Obj
         $partial = '';
         $sign = '';
         $raw = trim(strtolower((string) $this->raw));
+        $match = [];
         if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match)) {
             $this->section = explode(':', $match[1]);
             $raw = (string) preg_replace('/^' . preg_quote($match[1], '/') . ':/', '', $raw);

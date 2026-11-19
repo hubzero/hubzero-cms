@@ -69,6 +69,7 @@ class Courses extends Plugin
         $coursesObj = new \Components\Courses\Models\Courses();
         $courses    = $coursesObj->courses();
 
+        $match = null;
         if (isset($courses) && count($courses) > 0) {
             foreach ($courses as $course) {
                 if (!$course->isAvailable()) {

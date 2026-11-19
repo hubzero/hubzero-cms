@@ -14,6 +14,14 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for project public links
+ *
+ * @property  mixed  $expires
+ * @property  mixed  $id
+ * @property  mixed  $listed
+ * @property  mixed  $projectid
+ * @property  mixed  $reference
+ * @property  mixed  $stamp
+ * @property  mixed  $type
  */
 class Stamp extends Table
 {

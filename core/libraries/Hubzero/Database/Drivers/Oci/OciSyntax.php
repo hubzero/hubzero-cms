@@ -195,6 +195,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         // If it contains whitespace, check for alias patterns
         if (preg_match('/\s/', $column)) {
+            $m = [];
             // "column AS alias" or "column alias"
             if (preg_match('/^(\S+)\s+(?:as\s+)?(\S+)$/i', $column, $m)) {
                 return $this->quoteSelectColumns($m[1])
@@ -419,6 +420,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             );
         }
 
+        $matches = [];
         // Oracle requires FROM DUAL for bare SELECTs
         if (
             preg_match(
@@ -594,6 +596,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $matches = [];
         // Remove surrounding quotes for string defaults
         if (preg_match("/^'(.*)'$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);

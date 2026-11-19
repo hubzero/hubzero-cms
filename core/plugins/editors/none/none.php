@@ -184,6 +184,7 @@ class None extends Plugin
      */
     protected function displayButtons($name, $buttons, $asset, $author)
     {
+        $results = [];
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');
 

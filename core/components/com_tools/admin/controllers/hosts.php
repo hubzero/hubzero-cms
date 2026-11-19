@@ -124,6 +124,7 @@ class Hosts extends AdminController
         // clean at least some of it. See RFC 1034 for valid character set info
         $hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
+        $output = null;
         $status = Utils::middleware("check " . $hostname . " yes", $output);
 
         // Display results

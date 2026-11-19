@@ -820,6 +820,7 @@ class Mailinglists extends AdminController
         // split file by line break
         $parsedEmailLines = explode(PHP_EOL, (string) $emails);
 
+        $matches = null;
         // loop through each line and parse
         foreach ($parsedEmailLines as $emailLine) {
             // check to see if emails are in format: "Persons Name" <email@domain>

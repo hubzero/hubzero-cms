@@ -40,6 +40,7 @@ $rUrl = $this->url . '?action=browse&a=1' . $subdirlink;
 // Incoming
 $basic = Request::getInt('basic', 0);
 
+$parent = null;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 

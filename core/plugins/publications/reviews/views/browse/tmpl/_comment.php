@@ -49,6 +49,7 @@ if ($this->comment->isReported()) {
     $comment  = $this->comment->content('parsed');
 }
 
+$class = null;
 if ($this->comment->get('publication_id')) {
     $this->comment->set('item_id', $this->comment->get('id'));
     $this->comment->set('parent', 0);

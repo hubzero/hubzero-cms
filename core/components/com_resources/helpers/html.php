@@ -268,6 +268,7 @@ class Html
      */
     public static function dateToPath($date)
     {
+        $regs = [];
         if (
             $date
             && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)
@@ -312,6 +313,7 @@ class Html
     {
         $dir_id = self::niceidformat($id);
 
+        $regs = [];
         if (
             $date
             && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)

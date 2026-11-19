@@ -82,6 +82,8 @@ class Mysessions extends Module
                 . "/scripts/mw screenshot "
                 . User::get('username')
                 . " 2>&1 </dev/null";
+            $results = [];
+            $status = 0;
             exec($cmd, $results, $status);
         }
 

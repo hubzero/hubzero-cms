@@ -98,6 +98,8 @@ namespace Hubzero\Database\Traits;
  *     // Cleanup before deletion
  * });
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait Prunable
 {

@@ -16,6 +16,18 @@ use Hubzero\Facades\Event;
 
 /**
  * Course assets table class
+ *
+ * @property  mixed  $content
+ * @property  mixed  $course_id
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $path
+ * @property  mixed  $state
+ * @property  mixed  $subtype
+ * @property  mixed  $title
+ * @property  mixed  $type
+ * @property  mixed  $url
  */
 class Asset extends Table
 {

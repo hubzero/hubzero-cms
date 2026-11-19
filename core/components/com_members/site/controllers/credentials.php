@@ -126,7 +126,7 @@ class Credentials extends SiteController
         }
 
         // Find the user(s) for the given email address
-        $users = \Hubzero\User\User::whereEquals('email', $email)->whereEquals('block', 0)->rows();
+        $users = \Hubzero\User\User::all()->whereEquals('email', $email)->whereEquals('block', 0)->rows();
 
         // Make sure we have at least one
         if ($users->count() < 1) {
@@ -241,7 +241,7 @@ class Credentials extends SiteController
         }
 
         // Find the user for the given username
-        $user = \Hubzero\User\User::whereEquals($field, $username)->rows();
+        $user = \Hubzero\User\User::all()->whereEquals($field, $username)->rows();
 
         // Make sure we have at least one and not more than one
         if ($user->count() < 1) {
@@ -516,6 +516,7 @@ class Credentials extends SiteController
                 . strip_tags(implode(' ', $msg));
         }
 
+        $result = null;
         // If we're resetting password to the current password, just return true
         // That way you can't reset the counter on your current password, or invalidate it by putting it into history
         if (\Hubzero\User\Password::passwordMatches($user->get('id'), $password1)) {

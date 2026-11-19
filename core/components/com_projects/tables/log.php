@@ -12,6 +12,17 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project logs
+ *
+ * @property  mixed  $action
+ * @property  mixed  $ajax
+ * @property  mixed  $ip
+ * @property  mixed  $layout
+ * @property  mixed  $owner
+ * @property  mixed  $projectid
+ * @property  mixed  $request_uri
+ * @property  mixed  $section
+ * @property  mixed  $time
+ * @property  mixed  $userid
  */
 class Log extends Table
 {

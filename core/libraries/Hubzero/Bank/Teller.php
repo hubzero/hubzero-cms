@@ -120,7 +120,7 @@ class Teller extends Obj
     /**
      * Withdraw (spend) points
      *
-     * @param   number   $amount  Amount to withdraw
+     * @param   int|float $amount  Amount to withdraw
      * @param   string   $desc    Transaction description
      * @param   string   $cat     Transaction category
      * @param   integer  $ref     ID of item transaction references
@@ -211,7 +211,7 @@ class Teller extends Obj
     /**
      * Check that they have enough in their account to perform the transaction.
      *
-     * @param   number   $amount  Amount to subtract from balance
+     * @param   int|float $amount  Amount to subtract from balance
      * @return  boolean  True if they have enough credit
      */
     public function creditCheck($amount)

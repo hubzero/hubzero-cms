@@ -186,6 +186,7 @@ class Files extends Plugin
      */
     public function &onProjectCount($model)
     {
+        $counts = [];
         $repo  = new \Components\Projects\Models\Repo($model, 'local');
         $counts['files'] = $repo->count();
 
@@ -2323,6 +2324,7 @@ class Files extends Plugin
                     $pdfPath    = PATH_APP . $outputDir . DS . $contentFile;
                     $exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
+                    $out = [];
                     exec(
                         $gspath
                             . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile="

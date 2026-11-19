@@ -118,6 +118,7 @@ defined('_HZEXEC_') or die();
             $html = '';
             $now = Date::toSql();
 
+            $expires = null;
             while ($this->services->valid()) {
                 $currentService = $this->services->current();
                 // do we have an active subscription?

@@ -140,7 +140,7 @@ class Featuredresource extends Module
      * Get a resource image
      *
      * @param   string  $path  Path to get resource image from
-     * @return  string|void
+     * @return  string|null
      */
     private function getImage($path)
     {
@@ -177,6 +177,8 @@ class Featuredresource extends Module
                 }
             }
         }
+
+        return null;
     }
 
     /**

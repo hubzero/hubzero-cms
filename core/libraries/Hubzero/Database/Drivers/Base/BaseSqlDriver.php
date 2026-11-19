@@ -539,6 +539,7 @@ abstract class BaseSqlDriver extends PdoDriver
             ? '/^(\d+\.\d+\.\d+)/'
             : '/(\d+\.\d+\.\d+)/';
 
+        $matches = [];
         if (!preg_match($pattern, $version, $matches)) {
             return null;
         }
@@ -679,12 +680,14 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function parseCharacterSetFromCreate(array $create, string $table, ?string $field = null)
     {
         if (isset($field)) {
+            $matches = [];
             preg_match(
                 '/' . $this->quoteName($field) . ' [[:alnum:]\(\)]* CHARACTER SET ([[:alnum:]]*)/',
                 $create[$table] ?? '',
                 $matches,
             );
         } else {
+            $matches = [];
             preg_match('/CHARSET=([[:alnum:]]*)/', $create[$table] ?? '', $matches);
         }
 
@@ -1080,6 +1083,7 @@ abstract class BaseSqlDriver extends PdoDriver
         $version = $info['driver_version'] ?? null;
 
         if ($version) {
+            $matches = [];
             // Match major.minor (e.g., 8.0)
             if (preg_match('/^(\d+\.\d+)/', $version, $matches)) {
                 return (float) $matches[1];

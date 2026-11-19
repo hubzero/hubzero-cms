@@ -130,6 +130,7 @@ class Emailcloak extends Plugin
          */
         $pattern = $this->getPattern($searchEmail, $searchEmail);
         $pattern = str_replace('"mailto:', '"http://mce_host([\x20-\x7f][^<>]+/)', $pattern);
+        $regs = null;
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail = $regs[3][0];
             $mailText = $regs[5][0];

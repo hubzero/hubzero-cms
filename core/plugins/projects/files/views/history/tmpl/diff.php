@@ -31,6 +31,7 @@ $this
      ->css()
      ->js();
 
+$parent = null;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 

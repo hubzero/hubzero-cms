@@ -22,6 +22,7 @@ class MozifyHelper
      */
     public static function mozifyHtml($html = '', $mosaicSize = 5)
     {
+        $matches = [];
         //get all image tags
         preg_match_all('/<img src="([^"]*)"([^>]*)>/', $html, $matches, PREG_SET_ORDER);
 

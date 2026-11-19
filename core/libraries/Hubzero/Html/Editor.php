@@ -142,6 +142,7 @@ class Editor extends Obj
      */
     public function initialise()
     {
+        $results = [];
         if (is_null($this->editor)) {
             return;
         }
@@ -198,6 +199,7 @@ class Editor extends Obj
         $author = null,
         $params = [],
     ) {
+        $results = [];
         $this->asset  = $asset;
         $this->author = $author;
         $this->load($params);
@@ -247,6 +249,7 @@ class Editor extends Obj
      */
     public function save($editor)
     {
+        $results = [];
         $this->load();
 
         // Check whether editor is already loaded
@@ -274,6 +277,7 @@ class Editor extends Obj
      */
     public function getContent($editor)
     {
+        $results = [];
         $this->load();
 
         $return = '';
@@ -297,6 +301,7 @@ class Editor extends Obj
      */
     public function setContent($editor, $html)
     {
+        $results = [];
         $this->load();
 
         $return = '';
@@ -433,5 +438,7 @@ class Editor extends Obj
         $this->initialise();
 
         Plugin::import('editors-xtd');
+
+        return null;
     }
 }

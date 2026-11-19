@@ -63,6 +63,7 @@ $paths = $paths ?: $defaults;
  */
 $definedKeys = function ($root) {
     $keys = [];
+    $m = null;
     foreach (['core', 'app'] as $tree) {
         $base = $root . '/' . $tree;
         if (!is_dir($base)) {

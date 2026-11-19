@@ -935,6 +935,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         $data = [];
 
+        $matches = [];
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
             foreach ($matches as $match) {
@@ -1016,6 +1017,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             return '';
         }
 
+        $matches = [];
         if (preg_match('/^\/*([1|2]\d{3})\/+(0\d|1[012])\/(\d{5})\/*(.*?)\/*$/', $this->path, $matches)) {
             return $matches[1] . '/' . $matches[2] . '/' . $matches[3];
         }
@@ -1034,6 +1036,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             return '';
         }
 
+        $matches = [];
         if (preg_match('/^\/*([1|2]\d{3})\/+(0\d|1[012])\/(\d{5})\/*(.*?)\/*$/', $this->path, $matches)) {
             return $matches[4];
         }
@@ -1066,6 +1069,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         $date = $this->get('created');
 
+        $regs = [];
         if (
             $date
             && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)

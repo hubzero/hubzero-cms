@@ -16,6 +16,13 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for course page
+ *
+ * @property  mixed  $id
+ * @property  mixed  $ip
+ * @property  mixed  $offering_id
+ * @property  mixed  $page_id
+ * @property  mixed  $timestamp
+ * @property  mixed  $user_id
  */
 class PageHit extends Table
 {

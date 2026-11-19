@@ -22,6 +22,8 @@ defined('_HZEXEC_') or die();
 $numaff = 0;
 $numnon = 0;
 
+$nonaffiliated = null;
+$affiliated = null;
 // Did we get any results back?
 if ($this->citations) {
     // Get a needed library
@@ -114,6 +116,7 @@ if ($this->citations) {
     $type = $this->resource->type;
 
     $data = [];
+    $matches = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

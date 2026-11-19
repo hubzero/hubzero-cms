@@ -36,6 +36,7 @@ $this->row->fulltxt = ($this->row->fulltxt)
 $type = $this->row->type;
 
 $data = [];
+$matches = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

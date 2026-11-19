@@ -47,6 +47,7 @@ if ($this->comment->isReported()) {
     $comment  = $this->comment->content;
 }
 
+$class = null;
 if ($this->comment->get('resource_id')) {
     $this->comment->set('created_by', $this->comment->get('user_id'));
     $this->comment->set('item_id', $this->comment->get('id'));

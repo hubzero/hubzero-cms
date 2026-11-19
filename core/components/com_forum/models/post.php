@@ -24,6 +24,9 @@ use Hubzero\Facades\User;
  * @property-read  mixed  $creator  What creator() gives
  *
  * @property  int|string|null  $id
+ *
+ * @property  mixed  $lft
+ * @property  mixed  $rgt
  */
 class Post extends Relational
 {

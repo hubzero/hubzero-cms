@@ -87,6 +87,7 @@ class Newsletter extends Plugin
         $database->setQuery($sql);
         $queuedEmails = $database->loadObjectList();
 
+        $matches = null;
         // Get newsletter, check whether it is autogen
 
         // loop through each newsletter recipient, prepare and mail

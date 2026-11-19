@@ -34,6 +34,7 @@ class Redirect extends SiteController
     private function extractBaseDomain($host)
     {
         $host = (string) preg_replace('/^www\./', '', $host);
+        $matches = [];
         if (strpos($host, "proxy") !== false) {
             return "Proxy Service";
         } elseif (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {

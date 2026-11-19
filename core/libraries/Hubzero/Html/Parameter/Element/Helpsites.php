@@ -58,6 +58,7 @@ class Helpsites extends Element
      */
     public static function createSiteList($pathToXml, $selected = null)
     {
+        $option = [];
         $list = [];
         $xml = false;
 

@@ -326,6 +326,7 @@ class Questions extends Plugin
      */
     private function save()
     {
+        $message = [];
         // Login required
         if (User::isGuest()) {
             return $this->browse();

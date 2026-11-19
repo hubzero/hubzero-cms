@@ -108,6 +108,7 @@ class Comment extends ItemComment
                 }
 
                 if ($field == 'content') {
+                    $matches = [];
                     if (preg_match('/{attachment#([0-9]*)}/sU', $this->$property, $matches)) {
                         foreach ($matches as $i => $match) {
                             if ($i == 0) {

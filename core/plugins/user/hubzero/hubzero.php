@@ -774,6 +774,7 @@ class Hubzero extends Plugin
         if ($userName) {
             // as user Apache, we can't delete the directory so we need to delete all files.
             $cmd1 = "/bin/rm -rf /webdav/home/" . escapeshellarg($userName) . "/*";
+            $retval = 0;
             system($cmd1, $retval);
 
             // delete the files starting with a dot; ignore messages about '.' and '..'
@@ -849,7 +850,7 @@ class Hubzero extends Plugin
     /**
      * This utility method generates a new user secret.
      *
-     * @return String user secret
+     * @return string user secret
      */
     protected function createUserSecret()
     {
@@ -862,7 +863,7 @@ class Hubzero extends Plugin
      * This utility method saves a new user secret.
      *
      * @param   integer $userId  Primary key identifying user in jos_users table
-     * @param   String $secret   User secret
+     * @param   string $secret   User secret
      * @return  boolean True if secret column successfully populated in database
      */
     protected function saveUserSecret($userId, $secret)

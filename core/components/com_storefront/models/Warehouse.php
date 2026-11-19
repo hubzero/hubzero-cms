@@ -1016,6 +1016,7 @@ class Warehouse extends \Hubzero\Base\Obj
             throw new \Exception(Lang::txt('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
         }
 
+        $skuOptionsSql = null;
         // find if there is a SKU match
         if (!empty($options)) {
             $skuOptionsSql = '(0';

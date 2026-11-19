@@ -12,6 +12,14 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for publication license
+ *
+ * @property  mixed  $agreement
+ * @property  mixed  $customizable
+ * @property  mixed  $id
+ * @property  mixed  $name
+ * @property  mixed  $ordering
+ * @property  mixed  $text
+ * @property  mixed  $title
  */
 class License extends Table
 {

@@ -33,6 +33,7 @@ class Databaseconnection extends Select
      */
     protected function getOptions()
     {
+        $options = [];
         $element = $this->fieldElement();
 
         // Initialize variables.

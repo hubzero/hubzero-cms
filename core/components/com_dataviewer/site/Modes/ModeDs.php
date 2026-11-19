@@ -268,6 +268,7 @@ class ModeDs
         // Data for Custom Views
         $custom_view = Request::getString('custom_view', '');
 
+        $m = null;
         if ($custom_view != '' && isset($dd['cols']) && is_array($dd['cols'])) {
             $custom_view = explode(',', $custom_view);
             unset($dd['customizer']);

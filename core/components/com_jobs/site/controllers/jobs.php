@@ -715,6 +715,7 @@ class Jobs extends SiteController
         $months     = $units * (int) $service->unitsize;
         $newexprire = Date::of(strtotime('+' . $months . ' month'))->toSql();
 
+        $newunitcost = null;
         // we got an order
         if ($units) {
             if ($total && !$contact) {

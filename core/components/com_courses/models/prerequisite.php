@@ -78,7 +78,7 @@ class Prerequisite extends Base
      * @param  int       $section_id
      * @param  \Components\Courses\Models\GradeBook    $gradebook
      * @param  int|null  $member_id
-     * @return bool
+     * @return void
      */
     public function __construct($section_id, $gradebook, $member_id)
     {

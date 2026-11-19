@@ -256,5 +256,7 @@ class Wiki extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

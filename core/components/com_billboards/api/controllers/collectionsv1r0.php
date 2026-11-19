@@ -47,7 +47,7 @@ class Collectionsv1r0 extends ApiController
         $limitstart = Request::getInt('limitstart', 0);
 
         // Load up the entries
-        $collections = Collection::start($limitstart)->limit($limit)->rows();
+        $collections = Collection::all()->start($limitstart)->limit($limit)->rows();
 
         $this->send(['collections' => $collections->toArray()]);
     }

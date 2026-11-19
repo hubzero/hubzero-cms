@@ -13,6 +13,17 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for course page
+ *
+ * @property  mixed  $active
+ * @property  mixed  $content
+ * @property  mixed  $course_id
+ * @property  mixed  $id
+ * @property  mixed  $offering_id
+ * @property  mixed  $ordering
+ * @property  mixed  $page_id
+ * @property  mixed  $section_id
+ * @property  mixed  $title
+ * @property  mixed  $url
  */
 class Page extends Table
 {

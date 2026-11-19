@@ -53,6 +53,7 @@ $rt = $this->model->category();
 
 // Parse data
 $data = [];
+$matches = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->get('metadata', ''), $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

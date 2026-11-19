@@ -13,6 +13,13 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for job resumes
+ *
+ * @property  mixed  $created
+ * @property  mixed  $filename
+ * @property  mixed  $id
+ * @property  mixed  $main
+ * @property  mixed  $title
+ * @property  mixed  $uid
  */
 class Resume extends Table
 {

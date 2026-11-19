@@ -86,6 +86,7 @@ class Hidden extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
+        $html = [];
         $k = 0;
         $idBase = $control_name . '-' . $name;
         $nameBase = $control_name . '[' . $name . ']';

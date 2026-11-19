@@ -210,6 +210,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $matches = [];
         // Remove surrounding quotes for string defaults
         if (preg_match("/^'(.*)'$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);

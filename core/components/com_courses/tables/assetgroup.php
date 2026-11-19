@@ -15,6 +15,18 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course asset groups table class
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $description
+ * @property  mixed  $id
+ * @property  mixed  $ordering
+ * @property  mixed  $params
+ * @property  mixed  $parent
+ * @property  mixed  $state
+ * @property  mixed  $title
+ * @property  mixed  $unit_id
  */
 class AssetGroup extends Table
 {

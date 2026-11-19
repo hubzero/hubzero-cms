@@ -57,6 +57,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 
 $listName = $this->todo->getListName($this->model->get('id'), $color);
 
+$diff = null;
 // How long did it take to complete
 if ($this->row->isComplete()) {
     $diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));

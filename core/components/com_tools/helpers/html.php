@@ -37,11 +37,12 @@ class Html
      * Turn datetime YYYY-MM-DD hh:mm:ss to timestamp
      *
      * @param      string $stime Datetime to convert
-     * @return     number
+     * @return     int|float
      */
     public static function mkt($stime)
     {
         $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+        $regs = [];
         if ($stime && preg_match($pattern, $stime, $regs)) {
             $stime = mktime(
                 (int) $regs[4],
@@ -58,7 +59,7 @@ class Html
     /**
      * Calculate how long ago a date was
      *
-     * @param      number $timestamp Date to convert
+     * @param      int|float $timestamp Date to convert
      * @return     string
      */
     public static function timeAgoo($timestamp)

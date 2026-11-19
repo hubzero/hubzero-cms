@@ -478,6 +478,7 @@ class ColumnInfo
      */
     protected function parseLength(string $fullType): ?int
     {
+        $matches = [];
         if (preg_match('/\((\d+)\)/', $fullType, $matches)) {
             return (int) $matches[1];
         }

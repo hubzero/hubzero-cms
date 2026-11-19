@@ -175,6 +175,8 @@ class Orders
         $sql .= "`details` = " . $db->quote(json_encode($orderChanges)) . "";
         $db->setQuery($sql);
         $db->query();
+
+        return null;
     }
 
     /**

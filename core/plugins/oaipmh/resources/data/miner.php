@@ -124,6 +124,7 @@ class Miner extends Obj implements Provider
     public function records($filters = [])
     {
         if (isset($filters['set']) && $filters['set']) {
+            $matches = [];
             if (!preg_match('/^resources\:(.+)/i', $filters['set'], $matches)) {
                 return '';
             }
@@ -218,6 +219,7 @@ class Miner extends Obj implements Provider
      */
     public function match($identifier)
     {
+        $matches = [];
         if (preg_match('/(.*?)\/resources\/(\d+)(?:\?rev=(\d+))?/i', $identifier, $matches)) {
             return $matches[2] . (isset($matches[3]) ? ':' . $matches[3] : '');
         }

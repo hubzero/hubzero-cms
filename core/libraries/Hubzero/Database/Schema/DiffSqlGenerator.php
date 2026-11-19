@@ -790,6 +790,7 @@ class DiffSqlGenerator
      */
     protected function extractTypeSize(string $type): ?int
     {
+        $matches = [];
         if (preg_match('/\((\d+)(?:,\d+)?\)/', $type, $matches)) {
             return (int) $matches[1];
         }

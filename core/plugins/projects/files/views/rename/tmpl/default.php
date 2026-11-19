@@ -13,6 +13,7 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+$parent = null;
 /**
  * What this template is given.
  *

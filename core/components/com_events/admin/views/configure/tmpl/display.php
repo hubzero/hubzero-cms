@@ -39,6 +39,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></th>
                     <td><?php
+                    $first = [];
                     $first[] = Html::select(
                         'option',
                         '0',
@@ -69,6 +70,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL'); ?></th>
                     <td><?php
+                    $viewm = [];
                     $viewm[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text');
                     $viewm[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text');
                     echo Html::select(
@@ -87,6 +89,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></th>
                     <td><?php
+                    $viewb = [];
                     $viewb[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text');
                     $viewb[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text');
                     echo Html::select(
@@ -105,6 +108,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS'); ?></th>
                     <td><?php
+                    $viewh = [];
                     $viewh[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text');
                     $viewh[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text');
                     echo Html::select(
@@ -123,6 +127,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></th>
                     <td><?php
+                    $datef = [];
                     $datef[] = Html::select(
                         'option',
                         '0',
@@ -154,6 +159,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?></th>
                     <td><?php
+                    $stdTime = [];
                     $stdTime[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text');
                     $stdTime[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text');
                     echo Html::select(
@@ -172,6 +178,7 @@ Toolbar::cancel();
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE'); ?></th>
                     <td><?php
+                    $startpg = [];
                     $startpg[] = Html::select(
                         'option',
                         'day',

@@ -294,6 +294,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $matches = [];
         // Remove type casts (e.g., 'value'::character varying)
         if (preg_match("/^'(.*?)'::.*$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);

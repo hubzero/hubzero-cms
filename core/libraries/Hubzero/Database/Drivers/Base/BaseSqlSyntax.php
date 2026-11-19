@@ -1556,6 +1556,7 @@ abstract class BaseSqlSyntax
 
         $normalized = [];
 
+        $value = null;
         foreach ($conditions as $condition) {
             if (!is_array($condition)) {
                 throw new InvalidArgumentException('Join conditions must be arrays.');

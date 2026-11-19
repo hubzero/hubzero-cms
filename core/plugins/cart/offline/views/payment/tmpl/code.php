@@ -22,6 +22,7 @@ defined('_HZEXEC_') or die();
 
     <?php
 
+    $buttonVars = [];
     $buttonVars['custom'] = $this->transaction->token . '-' . $this->transaction->info->tId;
 
     foreach ($buttonVars as $k => $v) {

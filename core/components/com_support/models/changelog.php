@@ -44,10 +44,11 @@ class Changelog extends Obj
      * Is the question open?
      *
      * @param   string|null  $data
-     * @return  boolean
+     * @return  void
      */
     public function __construct($data = null)
     {
+        $matches = null;
         if ($data) {
             $this->raw = $data;
 

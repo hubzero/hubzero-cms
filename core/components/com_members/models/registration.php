@@ -797,6 +797,7 @@ class Registration
      */
     public function checkusername($username)
     {
+        $ret = [];
         $ret['status'] = 'error';
         if (empty($username)) {
             $ret['message'] = 'Please enter a username.';

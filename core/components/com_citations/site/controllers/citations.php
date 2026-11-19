@@ -859,7 +859,7 @@ class Citations extends SiteController
         // Make sure we have IDs to work with
         if (count($ids) > 0 && User::authorise('core.delete', 'com_citations')) {
             // Loop through the IDs and delete the citation
-            $citations = Citation::whereIn('id', $ids)->rows();
+            $citations = Citation::all()->whereIn('id', $ids)->rows();
             $citationsRemoved = [];
             foreach ($citations as $citation) {
                 $citationId = $citation->get('id');

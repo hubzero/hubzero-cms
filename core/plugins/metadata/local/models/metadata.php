@@ -43,7 +43,7 @@ class Metadata extends Relational
      **/
     public static function loadAllByPath($path)
     {
-        return self::whereEquals('path', $path)->rows();
+        return self::all()->whereEquals('path', $path)->rows();
     }
 
     /**
@@ -56,7 +56,7 @@ class Metadata extends Relational
      **/
     public static function oneOrNewByPathAndKey($path, $key)
     {
-        $row = self::whereEquals('path', $path)->whereEquals('key', $key)->row();
+        $row = self::all()->whereEquals('path', $path)->whereEquals('key', $key)->row();
 
         if ($row->isNew()) {
             $row->set([

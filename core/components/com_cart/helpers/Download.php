@@ -300,5 +300,7 @@ class Download
         $sql .= ')';
         $db->setQuery($sql);
         $db->execute();
+
+        return null;
     }
 }

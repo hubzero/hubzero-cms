@@ -85,8 +85,12 @@ class Local
     protected function getSocket()
     {
         if (!empty($this->socketPath)) {
+            $errno = 0;
+            $errstr = '';
             $socket = fsockopen('unix://' . $this->socketPath, -1, $errno, $errstr);
         } else {
+            $errno = 0;
+            $errstr = '';
             $socket = fsockopen($this->hostname, (int) $this->port, $errno, $errstr);
         }
 
@@ -202,6 +206,7 @@ class Local
     {
         $result = new Result();
 
+        $matches = [];
         /**
          * Matches the first line in the output. Something like this:
          *

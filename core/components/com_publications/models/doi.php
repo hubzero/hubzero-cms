@@ -167,6 +167,8 @@ class Doi extends Obj
         if (isset($this->data[$property])) {
             return $this->data[$property];
         }
+
+        return null;
     }
 
     /**
@@ -986,6 +988,7 @@ class Doi extends Obj
 
         if (!$doi) {
             $pattern = '/\((.*?)\)/';
+            $match = [];
             if (!preg_match($pattern, $response, $match)) {
                 return false;
             }

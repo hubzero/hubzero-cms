@@ -487,6 +487,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     public function setFrom($table, $as = null)
     {
+        $matches = [];
         // Parse embedded alias if present (e.g., "table AS alias" or "table alias")
         if ($as === null && $table && preg_match('/^(.+?)\s+(?:AS\s+)?(\w+)$/i', trim($table), $matches)) {
             $table = $matches[1];
@@ -515,6 +516,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         // Parse embedded alias if present
         $alias = null;
+        $matches = [];
         if ($table && preg_match('/^(.+?)\s+(?:AS\s+)?(\w+)$/i', trim($table), $matches)) {
             $table = $matches[1];
             $alias = $matches[2];
@@ -890,6 +892,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $matches = [];
         // Remove surrounding quotes from string defaults
         if (preg_match("/^'(.*)'$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);
@@ -1631,6 +1634,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             throw new \InvalidArgumentException('EXISTS join conditions require a subquery expression.');
         }
 
+        $matches = [];
         // Firebird requires FROM clause in subqueries
         // Check if this is a simple SELECT without FROM
         if (preg_match('/^SELECT\s+(.+?)$/i', $sql, $matches) && !preg_match('/\bFROM\b/i', $sql)) {

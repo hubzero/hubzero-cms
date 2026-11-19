@@ -212,6 +212,7 @@ class Ticketsv1r0 extends ApiController
 
                 default:
                     $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+                    $regs = [];
                     if (preg_match($pattern, $val, $regs)) {
                         // Time already matches pattern so do nothing.
                         //$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);

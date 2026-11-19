@@ -342,6 +342,7 @@ class Tags extends Cloud
             return false;
         }
 
+        $query = null;
         if ($id) {
             $query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t
@@ -496,6 +497,8 @@ class Tags extends Cloud
     {
         $html = '';
 
+        $min_qty = null;
+        $step = null;
         if ($tags && count($tags) > 0) {
             $lst = [];
             if (is_string($tagstring)) {

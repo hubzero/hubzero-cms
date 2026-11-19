@@ -15,6 +15,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for tool authors
+ *
+ * @property  mixed  $revision
+ * @property  mixed  $toolname
+ * @property  mixed  $uid
+ * @property  mixed  $version_id
  */
 class Author extends Table
 {

@@ -282,6 +282,7 @@ class Orcid extends SiteController
     {
         $retVal = [];
         $fields = explode("\r\n", (string) preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
+        $match = null;
         foreach ($fields as $field) {
             if (preg_match('/([^:]+): (.+)/m', $field, $match)) {
                 $match[1] = preg_replace_callback(
@@ -567,6 +568,7 @@ class Orcid extends SiteController
         } else {
             $output->success = 0;
             $output->message = Lang::txt('Failed in creating account for %s %s (%s).', $first_name, $last_name, $email);
+            $matches = [];
             if (preg_match('/\<error\-desc\>(.*?)\<\/error\-desc\>/i', (string) $curl_response, $matches)) {
                 $output->message .= ' ' . $matches[1];
             }

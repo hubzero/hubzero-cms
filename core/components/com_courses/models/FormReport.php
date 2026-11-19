@@ -173,6 +173,7 @@ class FormReport extends Model
      **/
     public static function getLetterResponseCountsForAssetId($db, $asset_id, $section_id = null)
     {
+        $answers = [];
         if (!is_numeric($asset_id)) {
             return false;
         }

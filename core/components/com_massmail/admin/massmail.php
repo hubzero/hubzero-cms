@@ -9,7 +9,7 @@
 namespace Components\Massmail\Admin;
 
 if (!\User::authorise('core.manage', 'com_massmail')) {
-    return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+    \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include models

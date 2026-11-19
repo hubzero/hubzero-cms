@@ -824,6 +824,7 @@ class Resources extends SiteController
         $activechild = Entry::oneOrFail($resid);
 
         $path = '';
+        $matches = [];
         // match YYYY/MM/#/something
         if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $activechild->path, $matches)) {
             $path = '/' . rtrim($matches[1], '/');
@@ -1207,6 +1208,7 @@ class Resources extends SiteController
         $base = DS . trim($this->config->get('uploadpath'), DS);
 
         $path = '';
+        $matches = [];
         // Match YYYY/MM/#/something
         if (preg_match('/(\d{4}\/\d{2}\/\d+)\/.+/i', $resource->path, $matches)) {
             $path = '/' . rtrim($matches[1], '/');
@@ -1292,6 +1294,7 @@ class Resources extends SiteController
             'ru' => 'Russian',
         ];
 
+        $m = null;
         //add each subtitle to manifest
         foreach ($subtitles as $k => $subtitle) {
             $info = pathinfo($subtitle);
@@ -1837,6 +1840,7 @@ class Resources extends SiteController
 
         $doc->itunes_owner = $owner;
 
+        $matches = null;
         // Start outputing results if any found
         if (count($rows) > 0) {
             $all_logical_types = Type::all()
@@ -2339,6 +2343,7 @@ class Resources extends SiteController
 
         $resource_base = ltrim($resource->relativepath(), '/');
 
+        $matches = [];
         if (preg_match('/^([1|2]\d{3})\/+(0\d|1[012])\/+(\d{5})\/+(.*)$/', $resource_path, $matches)) {
             if ($resource_base != $matches[1] . "/" . $matches[2] . "/" . $matches[3]) {
                 // Can't serve a protected resource belonging

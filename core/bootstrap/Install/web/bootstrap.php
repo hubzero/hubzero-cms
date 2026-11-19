@@ -384,6 +384,7 @@ use Hubzero\System\Requirements;
             2 => ['pipe', 'w'],  // stderr
         ];
 
+        $pipes = [];
         $process = proc_open($command, $descriptors, $pipes, null, PhpCli::environment());
 
         if (!is_resource($process)) {

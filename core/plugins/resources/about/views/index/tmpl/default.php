@@ -53,6 +53,7 @@ $this->model->fulltxt = str_replace(
 $type = $this->model->type;
 
 $data = [];
+$matches = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

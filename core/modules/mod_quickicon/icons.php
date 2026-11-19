@@ -39,6 +39,7 @@ class Icons
      */
     public static function button($button)
     {
+        $html = [];
         if (!empty($button['access'])) {
             // true lets anyone see it; a list is pairs of action and context
             if (!is_bool($button['access'])) {

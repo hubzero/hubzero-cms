@@ -161,6 +161,7 @@ class Blacklist extends Relational
      */
     public static function basedOnBlacklist($word)
     {
+        $words = [];
         $words[] = (string) $word;
         $words[] = strtolower($word);
         $words[] = strtolower(strrev($word));

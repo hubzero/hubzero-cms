@@ -250,6 +250,7 @@ class Server extends Obj
      */
     public static function serveFile($filename, $saveas = null, $disposition = 'inline', $acceptranges = true)
     {
+        $result = [];
         if (!self::valid($filename)) {
             return false;
         }
@@ -310,6 +311,7 @@ class Server extends Obj
         $multipart = (count($ranges) > 1);
         $content_length = 0;
 
+        $match = null;
         foreach ($ranges as $range) {
             preg_match("/^\s*(\d*)\s*-\s*(\d*)\s*$/", $range, $match);
 
@@ -360,7 +362,9 @@ class Server extends Obj
             }
         }
 
+        $matches = null;
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $matches = [];
             $msie = preg_match("/MSIE (\d+)\.(\d+)([^;]*);/i", $_SERVER['HTTP_USER_AGENT'], $matches); // MSIE
         } else {
             $msie = false;

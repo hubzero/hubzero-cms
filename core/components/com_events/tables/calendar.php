@@ -13,6 +13,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for event pages
+ *
+ * @property  mixed  $title
  */
 class Calendar extends Table
 {

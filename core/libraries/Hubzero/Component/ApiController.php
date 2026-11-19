@@ -333,6 +333,8 @@ class ApiController implements ControllerInterface
         // create reflection class of file
         $classReflector = new ReflectionClass($this);
 
+        $model = null;
+        $properties = null;
         if ($this->isDynamic) {
             $model = $this->resolveModel();
             $properties = $model->getStructure()->getTableColumns($model->getTableName());
@@ -480,6 +482,7 @@ class ApiController implements ControllerInterface
      */
     public function listTask()
     {
+        $filters = [];
         // A dynamically generated endpoint would otherwise dump a component's
         // whole table to anyone who asks
         $this->requireDynamicManage();
@@ -981,6 +984,7 @@ class ApiController implements ControllerInterface
      */
     protected function normalizeProperties($properties)
     {
+        $matches = null;
         foreach ($properties as $property => $type) {
             if (preg_match('/(.*?)\(\d+\).*/i', $type, $matches)) {
                 $type = $matches[1];

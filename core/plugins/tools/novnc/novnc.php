@@ -132,6 +132,7 @@ class Novnc extends Plugin
     {
         $browser = new \Hubzero\Browser\Detector();
 
+        $matches = null;
         if ($allowed = trim($this->params->get('browsers', ''))) {
             $browsers = [];
 

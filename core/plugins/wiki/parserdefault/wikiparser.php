@@ -1766,49 +1766,59 @@ class WikiParser
         if (!empty($in)) {
             $matched = $in;
             if ($element == 'td') {
+                $csp = [];
                 if (preg_match("/\\\\(\d+)/", $matched, $csp)) {
                     $colspan = $csp[1];
                 }
+                $rsp = [];
                 if (preg_match("/\/(\d+)/", $matched, $rsp)) {
                     $rowspan = $rsp[1];
                 }
             }
 
             if ($element == 'td' or $element == 'tr') {
+                $vert = [];
                 if (preg_match("/(" . self::$patterns['vlgn'] . ")/", $matched, $vert)) {
                     $style[] = 'vertical-align:' . $this->vAlign($vert[1]) . ';';
                 }
             }
 
+            $sty = [];
             if (preg_match("/\{([^}]*)\}/", $matched, $sty)) {
                 $style[] = rtrim($sty[1], ';') . ';';
                 $matched = str_replace($sty[0], '', $matched);
             }
 
+            $lng = [];
             if (preg_match("/\[([^]]+)\]/U", $matched, $lng)) {
                 $lang = $lng[1];
                 $matched = str_replace($lng[0], '', $matched);
             }
 
+            $cls = [];
             if (preg_match("/\(([^()]+)\)/U", $matched, $cls)) {
                 $class = $cls[1];
                 $matched = str_replace($cls[0], '', $matched);
             }
 
+            $pl = [];
             if (preg_match("/([(]+)/", $matched, $pl)) {
                 $style[] = 'padding-left:' . strlen($pl[1]) . 'em;';
                 $matched = str_replace($pl[0], '', $matched);
             }
 
+            $pr = [];
             if (preg_match("/([)]+)/", $matched, $pr)) {
                 $style[] = 'padding-right:' . strlen($pr[1]) . 'em;';
                 $matched = str_replace($pr[0], '', $matched);
             }
 
+            $horiz = [];
             if (preg_match("/(" . self::$patterns['hlgn'] . ")/", $matched, $horiz)) {
                 $style[] = 'text-align:' . $this->hAlign($horiz[1]) . ';';
             }
 
+            $ids = [];
             if (preg_match("/^(.*)#(.*)$/", $class, $ids)) {
                 $id = $ids[2];
                 $class = $ids[1];
@@ -2241,6 +2251,8 @@ class WikiParser
         $rows = [];
         $rowMeta = []; // Track cell types per row for thead/tbody
 
+        $rmtch = null;
+        $cmtch = null;
         foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) ?: [] as $row) {
             if (preg_match("/^({$ac}\.)(.*)/m", ltrim($row), $rmtch)) {
                 $ratts = $this->pba($rmtch[1], 'tr');
@@ -2807,6 +2819,8 @@ class WikiParser
      */
     public function toc($text, $standalone = false, $depth = 0)
     {
+        $refers = [];
+        $refcount = [];
         $showEditLink        = true;
         //$mShowToc            = true;
 
@@ -2819,6 +2833,7 @@ class WikiParser
         $placeholder = '';
         if (!$standalone) {
             $tocMode = 'none';
+            $mm = [];
             if (
                 preg_match(
                     '/<p>MACRO'

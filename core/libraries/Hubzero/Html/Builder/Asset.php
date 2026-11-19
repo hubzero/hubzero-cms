@@ -296,6 +296,8 @@ class Asset
                 $document->addStylesheet($include, 'text/css', null, $attribs);
             }
         }
+
+        return null;
     }
 
     /**
@@ -345,6 +347,8 @@ class Asset
                 $document->addScript($include, "text/javascript", $defer, $async);
             }
         }
+
+        return null;
     }
 
     /**

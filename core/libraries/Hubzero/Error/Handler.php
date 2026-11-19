@@ -263,13 +263,13 @@ class Handler
         // error exception instance and pass it into the regular exception handling
         // code so it can be displayed back out to the developer for information.
         if (!is_null($error)) {
-            extract($error);
-
-            if (!in_array($type, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE])) {
+            if (!in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE])) {
                 return;
             }
 
-            $this->handleException(new FatalError($message, $type, 0, $file, $line));
+            $this->handleException(
+                new FatalError($error['message'], $error['type'], 0, $error['file'], $error['line']),
+            );
         }
     }
 }

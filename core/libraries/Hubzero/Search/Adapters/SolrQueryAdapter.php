@@ -538,5 +538,7 @@ class SolrQueryAdapter implements QueryInterface
                 return $result;
             }
         }
+
+        return null;
     }
 }

@@ -15,6 +15,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for post votes
+ *
+ * @property  mixed  $id
+ * @property  mixed  $item_id
+ * @property  mixed  $user_id
+ * @property  mixed  $voted
  */
 class Vote extends Table
 {

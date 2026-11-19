@@ -964,6 +964,7 @@ class AseDriver extends BaseSqlDriver
         $rows = $this->loadObjectList();
         $defaults = [];
 
+        $m = null;
         if ($rows) {
             foreach ($rows as $row) {
                 // syscomments stores "DEFAULT  value" — extract just the value
@@ -1602,6 +1603,7 @@ class AseDriver extends BaseSqlDriver
 
         $identityTable = $this->detectIdentityInsert();
 
+        $quoted = null;
         if ($identityTable) {
             $quoted = $this->quoteName($identityTable);
             $this->execRawSilent("SET IDENTITY_INSERT {$quoted} ON");
@@ -1726,6 +1728,7 @@ class AseDriver extends BaseSqlDriver
         // FK referential actions — ASE 16.x does not support them.
         // Throw for non-NO ACTION actions; silently strip NO ACTION (default behavior).
         if (preg_match('/\bON\s+(DELETE|UPDATE)\s/i', (string) $sql)) {
+            $m = [];
             if (
                 preg_match(
                     '/\bON\s+(DELETE|UPDATE)\s+(CASCADE|SET\s+NULL|SET\s+DEFAULT|RESTRICT)\b/i',
@@ -1900,6 +1903,7 @@ class AseDriver extends BaseSqlDriver
 
         // Form 1: INSERT INTO table (columns) VALUES/SELECT
         $pattern = '/INSERT\s+INTO\s+' . $ident . '\s*\(([^)]+)\)/i';
+        $matches = [];
         if (preg_match($pattern, $sql, $matches)) {
             $table = $matches[1] ?: ($matches[2] ?: $matches[3]);
             $columns = array_map(function ($c) {
@@ -1933,6 +1937,7 @@ class AseDriver extends BaseSqlDriver
                     '',
                     $sql,
                 );
+                $selMatch = [];
                 if (preg_match('/^(.+?)\s+FROM\s+/is', $selectPart, $selMatch)) {
                     $selectExprs = array_map('trim', explode(',', $selMatch[1]));
                     $numSelectCols = count($selectExprs);
@@ -2043,6 +2048,7 @@ class AseDriver extends BaseSqlDriver
     public function getVersion()
     {
         $full = $this->getFullVersion();
+        $m = [];
         if ($full && preg_match('/(\d+\.\d+(\.\d+)?)/', $full, $m)) {
             return $m[1];
         }

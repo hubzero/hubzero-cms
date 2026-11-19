@@ -87,6 +87,7 @@ class Editor extends Obj
      */
     public function initialise()
     {
+        $results = [];
         if (is_null($this->editor)) {
             return;
         }
@@ -119,6 +120,7 @@ class Editor extends Obj
      */
     public function display($name, $id, $html, $cls, $col, $row, $params = [])
     {
+        $results = [];
         // Return a standard textarea if no editor is found
         if (!$this->name) {
             return '<textarea name="'
@@ -164,6 +166,7 @@ class Editor extends Obj
      */
     public function save($editor)
     {
+        $results = [];
         $this->load();
 
         if (is_null($this->editor)) {
@@ -190,6 +193,7 @@ class Editor extends Obj
      */
     public function getContent($editor)
     {
+        $results = [];
         $this->load();
 
         if (is_null($this->editor)) {
@@ -217,6 +221,7 @@ class Editor extends Obj
      */
     public function setContent($editor, $html)
     {
+        $results = [];
         $this->load();
 
         $args = [

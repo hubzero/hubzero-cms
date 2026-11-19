@@ -33,6 +33,7 @@ $this
 
 $v = count($this->versions) + 1;
 
+$parent = null;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 

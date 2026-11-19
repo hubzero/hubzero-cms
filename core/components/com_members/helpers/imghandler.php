@@ -364,8 +364,8 @@ class ImgHandler extends Obj
      * (1) the difference between the original size and the final size
      * (2) the final size
      *
-     * @param      number $orig  Original size
-     * @param      number $final Final size
+     * @param      int|float $orig  Original size
+     * @param      int|float $final Final size
      * @return     integer
      */
     private function findSharp($orig, $final)

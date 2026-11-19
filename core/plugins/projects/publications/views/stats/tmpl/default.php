@@ -31,6 +31,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('impact');
 
+$typetitle = null;
 if ($this->pub->exists()) {
     $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
         $this->pub->category()->alias,

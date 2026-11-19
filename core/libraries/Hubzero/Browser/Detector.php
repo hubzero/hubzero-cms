@@ -812,6 +812,7 @@ class Detector
             $this->accept = strtolower($accept);
         }
 
+        $version = null;
         if (!empty($this->agent)) {
             $this->setPlatform();
 
@@ -824,6 +825,7 @@ class Detector
                     }
 
                     if (isset($regex['version'])) {
+                        $ver = [];
                         if (preg_match($regex['version'], $this->agent, $ver)) {
                             $version = $ver;
                         }
@@ -1061,6 +1063,7 @@ class Detector
         }
 
         if (strtolower($this->platform) == 'ios') {
+            $matches = [];
             if (preg_match('/OS (\d\w\d)/i', $this->lowerAgent, $matches)) {
                 $v = explode('_', $matches[1]);
                 $this->platformVersion = $v[0] . '.' . $v[1];

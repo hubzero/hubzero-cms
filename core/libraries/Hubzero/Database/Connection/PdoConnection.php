@@ -323,6 +323,7 @@ class PdoConnection implements ConnectionInterface
             return $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         }
 
+        $matches = [];
         // Try to parse driver from DSN to avoid connecting just for the name
         if (preg_match('/^([a-z0-9]+):/', $this->dsn, $matches)) {
             return $matches[1];

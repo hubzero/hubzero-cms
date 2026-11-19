@@ -774,6 +774,7 @@ class Html extends Obj
      */
     public static function getAdminNotes($notes = '', $reviewer = '')
     {
+        $matches = [];
         preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes ?: '', $matches);
 
         $ntext = '';
@@ -799,6 +800,7 @@ class Html extends Obj
      */
     public static function getAdminNoteCount($notes = '', $reviewer = '')
     {
+        $matches = [];
         preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
 
         if (count($matches) > 0) {
@@ -823,6 +825,7 @@ class Html extends Obj
         $note = str_replace('<nb:' . $reviewer . '>', '', $note);
         $note = str_replace('</nb:' . $reviewer . '>', '', $note);
 
+        $matches = [];
         preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
         if (count($matches) > 0) {
             $meta = $matches[0];
@@ -853,6 +856,7 @@ class Html extends Obj
     public static function getLastAdminNote($notes = '', $reviewer = '')
     {
         $match = '';
+        $matches = [];
         preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
 
         if (count($matches) > 0) {

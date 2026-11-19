@@ -92,6 +92,8 @@ class Archive extends \Hubzero\Base\Obj
                 }
                 break;
         }
+
+        return null;
     }
 
     /**

@@ -304,6 +304,7 @@ class Module extends Relational
             $newFormat = $oldFormat = $styleSpec[1];
         }
 
+        $matches = [];
         // Check if we are incrementing an existing pattern, or appending a new one.
         if (preg_match($rxSearch, $string, $matches)) {
             $n = empty($n) ? ($matches[1] + 1) : $n;
@@ -387,6 +388,7 @@ class Module extends Relational
      */
     public function duplicate()
     {
+        $tuples = [];
         $pk = $this->get('id');
 
         $this->set('id', 0);

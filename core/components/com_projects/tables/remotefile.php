@@ -14,6 +14,32 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for project shared files
+ *
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $local_dirpath
+ * @property  mixed  $local_format
+ * @property  mixed  $local_md5
+ * @property  mixed  $local_path
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $original_format
+ * @property  mixed  $original_id
+ * @property  mixed  $original_path
+ * @property  mixed  $paired
+ * @property  mixed  $projectid
+ * @property  mixed  $remote_author
+ * @property  mixed  $remote_editing
+ * @property  mixed  $remote_format
+ * @property  mixed  $remote_id
+ * @property  mixed  $remote_md5
+ * @property  mixed  $remote_modified
+ * @property  mixed  $remote_parent
+ * @property  mixed  $remote_title
+ * @property  mixed  $service
+ * @property  mixed  $synced
+ * @property  mixed  $type
+ * @property  mixed  $uid
  */
 class RemoteFile extends Table
 {

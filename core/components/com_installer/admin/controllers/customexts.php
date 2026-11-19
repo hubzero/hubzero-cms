@@ -824,6 +824,8 @@ class Customexts extends AdminController
 
         $success = 0;
 
+        $remove_response = null;
+        $result = null;
         foreach ($ids as $id) {
             $extension = CustomExtensions::oneOrNew($id);
 

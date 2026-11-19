@@ -15,6 +15,21 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for project owners (team members)
+ *
+ * @property  mixed  $added
+ * @property  mixed  $groupid
+ * @property  mixed  $id
+ * @property  mixed  $invited_code
+ * @property  mixed  $invited_email
+ * @property  mixed  $invited_name
+ * @property  mixed  $lastvisit
+ * @property  mixed  $num_visits
+ * @property  mixed  $params
+ * @property  mixed  $prev_visit
+ * @property  mixed  $projectid
+ * @property  mixed  $role
+ * @property  mixed  $status
+ * @property  mixed  $userid
  */
 class Owner extends Table
 {
@@ -582,6 +597,8 @@ class Owner extends Table
      */
     public function reconcileGroups($projectid = null, $owned_by_group = 0, $synced = 1)
     {
+        $filters = [];
+        $array_ownersingroups = [];
         if ($projectid === null) {
             return false;
         }
@@ -1377,6 +1394,8 @@ class Owner extends Table
 
             return number_format($c / $d, 0);
         }
+
+        return null;
     }
 
     /**

@@ -711,6 +711,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             return null;
         }
 
+        $matches = [];
         // Remove surrounding quotes from string defaults
         if (preg_match("/^'(.*)'$/s", $value, $matches)) {
             return str_replace("''", "'", $matches[1]);

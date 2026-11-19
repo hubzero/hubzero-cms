@@ -1185,7 +1185,7 @@ class Profile extends Obj
 
                 $list = array_unique($value);
                 sort($list);
-                unset($value);
+                $value = [];
 
                 foreach ($list as $v) {
                     $value[] = strval($v);

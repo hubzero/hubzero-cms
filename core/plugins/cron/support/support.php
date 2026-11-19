@@ -682,6 +682,7 @@ class Support extends Plugin
 						)";
         }
 
+        $timestamp = null;
         if ($created = $params->get('support_ticketlist_created', '+week')) {
             $op = '';
             switch ($created) {

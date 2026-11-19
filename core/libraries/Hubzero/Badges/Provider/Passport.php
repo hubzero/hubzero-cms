@@ -83,6 +83,7 @@ class Passport implements ProviderInterface
      */
     public function setCredentials($passportCredentials)
     {
+        $params = [];
         $this->credentials = $passportCredentials;
         $this->request = new \OAuth(
             $this->credentials->client_id,

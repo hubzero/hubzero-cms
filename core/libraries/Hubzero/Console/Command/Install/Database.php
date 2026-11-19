@@ -2341,6 +2341,7 @@ class Database
             return false;
         }
 
+        $retval = 0;
         // Try to enable raw mode
         // -icanon: disable canonical mode (line buffering)
         // -echo: disable echoing of input characters
@@ -2564,6 +2565,7 @@ class Database
         $settings = [];
         $inClientSection = false;
 
+        $matches = null;
         foreach (explode("\n", $contents) as $line) {
             $line = trim($line);
 

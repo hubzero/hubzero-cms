@@ -234,6 +234,7 @@ class Migration extends Base implements CommandInterface
             $migration->registerCallback('progress', $progress);
         }
 
+        $matches = null;
         // Find migration files
         if ($migration->find($extension, $file) === false) {
             // Find failed, do nothing

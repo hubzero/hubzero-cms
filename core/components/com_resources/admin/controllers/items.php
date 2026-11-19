@@ -598,6 +598,7 @@ class Items extends AdminController
      */
     public function editTask($isnew = 0)
     {
+        $lists = [];
         Request::setVar('hidemainmenu', 1);
 
         // Push some needed styles to the tmeplate
@@ -1676,6 +1677,7 @@ class Items extends AdminController
      */
     private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
+        $users = [];
         $database = App::get('db');
 
         $group_id = 'g.id';

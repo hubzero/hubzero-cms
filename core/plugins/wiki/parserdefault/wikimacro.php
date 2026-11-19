@@ -145,6 +145,8 @@ class WikiMacro
         if (isset($this->data[$property])) {
             return $this->data[$property];
         }
+
+        return null;
     }
 
     /**

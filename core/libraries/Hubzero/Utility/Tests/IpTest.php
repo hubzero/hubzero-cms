@@ -167,6 +167,7 @@ class IpTest extends Basic
      **/
     public function testToPacked()
     {
+        $mapped = true;
         $this->assertEquals('c0000207', bin2hex((string) \Hubzero\Utility\Ip::toPacked('192.0.2.7', $mapped)));
         $this->assertFalse($mapped);
 

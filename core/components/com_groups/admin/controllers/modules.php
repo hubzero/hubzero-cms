@@ -568,6 +568,8 @@ class Modules extends AdminController
         // basic php lint command
         $cmd = 'php -l ' . escapeshellarg($file) . ' 2>&1';
 
+        $output = [];
+        $return = 0;
         // run lint
         exec($cmd, $output, $return);
 

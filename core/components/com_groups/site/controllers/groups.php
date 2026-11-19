@@ -398,6 +398,8 @@ class Groups extends Base
 
         // Display view
         $this->view->display();
+
+        return null;
     }
 
     /**
@@ -568,6 +570,7 @@ class Groups extends Base
      */
     public function saveTask()
     {
+        $message = [];
         // Check if they're logged in
         if (User::isGuest()) {
             $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
@@ -1098,7 +1101,7 @@ class Groups extends Base
         // Check if they're logged in
         if (User::isGuest()) {
             // Return to the confirmation form rather than to this POST-only task
-            return $this->loginTask(
+            $this->loginTask(
                 Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'),
                 'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=delete',
             );
@@ -1608,6 +1611,7 @@ class Groups extends Base
         $file_path     = $base_path . DS . $file;
         $alt_file_path = null;
 
+        $altPathCheck = null;
         // If super group offer alt path outside uploads
         if ($group->isSuperGroup()) {
             // do not serve gitignore or PHP files

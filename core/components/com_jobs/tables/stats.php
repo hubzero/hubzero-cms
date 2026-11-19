@@ -14,6 +14,13 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for job stats
+ *
+ * @property  mixed  $category
+ * @property  mixed  $id
+ * @property  mixed  $itemid
+ * @property  mixed  $lastviewed
+ * @property  mixed  $total_viewed
+ * @property  mixed  $viewed_today
  */
 class Stats extends Table
 {

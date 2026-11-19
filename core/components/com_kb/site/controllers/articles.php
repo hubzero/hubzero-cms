@@ -258,6 +258,7 @@ class Articles extends SiteController
             App::abort(404, Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
         }
 
+        $row = null;
         // Load the article
         switch ($type) {
             case 'article':

@@ -124,6 +124,7 @@ class Admin extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
         }
 
+        $status = [];
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
@@ -204,6 +205,7 @@ class Admin extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
         }
 
+        $status = [];
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
@@ -347,6 +349,7 @@ class Admin extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
         }
 
+        $status = [];
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
@@ -410,6 +413,7 @@ class Admin extends SiteController
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
         }
 
+        $status = [];
         // Get the tool status
         $obj->getToolStatus(
             $this->toolid,
@@ -430,6 +434,7 @@ class Admin extends SiteController
 
         // Create a Tool Version object
         $objV = new \Components\Tools\Tables\Version($this->database);
+        $tools = [];
         $objV->getToolVersions(
             $this->toolid,
             $tools,
@@ -461,6 +466,7 @@ class Admin extends SiteController
         // Log checkpoint
         Log::debug("publish(): checkpoint 2:$result, check revision");
 
+        $error_v = '';
         // check if version is valid
         if (!\Components\Tools\Models\Tool::validateVersion($status['version'], $error_v, $this->toolid)) {
             $result = false;
@@ -472,6 +478,7 @@ class Admin extends SiteController
 
         // Run finalizetool
         if (!$this->getError()) {
+            $out = '';
             if ($this->finalizeTool($out)) {
                 $this->setMessage(Lang::txt('COM_TOOLS_Version finalized.'));
             } else {
@@ -747,6 +754,7 @@ class Admin extends SiteController
 
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);
+        $status = [];
         $obj->getToolStatus($this->toolid, $this->option, $status, 'dev');
 
         if (count($status) > 0) {
@@ -833,6 +841,8 @@ class Admin extends SiteController
                 return false;
             } else {
                 Log::debug("findalizeTool(): deleting tmp files");
+                $rmOutput = [];
+                $result = 0;
                 exec('sudo -u apps rm -f ' . escapeshellarg('/tmp/' . $tar), $rmOutput, $result);
             }
             return true;
@@ -916,6 +926,8 @@ class Admin extends SiteController
     {
         $success = true;
 
+        $rawoutput = [];
+        $status = 0;
         exec($command . ' 2>&1 </dev/null', $rawoutput, $status);
 
         if ($status != 0) {

@@ -50,6 +50,7 @@ $saveActionUrl = Route::url(
     $this->url . '&action=save&no_html=1&ajax=1' . $subdirlink,
 );
 
+$parent = null;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
     $this->subdir,

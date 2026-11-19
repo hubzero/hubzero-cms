@@ -191,5 +191,7 @@ class Kb extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

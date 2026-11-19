@@ -12,6 +12,9 @@ use Hubzero\Database\Table;
 
 /**
  * Courses grade book table
+ *
+ * @property  mixed  $id
+ * @property  mixed  $score
  */
 class GradeBook extends Table
 {

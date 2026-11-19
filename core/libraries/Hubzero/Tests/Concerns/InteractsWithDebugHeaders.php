@@ -10,6 +10,8 @@ namespace Hubzero\Tests\Concerns;
 
 /**
  * Shared assertion helpers for debug/profile response headers.
+ *
+ * @phpstan-require-extends \PHPUnit\Framework\TestCase
  */
 trait InteractsWithDebugHeaders
 {

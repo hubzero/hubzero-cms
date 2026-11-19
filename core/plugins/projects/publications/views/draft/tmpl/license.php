@@ -161,12 +161,14 @@ $text = $this->pub->get('license_text', $defaultText);
                                 ><?php echo $reloadLabel; ?></span>
                         </div>
                     <?php } else {
+                        $substitutes = [];
                         // Word replacements required?
                         preg_match_all(
                             '/\[([^\]]*)\]/',
                             $this->license->text ? $this->license->text : "",
                             $substitutes,
                         );
+                        $matches = [];
                         preg_match_all(
                             '/\[([^]]+)\]/',
                             $this->pub->license_text ? $this->pub->license_text : "",

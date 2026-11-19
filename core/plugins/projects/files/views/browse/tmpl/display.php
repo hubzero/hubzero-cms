@@ -46,6 +46,7 @@ $this
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir = $this->params['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
+$parent = null;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
     $this->subdir,

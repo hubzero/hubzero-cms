@@ -1877,6 +1877,7 @@ class CurrentCart extends Cart
      */
     private function populateTransaction()
     {
+        $meta = [];
         // Get all cart items
         $cartItems = $this->cart->items;
 

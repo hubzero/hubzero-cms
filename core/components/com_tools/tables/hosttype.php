@@ -13,6 +13,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table for host types
+ *
+ * @property  mixed  $description
+ * @property  mixed  $name
+ * @property  mixed  $value
  */
 class Hosttype extends Table
 {

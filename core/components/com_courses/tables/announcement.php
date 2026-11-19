@@ -15,6 +15,16 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course announcement table class
+ *
+ * @property  mixed  $content
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $offering_id
+ * @property  mixed  $priority
+ * @property  mixed  $publish_down
+ * @property  mixed  $publish_up
+ * @property  mixed  $sticky
  */
 class Announcement extends Table
 {

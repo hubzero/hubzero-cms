@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 
 /**
  * Table for storing user middleware preferences
+ *
+ * @property  mixed  $class_id
+ * @property  mixed  $id
+ * @property  mixed  $jobs
+ * @property  mixed  $params
+ * @property  mixed  $user_id
  */
 class Preferences extends Table
 {

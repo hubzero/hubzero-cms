@@ -54,6 +54,7 @@ class Languagecode extends Plugin
                 $replace  = [];
             }
 
+            $matches = [];
             // Replace codes in <link hreflang="" /> attributes
             preg_match_all(
                 chr(1) . '(<link.*\s+hreflang=")([0-9a-z\-]*)(".*\s+rel="alternate".*/>)' . chr(1) . 'i',

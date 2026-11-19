@@ -13,6 +13,9 @@ use Hubzero\Facades\Lang;
 
 /**
  * Events table class for configuration
+ *
+ * @property  mixed  $param
+ * @property  mixed  $value
  */
 class Config extends Table
 {

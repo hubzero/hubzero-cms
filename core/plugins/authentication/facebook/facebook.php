@@ -47,7 +47,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Get the provider object, instantiating it if need be
      *
-     * @return  object
+     * @return  void
      */
     public function __construct($subject, $config)
     {

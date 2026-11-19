@@ -11,6 +11,7 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+$matches = [];
 /**
  * What this template is given.
  *

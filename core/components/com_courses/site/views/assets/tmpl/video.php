@@ -64,6 +64,8 @@ Html::behavior('framework', true);
 $width  = 'auto';
 $height = 'auto';
 
+$presentation = null;
+$content_folder = null;
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter') {
     // Check if path exists

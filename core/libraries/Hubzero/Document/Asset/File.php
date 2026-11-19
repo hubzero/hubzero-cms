@@ -248,6 +248,8 @@ class File extends Obj
      */
     public function sourcePath()
     {
+        $paths_app = [];
+        $paths_core = [];
         if (!isset($this->paths['source'])) {
             // If loading from an absolute path
             if ($this->directory == '/') {

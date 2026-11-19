@@ -80,6 +80,8 @@ class Gitlab
         if (isset($this->$property)) {
             return $this->$property;
         }
+
+        return null;
     }
 
     /**

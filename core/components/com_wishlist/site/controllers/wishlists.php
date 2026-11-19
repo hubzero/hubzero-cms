@@ -50,6 +50,8 @@ use Hubzero\Facades\Route;
  * @property  string  $_taskpath    The pathway link of the task, set by a task
  * @property  int     $_listid      The list whose settings are shown, set by settingsTask()
  * @property  int     $listid       The list being shown, kept for plugins (unread)
+ *
+ * @property  mixed  $plugin
  */
 class Wishlists extends SiteController
 {
@@ -2712,6 +2714,7 @@ class Wishlists extends SiteController
      */
     public function userSelect($name, $ownerids, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
+        $users = [];
         $database = App::get('db');
 
         $query = $database

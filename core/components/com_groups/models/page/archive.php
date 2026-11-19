@@ -141,6 +141,8 @@ class Archive extends Obj
             $page->set($key, $value);
             $page->store();
         }
+
+        return null;
     }
 
     /**

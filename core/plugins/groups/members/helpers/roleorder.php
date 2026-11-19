@@ -63,6 +63,7 @@ class RoleOrder
      */
     public static function date($name)
     {
+        $m = [];
         // A year stands alone: "2020s" is a decade and "2026B" a room
         if (!preg_match('/(?<![0-9A-Za-z])((?:19|20)\d{2})(?![0-9A-Za-z])/', (string) $name, $m)) {
             return null;
@@ -70,6 +71,7 @@ class RoleOrder
         $year  = (int) $m[1];
         $month = 1;
 
+        $n = [];
         // "05/2026", "2026-05"
         if (
             preg_match('#(?:^|\D)(\d{1,2})[/-]' . $year . '(?:\D|$)#', $name, $n)
@@ -80,6 +82,7 @@ class RoleOrder
             }
         }
 
+        $words = [];
         // "May 2026", "2026 Spring", "Class of 2025, Fall"
         if (preg_match_all('/[A-Za-z]+/', $name, $words)) {
             foreach ($words[0] as $word) {

@@ -130,6 +130,7 @@ class Notes extends Plugin
      */
     public function &onProjectCount($model)
     {
+        $counts = [];
         $group_prefix = $model->config()->get('group_prefix', 'pr-');
         $groupname = $group_prefix . $model->get('alias');
         $scope = 'projects' . DS . $model->get('alias') . DS . 'notes';

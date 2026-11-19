@@ -122,6 +122,7 @@ class Migration20260914180000MenuTypes extends Base
             ->whereEquals('menutype', 'default')
             ->fetch();
 
+        $m = null;
         foreach ($rows as $row) {
             $id    = (int) ((array) $row)['id'];
             $alias = ((array) $row)['alias'];

@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for group membership reason
+ *
+ * @property  mixed  $date
+ * @property  mixed  $gidNumber
+ * @property  mixed  $reason
+ * @property  mixed  $uidNumber
  */
 class Reason extends Table
 {

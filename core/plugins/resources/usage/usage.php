@@ -505,6 +505,7 @@ class Usage extends Plugin
 
         $orgs = $this->getTopValue($id, 3, $tid, $datetime, $period);
         $r = [];
+        $regs = null;
         if ($orgs) {
             $i = 0;
             foreach ($orgs as $row) {

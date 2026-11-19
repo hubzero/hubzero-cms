@@ -14,6 +14,19 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for project activity
+ *
+ * @property  mixed  $activity
+ * @property  mixed  $admin
+ * @property  mixed  $class
+ * @property  mixed  $commentable
+ * @property  mixed  $highlighted
+ * @property  mixed  $id
+ * @property  mixed  $managers_only
+ * @property  mixed  $projectid
+ * @property  mixed  $recorded
+ * @property  mixed  $referenceid
+ * @property  mixed  $url
+ * @property  mixed  $userid
  */
 class Activity extends Table
 {
@@ -466,6 +479,8 @@ class Activity extends Table
 
             return $d ? number_format($c / $d, 0) : 0;
         }
+
+        return null;
     }
 
     /**

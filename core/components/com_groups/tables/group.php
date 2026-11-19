@@ -13,6 +13,9 @@ use Hubzero\Facades\Lang;
 
 /**
  * Groups table
+ *
+ * @property  mixed  $cn
+ * @property  mixed  $title
  */
 class Group extends Table
 {

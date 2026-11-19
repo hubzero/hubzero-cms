@@ -167,5 +167,7 @@ class Groups extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

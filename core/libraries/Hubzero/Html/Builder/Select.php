@@ -705,6 +705,7 @@ class Select
      */
     public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null)
     {
+        $options = [];
         if (empty($attribs)) {
             $attribs = 'class="inputbox" size="1"';
         }

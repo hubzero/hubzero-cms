@@ -284,6 +284,8 @@ class Auth extends SiteController
             ->setLayout('default')
             ->addTemplatePath($this->getTemplatePath())
             ->display();
+
+        return null;
     }
 
     /**

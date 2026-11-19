@@ -685,6 +685,7 @@ class Ticket extends Relational
         $db = App::get('db');
 
         $having = '';
+        $matches = [];
         if (
             preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches)
             || preg_match('/GROUP BY f.id/i', $query, $matches)
@@ -752,6 +753,7 @@ class Ticket extends Relational
         $db = App::get('db');
 
         $having = '';
+        $matches = [];
         if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches)) {
             $having = $matches[0];
             $query = str_replace($matches[0], '', $query);

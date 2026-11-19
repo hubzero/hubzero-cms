@@ -1514,6 +1514,7 @@ class Publication extends Obj
     {
         $data = [];
 
+        $matches = [];
         // Parse data
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
@@ -2422,6 +2423,8 @@ class Publication extends Obj
      */
     public function getWorkData($putCode = null)
     {
+        $contributors = [];
+        $externalIDs = [];
         if (!$this->exists()) {
             return false;
         }

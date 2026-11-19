@@ -13,6 +13,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication stats
+ *
+ * @property  mixed  $publication_id
  */
 class Stats extends Table
 {

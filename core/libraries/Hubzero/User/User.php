@@ -34,6 +34,10 @@ use Hubzero\Facades\Request;
  * @property  string|null  $name
  *
  * @property-read  mixed  $groups  What groups() gives
+ *
+ * @property  mixed  $_authLevels
+ * @property  mixed  $auth_link_id
+ * @property  mixed  $password
  */
 class User extends \Hubzero\Database\Relational
 {

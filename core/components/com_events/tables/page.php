@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for event pages
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $event_id
+ * @property  mixed  $ordering
+ * @property  mixed  $title
  */
 class Page extends Table
 {

@@ -268,6 +268,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                 <?php
                 $k = 0;
 
+                $status = '';
                 for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $row = &$this->rows[$i];
 

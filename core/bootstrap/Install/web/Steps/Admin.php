@@ -352,6 +352,7 @@ class Admin implements StepInterface
             return true;
         }
 
+        $oldErrorReporting = null;
         try {
             // Suppress deprecation warnings
             $oldErrorReporting = error_reporting();

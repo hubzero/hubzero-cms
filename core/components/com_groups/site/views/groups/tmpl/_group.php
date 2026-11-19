@@ -31,6 +31,7 @@ if (!$group) {
 $status  = '';
 $options = '';
 
+$members = null;
 //determine group status
 if ($group->get('published') == 1 && !User::isGuest()) {
     $members = $group->get('members');

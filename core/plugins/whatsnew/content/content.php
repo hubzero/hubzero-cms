@@ -81,6 +81,8 @@ class Content extends Plugin
         $order_by = " ORDER BY publish_up DESC, title";
         $order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
+        $matches = null;
+        $tag = null;
         if ($limit) {
             // Get results
             $database->setQuery($c_fields . $c_from . " WHERE " . $c_where . $order_by);

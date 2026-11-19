@@ -330,6 +330,7 @@ class Endnote extends Plugin
             $existingCitations->filterBySearch($searchParams);
         }
 
+        $similar = null;
         // Loop through all current citations
         foreach ($existingCitations->rows() as $r) {
             $id    = $r->id;

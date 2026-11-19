@@ -120,6 +120,7 @@ class Opengraph extends Plugin
             }
             $content = $introtext . $fulltext;
 
+            $src = [];
             preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $src);
             if (isset($src[1]) && $src[1] != '') {
                 Document::setMetaData('og:image', Request::base(false) . htmlspecialchars($src[1]));

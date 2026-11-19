@@ -81,6 +81,7 @@ class Notices extends Module
     private function mkt($stime)
     {
         $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+        $regs = [];
         if ($stime && preg_match($pattern, $stime, $regs)) {
             $stime = mktime(
                 (int) $regs[4],

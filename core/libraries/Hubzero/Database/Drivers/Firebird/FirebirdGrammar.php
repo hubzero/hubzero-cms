@@ -409,6 +409,7 @@ class FirebirdGrammar extends BaseSchemaGrammar
             $statements[] = "ALTER TABLE " . $this->wrap($table) . " ADD " . $colDef;
         }
 
+        $matches = null;
         // Modify columns
         foreach ($builder->getModifyColumns() as $name => $definition) {
             $type = $definition['type'];

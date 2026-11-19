@@ -83,6 +83,8 @@ class DiffEngine
      */
     public function diff($from_lines, $to_lines)
     {
+        $xhash = [];
+        $yhash = [];
         $n_from = count($from_lines);
         $n_to = count($to_lines);
 
@@ -225,6 +227,9 @@ class DiffEngine
      */
     public function diag($xoff, $xlim, $yoff, $ylim, $nchunks)
     {
+        $ymatches = [];
+        $ymids = [];
+        $seps = [];
         $flip = false;
 
         if ($xlim - $xoff > $ylim - $yoff) {
@@ -376,6 +381,7 @@ class DiffEngine
             --$ylim;
         }
 
+        $seps = null;
         if ($xoff == $xlim || $yoff == $ylim) {
             $lcs = 0;
         } else {

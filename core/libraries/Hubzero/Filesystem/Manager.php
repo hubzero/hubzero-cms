@@ -71,6 +71,7 @@ class Manager
      **/
     protected static function getMountNameFromPath($path)
     {
+        $name = [];
         preg_match('/([[:alpha:]]*):\/\//', $path, $name);
 
         if (!isset($name[1]) || !$name[1]) {
@@ -88,6 +89,7 @@ class Manager
      **/
     protected static function getRelativePath($path)
     {
+        $name = [];
         preg_match('/([[:alpha:]]*):\/\/(.*)/', $path, $name);
 
         if (isset($name[2]) && $name[2]) {

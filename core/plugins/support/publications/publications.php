@@ -49,6 +49,7 @@ class Publications extends Plugin
 
         $database->setQuery($query);
         $rows = $database->loadObjectList();
+        $matches = null;
         if ($rows) {
             foreach ($rows as $key => $row) {
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
@@ -165,6 +166,7 @@ class Publications extends Plugin
                 // Delete the review
                 $review = new \Components\Publications\Tables\Review($database);
                 $review->load($referenceid);
+                $matches = [];
                 //$comment->anonymous = 1;
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $review->comment, $matches)) {
                     $format = strtolower(trim($matches[1]));
@@ -199,6 +201,7 @@ class Publications extends Plugin
             case 'pubreviewcomment':
                 $comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
 
+                $matches = [];
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->get('content'), $matches)) {
                     $format = strtolower(trim($matches[1]));
                     switch ($format) {

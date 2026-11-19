@@ -730,6 +730,7 @@ class SiteSettings
             return false;
         }
 
+        $retval = 0;
         $result = @system('stty -icanon -echo -isig 2>/dev/null', $retval);
 
         if ($retval !== 0) {

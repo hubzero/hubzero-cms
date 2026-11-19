@@ -113,6 +113,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
 
         // Extract version from version string (e.g., "8.0.32-24")
         $driverVersion = null;
+        $matches = [];
         if ($version && preg_match('/^(\d+\.\d+\.\d+)/', $version, $matches)) {
             $driverVersion = $matches[1];
         }
@@ -135,6 +136,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
         $info = $this->getServerInfo();
         $version = $info['version'] ?? null;
 
+        $matches = [];
         if ($version && preg_match('/^(\d+\.\d+)/', $version, $matches)) {
             return (float) $matches[1];
         }

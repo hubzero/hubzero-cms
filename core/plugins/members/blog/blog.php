@@ -541,7 +541,7 @@ class Blog extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -587,7 +587,7 @@ class Blog extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -681,7 +681,7 @@ class Blog extends Plugin
     private function delete()
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (User::get('id') != $this->member->get('id') && !User::authorize('core.admin', 'com_blog')) {
@@ -769,7 +769,7 @@ class Blog extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Check for request forgeries
@@ -867,7 +867,7 @@ class Blog extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Require POST to prevent accidental deletion by crawlers
@@ -959,7 +959,7 @@ class Blog extends Plugin
     private function settings()
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -988,7 +988,7 @@ class Blog extends Plugin
     private function savesettings()
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {

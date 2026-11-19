@@ -156,6 +156,7 @@ class Certificate extends Plugin
             $response->status    = \Hubzero\Auth\Status::SUCCESS;
             $response->fullname  = $username;
 
+            $matches = [];
             // Try to deduce fullname from potential patern (ex: LAST.FIRST.MIDDLE.ID)
             if (preg_match('/([[:alpha:]]*)\.([[:alpha:]]*)\.([[:alpha:]]*)/', $username, $matches)) {
                 $response->fullname = ucfirst($matches[2]) . ' ' . ucfirst($matches[3]) . ' ' . ucfirst($matches[1]);

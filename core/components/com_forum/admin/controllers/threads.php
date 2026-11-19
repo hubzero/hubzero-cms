@@ -211,6 +211,7 @@ class Threads extends AdminController
      */
     public function threadTask()
     {
+        $cateories = [];
         // Filters
         $filters = [
             'search' => Request::getState(

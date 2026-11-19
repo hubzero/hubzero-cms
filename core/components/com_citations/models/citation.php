@@ -112,6 +112,8 @@ use Hubzero\Facades\Lang;
  * @property-read  mixed  $sponsors  What sponsors() gives
  *
  * @property mixed $tempId  Not a column: the temporary id its authors were saved under, while it has no id
+ *
+ * @property  mixed  $badges
  */
 class Citation extends Relational implements \Hubzero\Search\Searchable
 {
@@ -890,6 +892,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'doi'          => 'rft_id=info:doi/',
         ];
 
+        $matches = null;
         // form the formatted citation
         foreach ($template_keys as $k => $v) {
             if (!$this->keyExistsOrIsNotEmpty($k, $this) && $k != 'author') {

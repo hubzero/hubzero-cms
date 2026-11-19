@@ -905,11 +905,13 @@ class Newsletters extends AdminController
                     $parts = array_map("trim", explode(':', $header, 2));
                     switch ($parts[0]) {
                         case 'From':
+                            $matches = [];
                             if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
                                 $message->setFrom([$matches[2] => $matches[1]]);
                             }
                             break;
                         case 'Reply-To':
+                            $matches = [];
                             if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
                                 $message->setReplyTo([$matches[2] => $matches[1]]);
                             }

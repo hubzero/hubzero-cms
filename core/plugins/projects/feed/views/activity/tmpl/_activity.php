@@ -220,6 +220,7 @@ if (!$this->activity->log->get('anonymous')) {
 
                             if ($hash) {
                                 // Only preview mid-size images from now on
+                                $preview = [];
                                 $hashed = md5(basename($file) . '-' . $hash) . '.png';
 
                                 if (is_file(PATH_APP . $to_path . DS . $hashed)) {

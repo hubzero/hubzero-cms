@@ -260,5 +260,7 @@ class Citations extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

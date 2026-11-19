@@ -40,7 +40,7 @@ class ConfigHelper
                 }
             }
             return $config;
-        } elseif ($name != '') {
+        } else {
             $filename = $baseDir . DS . $name . '.php';
             if (Filesystem::exists($filename)) {
                 $config = include_once $filename;

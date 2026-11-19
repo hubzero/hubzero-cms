@@ -89,6 +89,8 @@ class Toolsv1r0 extends ApiController
             . "/scripts/mw screenshot "
             . escapeshellarg($result->get('username'))
             . " 2>&1 </dev/null";
+        $results = [];
+        $status = 0;
         exec($cmd, $results, $status);
 
         $results = [];

@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication screenshot
+ *
+ * @property  mixed  $filename
+ * @property  mixed  $ordering
+ * @property  mixed  $publication_id
+ * @property  mixed  $publication_version_id
  */
 class Screenshot extends Table
 {
@@ -225,6 +230,8 @@ class Screenshot extends Table
         $query .= " AND filename=" . $this->db->quote($filename);
         $this->db->setQuery($query);
         $this->db->query();
+
+        return null;
     }
 
     /**

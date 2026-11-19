@@ -24,6 +24,7 @@ class Migration20131112130740ComUsage extends Base
      **/
     public function up()
     {
+        $options = [];
         require_once __DIR__ . '/data/UsageMetricsSeed.php';
 
         $schema = $this->db->schema();

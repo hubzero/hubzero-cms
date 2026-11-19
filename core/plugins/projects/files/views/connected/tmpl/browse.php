@@ -38,6 +38,9 @@ $metadata = Plugin::byType('metadata');
 
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
+
+// Set by buildFileBrowserCrumbs() below
+$parent = null;
 ?>
 
 <div id="preview-window"></div>

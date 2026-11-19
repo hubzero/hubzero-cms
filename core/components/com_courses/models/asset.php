@@ -157,6 +157,7 @@ class Asset extends Base
 
             // Recover full URL from content if url field was truncated at VARCHAR(255) limit
             if ($path !== null && strlen($path) >= 250) {
+                $m = [];
                 if (preg_match('~https?://[^\s"\')<>]+~i', $content, $m)) {
                     $path = $m[0];
                 }
@@ -312,6 +313,8 @@ class Asset extends Base
         if (!$view->store()) {
             $this->setError($view->getError());
         }
+
+        return null;
     }
 
     /**

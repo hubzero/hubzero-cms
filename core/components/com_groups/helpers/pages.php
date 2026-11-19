@@ -79,7 +79,7 @@ class Pages
      * Get Default Home Page
      *
      * @param    \Hubzero\User\Group    $group    \Hubzero\User\Group Object
-     * @return   String
+     * @return   string
      */
     public static function getDefaultHomePage($group)
     {
@@ -578,7 +578,7 @@ class Pages
      * @param    \Hubzero\User\Group    $group    \Hubzero\User\Group Object
      * @param    \Components\Groups\Models\Page|null    $page     \Components\Groups\Models\Page Object
      * @param   bool  $markHit
-     * @return   String
+     * @return   string
      */
     public static function displayPage($group, $page, $markHit = true)
     {
@@ -667,9 +667,9 @@ class Pages
      * Parse Wiki content
      *
      * @param    \Hubzero\User\Group    $group        \Hubzero\User\Group Object
-     * @param    String    $content      Content to parse
+     * @param    string    $content      Content to parse
      * @param    BOOL      $fullparse    Fully parse wiki content
-     * @return   String
+     * @return   string
      */
     public static function parseWiki($group, $content, $fullparse = true)
     {

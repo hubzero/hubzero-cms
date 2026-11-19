@@ -243,6 +243,7 @@ class IcalParser
      */
     private function parseRow($row)
     {
+        $matches = [];
         preg_match('#^([\w-]+);?(.*?):(.*)$#i', $row, $matches);
 
         $key      = false;

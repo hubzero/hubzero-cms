@@ -361,6 +361,7 @@ class Events extends GroupMacro
      */
     private function getFor(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/for[\s]*=[\s]*([\w\d\s]*)/', $arg, $matches)) {
@@ -392,6 +393,7 @@ class Events extends GroupMacro
      */
     private function getFrom(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/from[\s]*=[\s]*([\w\d-]*)/', $arg, $matches)) {
@@ -433,6 +435,7 @@ class Events extends GroupMacro
      */
     private function getTo(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/to[\s]*=[\s]*([\w\d-]*)/', $arg, $matches)) {
@@ -460,6 +463,8 @@ class Events extends GroupMacro
                 return $to;
             }
         }
+
+        return null;
     }
 
     /**
@@ -470,6 +475,7 @@ class Events extends GroupMacro
      */
     private function getOrder(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/order[\s]*=[\s]*([a-z]*)/', $arg, $matches)) {

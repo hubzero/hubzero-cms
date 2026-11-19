@@ -284,6 +284,7 @@ Examples:
                 // before reading its scheme ("java\tscript:" is javascript:),
                 // so test the scheme on the same stripped form
                 $probe = (string) preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
+                $m = [];
                 if (
                     preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
                     && !in_array(strtolower($m[1]), ['http', 'https', 'mailto', 'ftp'])

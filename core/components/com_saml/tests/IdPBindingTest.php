@@ -238,6 +238,7 @@ class IdPBindingTest extends Basic
         $this->assertStringContainsString('action="https://sp.example.com/acs"', $html);
 
         $this->assertMatchesRegularExpression('/name="SAMLResponse" value="([^"]+)"/', $html);
+        $field = [];
         preg_match('/name="SAMLResponse" value="([^"]+)"/', $html, $field);
         $xml = base64_decode(html_entity_decode($field[1] ?? ''));
         $this->assertStringContainsString('InResponseTo="request-1"', $xml);

@@ -12,6 +12,11 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for recent tools
+ *
+ * @property  mixed  $created
+ * @property  mixed  $id
+ * @property  mixed  $tool
+ * @property  mixed  $uid
  */
 class Recent extends Table
 {

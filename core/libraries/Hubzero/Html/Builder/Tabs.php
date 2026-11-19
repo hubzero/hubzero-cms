@@ -77,6 +77,7 @@ class Tabs
      */
     protected static function behavior($group, $params = [])
     {
+        $opt = [];
         static $loaded = [];
 
         if (!array_key_exists((string) $group, $loaded)) {

@@ -205,6 +205,7 @@ class Base
      */
     public function getMWDBO()
     {
+        $options = [];
         static $instance;
 
         if (!$instance instanceof Driver) {

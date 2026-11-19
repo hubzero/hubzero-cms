@@ -98,6 +98,7 @@ class Feed extends Plugin
      */
     public function &onProjectCount($model)
     {
+        $counts = [];
         // New activity count
         $counts['feed'] = $model->newCount();
 

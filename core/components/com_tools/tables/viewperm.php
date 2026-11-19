@@ -12,6 +12,15 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for middleware view permissions
+ *
+ * @property  mixed  $fwhost
+ * @property  mixed  $fwport
+ * @property  mixed  $geometry
+ * @property  mixed  $readonly
+ * @property  mixed  $sessnum
+ * @property  mixed  $viewtoken
+ * @property  mixed  $viewuser
+ * @property  mixed  $vncpass
  */
 class Viewperm extends Table
 {

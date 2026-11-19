@@ -151,6 +151,7 @@ class Inertia extends Base implements CommandInterface
             ];
         }
 
+        $routeMatches = [];
         if (
             preg_match_all(
                 '/(href|action|hx-get|hx-post|hx-put|hx-patch|hx-delete)=["\']([^"\']+)["\']/i',

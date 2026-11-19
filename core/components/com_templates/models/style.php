@@ -117,6 +117,7 @@ class Style extends Relational
             ->row();
 
         if ($style->get('id')) {
+            $matches = [];
             // Check if we are incrementing an existing pattern, or appending a new one.
             if (preg_match('#\((\d+)\)$#', $title, $matches)) {
                 $n = $matches[1] + 1;

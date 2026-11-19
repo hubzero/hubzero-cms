@@ -37,7 +37,7 @@ class Emailsubscriptions extends SiteController
         $subHelper = new SubscriptionsHelper();
 
         // acquire user info
-        $userId = \Hubzero\User\User::whereEquals('username', $username)->row()->get('id');
+        $userId = \Hubzero\User\User::all()->whereEquals('username', $username)->row()->get('id');
 
         $subscriptions = $subHelper->loadSubscriptions($userId);
 
@@ -55,7 +55,7 @@ class Emailsubscriptions extends SiteController
 
         $code = Request::getString('code');
         $userId = Request::getInt('userId');
-        $username = \Hubzero\User\User::whereEquals('id', $userId)->row()->get('username');
+        $username = \Hubzero\User\User::all()->whereEquals('id', $userId)->row()->get('username');
         $campaignId = Request::getInt('campaign');
 
         // Verify that the user-supplied URL and code are valid:

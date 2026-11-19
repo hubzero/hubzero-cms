@@ -441,6 +441,7 @@ class DoiService extends Obj
         curl_close($ch);
 
         $pattern = '/\((.*?)\)/';
+        $match = [];
         if (!preg_match($pattern, $response, $match)) {
             $this->setError('DOI metadata registration returned unexpected response: ' . $response);
             return false;

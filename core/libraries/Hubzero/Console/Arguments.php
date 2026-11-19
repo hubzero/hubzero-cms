@@ -165,6 +165,7 @@ class Arguments
 
                     continue;
                 } elseif (substr($this->raw[$i], 0, 1) == '-') {
+                    $matches = [];
                     // Args with a dash but no equals sign will be considered TRUE if present
                     // Try to catch clumped arguments (ex: -if as shorthand for -i -f)
                     if (preg_match("/^-([[:alpha:]]{2,})/", $this->raw[$i], $matches)) {

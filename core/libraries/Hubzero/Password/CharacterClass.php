@@ -27,6 +27,7 @@ class CharacterClass
      */
     private static function init()
     {
+        $classes = [];
         $classes[] = [
             'id' => '1',
             'name' => 'uppercase',

@@ -1268,6 +1268,7 @@ class Pages extends SiteController
                 . ' UTF-8';
             $output = shell_exec($cmd);
 
+            $hm = [];
             if ($output && preg_match('/^[+cmlCML]([a-f0-9]{32})/', $output, $hm)) {
                 $hash = $hm[1];
                 $tmpPng = $mathTmpDir . '/' . $hash . '.png';

@@ -56,6 +56,7 @@ class Unityv1r0 extends Base
 
         // Parse some things out of the referer
         $referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : Request::getString('referrer');
+        $matches = [];
         preg_match('/\/asset\/([[:digit:]]*)/', $referer, $matches);
 
         if (empty($matches[1]) || !($asset_id = (int) $matches[1])) {

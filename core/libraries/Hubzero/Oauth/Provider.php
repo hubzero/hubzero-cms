@@ -120,6 +120,7 @@ class Provider
      */
     public function validateRequest($uri = null, $method = null)
     {
+        $result = [];
         $endpoint = false;
 
         if (is_null($uri)) {

@@ -781,6 +781,7 @@ class Grid
         $translate = true,
         $checkbox = 'cb',
     ) {
+        $html = [];
         // Load the behavior.
         self::behavior();
 

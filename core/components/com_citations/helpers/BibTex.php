@@ -267,6 +267,8 @@ class BibTex
     public function addContent($bibstring)
     {
         $this->content .= $bibstring;
+
+        return null;
     }
 
     /**
@@ -930,6 +932,7 @@ class BibTex
      */
     public function generateWarning($type, $entry, $wholeentry = '')
     {
+        $warning = [];
         $warning['warning']    = $type;
         $warning['entry']      = $entry;
         $warning['wholeentry'] = $wholeentry;

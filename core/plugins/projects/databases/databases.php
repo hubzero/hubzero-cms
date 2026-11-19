@@ -146,6 +146,7 @@ class Databases extends Plugin
      */
     public function &onProjectCount($model)
     {
+        $counts = [];
         $counts['databases'] = 0;
 
         // Get this area details
@@ -171,6 +172,8 @@ class Databases extends Plugin
      */
     protected function checkConfig()
     {
+        $db_opt_rw = [];
+        $db_opt_ro = [];
         if (isset($this->configured)) {
             return $this->configured;
         }

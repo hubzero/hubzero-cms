@@ -43,7 +43,7 @@ $this
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
             </label><br />
             <select name="tool" id="field-tool">
-                <?php $tools = Tool::whereEquals('state', 7)->order('title', 'asc')->rows(); ?>
+                <?php $tools = Tool::all()->whereEquals('state', 7)->order('title', 'asc')->rows(); ?>
                 <?php if (count($tools) > 0) : ?>
                     <?php foreach ($tools as $tool) : ?>
                         <?php $sel = $tool->id == $this->row->tool_id ? ' selected="selected"' : ''; ?>

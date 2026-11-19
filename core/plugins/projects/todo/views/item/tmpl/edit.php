@@ -129,8 +129,7 @@ $todoContent = $this->row->get('details')
                             <select name="assigned">
                                 <option value=""><?php echo Lang::txt('PLG_PROJECTS_TODO_NOONE'); ?></option>
                             <?php foreach ($this->team as $member) { ?>
-                                <?php if ($member->userid && $member->userid != 0) {
-                                    $team_ids[] = $member->userid; ?>
+                                <?php if ($member->userid && $member->userid != 0) { ?>
                                     <?php
                                     $selectedAttr = $member->userid == $this->row->get('assigned_to')
                                         ? 'selected="selected"'

@@ -42,6 +42,7 @@ Html::behavior('keepalive');
             <div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
             <div class="options">
                 <?php
+                $refl = [];
                 foreach ($authenticators as $a) :
                     $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
                     if (!class_exists($authClass)) :

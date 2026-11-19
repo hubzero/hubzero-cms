@@ -13,6 +13,19 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for middleware sessions
+ *
+ * @property  mixed  $accesstime
+ * @property  mixed  $appname
+ * @property  mixed  $dispnum
+ * @property  mixed  $exechost
+ * @property  mixed  $hardTimeout
+ * @property  mixed  $params
+ * @property  mixed  $sessname
+ * @property  mixed  $sessnum
+ * @property  mixed  $sesstoken
+ * @property  mixed  $start
+ * @property  mixed  $timeout
+ * @property  mixed  $username
  */
 class Session extends Table
 {

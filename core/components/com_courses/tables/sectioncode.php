@@ -15,6 +15,14 @@ use Hubzero\Facades\Lang;
 
 /**
  * Courses table class for section coupon codes
+ *
+ * @property  mixed  $code
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $expires
+ * @property  mixed  $id
+ * @property  mixed  $redeemed_by
+ * @property  mixed  $section_id
  */
 class SectionCode extends Table
 {

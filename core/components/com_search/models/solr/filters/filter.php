@@ -89,7 +89,7 @@ class Filter extends Relational
      * Make sure params are a string
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string|void
+     * @return  string|null
      */
     public function automaticParams($data)
     {
@@ -102,6 +102,8 @@ class Filter extends Relational
             }
             return $data['params'];
         }
+
+        return null;
     }
 
     /**

@@ -1011,6 +1011,7 @@ class Comparator
         // Remove 'signed' suffix
         $type = (string) preg_replace('/\s+signed\b/i', '', $type);
 
+        $matches = [];
         // Extract base type and parameters
         if (preg_match('/^([a-z]+)(?:\(([^)]+)\))?(.*)$/', $type, $matches)) {
             $baseType = $matches[1];

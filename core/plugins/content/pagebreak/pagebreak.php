@@ -42,6 +42,7 @@ class Pagebreak extends Plugin
      */
     public function onContentPrepare($context, &$row, &$params, $page = 0)
     {
+        $t = [];
         $canProceed = $context == 'com_content.article';
         if (!$canProceed) {
             return true;

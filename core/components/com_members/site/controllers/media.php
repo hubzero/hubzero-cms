@@ -481,6 +481,7 @@ class Media extends SiteController
         $dir  = \Hubzero\Utility\Str::pad($id);
         $path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
+        $file = null;
         foreach ($files as $file) {
             if (!file_exists($path . DS . $file)) {
                 $this->setError(Lang::txt('FILE_NOT_FOUND'));

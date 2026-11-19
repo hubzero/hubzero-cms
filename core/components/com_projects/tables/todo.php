@@ -12,6 +12,22 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project to-do's
+ *
+ * @property  mixed  $activityid
+ * @property  mixed  $assigned_to
+ * @property  mixed  $closed
+ * @property  mixed  $closed_by
+ * @property  mixed  $color
+ * @property  mixed  $content
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $details
+ * @property  mixed  $duedate
+ * @property  mixed  $id
+ * @property  mixed  $priority
+ * @property  mixed  $projectid
+ * @property  mixed  $state
+ * @property  mixed  $todolist
  */
 class Todo extends Table
 {

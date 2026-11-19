@@ -124,5 +124,7 @@ class Tickets extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

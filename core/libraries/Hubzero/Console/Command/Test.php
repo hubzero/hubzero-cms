@@ -113,6 +113,7 @@ class Test extends Base implements CommandInterface
             2 => ["pipe", "w"],
         ];
 
+        $pipes = [];
         $process = proc_open($cmd, $descriptorspec, $pipes);
 
         if (is_resource($process)) {

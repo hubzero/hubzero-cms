@@ -720,6 +720,8 @@ class Register extends SiteController
         }
 
         $this->showRegistrationForm($xregistration, 'update');
+
+        return null;
     }
 
     /**

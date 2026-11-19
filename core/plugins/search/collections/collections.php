@@ -193,5 +193,7 @@ class Collections extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

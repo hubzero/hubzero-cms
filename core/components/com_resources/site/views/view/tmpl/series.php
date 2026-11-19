@@ -17,6 +17,8 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$ccount = null;
+
 /**
  * What this template is given.
  *

@@ -208,6 +208,7 @@ class Arr
         switch (strtoupper($type)) {
             case 'INT':
             case 'INTEGER':
+                $matches = [];
                 // Only use a LEADING integer value (whitespace trimmed). Anchored
                 // so digits are never scavenged from mid-string -- otherwise a
                 // value like "jesus1993coral@gmail.com" would yield 1993.
@@ -217,6 +218,7 @@ class Arr
 
             case 'FLOAT':
             case 'DOUBLE':
+                $matches = [];
                 // Only use the first floating point value
                 @preg_match('/-?[0-9]+(\.[0-9]+)?/', $result, $matches);
                 $result = (float) ($matches[0] ?? 0);

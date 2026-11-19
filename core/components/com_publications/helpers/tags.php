@@ -570,6 +570,7 @@ class Tags extends \Hubzero\Base\Obj
         if (!$id && !$alias) {
             return false;
         }
+        $query = null;
         if ($id) {
             $query = "SELECT COUNT(*)
 						FROM $this->objTbl AS ta, $this->tagTbl AS t
@@ -833,6 +834,8 @@ class Tags extends \Hubzero\Base\Obj
     {
         $html = '';
 
+        $min_qty = null;
+        $step = null;
         if ($tags && count($tags) > 0) {
             $lst = [];
             if (is_string($tagstring)) {

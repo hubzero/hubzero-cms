@@ -251,6 +251,7 @@ class Students extends AdminController
         $offeringObj = \Components\Courses\Models\Offering::getInstance($offering);
 
         $c = 0;
+        $model = null;
         foreach ($user_ids as $user_id) {
             if (!is_int($user_id)) {
                 $user = User::getInstance($user_id);

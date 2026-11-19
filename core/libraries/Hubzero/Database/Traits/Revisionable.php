@@ -108,6 +108,8 @@ namespace Hubzero\Database\Traits;
  * // Prune old revisions (keep last 10)
  * Article::pruneRevisions(10);
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait Revisionable
 {

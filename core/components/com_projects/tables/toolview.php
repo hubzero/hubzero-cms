@@ -13,6 +13,10 @@ use Hubzero\Facades\Date;
 
 /**
  * Project Tool View class
+ *
+ * @property  mixed  $parent_id
+ * @property  mixed  $userid
+ * @property  mixed  $viewed
  */
 class ToolView extends Table
 {

@@ -32,6 +32,7 @@ class Utils
      */
     public static function getMWDBO()
     {
+        $options = [];
         static $instance;
 
         if (!is_object($instance)) {
@@ -86,6 +87,8 @@ class Utils
         $host = $config->get('storagehost');
 
         if ($username && $host) {
+            $errno = 0;
+            $errstr = '';
             $fp = @stream_socket_client($host, $errno, $errstr, 30);
             if (!$fp) {
                 $info[] = "$errstr ($errno)\n";
@@ -121,6 +124,8 @@ class Utils
         //$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} dbname={$dbname} 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} 2>&1 </dev/null";
 
+        $results = [];
+        $status = 0;
         exec($cmd, $results, $status);
 
         // Check exec status
@@ -590,6 +595,8 @@ class Utils
         //$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw $comm 2>&1 </dev/null";
 
+        $results = [];
+        $status = 0;
         exec($cmd, $results, $status);
 
         $execFailed = ($status != 0);

@@ -76,6 +76,7 @@ class Document extends Obj
             App::abort(406, '\Components\Groups\Helpers\Document: Requires document to parse');
         }
 
+        $matches = [];
         // parse content
         // get all group includes
         if (preg_match_all('#<group:include([^>]*)/>#', $this->get('document'), $matches)) {
@@ -144,6 +145,8 @@ class Document extends Obj
         } else {
             return $this->get('document');
         }
+
+        return null;
     }
 
     /**

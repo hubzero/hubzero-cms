@@ -461,6 +461,7 @@ class Html
     {
         $msg = '';
 
+        $class = null;
         // Show message to restricted users
         if (!$publication->access('view-all')) {
             $class = 'warning';
@@ -792,6 +793,8 @@ class Html
             </h3>
         </div>
         <?php
+
+        return null;
     }
 
     /**
@@ -1015,6 +1018,7 @@ class Html
      */
     public static function parseTag($text, $tag)
     {
+        $matches = [];
         preg_match("#<nb:" . $tag . ">(.*?)</nb:" . $tag . ">#s", $text, $matches);
         if (count($matches) > 0) {
             $match = $matches[0];
@@ -1109,6 +1113,7 @@ class Html
             chdir($prefix . $path);
 
             $where = $git == true ? ' .[!.]*' : '';
+            $out = [];
             exec('du -sb ' . $where, $out);
 
             if ($out) {
@@ -1258,6 +1263,7 @@ class Html
         $files = [];
 
         $dirHandle = opendir($path);
+        $matches = null;
         // A directory that cannot be read lists nothing
 
         while ($dirHandle !== false && false !== ($fileName = readdir($dirHandle))) {
@@ -1417,6 +1423,7 @@ class Html
         }
 
         $dirHandle = opendir($galleryDir);
+        $matches = null;
         // A directory that cannot be read lists nothing
 
         while ($dirHandle !== false && false !== ($galleryFile = readdir($dirHandle))) {

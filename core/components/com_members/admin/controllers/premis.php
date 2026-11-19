@@ -48,6 +48,8 @@ class Premis extends AdminController
      */
     public function saveTask()
     {
+        $user = [];
+        $courses = [];
         // Check for request forgeries
         Request::checkToken();
 

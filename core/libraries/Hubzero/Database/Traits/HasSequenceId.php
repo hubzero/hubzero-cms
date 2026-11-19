@@ -37,6 +37,8 @@ namespace Hubzero\Database\Traits;
  * ```php
  * $driver->createSequence('invoice_number_seq', 1000);
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait HasSequenceId
 {

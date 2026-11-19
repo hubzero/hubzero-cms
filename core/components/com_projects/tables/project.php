@@ -14,6 +14,11 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for projects
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $params
+ * @property  mixed  $setup_stage
+ * @property  mixed  $title
  */
 class Project extends Table
 {

@@ -134,6 +134,7 @@ class Sessions extends AdminController
 
         $stopped = 0;
 
+        $output = null;
         if (count($ids) > 0) {
             $mwdb = Utils::getMWDBO();
             $row = new Tables\Session($mwdb);

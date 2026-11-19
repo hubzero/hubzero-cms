@@ -14,6 +14,16 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course asset groups table class
+ *
+ * @property  mixed  $course_id
+ * @property  mixed  $enrolled
+ * @property  mixed  $id
+ * @property  mixed  $offering_id
+ * @property  mixed  $permissions
+ * @property  mixed  $role_id
+ * @property  mixed  $section_id
+ * @property  mixed  $student
+ * @property  mixed  $user_id
  */
 class Member extends Table
 {
@@ -52,6 +62,7 @@ class Member extends Table
      */
     public function loadForCourse($uid = null, $cid = null, $oid = null, $sid = null, $student = null)
     {
+        $where = [];
         if ($uid === null) {
             return false;
         }

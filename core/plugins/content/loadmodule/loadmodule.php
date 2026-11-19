@@ -75,6 +75,7 @@ class Loadmodule extends Plugin
             return true;
         }
 
+        $matches = [];
         // Find all instances of plugin and put in $matches for loadposition
         // $matches[0] is full pattern match, $matches[1] is the position
         preg_match_all($regex, (string) $article->text, $matches, PREG_SET_ORDER);
@@ -103,6 +104,7 @@ class Loadmodule extends Plugin
         $regexmod = '/{loadmodule\s+(.*?)}/i';
         $stylemod = $style;
 
+        $matchesmod = [];
         // Find all instances of plugin and put in $matchesmod for loadmodule
         preg_match_all($regexmod, $article->text == null ? '' : $article->text, $matchesmod, PREG_SET_ORDER);
 

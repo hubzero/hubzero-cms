@@ -146,6 +146,7 @@ $router->rules('parse')->append('version', function ($uri) {
         $uri->setPath(implode('/', $segments));
     }
 
+    $matches = [];
     // Version from segments. ex: /v1.0/component
     if (isset($segments[0]) && preg_match('/v([0-9]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', $segments[0], $matches)) {
         $version = array_shift($segments);

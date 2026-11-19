@@ -13,6 +13,16 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication master type
+ *
+ * @property  mixed  $_params
+ * @property  mixed  $alias
+ * @property  mixed  $curation
+ * @property  mixed  $curatorGroup
+ * @property  mixed  $curatorgroup
+ * @property  mixed  $id
+ * @property  mixed  $ordering
+ * @property  mixed  $params
+ * @property  mixed  $type
  */
 class MasterType extends Table
 {

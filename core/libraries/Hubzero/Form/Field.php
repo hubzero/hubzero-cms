@@ -19,6 +19,8 @@ use Hubzero\Facades\Lang;
  * Inspired by Joomla's JFormField class
  *
  * @todo  Rewrite all of this.
+ *
+ * @property  mixed  $forceMultiple
  */
 abstract class Field
 {

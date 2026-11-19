@@ -86,6 +86,7 @@ class Hidden extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
+        $html = [];
         $k = 0;
 
         $html[] = '<table class="admintable" id="' . $name . '">';

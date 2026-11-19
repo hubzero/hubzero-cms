@@ -571,6 +571,8 @@ class Messages extends Plugin
 
             return $html;
         }
+
+        return null;
     }
 
     /**

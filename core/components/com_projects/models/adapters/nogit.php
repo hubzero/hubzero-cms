@@ -429,6 +429,7 @@ class Nogit extends Models\Adapter
         if ($path && is_dir($path)) {
             chdir($path);
 
+            $out = [];
             exec('du -sb --exclude=.git ', $out);
 
             if ($out) {

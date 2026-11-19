@@ -15,6 +15,27 @@ use Hubzero\Facades\Date;
 
 /**
  * Table class for job openings
+ *
+ * @property  mixed  $added
+ * @property  mixed  $addedBy
+ * @property  mixed  $admins
+ * @property  mixed  $applyExternalUrl
+ * @property  mixed  $applyInternal
+ * @property  mixed  $closedate
+ * @property  mixed  $code
+ * @property  mixed  $companyLocation
+ * @property  mixed  $companyLocationCountry
+ * @property  mixed  $companyName
+ * @property  mixed  $description
+ * @property  mixed  $edited
+ * @property  mixed  $editedBy
+ * @property  mixed  $employerid
+ * @property  mixed  $expiredate
+ * @property  mixed  $id
+ * @property  mixed  $opendate
+ * @property  mixed  $startdate
+ * @property  mixed  $status
+ * @property  mixed  $title
  */
 class Job extends Table
 {

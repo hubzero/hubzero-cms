@@ -89,6 +89,8 @@ use Hubzero\Facades\Event;
  * If your model uses `SoftDeletes`, `MassPrunable` will perform HARD deletes
  * (permanent deletion), not soft deletes. If you need soft delete behavior
  * during pruning, use the `Prunable` trait instead.
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait MassPrunable
 {

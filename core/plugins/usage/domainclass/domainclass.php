@@ -76,6 +76,8 @@ class Domainclass extends Plugin
 				WHERE class = " . $db->Quote($class);
         $db->setQuery($sql);
         $result = $db->loadRow();
+        $valfmt = null;
+        $size = null;
         if ($result) {
             $classname = $result[0];
             $valfmt = $result[1];

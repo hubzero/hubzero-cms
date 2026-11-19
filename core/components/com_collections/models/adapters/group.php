@@ -111,6 +111,7 @@ class Group extends Base
                 if (substr($params, 0, 1) == '?') {
                     $params = substr($params, 1);
                 }
+                $parsed = [];
                 parse_str($params, $parsed);
                 $params = $parsed;
             }

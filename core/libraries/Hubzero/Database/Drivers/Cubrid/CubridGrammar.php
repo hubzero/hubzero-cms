@@ -144,6 +144,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
             return null;
         }
 
+        $matches = [];
         // Calculate max length needed for the values:
         // - ENUM: longest value length
         // - SET: sum of all values plus separators (worst case: all selected)
@@ -152,6 +153,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         }
 
         $valuesStr = $matches[2];
+        $valueMatches = [];
         preg_match_all("/'([^']*)'/", $valuesStr, $valueMatches);
         $values = $valueMatches[1];
 

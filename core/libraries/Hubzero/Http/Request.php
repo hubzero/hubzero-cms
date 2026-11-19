@@ -180,6 +180,7 @@ class Request extends BaseRequest
         $str = is_array($str) ? self::flatten('', $str) : $str;
         $str = trim($str === null ? '' : (string) $str);
 
+        $matches = [];
         // Read only a LEADING integer (whitespace already trimmed above). The
         // match is anchored so digits are never scavenged from the middle of
         // arbitrary text: "jesus1993coral@gmail.com" returns the default, not
@@ -220,6 +221,7 @@ class Request extends BaseRequest
         $result = is_array($result) ? self::flatten('', $result) : $result;
         $result = trim($result === null ? '' : (string) $result);
 
+        $matches = [];
         // Anchored, for the reason getInt() is: an unanchored match scavenges
         // digits out of the middle of arbitrary text, so a word typed into a
         // numeric field would resolve to a number rather than the default.
@@ -763,6 +765,7 @@ class Request extends BaseRequest
                     break;
                 case 'float':
                     $new_state = (string) self::flatten('', $new_state);
+                    $m = [];
                     // Anchored match, as getFloat() does. This was a preg_replace()
                     // that stripped the digits out and cast what was left, so every
                     // float state resolved to 0.0 whatever was submitted.

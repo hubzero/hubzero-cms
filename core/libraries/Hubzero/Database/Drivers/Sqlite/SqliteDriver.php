@@ -3073,6 +3073,7 @@ class SqliteDriver extends BaseSqlDriver
         }
 
         $constraints = [];
+        $matches = [];
         // Basic regex to find CHECK (...) patterns
         // This is imperfect but works for simple standard definitions
         if (preg_match_all('/CONSTRAINT\s+["`]?(\w+)["`]?\s+CHECK\s*\(([^,]+)\)/i', $sql, $matches, PREG_SET_ORDER)) {

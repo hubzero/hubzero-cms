@@ -49,6 +49,7 @@ class WidenColumn extends Macro
 
         $field = $fields[$column];
 
+        $match = [];
         if (!preg_match('/^(?:var)?char\((\d+)\)$/i', $field->Type, $match) || (int) $match[1] >= $width) {
             return false;
         }

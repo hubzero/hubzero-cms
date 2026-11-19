@@ -232,6 +232,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     public function prev()
     {
         --$this->pos;
+
+        return null;
     }
 
     /**
@@ -244,6 +246,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     public function next()
     {
         ++$this->pos;
+
+        return null;
     }
 
     /**

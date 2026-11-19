@@ -225,6 +225,7 @@ class Checkout extends ComponentController
      */
     public function notesTask()
     {
+        $errors = [];
         $cart = new CurrentCart();
         $transaction = $cart->liftTransaction();
 

@@ -89,6 +89,8 @@ use Hubzero\Facades\App;
  *     $article->hit();
  * }
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait Hittable
 {

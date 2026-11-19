@@ -26,6 +26,7 @@ class Migration20150904235936ComUsage extends Base
      **/
     public function up()
     {
+        $options = [];
         require_once __DIR__ . '/data/UsageMetricsSeed.php';
 
         // Get stats DB object
@@ -65,6 +66,7 @@ class Migration20150904235936ComUsage extends Base
 
         $connected = false;
 
+        $statsDb = null;
         try {
             $statsDb   = \Hubzero\Database\Driver::getInstance($options);
             // getInstance() builds a lazy connection, so ask for the connection

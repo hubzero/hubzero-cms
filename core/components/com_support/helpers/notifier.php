@@ -154,6 +154,7 @@ class Notifier
             ['support.tickets', 1],
         ];
 
+        $encryptor = null;
         if (count($comment->to())) {
             $allowEmailResponses = $config->get('email_processing') && !$options['email_terse'];
 

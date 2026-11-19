@@ -242,6 +242,8 @@ class Newsletters extends SiteController
         }
 
         if ($cmd) {
+            $ouput = [];
+            $status = 0;
             // exec command
             exec($cmd, $ouput, $status);
 

@@ -320,6 +320,7 @@ class Helper
         //get protocol to track with
         $protocol = self::getNewsletterTrackingProtocol();
 
+        $urls = [];
         //get all links in email body
         preg_match_all('/<a.*href="([^"]+)"[^>]*>/', $emailMessage, $urls);
 

@@ -80,6 +80,8 @@ class Login extends AdminController
         $this->view
             ->setLayout('default')
             ->display();
+
+        return null;
     }
 
     /**

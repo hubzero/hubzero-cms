@@ -76,6 +76,8 @@ class Region extends Plugin
 				WHERE region = " . $db->quote($region);
         $db->setQuery($sql);
         $result = $db->loadRow();
+        $valfmt = null;
+        $size = null;
         if ($result) {
             $regionname = $result[0];
             $valfmt = $result[1];

@@ -1759,6 +1759,7 @@ class InformixDriver extends BaseSqlDriver
             }
         }
 
+        $matches = [];
         // Handle VARCHAR(n) > 255 → LVARCHAR(n)
         if (preg_match('/^VARCHAR\s*\((\d+)\)/i', $type, $matches)) {
             $size = (int) $matches[1];

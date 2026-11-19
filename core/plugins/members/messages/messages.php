@@ -1029,6 +1029,7 @@ class Messages extends Plugin
         //array to hold members
         $email_users = [];
 
+        $matches = null;
         foreach ($mbrs as $mbr) {
             // User ID
             if (is_numeric($mbr)) {
@@ -1094,6 +1095,8 @@ class Messages extends Plugin
             Notify::success(Lang::txt('You have successfully sent a message.'));
             App::redirect(Route::url($member->link() . '&active=messages&task=inbox', false));
         }
+
+        return null;
     }
 
     /**

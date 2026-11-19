@@ -372,6 +372,7 @@ class Batchcreate extends AdminController
 
         // Parse data
         $items = [];
+        $item = null;
         while ($this->reader->read()) {
             if ($this->reader->name === 'publication') {
                 $node = new \SimpleXMLElement($this->reader->readOuterXML());

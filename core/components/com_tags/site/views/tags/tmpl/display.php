@@ -74,6 +74,7 @@ $this
                 'sort_Dir' => 'DESC',
             ];
 
+            $ttl = null;
             if ($this->config->get('cache', 1)) {
                 $ttl = intval($this->config->get('cache_time', 15));
 

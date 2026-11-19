@@ -15,6 +15,27 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for publication author
+ *
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $credit
+ * @property  mixed  $department
+ * @property  mixed  $firstName
+ * @property  mixed  $lastName
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $name
+ * @property  mixed  $orcid
+ * @property  mixed  $orcid_work_put_code
+ * @property  mixed  $ordering
+ * @property  mixed  $organization
+ * @property  mixed  $orgid
+ * @property  mixed  $project_owner_id
+ * @property  mixed  $publication_version_id
+ * @property  mixed  $repository_contact
+ * @property  mixed  $role
+ * @property  mixed  $status
+ * @property  mixed  $user_id
  */
 class Author extends Table
 {

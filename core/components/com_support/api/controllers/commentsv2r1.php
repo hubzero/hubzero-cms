@@ -242,6 +242,7 @@ class Commentsv2r1 extends ApiController
                 return $vals;
             }
 
+            $regs = [];
             if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $val, $regs)) {
                 // Time already matches pattern so do nothing.
             } elseif (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {

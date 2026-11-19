@@ -1155,6 +1155,7 @@ class Repo extends Obj
 
             try {
                 chdir($tempPath);
+                $out = [];
                 exec('tar zxvf ' . escapeshellarg($tmp_name) . ' -C ' . escapeshellarg($extractPath) . ' 2>&1', $out);
             } catch (Exception $e) {
                 $this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
@@ -1443,6 +1444,7 @@ class Repo extends Obj
             $base_path = DS . trim($pubconfig->get('webpath'), DS);
 
             chdir(PATH_APP . $base_path);
+            $out = [];
             exec('du -sb ', $out);
             $used = 0;
 
@@ -1527,6 +1529,8 @@ class Repo extends Obj
             case 'commitCount':
                 return $commits;
         }
+
+        return null;
     }
 
     /**

@@ -12,6 +12,8 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for available publication handlers
+ *
+ * @property  mixed  $publication_version_id
  */
 class Handler extends Table
 {

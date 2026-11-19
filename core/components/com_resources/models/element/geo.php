@@ -122,6 +122,7 @@ class Geo extends Base
     private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
+        $matches = [];
         preg_match($pattern, $text, $matches);
         return (isset($matches[1]) ? $matches[1] : '');
     }

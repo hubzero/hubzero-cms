@@ -137,6 +137,8 @@ class SolrIndexAdapter implements IndexInterface
                 return $result;
             }
         }
+
+        return null;
     }
 
     /**

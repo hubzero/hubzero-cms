@@ -16,6 +16,8 @@ use Plugins\Resources\Usage\Usage as plgResourcesUsage;
 // No direct access
 defined('_HZEXEC_') or die();
 
+$matches = null;
+
 /**
  * What this template is given.
  *
@@ -95,6 +97,9 @@ $from = (date("Y") - 1) . '/' . date("m") . '/01';
 $half = date('Y/m/d', (int) mktime(0, 0, 0, (date("m") - 6), 1, (int) date("Y")));
 $qrtr = date('Y/m/d', (int) mktime(0, 0, 0, (date("m") - 3), 1, (int) date("Y")));
 
+$current = null;
+$runsTop = null;
+$usersTop = null;
 if ($results) {
     $usersTop = 0;
     $runsTop = 0;

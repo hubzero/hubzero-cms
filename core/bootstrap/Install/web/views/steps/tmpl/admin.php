@@ -5,6 +5,7 @@
  *
  * @var mixed $defaultEmail
  * @var mixed $installer
+ * @var array<string, mixed>|null $existingAdmin
  */
 
 $nameVal = htmlspecialchars($_POST['name'] ?? ($existingAdmin['name'] ?? 'Site Administrator'));

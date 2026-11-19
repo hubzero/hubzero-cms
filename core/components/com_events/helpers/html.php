@@ -152,6 +152,7 @@ class Html
      */
     public static function buildReccurDaySelect($reccurday, $tag_name, $args)
     {
+        $daynamelist = [];
         $day_name = [
             Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
@@ -185,6 +186,7 @@ class Html
      */
     public static function buildMonthSelect($month, $args)
     {
+        $monthslist = [];
         for ($a = 1; $a < 13; $a++) {
             $mnh = $a;
             if ($mnh <= "9" & preg_match("/(^[0-9]{1})/", (string) $mnh)) {
@@ -208,6 +210,7 @@ class Html
      */
     public static function buildDaySelect($year, $month, $day, $args)
     {
+        $dayslist = [];
         $nbdays = date("d", (int) mktime(0, 0, 0, ($month + 1), 0, $year));
         for ($a = 1; $a <= $nbdays; $a++) {
             $dys = $a;
@@ -253,6 +256,7 @@ class Html
      */
     public static function buildViewSelect($viewtype, $args)
     {
+        $viewlist = [];
         $viewlist[] = \Html::select('option', 'view_week', Lang::txt('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
         $viewlist[] = \Html::select('option', 'view_month', Lang::txt('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
         $viewlist[] = \Html::select('option', 'view_year', Lang::txt('EVENTS_CAL_LANG_VIEWBYYEAR'), 'value', 'text');
@@ -309,6 +313,7 @@ class Html
      */
     public static function buildCategorySelect($catid, $args, $gid, $option)
     {
+        $categories = [];
         $database = App::get('db');
 
         $catsql = "SELECT id AS value, title AS text FROM #__categories "

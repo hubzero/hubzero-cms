@@ -51,6 +51,7 @@ class Zones extends SiteController
 
         $result = [];
 
+        $part = null;
         foreach ($parts as $part) {
             if ($part === '' || $part == '.') {
                 continue;

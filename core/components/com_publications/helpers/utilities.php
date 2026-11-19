@@ -64,6 +64,8 @@ class Utilities
                 . ' '
                 . '2>&1 > '
                 . escapeshellarg('/www/tmp/' . $mkaipOutput);
+            $output = [];
+            $exitCode = 0;
             exec($cmd, $output, $exitCode);
 
             if ($exitCode == 0) {

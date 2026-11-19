@@ -12,6 +12,9 @@ use Hubzero\Database\Table;
 
 /**
  * Courses member badges table
+ *
+ * @property  mixed  $id
+ * @property  mixed  $member_id
  */
 class MemberBadge extends Table
 {

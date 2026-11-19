@@ -1124,6 +1124,7 @@ class Attachments extends SiteController
      */
     private function buildPathFromDate($date, $id, $base = '')
     {
+        $regs = [];
         if (
             $date
             && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)

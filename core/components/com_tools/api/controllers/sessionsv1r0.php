@@ -321,6 +321,8 @@ class Sessionsv1r0 extends ApiController
                 . "/scripts/mw screenshot "
                 . escapeshellarg($username)
                 . " 2>&1 </dev/null";
+            $results = [];
+            $status = 0;
             exec($cmd, $results, $status);
             $object->screenshots_taken = true;
         }
@@ -705,6 +707,7 @@ class Sessionsv1r0 extends ApiController
         // Trigger any events that need to be called before session invoke
         Event::trigger('mw.onBeforeSessionInvoke', [$app->toolname, $app->version]);
 
+        $output = null;
         // We've passed all checks so let's actually start the session
         $status = \Components\Tools\Helpers\Utils::middleware(
             "start user=" . escapeshellarg($result->get('username'))
@@ -973,6 +976,7 @@ class Sessionsv1r0 extends ApiController
             . ' version='
             . escapeshellarg((string) $app->version)
             . $encoded;
+        $output = null;
         $status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
         if (!$status || !$output) {
@@ -1059,6 +1063,7 @@ class Sessionsv1r0 extends ApiController
 
         if ($finished) {
             $count = count($parsed);
+            $matches = [];
             preg_match(
                 '/\[status\] output saved in [\-_0-9a-zA-Z\.\/]*\/(run[0-9]*\.xml)/',
                 $parsed[($count - 2)],
@@ -1229,6 +1234,7 @@ class Sessionsv1r0 extends ApiController
         // Trigger any events that need to be called before session start
         Event::trigger('mw.onBeforeSessionStart', [$toolname, $tv->revision]);
 
+        $output = null;
         // Call the view command
         $status = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
@@ -1554,6 +1560,7 @@ class Sessionsv1r0 extends ApiController
         // Trigger any events that need to be called before session stop
         Event::trigger('mw.onBeforeSessionStop', [$ms->get('appname')]);
 
+        $out = null;
         //run command to stop session
         $status = \Components\Tools\Helpers\Utils::middleware("stop " . (int) $sessionid, $out);
 
@@ -1729,6 +1736,8 @@ class Sessionsv1r0 extends ApiController
         // var to hold purge info
         $purge_info = [];
 
+        $error_num = 0;
+        $error_str = '';
         // open stream to purge files
         if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) {
             throw new Exception("$error_str ($error_num)", 500);
@@ -1836,6 +1845,7 @@ class Sessionsv1r0 extends ApiController
             2 => ["pipe", "w"],   // stderr is a pipe that the child with write to
         ];
 
+        $pipes = [];
         $process = proc_open($command, $descriptorspec, $pipes, "/", null);
 
         if (is_resource($process)) {

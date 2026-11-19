@@ -323,5 +323,7 @@ class Forum extends Plugin
                 return $ids;
             }
         }
+
+        return null;
     }
 }

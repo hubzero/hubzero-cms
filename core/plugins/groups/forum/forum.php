@@ -1809,6 +1809,7 @@ class Forum extends Plugin
 
         // Email the group and insert email tokens to allow them to respond to group posts via email
         $params = Component::params('com_groups');
+        $encryptor = null;
         if ($params->get('email_forum_comments') && $moving == false) {
             // A notification failure must never break the post submission: the
             // post is already saved, so any error here (mail send, template

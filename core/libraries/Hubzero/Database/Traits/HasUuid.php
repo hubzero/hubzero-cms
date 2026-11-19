@@ -98,6 +98,8 @@ use Hubzero\Database\Factory;
  * // Multiple UUIDs
  * $articles = Article::whereUuidIn(['uuid1', 'uuid2'])->rows();
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait HasUuid
 {

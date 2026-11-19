@@ -72,6 +72,7 @@ $citationUrlFormatString = $config->get("citation_custom_url", '');
 //if we have a custom url string
 //replace all matches
 if ($citationUrlFormatString != '') {
+    $matches = [];
     preg_match_all('/\{(\w+)\}/', $citationUrlFormatString, $matches, PREG_SET_ORDER);
     if ($matches) {
         foreach ($matches as $match) {

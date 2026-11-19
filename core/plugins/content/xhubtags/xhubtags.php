@@ -58,9 +58,11 @@ class Xhubtags extends Plugin
         // expression to search for
         $regex = "/\{xhub:\s*[^\}]*\}/i";
 
+        $matches = [];
         // find all instances of plugin and put in $matches
         preg_match_all($regex, $text, $matches, PREG_SET_ORDER);
 
+        $tag = null;
         if ($matches) {
             foreach ($matches as $match) {
                 $regex = "/\{xhub:\s*([^\s]+)\s*(.*)/i";
@@ -110,6 +112,7 @@ class Xhubtags extends Plugin
     {
         $regex = "/position\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
+        $position = [];
         if (!preg_match($regex, $options, $position)) {
             return '';
         }
@@ -118,6 +121,7 @@ class Xhubtags extends Plugin
 
         $regex = "/style\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
+        $style = [];
         if (preg_match($regex, $options, $style)) {
             $attribs['style'] = $style[2];
 
@@ -131,6 +135,7 @@ class Xhubtags extends Plugin
 
         $regex = "/params\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
+        $params = [];
         if (preg_match($regex, $options, $params)) {
             $attribs['params'] = $params[2];
         }
@@ -159,12 +164,14 @@ class Xhubtags extends Plugin
     {
         $regex = "/type\s*=\s*(\"|&quot;)(script|stylesheet)(\"|&quot;)/i";
 
+        $type = [];
         if (!preg_match($regex, $options, $type)) {
             return '';
         }
 
         $regex = "/filename\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
+        $file = [];
         if (!preg_match($regex, $options, $file)) {
             return '';
         }
@@ -187,6 +194,7 @@ class Xhubtags extends Plugin
             return '';
         }
 
+        $component = [];
         if ($file[2][0] == '/') {
             $filename = $file[2];
         } elseif (preg_match($regex, $options, $component)) {
@@ -230,18 +238,21 @@ class Xhubtags extends Plugin
     {
         $regex = "/filename\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
+        $file = [];
         if (!preg_match($regex, $options, $file)) {
             return '';
         }
 
         $regex = "/component\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
+        $component = [];
         if (preg_match($regex, $options, $component)) {
             return substr(\Hubzero\Document\Assets::getComponentImage($component[2], $file[2]), 1);
         }
 
         $regex = "/module\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
+        $module = [];
         if (preg_match($regex, $options, $module)) {
             return substr(\Hubzero\Document\Assets::getModuleImage($module[2], $file[2]), 1);
         }

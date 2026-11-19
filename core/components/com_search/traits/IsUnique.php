@@ -8,6 +8,9 @@
 
 namespace Components\Search\Traits;
 
+/**
+ * @phpstan-require-extends \Hubzero\Database\Relational
+ */
 trait IsUnique
 {
     /**

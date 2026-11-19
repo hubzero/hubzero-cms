@@ -14,6 +14,10 @@ use Hubzero\Facades\User;
 
 /**
  * Table class for job seeker
+ *
+ * @property  mixed  $active
+ * @property  mixed  $uid
+ * @property  mixed  $updated
  */
 class Seeker extends Table
 {

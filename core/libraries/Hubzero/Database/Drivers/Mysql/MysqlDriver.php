@@ -786,6 +786,7 @@ class MysqlDriver extends BaseSqlDriver
         $info = $this->getServerInfo();
         $fullVersion = $info['mysql_version'] ?? '';
 
+        $matches = [];
         if (preg_match('/^8\.0\.(\d+)/', $fullVersion, $matches)) {
             return (int) $matches[1] >= 16;
         }
@@ -883,6 +884,7 @@ class MysqlDriver extends BaseSqlDriver
         $info = $this->getServerInfo();
         $fullVersion = $info['mysql_version'] ?? '';
 
+        $matches = [];
         if (preg_match('/^8\.0\.(\d+)/', $fullVersion, $matches)) {
             return (int) $matches[1] >= 23;
         }
@@ -1538,6 +1540,7 @@ class MysqlDriver extends BaseSqlDriver
     {
         $create = $this->getTableCreate($table);
 
+        $matches = [];
         preg_match('/AUTO_INCREMENT=([0-9]*)/', $create[$table], $matches);
 
         return (isset($matches[1])) ? (int) $matches[1] : false;
@@ -1606,6 +1609,7 @@ class MysqlDriver extends BaseSqlDriver
             return [];
         }
 
+        $matches = [];
         // Parse ENUM('val1','val2',...) format
         if (preg_match("/^enum\('(.*)'\)$/i", $result['Type'], $matches)) {
             return explode("','", $matches[1]);

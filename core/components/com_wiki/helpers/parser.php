@@ -90,6 +90,7 @@ class Parser extends Obj
      */
     public function initialise($config = [], $getnew = false)
     {
+        $results = [];
         // Check if parser is already loaded (and is one: it gives a parser)
         $plugin = $this->parser;
         if (!is_object($plugin) || !method_exists($plugin, 'onGetWikiParser')) {
@@ -172,6 +173,7 @@ class Parser extends Obj
             return null;
         }
 
+        $m = [];
         if (preg_match('/\[\[\s*TableOfContents\s*(?:\(([^)]*)\))?\s*\]\]/i', $pagetext, $m)) {
             return self::parseTocArgs(isset($m[1]) ? $m[1] : '');
         }
@@ -214,6 +216,7 @@ class Parser extends Obj
      */
     public function parse($text, $config, $fullparse = true, $getnew = false, $params = [])
     {
+        $results = [];
         if (!$this->name) {
             return nl2br($text);
         }

@@ -56,6 +56,7 @@ if ($this->row->standalone == 1) {
 
     //$data = $this->row->fields();
     $data = [];
+    $matches = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
     if (count($matches) > 0) {
         foreach ($matches as $match) {

@@ -27,6 +27,7 @@ defined('_HZEXEC_') or die();
 
 $exec_pu = $this->config->get('exec_pu', 1);
 
+$execChoices = [];
 $execChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
 $execChoices['@OPEN'] =  ucfirst(Lang::txt('COM_TOOLS_TOOLACCESS_OPEN'));
 $execChoices['@US'] = ucfirst(Lang::txt('COM_TOOLS_TOOLACCESS_US'));
@@ -37,11 +38,13 @@ if ($exec_pu) {
 $execChoices['@GROUP'] = ucfirst(Lang::txt('COM_TOOLS_RESTRICTED')) . ' ' . Lang::txt('COM_TOOLS_TO') . ' '
     . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
 
+$codeChoices = [];
 $codeChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
 $codeChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_OPEN_SOURCE')) . ' (' . Lang::txt('COM_TOOLS_OPEN_SOURCE_TIPS')
     . ')';
 $codeChoices['@DEV'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'));
 
+$wikiChoices = [];
 $wikiChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
 $wikiChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_OPEN'));
 $wikiChoices['@DEV'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'));

@@ -65,6 +65,7 @@ class Wishlist extends Plugin
         $database->setQuery($query);
         $rows = $database->loadObjectList();
 
+        $matches = null;
         if ($rows) {
             foreach ($rows as $key => $row) {
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {

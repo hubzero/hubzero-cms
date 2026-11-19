@@ -13,6 +13,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for logging group actions
+ *
+ * @property  mixed  $gidNumber
  */
 class Log extends Table
 {

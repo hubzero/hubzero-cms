@@ -15,6 +15,15 @@ use Hubzero\Facades\Lang;
 
 /**
  * Course Units table class
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $offering_id
+ * @property  mixed  $ordering
+ * @property  mixed  $state
+ * @property  mixed  $title
  */
 class Unit extends Table
 {

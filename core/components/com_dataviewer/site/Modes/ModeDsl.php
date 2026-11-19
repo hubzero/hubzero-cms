@@ -204,6 +204,7 @@ class ModeDsl
 
         // Data for Custom Views
         $custom_view = Request::getArray('custom_view', []);
+        $m = null;
         if (count($custom_view) > 0 && isset($dd['cols']) && is_array($dd['cols'])) {
             unset($dd['customizer']);
 

@@ -50,6 +50,8 @@ class MimeType
         if (isset($extensionToMimeTypeMap[$extension])) {
             return $extensionToMimeTypeMap[$extension];
         }
+
+        return null;
     }
 
     /**

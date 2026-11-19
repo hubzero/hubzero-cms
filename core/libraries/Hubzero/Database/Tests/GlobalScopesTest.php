@@ -436,7 +436,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
         // ScopedArticle has active and tenant scopes
         // Add additional constraint for status
-        $articles = ScopedArticle::whereEquals('status', 'published')->rows();
+        $articles = ScopedArticle::all()->whereEquals('status', 'published')->rows();
 
         // Should return only active, tenant 1, published articles (1)
         $this->assertCount(1, $articles);

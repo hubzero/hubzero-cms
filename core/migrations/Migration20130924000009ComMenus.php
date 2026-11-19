@@ -176,6 +176,7 @@ class Migration20130924000009ComMenus extends Base
             $schema->addUniqueIndex('#__menu_types', 'idx_menutype', 'menutype');
         }
 
+        $matches = null;
         if ($first) {
             // Joomla seems to expect the root item to be 1...blah!
             // So, if id 1 is taken, we need to clear it out

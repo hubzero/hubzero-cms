@@ -325,7 +325,7 @@ class Versions extends AdminController
             return;
         }
 
-        $rows = Zone::whereEquals('tool_version_id', $version);
+        $rows = Zone::all()->whereEquals('tool_version_id', $version);
 
         // Display results
         $this->view

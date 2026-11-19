@@ -25,6 +25,7 @@ defined('_HZEXEC_') or die();
     <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) {
         $browseUrl = $this->model->link('files')
             . '&action=browse&connection=' . $this->connection->id;
+        $parent = null;
         $crumbs = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
             $this->subdir,
             $browseUrl,

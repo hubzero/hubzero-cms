@@ -181,6 +181,7 @@ class Resources extends GroupMacro
      */
     private function getClass(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {
                 $class = $matches[1];
@@ -188,6 +189,8 @@ class Resources extends GroupMacro
                 return $class;
             }
         }
+
+        return null;
     }
 
     /**
@@ -198,6 +201,7 @@ class Resources extends GroupMacro
      */
     private function getType(&$args)
     {
+        $matches = null;
         foreach ($args as $k => $arg) {
             if (preg_match('/type=([\w]*)/', $arg, $matches)) {
                 $type = $matches[1];
@@ -205,5 +209,7 @@ class Resources extends GroupMacro
                 return $type;
             }
         }
+
+        return null;
     }
 }

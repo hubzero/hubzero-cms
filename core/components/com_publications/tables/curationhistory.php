@@ -12,6 +12,15 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for publication curation history
+ *
+ * @property  mixed  $changelog
+ * @property  mixed  $comment
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $curator
+ * @property  mixed  $newstatus
+ * @property  mixed  $oldstatus
+ * @property  mixed  $publication_version_id
  */
 class CurationHistory extends Table
 {

@@ -1846,6 +1846,7 @@ class Query
         // Build the subquery to get its SQL
         list($sql, $bindings) = $this->buildSubquery($callback);
 
+        $matches = [];
         // Wrap in NOT (...)
         // Remove the outer SELECT wrapper and any leading WHERE if present
         // The subquery builder returns "SELECT * FROM table WHERE conditions"

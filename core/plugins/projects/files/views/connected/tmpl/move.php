@@ -109,6 +109,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                                     $filesLink = $this->model->link('files')
                                         . '&action=browse&connection='
                                         . $this->connection->id;
+                                    $parent = null;
                                     echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
                                         $this->subdir,
                                         $filesLink,

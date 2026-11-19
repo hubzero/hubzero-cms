@@ -10,6 +10,8 @@ namespace Hubzero\Tests\Concerns;
 
 /**
  * Shared assertion helpers for protocol debug panel markup.
+ *
+ * @phpstan-require-extends \PHPUnit\Framework\TestCase
  */
 trait InteractsWithDebugPanelMarkup
 {

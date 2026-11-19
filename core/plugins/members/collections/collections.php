@@ -539,7 +539,7 @@ class Collections extends Plugin
 
         // Is the board restricted to logged-in users only?
         if ($view->get('collection')->get('access') != 0 && User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Is it a private board?
@@ -609,7 +609,7 @@ class Collections extends Plugin
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Require POST
@@ -677,7 +677,7 @@ class Collections extends Plugin
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Require POST
@@ -953,7 +953,7 @@ class Collections extends Plugin
     private function edit($entry = null)
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
         $restrictUsers = Component::params('com_answers')->get('restrict_users');
         if ($restrictUsers == 'active') {
@@ -1086,7 +1086,7 @@ class Collections extends Plugin
         Request::checkToken();
 
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
@@ -1301,7 +1301,7 @@ class Collections extends Plugin
     private function repost()
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -1477,7 +1477,7 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Check for request forgeries
@@ -1563,7 +1563,7 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Authorization check
@@ -1622,7 +1622,7 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Access check
@@ -1764,7 +1764,7 @@ class Collections extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Incoming
@@ -1880,7 +1880,7 @@ class Collections extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Require POST
@@ -2121,7 +2121,7 @@ class Collections extends Plugin
 
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Access check
@@ -2219,7 +2219,7 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Access check

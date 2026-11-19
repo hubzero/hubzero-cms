@@ -56,6 +56,7 @@ class Url extends Content
 
         $return = [];
 
+        $matches = null;
         foreach ($urls as $url) {
             if (
                 !preg_match(
@@ -93,6 +94,7 @@ class Url extends Content
      **/
     public function preview($asset)
     {
+        $matches = [];
         if (preg_match('/http[s]*:\/\/(www\.)?youtube.com\/watch\?v=([0-9A-Za-z_-]+)/', $asset->get('url'), $matches)) {
             if (!empty($matches[2])) {
                 $content  = '';

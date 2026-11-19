@@ -13,6 +13,34 @@ use Hubzero\Facades\Lang;
 
 /**
  * Events table class for an event
+ *
+ * @property  mixed  $adresse_info
+ * @property  mixed  $announcement
+ * @property  mixed  $catid
+ * @property  mixed  $checked_out
+ * @property  mixed  $contact_info
+ * @property  mixed  $content
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $email
+ * @property  mixed  $extra_info
+ * @property  mixed  $id
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $params
+ * @property  mixed  $publish_down
+ * @property  mixed  $publish_up
+ * @property  mixed  $registerby
+ * @property  mixed  $restricted
+ * @property  mixed  $scope
+ * @property  mixed  $scope_id
+ * @property  mixed  $start_date
+ * @property  mixed  $start_time
+ * @property  mixed  $state
+ * @property  mixed  $stop_date
+ * @property  mixed  $stop_time
+ * @property  mixed  $time_zone
+ * @property  mixed  $title
  */
 class Event extends Table
 {

@@ -119,6 +119,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
 
         // Extract MariaDB version from version string (e.g., "10.5.12-MariaDB")
         $driverVersion = null;
+        $matches = [];
         if ($version && preg_match('/^(\d+\.\d+\.\d+)/', $version, $matches)) {
             $driverVersion = $matches[1];
         }
@@ -141,6 +142,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
         $info = $this->getServerInfo();
         $version = $info['mariadb_version'] ?? null;
 
+        $matches = [];
         if ($version && preg_match('/^(\d+\.\d+)/', $version, $matches)) {
             return (float) $matches[1];
         }

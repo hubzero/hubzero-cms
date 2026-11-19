@@ -385,6 +385,7 @@ class Sessions extends SiteController
 
         $result = [];
 
+        $part = null;
         foreach ($parts as $part) {
             if ($part === '' || $part == '.') {
                 continue;
@@ -429,6 +430,7 @@ class Sessions extends SiteController
 
         $params = Request::getString('params', '');
 
+        $matches = null;
         if (!empty($params)) {
             $params_whitelist = explode(',', $this->config->get('params_whitelist', ''));
 
@@ -702,6 +704,7 @@ class Sessions extends SiteController
             }
         }
 
+        $output = null;
         // We've passed all checks so let's actually start the session
         $status = Utils::middleware(
             "start user=" . escapeshellarg(User::get('username'))
@@ -811,6 +814,7 @@ class Sessions extends SiteController
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
         }
 
+        $output = null;
         // Stop the old session
         $status = Utils::middleware("stop $id", $output);
 
@@ -1247,6 +1251,7 @@ class Sessions extends SiteController
         // Trigger any events that need to be called before session start
         Event::trigger('mw.onBeforeSessionStart', [$toolname, $tv->revision]);
 
+        $output = null;
         // Call the view command
         $status = Utils::middleware($command, $output);
 
@@ -1579,6 +1584,7 @@ class Sessions extends SiteController
         // Trigger any events that need to be called before session stop
         Event::trigger('mw.onBeforeSessionStop', [$ms->appname]);
 
+        $output = null;
         // Stop the session
         $status = Utils::middleware("stop $sess", $output);
         if ($status) {

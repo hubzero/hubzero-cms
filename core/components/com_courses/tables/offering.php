@@ -16,6 +16,16 @@ use Hubzero\Facades\App;
 
 /**
  * Course Instances table class
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $course_id
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $id
+ * @property  mixed  $params
+ * @property  mixed  $publish_down
+ * @property  mixed  $publish_up
+ * @property  mixed  $title
  */
 class Offering extends Table
 {

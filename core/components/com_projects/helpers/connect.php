@@ -309,7 +309,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   bool|int  $reauth   Re-authenticate user?
      * @param   string   $return   URL to return to after authorization
-     * @return  bool|void
+     * @return  bool|null
      */
     public function makeConnection($service = 'google', $reauth = false, $return = '')
     {
@@ -397,6 +397,8 @@ class Connect extends Obj
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_DROPBOX_UNAVAIL'));
             return false;
         }
+
+        return null;
     }
 
     /**
@@ -2252,6 +2254,8 @@ class Connect extends Obj
         if ($service == 'google' && !$creator) {
             Google::clearPermissions($apiService, [$name => $email], $remoteid);
         }
+
+        return null;
     }
 
     /**

@@ -15,6 +15,14 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for collection posts
+ *
+ * @property  mixed  $collection_id
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $description
+ * @property  mixed  $id
+ * @property  mixed  $item_id
+ * @property  mixed  $ordering
  */
 class Post extends Table
 {

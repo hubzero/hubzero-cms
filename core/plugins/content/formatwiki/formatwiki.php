@@ -56,6 +56,7 @@ class Formatwiki extends Plugin
 
         $content = $article->get($key, '');
 
+        $matches = [];
         // The content already has a format assigned to it so do nothing
         if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches)) {
             return;
@@ -90,6 +91,7 @@ class Formatwiki extends Plugin
 
         $content = $article->get($key);
 
+        $matches = [];
         // Is there a format already applied?
         if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content == null ? '' : $content, $matches)) {
             // Is the format wiki?

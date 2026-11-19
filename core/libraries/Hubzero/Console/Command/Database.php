@@ -91,6 +91,8 @@ class Database extends Base implements CommandInterface
             . escapeshellarg(Config::get('db'))
             . ' > ' . escapeshellarg($filename);
 
+        $output = [];
+        $status = 0;
         exec($cmd, $output, $status);
         unlink($credentials);
 
@@ -163,6 +165,8 @@ class Database extends Base implements CommandInterface
 
         $this->output->addLine('Loading data from ' . ($infile === '-' ? 'standard input' : $infile) . '...');
 
+        $output = [];
+        $status = 0;
         // Now push the big red button
         exec($cmd, $output, $status);
         unlink($credentials);

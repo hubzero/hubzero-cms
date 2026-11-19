@@ -234,6 +234,8 @@ class Event implements ArrayAccess, Countable
     public function unserialize($data)
     {
         $this->__unserialize(unserialize($data));
+
+        return null;
     }
 
     /**

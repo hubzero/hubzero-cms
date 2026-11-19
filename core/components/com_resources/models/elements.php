@@ -736,6 +736,7 @@ class Elements
             $source = str_replace('_', DS, $type) . '.php';
             $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*'
                 . '([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+            $matches = [];
             preg_match($pattern, (string) $source, $matches);
             $file = (string) ($matches[0] ?? '');
 

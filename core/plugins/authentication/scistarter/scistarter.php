@@ -162,6 +162,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             $client->setAccessToken(App::get('session')->get('scistarter.token'));
         }
 
+        $error_message = null;
         // If we have an access token set, carry on
         if ($client->isAuthenticated()) {
             $account = $client->getUserData();

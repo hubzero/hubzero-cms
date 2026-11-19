@@ -93,6 +93,8 @@ namespace Hubzero\Database\Traits;
  * ```php
  * protected $lockTimeout = 0; // Never expires
  * ```
+ *
+ * @phpstan-require-extends \Hubzero\Database\Relational
  */
 trait Lockable
 {

@@ -49,6 +49,7 @@ class Formathtml extends Plugin
 
         // Is there a format already applied?
         $hadHtmlMarker = false;
+        $matches = [];
         if (preg_match('/^<!-- \{FORMAT:(.*?)\} -->/i', $content, $matches)) {
             $format = strtolower(trim($matches[1]));
 
@@ -116,6 +117,7 @@ class Formathtml extends Plugin
         // idempotent, whereas Sanitize::clean() re-encodes entities on every pass.
         if ($this->params->get('sanitizeBefore', 1)) {
             $formatMarker = '';
+            $fm = [];
             if (preg_match('/^(<!-- \{FORMAT:[^}]*\} -->)/i', $content, $fm)) {
                 $formatMarker = $fm[1];
             }
@@ -160,6 +162,7 @@ class Formathtml extends Plugin
         // asset-path rewriting and macro parsing that follow.
         $content = (string) preg_replace('/^<!-- \{FORMAT:RENDERED\} -->/i', '', $content);
 
+        $matches = [];
         // Is there a format already applied?
         if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches)) {
             // Is the format we want?

@@ -12,6 +12,15 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for job application
+ *
+ * @property  mixed  $applied
+ * @property  mixed  $cover
+ * @property  mixed  $id
+ * @property  mixed  $jid
+ * @property  mixed  $reason
+ * @property  mixed  $status
+ * @property  mixed  $uid
+ * @property  mixed  $withdrawn
  */
 class Application extends Table
 {

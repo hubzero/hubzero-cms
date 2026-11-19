@@ -33,6 +33,7 @@ defined('_HZEXEC_') or die();
 
 // Parse data
 $data = [];
+$matches = [];
 preg_match_all(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     $this->pub->metadata ? $this->pub->metadata : '',

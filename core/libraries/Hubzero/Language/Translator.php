@@ -1448,6 +1448,7 @@ class Translator extends Obj
 
         $langs = self::getKnownLanguages($basePath);
 
+        $installed_languages = null;
         if ($installed) {
             $db = App::get('db');
             $query = $db

@@ -119,6 +119,7 @@ class Identicon
      */
     private function convertHashToArrayOfBoolean()
     {
+        $chars = [];
         preg_match_all('/(\w)(\w)/', $this->hash, $chars);
 
         foreach ($chars[1] as $i => $char) {

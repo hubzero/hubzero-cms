@@ -16,6 +16,18 @@ use Hubzero\Facades\App;
 
 /**
  * Course section table class
+ *
+ * @property  mixed  $alias
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $end_date
+ * @property  mixed  $id
+ * @property  mixed  $offering_id
+ * @property  mixed  $params
+ * @property  mixed  $publish_down
+ * @property  mixed  $publish_up
+ * @property  mixed  $start_date
+ * @property  mixed  $title
  */
 class Section extends Table
 {

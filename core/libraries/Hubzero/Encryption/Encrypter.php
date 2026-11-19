@@ -102,6 +102,7 @@ class Encrypter
     {
         $sslStr = '';
 
+        $strong = false;
         $sslStr = openssl_random_pseudo_bytes($length, $strong);
 
         if ($strong) {

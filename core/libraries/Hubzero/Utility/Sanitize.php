@@ -545,6 +545,7 @@ class Sanitize
         switch (strtoupper($type)) {
             case 'INT':
             case 'INTEGER':
+                $matches = [];
                 // Only use a LEADING integer value (whitespace trimmed). Anchored
                 // so digits are never scavenged from mid-string -- otherwise a
                 // value like "jesus1993coral@gmail.com" would yield 1993.
@@ -553,6 +554,7 @@ class Sanitize
                 break;
 
             case 'UINT':
+                $matches = [];
                 // Only use a LEADING integer value (whitespace trimmed).
                 preg_match('/^-?[0-9]+/', trim((string) $source), $matches);
                 $result = abs((int) ($matches[0] ?? 0));
@@ -560,6 +562,7 @@ class Sanitize
 
             case 'FLOAT':
             case 'DOUBLE':
+                $matches = [];
                 // Only use the first floating point value
                 preg_match('/-?[0-9]+(\.[0-9]+)?/', (string) $source, $matches);
                 $result = (float) ($matches[0] ?? 0);
@@ -601,6 +604,7 @@ class Sanitize
 
             case 'PATH':
                 $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+                $matches = [];
                 preg_match($pattern, (string) $source, $matches);
                 $result = (string) ($matches[0] ?? '');
                 break;

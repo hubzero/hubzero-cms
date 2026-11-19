@@ -438,6 +438,8 @@ class Application extends Container
         if (method_exists($provider, 'boot')) {
             return $provider->boot();
         }
+
+        return null;
     }
 
     /**
@@ -541,6 +543,7 @@ class Application extends Container
             $time = (int) $this->startms;
             $ms = $this->endms - $this->startms;
 
+            $success = null;
             // The following is subject to race conditions, restarts, maybe garbage collection
             // and other vagaries of the APCu cache.  This data is intended as an
             // estimate so being exact really should not matter.

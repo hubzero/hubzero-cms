@@ -71,6 +71,7 @@ class MacrosTest extends TestCase
         $reflection = new ReflectionClass($class);
         $source     = (string) file_get_contents((string) $reflection->getFileName());
 
+        $matches = [];
         preg_match_all('/\$this->([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', $source, $matches);
 
         $missing = [];

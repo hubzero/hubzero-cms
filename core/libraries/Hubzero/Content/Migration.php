@@ -99,7 +99,7 @@ class Migration
      *
      * @param   string|null  $docroot  Defaults to null, which should then resolve to the hub docroot
      * @param   \Hubzero\Database\Driver|null  $runDb    The db that migrations will actually run against
-     * @return  bool
+     * @return  void
      **/
     public function __construct($docroot = null, $runDb = null)
     {

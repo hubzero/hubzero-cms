@@ -165,34 +165,34 @@ use Hubzero\Facades\User;
  * Query methods most often reached through __call() and __callStatic(); each
  * adds to the model's query and returns the model. Query has the rest.
  *
- * @method static static select(string $column, string $as = null, bool|string $count = false)
- * @method static static deselect()
- * @method static static from(string $table, string $as = null)
- * @method static static delete(string $table)
+ * @method $this select(string $column, string $as = null, bool|string $count = false)
+ * @method $this deselect()
+ * @method $this from(string $table, string $as = null)
+ * @method $this delete(string $table)
  * @method mixed execute()  Run the query built so far
- * @method static static join(string $table, string $leftKey = null, string $rightKey = null, string $type = 'inner')
- * @method static static where(string $column, string $operator, mixed $value, string $logical = 'and', int $depth = 0)
- * @method static static orWhere(string $column, string $operator, mixed $value, int $depth = 0)
- * @method static static whereEquals(string $column, mixed $value, int $depth = 0)
- * @method static static orWhereEquals(string $column, mixed $value, int $depth = 0)
- * @method static static whereIn(string $column, array<mixed> $values, int $depth = 0)
- * @method static static orWhereIn(string $column, array<mixed> $values, int $depth = 0)
- * @method static static whereNotIn(string $column, array<mixed> $values, int $depth = 0)
- * @method static static whereLike(string $column, string $value, int $depth = 0)
- * @method static static orWhereLike(string $column, string $value, int $depth = 0)
- * @method static static whereIsNull(string $column, int $depth = 0)
- * @method static static whereIsNotNull(string $column, int $depth = 0)
- * @method static static whereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
- * @method static static orWhereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
- * @method static static group(string $column)
- * @method static static having(string $column, string $operator, mixed $value)
- * @method static static order(string $column, string $dir)
- * @method static static unorder()
+ * @method $this join(string $table, string $leftKey = null, string $rightKey = null, string $type = 'inner')
+ * @method $this where(string $column, string $operator, mixed $value, string $logical = 'and', int $depth = 0)
+ * @method $this orWhere(string $column, string $operator, mixed $value, int $depth = 0)
+ * @method $this whereEquals(string $column, mixed $value, int $depth = 0)
+ * @method $this orWhereEquals(string $column, mixed $value, int $depth = 0)
+ * @method $this whereIn(string $column, array<mixed> $values, int $depth = 0)
+ * @method $this orWhereIn(string $column, array<mixed> $values, int $depth = 0)
+ * @method $this whereNotIn(string $column, array<mixed> $values, int $depth = 0)
+ * @method $this whereLike(string $column, string $value, int $depth = 0)
+ * @method $this orWhereLike(string $column, string $value, int $depth = 0)
+ * @method $this whereIsNull(string $column, int $depth = 0)
+ * @method $this whereIsNotNull(string $column, int $depth = 0)
+ * @method $this whereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
+ * @method $this orWhereRaw(string $string, array<mixed> $bindings = [], int $depth = 0)
+ * @method $this group(string $column)
+ * @method $this having(string $column, string $operator, mixed $value)
+ * @method $this order(string $column, string $dir)
+ * @method $this unorder()
  * @method string toString()  The query built so far, as SQL
- * @method static static start(int $start)
- * @method static static limit(int $limit)
- * @method static static joinRaw(string $table, string $raw, string $type = 'inner')
- * @method static static resetDepth(int $depth = 0)
+ * @method $this start(int $start)
+ * @method $this limit(int $limit)
+ * @method $this joinRaw(string $table, string $raw, string $type = 'inner')
+ * @method $this resetDepth(int $depth = 0)
  *
  * Lifecycle listeners are registered by event name through __callStatic():
  *
@@ -210,6 +210,10 @@ use Hubzero\Facades\User;
  *
  * @implements \ArrayAccess<mixed, mixed>
  * @implements \IteratorAggregate<mixed, mixed>
+ *
+ * @property  mixed  $assetRules
+ * @property  mixed  $introtext
+ * @property  mixed  $name
  */
 class Relational implements \IteratorAggregate, \ArrayAccess
 {
@@ -965,6 +969,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         if (static::getRelationshipRegistry()->has(static::class, $name)) {
             return $this->makeAcquaintance($name)->getRelationship($name);
         }
+
+        return null;
     }
 
     /**
@@ -983,7 +989,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   array<mixed>|string  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
-     * @return  static
+     * @return  void
      */
     public function __set($key, $value)
     {

@@ -294,6 +294,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     private function doReplacements($contents)
     {
+        $matches = null;
         // Replace variables
         if (count($this->replacements) > 0) {
             foreach ($this->replacements as $k => $v) {
@@ -345,6 +346,7 @@ class Scaffolding extends Base implements CommandInterface
             }
         }
 
+        $matches = [];
         // Now parse for nested templates
         preg_match_all('/\$\^[[:alpha:]\.]*\^\$/', $contents, $matches, PREG_SET_ORDER);
 
@@ -404,6 +406,7 @@ class Scaffolding extends Base implements CommandInterface
 
         $info = pathinfo($path);
 
+        $matches = [];
         // See if we need to do var replacement in actual filename
         if (
             preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches)
@@ -451,6 +454,7 @@ class Scaffolding extends Base implements CommandInterface
     {
         $files = array_diff(scandir($path), ['.', '..', '.DS_Store']);
 
+        $matches = null;
         if ($files) {
             foreach ($files as $file) {
                 if (is_file($path . DS . $file)) {

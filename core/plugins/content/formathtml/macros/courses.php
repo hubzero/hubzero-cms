@@ -214,6 +214,7 @@ class Courses extends Macro
      */
     private function getArg($arg, $default = '')
     {
+        $matches = [];
         // check to see if we have an arg matching our search
         if (preg_match('/' . $arg . '=([^,|\s]*)/', $this->args, $matches)) {
             return trim($matches[1]);

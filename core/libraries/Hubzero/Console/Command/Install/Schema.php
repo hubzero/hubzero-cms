@@ -417,6 +417,7 @@ class Schema
             echo "\033[?25l";
         }
 
+        $matches = null;
         foreach ($statements as $i => $statement) {
             $statement = trim($statement);
             if (empty($statement)) {

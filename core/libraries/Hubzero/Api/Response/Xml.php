@@ -45,7 +45,7 @@ class Xml
      * @param   mixed    $mixed             Data to encode (array/object)
      * @param   string   $tag               Root tag name
      * @param   string   $attributes        Attributes to add
-     * @param   number   $depth             Depth to encode to
+     * @param   int|float $depth             Depth to encode to
      * @param   boolean  $show_declaration  Show XML doctype declaration
      * @return  string   XML
      */
@@ -183,6 +183,8 @@ class Xml
 
         xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($p, XML_OPTION_SKIP_WHITE, 1);
+        $vals = [];
+        $index = [];
         xml_parse_into_struct($p, $xml, $vals, $index);
         xml_parser_free($p);
 

@@ -285,6 +285,7 @@ class Str
         $prefix = '';
         $suffix = $options['ellipsis'];
 
+        $closeTag = null;
         if ($options['html']) {
             $ellipsisLength = mb_strlen(strip_tags($options['ellipsis']));
             $truncateLength = 0;
@@ -293,6 +294,7 @@ class Str
             $truncate = '';
             $htmlNoCount = ['style', 'script'];
 
+            $tags = [];
             preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
 
             foreach ($tags as $tag) {

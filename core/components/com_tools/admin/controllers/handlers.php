@@ -157,7 +157,7 @@ class Handlers extends AdminController
         }, $rules);
 
         // Now process the implicit deletes
-        foreach (Rule::whereEquals('handler_id', $handler->id) as $rule) {
+        foreach (Rule::all()->whereEquals('handler_id', $handler->id) as $rule) {
             if (!in_array($rule->id, $ids)) {
                 $rule->destroy();
             }

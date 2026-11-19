@@ -411,6 +411,7 @@ class Db2Driver extends BaseSqlDriver
             return $value;
         }
 
+        $matches = [];
         // Handle explicit aliases: "table AS alias"
         if (preg_match('/^(.+)\s+as\s+([^\s]+)$/is', $value, $matches)) {
             return $this->wrap($matches[1]) . ' AS ' . $this->wrap($matches[2]);

@@ -11,6 +11,9 @@ namespace Components\Search\Tests\Traits;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Component;
 
+/**
+ * @phpstan-require-extends \PHPUnit\Framework\TestCase
+ */
 trait CanMock
 {
     /**

@@ -10,6 +10,8 @@ namespace Hubzero\Tests\Concerns;
 
 /**
  * Shared assertions for behavior-registered document assets.
+ *
+ * @phpstan-require-extends \PHPUnit\Framework\TestCase
  */
 trait InteractsWithBehaviorAssets
 {

@@ -34,6 +34,7 @@ class Collections extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
+        $arr = [];
         if (!$resource->type->params->get('plg_collections', 0)) {
             return null;
         }

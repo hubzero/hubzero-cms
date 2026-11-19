@@ -12,6 +12,10 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project database versions
+ *
+ * @property  mixed  $data_definition
+ * @property  mixed  $database_name
+ * @property  mixed  $version
  */
 class DatabaseVersion extends Table
 {

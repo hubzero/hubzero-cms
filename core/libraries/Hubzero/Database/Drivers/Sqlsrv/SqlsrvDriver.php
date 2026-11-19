@@ -484,6 +484,7 @@ class SqlsrvDriver extends BaseSqlDriver
             return 'VARBINARY(MAX)';
         }
 
+        $m = [];
         // VARCHAR(n) → NVARCHAR(n)
         if (preg_match('/^VARCHAR\s*\((\d+)\)$/i', $cleaned, $m)) {
             return "NVARCHAR({$m[1]})";
@@ -552,6 +553,7 @@ class SqlsrvDriver extends BaseSqlDriver
             return 'VARBINARY(MAX)';
         }
 
+        $matches = [];
         // VARCHAR -> NVARCHAR
         if (preg_match('/^VARCHAR\s*\((\d+)\)$/i', $upper, $matches)) {
             return "NVARCHAR({$matches[1]})";
@@ -1215,6 +1217,7 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $identityTable = $this->detectIdentityInsert();
 
+        $quoted = null;
         if ($identityTable) {
             $quoted = $this->quoteName($identityTable);
             $this->getConnection()->exec(
@@ -1255,6 +1258,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $ident = '(?:"[^"]+"|\\[[^\\]]+\\]|[\\w.]+)';
         $pattern = '/^(INSERT\s+INTO\s+' . $ident . ')\s+(SELECT\b)/i';
 
+        $m = [];
         if (!preg_match($pattern, $sql, $m)) {
             return;
         }
@@ -1312,6 +1316,7 @@ class SqlsrvDriver extends BaseSqlDriver
 
         // Pattern 1: INSERT INTO table (columns) ...
         $pattern = '/INSERT\s+INTO\s+' . $ident . '\s*\(([^)]+)\)/i';
+        $matches = [];
         if (preg_match($pattern, $sql, $matches)) {
             $table = $matches[1] ?: ($matches[2] ?: $matches[3]);
             $columns = array_map(function ($c) {

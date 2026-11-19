@@ -50,6 +50,7 @@ foreach ($xp->getNamespaces(true) as $name => $url) {
     $xp->registerXPathNamespace($name ? $name : 'base', $url);
 }
 $rv = [];
+$ma = null;
 // select entities having the saml attribute indicating that they are research & scholarship category members
 // being members ourselves, we can get attributes about users released fromt these entities
 foreach (

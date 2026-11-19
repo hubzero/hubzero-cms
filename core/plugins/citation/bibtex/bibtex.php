@@ -147,6 +147,7 @@ class Bibtex extends Plugin
             $existingCitations->filterBySearch($searchParams);
         }
 
+        $similar = null;
         // Loop through all current citations
         foreach ($existingCitations->rows()->toObject() as $r) {
             $id    = $r->id;

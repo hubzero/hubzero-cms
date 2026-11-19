@@ -62,6 +62,7 @@ class Network
     {
         $parts    = explode('/', trim((string) $cidr), 2);
         $everyone = false;
+        $mapped = false;
         $address  = Ip::toPacked($parts[0], $mapped);
 
         if ($address === false) {

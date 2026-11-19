@@ -73,6 +73,8 @@ class Package extends Base implements CommandInterface
             . ' install '
             . implode(' ', $args)
             . ' 2>&1';
+        $output = [];
+        $status = 0;
         exec($cmd, $output, $status);
 
         // Composer install

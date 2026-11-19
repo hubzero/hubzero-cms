@@ -111,6 +111,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                 $db = App::get('db');
 
                 if (count($groups) > 0) {
+                    $seen = [];
                     foreach ($groups as $group) {
                         ?>
                         <tr>

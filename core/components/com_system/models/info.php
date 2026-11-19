@@ -164,6 +164,7 @@ class Info extends Obj
             $phpinfo = (string) ob_get_contents();
             ob_end_clean();
 
+            $output = [];
             preg_match_all('#<body[^>]*>(.*)</body>#siU', $phpinfo, $output);
             $output = (string) preg_replace('#<table[^>]*>#', '<table class="adminlist">', $output[1][0]);
             $output = (string) preg_replace('#(\w),(\w)#', '\1, \2', $output);

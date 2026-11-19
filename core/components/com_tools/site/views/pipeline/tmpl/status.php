@@ -28,8 +28,10 @@ $developer_url = $live_site = 'https://' . preg_replace('#^(https://|http://)#',
 $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
+$state = '';
 // get status name
 ToolsHtml::getStatusName($this->status['state'], $state);
+$statusClass = '';
 ToolsHtml::getStatusClass($this->status['state'], $statusClass);
 $this->set('statusClass', $statusClass);
 

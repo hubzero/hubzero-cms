@@ -453,6 +453,7 @@ class View
         // get all php files in template directory
         $files = Filesystem::files(PATH_APP . $base, '\\.php', false, true);
 
+        $header = null;
         // check to see if any of our files are page templates
         foreach ($files as $file) {
             // dont include the default template (default.php or index.php)

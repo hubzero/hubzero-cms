@@ -15,6 +15,8 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+$element = null;
+
 /**
  * What this template is given.
  *

@@ -12,6 +12,10 @@ use Hubzero\Database\Table;
 
 /**
  * Table class for project tool logs
+ *
+ * @property  mixed  $instance_id
+ * @property  mixed  $parent_id
+ * @property  mixed  $parent_name
  */
 class ToolLog extends Table
 {

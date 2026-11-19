@@ -55,7 +55,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Magic function to clone the registry object.
      *
-     * @return  object
+     * @return  void
      */
     public function __clone()
     {

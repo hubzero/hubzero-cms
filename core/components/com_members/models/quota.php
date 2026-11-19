@@ -101,6 +101,7 @@ class Quota extends Relational
                 . " "
                 . escapeshellarg((string) (int) $this->get('hard_blocks'));
 
+            $output = null;
             $status = Utils::middleware($command, $output);
 
             if (!$status) {

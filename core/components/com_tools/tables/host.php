@@ -13,6 +13,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Middleware host table class
+ *
+ * @property  mixed  $hostname
+ * @property  mixed  $provisions
+ * @property  mixed  $status
  */
 class Host extends Table
 {

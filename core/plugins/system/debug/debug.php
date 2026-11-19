@@ -194,6 +194,7 @@ class Debug extends Plugin
 
             . '</span></a>';
 
+        $dumper = null;
         if (Config::get('debug')) {
             if ($this->params->get('memory', 1)) {
                 $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="'

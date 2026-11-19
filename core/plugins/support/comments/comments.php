@@ -55,6 +55,7 @@ class Comments extends Plugin
         $database = App::get('db');
         $database->setQuery($query);
 
+        $matches = null;
         if ($rows = $database->loadObjectList()) {
             if ($parent) {
                 foreach ($rows as $key => $row) {
@@ -215,6 +216,7 @@ class Comments extends Plugin
 
         $comment = \Hubzero\Item\Comment::oneOrFail($refid);
 
+        $matches = [];
         if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->get('content'), $matches)) {
             $format = strtolower(trim($matches[1]));
             switch ($format) {

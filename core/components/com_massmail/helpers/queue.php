@@ -54,6 +54,7 @@ class Queue
             return ['available' => true, 'size' => 0];
         }
 
+        $m = [];
         // Summary line, e.g. "-- 12 Kbytes in 3 Requests."
         if (preg_match('/(\d+)\s+Request/i', $text, $m)) {
             return ['available' => true, 'size' => (int) $m[1]];

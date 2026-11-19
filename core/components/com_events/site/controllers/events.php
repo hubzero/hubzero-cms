@@ -1486,6 +1486,7 @@ class Events extends SiteController
      */
     public function editTask($row = null)
     {
+        $lists = [];
         // Check if they are logged in
         if (User::isGuest()) {
             if (Pathway::count() <= 0) {
@@ -2251,6 +2252,7 @@ class Events extends SiteController
      */
     public static function parseTag($text, $tag)
     {
+        $matches = [];
         preg_match("#<ef:" . $tag . ">(.*?)</ef:" . $tag . ">#s", $text, $matches);
         if (count($matches) > 0) {
             $match = $matches[0];

@@ -134,6 +134,8 @@ class Overview extends Plugin
      */
     public function getUsageForDate()
     {
+        $residence = [];
+        $organization = [];
         $period   = $this->periodToInt(Request::getString('period', $this->params->get('period', 'prior12')));
         $datetime = Request::getString('datetime', date("Y") . '-' . date("m")) . '-00 00:00:00';
 
@@ -247,8 +249,8 @@ class Overview extends Plugin
         $data = new \stdClass();
         $data->visits = new \stdClass();
         $data->visits->total        = number_format($result == null ? 0.0 : floatval($result));
-        $data->visits->residence    = $residence ?? '';
-        $data->visits->organization = $organization ?? '';
+        $data->visits->residence    = $residence ?: '';
+        $data->visits->organization = $organization ?: '';
 
         $sql = "SELECT value, valfmt
 				FROM `summary_user_vals`
@@ -354,8 +356,8 @@ class Overview extends Plugin
 
         $data->downloads = new \stdClass();
         $data->downloads->total        = number_format((float) ($result ?? 0.0));
-        $data->downloads->residence    = !isset($residence) ? '' : $residence;
-        $data->downloads->organization = !isset($organization) ? '' : $organization;
+        $data->downloads->residence    = $residence ?: '';
+        $data->downloads->organization = $organization ?: '';
         ;
 
         $db->setQuery(
@@ -409,6 +411,7 @@ class Overview extends Plugin
      */
     public static function formatValue($value, $fmt)
     {
+        $valfmt = [];
         $valfmt[0] = '-'; // blank. for future use
         $valfmt[1] = ' '; // no units
         $valfmt[2] = '%';

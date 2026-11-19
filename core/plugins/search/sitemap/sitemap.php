@@ -222,6 +222,7 @@ class Sitemap extends Plugin
         if (array_key_exists('add', $_POST)) {
             return self::saveEntryFromPost();
         }
+        $id = null;
         foreach ($_POST as $k => $v) {
             if (preg_match('/(delete|edit)-(\d+)/', $k, $id)) {
                 if ($id[1] == 'edit') {

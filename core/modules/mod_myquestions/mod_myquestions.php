@@ -69,7 +69,7 @@ class Myquestions extends Module
      * Format the tags
      *
      * @param   string   $string  String of comma-separated tags
-     * @param   number   $num     Number of tags to display
+     * @param   int|float $num     Number of tags to display
      * @param   integer  $max     Max character length
      * @return  string   HTML
      */

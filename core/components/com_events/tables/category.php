@@ -13,6 +13,11 @@ use Hubzero\Facades\Lang;
 
 /**
  * Events table class for category
+ *
+ * @property  mixed  $_error
+ * @property  mixed  $id
+ * @property  mixed  $section
+ * @property  mixed  $title
  */
 class Category extends Table
 {

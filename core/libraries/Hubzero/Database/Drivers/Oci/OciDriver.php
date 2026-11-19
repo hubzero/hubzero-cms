@@ -471,6 +471,7 @@ class OciDriver extends BaseSqlDriver
             return $value;
         }
 
+        $matches = [];
         // Handle explicit AS aliases — use space not AS
         if (
             preg_match(
@@ -2737,6 +2738,7 @@ class OciDriver extends BaseSqlDriver
      */
     public function prepare($statement)
     {
+        $matches = [];
         // Capture table name from INSERT statements
         if (
             preg_match(
@@ -2776,6 +2778,7 @@ class OciDriver extends BaseSqlDriver
                 $this->enforceRawQueryMode((string) $query);
             }
 
+            $matches = [];
             if (
                 is_string($query) && preg_match(
                     '/^\s*INSERT\s+(?:ALL\s+)?INTO\s+"?([^"\s(]+)"?/i',
@@ -2932,6 +2935,7 @@ class OciDriver extends BaseSqlDriver
             return 'BINARY_DOUBLE';
         }
 
+        $m = [];
         // Decimal/Numeric - preserve precision
         if (
             preg_match(
@@ -3175,6 +3179,7 @@ class OciDriver extends BaseSqlDriver
         ) {
             return 'NUMBER(1)';
         }
+        $m = [];
         if (
             preg_match(
                 '/^VARCHAR\((\d+)\)$/i',

@@ -1312,6 +1312,7 @@ class File extends Base
         $i = 0;
         $a = 0;
 
+        $matches = null;
         // Attach/refresh each selected item
         foreach ($toAttach as $identifier) {
             if (!trim($identifier)) {

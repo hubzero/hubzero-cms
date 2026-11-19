@@ -160,6 +160,7 @@ class SchemaConverter
         $tables = preg_split('/(CREATE TABLE)/', $contentNoViews, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
         $tableCount = 0;
 
+        $matches = null;
         for ($i = 1; $i < count($tables); $i += 2) {
             if (!isset($tables[$i + 1])) {
                 continue;
@@ -197,6 +198,7 @@ class SchemaConverter
         $viewCount = 0;
         $viewDefs = [];
 
+        $viewMatches = [];
         // Extract all view definitions
         preg_match_all(
             '/DROP VIEW IF EXISTS\s+`([^`]+)`;\s*CREATE\s+(?:ALGORITHM=\S+\s+)?'
@@ -286,6 +288,7 @@ class SchemaConverter
         // Remove COMMENT strings
         $sql = (string) preg_replace("/\s+COMMENT\s+'[^']*'/", '', $sql);
 
+        $aiMatch = [];
         // Handle AUTO_INCREMENT columns
         $hasAutoIncrement = preg_match('/`(\w+)`[^,]+AUTO_INCREMENT/i', $sql, $aiMatch);
         $autoIncrementColumn = $hasAutoIncrement ? $aiMatch[1] : null;
@@ -319,6 +322,7 @@ class SchemaConverter
             $sql = (string) preg_replace('/\s+AUTO_INCREMENT/i', '', (string) $sql);
         }
 
+        $fallbackMatch = [];
         // Fallback: catch any remaining AUTO_INCREMENT patterns
         if (preg_match('/`(\w+)`\s+INTEGER\s+(?:NOT NULL\s+)?AUTO_INCREMENT/i', $sql, $fallbackMatch)) {
             $sql = (string) preg_replace(
@@ -356,8 +360,10 @@ class SchemaConverter
         // Extract and convert indexes
         $indexes = [];
 
+        $ukMatches = [];
         // Extract UNIQUE KEY
         preg_match_all('/,\s*UNIQUE KEY\s+`([^`]+)`\s*\(([^)]+)\)/', $sql, $ukMatches, PREG_SET_ORDER);
+        $tableMatch = null;
         foreach ($ukMatches as $match) {
             $indexName = $match[1];
             $columns = $match[2];
@@ -367,6 +373,7 @@ class SchemaConverter
         }
         $sql = (string) preg_replace('/,\s*UNIQUE KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
 
+        $kMatches = [];
         // Extract regular KEY (indexes)
         preg_match_all('/,\s*KEY\s+`([^`]+)`\s*\(([^)]+)\)/', $sql, $kMatches, PREG_SET_ORDER);
         foreach ($kMatches as $match) {

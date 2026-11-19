@@ -97,6 +97,7 @@ class Latex extends Plugin
         $command .= escapeshellarg(DS . trim($this->params->get('texpath', '/usr/bin/pdflatex'), DS));
         $command .= ' -no-shell-escape -interaction=batchmode ' . escapeshellarg($uniqid . '.tex');
 
+        $out = [];
         // Exec and capture output
         exec($command, $out);
 

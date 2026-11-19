@@ -290,6 +290,7 @@ class Entity extends Obj
         //    making multiple calls to scan individual files
         $command = App::get('config')->get('virus_scanner', 'clamscan -i -r --no-summary --block-encrypted');
 
+        $temp = null;
         // Always scan local, and only scan remote if explicitly requested
         if ($this->isLocal() || $remote) {
             if (!$this->isLocal()) {
@@ -308,6 +309,8 @@ class Entity extends Obj
                 $command .= ' ' . escapeshellarg($path);
             }
 
+            $output = [];
+            $status = 0;
             // Execute the scan
             exec($command, $output, $status);
 

@@ -17,6 +17,16 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for collection item asset
+ *
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $description
+ * @property  mixed  $filename
+ * @property  mixed  $id
+ * @property  mixed  $item_id
+ * @property  mixed  $ordering
+ * @property  mixed  $state
+ * @property  mixed  $type
  */
 class Asset extends Table
 {

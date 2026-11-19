@@ -995,6 +995,8 @@ class Install extends Base implements CommandInterface
             $host = (string) Config::get('smtphost', 'localhost');
             $port = (int) Config::get('smtpport', 25);
 
+            $errno = 0;
+            $errstr = '';
             $socket = @fsockopen($host, $port, $errno, $errstr, 5);
 
             if ($socket) {

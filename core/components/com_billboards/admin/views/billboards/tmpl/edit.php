@@ -91,7 +91,7 @@ $this->js();
                 <div class="input-wrap">
                     <label for="ordering"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_ORDERING'); ?>:</label><br />
                     <?php if ($this->row->id) : ?>
-                        <?php $query = Billboard::select('ordering', 'value')
+                        <?php $query = Billboard::all()->select('ordering', 'value')
                             ->select('name', 'text')
                             ->whereEquals('collection_id', $this->row->collection_id)
                             ->toString(); ?>

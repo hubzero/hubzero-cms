@@ -188,6 +188,7 @@ class ExpireInactiveTest extends Basic
     {
         $schema = (string) file_get_contents(PATH_CORE . '/bootstrap/Install/sql/mysql/schema.sql');
 
+        $m = [];
         if (!preg_match('/CREATE TABLE `#__' . preg_quote($table, '/') . '` \(.*?\) ENGINE=[^;]*;/s', $schema, $m)) {
             throw new \RuntimeException('#__' . $table . ' not found in schema.sql');
         }

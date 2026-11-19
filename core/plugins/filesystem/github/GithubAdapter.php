@@ -124,6 +124,7 @@ class GithubAdapter implements FilesystemAdapter
     {
         $repository = trim((string) $repository);
 
+        $matches = [];
         // Pull "owner/repo" out of a full GitHub URL (https or scp-style).
         if (preg_match('#github\.com[:/]+([^/]+/[^/]+)#i', $repository, $matches)) {
             $repository = $matches[1];

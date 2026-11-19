@@ -181,6 +181,7 @@ class Create extends SiteController
      */
     protected function checkProgress($id)
     {
+        $progress = [];
         $steps = $this->steps;
         $laststep = (count($steps) - 1);
         $stepchecks = [];

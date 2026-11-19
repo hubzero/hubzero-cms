@@ -320,6 +320,7 @@ class Parameter extends Registry
 
         if (!class_exists($elementClass)) {
             $dirs = $this->elementPath;
+            $matches = [];
             preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace(
                 '_',
                 DS,

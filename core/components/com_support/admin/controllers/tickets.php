@@ -970,6 +970,7 @@ class Tickets extends AdminController
      */
     private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
+        $users = [];
         $database = App::get('db');
 
         $query = "SELECT a.id AS value, a.name AS text"

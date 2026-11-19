@@ -112,6 +112,7 @@ class Preferences extends AdminController
      */
     public function editTask($row = null)
     {
+        $options = [];
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {

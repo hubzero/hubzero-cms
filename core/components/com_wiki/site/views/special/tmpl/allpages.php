@@ -14,6 +14,8 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$cls = null;
+
 /**
  * What this template is given.
  *

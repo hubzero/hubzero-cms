@@ -13,6 +13,10 @@ use Hubzero\Database\Table;
 /**
  * A table of things with an id and a title, read from a driver that needs
  * no database
+ *
+ * @property  mixed  $extra
+ * @property  mixed  $id
+ * @property  mixed  $title
  */
 class ThingTable extends Table
 {

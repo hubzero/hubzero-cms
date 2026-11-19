@@ -17,6 +17,11 @@ use Hubzero\Facades\Date;
 
 /**
  * Tools table for a Tool
+ *
+ * @property  mixed  $config
+ * @property  mixed  $id
+ * @property  mixed  $title
+ * @property  mixed  $toolname
  */
 class Tool extends Table
 {

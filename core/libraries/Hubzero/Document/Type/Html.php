@@ -412,6 +412,7 @@ class Html extends Base
 
         $form .= '</form>' . "\n";
 
+        $match = [];
         // Put it first in <body>: form="..." and getElementById() take the first
         // element with the id, and posted content (which may keep id attributes)
         // must not be able to claim it ahead of the real form

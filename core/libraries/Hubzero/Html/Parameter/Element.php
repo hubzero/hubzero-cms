@@ -66,6 +66,7 @@ class Element extends Obj
      */
     public function render(&$xmlElement, $value, $control_name = 'params')
     {
+        $result = [];
         $name  = (string) $xmlElement['name'];
         $label = (string) $xmlElement['label'];
         $descr = (string) $xmlElement['description'];

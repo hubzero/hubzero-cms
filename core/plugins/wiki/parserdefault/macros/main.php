@@ -38,6 +38,7 @@ class Main extends WikiMacro
      */
     public function render()
     {
+        $l = [];
         $et = $this->args;
 
         if (!$et) {

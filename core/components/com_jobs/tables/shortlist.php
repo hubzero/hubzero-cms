@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for job shortlist
+ *
+ * @property  mixed  $added
+ * @property  mixed  $category
+ * @property  mixed  $emp
+ * @property  mixed  $id
+ * @property  mixed  $seeker
  */
 class Shortlist extends Table
 {

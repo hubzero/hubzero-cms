@@ -16,6 +16,19 @@ use Hubzero\Facades\App;
 
 /**
  * Table class for collection items
+ *
+ * @property  mixed  $access
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $description
+ * @property  mixed  $id
+ * @property  mixed  $modified
+ * @property  mixed  $modified_by
+ * @property  mixed  $object_id
+ * @property  mixed  $state
+ * @property  mixed  $title
+ * @property  mixed  $type
+ * @property  mixed  $url
  */
 class Item extends Table
 {

@@ -134,6 +134,8 @@ class CartMessenger
         } else {
             $this->emailError($this->logFile, 'LOG');
         }
+
+        return null;
     }
 
     /**

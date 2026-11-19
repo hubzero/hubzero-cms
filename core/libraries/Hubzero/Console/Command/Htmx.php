@@ -151,6 +151,7 @@ class Htmx extends Base implements CommandInterface
             ];
         }
 
+        $idMatches = [];
         if (preg_match_all('/\bid=["\']([^"\']+)["\']/i', $contents, $idMatches, PREG_OFFSET_CAPTURE)) {
             $seen = [];
             foreach ($idMatches[1] as $match) {
@@ -169,6 +170,7 @@ class Htmx extends Base implements CommandInterface
             }
         }
 
+        $targetMatches = [];
         if (preg_match_all('/\bhx-target=["\']([^"\']*)["\']/i', $contents, $targetMatches, PREG_OFFSET_CAPTURE)) {
             foreach ($targetMatches[1] as $match) {
                 $target = trim((string) $match[0]);
@@ -183,6 +185,7 @@ class Htmx extends Base implements CommandInterface
             }
         }
 
+        $swapMatches = [];
         if (preg_match_all('/\bhx-swap=["\']([^"\']+)["\']/i', $contents, $swapMatches, PREG_OFFSET_CAPTURE)) {
             $allowed = [
                 'innerhtml',
@@ -208,6 +211,7 @@ class Htmx extends Base implements CommandInterface
             }
         }
 
+        $routeMatches = [];
         if (
             preg_match_all(
                 '/\bhx-(get|post|put|patch|delete)=["\']([^"\']+)["\']/i',

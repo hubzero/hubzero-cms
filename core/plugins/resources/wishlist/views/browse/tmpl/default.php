@@ -308,6 +308,7 @@ $this->css();
     $type = $this->resource->type;
 
     $data = [];
+    $matches = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {

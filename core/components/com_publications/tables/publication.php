@@ -16,6 +16,22 @@ use Hubzero\Facades\Lang;
 
 /**
  * Table class for publications
+ *
+ * @property  mixed  $access
+ * @property  mixed  $alias
+ * @property  mixed  $category
+ * @property  mixed  $created
+ * @property  mixed  $created_by
+ * @property  mixed  $featured
+ * @property  mixed  $group_owner
+ * @property  mixed  $id
+ * @property  mixed  $master_doi
+ * @property  mixed  $master_type
+ * @property  mixed  $project_id
+ * @property  mixed  $ranking
+ * @property  mixed  $rating
+ * @property  mixed  $times_rated
+ * @property  mixed  $title
  */
 class Publication extends Table
 {
@@ -672,5 +688,7 @@ class Publication extends Table
 
             return $d ? number_format($c / $d, 0) : 0;
         }
+
+        return null;
     }
 }

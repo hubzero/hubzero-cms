@@ -52,6 +52,7 @@ class Log extends Base implements CommandInterface
             $this->output->error('This feature is only available in interactive mode!');
         }
 
+        $settings = [];
         // Set tty icanon so keystrokes are captured without enter
         // Save settings first so we can reapply them when all is said and done
         exec('stty -g', $settings);
@@ -99,6 +100,7 @@ class Log extends Base implements CommandInterface
             2 => ['pipe', 'w'],
         ];
 
+        $fp = [];
         // Tail the given log
         $proc = proc_open("tail -f {$path}", $descs, $fp);
         if (!is_resource($proc)) {
@@ -392,6 +394,7 @@ class Log extends Base implements CommandInterface
         }
 
         $threshold = [];
+        $params = null;
         foreach ($thresholds as $t) {
             if (
                 preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]\.]+)/', $t, $params)
