@@ -35,11 +35,11 @@ $this
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } else { ?>
-    <?php $val = $this->escape($this->email); ?>
-    <?php $val = $this->hubName; ?>
+    <?php $emailVal = $this->escape($this->email); ?>
+    <?php $hubVal = $this->hubName; ?>
     <p class="passed">
-        A confirmation email has been sent to "<?php echo $val; ?>". You must click the link in that email to activate
-        your account and resume using <?php echo $val; ?>.
+        A confirmation email has been sent to "<?php echo $emailVal; ?>". You must click the link in that email
+        to activate your account and resume using <?php echo $hubVal; ?>.
     </p>
     <?php if ($this->show_correction_faq) { ?>
         <h4>Wrong email address?</h4>

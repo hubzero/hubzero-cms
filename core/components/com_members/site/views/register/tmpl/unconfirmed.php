@@ -32,12 +32,12 @@ $this
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
             <p class="error">
-                <?php $val = $this->escape($this->email); ?>
-                <?php $val = $this->sitename; ?>
-                Your email address "<?php echo $val; ?>" has not been confirmed.
+                <?php $emailVal = $this->escape($this->email); ?>
+                <?php $siteVal = $this->sitename; ?>
+                Your email address "<?php echo $emailVal; ?>" has not been confirmed.
                 Please check your email for a confirmation notice.
                 You must click the link in that email to activate your
-                account and resume using <?php echo $val; ?>.
+                account and resume using <?php echo $siteVal; ?>.
             </p>
         </div><!-- / .subject -->
         <aside class="aside">

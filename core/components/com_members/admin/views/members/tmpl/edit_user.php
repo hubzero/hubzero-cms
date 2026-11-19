@@ -67,12 +67,13 @@ $approvedSelected = function ($value) use ($view) {
             <legend><span><?php echo Lang::txt('Account Details'); ?></span></legend>
 
             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?>">
-                <?php $val = Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?>
-                <?php $val = Lang::txt('JOPTION_REQUIRED'); ?>
+                <?php $labelText = Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?>
+                <?php $requiredText = Lang::txt('JOPTION_REQUIRED'); ?>
                 <label
                     id="field_username-lbl"
                     for="field_username"
-                    class="required"><?php echo $val; ?> <span class="required star"><?php echo $val; ?></span></label>
+                    class="required"><?php echo $labelText; ?>
+                    <span class="required star"><?php echo $requiredText; ?></span></label>
                 <?php $val = $this->escape($this->profile->get('username')); ?>
                 <?php $readOnly = $this->profile->get('id') ? ' readonly" readonly="readonly' : ''; ?>
                 <input
@@ -84,12 +85,13 @@ $approvedSelected = function ($value) use ($view) {
             </div>
 
             <div class="input-wrap">
-                <?php $val = Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?>
-                <?php $val = Lang::txt('JOPTION_REQUIRED'); ?>
+                <?php $labelText = Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?>
+                <?php $requiredText = Lang::txt('JOPTION_REQUIRED'); ?>
                 <label
                     id="field_email-lbl"
                     for="field_email"
-                    class="required"><?php echo $val; ?> <span class="required star"><?php echo $val; ?></span></label>
+                    class="required"><?php echo $labelText; ?>
+                    <span class="required star"><?php echo $requiredText; ?></span></label>
                 <input
                     type="email"
                     name="fields[email]"

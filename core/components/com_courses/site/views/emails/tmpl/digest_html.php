@@ -193,7 +193,6 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
         </td>
         <td style="text-align: right;">
             <?php $val = $base . '/' . $this->offering->get('alias') . '/discussions'; ?>
-            <?php $val = $base . '/' . $this->offering->get('alias') . '/discussions'; ?>
             <a href="<?php echo $val; ?>"><?php echo $val; ?></a>
         </td>
     </tr>

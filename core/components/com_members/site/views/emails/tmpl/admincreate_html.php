@@ -78,7 +78,6 @@ $this->css($css);
                 style="line-height: 1; padding: 0 0 5px 10px;">
                 <span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
                     <?php $val = $this->baseUrl; ?>
-                    <?php $val = $this->baseUrl; ?>
                     <a href="<?php echo $val; ?>" style="color: #666; font-weight: bold; text-decoration: none; border:
                         none;"><?php echo $val; ?></a>
                 </span>
