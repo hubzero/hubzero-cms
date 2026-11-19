@@ -2641,6 +2641,9 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException('No class "' . $class . '" to fetch a row into.');
+        }
         return $this->statement->fetchObject($class) ?: null;
     }
 
@@ -2880,8 +2883,10 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Inserts a row into a table based on an object's properties
      *
+     * @template  T of object
      * @param   string  $table    The name of the database table to insert into
-     * @param   object  &$object  A reference to an object whose public properties match the table fields
+     * @param   T       &$object  A reference to an object whose public properties match the table fields
+     * @param-out  T    $object
      * @param   string|null  $key      The name of the primary key. If provided the object property is updated
      * @return  bool
      */
@@ -2939,8 +2944,10 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Updates a row in a table based on an object's properties
      *
+     * @template  T of object
      * @param   string  $table    The name of the database table to update
-     * @param   object  &$object  A reference to an object whose public properties match the table fields
+     * @param   T       &$object  A reference to an object whose public properties match the table fields
+     * @param-out  T    $object
      * @param   string  $key      The name of the primary key
      * @param   bool    $nulls    True to update null fields or false to ignore them
      * @return  bool|$this

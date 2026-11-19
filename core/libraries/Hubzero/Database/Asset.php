@@ -19,14 +19,14 @@ class Asset
     /**
      * The database model: one with a name to title its asset by, and rules if it carries any
      *
-     * @var  \Hubzero\Database\Relational&object{name: mixed, assetRules: mixed}
+     * @var  \Hubzero\Database\Relational
      **/
     private $model = null;
 
     /**
      * Constructs a new object, setting the model
      *
-     * @param   object  $model  The model to which the asset will refer
+     * @param   \Hubzero\Database\Relational  $model  The model to which the asset will refer
      * @return  void
      **/
     public function __construct($model)
@@ -48,7 +48,7 @@ class Asset
     /**
      * Deletes the asset entry for the provided model
      *
-     * @param   object  $model  The model being deleted
+     * @param   \Hubzero\Database\Relational  $model  The model being deleted
      * @return  bool
      **/
     public static function destroy($model)
@@ -81,7 +81,7 @@ class Asset
         $asset->set('name', $name);
         $asset->set('title', $title);
 
-        if ($this->model->assetRules instanceof \Hubzero\Access\Rules) {
+        if (isset($this->model->assetRules) && $this->model->assetRules instanceof \Hubzero\Access\Rules) {
             $asset->set('rules', (string) $this->model->assetRules);
         }
 
@@ -153,7 +153,7 @@ class Asset
     private function getAssetTitle()
     {
         // @FIXME: need a way to override this
-        return $this->model->name;
+        return (string) ($this->model->name ?? '');
     }
 
     /**

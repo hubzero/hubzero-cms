@@ -14,7 +14,7 @@ namespace Hubzero\Database\Tests\TestModels;
  * Implements the minimal interface needed for query caching:
  * get(), put(), forget(), has()
  */
-class MockCacheStore
+class MockCacheStore implements \Hubzero\Database\CacheStoreInterface
 {
     /**
      * Storage for cached items
@@ -64,7 +64,7 @@ class MockCacheStore
      * @param   string  $key
      * @return  mixed
      **/
-    public function get($key)
+    public function get(string $key)
     {
         $this->getCount++;
         return $this->storage[$key] ?? null;
@@ -78,7 +78,7 @@ class MockCacheStore
      * @param   int     $minutes
      * @return  bool
      **/
-    public function put($key, $value, $minutes)
+    public function put(string $key, $value, int $minutes = 0): bool
     {
         $this->putCount++;
         $this->lastKey = $key;
@@ -93,7 +93,7 @@ class MockCacheStore
      * @param   string  $key
      * @return  bool
      **/
-    public function forget($key)
+    public function forget(string $key): bool
     {
         $this->forgetCount++;
         unset($this->storage[$key]);

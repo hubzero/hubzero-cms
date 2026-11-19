@@ -412,7 +412,10 @@ class Relationship
     protected function seed($rows, $data, $name)
     {
         foreach ($rows as $row) {
-            if ($related = $data->seek($row->{$this->localKey})) {
+            // Rows are sought by key; a list of them is keyed by it
+            $key = $row->{$this->localKey};
+            $related = $data instanceof \Hubzero\Database\Rows ? $data->seek($key) : ($data[$key] ?? false);
+            if ($related) {
                 $row->addRelationship($name, $related);
             } else {
                 $related = $this->related;

@@ -528,6 +528,7 @@ class FactoryTest extends AbstractDriverTestCase
     public function paragraphsContainsDoubleNewlines(): void
     {
         $paragraphs = Factory::paragraphs(3);
+        $this->assertIsString($paragraphs);
         $this->assertStringContainsString("\n\n", $paragraphs);
     }
 

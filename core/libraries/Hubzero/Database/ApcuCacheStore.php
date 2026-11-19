@@ -11,7 +11,7 @@ namespace Hubzero\Database;
 /**
  * APCu-backed cache store adapter for query persistent caching.
  */
-class ApcuCacheStore
+class ApcuCacheStore implements CacheStoreInterface
 {
     /**
      * Determine whether APCu extension functions are available.

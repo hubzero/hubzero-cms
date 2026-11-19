@@ -112,6 +112,9 @@ class MysqliStatement
         if (!$this->result) {
             return null;
         }
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException('No class "' . $class . '" to fetch a row into.');
+        }
         return $this->result->fetch_object($class) ?: null;
     }
 

@@ -270,14 +270,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The database connection used by the query object
      *
-     * @var \Hubzero\Database\Driver|object|null
+     * @var \Hubzero\Database\Driver|null
      **/
     public static $connection = null;
 
     /**
      * A connection for this instance alone, taking precedence over the default
      *
-     * @var  \Hubzero\Database\Driver|object|null
+     * @var  \Hubzero\Database\Driver|null
      **/
     private $instanceConnection = null;
 
@@ -1781,7 +1781,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Sets the database connection to be used by the query builder
      *
-     * @param   object  $connection  The connection to set
+     * @param   \Hubzero\Database\Driver  $connection  The connection to set
      * @return  void
      **/
     public static function setDefaultConnection($connection)
@@ -1797,7 +1797,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * getConnection() to resolve it, without redirecting every other model the
      * way setDefaultConnection() would.
      *
-     * @param   object  $connection  The connection to use
+     * @param   \Hubzero\Database\Driver  $connection  The connection to use
      * @return  $this
      **/
     public function setConnection($connection)
@@ -1810,7 +1810,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Gets the connection this instance's queries run on
      *
-     * @return  \Hubzero\Database\Driver|object|null  The instance connection, else the default
+     * @return  \Hubzero\Database\Driver|null  The instance connection, else the default
      **/
     public function getConnection()
     {
@@ -2050,12 +2050,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Set the persistent cache store for query caching
      *
      * This is a static convenience method that delegates to Query::setCacheStore().
-     * The cache store should implement get(), put(), forget(), and has() methods.
+     * The store is one Query::setCacheStore() takes.
      *
      * Example:
      *   Relational::setCacheStore(new MyRedisCache());
      *
-     * @param   object|null  $store  Cache store instance or null to disable
+     * @param   CacheStoreInterface|\Hubzero\Cache\Storage\StorageInterface|\Hubzero\Cache\Manager|string|null  $store
+     *          Cache store instance, 'apcu', or null to disable
      * @return  void
      **/
     public static function setCacheStore($store)
@@ -4515,12 +4516,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     {
         $connection = self::$connection;
 
-        if (
-            !$connection
-            || !method_exists($connection, 'transactionStart')
-            || !method_exists($connection, 'transactionCommit')
-            || !method_exists($connection, 'transactionRollback')
-        ) {
+        // Without a connection there is nothing to hold a transaction
+        if (!$connection) {
             return $callback();
         }
 

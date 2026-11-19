@@ -17,7 +17,7 @@ use Hubzero\Database\Table;
 class ThingTable extends Table
 {
     /**
-     * @param   object  $db  Anything that answers getTableColumns()
+     * @param   \Hubzero\Database\Driver  $db  A driver (the tests' answers only getTableColumns())
      * @return  void
      */
     public function __construct($db)

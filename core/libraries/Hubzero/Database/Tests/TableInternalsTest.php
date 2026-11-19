@@ -17,11 +17,18 @@ use PHPUnit\Framework\TestCase;
 class TableInternalsTest extends TestCase
 {
     /**
-     * @return  object
+     * A driver that answers only for the columns, without connecting
+     *
+     * @return  \Hubzero\Database\Drivers\Sqlite\SqliteDriver
      */
     private function driver()
     {
-        return new class {
+        return new class extends \Hubzero\Database\Drivers\Sqlite\SqliteDriver {
+            /**
+             * Nothing to connect to
+             */
+            public function __construct() {}
+
             /**
              * @param   string  $table
              * @param   bool  $typeOnly

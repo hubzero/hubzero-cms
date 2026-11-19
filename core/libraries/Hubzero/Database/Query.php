@@ -114,7 +114,7 @@ class Query
      * compatible with Hubzero\Cache\Storage interface. When set, it will be used
      * for persistent caching across requests.
      *
-     * @var  object|null
+     * @var  CacheStoreInterface|\Hubzero\Cache\Storage\StorageInterface|\Hubzero\Cache\Manager|null
      **/
     private static $cacheStore = null;
 
@@ -364,8 +364,9 @@ class Query
     /**
      * Set the persistent cache store for query caching
      *
-     * The cache store should implement get(), put(), forget(), and has() methods.
-     * Compatible with Hubzero\Cache\Storage classes or any duck-typed equivalent.
+     * The store is a CacheStoreInterface (as ApcuCacheStore is), one of the
+     * Hubzero\Cache\Storage classes, or the cache manager, which hands calls
+     * to its storage.
      *
      * Example with custom store:
      *   Query::setCacheStore(new MyRedisCache());
@@ -373,7 +374,8 @@ class Query
      * Example with explicit APCu store:
      *   Query::setCacheStore('apcu');
      *
-     * @param   object|string|null  $store  Cache store instance, 'apcu', or null to disable
+     * @param   CacheStoreInterface|\Hubzero\Cache\Storage\StorageInterface|\Hubzero\Cache\Manager|string|null  $store
+     *          Cache store instance, 'apcu', or null to disable
      * @return  void
      **/
     public static function setCacheStore($store)
@@ -399,7 +401,7 @@ class Query
     /**
      * Get the persistent cache store
      *
-     * @return  object|null
+     * @return  CacheStoreInterface|\Hubzero\Cache\Storage\StorageInterface|\Hubzero\Cache\Manager|null
      **/
     public static function getCacheStore()
     {
