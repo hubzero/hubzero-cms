@@ -183,8 +183,13 @@ class BlockElements extends Obj
             return $this->elements[$signature];
         }
 
-        $elementClass = __NAMESPACE__ . '\\BlockElement\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
+        // The element types there are, by name (case does not matter, as it did not for class_exists())
+        $classes = [
+            'dataselector' => BlockElement\Dataselector::class,
+            'metadata'     => BlockElement\Metadata::class,
+        ];
+        $elementClass = $classes[strtolower($name)] ?? null;
+        if ($elementClass === null) {
             return false;
         }
 

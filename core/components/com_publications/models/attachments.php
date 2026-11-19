@@ -478,8 +478,16 @@ class Attachments extends Obj
             return $this->types[$signature];
         }
 
-        $elementClass = __NAMESPACE__ . '\\Attachment\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
+        // The attachment types there are, by name (case does not matter, as it did not for class_exists())
+        $classes = [
+            'data'        => Attachment\Data::class,
+            'file'        => Attachment\File::class,
+            'link'        => Attachment\Link::class,
+            'publication' => Attachment\Publication::class,
+            'tool'        => Attachment\Tool::class,
+        ];
+        $elementClass = $classes[strtolower($name)] ?? null;
+        if ($elementClass === null) {
             return false;
         }
 

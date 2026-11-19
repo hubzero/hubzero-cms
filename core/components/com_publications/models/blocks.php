@@ -107,8 +107,20 @@ class Blocks extends Obj
             return $this->blocks[$signature];
         }
 
-        $elementClass = __NAMESPACE__ . '\\Block\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
+        // The block types there are, by name (case does not matter, as it did not for class_exists())
+        $classes = [
+            'authors'     => Block\Authors::class,
+            'citations'   => Block\Citations::class,
+            'content'     => Block\Content::class,
+            'description' => Block\Description::class,
+            'extras'      => Block\Extras::class,
+            'license'     => Block\License::class,
+            'notes'       => Block\Notes::class,
+            'review'      => Block\Review::class,
+            'tags'        => Block\Tags::class,
+        ];
+        $elementClass = $classes[strtolower($name)] ?? null;
+        if ($elementClass === null) {
             return false;
         }
 
