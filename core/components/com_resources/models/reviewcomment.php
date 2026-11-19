@@ -20,6 +20,15 @@ use Hubzero\Item\Comment as ItemComment;
 class Reviewcomment extends ItemComment
 {
     /**
+     * The table, named: built from the class name it would be
+     * #__item_reviewcomments, which does not exist. Review comments are item
+     * comments like any other.
+     *
+     * @var  string
+     */
+    protected $table = '#__item_comments';
+
+    /**
      * Flagged state
      *
      * @var  integer
