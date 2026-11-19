@@ -407,15 +407,13 @@ abstract class Result
     }
 
     /**
-     * Short description for 'get_section'
+     * The section the result is listed under, words capitalised
      *
-     * Long description (if any) ...
-     *
-     * @return     mixed Return description (if any) ...
+     * @return  string  Empty when the result has none
      */
     public function getSection()
     {
-        return ucwords($this->section);
+        return ucwords((string) $this->section);
     }
 
     /**
@@ -600,7 +598,11 @@ abstract class Result
     public function getExcerpt()
     {
         if (!$this->excerpt) {
-            $descr = preg_replace('#(?:[{]xhub:.*?[}]|[{}]|[\#][!]html)#ixms', '', $this->description);
+            $descr = (string) preg_replace(
+                '#(?:[{]xhub:.*?[}]|[{}]|[\#][!]html)#ixms',
+                '',
+                (string) $this->description,
+            );
             $pattern = '#(?:^|[.?!"])\s*?(.*?' . $this->highlight_regex . '.*?(?:[.?!"]|$))#ims';
             $excerpt = [];
             if (preg_match_all($pattern, $descr, $excerpt)) {
