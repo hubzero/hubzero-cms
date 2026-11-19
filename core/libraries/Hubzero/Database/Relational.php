@@ -223,6 +223,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     use Traits\ErrorBag;
 
     /**
+     * Column types that hold numbers
+     *
+     * @var  string
+     */
+    private const NUMERIC_TYPE = '/^((tiny|small|medium|big)?int|integer|decimal|numeric|float|double|real)\b/i';
+
+    /**
      * Database state constants
      **/
     public const STATE_UNPUBLISHED = 0;
@@ -4417,6 +4424,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return false;
         }
 
+        // What the columns cannot hold is the person's mistake, not a query to
+        // send and fail
+        if (!$this->fitsColumns()) {
+            return false;
+        }
+
         // Handle cases where the primary key might be an empty string
         // For auto-increment in strict-mode DBs, this needs to be NULL
         // instead.
@@ -4864,11 +4877,58 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Write an empty date as no date
+     * Whether the values about to be written fit their columns
      *
-     * A form posts a blank date field, or a hidden one holding a date that was
-     * never set, as ''. Strict SQL refuses '' for a date or time column, so the
-     * save failed outright; where the column allows NULL, NULL is what '' means.
+     * Strict SQL refuses text in a numeric column and text longer than a
+     * char or varchar column, and the refusal arrived as an uncaught query
+     * error: a typo in a form field was a server error. Those become
+     * validation errors here. Only what will be written is checked: every
+     * column of a new record, the changed ones of an existing record.
+     *
+     * @return  bool
+     **/
+    private function fitsColumns(): bool
+    {
+        $values = $this->isNew() ? $this->attributes : $this->getDirty();
+        $values = array_intersect_key($values, $this->getTableColumns());
+        $columns = $this->getTableColumns();
+        $errors = [];
+
+        foreach ($values as $key => $value) {
+            $column = $columns[$key] ?? null;
+
+            if (!is_array($column) || !is_string($value) || $value === '') {
+                continue;
+            }
+
+            $type = strtolower((string) ($column['type'] ?? ''));
+
+            if (preg_match(self::NUMERIC_TYPE, $type)) {
+                if (!is_numeric(trim($value))) {
+                    $errors[] = $key . ' must be a number';
+                }
+            } elseif (preg_match('/^(var)?char\((\d+)\)/', $type, $m)) {
+                if (mb_strlen($value) > (int) $m[2]) {
+                    $errors[] = $key . ' can be at most ' . $m[2] . ' characters long';
+                }
+            }
+        }
+
+        if ($errors) {
+            $this->setErrors($errors);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Write an empty date or number as none
+     *
+     * A form posts a blank date or number field, or a hidden one holding a date
+     * that was never set, as ''. Strict SQL refuses '' for date, time and
+     * numeric columns, so the save failed outright; where the column allows
+     * NULL, NULL is what '' means.
      *
      * @param   array<string, mixed>  $data  Column values about to be written
      * @return  array<string, mixed>
@@ -4888,7 +4948,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if (
                 is_array($column)
                 && !empty($column['allownull'])
-                && preg_match('/^(date|datetime|timestamp|time|year)\b/i', (string) ($column['type'] ?? ''))
+                && (
+                    preg_match('/^(date|datetime|timestamp|time|year)\b/i', (string) ($column['type'] ?? ''))
+                    || preg_match(self::NUMERIC_TYPE, (string) ($column['type'] ?? ''))
+                )
             ) {
                 $data[$key] = null;
             }
