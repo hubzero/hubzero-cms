@@ -29,9 +29,9 @@ class Session extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Tools\Tables\Session|null
+     * @var \Components\Tools\Tables\Session
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * \Hubzero\ItemList

@@ -77,9 +77,9 @@ class Item extends Obj
     /**
      * Enclosure element
      *
-     * @var  object|null
+     * @var  object
      */
-    public $enclosure =  null;
+    public $enclosure;
 
     /**
      * Guid element
@@ -181,9 +181,9 @@ class Item extends Obj
     /**
      * iTunes subcategories
      *
-     * @var  string|null
+     * @var  string
      */
-    public $itunes_subcategories = null;
+    public $itunes_subcategories;
 
     /**
      * Set the Enclosure for this item

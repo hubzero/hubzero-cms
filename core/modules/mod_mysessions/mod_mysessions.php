@@ -24,13 +24,13 @@ class Mysessions extends Module
     /**
      * @var  bool|null
      */
-    protected $error;
+    protected $error = null;
     /**
      * @var  array<mixed>|null
      */
     protected $sessions;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $toolsConfig;
 

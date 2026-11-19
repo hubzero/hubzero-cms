@@ -32,16 +32,16 @@ class Status extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\ToolStatus|null
+     * @var \Components\Projects\Tables\ToolStatus
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  object
      */
-    public $config = null;
+    public $config;
 
     /**
      * Constructor
@@ -53,9 +53,7 @@ class Status extends Model
     {
         $this->db = App::get('db');
 
-        if (!isset($this->table)) {
-            $this->table = new Tables\ToolStatus($this->db);
-        }
+        $this->table = new Tables\ToolStatus($this->db);
         if (!isset($this->statuses)) {
             $this->statuses = [];
             $statuses = $this->table->getItems();

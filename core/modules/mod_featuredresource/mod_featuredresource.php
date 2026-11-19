@@ -18,17 +18,17 @@ use User;
  */
 class Featuredresource extends Module
 {
-    /** @var string|null */
+    /** @var string */
     protected $cls;
     /**
      * @var  string|\Components\Resources\Models\Entry|null
      */
     protected $row;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $thumb;
-    /** @var string|null */
+    /** @var string */
     protected $txt_length;
 
     /**

@@ -28,9 +28,9 @@ class Code extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\SectionCode|null
+     * @var \Components\Courses\Tables\SectionCode
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

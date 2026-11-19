@@ -27,44 +27,44 @@ class Node extends Obj
     /**
      * The id of the category in the asset table
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $asset_id = null;
+    public $asset_id;
 
     /**
      * The id of the parent of category in the asset table, 0 for category root
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $parent_id = null;
+    public $parent_id;
 
     /**
      * The lft value for this category in the category tree
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $lft = null;
+    public $lft;
 
     /**
      * The rgt value for this category in the category tree
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $rgt = null;
+    public $rgt;
 
     /**
      * The depth of this category's position in the category tree
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $level = null;
+    public $level;
 
     /**
      * The extension this category is associated with
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $extension = null;
+    public $extension;
 
     /**
      * The menu title for the category (a short name)
@@ -76,23 +76,23 @@ class Node extends Obj
     /**
      * The the alias for the category
      *
-     * @var  string|null
+     * @var  string
      */
-    public $alias = null;
+    public $alias;
 
     /**
      * Description of the category.
      *
-     * @var  string|null
+     * @var  string
      */
-    public $description = null;
+    public $description;
 
     /**
      * The publication status of the category
      *
-     * @var  boolean|null
+     * @var  boolean
      */
-    public $published = null;
+    public $published;
 
     /**
      * Whether the category is or is not checked out
@@ -111,9 +111,9 @@ class Node extends Obj
     /**
      * Access level for the category
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $access = null;
+    public $access;
 
     /**
      * JSON string of parameters, a Registry once read
@@ -125,16 +125,16 @@ class Node extends Obj
     /**
      * Metadata description
      *
-     * @var  string|null
+     * @var  string
      */
-    public $metadesc = null;
+    public $metadesc;
 
     /**
      * Key words for meta data
      *
-     * @var  string|null
+     * @var  string
      */
-    public $metakey = null;
+    public $metakey;
 
     /**
      * JSON string of other meta data, a Registry once read
@@ -146,65 +146,65 @@ class Node extends Obj
     /**
      * Created user ID
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $created_user_id = null;
+    public $created_user_id;
 
     /**
      * The time at which the category was created
      *
-     * @var  string|null
+     * @var  string
      */
-    public $created_time = null;
+    public $created_time;
 
     /**
      * Modified user ID
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $modified_user_id = null;
+    public $modified_user_id;
 
     /**
      * The time at which the category was modified
      *
-     * @var  string|null
+     * @var  string
      */
-    public $modified_time = null;
+    public $modified_time;
 
     /**
      * Nmber of times the category has been viewed
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $hits = null;
+    public $hits;
 
     /**
      * The language for the category in xx-XX format
      *
-     * @var  string|null
+     * @var  string
      */
-    public $language = null;
+    public $language;
 
     /**
      * Number of items in this category or descendants of this category
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $numitems = null;
+    public $numitems;
 
     /**
      * Number of children items
      *
-     * @var  integer|null
+     * @var  integer
      */
-    public $childrennumitems = null;
+    public $childrennumitems;
 
     /**
      * Slug fo the category (used in URL)
      *
-     * @var  string|null
+     * @var  string
      */
-    public $slug = null;
+    public $slug;
 
     /**
      * Array of  assets
@@ -244,9 +244,9 @@ class Node extends Obj
     /**
      * Category right of this one
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $rightSibling = null;
+    protected $rightSibling;
 
     /**
      * true if all children have been loaded
@@ -258,9 +258,9 @@ class Node extends Obj
     /**
      * Constructor of this tree
      *
-     * @var \Components\Categories\Helpers\Categories|null
+     * @var \Components\Categories\Helpers\Categories
      */
-    protected $constructor = null;
+    protected $constructor;
 
     /**
      * Class constructor

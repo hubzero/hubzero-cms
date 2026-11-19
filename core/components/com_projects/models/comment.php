@@ -27,9 +27,9 @@ class Comment extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\Comment|null
+     * @var \Components\Projects\Tables\Comment
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

@@ -48,7 +48,7 @@ abstract class Result
     /**
      * @var  string|null
      */
-    private $canonicalized_link;
+    private $canonicalized_link = null;
     /**
      * @var  mixed
      */

@@ -39,9 +39,9 @@ class Asset extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Asset|null
+     * @var \Components\Courses\Tables\Asset
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

@@ -76,7 +76,7 @@ class Languagefilter extends Plugin
     /**
      * Whether the session id travels in a cookie
      *
-     * @var  bool|null
+     * @var  bool
      */
     protected static $cookie;
 

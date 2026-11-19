@@ -40,9 +40,9 @@ class Offering extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Offering|null
+     * @var \Components\Courses\Tables\Offering
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope
@@ -82,9 +82,9 @@ class Offering extends Base
     /**
      * Iterator
      *
-     * @var \Components\Courses\Models\Iterator|null
+     * @var \Components\Courses\Models\Iterator
      */
-    private $announcements = null;
+    private $announcements;
 
     /**
      * Iterator

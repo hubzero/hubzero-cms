@@ -27,7 +27,7 @@ class CustomHandler
 
     // Cart ID
     /**
-     * @var  int|null
+     * @var  int
      */
     public $crtId;
 

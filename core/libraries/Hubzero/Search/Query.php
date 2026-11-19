@@ -16,7 +16,7 @@ use Hubzero\Search\Adapters;
 class Query
 {
     /**
-     * @var  \Hubzero\Search\Adapters\SolrQueryAdapter|null  Solr is the only engine there is
+     * @var  \Hubzero\Search\Adapters\SolrQueryAdapter  Solr is the only engine there is
      */
     public $adapter;
 

@@ -40,7 +40,7 @@ class Notes extends Plugin
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */
@@ -50,7 +50,7 @@ class Notes extends Plugin
      */
     protected $model;
     /**
-     * @var  \Components\Projects\Models\Note|null
+     * @var  \Components\Projects\Models\Note
      */
     protected $note;
 
@@ -71,23 +71,23 @@ class Notes extends Plugin
     /**
      * Name of master scope
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $masterScope = null;
+    protected $masterScope;
 
     /**
      * Name of page
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pagename = null;
+    protected $pagename;
 
     /**
      * Controller name
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $controllerName = null;
+    protected $controllerName;
 
     /**
      * Store internal message

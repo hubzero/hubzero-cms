@@ -136,23 +136,23 @@ class AlterTableBuilder
     /**
      * Table engine to change to (MySQL only)
      *
-     * @var string|null
+     * @var string
      */
-    protected $newEngine = null;
+    protected $newEngine;
 
     /**
      * Table character set to change to (MySQL only)
      *
-     * @var string|null
+     * @var string
      */
-    protected $newCharset = null;
+    protected $newCharset;
 
     /**
      * Table collation to change to (MySQL only)
      *
-     * @var string|null
+     * @var string
      */
-    protected $newCollation = null;
+    protected $newCollation;
 
     /**
      * Source table info for schema comparisons
@@ -161,9 +161,9 @@ class AlterTableBuilder
      * this contains the original table structure. SQLite uses this to perform
      * table rebuilds without querying the actual database.
      *
-     * @var TableInfo|null
+     * @var TableInfo
      */
-    protected $sourceTableInfo = null;
+    protected $sourceTableInfo;
 
     /**
      * The last added column name (for chaining modifiers)

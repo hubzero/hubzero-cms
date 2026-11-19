@@ -30,19 +30,19 @@ use Components\Groups\Tables\Reason;
 class Members extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $componentOption;
     /**
      * @var  string|null
      */
-    protected $output;
+    protected $output = null;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /** @var \Hubzero\Database\Driver */
@@ -62,7 +62,7 @@ class Members extends Plugin
     /**
      * @var  string|null
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

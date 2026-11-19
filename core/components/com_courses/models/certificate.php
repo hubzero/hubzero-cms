@@ -34,9 +34,9 @@ class Certificate extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Certificate|null
+     * @var \Components\Courses\Tables\Certificate
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope
@@ -55,9 +55,9 @@ class Certificate extends Base
     /**
      * Base file path
      *
-     * @var string|null
+     * @var string
      */
-    protected $base = null;
+    protected $base;
 
     /**
      * Constructor

@@ -24,7 +24,7 @@ class Reportproblems extends Module
      */
     protected $allowed;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $browser;
     /**
@@ -32,26 +32,26 @@ class Reportproblems extends Module
      */
     protected $browser_ver;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     protected $guestOrTmpAccount;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $os;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $os_version;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $referrer;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $supportParams;
-    /** @var int|null */
+    /** @var int */
     protected $verified;
 
     /**

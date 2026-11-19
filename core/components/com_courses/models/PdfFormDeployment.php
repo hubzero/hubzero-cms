@@ -45,14 +45,14 @@ class PdfFormDeployment
     /**
      * Form deployment start time
      *
-     * @var string|null  Date and time
+     * @var string  Date and time
      **/
     private $startTime;
 
     /**
      * Form deployment end time
      *
-     * @var string|null  Date and time
+     * @var string  Date and time
      **/
     private $endTime;
 

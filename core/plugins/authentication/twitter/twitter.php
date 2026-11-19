@@ -33,9 +33,9 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     /**
      * The initialized OAuth2 provider.
      *
-     * @var  \Smolblog\OAuth2\Client\Provider\Twitter|null
+     * @var  \Smolblog\OAuth2\Client\Provider\Twitter
      */
-    private $provider = null;
+    private $provider;
 
     /**
      * Session scope key for namespacing session variables.

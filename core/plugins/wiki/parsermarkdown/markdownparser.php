@@ -26,9 +26,9 @@ class MarkdownParser
     /**
      * A unique token
      *
-     * @var string|null
+     * @var string
      */
-    private $token = null;
+    private $token;
 
     /**
      * Configuration options

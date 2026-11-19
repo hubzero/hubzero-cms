@@ -19,16 +19,16 @@ class Config
     /**
      * Parsed config vars
      *
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      **/
-    private $config = null;
+    private $config;
 
     /**
      * Config file path
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $path = null;
+    private $path;
 
     /**
      * Constructs a new config instance

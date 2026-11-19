@@ -31,9 +31,9 @@ class Profile extends Obj
     /**
      * ID (primary key)
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $uidNumber = null;
+    private $uidNumber;
 
     /**
      * Name
@@ -45,121 +45,121 @@ class Profile extends Obj
     /**
      * Username
      *
-     * @var  string|null
+     * @var  string
      */
-    private $username = null;
+    private $username;
 
     /**
      * Email address
      *
-     * @var  string|null
+     * @var  string
      */
-    private $email = null;
+    private $email;
 
     /**
      * Timestamp for registration date
      *
-     * @var  string|null
+     * @var  string
      */
-    private $registerDate = null;
+    private $registerDate;
 
     /**
      * Description for 'gidNumber'
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $gidNumber = null;
+    private $gidNumber;
 
     /**
      * System home directory for the user
      *
-     * @var  string|null
+     * @var  string
      */
-    private $homeDirectory = null;
+    private $homeDirectory;
 
     /**
      * Description for 'loginShell'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $loginShell = null;
+    private $loginShell;
 
     /**
      * Description for 'ftpShell'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $ftpShell = null;
+    private $ftpShell;
 
     /**
      * Description for 'userPassword'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $userPassword = null;
+    private $userPassword;
 
     /**
      * Description for 'shadowExpire'
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $shadowExpire = null;
+    private $shadowExpire;
 
     /**
      * Description for 'gid'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $gid = null;
+    private $gid;
 
     /**
      * Organization type
      *
-     * @var  string|null
+     * @var  string
      */
-    private $orgtype = null;
+    private $orgtype;
 
     /**
      * Organization
      *
-     * @var  string|null
+     * @var  string
      */
-    private $organization = null;
+    private $organization;
 
     /**
      * Two-letter code for 'Country of residence'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $countryresident = null;
+    private $countryresident;
 
     /**
      * Two-letter code for 'Country of origin'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $countryorigin = null;
+    private $countryorigin;
 
     /**
      * Gender
      *
-     * @var  string|null
+     * @var  string
      */
-    private $gender = null;
+    private $gender;
 
     /**
      * URL
      *
-     * @var  string|null
+     * @var  string
      */
-    private $url = null;
+    private $url;
 
     /**
      * Reason (for getting an account)
      *
-     * @var  string|null
+     * @var  string
      */
-    private $reason = null;
+    private $reason;
 
     /**
      * Receive email updates form the site?
@@ -171,138 +171,138 @@ class Profile extends Obj
     /**
      * Agreed to Terms of Service?
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $usageAgreement = null;
+    private $usageAgreement;
 
     /**
      * Timestamp for last time profile was modified
      *
-     * @var  string|null
+     * @var  string
      */
-    private $modifiedDate = null;
+    private $modifiedDate;
 
     /**
      * Email address confirmed?
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $emailConfirmed = null;
+    private $emailConfirmed;
 
     /**
      * Registration IP
      *
-     * @var  string|null
+     * @var  string
      */
-    private $regIP = null;
+    private $regIP;
 
     /**
      * Registration host
      *
-     * @var  string|null
+     * @var  string
      */
-    private $regHost = null;
+    private $regHost;
 
     /**
      * Native tribe
      *
-     * @var  string|null
+     * @var  string
      */
-    private $nativeTribe = null;
+    private $nativeTribe;
 
     /**
      * Phone number
      *
-     * @var  string|null
+     * @var  string
      */
-    private $phone = null;
+    private $phone;
 
     /**
      * Password from proxy creation
      *
-     * @var  string|null
+     * @var  string
      */
-    private $proxyPassword = null;
+    private $proxyPassword;
 
     /**
      * User ID from proxy creation
      *
-     * @var  string|null
+     * @var  string
      */
-    private $proxyUidNumber = null;
+    private $proxyUidNumber;
 
     /**
      * Given name (first name)
      *
-     * @var  string|null
+     * @var  string
      */
-    private $givenName = null;
+    private $givenName;
 
     /**
      * Middle name
      *
-     * @var  string|null
+     * @var  string
      */
-    private $middleName = null;
+    private $middleName;
 
     /**
      * Surname (last/family name)
      *
-     * @var  string|null
+     * @var  string
      */
-    private $surname = null;
+    private $surname;
 
     /**
      * Picture
      *
-     * @var  string|null
+     * @var  string
      */
-    private $picture = null;
+    private $picture;
 
     /**
      * VIP status?
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $vip = null;
+    private $vip;
 
     /**
      * Public profile?
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $public = null;
+    private $public;
 
     /**
      * Parameters
      *
-     * @var  string|null
+     * @var  string
      */
-    private $params = null;
+    private $params;
 
     /**
      * Notes
      *
-     * @var  string|null
+     * @var  string
      */
-    private $note = null;
+    private $note;
 
     /**
      * ORCID
      * http://orcid.org
      *
-     * @var  string|null
+     * @var  string
      */
-    private $orcid = null;
+    private $orcid;
 
     // Multi-value properties stored in auxilliary tables
 
     /**
      * Profile bio
      *
-     * @var  string|null
+     * @var  string
      */
-    private $auxsBio = null;
+    private $auxsBio;
 
     /**
      * List of diabilities
@@ -356,9 +356,9 @@ class Profile extends Obj
     /**
      * Description for 'plainPassword'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $plainPassword = null;
+    private $plainPassword;
 
     /**
      * Registry

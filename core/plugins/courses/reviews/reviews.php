@@ -22,23 +22,23 @@ use Hubzero\Facades\User;
 class Reviews extends Plugin
 {
     /** @var string|null */
-    protected $controller;
+    protected $controller = null;
     /**
      * @var  \Hubzero\Database\Driver
      */
     protected $database;
     /**
-     * @var  \Components\Courses\Models\Course|null
+     * @var  \Components\Courses\Models\Course
      */
     protected $obj;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $obj_type;
     /** @var string|null */
-    protected $task;
+    protected $task = null;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $url;
     /**

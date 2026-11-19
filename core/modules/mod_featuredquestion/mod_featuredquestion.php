@@ -17,17 +17,17 @@ use Hubzero\Facades\Component;
  */
 class Featuredquestion extends Module
 {
-    /** @var string|null */
+    /** @var string */
     protected $cls;
     /**
-     * @var  \Components\Answers\Models\Question|null
+     * @var  \Components\Answers\Models\Question
      */
     protected $row;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $thumb;
-    /** @var string|null */
+    /** @var string */
     protected $txt_length;
 
     /**

@@ -138,9 +138,9 @@ class Version
     /**
      * Description for 'state'
      *
-     * @var integer|null
+     * @var integer
      */
-    private $state = null;            // state              #__tool_version
+    private $state;            // state              #__tool_version
 
     /**
      * Description for 'released_by'
@@ -201,9 +201,9 @@ class Version
     /**
      * The longest a session of this version may run, in seconds; null for no limit
      *
-     * @var integer|null
+     * @var integer
      */
-    private $hardTimeout = null;        // hardTimeout          #__tool_version
+    private $hardTimeout;        // hardTimeout          #__tool_version
 
     /**
      * Description for 'vnc_command'

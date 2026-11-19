@@ -29,7 +29,7 @@ use User;
 class Filesv1r0 extends ApiController
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $cid;
     /**
@@ -37,11 +37,11 @@ class Filesv1r0 extends ApiController
      */
     protected $model;
     /**
-     * @var  \Components\Projects\Models\Orm\Connection|null
+     * @var  \Components\Projects\Models\Orm\Connection
      */
     protected $ormconn;
     /**
-     * @var  \Components\Projects\Models\Orm\Project|null
+     * @var  \Components\Projects\Models\Orm\Project
      */
     protected $ormproj;
 

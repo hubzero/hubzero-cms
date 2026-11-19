@@ -19,16 +19,16 @@ class Log extends Base implements CommandInterface
     /**
      * Keep track of log class
      *
-     * @var string|null
+     * @var string
      **/
-    private $log = null;
+    private $log;
 
     /**
      * Keep track of prompt character
      *
-     * @var string|null
+     * @var string
      **/
-    private $promptChar = null;
+    private $promptChar;
 
     /**
      * Default (required) command

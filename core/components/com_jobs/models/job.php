@@ -29,9 +29,9 @@ class Job extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Jobs\Tables\Job|null
+     * @var \Components\Jobs\Tables\Job
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

@@ -24,7 +24,7 @@ class Section extends Base
     /**
      * @var  \Components\Courses\Models\Permissions|null
      */
-    protected $permissions;
+    protected $permissions = null;
 
     /**
      * Table class name
@@ -36,9 +36,9 @@ class Section extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Section|null
+     * @var \Components\Courses\Tables\Section
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

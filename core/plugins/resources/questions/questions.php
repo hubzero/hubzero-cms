@@ -41,7 +41,7 @@ class Questions extends Plugin
     /**
      * @var  \Components\Resources\Models\Entry|null
      */
-    protected $model;
+    protected $model = null;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

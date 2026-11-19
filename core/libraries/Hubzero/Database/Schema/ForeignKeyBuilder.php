@@ -53,7 +53,7 @@ class ForeignKeyBuilder
     /**
      * Referenced table name
      *
-     * @var string|null
+     * @var string
      */
     protected $referencedTable;
 
@@ -81,7 +81,7 @@ class ForeignKeyBuilder
     /**
      * Constraint name (auto-generated if not set)
      *
-     * @var string|null
+     * @var string
      */
     protected $constraintName;
 

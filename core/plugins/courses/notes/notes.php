@@ -44,9 +44,9 @@ class Notes extends Plugin
     /**
      * Offering object
      *
-     * @var \Components\Courses\Models\Offering|null
+     * @var \Components\Courses\Models\Offering
      */
-    protected $offering = null;
+    protected $offering;
 
     /**
      * Return data on a course view (this will be some form of HTML)

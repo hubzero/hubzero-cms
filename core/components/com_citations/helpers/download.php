@@ -34,9 +34,9 @@ class Download
     /**
      * Citation object
      *
-     * @var \Components\Citations\Models\Citation|null
+     * @var \Components\Citations\Models\Citation
      */
-    protected $reference = null;
+    protected $reference;
 
     /**
      * List of formatters

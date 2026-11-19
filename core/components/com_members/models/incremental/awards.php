@@ -21,7 +21,7 @@ class Awards
      *
      * @var  \Hubzero\Database\Driver|null
      */
-    private static $dbh;
+    private static $dbh = null;
 
     /**
      * Awards

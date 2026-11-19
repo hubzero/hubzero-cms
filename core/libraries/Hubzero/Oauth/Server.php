@@ -29,9 +29,9 @@ class Server
     /**
      * Internal var to hold true Oauth Server
      *
-     * @var  \OAuth2\Server|null
+     * @var  \OAuth2\Server
      */
-    private $server = null;
+    private $server;
 
     /**
      * Config values

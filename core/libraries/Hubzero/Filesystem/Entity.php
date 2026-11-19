@@ -22,7 +22,7 @@ class Entity extends Obj
     /**
      * @var  string|null
      */
-    protected $path;
+    protected $path = null;
     /**
      * @var  mixed
      */

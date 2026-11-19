@@ -23,9 +23,9 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\Model
      *
-     * @var \Hubzero\Base\Model\ItemList|null
+     * @var \Hubzero\Base\Model\ItemList
      */
-    private $modules = null;
+    private $modules;
 
     /**
      * Database

@@ -21,19 +21,19 @@ class Mypoints extends Module
     /**
      * @var  bool|null
      */
-    protected $error;
+    protected $error = null;
     /**
      * @var  array<mixed>|null
      */
     protected $history;
-    /** @var int|null */
+    /** @var int */
     protected $limit;
     /**
      * @var  mixed
      */
     protected $moduleclass;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $summary;
 

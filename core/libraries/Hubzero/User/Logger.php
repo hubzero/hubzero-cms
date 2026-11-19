@@ -21,9 +21,9 @@ class Logger extends Obj
     /**
      * User model
      *
-     * @var  \Hubzero\User\User|null  \Hubzero\User\User
+     * @var  \Hubzero\User\User  \Hubzero\User\User
      */
-    private $user = null;
+    private $user;
 
     /**
      * Constructs a new user logger class

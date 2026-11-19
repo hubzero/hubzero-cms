@@ -21,9 +21,9 @@ class Resources extends Base
     /**
      * The resource the wish list belongs to
      *
-     * @var  \Components\Resources\Models\Entry|null
+     * @var  \Components\Resources\Models\Entry
      */
-    protected $item = null;
+    protected $item;
 
     /**
      * URL segments

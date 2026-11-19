@@ -22,9 +22,9 @@ class Elements
     /**
      * The raw params string
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $raw = null;
+    protected $raw;
 
     /**
      * The XML params element

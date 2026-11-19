@@ -33,9 +33,9 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Stores the initialized OAuth2 provider object.
      *
-     * @var  \League\OAuth2\Client\Provider\Facebook|null  Oauth2\Client\Provider
+     * @var  \League\OAuth2\Client\Provider\Facebook  Oauth2\Client\Provider
      */
-    private $provider = null;
+    private $provider;
 
     /**
      * Stores the session scope key for session variables

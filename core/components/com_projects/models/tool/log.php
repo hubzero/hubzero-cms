@@ -22,7 +22,7 @@ class Log extends Model
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $actor;
+    protected $actor = null;
     /**
      * @var  mixed
      */
@@ -38,16 +38,16 @@ class Log extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\ToolLog|null
+     * @var \Components\Projects\Tables\ToolLog
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  object
      */
-    public $config = null;
+    public $config;
 
     /**
      * Constructor

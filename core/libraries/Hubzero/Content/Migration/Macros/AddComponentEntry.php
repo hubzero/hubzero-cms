@@ -21,7 +21,7 @@ class AddComponentEntry extends Macro
      *
      * @var  \Hubzero\Menu\ComponentRoute|null
      */
-    protected $routes;
+    protected $routes = null;
 
     /**
      * Add, as needed, the component to the appropriate table, depending on the CMS version

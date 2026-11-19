@@ -36,7 +36,7 @@ class Account extends Plugin
      */
     protected $member;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     protected $user;
 

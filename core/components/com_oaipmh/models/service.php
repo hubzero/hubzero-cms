@@ -52,9 +52,9 @@ class Service extends Obj
     /**
      * XML Response
      *
-     * @var  \Components\Oaipmh\Models\Xml\Response|null
+     * @var  \Components\Oaipmh\Models\Xml\Response
      */
-    protected $response = null;
+    protected $response;
 
     /**
      * List of providers

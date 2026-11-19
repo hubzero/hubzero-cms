@@ -23,13 +23,13 @@ use Hubzero\Facades\User;
 class Dashboard extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
      * @var  string|null
      */
-    protected $controller;
+    protected $controller = null;
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**

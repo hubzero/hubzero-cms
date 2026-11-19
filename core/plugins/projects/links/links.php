@@ -37,13 +37,13 @@ class Links extends Plugin
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $pubconfig;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */

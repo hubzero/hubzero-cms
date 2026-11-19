@@ -26,7 +26,7 @@ class Billboards extends Module
      */
     protected $pager;
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $slides;
 

@@ -104,7 +104,7 @@ class Category extends Nested
      *
      * @var  \Hubzero\Access\Rules|null
      */
-    public $assetRules;
+    public $assetRules = null;
 
     /**
      * Set the namespace

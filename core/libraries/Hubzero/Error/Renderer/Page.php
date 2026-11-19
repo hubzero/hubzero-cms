@@ -24,7 +24,7 @@ class Page implements RendererInterface
      *
      * @var  \Hubzero\Document\Manager|null
      */
-    protected $document;
+    protected $document = null;
 
     /**
      * Template loader

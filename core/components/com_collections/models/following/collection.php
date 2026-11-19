@@ -26,16 +26,16 @@ class Collection extends Base
     /**
      * Collection
      *
-     * @var \Components\Collections\Models\Collection|null
+     * @var \Components\Collections\Models\Collection
      */
-    private $obj = null;
+    private $obj;
 
     /**
      * URL
      *
-     * @var string|null
+     * @var string
      */
-    private $baselink = null;
+    private $baselink;
 
     /**
      * Constructor

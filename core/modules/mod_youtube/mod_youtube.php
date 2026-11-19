@@ -18,7 +18,7 @@ use Hubzero\Facades\Lang;
 class Youtube extends Module
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $html;
     /**

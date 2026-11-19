@@ -67,7 +67,7 @@ class Installer
      *
      * @var SecurityGuard|null
      */
-    private $security;
+    private $security = null;
 
     /**
      * Current step

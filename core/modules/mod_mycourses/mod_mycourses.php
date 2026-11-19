@@ -21,7 +21,7 @@ class Mycourses extends Module
      * @var  array<int, mixed>|null
      */
     protected $courses;
-    /** @var int|null */
+    /** @var int */
     protected $limit;
     /**
      * @var  mixed

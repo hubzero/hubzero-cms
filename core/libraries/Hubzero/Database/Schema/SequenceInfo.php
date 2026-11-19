@@ -36,14 +36,14 @@ class SequenceInfo
     /**
      * Schema/namespace containing the sequence
      *
-     * @var string|null
+     * @var string
      */
     protected $schema;
 
     /**
      * Current value of the sequence
      *
-     * @var int|null
+     * @var int
      */
     protected $currentValue;
 

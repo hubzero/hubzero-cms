@@ -27,37 +27,37 @@ class Provider
     /**
      * Consumer data
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    private $consumer_data = null;
+    private $consumer_data;
 
     /**
      * Token data
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    private $token_data = null;
+    private $token_data;
 
     /**
      * Request token path
      *
-     * @var  string|null
+     * @var  string
      */
-    private $request_token_path = null;
+    private $request_token_path;
 
     /**
      * Access token path
      *
-     * @var  string|null
+     * @var  string
      */
-    private $access_token_path = null;
+    private $access_token_path;
 
     /**
      * Authorize path
      *
-     * @var  string|null
+     * @var  string
      */
-    private $authorize_path = null;
+    private $authorize_path;
 
     /**
      * Set request token path

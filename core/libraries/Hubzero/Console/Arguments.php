@@ -28,9 +28,9 @@ class Arguments
     /**
      * Class name - command to execute
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $class = null;
+    private $class;
 
     /**
      * Task name - class method to execute

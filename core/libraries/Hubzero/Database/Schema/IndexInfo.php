@@ -65,7 +65,7 @@ class IndexInfo
     /**
      * Index comment
      *
-     * @var string|null
+     * @var string
      */
     protected $comment;
 

@@ -20,7 +20,7 @@ class Importer
      *
      * @var  \Components\Resources\Import\Interfaces\Adapter|null
      */
-    private $adapter;
+    private $adapter = null;
 
     /**
      * Array of Resource Import Adapters

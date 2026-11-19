@@ -23,7 +23,7 @@ class Review extends \Hubzero\Base\Model
     /**
      * @var  string|null
      */
-    protected $base;
+    protected $base = null;
 
     /**
      * ResourcesReview
@@ -35,9 +35,9 @@ class Review extends \Hubzero\Base\Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Publications\Tables\Review|null
+     * @var \Components\Publications\Tables\Review
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

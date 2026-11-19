@@ -29,9 +29,9 @@ class Page extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Page|null
+     * @var \Components\Courses\Tables\Page
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

@@ -29,9 +29,9 @@ class Course extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Course|null
+     * @var \Components\Courses\Tables\Course
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

@@ -23,9 +23,9 @@ class Login extends Obj
     /**
      * Indicates if the internal state has been set
      *
-     * @var  boolean|null
+     * @var  boolean
      */
-    protected $stateSet = null;
+    protected $stateSet;
 
     /**
      * A state object

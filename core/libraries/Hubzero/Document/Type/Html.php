@@ -38,30 +38,30 @@ class Html extends Base
     /**
      * Name of the template
      *
-     * @var  string|null
+     * @var  string
      */
-    public $template = null;
+    public $template;
 
     /**
      * Base url
      *
-     * @var  string|null
+     * @var  string
      */
-    public $baseurl = null;
+    public $baseurl;
 
     /**
      * The template's parameters
      *
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
-    public $params = null;
+    public $params;
 
     /**
      * File name
      *
-     * @var  string|null
+     * @var  string
      */
-    public $file = null;
+    public $file;
 
     /**
      * String holding parsed template

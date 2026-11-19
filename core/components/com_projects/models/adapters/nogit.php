@@ -23,7 +23,7 @@ class Nogit extends Models\Adapter
      * @var  array<mixed>|null
      */
     protected $files;
-    /** @var \Components\Projects\Helpers\Nogit|null */
+    /** @var \Components\Projects\Helpers\Nogit */
     protected $nogit;
     /**
      * @var  array<mixed>|null
@@ -33,9 +33,9 @@ class Nogit extends Models\Adapter
     /**
      * Full path to repository
      *
-     * @var  string|null
+     * @var  string
      */
-    private $path = null;
+    private $path;
 
     /**
      * Constructor

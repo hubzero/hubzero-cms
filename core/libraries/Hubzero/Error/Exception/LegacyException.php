@@ -16,9 +16,9 @@ class LegacyException extends \Exception
     /**
      * Error level.
      *
-     * @var  int|null
+     * @var  int
      */
-    protected $level = null;
+    protected $level;
 
     /**
      * Additional info about the error relevant to the developer,

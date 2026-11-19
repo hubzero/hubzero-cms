@@ -20,7 +20,7 @@ use Hubzero\Facades\App;
 class EventsCal extends Module
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $content;
 

@@ -20,9 +20,9 @@ class Courses extends Obj
     /**
      * Tables\Course
      *
-     * @var \Components\Courses\Tables\Course|null
+     * @var \Components\Courses\Tables\Course
      */
-    private $tbl = null;
+    private $tbl;
 
     /**
      * Database

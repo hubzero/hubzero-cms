@@ -28,7 +28,7 @@ class Memcache extends Store
     /**
      * Resource for the current memcached connection.
      *
-     * @var  \Memcache|null
+     * @var  \Memcache
      */
     private $engine;
 

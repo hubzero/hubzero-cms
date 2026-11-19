@@ -55,7 +55,7 @@ class Initialcon
     private $fontPath;
 
     /**
-     * @var  int|null
+     * @var  int
      */
     private $pixelRatio;
 

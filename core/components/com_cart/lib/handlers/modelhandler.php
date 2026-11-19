@@ -23,11 +23,11 @@ class ModelHandler
     public $item;
 
     /**
-     * @var  int|null
+     * @var  int
      */
     public $crtId;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $tId;
 

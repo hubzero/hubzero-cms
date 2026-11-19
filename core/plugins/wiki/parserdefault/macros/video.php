@@ -36,9 +36,9 @@ class Video extends WikiMacro
     /**
      * Hubzero\Config\Registry
      *
-     * @var \Hubzero\Config\Registry|null
+     * @var \Hubzero\Config\Registry
      */
-    protected $config = null;
+    protected $config;
 
     /**
      * Returns description of macro, use, and accepted arguments

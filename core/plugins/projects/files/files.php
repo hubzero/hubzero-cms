@@ -48,23 +48,23 @@ class Files extends Plugin
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $publishing;
-    /** @var \Plugins\Projects\Files\Helpers\Sync|null */
+    /** @var \Plugins\Projects\Files\Helpers\Sync */
     protected $rSync;
-    /** @var string|null */
+    /** @var string */
     protected $remoteService;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */
     protected $uid;
     /** @var int|null */
-    protected $forceSync;
+    protected $forceSync = null;
 
     /**
      * The project, as onProject() was given it
@@ -73,7 +73,7 @@ class Files extends Plugin
      */
     public $model;
 
-    /** @var int|null */
+    /** @var int */
     protected $publication;
     /**
      * @var  \Components\Projects\Models\Repo|null
@@ -97,9 +97,9 @@ class Files extends Plugin
     /**
      * Repository path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * Component name

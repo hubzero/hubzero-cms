@@ -17,7 +17,7 @@ abstract class Renderer
     /**
      * @var  \Components\Groups\Models\Page|null
      */
-    public $page    = null;
+    public $page = null;
     /**
      * @var  mixed
      */
@@ -27,9 +27,9 @@ abstract class Renderer
      */
     public $name    = null;
     /**
-     * @var  \stdClass|null  The include's attributes
+     * @var  \stdClass  The include's attributes
      */
-    public $params  = null;
+    public $params;
     /**
      * @var  mixed
      */

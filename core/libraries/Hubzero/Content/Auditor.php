@@ -34,9 +34,9 @@ class Auditor
     /**
      * Type of items being audited
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $scope = null;
+    protected $scope;
 
     /**
      * Log data?

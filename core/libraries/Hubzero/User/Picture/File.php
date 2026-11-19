@@ -19,9 +19,9 @@ class File implements Resolver
     /**
      * File path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * File name

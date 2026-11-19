@@ -27,9 +27,9 @@ class Period
     /**
      * The original search text - should NEVER BE CHANGED
      *
-     * @var  string|null
+     * @var  string
      */
-    private $period = null;
+    private $period;
 
     /**
      * Container for storing overloaded data

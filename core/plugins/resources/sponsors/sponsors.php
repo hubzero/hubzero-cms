@@ -24,15 +24,15 @@ class Sponsors extends Plugin
     /**
      * @var  string|null
      */
-    protected $controller;
+    protected $controller = null;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $componentOption;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /** @var \Hubzero\Database\Driver */
     protected $database;
 

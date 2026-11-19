@@ -22,7 +22,7 @@ use Hubzero\Facades\Date;
 class Changelog extends Obj
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $raw;
 

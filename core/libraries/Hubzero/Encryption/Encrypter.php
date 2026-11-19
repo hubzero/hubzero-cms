@@ -25,7 +25,7 @@ class Encrypter
     /**
      * The encryption key[/pair)].
      *
-     * @var  \Hubzero\Encryption\Key|null
+     * @var  \Hubzero\Encryption\Key
      */
     private $key;
 

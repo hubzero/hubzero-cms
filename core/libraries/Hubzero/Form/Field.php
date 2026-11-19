@@ -34,14 +34,14 @@ abstract class Field
      *
      * @var  \SimpleXMLElement|null
      */
-    protected $element;
+    protected $element = null;
 
     /**
      * The Form object of the form attached to the form field.
      *
      * @var  \Hubzero\Form\Form|null  Null when the field was made without one
      */
-    protected $form;
+    protected $form = null;
 
     /**
      * The form control prefix for field names from the Form object attached to the form field.
@@ -83,14 +83,14 @@ abstract class Field
      *
      * @var  string|null
      */
-    protected $input;
+    protected $input = null;
 
     /**
      * The label for the form field.
      *
      * @var  string|null
      */
-    protected $label;
+    protected $label = null;
 
     /**
      * The multiple state for the form field.  If true then multiple values are allowed for the
@@ -134,7 +134,7 @@ abstract class Field
      *
      * @var  string|null
      */
-    protected $type;
+    protected $type = null;
 
     /**
      * The validation method for the form field.  This value will determine which method is used
@@ -171,7 +171,7 @@ abstract class Field
      * __get() offers it, but nothing sets it yet: the class is read from the
      * field's element instead.
      *
-     * @var  string|null
+     * @var  string
      */
     protected $class;
 

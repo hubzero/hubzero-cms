@@ -25,7 +25,7 @@ use Hubzero\Facades\User;
 class Projects extends Plugin
 {
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $config;
     /**
@@ -37,11 +37,11 @@ class Projects extends Plugin
      */
     protected $projects;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /**

@@ -52,7 +52,7 @@ class Record extends Obj
      */
     private $database;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     private $user;
 

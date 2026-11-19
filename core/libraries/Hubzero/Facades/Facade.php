@@ -19,7 +19,7 @@ abstract class Facade
     /**
      * The application instance being facaded.
      *
-     * @var  \Hubzero\Container\Container|null  The application (a bare container in tests)
+     * @var  \Hubzero\Container\Container  The application (a bare container in tests)
      */
     protected static $app;
 

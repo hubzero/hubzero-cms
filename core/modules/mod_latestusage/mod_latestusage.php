@@ -15,7 +15,7 @@ use Hubzero\Module\Module;
  */
 class Latestusage extends Module
 {
-    /** @var string|null */
+    /** @var string */
     protected $cls;
     /**
      * @var  mixed

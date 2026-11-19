@@ -27,9 +27,9 @@ class Assetgroup extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\AssetGroup|null
+     * @var \Components\Courses\Tables\AssetGroup
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope
@@ -55,9 +55,9 @@ class Assetgroup extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var \Components\Courses\Models\Iterator|null
+     * @var \Components\Courses\Models\Iterator
      */
-    public $children = null;
+    public $children;
 
     /**
      * \Components\Courses\Models\AssetGroup

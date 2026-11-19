@@ -20,7 +20,7 @@ class HashtableReplacer extends Replacer
      */
     public $table;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $index;
 

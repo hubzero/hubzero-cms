@@ -45,7 +45,7 @@ class View extends AbstractView
      *
      * @var string|null
      */
-    public $controller;
+    public $controller = null;
 
     /**
      * Current task

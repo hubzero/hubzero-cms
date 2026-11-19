@@ -29,16 +29,16 @@ class Attachment extends Relational
     /**
      * Upload path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $uploadDir = null;
+    protected $uploadDir;
 
     /**
      * File size
      *
-     * @var  int|null
+     * @var  int
      */
-    protected $size = null;
+    protected $size;
 
     /**
      * Diemnsions for file (must be an image)

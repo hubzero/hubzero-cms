@@ -17,9 +17,9 @@ class Dumper
     /**
      * Renderable
      *
-     * @var  \Hubzero\Debug\Dumper\Renderable|null
+     * @var  \Hubzero\Debug\Dumper\Renderable
      */
-    protected $renderer = null;
+    protected $renderer;
 
     /**
      * Messages

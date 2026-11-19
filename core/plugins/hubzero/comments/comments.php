@@ -29,12 +29,12 @@ class Comments extends Plugin
      * @var  mixed
      */
     protected $componentOption;
-    /** @var string|null */
+    /** @var string */
     protected $action;
-    /** @var \Plugins\Hubzero\Comments\Models\Comment|null */
+    /** @var \Plugins\Hubzero\Comments\Models\Comment */
     protected $comment;
     /**
-     * @var  object|null
+     * @var  object
      */
     protected $obj;
     /**
@@ -42,13 +42,13 @@ class Comments extends Plugin
      */
     protected $obj_id;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $obj_type;
     /** @var string|null */
-    protected $task;
+    protected $task = null;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $url;
     /**

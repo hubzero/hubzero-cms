@@ -20,7 +20,7 @@ use App;
 class Mysubmissions extends Module
 {
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $rows;
     /**

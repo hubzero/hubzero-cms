@@ -18,11 +18,11 @@ use Hubzero\Facades\Component;
 class Findresources extends Module
 {
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $categories;
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $tags;
 

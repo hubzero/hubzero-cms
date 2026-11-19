@@ -22,10 +22,10 @@ class Myresources extends Module
      */
     protected $contributions;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $limit;
-    /** @var int|null */
+    /** @var int */
     protected $no_html;
     /**
      * @var  mixed

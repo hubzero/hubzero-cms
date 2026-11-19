@@ -27,9 +27,9 @@ class Todo extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\Todo|null
+     * @var \Components\Projects\Tables\Todo
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Entry
@@ -41,9 +41,9 @@ class Todo extends Model
     /**
      * Registry
      *
-     * @var \Hubzero\Config\Registry|null
+     * @var \Hubzero\Config\Registry
      */
-    public $config = null;
+    public $config;
 
     /**
      * Constructor

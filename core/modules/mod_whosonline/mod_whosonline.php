@@ -19,11 +19,11 @@ use Hubzero\Facades\App;
 class Whosonline extends Module
 {
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $guestCount;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $loggedInCount;
     /**

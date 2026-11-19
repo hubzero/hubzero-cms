@@ -17,7 +17,7 @@ use Hubzero\System\Requirements as SystemRequirements;
 class Requirements implements StepInterface
 {
     /**
-     * @var  \Bootstrap\Install\Web\Installer|null
+     * @var  \Bootstrap\Install\Web\Installer
      */
     private $installer;
     /**

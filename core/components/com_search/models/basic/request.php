@@ -19,7 +19,7 @@ class Request
     /**
      * Description for 'terms'
      *
-     * @var \Components\Search\Models\Basic\Terms|null
+     * @var \Components\Search\Models\Basic\Terms
      */
     private $terms;
     /**
@@ -27,7 +27,7 @@ class Request
      */
     private $term_ar;
     /**
-     * @var  \Components\Search\Models\Basic\Result\AssocList|null
+     * @var  \Components\Search\Models\Basic\Result\AssocList
      */
     private $tags;
     /**

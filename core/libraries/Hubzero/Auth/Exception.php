@@ -16,9 +16,9 @@ class Exception extends \Exception
     /**
      * Error level.
      *
-     * @var  int|null
+     * @var  int
      */
-    protected $level = null;
+    protected $level;
 
     /**
      * Additional info about the error relevant to the developer,
@@ -32,24 +32,24 @@ class Exception extends \Exception
      * Name of the method the error occurred in
      * [Available if backtrace is enabled]
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $function = null;
+    protected $function;
 
     /**
      * Name of the class the error occurred in
      * [Available if backtrace is enabled]
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $class = null;
+    protected $class;
 
     /**
      * Error type.
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $type = null;
+    protected $type;
 
     /**
      * Arguments recieved by the method the error occurred in

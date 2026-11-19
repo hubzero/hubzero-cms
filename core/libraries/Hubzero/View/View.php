@@ -49,16 +49,16 @@ class View extends Obj
     /**
      * The name of the view
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $viewName = null;
+    protected $viewName;
 
     /**
      * The base path of the view
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $basePath = null;
+    protected $basePath;
 
     /**
      * Root directory of the override
@@ -70,9 +70,9 @@ class View extends Obj
     /**
      * The override path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $overridePath = null;
+    protected $overridePath;
 
     /**
      * Layout name
@@ -108,9 +108,9 @@ class View extends Obj
     /**
      * The name of the default template source file.
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $templateFile = null;
+    protected $templateFile;
 
     /**
      * The output of the template script.

@@ -26,9 +26,9 @@ class Oauth extends SiteController
     /**
      * OAuth Server Object
      *
-     * @var  \Hubzero\Oauth\Server|null
+     * @var  \Hubzero\Oauth\Server
      */
-    private $server = null;
+    private $server;
 
     /**
      * Constructor

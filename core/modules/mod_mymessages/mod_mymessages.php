@@ -19,7 +19,7 @@ use Hubzero\Facades\Lang;
  */
 class Mymessages extends Module
 {
-    /** @var int|null */
+    /** @var int */
     protected $limit;
     /**
      * @var  mixed
@@ -30,7 +30,7 @@ class Mymessages extends Module
      */
     protected $rows;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $total;
 

@@ -25,16 +25,16 @@ class Archive extends Obj
     /**
      * Object type [member, group, etc.]
      *
-     * @var string|null
+     * @var string
      */
-    private $objectType = null;
+    private $objectType;
 
     /**
      * Object ID [member ID, group ID, etc.]
      *
-     * @var integer|null
+     * @var integer
      */
-    private $objectId = null;
+    private $objectId;
 
     /**
      * Database

@@ -17,9 +17,9 @@ use Hubzero\Search\Adapters;
 class Index
 {
     /**
-     * @var  \Hubzero\Search\Adapters\SolrIndexAdapter|null  Solr is the only engine there is
+     * @var  \Hubzero\Search\Adapters\SolrIndexAdapter  Solr is the only engine there is
      */
-    public $adapter = null;
+    public $adapter;
 
     /**
      * __construct

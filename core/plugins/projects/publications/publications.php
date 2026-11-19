@@ -37,7 +37,7 @@ use Hubzero\Facades\User;
 class Publications extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $activity;
     /**
@@ -59,13 +59,13 @@ class Publications extends Plugin
      */
     protected $pid;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $pubconfig;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */
@@ -96,9 +96,9 @@ class Publications extends Plugin
     /**
      * Store internal message
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $msg = null;
+    protected $msg;
 
     /**
      * Event call to determine if this plugin should return data

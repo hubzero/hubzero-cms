@@ -33,7 +33,7 @@ class Feed extends Plugin
      */
     protected $config;
     /** @var string|null */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */
@@ -60,9 +60,9 @@ class Feed extends Plugin
     /**
      * Store internal message
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $msg = null;
+    protected $msg;
 
     /**
      * Repository path

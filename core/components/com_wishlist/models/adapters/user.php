@@ -19,9 +19,9 @@ class User extends Base
     /**
      * The member the wish list belongs to
      *
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
-    protected $item = null;
+    protected $item;
 
     /**
      * URL segments

@@ -51,21 +51,21 @@ class ColumnInfo
     /**
      * Column length/size (for varchar, char, etc.)
      *
-     * @var int|null
+     * @var int
      */
     protected $length;
 
     /**
      * Numeric precision (for decimal, float, etc.)
      *
-     * @var int|null
+     * @var int
      */
     protected $precision;
 
     /**
      * Numeric scale (for decimal)
      *
-     * @var int|null
+     * @var int
      */
     protected $scale;
 
@@ -100,14 +100,14 @@ class ColumnInfo
     /**
      * Column comment
      *
-     * @var string|null
+     * @var string
      */
     protected $comment;
 
     /**
      * Column collation
      *
-     * @var string|null
+     * @var string
      */
     protected $collation;
 

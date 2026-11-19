@@ -23,7 +23,7 @@ class Manager extends Obj
     /**
      * @var  \Hubzero\Config\Registry|null
      */
-    protected $config;
+    protected $config = null;
 
     /**
      * Cached data

@@ -45,9 +45,9 @@ class Collection extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Collections\Tables\Collection|null
+     * @var \Components\Collections\Tables\Collection
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

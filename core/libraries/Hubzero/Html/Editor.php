@@ -46,16 +46,16 @@ class Editor extends Obj
     /**
      * Object asset
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $asset = null;
+    protected $asset;
 
     /**
      * Object author
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $author = null;
+    protected $author;
 
     /**
      * Editor instances container.

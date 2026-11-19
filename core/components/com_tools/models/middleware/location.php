@@ -23,9 +23,9 @@ class Location extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Tools\Tables\ZoneLocations|null
+     * @var \Components\Tools\Tables\ZoneLocations
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Returns a reference to a zone location model

@@ -22,7 +22,7 @@ class File extends Entity
     /**
      * @var  string|null
      */
-    protected $extension;
+    protected $extension = null;
     /**
      * @var  mixed
      */

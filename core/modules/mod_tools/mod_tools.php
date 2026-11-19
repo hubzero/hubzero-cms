@@ -17,15 +17,15 @@ use Hubzero\Facades\App;
 class Tools extends Module
 {
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $abandoned;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $approved;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $created;
     /**
@@ -33,29 +33,29 @@ class Tools extends Module
      */
     protected $data;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $installed;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $published;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $registered;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $retired;
-    /** @var int|null */
+    /** @var int */
     protected $total;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $updated;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $uploaded;
 

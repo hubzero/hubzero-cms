@@ -18,10 +18,10 @@ class JoinBuilder
     /**
      * @var  Query|null
      */
-    protected $query;
+    protected $query = null;
 
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $table;
 

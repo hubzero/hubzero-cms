@@ -51,13 +51,13 @@ class Citations extends Plugin
      */
     protected $access;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
      * @var  string|null
      */
-    protected $authorized;
+    protected $authorized = null;
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
@@ -65,7 +65,7 @@ class Citations extends Plugin
      */
     protected $group = null;
     /**
-     * @var  \Components\Citations\Models\Importer|null
+     * @var  \Components\Citations\Models\Importer
      */
     protected $importer;
     /**
@@ -73,7 +73,7 @@ class Citations extends Plugin
      */
     protected $members;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $path;
 

@@ -82,9 +82,9 @@ class Category extends Relational
     /**
      * ACL asset rules
      *
-     * @var  \Hubzero\Access\Rules|null
+     * @var  \Hubzero\Access\Rules
      */
-    public $assetRules = null;
+    public $assetRules;
 
     /**
      * Scope adapter

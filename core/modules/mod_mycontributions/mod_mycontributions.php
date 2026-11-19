@@ -21,24 +21,24 @@ class Mycontributions extends Module
      * @var  array<int, \stdClass>|null
      */
     public $contributions;
-    /** @var int|null */
+    /** @var int */
     public $limit_other;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $limit_tools;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $show_questions;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $show_tickets;
-    /** @var int|null */
+    /** @var int */
     public $show_tools;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $show_wishes;
     /**

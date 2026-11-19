@@ -31,9 +31,9 @@ class Version extends Relational
     /**
      * Adapter type
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $adapter = null;
+    protected $adapter;
 
     /**
      * Default order by for model

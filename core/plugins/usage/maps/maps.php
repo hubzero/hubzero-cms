@@ -31,9 +31,9 @@ class Maps extends Plugin
     /**
      * Connection to the usage database
      *
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    protected $udb = null;
+    protected $udb;
 
     /**
      * Return the name of the area this plugin retrieves records for

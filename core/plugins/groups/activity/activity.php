@@ -24,7 +24,7 @@ use Hubzero\Facades\User;
 class Activity extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $base;
     /**

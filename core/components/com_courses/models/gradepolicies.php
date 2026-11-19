@@ -26,9 +26,9 @@ class GradePolicies extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\GradePolicies|null
+     * @var \Components\Courses\Tables\GradePolicies
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

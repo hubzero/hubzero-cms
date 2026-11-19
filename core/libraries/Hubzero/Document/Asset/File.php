@@ -20,9 +20,9 @@ class File extends Obj
     /**
      * Asset type
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $type = null;
+    protected $type;
 
     /**
      * Asset name (without file extension)
@@ -34,23 +34,23 @@ class File extends Obj
     /**
      * Asset directory
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $directory = null;
+    protected $directory;
 
     /**
      * CMS Extension name (e.g., com_blog)
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $extension = null;
+    protected $extension;
 
     /**
      * CMS Extension type
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $kind = null;
+    protected $kind;
 
     /**
      * Is a declaration?

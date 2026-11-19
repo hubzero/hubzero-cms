@@ -19,23 +19,23 @@ class Uri
     /**
      * Original URI
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $uri = null;
+    protected $uri;
 
     /**
      * Protocol
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $scheme = null;
+    protected $scheme;
 
     /**
      * Host
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $host = null;
+    protected $host;
 
     /**
      * Port
@@ -47,23 +47,23 @@ class Uri
     /**
      * Username
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $user = null;
+    protected $user;
 
     /**
      * Password
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pass = null;
+    protected $pass;
 
     /**
      * Path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * Query
@@ -75,9 +75,9 @@ class Uri
     /**
      * Anchor
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $fragment = null;
+    protected $fragment;
 
     /**
      * Query variable hash

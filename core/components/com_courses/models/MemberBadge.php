@@ -25,9 +25,9 @@ class MemberBadge extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\MemberBadge|null
+     * @var \Components\Courses\Tables\MemberBadge
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

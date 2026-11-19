@@ -63,16 +63,16 @@ class Relationship
     /**
      * The local key (probably 'id')
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $localKey = null;
+    protected $localKey;
 
     /**
      * The related key (probably 'modelName_id')
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $relatedKey = null;
+    protected $relatedKey;
 
     /**
      * Whether to cascade delete to related models

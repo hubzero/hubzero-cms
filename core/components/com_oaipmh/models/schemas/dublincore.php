@@ -45,16 +45,16 @@ class DublinCore implements Schema
     /**
      * Parent service
      *
-     * @var  \Components\Oaipmh\Models\Service|null
+     * @var  \Components\Oaipmh\Models\Service
      */
-    protected $service = null;
+    protected $service;
 
     /**
      * XML Response
      *
-     * @var  \Components\Oaipmh\Models\Xml\Response|null
+     * @var  \Components\Oaipmh\Models\Xml\Response
      */
-    protected $response = null;
+    protected $response;
 
     /**
      * Does this adapter respond to a mime type

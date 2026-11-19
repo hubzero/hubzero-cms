@@ -31,9 +31,9 @@ class Redis extends Store
     /**
      * Redis database connection
      *
-     * @var  \Predis\Client|null
+     * @var  \Predis\Client
      */
-    private $database = null;
+    private $database;
 
     /**
      * Constructor

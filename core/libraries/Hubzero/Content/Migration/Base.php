@@ -107,9 +107,9 @@ class Base
     /**
      * Schema builder instance
      *
-     * @var  SchemaBuilder|null
+     * @var  SchemaBuilder
      **/
-    private $schemaBuilder = null;
+    private $schemaBuilder;
 
     /**
      * Macros

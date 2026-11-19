@@ -39,9 +39,9 @@ class ImageViewer extends Base
     /**
      * Image Helper
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $imgHelper = null;
+    protected $imgHelper;
 
     /**
      * Get default params for the handler

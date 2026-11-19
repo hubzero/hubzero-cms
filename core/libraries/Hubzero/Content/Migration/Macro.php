@@ -18,9 +18,9 @@ abstract class Macro
     /**
      * Migration instance
      *
-     * @var  \Hubzero\Content\Migration\Base|null
+     * @var  \Hubzero\Content\Migration\Base
      */
-    protected $migration = null;
+    protected $migration;
 
     /**
      * Database connection

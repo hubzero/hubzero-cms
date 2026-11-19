@@ -27,23 +27,23 @@ class Importer extends Obj
     /**
      * Filesystem
      *
-     * @var  \Hubzero\Filesystem\Filesystem|null
+     * @var  \Hubzero\Filesystem\Filesystem
      */
-    protected $filesystem = null;
+    protected $filesystem;
 
     /**
      * The tmp file path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * Unique string
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $hash = null;
+    protected $hash;
 
     /**
      * Allow tags?

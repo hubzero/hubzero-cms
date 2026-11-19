@@ -19,7 +19,7 @@ use Hubzero\Facades\App;
 class Unit extends Base
 {
     /**
-     * @var  \Components\Courses\Models\Iterator|null
+     * @var  \Components\Courses\Models\Iterator
      */
     protected $assetgroupsBackup;
 
@@ -38,9 +38,9 @@ class Unit extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Unit|null
+     * @var \Components\Courses\Tables\Unit
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

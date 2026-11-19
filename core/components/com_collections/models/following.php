@@ -27,9 +27,9 @@ class Following extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Collections\Tables\Following|null
+     * @var \Components\Collections\Tables\Following
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Following

@@ -26,9 +26,9 @@ class Oauth
     /**
      * The http tranport object
      *
-     * @var  Curl|null
+     * @var  Curl
      **/
-    private $http = null;
+    private $http;
 
     /**
      * The API environment
@@ -40,16 +40,16 @@ class Oauth
     /**
      * The oauth client ID
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $clientId = null;
+    private $clientId;
 
     /**
      * The oauth client secret
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $clientSecret = null;
+    private $clientSecret;
 
     /**
      * The oauth request scope
@@ -66,16 +66,16 @@ class Oauth
     /**
      * The oauth redirect URI
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $redirectUri = null;
+    private $redirectUri;
 
     /**
      * The oauth access token
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $accessToken = null;
+    private $accessToken;
 
     /**
      * Constructs a new instance

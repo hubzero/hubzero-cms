@@ -61,14 +61,14 @@ class DatabaseInfo
     /**
      * Default character set
      *
-     * @var string|null
+     * @var string
      */
     protected $charset;
 
     /**
      * Default collation
      *
-     * @var string|null
+     * @var string
      */
     protected $collation;
 

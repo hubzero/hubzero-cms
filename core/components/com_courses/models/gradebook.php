@@ -31,9 +31,9 @@ class GradeBook extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\GradeBook|null
+     * @var \Components\Courses\Tables\GradeBook
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

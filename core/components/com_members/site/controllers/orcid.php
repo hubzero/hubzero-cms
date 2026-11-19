@@ -41,7 +41,7 @@ class Orcid extends SiteController
     /**
      * OAuth AccessTokens
      *
-     * @var  string|null
+     * @var  string
      */
     protected $accessToken;
 

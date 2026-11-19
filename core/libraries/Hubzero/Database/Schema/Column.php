@@ -89,16 +89,16 @@ class Column
     /**
      * Column comment
      *
-     * @var string|null
+     * @var string
      */
-    protected $comment = null;
+    protected $comment;
 
     /**
      * Position constraint (AFTER column_name or FIRST)
      *
-     * @var string|null
+     * @var string
      */
-    protected $after = null;
+    protected $after;
 
     /**
      * Create a new column definition

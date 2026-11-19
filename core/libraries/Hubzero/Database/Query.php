@@ -237,9 +237,9 @@ class Query
      * This is a silly way of tracking what type of query we think
      * we're going to execute. This is used by the execute method.
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $type = null;
+    protected $type;
 
     /**
      * Current condition group nesting depth

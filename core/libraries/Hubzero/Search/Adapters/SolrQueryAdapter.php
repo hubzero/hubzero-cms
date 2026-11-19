@@ -30,9 +30,9 @@ class SolrQueryAdapter implements QueryInterface
     public $logPath = null;
 
     /**
-     * @var  \Solarium\Client|null
+     * @var  \Solarium\Client
      */
-    public $connection = null;
+    public $connection;
 
     /**
      * @var  array<string, mixed>|null
@@ -40,9 +40,9 @@ class SolrQueryAdapter implements QueryInterface
     public $config = null;
 
     /**
-     * @var  \Solarium\QueryType\Select\Query\Query|null
+     * @var  \Solarium\QueryType\Select\Query\Query
      */
-    public $query = null;
+    public $query;
 
     /**
      * @var  mixed

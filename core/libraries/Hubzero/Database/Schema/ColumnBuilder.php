@@ -67,14 +67,14 @@ class ColumnBuilder
     /**
      * New column name (for renames)
      *
-     * @var string|null
+     * @var string
      */
     protected $newColumn;
 
     /**
      * Raw SQL column definition (when not using abstract types)
      *
-     * @var string|null
+     * @var string
      */
     protected $definition;
 
@@ -102,16 +102,16 @@ class ColumnBuilder
     /**
      * Column position (after which column)
      *
-     * @var string|null
+     * @var string
      */
-    protected $afterColumn = null;
+    protected $afterColumn;
 
     /**
      * Column position (before which column)
      *
-     * @var string|null
+     * @var string
      */
-    protected $beforeColumn = null;
+    protected $beforeColumn;
 
     /**
      * Whether to position at the beginning

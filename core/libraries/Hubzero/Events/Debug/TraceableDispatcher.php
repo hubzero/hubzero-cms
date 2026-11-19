@@ -24,7 +24,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Logger
      *
-     * @var  \Hubzero\Log\Writer|null
+     * @var  \Hubzero\Log\Writer
      */
     protected $logger;
 

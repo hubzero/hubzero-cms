@@ -166,14 +166,14 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @var \PDOStatement|null
      */
-    protected $statement;
+    protected $statement = null;
 
     /**
      * The query the statement was last prepared from
      *
      * @var string|null
      */
-    protected $preparedSql;
+    protected $preparedSql = null;
 
     /**
      * The prepared statement bindings
@@ -242,7 +242,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @var string|null
      */
-    protected $database;
+    protected $database = null;
 
     /**
      * Original connection options used to construct this driver instance.
@@ -275,9 +275,9 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The database driver syntax
      *
-     * @var string|null
+     * @var string
      **/
-    protected $syntax = null;
+    protected $syntax;
 
     /**
      * The schema manager instance

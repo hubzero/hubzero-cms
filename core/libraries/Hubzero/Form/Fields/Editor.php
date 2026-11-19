@@ -29,7 +29,7 @@ class Editor extends Field
      *
      * @var  object|null
      */
-    protected $editor;
+    protected $editor = null;
 
     /**
      * Method to get the field input markup for the editor area

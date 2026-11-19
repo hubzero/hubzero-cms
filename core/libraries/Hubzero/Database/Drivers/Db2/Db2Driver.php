@@ -80,9 +80,9 @@ class Db2Driver extends BaseSqlDriver
     /**
      * DB2 version (cached after first query)
      *
-     * @var string|null
+     * @var string
      */
-    protected $db2Version = null;
+    protected $db2Version;
 
     /**
      * SQL expression for current timestamp

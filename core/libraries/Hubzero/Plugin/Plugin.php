@@ -23,10 +23,10 @@ class Plugin
     /**
      * Event object to observe.
      *
-     * @var  object|null
+     * @var  object
      * @deprecated
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * A Registry object holding the parameters for the plugin (the constructor makes one)
@@ -38,24 +38,24 @@ class Plugin
     /**
      * The name of the plugin
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pluginName = null;
+    protected $pluginName;
 
     /**
      * The plugin type
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pluginType = null;
+    protected $pluginType;
 
     /**
      * Component this plugin might be associated with
      * @TODO: Remove this
      *
-     * @var   string|null
+     * @var   string
      */
-    public $option = null;
+    public $option;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -67,7 +67,7 @@ class Plugin
     /**
      * The triggered event, set by the dispatcher's WrappedListener
      *
-     * @var \Hubzero\Events\Event|null
+     * @var \Hubzero\Events\Event
      */
     public $event;
 

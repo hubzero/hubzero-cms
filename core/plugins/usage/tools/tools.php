@@ -21,13 +21,13 @@ use Hubzero\Facades\Route;
 class Tools extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $componentOption;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  array<mixed>|null
      */

@@ -51,9 +51,9 @@ class Password
     /**
      * Description for 'passhash'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $passhash = null;
+    private $passhash;
 
     /**
      * Description for 'shadowLastChange'

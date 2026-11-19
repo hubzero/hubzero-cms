@@ -24,7 +24,7 @@ class Handler
      *
      * @var  \Monolog\Logger|null
      */
-    protected $logger;
+    protected $logger = null;
 
     /**
      * The exception renderer.

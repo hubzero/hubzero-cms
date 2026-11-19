@@ -27,16 +27,16 @@ class Memcached extends Store
     /**
      * Resource for the current memcached connection.
      *
-     * @var  \Memcached|null
+     * @var  \Memcached
      */
     private $engine;
 
     /**
      * Use compression? Null leaves the extension's default (on)
      *
-     * @var  bool|null
+     * @var  bool
      */
-    private $compress = null;
+    private $compress;
 
     /**
      * List of servers

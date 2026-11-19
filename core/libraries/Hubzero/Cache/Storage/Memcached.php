@@ -21,7 +21,7 @@ class Memcached extends None
      *
      * @var  \Memcached|null
      */
-    protected $engine;
+    protected $engine = null;
 
     /**
      * Create a new file cache store instance.

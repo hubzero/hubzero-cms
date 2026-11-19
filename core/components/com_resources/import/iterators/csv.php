@@ -22,11 +22,11 @@ class Csv implements \Iterator
      */
     private $file;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $delimiter;
     /**
-     * @var  int|null
+     * @var  int
      */
     private $position;
     /**

@@ -49,23 +49,23 @@ class Node extends Obj
     /**
      * Node Link
      *
-     * @var  string|null
+     * @var  string
      */
-    public $link = null;
+    public $link;
 
     /**
      * Link Target
      *
-     * @var  string|null
+     * @var  string
      */
-    public $target = null;
+    public $target;
 
     /**
      * CSS Class for node
      *
-     * @var  string|null
+     * @var  string
      */
-    public $class = null;
+    public $class;
 
     /**
      * Active Node?

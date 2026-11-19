@@ -21,23 +21,23 @@ use Hubzero\Facades\Request;
 class View extends AbstractView
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $baseurl;
 
     /**
      * Folder
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pluginFolder = null;
+    protected $pluginFolder;
 
     /**
      * Folder
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $pluginElement = null;
+    protected $pluginElement;
 
     /**
      * Constructor

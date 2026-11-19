@@ -17,7 +17,7 @@ class SolariumBoostQuery
     /**
      * @var  string|null
      */
-    protected $query;
+    protected $query = null;
 
     /**
      * @param   mixed  $args

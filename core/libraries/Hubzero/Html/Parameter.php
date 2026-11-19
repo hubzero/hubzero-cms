@@ -21,9 +21,9 @@ class Parameter extends Registry
     /**
      * The raw params string
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $raw = null;
+    protected $raw;
 
     /**
      * The XML params elements, by group

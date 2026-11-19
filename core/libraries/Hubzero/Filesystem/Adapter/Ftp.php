@@ -46,7 +46,7 @@ class Ftp implements AdapterInterface
      */
     protected $connection;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $host;
     /**
@@ -54,11 +54,11 @@ class Ftp implements AdapterInterface
      */
     protected $port = 21;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $username;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $password;
     /**

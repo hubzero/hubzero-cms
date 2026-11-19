@@ -30,9 +30,9 @@ trait ColumnDefinitionTrait
     /**
      * Abstract column type (e.g., 'integer', 'string', 'boolean')
      *
-     * @var string|null
+     * @var string
      */
-    protected $columnType = null;
+    protected $columnType;
 
     /**
      * Type parameters (e.g., length for string, precision/scale for decimal)

@@ -61,9 +61,9 @@ class MigrationSquasher
     /**
      * Schema manager (lazy-loaded, only needed for generateFromDatabase)
      *
-     * @var SchemaManager|null
+     * @var SchemaManager
      */
-    protected $schemaManager = null;
+    protected $schemaManager;
 
     /**
      * Whether to include IF NOT EXISTS / IF EXISTS checks
@@ -96,9 +96,9 @@ class MigrationSquasher
     /**
      * Custom template content
      *
-     * @var string|null
+     * @var string
      */
-    protected $template = null;
+    protected $template;
 
     /**
      * Create a new MigrationSquasher

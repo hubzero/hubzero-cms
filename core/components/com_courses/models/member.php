@@ -26,9 +26,9 @@ class Member extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Member|null
+     * @var \Components\Courses\Tables\Member
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

@@ -22,7 +22,7 @@ class MysqliConnection implements ConnectionInterface
      *
      * @var \mysqli|null
      */
-    protected $mysqli;
+    protected $mysqli = null;
 
     /**
      * Connection options

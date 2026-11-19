@@ -28,7 +28,7 @@ class Note extends \Components\Wiki\Models\Book
      */
     protected $db;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $scope;
 

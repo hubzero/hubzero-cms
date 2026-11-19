@@ -58,7 +58,7 @@ abstract class Table extends \stdClass
      *
      * @var \Hubzero\Access\Rules|null  A Access Rules object.
      */
-    protected $assetRules;
+    protected $assetRules = null;
 
     /**
      * Indicator that the tables have been locked.

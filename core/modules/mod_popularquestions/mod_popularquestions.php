@@ -29,12 +29,12 @@ class Popularquestions extends Module
      */
     protected $cssId;
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $rows;
-    /** @var string|null */
+    /** @var string */
     protected $style;
-    /** @var string|null */
+    /** @var string */
     protected $tag;
 
     /**

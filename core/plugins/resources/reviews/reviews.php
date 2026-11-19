@@ -26,7 +26,7 @@ class Reviews extends Plugin
      * @var  mixed
      */
     protected $banking;
-    /** @var string|null */
+    /** @var string */
     protected $infolink;
 
     /**

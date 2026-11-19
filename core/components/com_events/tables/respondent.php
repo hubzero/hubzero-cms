@@ -27,16 +27,16 @@ class Respondent extends Table
     /**
      * Ordering column
      *
-     * @var string|null
+     * @var string
      */
-    private $order = null;
+    private $order;
 
     /**
      * Ordering direction
      *
-     * @var  string|null
+     * @var  string
      */
-    private $order_desc = null;
+    private $order_desc;
 
     /**
      * Search terms

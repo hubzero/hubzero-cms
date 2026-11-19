@@ -32,16 +32,16 @@ class Discussions extends Plugin
      * @var  mixed
      */
     protected $config;
-    /** @var int|null */
+    /** @var int */
     protected $limit;
-    /** @var int|null */
+    /** @var int */
     protected $limitstart;
     /** @var string|null */
-    protected $name;
+    protected $name = null;
     /**
      * @var  \Hubzero\Database\Rows|null
      */
-    protected $sections;
+    protected $sections = null;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -56,9 +56,9 @@ class Discussions extends Plugin
     protected $course;
 
     /**
-     * @var \Components\Courses\Models\Offering|null
+     * @var \Components\Courses\Models\Offering
      */
-    protected $offering = null;
+    protected $offering;
 
     /**
      * @var \Components\Forum\Models\Manager
@@ -66,24 +66,24 @@ class Discussions extends Plugin
     protected $forum;
 
     /**
-     * @var string|null
+     * @var string
      */
-    protected $base = null;
+    protected $base;
 
     /**
-     * @var string|null
+     * @var string
      */
-    protected $active = null;
+    protected $active;
 
     /**
-     * @var \Components\Courses\Models\Unit|null  The unit being discussed
+     * @var \Components\Courses\Models\Unit  The unit being discussed
      */
-    protected $unit = null;
+    protected $unit;
 
     /**
-     * @var \Components\Courses\Models\Assetgroup|null  The lecture being discussed
+     * @var \Components\Courses\Models\Assetgroup  The lecture being discussed
      */
-    protected $lecture = null;
+    protected $lecture;
 
     /**
      * @var array<mixed>|null

@@ -23,10 +23,10 @@ use Hubzero\Facades\User;
 
 class Watch extends Plugin
 {
-    /** @var string|null */
+    /** @var string */
     protected $action;
     /**
-     * @var  \Components\Publications\Models\Publication|null
+     * @var  \Components\Publications\Models\Publication
      */
     protected $publication;
 

@@ -24,9 +24,9 @@ class Status extends Obj
      * 2 = requirement partially satisfied (incomplete)
      * 3 = not available
      *
-     * @var  int|null
+     * @var  int
      */
-    public $status = null;
+    public $status;
 
     /**
      * Status message

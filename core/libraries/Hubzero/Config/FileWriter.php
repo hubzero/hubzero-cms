@@ -25,7 +25,7 @@ class FileWriter
      *
      * @var  string|null
      */
-    protected $path;
+    protected $path = null;
 
     /**
      * Formatting options for the specified format

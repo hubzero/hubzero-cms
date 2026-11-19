@@ -27,23 +27,23 @@ class Helper extends \Hubzero\Base\Obj
     // reviewer's own review back off it. The same is true of the resources
     // reviews helper, which is the same class under a different name.
     /**
-     * @var  string|null
+     * @var  string
      */
     public $componentOption;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     public $loggedin;
     /**
-     * @var  \Components\Publications\Tables\Review|null
+     * @var  \Components\Publications\Tables\Review
      */
     public $myreview;
     /**
-     * @var  \Components\Publications\Models\Publication|null
+     * @var  \Components\Publications\Models\Publication
      */
     public $publication;
     /**
-     * @var  string|null
+     * @var  string
      */
     public $option;
 

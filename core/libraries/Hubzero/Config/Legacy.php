@@ -19,14 +19,14 @@ class Legacy extends Registry
     /**
      * Root path for path rewriting.
      *
-     * @var  string|null
+     * @var  string
      */
     protected $rootPath;
 
     /**
      * App path for path rewriting.
      *
-     * @var  string|null
+     * @var  string
      */
     protected $appPath;
 

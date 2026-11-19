@@ -22,7 +22,7 @@ class Mygroups extends Module
      * @var  array<int, \stdClass>|null
      */
     public $allgroups;
-    /** @var int|null */
+    /** @var int */
     public $limit;
     /**
      * @var  mixed

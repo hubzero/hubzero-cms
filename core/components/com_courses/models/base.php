@@ -29,9 +29,9 @@ abstract class Base extends Model
     /**
      * Entry scope
      *
-     * @var string|null
+     * @var string
      */
-    protected $scope = null;
+    protected $scope;
 
     /**
      * Entry creator

@@ -13,7 +13,7 @@ use Hubzero\Utility\Arr;
 class QueryAddColumnStatement
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $asString;
     /**

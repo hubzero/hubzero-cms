@@ -38,16 +38,16 @@ class Announcements extends Plugin
     /**
      * Offering object
      *
-     * @var  \Components\Courses\Models\Offering|null
+     * @var  \Components\Courses\Models\Offering
      */
-    protected $offering = null;
+    protected $offering;
 
     /**
      * Option declaration
      *
-     * @var  string|null
+     * @var  string
      */
-    public $option = null;
+    public $option;
 
     /**
      * Return data on a course view (this will be some form of HTML)

@@ -16,7 +16,7 @@ use Hubzero\Facades\Request;
  */
 class Supportactivity extends Module
 {
-    /** @var int|null */
+    /** @var int */
     protected $feed;
     /**
      * @var  mixed

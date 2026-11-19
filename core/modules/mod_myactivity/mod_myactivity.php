@@ -18,7 +18,7 @@ use Hubzero\Facades\User;
 class Myactivity extends Module
 {
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $limit;
     /**
@@ -26,7 +26,7 @@ class Myactivity extends Module
      */
     protected $moduleclass;
     /**
-     * @var  \Hubzero\Activity\Recipient|null
+     * @var  \Hubzero\Activity\Recipient
      */
     protected $rows;
 

@@ -71,23 +71,23 @@ class Base extends Obj
      * carries a file can ask the filesystem without rebuilding the path from
      * the template's name.
      *
-     * @var  string|null
+     * @var  string
      */
-    public $templatePath = null;
+    public $templatePath;
 
     /**
      * Base URL of the site, for addresses of template files
      *
-     * @var  string|null
+     * @var  string
      */
-    public $baseurl = null;
+    public $baseurl;
 
     /**
      * Name of the template
      *
-     * @var  string|null
+     * @var  string
      */
-    public $template = null;
+    public $template;
 
     /**
      * Document generator
@@ -183,16 +183,16 @@ class Base extends Obj
     /**
      * The rendering engine
      *
-     * @var  object|null
+     * @var  object
      */
-    public $engine = null;
+    public $engine;
 
     /**
      * The document type
      *
-     * @var  string|null
+     * @var  string
      */
-    public $type = null;
+    public $type;
 
     /**
      * Array of buffered output

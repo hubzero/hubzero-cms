@@ -29,9 +29,9 @@ class Asset extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Collections\Tables\Asset|null
+     * @var \Components\Collections\Tables\Asset
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * File size

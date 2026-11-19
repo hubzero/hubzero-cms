@@ -33,9 +33,9 @@ class Writer
     /**
      * The Monolog logger instance.
      *
-     * @var  \Monolog\Logger|null
+     * @var  \Monolog\Logger
      */
-    protected $monolog = null;
+    protected $monolog;
 
     /**
      * All of the error levels.
@@ -56,9 +56,9 @@ class Writer
     /**
      * The event dispatcher instance.
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $dispatcher = null;
+    protected $dispatcher;
 
     /**
      * Create a new log writer instance.

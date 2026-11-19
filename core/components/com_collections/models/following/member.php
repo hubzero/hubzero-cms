@@ -16,9 +16,9 @@ class Member extends Base
     /**
      * \Hubzero\User\User
      *
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
-    private $obj = null;
+    private $obj;
 
     /**
      * File path
@@ -30,9 +30,9 @@ class Member extends Base
     /**
      * URL
      *
-     * @var  string|null
+     * @var  string
      */
-    private $baselink = null;
+    private $baselink;
 
     /**
      * Constructor

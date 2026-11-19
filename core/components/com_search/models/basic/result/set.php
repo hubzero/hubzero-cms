@@ -26,7 +26,7 @@ class Set extends Obj implements Iterator
     /** @var \Hubzero\Database\Driver */
     protected $db;
     /**
-     * @var  \Components\Search\Models\Basic\Terms|null
+     * @var  \Components\Search\Models\Basic\Terms
      */
     protected $terms;
 
@@ -68,9 +68,9 @@ class Set extends Obj implements Iterator
     /**
      * Custom title
      *
-     * @var string|null
+     * @var string
      */
-    private $custom_title = null;
+    private $custom_title;
 
     /**
      * Custom mode
@@ -126,7 +126,7 @@ class Set extends Obj implements Iterator
      *
      * @var string|null
      */
-    private $current_plugin;
+    private $current_plugin = null;
 
     /**
      * Total

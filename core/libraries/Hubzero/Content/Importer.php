@@ -24,14 +24,14 @@ class Importer
      *
      * @var \Hubzero\Content\Import\Adapter|null
      */
-    private $adapter;
+    private $adapter = null;
 
     /**
      * Array of Import Adapters
      *
      * @var list<class-string<\Hubzero\Content\Import\Adapter>>|null
      */
-    private $adapters;
+    private $adapters = null;
 
     /**
      * Constructor

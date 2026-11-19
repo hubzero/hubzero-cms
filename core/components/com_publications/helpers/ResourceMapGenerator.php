@@ -80,19 +80,19 @@ class ResourceMapGenerator
      */
     private $intro;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $created_by;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $date_created;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $date_modified;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $date_published;
 

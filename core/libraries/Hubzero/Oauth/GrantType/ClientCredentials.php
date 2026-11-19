@@ -23,7 +23,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Store object
      *
-     * @var \OAuth2\Storage\ClientCredentialsInterface|null
+     * @var \OAuth2\Storage\ClientCredentialsInterface
      */
     private $storage;
 

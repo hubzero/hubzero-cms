@@ -25,12 +25,12 @@ class RedirectResponse extends BaseRedirectResponse
      *
      * @var  Request|null
      */
-    protected $request;
+    protected $request = null;
 
     /**
      * The session store implementation.
      *
-     * @var  \Hubzero\Session\Manager|null
+     * @var  \Hubzero\Session\Manager
      */
     protected $session;
 

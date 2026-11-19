@@ -36,9 +36,9 @@ class Content extends Base
     /**
      * Default manifest
      *
-     * @var     \stdClass|null
+     * @var     \stdClass
      */
-    protected $manifest  = null;
+    protected $manifest;
 
     /**
      * Numeric block ID

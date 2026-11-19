@@ -27,15 +27,15 @@ class Tool extends Model
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $actor;
+    protected $actor = null;
     /**
      * @var  \Hubzero\Config\Registry|null
      */
-    protected $componentConfig;
+    protected $componentConfig = null;
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $creator;
+    protected $creator = null;
     /**
      * @var  mixed
      */
@@ -47,23 +47,23 @@ class Tool extends Model
     /**
      * @var  \Components\Projects\Models\Tool\Log|null
      */
-    protected $log;
+    protected $log = null;
     /**
      * @var  \Components\Projects\Models\Tool\Status|null
      */
-    protected $status;
+    protected $status = null;
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $statusChanger;
+    protected $statusChanger = null;
     /**
      * @var  \Components\Projects\Models\Tool\Instance|null
      */
-    protected $version;
+    protected $version = null;
     /**
      * @var  \Components\Projects\Models\Tool\View|null
      */
-    protected $viewLog;
+    protected $viewLog = null;
 
     /**
      * Table class name
@@ -75,16 +75,16 @@ class Tool extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\Tool|null
+     * @var \Components\Projects\Tables\Tool
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Registry
      *
-     * @var object|null
+     * @var object
      */
-    public $config = null;
+    public $config;
 
     /**
      * Constructor

@@ -27,9 +27,9 @@ class Local implements AdapterInterface
     /**
      * File scanning command.
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $command = null;
+    protected $command;
 
     /**
      * Constructor.

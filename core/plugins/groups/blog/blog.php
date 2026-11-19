@@ -26,11 +26,11 @@ use Hubzero\Facades\User;
 class Blog extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /** @var \Hubzero\Database\Driver */

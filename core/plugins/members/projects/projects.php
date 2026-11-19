@@ -23,7 +23,7 @@ use Hubzero\Facades\Route;
 class Projects extends Plugin
 {
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $config;
     /** @var \Hubzero\Database\Driver */
@@ -37,7 +37,7 @@ class Projects extends Plugin
      */
     protected $total;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $user;
     /** @var \Components\Projects\Models\Project */

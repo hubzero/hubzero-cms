@@ -26,9 +26,9 @@ class Event extends Model
     /**
      * Table
      *
-     * @var \Components\Events\Tables\Event|null
+     * @var \Components\Events\Tables\Event
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Table name

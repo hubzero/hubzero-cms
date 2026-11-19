@@ -16,9 +16,9 @@ class Logs extends AbstractRenderer
     /**
      * Logger
      *
-     * @var  \Hubzero\Log\Manager|null  The log manager (it hands calls to the default log)
+     * @var  \Hubzero\Log\Manager  The log manager (it hands calls to the default log)
      */
-    protected $logger = null;
+    protected $logger;
 
     /**
      * Constructor

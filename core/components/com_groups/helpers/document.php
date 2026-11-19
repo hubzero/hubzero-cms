@@ -19,9 +19,9 @@ class Document extends Obj
     /**
      * Document
      *
-     * @var  string|null  The page source to parse
+     * @var  string  The page source to parse
      */
-    public $document     = null;
+    public $document;
 
     /**
      * Group
@@ -33,23 +33,23 @@ class Document extends Obj
     /**
      * Content
      *
-     * @var  string|null  What parsing and rendering produced
+     * @var  string  What parsing and rendering produced
      */
-    public $content      = null;
+    public $content;
 
     /**
      * Page
      *
      * @var  \Components\Groups\Models\Page|null
      */
-    public $page         = null;
+    public $page = null;
 
     /**
      * Tab
      *
-     * @var  string|null
+     * @var  string
      */
-    public $tab          = null;
+    public $tab;
 
     /**
      * Allowed tags

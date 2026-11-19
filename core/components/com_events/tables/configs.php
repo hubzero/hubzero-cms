@@ -21,9 +21,9 @@ class Configs
     /**
      * Table name
      *
-     * @var  string|null
+     * @var  string
      */
-    private $tbl = null;
+    private $tbl;
 
     /**
      * Database connection

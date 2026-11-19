@@ -22,7 +22,7 @@ use Hubzero\Facades\User;
 class Wishlist extends Plugin
 {
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $config;
 

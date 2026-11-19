@@ -23,9 +23,9 @@ class Attachment extends Obj
     /**
      * File size
      *
-     * @var  int|null
+     * @var  int
      */
-    protected $size = null;
+    protected $size;
 
     /**
      * Dimensions for file (must be an image)
@@ -37,9 +37,9 @@ class Attachment extends Obj
     /**
      * Upload directory (relative to PATH_APP)
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $uploadDir = null;
+    protected $uploadDir;
 
     /**
      * Set the upload path

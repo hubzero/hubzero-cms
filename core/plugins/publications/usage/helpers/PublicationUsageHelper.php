@@ -38,14 +38,14 @@ class PublicationUsageHelper
      *
      * @var string|null  The id, quoted for SQL
      */
-    protected $versionId;
+    protected $versionId = null;
 
     /**
      * Publication ID
      *
      * @var string|null  The id, quoted for SQL
      */
-    protected $publicationId;
+    protected $publicationId = null;
 
     /**
      * Instantiates PublicationUsageHelper

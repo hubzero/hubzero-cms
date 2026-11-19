@@ -29,11 +29,11 @@ class Myquestions extends Module
      */
     protected $banking;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $interests;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $intext;
     /**
@@ -57,11 +57,11 @@ class Myquestions extends Module
      */
     protected $otherquestions;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $show_assigned;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $show_interests;
 

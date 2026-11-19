@@ -23,7 +23,7 @@ class Entry extends Model
     /**
      * @var  \Components\Projects\Models\Project|null
      */
-    protected $project;
+    protected $project = null;
 
     /**
      * Table name
@@ -35,9 +35,9 @@ class Entry extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\Todo|null
+     * @var \Components\Projects\Tables\Todo
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

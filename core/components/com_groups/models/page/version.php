@@ -26,9 +26,9 @@ class Version extends Model
     /**
      * Table object
      *
-     * @var  \Components\Groups\Tables\PageVersion|null
+     * @var  \Components\Groups\Tables\PageVersion
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Table name

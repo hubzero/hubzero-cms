@@ -39,7 +39,7 @@ class MysqliStatement
      *
      * @var \mysqli_result|null
      */
-    protected $result;
+    protected $result = null;
 
     /**
      * The query string

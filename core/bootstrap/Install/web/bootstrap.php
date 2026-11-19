@@ -85,9 +85,9 @@ use Hubzero\System\Requirements;
     private $allPassed = true;
 
     /**
-     * @var  SecurityGuard|null
+     * @var  SecurityGuard
      */
-    private $security = null;
+    private $security;
 
     public function __construct()
     {

@@ -106,9 +106,9 @@ class Provider extends AbstractService
     /**
      * API key
      *
-     * @var string|null
+     * @var string
      */
-    public $apiKey = null;
+    public $apiKey;
 
     /**
      * Akismet server

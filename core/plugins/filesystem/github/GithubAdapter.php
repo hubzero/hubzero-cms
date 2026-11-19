@@ -66,7 +66,7 @@ class GithubAdapter implements FilesystemAdapter
     private $authenticated = false;
 
     /** @var string|null */
-    private $token;
+    private $token = null;
 
     /** @var ExtensionMimeTypeDetector */
     private $mimeTypeDetector;

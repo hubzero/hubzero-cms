@@ -28,9 +28,9 @@ class Log extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Publications\Tables\Log|null
+     * @var \Components\Publications\Tables\Log
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Registry
@@ -42,9 +42,9 @@ class Log extends Model
     /**
      * Table class object
      *
-     * @var  object|null
+     * @var  object
      */
-    public $pubLog = null;
+    public $pubLog;
 
     /**
      * Parse log file

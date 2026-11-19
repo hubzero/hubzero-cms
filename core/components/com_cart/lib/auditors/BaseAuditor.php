@@ -15,18 +15,18 @@ class BaseAuditor
      */
     public $type;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $pId;
     /**
-     * @var  int|null
+     * @var  int
      */
     public $crtId;
     /**
      * @var  int|false|null
      */
     public $uId;
-    /** @var \stdClass|null */
+    /** @var \stdClass */
     public $response;
     /**
      * @var  mixed

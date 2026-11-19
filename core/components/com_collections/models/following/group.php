@@ -18,9 +18,9 @@ class Group extends Base
     /**
      * \Hubzero\User\Group
      *
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
-    private $obj = null;
+    private $obj;
 
     /**
      * File path
@@ -32,9 +32,9 @@ class Group extends Base
     /**
      * URL
      *
-     * @var string|null
+     * @var string
      */
-    private $baselink = null;
+    private $baselink;
 
     /**
      * Constructor

@@ -34,7 +34,7 @@ class DropboxOauthClient
      */
     protected $clientSecret;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $redirectUri;
     /**

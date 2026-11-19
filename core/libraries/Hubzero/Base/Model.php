@@ -51,16 +51,16 @@ abstract class Model extends Obj
     /**
      * Table class name
      *
-     * @var  class-string|null
+     * @var  class-string
      */
-    protected $tableClass = null;
+    protected $tableClass;
 
     /**
      * Table
      *
-     * @var \Hubzero\Database\Table|null  An instance of $tableClass, checked by the constructor
+     * @var \Hubzero\Database\Table  An instance of $tableClass, checked by the constructor
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Database
@@ -73,9 +73,9 @@ abstract class Model extends Obj
      * Model context.
      * option.model(.content)
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $context = null;
+    protected $context;
 
     /**
      * Constructor

@@ -25,27 +25,27 @@ class Helper extends \Hubzero\Base\Obj
     // resource and the option it is working on, and the views read the
     // reviewer's own review back off it.
     /**
-     * @var  string|null
+     * @var  string
      */
     public $componentOption;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     public $isAuthor;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     public $loggedin;
     /**
-     * @var  \Components\Resources\Models\Review|null
+     * @var  \Components\Resources\Models\Review
      */
     public $myreview;
     /**
-     * @var  \Components\Resources\Models\Entry|null
+     * @var  \Components\Resources\Models\Entry
      */
     public $resource;
     /**
-     * @var  string|null
+     * @var  string
      */
     public $option;
 

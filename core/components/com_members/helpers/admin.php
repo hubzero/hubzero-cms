@@ -28,7 +28,7 @@ class Admin
      *
      * @var  \Hubzero\Base\Obj|null
      */
-    protected static $actions;
+    protected static $actions = null;
 
     /**
      * Gets a list of the actions that can be performed.

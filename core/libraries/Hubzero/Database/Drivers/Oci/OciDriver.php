@@ -77,9 +77,9 @@ class OciDriver extends BaseSqlDriver
     /**
      * Oracle version (cached after first query)
      *
-     * @var string|null
+     * @var string
      */
-    protected $oracleVersion = null;
+    protected $oracleVersion;
 
     /**
      * The table name from the last INSERT statement

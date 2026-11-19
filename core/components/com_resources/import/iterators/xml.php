@@ -16,19 +16,19 @@ namespace Components\Resources\Import\Iterators;
 class Xml implements \Iterator
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     private $file;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $key;
     /**
-     * @var  \XMLReader|null
+     * @var  \XMLReader
      */
     private $reader;
     /**
-     * @var  int|null
+     * @var  int
      */
     private $position;
 

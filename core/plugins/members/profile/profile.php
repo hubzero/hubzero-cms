@@ -29,9 +29,9 @@ class Profile extends Plugin
      */
     protected $member;
     /** @var string|null */
-    protected $task;
+    protected $task = null;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     protected $user;
 

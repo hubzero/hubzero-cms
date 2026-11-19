@@ -25,100 +25,100 @@ class Metadata extends Obj
     /**
      * Object abstract
      *
-     * @var  string|null
+     * @var  string
      */
-    public $abstract = null;
+    public $abstract;
 
     /**
      * Object description
      *
-     * @var  string|null
+     * @var  string
      */
-    public $description = null;
+    public $description;
 
     /**
      * Object dc type
      *
-     * @var  string|null
+     * @var  string
      */
-    public $type = null;
+    public $type;
 
     /**
      * URL
      *
-     * @var  string|null
+     * @var  string
      */
-    public $url = null;
+    public $url;
 
     /**
      * DOI
      *
-     * @var  string|null
+     * @var  string
      */
-    public $doi = null;
+    public $doi;
 
     /**
      * Publisher
      *
-     * @var  string|null
+     * @var  string
      */
-    public $publisher = null;
+    public $publisher;
 
     /**
      * Journal
      *
-     * @var  string|null
+     * @var  string
      */
-    public $journal = null;
+    public $journal;
 
     /**
      * Subject
      *
-     * @var  string|null
+     * @var  string
      */
-    public $subject = null;
+    public $subject;
 
     /**
      * Language
      *
-     * @var  string|null
+     * @var  string
      */
-    public $language = null;
+    public $language;
 
     /**
      * Format
      *
-     * @var  string|null
+     * @var  string
      */
-    public $format = null;
+    public $format;
 
     /**
      * Date
      *
-     * @var  string|null
+     * @var  string
      */
-    public $date = null;
+    public $date;
 
     /**
      * Date
      *
-     * @var  string|null
+     * @var  string
      */
-    public $issued = null;
+    public $issued;
 
     /**
      * Volume
      *
-     * @var  string|null
+     * @var  string
      */
-    public $volume = null;
+    public $volume;
 
     /**
      * Issue
      *
-     * @var  string|null
+     * @var  string
      */
-    public $issue = null;
+    public $issue;
 
     /**
      * Page
@@ -130,14 +130,14 @@ class Metadata extends Obj
     /**
      * ISBN
      *
-     * @var  string|null
+     * @var  string
      */
-    public $isbn = null;
+    public $isbn;
 
     /**
      * Author
      *
-     * @var  string|null
+     * @var  string
      */
-    public $author = null;
+    public $author;
 }

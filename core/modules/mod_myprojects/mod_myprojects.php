@@ -23,7 +23,7 @@ class Myprojects extends Module
      */
     protected $filters;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $limit;
     /**
@@ -31,7 +31,7 @@ class Myprojects extends Module
      */
     protected $moduleclass;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $pconfig;
     /**
@@ -39,7 +39,7 @@ class Myprojects extends Module
      */
     protected $rows;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $total;
 

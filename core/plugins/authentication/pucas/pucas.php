@@ -35,13 +35,13 @@ class Pucas extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * @var  \Monolog\Handler\StreamHandler|null
+     * @var  \Monolog\Handler\StreamHandler
      */
-    protected $stream_handler = null;
+    protected $stream_handler;
     /**
-     * @var  \Monolog\Logger|null
+     * @var  \Monolog\Logger
      */
-    protected $logger = null;
+    protected $logger;
 
     /**
      * Actions to perform when logging out a user session

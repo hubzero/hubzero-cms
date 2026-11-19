@@ -16,9 +16,9 @@ class Curl
     /**
      * The connection resource
      *
-     * @var  \CurlHandle|null
+     * @var  \CurlHandle
      **/
-    private $resource = null;
+    private $resource;
 
     /**
      * Constructs a new instance

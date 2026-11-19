@@ -35,9 +35,9 @@ class Resources extends Plugin
     /**
      * Resource types
      *
-     * @var  iterable<mixed>|null
+     * @var  iterable<mixed>
      */
-    private $cats = null;
+    private $cats;
 
     /**
      * Results total

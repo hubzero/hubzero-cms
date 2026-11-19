@@ -24,7 +24,7 @@ class Quotes extends Module
      */
     protected $filters;
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $quotes;
 

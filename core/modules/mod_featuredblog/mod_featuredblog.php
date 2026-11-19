@@ -17,13 +17,13 @@ use Hubzero\Facades\App;
  */
 class Featuredblog extends Module
 {
-    /** @var string|null */
+    /** @var string */
     protected $cls;
     /**
      * @var  \Components\Blog\Models\Entry|null
      */
-    protected $row;
-    /** @var string|null */
+    protected $row = null;
+    /** @var string */
     protected $txt_length;
 
     /**

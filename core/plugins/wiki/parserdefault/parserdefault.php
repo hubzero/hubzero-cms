@@ -28,7 +28,7 @@ class Parserdefault extends Plugin
      *
      * @var  \Plugins\Wiki\Parserdefault\WikiParser|null
      */
-    public $parser;
+    public $parser = null;
 
     /**
      * Get the wiki parser, creating a new one if not already existing or $getnew is set

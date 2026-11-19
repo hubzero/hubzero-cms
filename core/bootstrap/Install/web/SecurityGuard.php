@@ -70,16 +70,16 @@ class SecurityGuard
     /**
      * Server secret (loaded/generated once)
      *
-     * @var string|null
+     * @var string
      */
-    private $serverSecret = null;
+    private $serverSecret;
 
     /**
      * Resolved storage directory path
      *
-     * @var string|null
+     * @var string
      */
-    private $storageDirPath = null;
+    private $storageDirPath;
 
     /**
      * Constructor

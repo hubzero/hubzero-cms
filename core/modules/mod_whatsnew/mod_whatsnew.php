@@ -35,11 +35,11 @@ class Whatsnew extends Module
      */
     public $feed;
     /**
-     * @var  string|null
+     * @var  string
      */
     public $feedlink;
     /**
-     * @var  string|null
+     * @var  string
      */
     public $period;
     /**
@@ -54,7 +54,7 @@ class Whatsnew extends Module
      * @var  array<mixed>|null
      */
     protected $searchareas;
-    /** @var int|null */
+    /** @var int */
     public $tagged;
     /**
      * @var  mixed

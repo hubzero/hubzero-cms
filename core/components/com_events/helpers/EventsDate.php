@@ -16,44 +16,44 @@ class EventsDate
     /**
      * Year
      *
-     * @var int|null
+     * @var int
      */
-    public $year   = null;
+    public $year;
 
     /**
      * Month
      *
-     * @var int|null
+     * @var int
      */
-    public $month  = null;
+    public $month;
 
     /**
      * Day
      *
-     * @var int|null
+     * @var int
      */
-    public $day    = null;
+    public $day;
 
     /**
      * Hour
      *
-     * @var integer|null
+     * @var integer
      */
-    public $hour   = null;
+    public $hour;
 
     /**
      * Minute
      *
-     * @var integer|null
+     * @var integer
      */
-    public $minute = null;
+    public $minute;
 
     /**
      * Second
      *
-     * @var integer|null
+     * @var integer
      */
-    public $second = null;
+    public $second;
 
     /**
      * Constructor

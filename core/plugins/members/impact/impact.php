@@ -25,7 +25,7 @@ class Impact extends Plugin
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $componentOption;
 

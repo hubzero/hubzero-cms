@@ -20,13 +20,13 @@ use Hubzero\Facades\Component;
 class Boosts extends AdminController
 {
     /**
-     * @var  \Components\Search\Helpers\RecordProcessingHelper|null
+     * @var  \Components\Search\Helpers\RecordProcessingHelper
      */
     protected $crudHelper;
-    /** @var \Components\Search\Helpers\BoostFactory|null */
+    /** @var \Components\Search\Helpers\BoostFactory */
     protected $factory;
     /**
-     * @var  \Components\Search\Helpers\TypeOptionsHelper|null
+     * @var  \Components\Search\Helpers\TypeOptionsHelper
      */
     protected $typeHelper;
 

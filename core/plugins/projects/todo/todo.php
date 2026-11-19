@@ -40,13 +40,13 @@ class Todo extends Plugin
     /**
      * @var  int|null
      */
-    protected $mine;
+    protected $mine = null;
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $todoid;
     /**
@@ -57,7 +57,7 @@ class Todo extends Plugin
      * @var  \Components\Projects\Models\Project
      */
     protected $model;
-    /** @var \Components\Projects\Models\Todo|null */
+    /** @var \Components\Projects\Models\Todo */
     protected $todo;
 
     /**
@@ -77,9 +77,9 @@ class Todo extends Plugin
     /**
      * Store internal message
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $msg = null;
+    protected $msg;
 
     /**
      * Event call to determine if this plugin should return data

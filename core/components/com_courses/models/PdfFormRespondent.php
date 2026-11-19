@@ -38,14 +38,14 @@ class PdfFormRespondent
     /**
      * Bool indicating whether the form has been started
      *
-     * @var string|null  Date and time
+     * @var string  Date and time
      **/
     private $started;
 
     /**
      * Bool indicating whether the form has been finished
      *
-     * @var string|null  Date and time
+     * @var string  Date and time
      **/
     private $finished;
 

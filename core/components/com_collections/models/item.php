@@ -43,9 +43,9 @@ class Item extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Collections\Tables\Item|null
+     * @var \Components\Collections\Tables\Item
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

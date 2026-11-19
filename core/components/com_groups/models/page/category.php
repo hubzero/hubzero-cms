@@ -23,9 +23,9 @@ class Category extends Model
     /**
      * Table object
      *
-     * @var \Components\Groups\Tables\PageCategory|null
+     * @var \Components\Groups\Tables\PageCategory
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Table name

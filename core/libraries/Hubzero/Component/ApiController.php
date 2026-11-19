@@ -53,9 +53,9 @@ class ApiController implements ControllerInterface
     /**
      * The name of the task to be executed
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $doTask = null;
+    protected $doTask;
 
     /**
      * The name of this controller
@@ -67,18 +67,18 @@ class ApiController implements ControllerInterface
     /**
      * The name of this component
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $option = null;
+    protected $option;
 
     /**
      * The name of the model
      *
      * Default is a singular inflection of a plural controller name
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $modelClass = null;
+    protected $modelClass;
 
     /**
      * Is this a dynamically generated endpoint?
@@ -111,9 +111,9 @@ class ApiController implements ControllerInterface
     /**
      * Response object
      *
-     * @var  \Hubzero\Http\Response|null
+     * @var  \Hubzero\Http\Response
      */
-    public $response = null;
+    public $response;
 
     /**
      * Methods needing Auth

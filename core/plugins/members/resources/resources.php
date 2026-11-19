@@ -37,9 +37,9 @@ class Resources extends Plugin
     /**
      * Resource categories
      *
-     * @var iterable<mixed>|null
+     * @var iterable<mixed>
      */
-    private $cats  = null;
+    private $cats;
 
     /**
      * Record count

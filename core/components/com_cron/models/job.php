@@ -33,9 +33,9 @@ class Job extends Relational
     /**
      * Profiler
      *
-     * @var  \Hubzero\Debug\Profiler|null
+     * @var  \Hubzero\Debug\Profiler
      */
-    protected $profiler = null;
+    protected $profiler;
 
     /**
      * The table namespace

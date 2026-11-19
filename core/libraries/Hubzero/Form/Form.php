@@ -37,7 +37,7 @@ class Form
     /**
      * The Registry data store for form fields during display.
      *
-     * @var \Hubzero\Config\Registry|null
+     * @var \Hubzero\Config\Registry
      */
     protected $data;
 
@@ -53,7 +53,7 @@ class Form
      *
      * @var string|null
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * The form object options for use in rendering and validation.
@@ -67,7 +67,7 @@ class Form
      *
      * @var \SimpleXMLElement|null
      */
-    protected $xml;
+    protected $xml = null;
 
     /**
      * Form instances.

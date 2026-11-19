@@ -21,23 +21,23 @@ class OneToManyThrough extends OneToMany
     /**
      * The associative table used to capture the through relationship
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $associativeTable = null;
+    protected $associativeTable;
 
     /**
      * Key on the left side of the associative table
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $associativeLocal = null;
+    protected $associativeLocal;
 
     /**
      * Key on the right side of the associative table
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $associativeRelated = null;
+    protected $associativeRelated;
 
     /**
      * Constructs a new object instance

@@ -23,7 +23,7 @@ class Slideshow extends Module
      */
     protected $height;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $noflash_file;
     /**

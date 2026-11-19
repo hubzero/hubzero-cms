@@ -27,16 +27,16 @@ class View extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\ToolView|null
+     * @var \Components\Projects\Tables\ToolView
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  object
      */
-    public $config = null;
+    public $config;
 
     /**
      * Constructor

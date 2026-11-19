@@ -30,7 +30,7 @@ class Sessionsv1r0 extends ApiController
      * @var  \Hubzero\Database\Driver
      */
     protected $database;
-    /** @var \Components\Resources\Helpers\Tags|null */
+    /** @var \Components\Resources\Helpers\Tags */
     protected $rt;
 
     /**

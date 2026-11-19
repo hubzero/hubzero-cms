@@ -39,11 +39,11 @@ class Todo extends Plugin
      */
     protected $projects;
     /** @var string|null */
-    protected $task;
-    /** @var \Components\Projects\Models\Todo|null */
+    protected $task = null;
+    /** @var \Components\Projects\Models\Todo */
     protected $todo;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     protected $user;
 

@@ -112,9 +112,9 @@ class InformixDriver extends BaseSqlDriver
      *
      * Null means unknown and will be detected lazily.
      *
-     * @var bool|null
+     * @var bool
      */
-    protected $transactionSqlSupported = null;
+    protected $transactionSqlSupported;
     /**
      * Whether we are emulating transactions by buffering write SQL.
      *

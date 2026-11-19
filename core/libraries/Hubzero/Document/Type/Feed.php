@@ -35,9 +35,9 @@ class Feed extends Base
    *
    * optional
    *
-   * @var  \Hubzero\Document\Type\Feed\Image|null
+   * @var  \Hubzero\Document\Type\Feed\Image
    */
-    public $image = null;
+    public $image;
 
     /**
      * Copyright feed elememnt
@@ -176,9 +176,9 @@ class Feed extends Base
     /**
      * iTunes feed owner
      *
-     * @var  \Hubzero\Document\Type\Feed\ItunesOwner|null  With name and email
+     * @var  \Hubzero\Document\Type\Feed\ItunesOwner  With name and email
      */
-    public $itunes_owner = null;
+    public $itunes_owner;
 
     /**
      * iTunes 'explicit content' flag
@@ -204,9 +204,9 @@ class Feed extends Base
     /**
      * iTunes image
      *
-     * @var  \Hubzero\Document\Type\Feed\Image|null  With url
+     * @var  \Hubzero\Document\Type\Feed\Image  With url
      */
-    public $itunes_image = null;
+    public $itunes_image;
 
     /**
      * Class constructor

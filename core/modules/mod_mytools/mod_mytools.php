@@ -25,10 +25,10 @@ class Mytools extends Module
      */
     public $alltools;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     protected $can_launch;
-    /** @var string|null */
+    /** @var string */
     public $fav;
     /**
      * @var  array<int, string>|null
@@ -38,15 +38,15 @@ class Mytools extends Module
      * @var  array<string, App>|null
      */
     public $favtools;
-    /** @var bool|null */
+    /** @var bool */
     protected $launch_page;
-    /** @var int|null */
+    /** @var int */
     public $no_html;
     /**
      * @var  array<string, App>|null
      */
     public $rectools;
-    /** @var \Components\Resources\Helpers\Tags|null */
+    /** @var \Components\Resources\Helpers\Tags */
     protected $rt;
     /**
      * @var  mixed

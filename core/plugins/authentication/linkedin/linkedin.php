@@ -33,9 +33,9 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
     /**
      * The initialized OAuth2 provider.
      *
-     * @var  \League\OAuth2\Client\Provider\LinkedIn|null
+     * @var  \League\OAuth2\Client\Provider\LinkedIn
      */
-    private $provider = null;
+    private $provider;
 
     /**
      * Session scope key for namespacing session variables.

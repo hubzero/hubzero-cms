@@ -37,16 +37,16 @@ use Exception;
  */
 class Citations extends Plugin
 {
-    /** @var string|null */
+    /** @var string */
     protected $action;
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $grand_total;
     /**
-     * @var  \Components\Citations\Models\Importer|null
+     * @var  \Components\Citations\Models\Importer
      */
     protected $importer;
     /**

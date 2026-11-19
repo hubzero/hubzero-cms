@@ -35,7 +35,7 @@ class Databases extends Plugin
     /**
      * @var  bool|null
      */
-    protected $configured;
+    protected $configured = null;
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
@@ -57,7 +57,7 @@ class Databases extends Plugin
     /** @var \Components\Projects\Models\Repo */
     protected $repo;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $subdir;
 
@@ -85,9 +85,9 @@ class Databases extends Plugin
     /**
      * Store internal message
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $msg = null;
+    protected $msg;
 
     /**
      * Event call after databases initialized

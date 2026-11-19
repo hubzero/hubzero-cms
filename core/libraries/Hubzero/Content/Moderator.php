@@ -18,30 +18,30 @@ class Moderator
     /**
      * The path to the content being served
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $path = null;
+    private $path;
 
     /**
      * The token identifier
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $token = null;
+    private $token;
 
     /**
      * The session identifier
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $session_id = null;
+    private $session_id;
 
     /**
      * The site secret key
      *
-     * @var  string|null
+     * @var  string
      **/
-    private $secret = null;
+    private $secret;
 
     /**
      * Constructs the moderator

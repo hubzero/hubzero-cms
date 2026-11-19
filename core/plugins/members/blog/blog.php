@@ -46,9 +46,9 @@ class Blog extends Plugin
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     protected $user;
 

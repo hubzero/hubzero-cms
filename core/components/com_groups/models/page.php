@@ -23,9 +23,9 @@ class Page extends Model
     /**
      * Table
      *
-     * @var \Components\Groups\Tables\Page|null
+     * @var \Components\Groups\Tables\Page
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Table name
@@ -44,9 +44,9 @@ class Page extends Model
     /**
      * Versions Count
      *
-     * @var integer|null
+     * @var integer
      */
-    protected $versionsCount = null;
+    protected $versionsCount;
 
     /**
      * Constructor

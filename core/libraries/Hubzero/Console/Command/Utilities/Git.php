@@ -16,21 +16,21 @@ class Git
     /**
      * Root path of git repository
      *
-     * @var string|null
+     * @var string
      **/
     private $dir;
 
     /**
      * Git working tree directory
      *
-     * @var string|null
+     * @var string
      **/
     private $workTree;
 
     /**
      * Base command for all git calls
      *
-     * @var string|null
+     * @var string
      **/
     private $baseCmd;
 

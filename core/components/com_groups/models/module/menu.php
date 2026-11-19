@@ -29,9 +29,9 @@ class Menu extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Groups\Tables\ModuleMenu|null
+     * @var \Components\Groups\Tables\ModuleMenu
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Constructor

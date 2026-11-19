@@ -28,13 +28,13 @@ use Hubzero\Facades\Component;
 class Curation extends Obj
 {
     /** @var \Components\Publications\Tables\CurationVersion|null */
-    protected $curationVersion;
+    protected $curationVersion = null;
     /**
      * @var  \Components\Publications\Tables\Curation|null
      */
-    protected $tbl;
+    protected $tbl = null;
     /** @var \Components\Publications\Tables\CurationHistory|null */
-    protected $tblHistory;
+    protected $tblHistory = null;
 
     /**
      * Database
@@ -60,9 +60,9 @@ class Curation extends Obj
     /**
      * Curation manifest, decoded
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    public $manifest = null;
+    public $manifest;
 
     /**
      * Blocks
@@ -88,16 +88,16 @@ class Curation extends Obj
     /**
      * Current block name
      *
-     * @var  string|null
+     * @var  string
      */
-    public $blockname = null;
+    public $blockname;
 
     /**
      * Current block blockId
      *
-     * @var  int|null
+     * @var  int
      */
-    public $blockorder = null;
+    public $blockorder;
 
     /**
      * Progress
@@ -109,9 +109,9 @@ class Curation extends Obj
     /**
      * Message
      *
-     * @var  string|null
+     * @var  string
      */
-    public $message = null;
+    public $message;
 
     /**
      * @var  string

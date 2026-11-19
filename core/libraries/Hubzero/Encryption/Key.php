@@ -20,14 +20,14 @@ class Key
      *
      * @var  string|null
      */
-    public $private;
+    public $private = null;
 
     /**
      * The public key.
      *
      * @var  string|null
      */
-    public $public;
+    public $public = null;
 
     /**
      * The key type.

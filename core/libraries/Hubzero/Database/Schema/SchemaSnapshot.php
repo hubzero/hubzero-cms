@@ -66,7 +66,7 @@ class SchemaSnapshot
     /**
      * Table prefix filter
      *
-     * @var string|null
+     * @var string
      */
     protected $prefix;
 

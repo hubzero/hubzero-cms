@@ -23,9 +23,9 @@ class Editor extends Obj
     /**
      * Handler object
      *
-     * @var  \Components\Publications\Models\Handler|null
+     * @var  \Components\Publications\Models\Handler
      */
-    public $handler = null;
+    public $handler;
 
     /**
      * Constructor

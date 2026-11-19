@@ -53,9 +53,9 @@ class Connect extends Obj
     /**
      * User ID
      *
-     * @var integer|null
+     * @var integer
      */
-    private $uid = null;
+    private $uid;
 
     /**
      * Connection configuration

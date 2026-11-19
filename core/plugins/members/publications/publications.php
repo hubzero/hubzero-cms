@@ -33,7 +33,7 @@ class Publications extends Plugin
      *
      * @var \Hubzero\Database\Rows|null
      */
-    private $cats  = null;
+    private $cats = null;
 
     /**
      * Constructor

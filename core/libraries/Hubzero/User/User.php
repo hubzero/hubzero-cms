@@ -88,10 +88,10 @@ class User extends \Hubzero\Database\Relational
     /**
      * A cached switch for if this user has root access rights.
      *
-     * @var    boolean|null
+     * @var    boolean
      * @since  2.1.0
      */
-    protected $isRoot = null;
+    protected $isRoot;
 
     /**
      * User params
@@ -128,10 +128,10 @@ class User extends \Hubzero\Database\Relational
     /**
      * Link pattern
      *
-     * @var    string|null
+     * @var    string
      * @since  2.1.0
      */
-    public static $linkBase = null;
+    public static $linkBase;
 
     /**
      * List of picture resolvers

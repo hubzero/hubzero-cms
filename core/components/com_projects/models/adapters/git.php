@@ -42,9 +42,9 @@ class Git extends Models\Adapter
     /**
      * Full path to repository
      *
-     * @var  string|null
+     * @var  string
      */
-    private $path = null;
+    private $path;
 
     /**
      * Constructor

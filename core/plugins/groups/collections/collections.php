@@ -23,11 +23,11 @@ use Hubzero\Facades\User;
 class Collections extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /** @var \Hubzero\Database\Driver */
@@ -49,7 +49,7 @@ class Collections extends Plugin
     /**
      * @var  string|null
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

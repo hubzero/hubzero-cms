@@ -55,7 +55,7 @@ class Date extends DateTime
      *
      * @var  \DateTimeZone|null
      */
-    protected static $gmt;
+    protected static $gmt = null;
 
     /**
      * Placeholder for a DateTimeZone object with the default server
@@ -63,7 +63,7 @@ class Date extends DateTime
      *
      * @var  \DateTimeZone|null
      */
-    protected static $stz;
+    protected static $stz = null;
 
     /**
      * An array of offsets and time zone strings representing the available

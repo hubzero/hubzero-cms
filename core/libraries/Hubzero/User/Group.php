@@ -47,72 +47,72 @@ class Group extends Obj
     /**
      * Group alias
      *
-     * @var  string|null
+     * @var  string
      */
-    private $cn = null;
+    private $cn;
 
     /**
      * Group title
      *
-     * @var  string|null
+     * @var  string
      */
-    private $description = null;
+    private $description;
 
     /**
      * Published state
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $published = null;
+    private $published;
 
     /**
      * Approved/not approves
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $approved = null;
+    private $approved;
 
     /**
      * Group type
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $type = null;
+    private $type;
 
     /**
      * Public description
      *
-     * @var  string|null
+     * @var  string
      */
-    private $public_desc = null;
+    private $public_desc;
 
     /**
      * Pivate description
      *
-     * @var  string|null
+     * @var  string
      */
-    private $private_desc = null;
+    private $private_desc;
 
     /**
      * Message for restricted access
      *
-     * @var  string|null
+     * @var  string
      */
-    private $restrict_msg = null;
+    private $restrict_msg;
 
     /**
      * Join policy
      *
-     * @var  string|null
+     * @var  string
      */
-    private $join_policy = null;
+    private $join_policy;
 
     /**
      * Discoverability
      *
-     * @var integer|null
+     * @var integer
      */
-    private $discoverability = null;
+    private $discoverability;
 
     /**
      * Autosubscribe to discussion emails
@@ -124,37 +124,37 @@ class Group extends Obj
     /**
      * Description for 'logo'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $logo = null;
+    private $logo;
 
     /**
      * Description for 'plugins'
      *
-     * @var  string|null
+     * @var  string
      */
-    private $plugins = null;
+    private $plugins;
 
     /**
      * Created timestamp
      *
-     * @var  string|null
+     * @var  string
      */
-    private $created = null;
+    private $created;
 
     /**
      * Created by user ID
      *
-     * @var  integer|null
+     * @var  integer
      */
-    private $created_by = null;
+    private $created_by;
 
     /**
      * Paramters
      *
-     * @var  string|null
+     * @var  string
      */
-    private $params = null;
+    private $params;
 
     /**
      * List of members

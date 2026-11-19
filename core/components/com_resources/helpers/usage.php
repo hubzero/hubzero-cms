@@ -25,9 +25,9 @@ class Usage
     /**
      * Resource ID
      *
-     * @var int|null
+     * @var int
      */
-    public $resid = null;
+    public $resid;
 
     /**
      * Resource type
@@ -39,9 +39,9 @@ class Usage
     /**
      * Resource rating
      *
-     * @var int|null
+     * @var int
      */
-    public $rating = null;
+    public $rating;
 
     /**
      * Number of users
@@ -53,30 +53,30 @@ class Usage
     /**
      * Description for 'datetime'
      *
-     * @var string|null
+     * @var string
      */
-    public $datetime = null;
+    public $datetime;
 
     /**
      * Number of citations
      *
-     * @var integer|null
+     * @var integer
      */
-    public $cites = null;
+    public $cites;
 
     /**
      * Last citation date
      *
-     * @var string|null
+     * @var string
      */
-    public $lastcite = null;
+    public $lastcite;
 
     /**
      * Date format
      *
-     * @var string|null
+     * @var string
      */
-    public $dateFormat = null;
+    public $dateFormat;
 
     /**
      * Constructor

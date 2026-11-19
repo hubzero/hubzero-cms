@@ -31,9 +31,9 @@ class Module extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Groups\Tables\Module|null
+     * @var \Components\Groups\Tables\Module
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

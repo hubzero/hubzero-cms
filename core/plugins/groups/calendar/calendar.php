@@ -28,7 +28,7 @@ class Calendar extends Plugin
      */
     protected $access;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
@@ -36,10 +36,10 @@ class Calendar extends Plugin
      */
     protected $arrival;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
-    /** @var int|null */
+    /** @var int */
     protected $calendar;
     /**
      * The calendar event being shown. Kept apart from $event, which the
@@ -61,11 +61,11 @@ class Calendar extends Plugin
     /**
      * @var  string|null
      */
-    protected $dinner;
+    protected $dinner = null;
     /**
      * @var  string|null
      */
-    protected $disability;
+    protected $disability = null;
     /**
      * @var  \Hubzero\User\Group
      */
@@ -87,10 +87,10 @@ class Calendar extends Plugin
      */
     protected $register;
     /**
-     * @var  \Hubzero\User\User|null
+     * @var  \Hubzero\User\User
      */
     protected $user;
-    /** @var int|null */
+    /** @var int */
     protected $year;
 
     /**

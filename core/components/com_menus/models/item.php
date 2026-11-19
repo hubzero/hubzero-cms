@@ -117,7 +117,7 @@ class Item extends Nested
      *
      * @var  \Hubzero\Config\Registry|null
      */
-    public $paramsRegistry;
+    public $paramsRegistry = null;
 
     /**
      * Sets up additional custom rules

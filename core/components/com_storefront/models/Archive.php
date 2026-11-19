@@ -18,7 +18,7 @@ use Hubzero\Facades\App;
 class Archive extends \Hubzero\Base\Obj
 {
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $count;
     /**

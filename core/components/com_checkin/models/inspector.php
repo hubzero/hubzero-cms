@@ -39,16 +39,16 @@ class Inspector extends Obj
     /**
      * Indicates if the internal state has been set
      *
-     * @var  boolean|null
+     * @var  boolean
      */
-    protected $stateSet = null;
+    protected $stateSet;
 
     /**
      * Total items
      *
      * @var  integer|null
      */
-    protected $total;
+    protected $total = null;
 
     /**
      * List of tables

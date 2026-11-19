@@ -26,9 +26,9 @@ class Prerequisite extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Prerequisites|null
+     * @var \Components\Courses\Tables\Prerequisites
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope
@@ -40,9 +40,9 @@ class Prerequisite extends Base
     /**
      * Track the member id for whom the prereqs apply
      *
-     * @var int|null
+     * @var int
      **/
-    protected $member_id = null;
+    protected $member_id;
 
     /**
      * Store the prereqs themselves

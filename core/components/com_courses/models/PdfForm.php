@@ -28,9 +28,9 @@ class PdfForm
     /**
      * File name (from which images are generated)
      *
-     * @var string|null
+     * @var string
      **/
-    private $fname = null;
+    private $fname;
 
     /**
      * Form ID
@@ -42,9 +42,9 @@ class PdfForm
     /**
      * Count of pages created
      *
-     * @var int|null
+     * @var int
      **/
-    private $pages = null;
+    private $pages;
 
     /**
      * Form title
@@ -56,9 +56,9 @@ class PdfForm
     /**
      * Base path for form images
      *
-     * @var string|null
+     * @var string
      **/
-    private $base = null;
+    private $base;
 
     /**
      * Constructor

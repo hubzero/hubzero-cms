@@ -19,16 +19,16 @@ use Hubzero\Facades\Lang;
 class Nogit extends Obj
 {
     /**
-     * @var  \Hubzero\Filesystem\Flysystem|null
+     * @var  \Hubzero\Filesystem\Flysystem
      */
     protected $adapter;
 
     /**
      * Full path to Git repo
      *
-     * @var string|null
+     * @var string
      */
-    private $path = null;
+    private $path;
 
     /**
      * Constructor

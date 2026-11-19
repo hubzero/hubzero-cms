@@ -27,7 +27,7 @@ class Randomquote extends Module
      */
     protected $quote;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $quote_to_show;
     /**

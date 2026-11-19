@@ -47,7 +47,7 @@ class Supporttickets extends Module
      */
     protected $topened;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $year;
 

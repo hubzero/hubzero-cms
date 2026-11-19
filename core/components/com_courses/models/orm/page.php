@@ -79,9 +79,9 @@ class Page extends Relational
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  object
      */
-    public $params = null;
+    public $params;
 
     /**
      * Generates automatic ordering field value

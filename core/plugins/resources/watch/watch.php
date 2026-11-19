@@ -22,14 +22,14 @@ use Hubzero\Facades\User;
 
 class Watch extends Plugin
 {
-    /** @var string|null */
+    /** @var string */
     protected $action;
     /**
      * @var  mixed
      */
     protected $link;
     /**
-     * @var  \Components\Resources\Models\Entry|null
+     * @var  \Components\Resources\Models\Entry
      */
     protected $resource;
 

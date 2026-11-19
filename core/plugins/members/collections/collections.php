@@ -25,7 +25,7 @@ use Hubzero\Facades\User;
 class Collections extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /** @var \Hubzero\Database\Driver */

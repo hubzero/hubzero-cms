@@ -36,7 +36,7 @@ class Notices extends Module
      */
     protected $moduleid;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     protected $publish;
 

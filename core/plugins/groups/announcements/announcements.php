@@ -29,13 +29,13 @@ class Announcements extends Plugin
      */
     protected $access;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
      * @var  string|null
      */
-    protected $authorized;
+    protected $authorized = null;
     /**
      * @var  \Hubzero\User\Group
      */
@@ -47,7 +47,7 @@ class Announcements extends Plugin
     /**
      * @var  int|null
      */
-    protected $total;
+    protected $total = null;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

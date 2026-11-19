@@ -49,7 +49,7 @@ class CurrentCart extends Cart
     /**
      * @var  \stdClass|null
      */
-    public $tInfo;
+    public $tInfo = null;
 
     /**
      * Cart constructor

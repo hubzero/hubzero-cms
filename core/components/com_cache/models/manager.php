@@ -35,9 +35,9 @@ class Manager extends Obj
     /**
      * Indicates if the internal state has been set
      *
-     * @var  boolean|null
+     * @var  boolean
      */
-    protected $stateSet = null;
+    protected $stateSet;
 
     /**
      * An array of Cache Items indexed by cache group ID
@@ -49,9 +49,9 @@ class Manager extends Obj
     /**
      * Group total
      *
-     * @var  integer|null
+     * @var  integer
      */
-    protected $total = null;
+    protected $total;
 
     /**
      * Pagination object

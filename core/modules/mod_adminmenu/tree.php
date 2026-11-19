@@ -18,23 +18,23 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * CSS string to add to document head
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $css = null;
+    protected $css;
 
     /**
      * Root node
      *
-     * @var  \Modules\Adminmenu\Node|null
+     * @var  \Modules\Adminmenu\Node
      */
-    protected $root = null;
+    protected $root;
 
     /**
      * Current working node
      *
-     * @var  \Modules\Adminmenu\Node|null
+     * @var  \Modules\Adminmenu\Node
      */
-    protected $current = null;
+    protected $current;
 
     /**
      * Constructor

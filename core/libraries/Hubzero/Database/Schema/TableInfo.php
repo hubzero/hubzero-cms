@@ -57,35 +57,35 @@ class TableInfo
     /**
      * Storage engine (MySQL: InnoDB, MyISAM, etc.)
      *
-     * @var string|null
+     * @var string
      */
     protected $engine;
 
     /**
      * Character set
      *
-     * @var string|null
+     * @var string
      */
     protected $charset;
 
     /**
      * Collation
      *
-     * @var string|null
+     * @var string
      */
     protected $collation;
 
     /**
      * Table comment
      *
-     * @var string|null
+     * @var string
      */
     protected $comment;
 
     /**
      * Auto-increment value
      *
-     * @var int|null
+     * @var int
      */
     protected $autoIncrement;
 

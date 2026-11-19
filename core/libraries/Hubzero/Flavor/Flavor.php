@@ -60,7 +60,7 @@ class Flavor
     /**
      * The file it came from, for messages
      *
-     * @var  string|null
+     * @var  string
      */
     protected $file;
 

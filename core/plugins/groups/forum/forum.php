@@ -39,11 +39,11 @@ use Components\Forum\Models\Attachment;
 class Forum extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $base;
     /** @var \Hubzero\Database\Driver */
@@ -63,11 +63,11 @@ class Forum extends Plugin
      */
     protected $group_plugin_acl;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $limit;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $limitstart;
     /**

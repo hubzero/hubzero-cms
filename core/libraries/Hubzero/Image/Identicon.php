@@ -50,7 +50,7 @@ class Identicon
     private $size;
 
     /**
-     * @var  int|null
+     * @var  int
      */
     private $pixelRatio;
 

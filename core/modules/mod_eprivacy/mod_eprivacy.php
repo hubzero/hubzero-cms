@@ -33,7 +33,7 @@ class Eprivacy extends Module
      */
     protected $moduleid;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $uri;
 

@@ -21,9 +21,9 @@ class ClientDetector
     /**
      * Request URI
      *
-     * @var  \Hubzero\Http\Request|null
+     * @var  \Hubzero\Http\Request
      */
-    private $request = null;
+    private $request;
 
     /**
      * Create a new application instance.

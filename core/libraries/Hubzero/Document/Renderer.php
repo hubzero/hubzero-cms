@@ -20,9 +20,9 @@ class Renderer extends Obj
     /**
      * Reference to the Document object that instantiated the renderer
      *
-     * @var  \Hubzero\Document\Base|null
+     * @var  \Hubzero\Document\Base
      */
-    protected $doc = null;
+    protected $doc;
 
     /**
      * Renderer mime type

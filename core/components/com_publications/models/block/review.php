@@ -31,16 +31,16 @@ class Review extends Base
     /**
   * Parent block name
   *
-  * @var        string|null
+  * @var        string
   */
-    protected $parentname    = null;
+    protected $parentname;
 
     /**
   * Default manifest
   *
-  * @var        \stdClass|null
+  * @var        \stdClass
   */
-    protected $manifest      = null;
+    protected $manifest;
 
     /**
   * Numeric block ID

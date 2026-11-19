@@ -26,16 +26,16 @@ class Dataselector extends Base
     /**
      * Git helper
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $git = null;
+    protected $git;
 
     /**
      * Project repo path
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * Render

@@ -39,7 +39,7 @@ class Team extends Plugin
     /**
      * @var  string|null
      */
-    protected $task;
+    protected $task = null;
     /**
      * @var  mixed
      */

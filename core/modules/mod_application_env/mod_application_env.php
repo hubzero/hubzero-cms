@@ -16,7 +16,7 @@ use Hubzero\Facades\Config;
  */
 class ApplicationEnv extends Module
 {
-    /** @var string|null */
+    /** @var string */
     protected $environment;
 
     /**

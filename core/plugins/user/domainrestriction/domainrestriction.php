@@ -45,18 +45,18 @@ class Domainrestriction extends Plugin
      * @var  mixed
      */
     private $bademails;
-    /** @var string|null */
+    /** @var string */
     private $email;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $domain;
     /**
-     * @var  string|null
+     * @var  string
      */
     private $tld;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     private $allowed;
 

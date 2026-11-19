@@ -29,9 +29,9 @@ class Announcement extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\Announcement|null
+     * @var \Components\Courses\Tables\Announcement
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

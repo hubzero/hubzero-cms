@@ -23,15 +23,15 @@ use Hubzero\Facades\User;
 class Wishlist extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $authorized;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $config;
     /**

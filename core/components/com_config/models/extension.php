@@ -56,9 +56,9 @@ class Extension extends Relational
     /**
      * XML manifest
      *
-     * @var  object|null
+     * @var  object
      */
-    protected $manifest = null;
+    protected $manifest;
 
     /**
      * Fields and their validation criteria

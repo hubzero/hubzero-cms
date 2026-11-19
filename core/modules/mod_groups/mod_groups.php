@@ -49,7 +49,7 @@ class Groups extends Module
      * @var  mixed
      */
     protected $restricted;
-    /** @var string|null */
+    /** @var string */
     protected $type;
     /**
      * @var  mixed

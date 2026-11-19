@@ -33,9 +33,9 @@ class Calendar extends Model
     /**
      * Table
      *
-     * @var \Components\Events\Tables\Calendar|null
+     * @var \Components\Events\Tables\Calendar
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Table name
@@ -61,9 +61,9 @@ class Calendar extends Model
     /**
      * Events Count
      *
-     * @var string|null
+     * @var string
      */
-    private $events_count = null;
+    private $events_count;
 
     /**
      * Constructor

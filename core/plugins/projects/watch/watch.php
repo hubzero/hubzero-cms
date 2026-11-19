@@ -27,15 +27,15 @@ class Watch extends Plugin
      * @var  array<mixed>|null
      */
     protected $area;
-    /** @var string|null */
+    /** @var string */
     protected $action;
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $project;
-    /** @var \Hubzero\Item\Watch|null */
+    /** @var \Hubzero\Item\Watch */
     protected $watch;
 
     /**

@@ -27,9 +27,9 @@ class Post extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Collections\Tables\Post|null
+     * @var \Components\Collections\Tables\Post
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

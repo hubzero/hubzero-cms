@@ -36,9 +36,9 @@ class Comments extends SiteController
     /**
      * Book model
      *
-     * @var  \Components\Wiki\Models\Book|null
+     * @var  \Components\Wiki\Models\Book
      */
-    public $book = null;
+    public $book;
 
     /**
      * Sub component?

@@ -53,9 +53,9 @@ class MigrationGenerator
     /**
      * Custom template content
      *
-     * @var string|null
+     * @var string
      */
-    protected $template = null;
+    protected $template;
 
     /**
      * Safe mode flags for SQL generation

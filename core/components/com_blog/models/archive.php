@@ -28,14 +28,14 @@ class Archive extends Obj
      *
      * @var  \Hubzero\Config\Registry|null
      */
-    private $config;
+    private $config = null;
 
     /**
      * File space path
      *
      * @var  Adapters\Base|null
      */
-    private $adapter;
+    private $adapter = null;
 
     /**
      * Constructor

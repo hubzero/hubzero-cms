@@ -153,16 +153,16 @@ class TableDiff
     /**
      * Old table name (if renamed)
      *
-     * @var string|null
+     * @var string
      */
-    protected $oldTableName = null;
+    protected $oldTableName;
 
     /**
      * New table name (if renamed)
      *
-     * @var string|null
+     * @var string
      */
-    protected $newTableName = null;
+    protected $newTableName;
 
     /**
      * Create a new TableDiff instance

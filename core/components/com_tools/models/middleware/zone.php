@@ -28,9 +28,9 @@ class Zone extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Tools\Tables\Zones|null
+     * @var \Components\Tools\Tables\Zones
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * \Hubzero\ItemList

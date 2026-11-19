@@ -16,9 +16,9 @@ class ManyShiftsToMany extends ManyToMany
     /**
      * The field identifying model type
      *
-     * @var  string|null
+     * @var  string
      **/
-    protected $shifter = null;
+    protected $shifter;
 
     /**
      * Constructs a new object instance

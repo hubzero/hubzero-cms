@@ -18,9 +18,9 @@ class Parser
     /**
      * A unique token
      *
-     * @var  string|null
+     * @var  string
      */
-    private $tokenPrefix = null;
+    private $tokenPrefix;
 
     /**
      * Configuration options

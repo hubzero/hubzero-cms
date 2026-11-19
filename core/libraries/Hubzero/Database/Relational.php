@@ -238,16 +238,16 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This will defined as the static/calling class' name.
      * It's used when building relationships between classes.
      *
-     * @var string|null
+     * @var string
      **/
-    private $modelName = null;
+    private $modelName;
 
     /**
      * The database model namespace
      *
-     * @var string|null
+     * @var string
      **/
-    private $modelNamespace = null;
+    private $modelNamespace;
 
     /**
      * The internal array of methods of this model
@@ -263,9 +263,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The database query object
      *
-     * @var \Hubzero\Database\Query|null
+     * @var \Hubzero\Database\Query
      **/
-    private $query = null;
+    private $query;
 
     /**
      * The database connection used by the query object
@@ -379,16 +379,16 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @var string|null
+     * @var string
      **/
-    protected $table = null;
+    protected $table;
 
     /**
      * An alias to apply to the table for initial query building
      *
-     * @var string|null
+     * @var string
      **/
-    protected $tableAlias = null;
+    protected $tableAlias;
 
     /**
      * The table namespace
@@ -399,9 +399,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @FIXME: could we infer this once our models are properly namespaced?
      *
-     * @var string|null
+     * @var string
      **/
-    protected $namespace = null;
+    protected $namespace;
 
     /**
      * The table primary key name
@@ -469,9 +469,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * This will also get set on the rows object if applicable.
      *
-     * @var \Hubzero\Database\Pagination|null
+     * @var \Hubzero\Database\Pagination
      **/
-    public $pagination = null;
+    public $pagination;
 
     /**
      * Automatic fields to populate every time a row is touched
@@ -497,9 +497,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Any associative elements
      *
-     * @var object|null
+     * @var object
      **/
-    public $associated = null;
+    public $associated;
 
     /**
      * Cached list of class methods

@@ -22,7 +22,7 @@ class Bundle
      *
      * @var \Components\Publications\Models\Publication|null
      */
-    protected $publication;
+    protected $publication = null;
 
     /**
      * Publication ID

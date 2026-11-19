@@ -41,9 +41,9 @@ class Member extends Relational
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  object
      */
-    public $params = null;
+    public $params;
 
     /**
      * Get parent course

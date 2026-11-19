@@ -22,23 +22,23 @@ class Git extends Obj
     /**
      * Git path
      *
-     * @var string|null
+     * @var string
      */
-    private $gitpath = null;
+    private $gitpath;
 
     /**
      * User ID
      *
-     * @var integer|null
+     * @var integer
      */
-    private $uid = null;
+    private $uid;
 
     /**
      * Full path to Git repo
      *
-     * @var string|null
+     * @var string
      */
-    private $path = null;
+    private $path;
 
     /**
      * Constructor

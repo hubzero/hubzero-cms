@@ -25,9 +25,9 @@ class Date extends Base
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Courses\Tables\SectionDate|null
+     * @var \Components\Courses\Tables\SectionDate
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Object scope

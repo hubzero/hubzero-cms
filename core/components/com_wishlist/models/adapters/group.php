@@ -19,9 +19,9 @@ class Group extends Base
     /**
      * The group the wish list belongs to
      *
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
-    protected $item = null;
+    protected $item;
 
     /**
      * URL segments

@@ -49,9 +49,9 @@ class WikiParser
     /**
      * A unique token
      *
-     * @var string|null
+     * @var string
      */
-    private $token = null;
+    private $token;
 
     /**
      * Configuration options
@@ -138,7 +138,7 @@ class WikiParser
     /**
      * Flag for last section state
      *
-     * @var string|null
+     * @var string
      */
     private $mLastSection;
 

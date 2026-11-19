@@ -22,11 +22,11 @@ use Hubzero\Facades\User;
 class Captcha extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $keystring;
     /**
-     * @var  int|null
+     * @var  int
      */
     protected $ly;
 

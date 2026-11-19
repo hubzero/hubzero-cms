@@ -20,9 +20,9 @@ class Publication extends Base
     /**
      * The publication the wish list belongs to
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    protected $item = null;
+    protected $item;
 
     /**
      * URL segments

@@ -153,9 +153,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Path to filespace
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $filespace = null;
+    protected $filespace;
 
     /**
      * Params Registry

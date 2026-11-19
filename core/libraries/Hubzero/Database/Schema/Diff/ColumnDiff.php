@@ -105,16 +105,16 @@ class ColumnDiff
     /**
      * Old column name (if renamed)
      *
-     * @var string|null
+     * @var string
      */
-    protected $oldName = null;
+    protected $oldName;
 
     /**
      * New column name (if renamed)
      *
-     * @var string|null
+     * @var string
      */
-    protected $newName = null;
+    protected $newName;
 
     /**
      * Create a new ColumnDiff instance

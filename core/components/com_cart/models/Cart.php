@@ -32,9 +32,9 @@ abstract class Cart
     /**
      * Cart ID
      *
-     * @var  int|null
+     * @var  int
      */
-    public $crtId = null;
+    public $crtId;
 
     /**
      * Debug mode
@@ -46,9 +46,9 @@ abstract class Cart
     /**
      * Warehouse Model
      *
-     * @var warehouse|null
+     * @var warehouse
      */
-    public $warehouse = null;
+    public $warehouse;
 
     /**
      * Salt

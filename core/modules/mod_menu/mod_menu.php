@@ -20,11 +20,11 @@ use Hubzero\Facades\App;
 class Menu extends Module
 {
     /**
-     * @var  bool|null
+     * @var  bool
      */
     public $parentLink;
     /**
-     * @var  bool|null
+     * @var  bool
      */
     public $rootLink;
 

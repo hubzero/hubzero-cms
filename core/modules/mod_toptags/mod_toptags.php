@@ -17,7 +17,7 @@ use Components\Tags\Models\Tag;
 class Toptags extends Module
 {
     /**
-     * @var  \Hubzero\Database\Rows|null
+     * @var  \Hubzero\Database\Rows
      */
     protected $tags;
 

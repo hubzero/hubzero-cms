@@ -62,9 +62,9 @@ class Rows implements Iterator, Countable
     /**
      * The pagination object based on these rows
      *
-     * @var \Hubzero\Database\Pagination|null
+     * @var \Hubzero\Database\Pagination
      **/
-    public $pagination = null;
+    public $pagination;
 
     /**
      * Calls the given array function on the rows object and attaches itself to the model

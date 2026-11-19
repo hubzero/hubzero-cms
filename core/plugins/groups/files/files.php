@@ -24,11 +24,11 @@ use Hubzero\Facades\User;
 class Files extends Plugin
 {
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $componentOption;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $action;
     /**
@@ -42,9 +42,9 @@ class Files extends Plugin
     /**
      * @var  string|null
      */
-    protected $name;
+    protected $name = null;
     /**
-     * @var  string|null
+     * @var  string
      */
     protected $path;
 

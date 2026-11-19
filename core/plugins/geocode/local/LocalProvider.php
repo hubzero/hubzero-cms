@@ -264,9 +264,9 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     ];
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $type = null;
+    private $type;
 
     /**
      * @param \Psr\Http\Client\ClientInterface $adapter An HTTP adapter.

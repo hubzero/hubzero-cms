@@ -43,7 +43,7 @@ class PdoConnection implements ConnectionInterface
      *
      * @var \PDO|null
      */
-    protected $pdo;
+    protected $pdo = null;
 
     /**
      * The Data Source Name for connection

@@ -28,11 +28,11 @@ class Project extends Model
     /**
      * @var  string|null
      */
-    protected $base;
+    protected $base = null;
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $creator;
+    protected $creator = null;
     /**
      * @var  mixed
      */
@@ -44,13 +44,13 @@ class Project extends Model
     /**
      * @var  int|null
      */
-    protected $newCount;
-    /** @var \Components\Publications\Tables\Publication|null */
+    protected $newCount = null;
+    /** @var \Components\Publications\Tables\Publication */
     protected $objPub;
     /**
      * @var  \Hubzero\User\User|null
      */
-    protected $owner;
+    protected $owner = null;
     /**
      * @var  mixed
      */
@@ -64,19 +64,19 @@ class Project extends Model
      */
     protected $repo = null;
     /** @var \Components\Projects\Tables\Activity|null */
-    protected $tblActivity;
+    protected $tblActivity = null;
     /** @var \Components\Projects\Tables\Blog|null */
-    protected $tblBlog;
+    protected $tblBlog = null;
     /** @var \Components\Projects\Tables\Comment|null */
-    protected $tblComment;
+    protected $tblComment = null;
     // Read and written from outside the class: the projects controller
     // reconciles groups, matches invitations and loads the team through it.
     /** @var \Components\Projects\Tables\Owner|null */
-    public $tblOwner;
+    public $tblOwner = null;
     /** @var \Components\Projects\Tables\Todo|null */
-    protected $tblTodo;
+    protected $tblTodo = null;
     /** @var \Components\Projects\Tables\Type|null */
-    protected $tblType;
+    protected $tblType = null;
     /**
      * The owners' rows, cached by team()
      *
@@ -86,7 +86,7 @@ class Project extends Model
     /**
      * @var  \Components\Projects\Tables\Type|null
      */
-    protected $type;
+    protected $type = null;
     /**
      * @var  array<int, mixed>|null
      */
@@ -109,9 +109,9 @@ class Project extends Model
     /**
      * Table, an instance of $tableClass
      *
-     * @var \Components\Projects\Tables\Project|null
+     * @var \Components\Projects\Tables\Project
      */
-    protected $table = null;
+    protected $table;
 
     /**
      * Model context

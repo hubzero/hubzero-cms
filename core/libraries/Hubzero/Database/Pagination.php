@@ -47,7 +47,7 @@ class Pagination
      *
      * @var  \Hubzero\Pagination\Paginator|null
      **/
-    private $paginator;
+    private $paginator = null;
 
     /**
      * Attempts to forward calls to the paginator itself
