@@ -68,14 +68,13 @@ defined('_HZEXEC_') or die();
                     echo ')"></div>';
                 } else {
                     echo '<div class="img" style="background-image: url(';
-                    $baseDir = str_replace(PATH_ROOT, '', __DIR__);
-                    $imgPath = dirname(dirname(dirname($baseDir)))
-                        . DS . 'assets' . DS . 'img' . DS;
+                    // The address of core, which need not be under the document root
+                    $imgPath = \Hubzero\Filesystem\Util::coreUrlPath(dirname(__DIR__, 3)) . '/assets/img/';
                     echo "'" . $imgPath . "noimage.png'";
                     echo ')"></div>';
                 }
                     echo '<a href="';
-                    $baseUrl = Route::url('index.php?option=' . Request::getCmd('option'));
+                    $baseUrl = rtrim(Route::url('index.php?option=' . Request::getCmd('option')), '/') . '/';
                     echo $baseUrl . 'product/' . $productIdentificator;
                     echo '">';
                     echo '<div class="content">';

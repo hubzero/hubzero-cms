@@ -207,9 +207,7 @@ $aliasValue = $this->escape(stripslashes($this->row->getAlias()));
                     } else {
                         $image = false;
                         $pic = 'noimage.png';
-                        $relDir = str_replace(PATH_ROOT, '', __DIR__);
-                        $path = dirname(dirname(dirname(dirname($relDir))))
-                            . '/site/assets/img';
+                        $path = \Hubzero\Filesystem\Util::coreUrlPath(dirname(__DIR__, 4)) . '/site/assets/img';
                     }
                     ?>
                     <div id="img-container">

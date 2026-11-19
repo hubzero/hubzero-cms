@@ -14,7 +14,7 @@ use Hubzero\Facades\Request;
 /** @var \Components\Groups\Helpers\Template $this */
 
 // define base path (without doc root)
-$base = rtrim(str_replace(PATH_ROOT, '', __DIR__), DS);
+$base = rtrim(\Hubzero\Filesystem\Util::urlPath(__DIR__), '/');
 
 // define base url for links
 $baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');

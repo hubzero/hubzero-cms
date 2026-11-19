@@ -62,8 +62,8 @@ if (!empty($this->notifications)) {
                         empty($this->product->images)
                         || !is_file(PATH_ROOT . $imgPath . $this->product->images[0]->imgName)
                     ) {
-                        $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS
-                            . 'img' . DS;
+                        // The address of core, which need not be under the document root
+                        $imgPath = \Hubzero\Filesystem\Util::coreUrlPath(dirname(__DIR__, 3)) . '/assets/img/';
                         $image = new \stdClass();
                         $image->imgName = 'noimage.png';
                         $this->product->images[0] = $image;

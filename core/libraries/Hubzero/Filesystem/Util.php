@@ -257,4 +257,33 @@ class Util
 
         return '/' . basename(PATH_CORE) . $inside;
     }
+
+    /**
+     * The URL path, from the site root, of a file or directory either under the document root or inside core,
+     * wherever core is. For code that may run from either place, such as a group template copied into app.
+     *
+     * @param   string  $path  A path under PATH_ROOT or inside core
+     * @return  string
+     */
+    public static function urlPath($path)
+    {
+        $root = (string) realpath(PATH_ROOT);
+        $real = realpath($path);
+        if ($real === false) {
+            $real = $path;
+        }
+
+        // Inside core first: core is linked into the root on many hubs, and its
+        // real path then lies outside it
+        $core = (string) realpath(PATH_CORE);
+        if ($core !== '' && str_starts_with($real, $core)) {
+            return self::coreUrlPath($real);
+        }
+
+        if ($root !== '' && str_starts_with($real, $root)) {
+            return '/' . ltrim(substr($real, strlen($root)), '/');
+        }
+
+        return self::coreUrlPath($path);
+    }
 }

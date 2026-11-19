@@ -278,7 +278,7 @@ class Events extends GroupMacro
     private function renderEvents($group, $events)
     {
         Document::addStyleSheet(
-            rtrim(str_replace(PATH_ROOT, '', __DIR__)) . DS . '../macro-assets' . DS . 'events' . DS . 'events.css',
+            \Hubzero\Filesystem\Util::coreUrlPath(dirname(__DIR__)) . '/macro-assets/events/events.css',
         );
 
         $content = '';

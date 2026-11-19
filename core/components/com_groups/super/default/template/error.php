@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 /** @var \Components\Groups\Helpers\Template $this */
 
 // define base path
-$base = str_replace(PATH_ROOT, '', __DIR__);
+$base = \Hubzero\Filesystem\Util::urlPath(__DIR__);
 
 // add stylesheets and scripts
 Document::addStyleSheet($base . DS . 'assets/css/main.css');

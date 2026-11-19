@@ -71,13 +71,13 @@ $this
                     echo ')"></div>';
                 } else {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS
-                        . 'img' . DS;
+                    // The address of core, which need not be under the document root
+                    $imgPath = \Hubzero\Filesystem\Util::coreUrlPath(dirname(__DIR__, 3)) . '/assets/img/';
                     echo "'" . $imgPath . "noimage.png'";
                     echo ')"></div>';
                 }
                 echo '<a href="';
-                echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/'
+                echo rtrim(Route::url('index.php?option=' . Request::getCmd('option')), '/') . '/product/'
                     . $this->escape($productIdentificator);
                 echo '">';
                 echo '<div class="content">';
