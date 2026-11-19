@@ -322,7 +322,7 @@ class Grid
         $hover = '<span class="checkedout">';
 
         if ($tooltip && isset($row->checked_out_time)) {
-            $text = addslashes(htmlspecialchars($row->editor, ENT_COMPAT, 'UTF-8'));
+            $text = addslashes(htmlspecialchars((string) ($row->editor ?? ''), ENT_COMPAT, 'UTF-8'));
 
             $date = with(new Date($row->checked_out_time))->toLocal(Lang::txt('DATE_FORMAT_LC1'));
             $time = with(new Date($row->checked_out_time))->toLocal('H:i');

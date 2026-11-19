@@ -45,8 +45,8 @@ class Helper
         //we must have valid mailing recipient object
         if (
             !is_object($mailingRecipientObject)
-            || !$mailingRecipientObject->mailingid
-            || !$mailingRecipientObject->email
+            || empty($mailingRecipientObject->mailingid)
+            || empty($mailingRecipientObject->email)
         ) {
             return false;
         }

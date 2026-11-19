@@ -1326,7 +1326,8 @@ class Citations extends Plugin
      * Applies filters to Citations model and returns applied filters
      * @param array<mixed>  $filters array of POST values
      * @param   mixed  $scope_id
-     * @return  array<string, mixed> sanitized and validated filter values
+     * @return  array{citations: \Components\Citations\Models\Citation, filters: array<string, mixed>}
+     *          The filtered citations query and the sanitized filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {

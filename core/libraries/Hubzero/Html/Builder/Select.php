@@ -473,7 +473,7 @@ class Select
             $label = '';
             $id    = '';
             $dataAttributes = '';
-            if (is_object($element) && method_exists($element, 'getProperties')) {
+            if ($element instanceof \Hubzero\Base\Obj) {
                 $elementProperties = $element->getProperties();
                 foreach ($elementProperties as $property => $value) {
                     $dataField = strtolower(substr($property, 0, 4));

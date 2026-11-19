@@ -291,8 +291,8 @@ class Pipeline extends SiteController
             'toolname'        => $hzt->toolname,
             'membergroups'    => \Components\Tools\Models\Tool::getToolGroups($this->_toolid),
             'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
-            'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
-            'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : ''),
+            'currentrevision' => (isset($hztv_current->revision) ? $hztv_current->revision : ''),
+            'currentversion'  => (isset($hztv_current->version) ? $hztv_current->version : ''),
         ];
 
         if (Pathway::count() <= 0) {

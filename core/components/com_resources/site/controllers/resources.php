@@ -2803,7 +2803,7 @@ class Resources extends SiteController
         }
 
         // Check if they're the resource creator
-        if (is_object($resource) && $resource->created_by == User::get('id')) {
+        if (isset($resource->created_by) && $resource->created_by == User::get('id')) {
             return true;
         }
 
