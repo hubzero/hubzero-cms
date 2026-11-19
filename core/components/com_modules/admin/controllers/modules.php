@@ -385,10 +385,10 @@ class Modules extends AdminController
         }
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
-            $fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+            $fields['publish_up']   = Date::parse($fields['publish_up'], Config::get('offset'))?->toSql();
         }
         if (isset($fields['publish_down']) && $fields['publish_down'] != '') {
-            $fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+            $fields['publish_down'] = Date::parse($fields['publish_down'], Config::get('offset'))?->toSql();
         }
 
         if (!isset($fields['content'])) {

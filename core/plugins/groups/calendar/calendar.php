@@ -832,10 +832,10 @@ class Calendar extends Plugin
         // If no end date set, it assumes the allday event was scheduled for just the publish_up day selected.
         $allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
         if ($allday) {
-            $event['publish_up'] = Date::of($event['publish_up'])->toSql();
+            $event['publish_up'] = Date::parse($event['publish_up'])?->toSql();
 
             $event['publish_down'] = !empty($event['publish_down']) ? $event['publish_down'] : $event['publish_up'];
-            $event['publish_down'] = Date::of($event['publish_down'])->add('24 hours')->toSql();
+            $event['publish_down'] = Date::parse($event['publish_down'])?->add('24 hours')->toSql();
         }
 
         //parse publish up date/time
@@ -844,7 +844,7 @@ class Calendar extends Plugin
             if (isset($event['publish_up_time'])) {
                 $event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
             }
-            $event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'], $ignoreDst)->toSql();
+            $event['publish_up'] = Date::parse($event['publish_up'], $event['time_zone'], $ignoreDst)?->toSql();
             unset($event['publish_up_time']);
         }
 
@@ -854,7 +854,7 @@ class Calendar extends Plugin
             if (isset($event['publish_down_time'])) {
                 $event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
             }
-            $event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'], $ignoreDst)->toSql();
+            $event['publish_down'] = Date::parse($event['publish_down'], $event['time_zone'], $ignoreDst)?->toSql();
             unset($event['publish_down_time']);
         }
 
@@ -862,7 +862,7 @@ class Calendar extends Plugin
         if (isset($event['registerby']) && $event['registerby'] != '') {
             //remove @ symbol
             $event['registerby'] = str_replace("@", "", $event['registerby']);
-            $event['registerby'] = Date::of($event['registerby'], $event['time_zone'])->toSql();
+            $event['registerby'] = Date::parse($event['registerby'], $event['time_zone'])?->toSql();
         }
 
         //did we want to turn off registration?
@@ -870,8 +870,9 @@ class Calendar extends Plugin
             $event['registerby'] = null;
         }
 
-        // calender_id cannot be an empty string due to database constrain
-        if ($event['calendar_id'] === "") {
+        // calender_id cannot be an empty string due to database constrain; the
+        // picker is not shown at all to a member when the group has no calendars
+        if (($event['calendar_id'] ?? '') === '') {
             $event['calendar_id'] = null;
         }
 

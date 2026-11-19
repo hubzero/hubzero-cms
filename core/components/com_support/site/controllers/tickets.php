@@ -1645,7 +1645,7 @@ class Tickets extends SiteController
             if (!$incoming['target_date']) {
                 $incoming['target_date'] = null;
             } else {
-                $incoming['target_date'] = Date::of($incoming['target_date'], Config::get('offset'))->toSql();
+                $incoming['target_date'] = Date::parse($incoming['target_date'], Config::get('offset'))?->toSql();
             }
         }
 

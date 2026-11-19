@@ -262,10 +262,10 @@ class Entries extends SiteController
         //$fields['allow_comments'] = (isset($fields['allow_comments'])) ? 1 : 0;
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
-            $fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+            $fields['publish_up']   = Date::parse($fields['publish_up'], Config::get('offset'))?->toSql();
         }
         if (isset($fields['publish_down']) && $fields['publish_down'] != '') {
-            $fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+            $fields['publish_down'] = Date::parse($fields['publish_down'], Config::get('offset'))?->toSql();
         }
         $fields['scope'] = 'site';
         $fields['scope_id'] = 0;
@@ -652,12 +652,12 @@ class Entries extends SiteController
 
         Event::trigger('system.logActivity', [
             'activity' => [
-                'action'      => ($data['id'] ? 'updated' : 'created'),
+                'action'      => ($isNew ? 'created' : 'updated'),
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
                 'description' => Lang::txt(
-                    'COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'),
+                    'COM_BLOG_ACTIVITY_COMMENT_' . ($isNew ? 'CREATED' : 'UPDATED'),
                     $comment->get('id'),
                     '<a href="'
                         . Route::url($entry->link() . '#c' . $comment->get('id'))

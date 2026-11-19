@@ -160,7 +160,7 @@ class Campaigns extends AdminController
                 // get timezone identifier from user setting
                 $tz = User::getParam('timezone', Config::get('offset'));
                 // save the newly changed date, accounting for the user's local time zone, $tz:
-                $row->expire_date = Date::of($fields['expire_date_display'], $tz)->toSql();
+                $row->expire_date = Date::parse($fields['expire_date_display'], $tz)?->toSql();
             }
         }
 

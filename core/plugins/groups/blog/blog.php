@@ -750,11 +750,11 @@ class Blog extends Plugin
         $entry = Request::getArray('entry', [], 'post');
 
         if (isset($entry['publish_up']) && $entry['publish_up'] != '') {
-            $entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
+            $entry['publish_up']   = Date::parse($entry['publish_up'], Config::get('offset'))?->toSql();
         }
 
         if (isset($entry['publish_down']) && $entry['publish_down'] != '') {
-            $entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
+            $entry['publish_down'] = Date::parse($entry['publish_down'], Config::get('offset'))?->toSql();
         }
 
         // make sure we dont want to turn off comments

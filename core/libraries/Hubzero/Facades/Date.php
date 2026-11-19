@@ -57,4 +57,29 @@ class Date extends Facade
         $date = $date ?: 'now';
         return new \Hubzero\Utility\Date($date, $tz, $ignoreDst);
     }
+
+    /**
+     * A date from what someone typed, or null when it is not one
+     *
+     * of() throws on a string PHP cannot read as a date, and a form field is
+     * such a string whenever someone types into it by hand; reading posted
+     * dates through of() turned a typo into a server error.
+     *
+     * @param   mixed  $date       The text to read
+     * @param   mixed  $tz         Time zone the text is in
+     * @param   bool   $ignoreDst  Ignore daylight saving time
+     * @return  \Hubzero\Utility\Date|null
+     */
+    public static function parse($date, $tz = null, $ignoreDst = false)
+    {
+        if (!is_string($date) || trim($date) === '') {
+            return null;
+        }
+
+        try {
+            return new \Hubzero\Utility\Date($date, $tz, $ignoreDst);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }
