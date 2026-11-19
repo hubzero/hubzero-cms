@@ -14,7 +14,7 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Component\AbstractComponent;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 
 /**
  * Component entry point
@@ -57,29 +57,25 @@ class Media extends AbstractComponent
         // Load the admin HTML view
 
         // Make sure the user is authorized to view this page
-        $cmd = Request::getCmd('task', null);
-        $controllerName = 'media';
+        // The controller is named as the administrator's views name it
+        // (controller=medialist), or before the task as in task=media.upload
+        $cmd = Request::getCmd('task', '');
+        $controllerName = Request::getCmd('controller', 'media');
 
         if (strpos($cmd, '.') != false) {
             // We have a defined controller/task pair -- lets split them out
             list($controllerName, $task) = explode('.', $cmd);
 
-            // Define the controller name and path
-            $controllerName = strtolower($controllerName);
-            $controllerPath = dirname(__DIR__) . '/admin/controllers/' . $controllerName . '.php';
-
-            // If the controller file path exists, include it ... else lets die with a 500 error
-            if (file_exists($controllerPath)) {
-                require_once $controllerPath;
-            } else {
-                App::abort(402, Lang::txt('JERROR_INVALID_CONTROLLER'));
-            }
+            // The controller runs the task by its own name
+            Request::setVar('task', $task);
         }
 
-        // Set the name for the controller and instantiate it
+        // The site's controllers (site/controllers) run the administrator's
+        // media manager; until they existed this looked for them in vain, so
+        // every request here ended in the error below
         $controllerClass = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-        if (!class_exists($controllerClass)) {
+        if (!is_subclass_of($controllerClass, \Hubzero\Component\ControllerInterface::class)) {
             App::abort(402, Lang::txt('JERROR_INVALID_CONTROLLER_CLASS'));
         }
 

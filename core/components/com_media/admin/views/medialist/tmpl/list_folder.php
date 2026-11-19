@@ -13,7 +13,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();

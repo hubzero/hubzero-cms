@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -189,7 +189,7 @@ $this->js();
                     <div class="media-items" id="media-items" data-tmpl="<?= $this->escape($tmpl) ?>"
                         data-list="<?= $displayUrl ?>">
                         <?php
-                        $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(MediaHelper::base(), '');
+                        $children = Components\Media\Helpers\MediaHelper::getChildren(MediaHelper::base(), '');
 
                         $this
                             ->view('default', 'medialist')

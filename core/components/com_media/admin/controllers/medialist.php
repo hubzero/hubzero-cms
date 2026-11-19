@@ -10,7 +10,7 @@ namespace Components\Media\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Media\Models\Files;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;

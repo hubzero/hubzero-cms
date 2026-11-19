@@ -11,7 +11,7 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -54,7 +54,7 @@ else :
         );
 endif;
 
-    $fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
+    $fileSize = \Components\Media\Helpers\MediaHelper::parseSize(
         $this->data['size'],
     );
     $imgAlt = $this->escape(

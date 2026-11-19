@@ -13,7 +13,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -52,7 +52,7 @@ $href = Route::url(
 );
 
 // Image alt text
-$fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
+$fileSize = \Components\Media\Helpers\MediaHelper::parseSize(
     $this->currentImg['size'],
 );
 $imgAlt = Lang::txt(

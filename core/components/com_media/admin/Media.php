@@ -8,7 +8,7 @@
 
 namespace Components\Media\Admin;
 
-use Components\Media\Admin\Helpers\MediaHelper;
+use Components\Media\Helpers\MediaHelper;
 use Hubzero\Component\AbstractComponent;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
