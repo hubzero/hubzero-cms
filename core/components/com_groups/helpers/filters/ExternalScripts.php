@@ -30,7 +30,7 @@ class ExternalScripts extends \HTMLPurifier_Filter
     {
         $pre_regex   = '#<script(.)*src="([^"]*)"([^>]*)></script>#';
         $pre_replace = '[externalscript src="$2"]';
-        return preg_replace($pre_regex, $pre_replace, $html);
+        return (string) preg_replace($pre_regex, $pre_replace, $html);
     }
 
     /**
@@ -45,6 +45,6 @@ class ExternalScripts extends \HTMLPurifier_Filter
     {
         $pre_regex   = '#\[externalscript src="([^"]*)"\]#';
         $pre_replace = '<script src="$1"></script>';
-        return preg_replace($pre_regex, $pre_replace, $html);
+        return (string) preg_replace($pre_regex, $pre_replace, $html);
     }
 }

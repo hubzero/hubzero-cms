@@ -30,7 +30,7 @@ class Type extends Table
      * Get params
      *
      * @param   integer  $type
-     * @return  string   or null
+     * @return  string|null   or null
      */
     public function getParams($type = 1)
     {
@@ -53,7 +53,7 @@ class Type extends Table
      * Get type title
      *
      * @param   integer  $id
-     * @return  string   or null
+     * @return  string|null   or null
      */
     public function getTypeTitle($id = 0)
     {
@@ -65,7 +65,7 @@ class Type extends Table
      * Get ID by type title
      *
      * @param   string  $type
-     * @return  string  or null
+     * @return  string|null  or null
      */
     public function getIdByTitle($type = '')
     {

@@ -104,4 +104,19 @@ abstract class Button extends Obj
      * @return  string
      */
     abstract public function fetchButton();
+
+    /**
+     * The parent, which the calls using it need set
+     *
+     * @return  \Hubzero\Html\Toolbar
+     * @throws  \LogicException  When it is not
+     */
+    protected function parentOrFail()
+    {
+        if ($this->parent === null) {
+            throw new \LogicException(static::class . '::$parent is not set');
+        }
+
+        return $this->parent;
+    }
 }

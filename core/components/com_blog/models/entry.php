@@ -162,7 +162,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
         $alias = str_replace(' ', '-', $alias);
 
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
 
     /**
@@ -744,7 +744,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $data = parent::toObject();
 
         $this->access();
-        $data->params = $this->params->toObject();
+        $data->params = $this->transformParams()->toObject();
 
         return $data;
     }
@@ -766,7 +766,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         $data = $this->toArray();
-        $data['params'] = $this->params->toArray();
+        $data['params'] = $this->transformParams()->toArray();
 
         $form->bind($data);
 

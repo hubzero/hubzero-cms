@@ -98,6 +98,7 @@ class RenderedMarkerTest extends TestCase
     protected function tearDown(): void
     {
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         foreach (['router', 'request', 'html.builder', 'client', 'filesystem'] as $service) {
             $app->forget($service);
         }

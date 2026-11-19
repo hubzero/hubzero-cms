@@ -202,7 +202,7 @@ class Captcha extends Plugin
     /**
      * Displays either an image or text-based CAPTCHA for module forms
      *
-     * @return string
+     * @return string|null
      */
     public function onGetModuleCaptcha()
     {
@@ -212,7 +212,7 @@ class Captcha extends Plugin
     /**
      * Displays either an image or text-based CAPTCHA for component forms
      *
-     * @return string
+     * @return string|null
      */
     public function onGetComponentCaptcha()
     {

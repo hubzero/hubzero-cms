@@ -47,6 +47,6 @@ class Custom extends Button
      */
     public function fetchId($type = 'Custom', $html = '', $id = 'custom')
     {
-        return $this->parent->getName() . '-' . $id;
+        return $this->parentOrFail()->getName() . '-' . $id;
     }
 }

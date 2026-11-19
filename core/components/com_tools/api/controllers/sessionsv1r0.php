@@ -636,7 +636,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr((string) strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr((string) $app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -706,8 +706,8 @@ class Sessionsv1r0 extends ApiController
         $status = \Components\Tools\Helpers\Utils::middleware(
             "start user=" . escapeshellarg($result->get('username'))
             . " ip=" . escapeshellarg($app->ip)
-            . " app=" . escapeshellarg($app->name)
-            . " version=" . escapeshellarg($app->version),
+            . " app=" . escapeshellarg((string) $app->name)
+            . " version=" . escapeshellarg((string) $app->version),
             $output,
         );
 
@@ -845,7 +845,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr((string) strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr((string) $app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -966,13 +966,13 @@ class Sessionsv1r0 extends ApiController
             . ' ip='
             . escapeshellarg($app->ip)
             . ' app='
-            . escapeshellarg($app->name)
+            . escapeshellarg((string) $app->name)
             . ' version='
-            . escapeshellarg($app->version)
+            . escapeshellarg((string) $app->version)
             . $encoded;
         $status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
-        if (!$status) {
+        if (!$status || !$output) {
             throw new Exception(Lang::txt('Tool invocation failed'), 500);
         }
 
@@ -1229,7 +1229,7 @@ class Sessionsv1r0 extends ApiController
         // Call the view command
         $status = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
-        if (!$status) {
+        if (!$status || !$output) {
             throw new Exception(
                 isset($output->user_message) ? $output->user_message : Lang::txt('COM_TOOLS_ERROR_SESSION_VIEW_FAILED'),
                 500,

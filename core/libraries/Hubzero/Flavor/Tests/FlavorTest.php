@@ -54,6 +54,7 @@ class FlavorTest extends TestCase
     public function testAChildCascadesOntoItsParent()
     {
         $tooled = new Finder([$this->files('shipped')])->find('tooled');
+        $this->assertNotNull($tooled);
 
         $this->assertNull($tooled->parent(), 'the cascade is done once resolved');
         $this->assertSame('The base, with tools', $tooled->description());

@@ -305,12 +305,12 @@ class Node extends Obj
 
             $this->parent = & $parent;
 
-            if ($this->parent_id != 1) {
+            if ($this->parent_id != 1 && $parent) {
                 $this->path = $parent->getPath();
             }
             $this->path[] = $this->id . ':' . $this->alias;
 
-            if (count($parent->children) > 1) {
+            if ($parent && count($parent->children) > 1) {
                 end($parent->children);
                 $this->leftSibling = prev($parent->children);
                 $this->leftSibling->_rightsibling = &$this;

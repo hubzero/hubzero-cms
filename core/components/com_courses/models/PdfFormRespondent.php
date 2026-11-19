@@ -315,7 +315,7 @@ class PdfFormRespondent
             'SELECT question_id, answer_id FROM #__courses_form_respondent_progress '
             . 'WHERE respondent_id = ' . (int) $this->id,
         );
-        return $dbh->loadAssocList('question_id');
+        return $dbh->loadAssocList('question_id') ?? [];
     }
 
     /**
@@ -361,7 +361,7 @@ class PdfFormRespondent
         $query .= ' AND `member_id` = ' . $dbh->quote($this->member_id)
             . ' AND `finished` IS NOT NULL ORDER BY `attempt` ASC';
         $dbh->setQuery($query);
-        return $dbh->loadColumn();
+        return $dbh->loadColumn() ?? [];
     }
 
     /**

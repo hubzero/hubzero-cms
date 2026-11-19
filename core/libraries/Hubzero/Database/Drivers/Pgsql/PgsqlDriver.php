@@ -307,7 +307,7 @@ class PgsqlDriver extends BaseSqlDriver
             "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name",
         );
 
-        return $this->loadColumn();
+        return $this->loadColumn() ?? [];
     }
 
     /**
@@ -345,7 +345,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Gets the database collation in use
      *
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getCollation()
     {
@@ -366,7 +366,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getPrimaryKey($table)
     {
@@ -510,7 +510,7 @@ class PgsqlDriver extends BaseSqlDriver
                   AND pg_attribute.attname = " . $this->quote($column);
 
         $this->setQuery($query);
-        return $this->loadColumn();
+        return $this->loadColumn() ?? [];
     }
 
     /**
@@ -621,7 +621,7 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set
      * @param   string|null       $field  The field to check (optional)
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getCharacterSet($table, $field = null)
     {
@@ -833,7 +833,7 @@ class PgsqlDriver extends BaseSqlDriver
     /**
      * Gets the version of the database connector
      *
-     * @return  string
+     * @return  string|null
      */
     public function getVersion()
     {
@@ -2226,7 +2226,7 @@ class PgsqlDriver extends BaseSqlDriver
     {
         // PostgreSQL 12+ supports GENERATED ALWAYS AS
         $version = $this->getVersion();
-        return version_compare($version, '12.0', '>=');
+        return version_compare((string) $version, '12.0', '>=');
     }
 
     /**

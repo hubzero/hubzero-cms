@@ -161,7 +161,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     {
         $alias = (isset($data['cn']) && $data['cn'] ? $data['cn'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
-        return preg_replace("/[^a-zA-Z0-9\-\_]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-\_]/", '', strtolower($alias));
     }
 
     /**

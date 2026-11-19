@@ -218,15 +218,15 @@ class Doi extends Plugin
     protected function getDoiXml($doi)
     {
         if (
-            $this->configs->dataciteEZIDSwitch
+            $this->getPubConfig()->dataciteEZIDSwitch
             == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE
         ) {
-            $url = rtrim($this->configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
+            $url = rtrim($this->getPubConfig()->dataciteServiceURL, '/') . '/metadata/' . $doi;
 
             $ch = curl_init($url);
             $options = [
                 CURLOPT_URL             => $url,
-                CURLOPT_USERPWD         => $this->configs->dataciteUserPW,
+                CURLOPT_USERPWD         => $this->getPubConfig()->dataciteUserPW,
                 CURLOPT_RETURNTRANSFER  => true,
                 CURLOPT_HTTPHEADER      => [
                     'Content-Type:text/plain;charset=UTF-8',
@@ -489,10 +489,10 @@ class Doi extends Plugin
      */
     protected function regMetadata($xml)
     {
-        $url = rtrim($this->configs->dataciteServiceURL, '/') . '/' . 'metadata';
+        $url = rtrim($this->getPubConfig()->dataciteServiceURL, '/') . '/' . 'metadata';
 
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->configs->dataciteUserPW);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->getPubConfig()->dataciteUserPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
@@ -513,7 +513,7 @@ class Doi extends Plugin
     /**
      * Get DOI service information from publication component configuration
      *
-     * @return  void
+     * @return  \stdClass
      */
     public function getPubConfig()
     {
@@ -527,6 +527,8 @@ class Doi extends Plugin
 
             $this->configs = $configs;
         }
+
+        return $this->configs;
     }
 
     /**

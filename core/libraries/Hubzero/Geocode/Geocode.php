@@ -338,7 +338,7 @@ class Geocode
             "SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) ="
                 . $gdb->quote(strtolower($continent)),
         );
-        return $gdb->loadColumn();
+        return $gdb->loadColumn() ?? [];
     }
 
     /**
@@ -357,7 +357,7 @@ class Geocode
             "SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) ="
                 . $gdb->quote(strtolower($country)),
         );
-        return $gdb->loadColumn();
+        return $gdb->loadColumn() ?? [];
     }
 
     /**

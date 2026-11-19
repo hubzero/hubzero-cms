@@ -264,7 +264,7 @@ class Questions extends Plugin
         if (User::isGuest()) {
             $rtrn = Request::getString(
                 'REQUEST_URI',
-                Route::url($this->model->link() . '&active=' . $this->pluginName, false, true),
+                Route::url($this->modelOrFail()->link() . '&active=' . $this->pluginName, false, true),
                 'server',
             );
 
@@ -407,18 +407,19 @@ class Questions extends Plugin
         $row->tag($tags);
 
         // Add the tag to link to the resource
-        $tag = ($this->model->isTool() ? 'tool:' . $this->model->alias : 'resource:' . $this->model->id);
-        $row->addTag($tag, User::get('id'), ($this->model->isTool() ? 0 : 1));
+        $model = $this->modelOrFail();
+        $tag = ($model->isTool() ? 'tool:' . $model->alias : 'resource:' . $model->id);
+        $row->addTag($tag, User::get('id'), ($this->modelOrFail()->isTool() ? 0 : 1));
 
         // Build list of recipients
         $receivers = [];
 
         // Get tool contributors (if question is about a tool)
-        if ($this->model->isTool()) {
+        if ($this->modelOrFail()->isTool()) {
             $TA = new \Components\Tools\Tables\Author($this->database);
             $objV = new \Components\Tools\Tables\Version($this->database);
 
-            $toolname = $this->model->alias;
+            $toolname = $this->modelOrFail()->alias;
 
             $rev = $objV->getCurrentVersionProperty($toolname, 'revision');
             $authors = $TA->getToolAuthors('', 0, $toolname, $rev);
@@ -516,7 +517,22 @@ class Questions extends Plugin
 
         // Redirect to the question
         App::redirect(
-            Route::url($this->model->link() . '&active=' . $this->pluginName),
+            Route::url($this->modelOrFail()->link() . '&active=' . $this->pluginName),
         );
+    }
+
+    /**
+     * The model, which the calls using it need set
+     *
+     * @return  \Components\Resources\Models\Entry
+     * @throws  \LogicException  When it is not
+     */
+    protected function modelOrFail()
+    {
+        if ($this->model === null) {
+            throw new \LogicException(static::class . '::$model is not set');
+        }
+
+        return $this->model;
     }
 }

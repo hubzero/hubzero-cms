@@ -725,7 +725,7 @@ class Version extends Table
      *
      * @param   string  $toolname
      * @param   string  $property
-     * @return  string
+     * @return  string|null
      */
     public function getCurrentVersionProperty($toolname, $property)
     {
@@ -741,7 +741,7 @@ class Version extends Table
      *
      * @param   string  $toolname
      * @param   string  $property
-     * @return  string
+     * @return  string|null
      */
     public function getDevVersionProperty($toolname, $property)
     {

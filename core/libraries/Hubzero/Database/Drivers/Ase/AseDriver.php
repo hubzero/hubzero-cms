@@ -865,7 +865,7 @@ class AseDriver extends BaseSqlDriver
     public function getTableList()
     {
         $this->setQuery("SELECT name FROM sysobjects WHERE type = 'U' ORDER BY name");
-        return $this->loadColumn();
+        return $this->loadColumn() ?? [];
     }
 
     /**
@@ -993,7 +993,7 @@ class AseDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getPrimaryKey($table)
     {

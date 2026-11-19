@@ -369,7 +369,7 @@ class Sql
      */
     protected function name($table)
     {
-        return preg_replace('/^#__/', '', $table);
+        return (string) preg_replace('/^#__/', '', $table);
     }
 
     /**

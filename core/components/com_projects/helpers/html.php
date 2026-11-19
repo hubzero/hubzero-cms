@@ -167,7 +167,7 @@ class Html extends Obj
     {
         $ds = (DS == '\\') ? '\\' . DS : DS;
         $regex = ['#[^A-Za-z0-9:\_\-' . $ds . ' ]#'];
-        return preg_replace($regex, '', $path);
+        return (string) preg_replace($regex, '', $path);
     }
 
     /**
@@ -229,7 +229,7 @@ class Html extends Obj
      *
      * @param   string|null  $file
      * @param   string|null  $mimeType
-     * @return  string
+     * @return  string|null
      */
     public static function fixUpMimeType($file = null, $mimeType = null)
     {
@@ -376,11 +376,12 @@ class Html extends Obj
     public static function replaceEmoIcons($text = null)
     {
         $icons = self::getEmoIcons();
+        $text  = (string) $text;
 
         foreach ($icons as $icon => $image) {
             $pat  =  '#(?<=\s|^)(' . preg_quote($icon) . ')(?=\s|$)#';
             $rep  = '<span class="icon-emo-' . $image . '"></span>';
-            $text = preg_replace($pat, $rep, (string) $text);
+            $text = (string) preg_replace($pat, $rep, $text);
         }
 
         return $text;

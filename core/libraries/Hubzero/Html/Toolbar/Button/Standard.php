@@ -74,7 +74,7 @@ class Standard extends Button
      */
     public function fetchId($type = 'Standard', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
     {
-        return $this->parent->getName() . '-' . $name;
+        return $this->parentOrFail()->getName() . '-' . $name;
     }
 
     /**

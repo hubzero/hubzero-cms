@@ -86,7 +86,7 @@ class Category extends Select
 
                 // For new items we want a list of categories you are allowed to create in.
 
-                if (!$this->form->getValue($name)) {
+                if (!$this->formValue($name)) {
                     foreach ($options as $i => $option) {
                         // To take save or create in a category you need to have create rights for that category
 
@@ -103,7 +103,7 @@ class Category extends Select
                 } else {
                     // If you have an existing category id things are more complex.
 
-                    $categoryOld = $this->form->getValue($name);
+                    $categoryOld = $this->formValue($name);
 
                     foreach ($options as $i => $option) {
                         // If you are only allowed to edit in this category but not edit.state, you should not get any

@@ -574,7 +574,7 @@ class Sessions extends SiteController
         }
 
         // Check of the toolname has a revision indicator
-        $r = substr((string) strrchr($app->name, '_'), 1);
+        $r = substr((string) strrchr((string) $app->name, '_'), 1);
         if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev') {
             $r = '';
         }
@@ -706,8 +706,8 @@ class Sessions extends SiteController
         $status = Utils::middleware(
             "start user=" . escapeshellarg(User::get('username'))
             . " ip=" . escapeshellarg($app->ip)
-            . " app=" . escapeshellarg($app->name)
-            . " version=" . escapeshellarg($app->version)
+            . " app=" . escapeshellarg((string) $app->name)
+            . " version=" . escapeshellarg((string) $app->version)
             . $toolparams,
             $output,
         );
@@ -1250,7 +1250,7 @@ class Sessions extends SiteController
         // Call the view command
         $status = Utils::middleware($command, $output);
 
-        if (!$status) {
+        if (!$status || !$output) {
             App::redirect(
                 Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
                 isset($output->user_message) ? $output->user_message : 'no reason given',

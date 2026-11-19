@@ -84,7 +84,7 @@ class Author extends Table
      * Get the first author's name on a resource
      *
      * @param   integer  $rid  Resource ID
-     * @return  string
+     * @return  string|null
      */
     public function getFirstAuthor($rid = 0)
     {

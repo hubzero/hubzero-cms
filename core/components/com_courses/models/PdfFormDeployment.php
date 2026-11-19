@@ -220,7 +220,7 @@ class PdfFormDeployment
 			ORDER BY member_id ASC, score ASC",
         );
 
-        return $dbh->loadAssocList($key);
+        return $dbh->loadAssocList($key) ?? [];
     }
 
     /**

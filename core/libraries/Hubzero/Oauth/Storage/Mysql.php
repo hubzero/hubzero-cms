@@ -123,7 +123,7 @@ class Mysql implements
      * Get client details by id
      *
      * @param   int   $id  Client mysql row auto-incrementing id
-     * @return  array<string, mixed>
+     * @return  array<string, mixed>|null
      */
     public function getClientDetailsById($id)
     {

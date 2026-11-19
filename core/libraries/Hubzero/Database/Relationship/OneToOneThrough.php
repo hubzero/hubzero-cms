@@ -232,7 +232,7 @@ class OneToOneThrough extends Relationship
             if (isset($data[$key])) {
                 $row->addRelationship($name, $data[$key]);
             } else {
-                $related = $this->related;
+                $related = $this->relatedOrFail();
                 $row->addRelationship($name, $related::blank());
             }
         }

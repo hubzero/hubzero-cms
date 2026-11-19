@@ -87,6 +87,7 @@ class IdPBindingTest extends Basic
 
         // The metadata's endpoints are built from the hub's canonical URL
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         if ($app->has('config')) {
             $this->config = $app->raw('config');
             $app->forget('config');
@@ -102,6 +103,7 @@ class IdPBindingTest extends Basic
         list($_SERVER, $_GET, $_POST) = $this->globals;
 
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         $app->forget('config');
         if ($this->config !== null) {
             $app['config'] = $this->config;
@@ -124,6 +126,7 @@ class IdPBindingTest extends Basic
         $location = $this->signedRedirect($this->authnRequest(), 'sp');
 
         $message = $this->idp->readSAMLRequest($this->arrive('GET', $location))->getMessage();
+        $this->assertNotNull($message);
 
         $this->assertInstanceOf(AuthnRequest::class, $message);
         $this->assertSame('https://sp.example.com/saml2', $message->getIssuer()->getValue());
@@ -145,6 +148,7 @@ class IdPBindingTest extends Basic
         );
 
         $message = $this->idp->readSAMLRequest($this->arrive('GET', $location))->getMessage();
+        $this->assertNotNull($message);
 
         $this->assertSame('state-999', $message->getRelayState());
         $this->assertFalse($this->idp->validateRequestSignature($message, $this->sp('sp')));

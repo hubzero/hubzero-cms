@@ -87,7 +87,7 @@ class Tags extends Cloud
         $sql .= implode(" AND ", $where) . " GROUP BY rt.objectid, rt.id";
 
         $db->setQuery($sql);
-        return $db->loadAssocList('objectid');
+        return $db->loadAssocList('objectid') ?? [];
     }
 
     /**

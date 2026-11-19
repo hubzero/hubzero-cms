@@ -54,7 +54,7 @@ class Timezone extends Groupedlist
         $groups = [];
 
         $keyField = $element['key_field'] ? (string) $element['key_field'] : 'id';
-        $keyValue = $this->form->getValue($keyField);
+        $keyValue = $this->formValue($keyField);
 
         // If the timezone is not set use the server setting.
         if (strlen($this->value) == 0 && empty($keyValue)) {

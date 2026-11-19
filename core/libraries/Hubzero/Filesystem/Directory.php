@@ -37,7 +37,7 @@ class Directory extends Entity
      **/
     public function listContents($recursive = false)
     {
-        return $this->hasAdapterOrFail()->adapter->listContents($this->getPath(), $recursive);
+        return $this->adapterOrFail()->listContents($this->getPath(), $recursive);
     }
 
     /**
@@ -47,7 +47,7 @@ class Directory extends Entity
      **/
     public function create()
     {
-        return $this->hasAdapterOrFail()->adapter->createDir($this->getPath());
+        return $this->adapterOrFail()->createDir($this->getPath());
     }
 
     /**
@@ -57,7 +57,7 @@ class Directory extends Entity
      **/
     public function delete()
     {
-        return $this->hasAdapterOrFail()->adapter->deleteDir($this->getPath());
+        return $this->adapterOrFail()->deleteDir($this->getPath());
     }
 
     /**
@@ -78,7 +78,7 @@ class Directory extends Entity
     {
         $dirs = [];
 
-        $contents = $this->hasAdapterOrFail()->adapter->listContents($this->getPath(), false);
+        $contents = $this->adapterOrFail()->listContents($this->getPath(), false);
         foreach ($contents as $item) {
             if ($item->isDir()) {
                 $thisDir = new \stdClass();

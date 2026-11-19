@@ -391,7 +391,7 @@ class Tool extends Table
      * Get tool dev group
      *
      * @param   integer  $toolid
-     * @return  string
+     * @return  string|null
      */
     public function getToolDevGroup($toolid)
     {

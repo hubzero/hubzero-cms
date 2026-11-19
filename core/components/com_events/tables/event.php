@@ -91,7 +91,7 @@ class Event extends Table
     /**
      * Get the newest event date
      *
-     * @return  string
+     * @return  string|null
      */
     public function getFirst()
     {
@@ -102,7 +102,7 @@ class Event extends Table
     /**
      * Get the oldest event date
      *
-     * @return  string
+     * @return  string|null
      */
     public function getLast()
     {

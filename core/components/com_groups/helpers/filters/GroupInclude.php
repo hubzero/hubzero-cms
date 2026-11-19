@@ -30,7 +30,7 @@ class GroupInclude extends \HTMLPurifier_Filter
     {
         $pre_regex   = '#<group:include([^>]*)/>#';
         $pre_replace = '[group:include$1]';
-        return preg_replace($pre_regex, $pre_replace, $html);
+        return (string) preg_replace($pre_regex, $pre_replace, $html);
     }
 
     /**
@@ -45,6 +45,6 @@ class GroupInclude extends \HTMLPurifier_Filter
     {
         $pre_regex   = '#\[group:include([^\]]*)\]#';
         $pre_replace = '<group:include$1/>';
-        return preg_replace($pre_regex, $pre_replace, $html);
+        return (string) preg_replace($pre_regex, $pre_replace, $html);
     }
 }

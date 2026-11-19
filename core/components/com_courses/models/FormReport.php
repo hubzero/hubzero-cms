@@ -133,7 +133,7 @@ class FormReport extends Model
                 $db->setQuery($query);
                 $aux   = $db->loadObject();
 
-                if (!$aux->student) {
+                if (!$aux || !$aux->student) {
                     continue;
                 }
 

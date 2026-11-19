@@ -1122,7 +1122,7 @@ class WikiParser
                 case 'html':
                     if ($this->get('fullparse')) {
                         $txt = $this->cleanXss($txt);
-                        return preg_replace('/#!html/', '', $txt, 1);
+                        return (string) preg_replace('/#!html/', '', $txt, 1);
                     } else {
                         return '<strong>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_HTML_NOT_ALLOWED') . '</strong>';
                     }
@@ -1362,7 +1362,7 @@ class WikiParser
     {
         $this->set('wikitohtml', true);
         //admonitionCallback
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             '/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s',
             [&$this, 'getAdmonition'],
             $text,
@@ -1394,7 +1394,7 @@ class WikiParser
         if (class_exists('Html')) {
             Html::behavior('math');
         }
-        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
+        return (string) preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
     }
 
     /**
@@ -1454,7 +1454,7 @@ class WikiParser
      */
     private function includes($text)
     {
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             '/\[\[(include)(\]\]|\((.*)\)\]\])/Ui',
             [&$this, 'getInclude'],
             $text == null ? '' : $text,
@@ -1529,7 +1529,7 @@ class WikiParser
         $text = (string) $text;
 
         // Get macros [[name(args)]]
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             '/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',
             [&$this, 'getMacro'],
             $text,
@@ -2218,7 +2218,7 @@ class WikiParser
         $sac = self::$patterns['spns'] . self::$patterns['algn'] . self::$patterns['clss'];
 
         $text .= "\n\n";
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             "/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU",
             [&$this, 'getTable'],
             $text,

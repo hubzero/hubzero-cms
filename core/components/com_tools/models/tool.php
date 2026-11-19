@@ -190,7 +190,7 @@ class Tool
         $db = App::get('db');
 
         $db->setQuery("SELECT toolname FROM `#__tool`;");
-        return $db->loadColumn();
+        return $db->loadColumn() ?? [];
     }
 
     /**
@@ -1184,7 +1184,7 @@ class Tool
         $query .= ";";
         $db->setQuery($query);
 
-        return $db->loadAssocList();
+        return $db->loadAssocList() ?? [];
     }
 
     /**
@@ -1207,7 +1207,7 @@ class Tool
         $query .= self::buildQuerySort($filters, $admin) . self::buildQueryLimit($filters, $admin);
         $query .= ";";
         $db->setQuery($query);
-        return $db->loadAssocList();
+        return $db->loadAssocList() ?? [];
     }
 
     /**

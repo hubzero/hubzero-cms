@@ -260,7 +260,7 @@ class Project extends Model
      * Return a formatted created timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function created($as = '')
     {
@@ -271,7 +271,7 @@ class Project extends Model
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function modified($as = '')
     {
@@ -1120,7 +1120,7 @@ class Project extends Model
      *     $name is 'Type' ? Tables\Type : (
      *     $name is 'Blog' ? Tables\Blog : (
      *     $name is 'Comment' ? Tables\Comment : (
-     *     $name is 'Todo' ? Tables\Todo : Tables\Project|null))))))
+     *     $name is 'Todo' ? Tables\Todo : Tables\Project))))))
      * )
      */
     public function table($name = null)

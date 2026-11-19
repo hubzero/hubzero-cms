@@ -241,7 +241,7 @@ class Tool extends Table
      * @param   string|null   $identifier
      * @param   integer  $projectid
      * @param   integer  $instanceId
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getFullRecord($identifier = null, $projectid = 0, $instanceId = 0)
     {

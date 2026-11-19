@@ -58,6 +58,8 @@ class Dataselector extends Base
         $master = null,
         $order = 0,
     ) {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         $html = '';
 
         // Get project path
@@ -122,6 +124,8 @@ class Dataselector extends Base
      */
     public function drawItem($elementId, $manifest, $pub = null, $status = null, $master = null, $viewname = 'freeze')
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'projects',
             'element' => 'publications',
@@ -130,12 +134,12 @@ class Dataselector extends Base
         ]);
 
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parentOrFail()->db);
 
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->parent->db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->parentOrFail()->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -156,7 +160,7 @@ class Dataselector extends Base
         $view->set('status', $status);
         $view->set('elementId', $elementId);
         $view->set('attachments', $attachments);
-        $view->set('database', $this->parent->db);
+        $view->set('database', $this->parentOrFail()->db);
         $view->set('master', $master);
         $view->set('name', $viewname);
         $view->set('viewer', 'freeze');
@@ -190,13 +194,15 @@ class Dataselector extends Base
         $master = null,
         $order = 0,
     ) {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parentOrFail()->db);
 
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->parent->db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->parentOrFail()->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -228,7 +234,7 @@ class Dataselector extends Base
         $view->set('collapse', $collapse);
         $view->set('total', $total);
         $view->set('master', $master);
-        $view->set('database', $this->parent->db);
+        $view->set('database', $this->parentOrFail()->db);
         $view->set('order', $order);
         $view->set('viewer', 'edit');
         $view->set('git', $this->git);

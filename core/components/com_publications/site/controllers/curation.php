@@ -866,7 +866,7 @@ class Curation extends SiteController
         if ($this->getError()) {
             return;
         }
-        $pub    = $this->pub;
+        $pub    = $this->pubOrFail();
         $status = $this->pubOrFail()->version->state;
 
         $activity = $status == 1

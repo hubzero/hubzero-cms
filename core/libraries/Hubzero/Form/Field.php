@@ -555,6 +555,23 @@ abstract class Field
     }
 
     /**
+     * A value of the form the field is in, or the default when it is in none
+     *
+     * @param   string       $name     The name of the field
+     * @param   string|null  $group    The optional dot-separated form group path on which to find the field
+     * @param   mixed        $default  The value to give when there is no form or no value
+     * @return  mixed
+     */
+    protected function formValue($name, $group = null, $default = null)
+    {
+        if (!$this->form) {
+            return $default;
+        }
+
+        return $this->form->getValue($name, $group, $default);
+    }
+
+    /**
      * The <field /> element, or an empty one before setup() has been given it
      *
      * @return  SimpleXMLElement

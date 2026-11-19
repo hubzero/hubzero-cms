@@ -93,14 +93,14 @@ class QueryFolder extends Relational
     {
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
-        return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9]/", '', strtolower($alias));
     }
 
     /**
      * Generates automatic created field value
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string
+     * @return  string|null
      */
     public function automaticModified($data)
     {

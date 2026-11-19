@@ -319,7 +319,7 @@ class Relationship
      **/
     public function save($data)
     {
-        $related = $this->related;
+        $related = $this->relatedOrFail();
         $model   = $related::newFromResults($data);
 
         return $this->associate($model)->save();
@@ -418,7 +418,7 @@ class Relationship
             if ($related) {
                 $row->addRelationship($name, $related);
             } else {
-                $related = $this->related;
+                $related = $this->relatedOrFail();
                 $row->addRelationship($name, $related::blank());
             }
         }

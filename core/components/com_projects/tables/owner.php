@@ -358,7 +358,7 @@ class Owner extends Table
      * Get project creator
      *
      * @param   integer|null  $projectid
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getCreator($projectid = null)
     {

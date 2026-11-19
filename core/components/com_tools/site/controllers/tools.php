@@ -180,7 +180,7 @@ class Tools extends SiteController
         if (is_readable((string) $image)) {
             ob_clean();
             header("Content-Type: image/png");
-            readfile($image);
+            readfile((string) $image);
             ob_end_flush();
             exit();
         }
@@ -220,7 +220,7 @@ class Tools extends SiteController
         if (is_readable((string) $file)) {
             ob_clean();
             header("Content-Type: text/css");
-            readfile($file);
+            readfile((string) $file);
             ob_end_flush();
             exit();
         }

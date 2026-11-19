@@ -243,6 +243,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         $table = $schema->introspectTable($tableName);
         $col = $table->getColumn('email');
+        $this->assertNotNull($col);
 
         $this->assertEquals('email', $col->getName());
 
@@ -264,15 +265,18 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         // Email was defined with nullable()
         $emailCol = $table->getColumn('email');
+        $this->assertNotNull($emailCol);
         $this->assertTrue($emailCol->isNullable());
 
         // Description was also defined with nullable()
         $descCol = $table->getColumn('description');
+        $this->assertNotNull($descCol);
         $this->assertTrue($descCol->isNullable());
 
         // Name was given no nullable() either: the schema builder makes columns
         // nullable unless notNull() says otherwise
         $nameCol = $table->getColumn('name');
+        $this->assertNotNull($nameCol);
         $this->assertTrue($nameCol->isNullable());
 
         // Cleanup
@@ -292,9 +296,11 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $table = $schema->introspectTable($tableName);
 
         $nameCol = $table->getColumn('name');
+        $this->assertNotNull($nameCol);
         $this->assertTrue($nameCol->isString());
 
         $idCol = $table->getColumn('id');
+        $this->assertNotNull($idCol);
         $this->assertTrue($idCol->isInteger());
         $this->assertTrue($idCol->isNumeric());
 
@@ -319,6 +325,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $this->assertTrue($idCol->isPrimaryKey());
 
         $nameCol = $table->getColumn('name');
+        $this->assertNotNull($nameCol);
         $this->assertFalse($nameCol->isPrimaryKey());
 
         // Cleanup
@@ -337,6 +344,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         $table = $schema->introspectTable($tableName);
         $col = $table->getColumn('name');
+        $this->assertNotNull($col);
         $array = $col->toArray();
 
         $this->assertArrayHasKey('name', $array);

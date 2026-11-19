@@ -41,6 +41,7 @@ class MigrationFindTest extends TestCase
 
         // The constructor checks for the migrations table; give it one
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         if ($app->has('db')) {
             $this->db = $app->raw('db');
             $app->forget('db');
@@ -76,6 +77,7 @@ class MigrationFindTest extends TestCase
     protected function tearDown(): void
     {
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         $app->forget('db');
         if ($this->db !== null) {
             $app['db'] = $this->db;

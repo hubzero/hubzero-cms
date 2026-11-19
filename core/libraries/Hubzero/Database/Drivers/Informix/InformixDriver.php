@@ -1825,7 +1825,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Gets the database collation in use
      *
-     * @return  string|bool
+     * @return  string|bool|null
      */
     public function getCollation()
     {
@@ -1843,7 +1843,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string|null       $table  The table for which to retrieve the character set
      * @param   string|null       $field  The field to check (optional)
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getCharacterSet($table, $field = null)
     {
@@ -1949,7 +1949,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get the current database name
      *
-     * @return  string
+     * @return  string|null
      */
     public function getDatabase()
     {
@@ -1970,7 +1970,7 @@ class InformixDriver extends BaseSqlDriver
     {
         try {
             $this->setQuery("SELECT name FROM sysdatabases ORDER BY name");
-            return $this->loadColumn();
+            return $this->loadColumn() ?? [];
         } catch (\Exception $e) {
             return [];
         }

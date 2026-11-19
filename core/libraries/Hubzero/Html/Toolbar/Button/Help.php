@@ -86,7 +86,7 @@ class Help extends Button
      */
     public function fetchId()
     {
-        return $this->parent->getName() . '-' . 'help';
+        return $this->parentOrFail()->getName() . '-' . 'help';
     }
 
     /**

@@ -73,7 +73,7 @@ class Level extends Relational
         }
         $alias = str_replace(' ', '-', $alias);
 
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
 
     /**

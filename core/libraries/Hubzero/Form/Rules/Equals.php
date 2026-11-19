@@ -47,6 +47,11 @@ class Equals extends Rule
             return new Exception('JLIB_FORM_INVALID_FORM_OBJECT' . get_class($this));
         }
 
+        // Without the data set there is nothing to compare with.
+        if (!$input) {
+            return false;
+        }
+
         // Test the two values against each other.
         if ($value == $input->get($field)) {
             return true;

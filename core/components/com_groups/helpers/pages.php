@@ -482,7 +482,7 @@ class Pages
      * Get page checkout details
      *
      * @param    mixed  $pageid    Id of page to get info
-     * @return   \stdClass
+     * @return   \stdClass|null
      */
     public static function getCheckout($pageid)
     {

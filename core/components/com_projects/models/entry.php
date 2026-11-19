@@ -150,7 +150,7 @@ class Entry extends Model
      * Return a formatted created timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function created($as = '')
     {
@@ -161,7 +161,7 @@ class Entry extends Model
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function due($as = '')
     {
@@ -172,7 +172,7 @@ class Entry extends Model
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function closed($as = '')
     {

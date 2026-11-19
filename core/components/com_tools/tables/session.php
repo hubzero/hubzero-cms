@@ -90,7 +90,7 @@ class Session extends Table
      *
      * @param   int|string|null  $sess        Session number
      * @param   string|null  $authorized  Admin authorization?
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function loadSession($sess = null, $authorized = null)
     {
@@ -124,7 +124,7 @@ class Session extends Table
      *
      * @param   int|string|null  $sess        Session number
      * @param   string|null  $authorized  Admin authorization?
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function checkSession($sess = null, $authorized = null)
     {

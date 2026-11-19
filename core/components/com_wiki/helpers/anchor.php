@@ -61,7 +61,7 @@ class Anchor
      */
     public static function decodeReferences($text)
     {
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             self::REFERENCE,
             function ($match) {
                 if (isset($match[3])) {

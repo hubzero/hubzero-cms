@@ -109,7 +109,7 @@ class File extends Entity
     public function getMimetype()
     {
         if (!isset($this->mimetype)) {
-            $this->mimetype = $this->hasAdapterOrFail()->adapter->getMimetype($this->getPath());
+            $this->mimetype = $this->adapterOrFail()->getMimetype($this->getPath());
         }
 
         return $this->mimetype;
@@ -124,7 +124,7 @@ class File extends Entity
     public function getSize($raw = false)
     {
         if (!isset($this->size)) {
-            $this->size = $this->hasAdapterOrFail()->adapter->getSize($this->getPath());
+            $this->size = $this->adapterOrFail()->getSize($this->getPath());
         }
 
         return ($raw) ? $this->size : \Hubzero\Utility\Number::formatBytes($this->size);
@@ -182,7 +182,7 @@ class File extends Entity
     public function read()
     {
         if (!isset($this->contents)) {
-            $this->contents = $this->hasAdapterOrFail()->adapter->read($this->getPath());
+            $this->contents = $this->adapterOrFail()->read($this->getPath());
         }
 
         return (string) $this->contents;
@@ -195,7 +195,7 @@ class File extends Entity
      **/
     public function readStream()
     {
-        return $this->hasAdapterOrFail()->adapter->readStream($this->getPath());
+        return $this->adapterOrFail()->readStream($this->getPath());
     }
 
     /**
@@ -239,7 +239,7 @@ class File extends Entity
      **/
     public function write($contents)
     {
-        return $this->hasAdapterOrFail()->adapter->write($this->getPath(), $contents);
+        return $this->adapterOrFail()->write($this->getPath(), $contents);
     }
 
     /**
@@ -250,7 +250,7 @@ class File extends Entity
      **/
     public function update($contents)
     {
-        return $this->hasAdapterOrFail()->adapter->update($this->getPath(), $contents);
+        return $this->adapterOrFail()->update($this->getPath(), $contents);
     }
 
     /**
@@ -261,7 +261,7 @@ class File extends Entity
      **/
     public function put($contents)
     {
-        return $this->hasAdapterOrFail()->adapter->put($this->getPath(), $contents);
+        return $this->adapterOrFail()->put($this->getPath(), $contents);
     }
 
     /**
@@ -272,7 +272,7 @@ class File extends Entity
      **/
     public function putStream($contents)
     {
-        return $this->hasAdapterOrFail()->adapter->putStream($this->getPath(), $contents);
+        return $this->adapterOrFail()->putStream($this->getPath(), $contents);
     }
 
     /**
@@ -321,7 +321,7 @@ class File extends Entity
     public function readAndDelete()
     {
         if (!isset($this->contents)) {
-            $this->contents = $this->hasAdapterOrFail()->adapter->readAndDelete($this->getPath());
+            $this->contents = $this->adapterOrFail()->readAndDelete($this->getPath());
         } else {
             // We've already read it...so just go ahead and delete rather than reading again
             $this->delete();
@@ -337,7 +337,7 @@ class File extends Entity
      **/
     public function delete()
     {
-        return $this->hasAdapterOrFail()->adapter->delete($this->getPath());
+        return $this->adapterOrFail()->delete($this->getPath());
     }
 
     /**

@@ -29,6 +29,7 @@ class TransportDsnTest extends TestCase
     protected function tearDown(): void
     {
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         $app->forget('config');
         if ($this->previous !== null) {
             $app['config'] = $this->previous;
@@ -42,6 +43,7 @@ class TransportDsnTest extends TestCase
     private function configure(array $settings): void
     {
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         if (isset($app['config'])) {
             $this->previous = $app['config'];
         }

@@ -154,11 +154,12 @@ class ConstantContactClient
             ]);
         } catch (RequestException $e) {
             $message = 'Token refresh failed';
-            if ($e->hasResponse()) {
-                $body = json_decode((string) $e->getResponse()->getBody(), true);
+            $errorResponse = $e->getResponse();
+            if ($errorResponse) {
+                $body = json_decode((string) $errorResponse->getBody(), true);
                 $detail = $body['error_description']
                     ?? $body['error']
-                    ?? (string) $e->getResponse()->getBody();
+                    ?? (string) $errorResponse->getBody();
                 $message .= ': ' . $detail;
             }
             throw new \RuntimeException($message, 0, $e);
@@ -219,12 +220,13 @@ class ConstantContactClient
             $response = $this->httpClient->request($method, $uri, $options);
         } catch (RequestException $e) {
             $message = "CC API {$method} {$uri} failed";
-            if ($e->hasResponse()) {
-                $code = $e->getResponse()->getStatusCode();
-                $body = json_decode((string) $e->getResponse()->getBody(), true);
+            $errorResponse = $e->getResponse();
+            if ($errorResponse) {
+                $code = $errorResponse->getStatusCode();
+                $body = json_decode((string) $errorResponse->getBody(), true);
                 $errorBody = $body['error_message']
                     ?? $body[0]['error_message']
-                    ?? (string) $e->getResponse()->getBody();
+                    ?? (string) $errorResponse->getBody();
                 $message .= " ({$code}): " . $errorBody;
             }
             throw new \RuntimeException($message, 0, $e);
@@ -333,12 +335,13 @@ class ConstantContactClient
             $this->httpClient->request('DELETE', '/v3/contacts/' . urlencode($contactId), $options);
         } catch (RequestException $e) {
             $message = "CC API DELETE /v3/contacts/{$contactId} failed";
-            if ($e->hasResponse()) {
-                $code = $e->getResponse()->getStatusCode();
-                $body = json_decode((string) $e->getResponse()->getBody(), true);
+            $errorResponse = $e->getResponse();
+            if ($errorResponse) {
+                $code = $errorResponse->getStatusCode();
+                $body = json_decode((string) $errorResponse->getBody(), true);
                 $errorBody = $body['error_message']
                     ?? $body[0]['error_message']
-                    ?? (string) $e->getResponse()->getBody();
+                    ?? (string) $errorResponse->getBody();
                 $message .= " ({$code}): " . $errorBody;
             }
             throw new \RuntimeException($message, 0, $e);

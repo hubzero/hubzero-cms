@@ -386,7 +386,7 @@ class Tags extends Cloud
 					AND ta.objectid=r.id";
 
         $this->db->setQuery($query);
-        return $this->db->loadColumn();
+        return $this->db->loadColumn() ?? [];
     }
 
     /**

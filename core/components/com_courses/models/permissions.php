@@ -180,32 +180,36 @@ class Permissions extends Obj
      * Check if the current user is enrolled
      *
      * @param   integer|null $user_id
-     * @return  Manager|null  The course manager record for the user, if there is one
+     * @return  Manager  The course manager record for the user (empty if they are not one)
      */
     public function manager($user_id = null)
     {
+        $manager = $this->manager;
+
         if (
-            !isset($this->manager)
+            !isset($manager)
             || ($user_id !== null
-                && (int) $this->manager->get('user_id') != $user_id)
+                && (int) $manager->get('user_id') != $user_id)
         ) {
-            $this->manager = null;
+            $manager = null;
 
             if (isset($this->managers) && isset($this->managers[$user_id])) {
-                $this->manager = $this->managers[$user_id];
+                $manager = $this->managers[$user_id];
             }
 
-            if (!$this->manager) {
-                $this->manager = Manager::getInstance(
+            if (!$manager) {
+                $manager = Manager::getInstance(
                     $user_id,
                     $this->get('course_id'),
                     $this->get('offering_id'),
                     $this->get('section_id'),
                 );
             }
+
+            $this->manager = $manager;
         }
 
-        return $this->manager;
+        return $manager;
     }
 
     /**

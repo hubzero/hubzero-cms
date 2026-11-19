@@ -137,7 +137,7 @@ class ServiceProvider extends Relational
     {
         $cert = (string) preg_replace('/-----(BEGIN|END)[^-]+-----/', '', (string) $cert);
 
-        return preg_replace('/\s+/', '', $cert);
+        return (string) preg_replace('/\s+/', '', $cert);
     }
 
     /**

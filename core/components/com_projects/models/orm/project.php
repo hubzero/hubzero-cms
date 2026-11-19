@@ -231,7 +231,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
         $alias = strip_tags($alias);
 
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
 
     /**

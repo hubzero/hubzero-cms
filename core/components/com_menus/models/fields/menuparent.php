@@ -43,14 +43,14 @@ class MenuParent extends Select
             ->from('#__menu', 'a')
             ->joinRaw('#__menu AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left');
 
-        if ($menuType = $this->form->getValue('menutype')) {
+        if ($menuType = $this->formValue('menutype')) {
             $query->whereEquals('a.menutype', $menuType);
         } else {
             $query->where('a.menutype', '!=', '');
         }
 
         // Prevent parenting to children of this item.
-        if ($id = $this->form->getValue('id')) {
+        if ($id = $this->formValue('id')) {
             $query->joinRaw('#__menu AS p', 'p.id = ' . (int) $id, 'left');
             $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
         }

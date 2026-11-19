@@ -1407,7 +1407,7 @@ class Profile extends Obj
             . $db->quote($gid);
         $db->setQuery($sql);
 
-        return $db->loadAssocList();
+        return $db->loadAssocList() ?? [];
     }
 
     /**

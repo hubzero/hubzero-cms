@@ -107,6 +107,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         $result = $driver
             ->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
             ->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(3, $result->cnt);
     }
 
@@ -181,6 +182,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         $result = $driver
             ->setQuery('SELECT COUNT(*) as cnt FROM ' . $driver->quoteName(self::$testTable))
             ->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(25, $result->cnt);
     }
 
@@ -210,6 +212,7 @@ class BulkInsertTest extends AbstractDriverTestCase
                 . ' WHERE email = ' . $driver->quote('alice@example.com'),
             )
             ->loadObject();
+        $this->assertNotNull($alice);
         $this->assertEquals('Alice', $alice->name);
         $this->assertEquals(1, $alice->status);
 
@@ -220,6 +223,7 @@ class BulkInsertTest extends AbstractDriverTestCase
                 . ' WHERE email = ' . $driver->quote('bob@example.com'),
             )
             ->loadObject();
+        $this->assertNotNull($bob);
         $this->assertEquals('Bob', $bob->name);
         $this->assertEquals(0, $bob->status);
     }
@@ -251,6 +255,7 @@ class BulkInsertTest extends AbstractDriverTestCase
                 . ' WHERE name = ' . $driver->quote('Alice'),
             )
             ->loadObject();
+        $this->assertNotNull($alice);
         $this->assertNull($alice->email);
     }
 

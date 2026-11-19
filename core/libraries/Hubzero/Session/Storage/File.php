@@ -189,6 +189,6 @@ class File extends Store
 
         // Remove double slashes and backslahses and convert
         // all slashes and backslashes to DIRECTORY_SEPARATOR
-        return preg_replace('#[/\\\\]+#', $ds, $path);
+        return (string) preg_replace('#[/\\\\]+#', $ds, $path);
     }
 }

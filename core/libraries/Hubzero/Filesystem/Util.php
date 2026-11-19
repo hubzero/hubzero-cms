@@ -138,7 +138,7 @@ class Util
     {
         $regex = ['#[^A-Za-z0-9:_\\\/-]#'];
 
-        return preg_replace($regex, '', $path);
+        return (string) preg_replace($regex, '', $path);
     }
 
     /**
@@ -158,7 +158,7 @@ class Util
             '#^\.#',
         ];
 
-        return preg_replace($regex, '', $normalized);
+        return (string) preg_replace($regex, '', $normalized);
     }
 
     /**

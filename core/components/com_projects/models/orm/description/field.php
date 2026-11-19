@@ -107,7 +107,7 @@ class Field extends Relational
         $name = strip_tags($name);
         $name = trim($name);
 
-        return preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($name));
+        return (string) preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($name));
     }
 
     /**

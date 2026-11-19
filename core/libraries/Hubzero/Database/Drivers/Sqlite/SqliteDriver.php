@@ -228,7 +228,7 @@ class SqliteDriver extends BaseSqlDriver
             "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
         );
 
-        return $this->loadColumn();
+        return $this->loadColumn() ?? [];
     }
 
     /**
@@ -527,7 +527,7 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string       $table  The table for which to retrieve the character set
      * @param   string|null       $field  The field to check (optional)
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getCharacterSet($table, $field = null)
     {
@@ -873,7 +873,7 @@ class SqliteDriver extends BaseSqlDriver
     /**
      * Gets the version of the database connector
      *
-     * @return  string
+     * @return  string|null
      */
     public function getVersion()
     {
@@ -3152,7 +3152,7 @@ class SqliteDriver extends BaseSqlDriver
     {
         // Simple version check before attempting syntax
         $version = $this->getVersion();
-        if (version_compare($version, '3.31.0', '<')) {
+        if (version_compare((string) $version, '3.31.0', '<')) {
             throw new \RuntimeException('Generated columns require SQLite 3.31.0+');
         }
 
@@ -3177,7 +3177,7 @@ class SqliteDriver extends BaseSqlDriver
     {
         // Simple version check
         $version = $this->getVersion();
-        if (version_compare($version, '3.31.0', '<')) {
+        if (version_compare((string) $version, '3.31.0', '<')) {
             throw new \RuntimeException('Generated columns require SQLite 3.31.0+');
         }
 

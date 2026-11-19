@@ -409,7 +409,7 @@ class Usage extends Plugin
             . "('series', 'workshop', 'workshops', 'course', 'courses')";
 
         $database->setQuery($sql);
-        return $database->loadColumn();
+        return $database->loadColumn() ?? [];
     }
 
     /**
@@ -425,6 +425,6 @@ class Usage extends Plugin
         $sql = "SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $database->quote($parent_id);
 
         $database->setQuery($sql);
-        return $database->loadColumn();
+        return $database->loadColumn() ?? [];
     }
 }

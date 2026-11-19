@@ -106,7 +106,7 @@ class Screenshot extends Relational
         }
         $alias = str_replace(' ', '_', $alias);
 
-        return preg_replace("/[^a-zA-Z0-9\-_\.]/", '', $alias);
+        return (string) preg_replace("/[^a-zA-Z0-9\-_\.]/", '', $alias);
     }
 
     /**

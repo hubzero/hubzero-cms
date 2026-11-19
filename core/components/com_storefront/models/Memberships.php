@@ -56,7 +56,7 @@ class Memberships
      *
      * @param   int    $crtId  cart ID
      * @param   int    $pId    membership product ID
-     * @return  array<string, mixed>  membership info
+     * @return  array<string, mixed>|null  membership info
      */
     public function getMembershipInfo($crtId, $pId)
     {

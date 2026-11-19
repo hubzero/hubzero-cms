@@ -111,7 +111,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         }
         $alias = str_replace(' ', '_', $alias);
 
-        return preg_replace("/[^a-zA-Z0-9_\-\.]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9_\-\.]/", '', strtolower($alias));
     }
 
     /**

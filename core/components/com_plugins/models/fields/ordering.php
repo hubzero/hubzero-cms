@@ -47,8 +47,8 @@ class Ordering extends Field
         $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get some field values from the form.
-        $pluginId = (int) $this->form->getValue('extension_id');
-        $folder = $this->form->getValue('folder');
+        $pluginId = (int) $this->formValue('extension_id');
+        $folder = $this->formValue('folder');
 
         $db = App::get('db');
 

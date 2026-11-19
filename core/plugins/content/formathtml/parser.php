@@ -389,7 +389,7 @@ class Parser
         $this->addMacroPath(__DIR__ . DS . 'macros');
 
         // Get macros [[name(args)]]
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             '/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',
             [&$this, 'getMacro'],
             $text,

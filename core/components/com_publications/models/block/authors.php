@@ -113,6 +113,8 @@ class Authors extends Base
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         // Set block manifest
         if ($this->manifest === null) {
             $this->manifest = $manifest ? $manifest : self::getManifest();
@@ -292,7 +294,7 @@ class Authors extends Base
             }
 
             $pAuthor = new \Components\Publications\Tables\Author($this->parent->db);
-            if ($pAuthor->load($id) && $pAuthor->publication_version_id == $pub->version_id) {
+            if ($pAuthor->load($id) && $pAuthor->publication_version_id == $pub?->version_id) {
                 $pAuthor->ordering = $o;
                 $o++;
 
@@ -675,6 +677,8 @@ class Authors extends Base
      */
     public function buildContent($pub = null, $viewname = 'edit')
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         $name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
         // Get selector styles
@@ -722,6 +726,8 @@ class Authors extends Base
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         // Set block manifest
         if ($this->manifest === null) {
             $this->manifest = $manifest ? $manifest : self::getManifest();

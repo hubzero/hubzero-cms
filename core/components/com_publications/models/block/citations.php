@@ -107,6 +107,8 @@ class Citations extends Base
      */
     public function buildContent($pub = null, $viewname = 'edit')
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         $name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
         // Output HTML
@@ -146,6 +148,8 @@ class Citations extends Base
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         // Set block manifest
         if ($this->manifest === null) {
             $this->manifest = $manifest ? $manifest : self::getManifest();
@@ -353,6 +357,8 @@ class Citations extends Base
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         $status = new \Components\Publications\Models\Status();
 
         $pub->getCitations();

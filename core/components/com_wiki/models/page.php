@@ -421,7 +421,7 @@ class Page extends Relational
      */
     public static function normalize($txt)
     {
-        return preg_replace("/[^\:a-zA-Z0-9_]/", '', $txt);
+        return (string) preg_replace("/[^\:a-zA-Z0-9_]/", '', $txt);
     }
 
     /**
@@ -1059,7 +1059,7 @@ class Page extends Relational
 
         $keys = join('|', array_keys($classes));
 
-        return preg_replace_callback(
+        return (string) preg_replace_callback(
             "/\[:($keys):]/",
             function ($matches) use ($classes) {
                 return $classes[$matches[1]];

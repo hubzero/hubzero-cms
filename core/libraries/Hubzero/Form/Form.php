@@ -51,9 +51,9 @@ class Form
     /**
      * The name of the form instance.
      *
-     * @var string|null
+     * @var string
      */
-    protected $name = null;
+    protected $name;
 
     /**
      * The form object options for use in rendering and validation.
@@ -599,9 +599,12 @@ class Form
                     if ($replace) {
                         $olddom = dom_import_simplexml($current);
                         $loadeddom = dom_import_simplexml($field);
-                        $addeddom = $olddom->ownerDocument->importNode($loadeddom);
-                        $olddom->parentNode->replaceChild($addeddom, $olddom);
-                        $loadeddom->parentNode->removeChild($loadeddom);
+                        $document = $olddom->ownerDocument;
+                        $parent = $olddom->parentNode;
+                        if ($document && $parent) {
+                            $parent->replaceChild($document->importNode($loadeddom), $olddom);
+                        }
+                        $loadeddom->parentNode?->removeChild($loadeddom);
                     } else {
                         unset($field);
                     }
@@ -671,7 +674,7 @@ class Form
         // If the element exists remove it from the form definition.
         if ($element instanceof SimpleXMLElement) {
             $dom = dom_import_simplexml($element);
-            $dom->parentNode->removeChild($dom);
+            $dom->parentNode?->removeChild($dom);
         }
 
         return true;
@@ -695,7 +698,7 @@ class Form
         $elements = &$this->findGroup($group);
         foreach ($elements as &$element) {
             $dom = dom_import_simplexml($element);
-            $dom->parentNode->removeChild($dom);
+            $dom->parentNode?->removeChild($dom);
         }
 
         return true;
@@ -754,7 +757,7 @@ class Form
         // If an existing field is found and replace flag is true remove the old field.
         if ($replace && !empty($old) && ($old instanceof SimpleXMLElement)) {
             $dom = dom_import_simplexml($old);
-            $dom->parentNode->removeChild($dom);
+            $dom->parentNode?->removeChild($dom);
         }
 
         // If no existing field is found find a group element and add the field as a child of it.

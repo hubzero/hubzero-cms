@@ -66,9 +66,9 @@ class Migration
     /**
      * Array of callbacks
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      **/
-    private $callbacks;
+    private $callbacks = [];
 
     /**
      * Table holding migration entries
@@ -842,8 +842,8 @@ class Migration
         }
 
         try {
-            $this->db->setQuery('SET SESSION sql_mode = ' . $this->db->quote($sqlMode));
-            $this->db->query();
+            $this->dbOrFail()->setQuery('SET SESSION sql_mode = ' . $this->dbOrFail()->quote($sqlMode));
+            $this->dbOrFail()->query();
         } catch (\Exception $e) {
             // The connection is about to be discarded anyway.
         }
@@ -953,7 +953,7 @@ class Migration
     {
         // Catch instances where we don't have a status field yet
         // and mimic prior behavior where these runs were not logged
-        if (!$this->db->tableHasField($this->get('tbl_name'), 'status') && $status != 'success') {
+        if (!$this->dbOrFail()->tableHasField($this->get('tbl_name'), 'status') && $status != 'success') {
             return true;
         }
 
@@ -976,19 +976,19 @@ class Migration
                     : User::get('id'),
             ];
 
-            if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+            if ($this->dbOrFail()->tableHasField($this->get('tbl_name'), 'scope')) {
                 $obj->scope = $scope;
             }
 
-            if ($this->db->tableHasField($this->get('tbl_name'), 'status')) {
+            if ($this->dbOrFail()->tableHasField($this->get('tbl_name'), 'status')) {
                 $obj->status = $status;
             }
 
-            if ($executionTime !== null && $this->db->tableHasField($this->get('tbl_name'), 'execution_time')) {
+            if ($executionTime !== null && $this->dbOrFail()->tableHasField($this->get('tbl_name'), 'execution_time')) {
                 $obj->execution_time = (int) $executionTime;
             }
 
-            $this->db->insertObject($this->get('tbl_name'), $obj);
+            $this->dbOrFail()->insertObject($this->get('tbl_name'), $obj);
             return true;
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
             $this->log("Failed inserting migration record: {$e->getMessage()}", 'error');
@@ -1004,9 +1004,9 @@ class Migration
     public function history()
     {
         try {
-            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'));
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $query = "SELECT * FROM " . $this->dbOrFail()->quoteName($this->get('tbl_name'));
+            $this->dbOrFail()->setQuery($query);
+            $results = $this->dbOrFail()->loadObjectList();
 
             return $results;
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
@@ -1761,5 +1761,20 @@ class Migration
             $this->log('Unable to create needed migrations table', 'error');
             return false;
         }
+    }
+
+    /**
+     * The db, which the calls using it need set
+     *
+     * @return  \Hubzero\Database\Driver
+     * @throws  \LogicException  When it is not
+     */
+    protected function dbOrFail()
+    {
+        if ($this->db === null) {
+            throw new \LogicException(static::class . '::$db is not set');
+        }
+
+        return $this->db;
     }
 }

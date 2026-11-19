@@ -44,8 +44,8 @@ class Media extends Field
 
         $assetField  = $element['asset_field'] ? (string) $element['asset_field'] : 'asset_id';
         $authorField = $element['created_by_field'] ? (string) $element['created_by_field'] : 'created_by';
-        $asset = $this->form->getValue($assetField)
-            ? $this->form->getValue($assetField)
+        $asset = $this->formValue($assetField)
+            ? $this->formValue($assetField)
             : (string) $element['asset_id'];
         if ($asset == '') {
             $asset = App::get('request')->getCmd('option');
@@ -158,7 +158,7 @@ class Media extends Field
             : ($link
                 ? $link
                 : 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
-                . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
+                . $this->formValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
             . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
         $html[] = $lang->txt('JLIB_FORM_BUTTON_SELECT') . '</a>';
         $html[] = '	</span>';

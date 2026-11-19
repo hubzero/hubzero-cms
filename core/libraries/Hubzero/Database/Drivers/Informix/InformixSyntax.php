@@ -232,7 +232,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $idx = 0;
         $count = count($bindings);
 
-        return preg_replace_callback('/\?/', function () use ($bindings, &$idx, $count) {
+        return (string) preg_replace_callback('/\?/', function () use ($bindings, &$idx, $count) {
             if ($idx >= $count) {
                 return '?';
             }

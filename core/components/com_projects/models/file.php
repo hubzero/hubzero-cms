@@ -478,7 +478,7 @@ class File extends Obj
      * Fix up some mimetypes
      *
      * @param   string|null  $mimeType
-     * @return  string
+     * @return  string|null
      */
     protected function fixUpMimeType($mimeType = null)
     {

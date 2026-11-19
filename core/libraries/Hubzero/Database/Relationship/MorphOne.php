@@ -167,7 +167,7 @@ class MorphOne extends Relationship
      */
     public function save($data)
     {
-        $related = $this->related;
+        $related = $this->relatedOrFail();
         $model   = $related::newFromResults($data);
         $this->associate($model);
 
@@ -182,7 +182,7 @@ class MorphOne extends Relationship
      */
     public function create(array $attributes = [])
     {
-        $related = $this->related;
+        $related = $this->relatedOrFail();
         $model   = $related::blank();
 
         foreach ($attributes as $key => $value) {
@@ -251,7 +251,7 @@ class MorphOne extends Relationship
             if (isset($byId[$key])) {
                 $row->addRelationship($name, $byId[$key]);
             } else {
-                $related = $this->related;
+                $related = $this->relatedOrFail();
                 $row->addRelationship($name, $related::blank());
             }
         }

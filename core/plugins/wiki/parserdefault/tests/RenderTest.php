@@ -228,6 +228,7 @@ end',
     protected function tearDown(): void
     {
         $app = Facade::getApplication();
+        $this->assertNotNull($app);
         foreach (['router', 'request', 'html.builder'] as $service) {
             $app->forget($service);
         }

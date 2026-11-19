@@ -294,7 +294,7 @@ class Citations extends Plugin
         // set metadata for menu
         $arr['metadata']['count'] = \Components\Citations\Models\Citation::all()
             ->whereEquals('scope', self::PLUGIN_SCOPE)
-            ->whereEquals('scope_id', $this->group->get('gidNumber'))
+            ->whereEquals('scope_id', $this->groupOrFail()->get('gidNumber'))
             ->whereEquals('published', \Components\Citations\Models\Citation::STATE_PUBLISHED)
             ->count();
 
@@ -312,17 +312,17 @@ class Citations extends Plugin
     private function browse()
     {
         // Instantiate a new citations object
-        $obj = $this->filterHandler(Request::getArray('filters', []), $this->group->get('gidNumber'));
+        $obj = $this->filterHandler(Request::getArray('filters', []), $this->groupOrFail()->get('gidNumber'));
 
         $count = clone($obj['citations']);
         $count = $count->count();
         $isManager = ($this->authorized == 'manager') ? true : false;
-        $config  = new \Hubzero\Config\Registry($this->group->get('params'));
+        $config  = new \Hubzero\Config\Registry($this->groupOrFail()->get('params'));
         $display = $config->get('display');
 
         $total = \Components\Citations\Models\Citation::all()
             ->where('scope', '=', self::PLUGIN_SCOPE)
-            ->where('scope_id', '=', $this->group->get('gidNumber'))
+            ->where('scope_id', '=', $this->groupOrFail()->get('gidNumber'))
             ->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
             ->count();
 
@@ -330,7 +330,9 @@ class Citations extends Plugin
         if ($count == 0 && $isManager && !isset($display)) {
             // have a group manager set the settings
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
+                Route::url(
+                    'index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations&action=settings',
+                ),
                 Lang::txt('Please select your settings for this group.'),
                 'warning',
             );
@@ -455,7 +457,7 @@ class Citations extends Plugin
             $view->setError($error);
         }
 
-        if ($this->group->isSuperGroup()) {
+        if ($this->groupOrFail()->isSuperGroup()) {
             $view->addTemplatePath($this->path . DS . 'browse');
         }
 
@@ -480,11 +482,11 @@ class Citations extends Plugin
         // push objects to view
         $view->set('group', $this->group);
         $view->set('isManager', ($this->authorized == 'manager') ? true : false);
-        $view->set('config', new \Hubzero\Config\Registry($this->group->get('params')));
+        $view->set('config', new \Hubzero\Config\Registry($this->groupOrFail()->get('params')));
 
         if ($view->get('isManager') == false) {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
                 'warning',
             );
@@ -538,7 +540,7 @@ class Citations extends Plugin
         // non-owner redirect
         if (!$view->get('row')->isNew() &&  $view->get('row')->scope != 'group') {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
                 'warning',
             );
@@ -607,7 +609,7 @@ class Citations extends Plugin
             $view->setError($error);
         }
 
-        if ($this->group->isSuperGroup()) {
+        if ($this->groupOrFail()->isSuperGroup()) {
             $view->addTemplatePath($this->path . DS . 'edit');
         }
 
@@ -628,7 +630,7 @@ class Citations extends Plugin
 
         // set scope & scope id in save so no one can mess with hidden form inputs
         //$scope = 'group';
-        $scope_id = $this->group->get('gidNumber');
+        $scope_id = $this->groupOrFail()->get('gidNumber');
 
         // get tags
         $tags = trim(Request::getString('tags', ''));
@@ -650,7 +652,10 @@ class Citations extends Plugin
 
         if (
             $cid > 0 && $citation->get('id')
-            && ($citation->get('scope') != 'group' || $citation->get('scope_id') != $this->group->get('gidNumber'))
+            && (
+                $citation->get('scope') != 'group'
+                || $citation->get('scope_id') != $this->groupOrFail()->get('gidNumber')
+            )
         ) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
@@ -788,7 +793,7 @@ class Citations extends Plugin
 
         // redirect after save
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+            Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
             Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
             'success',
         );
@@ -813,7 +818,7 @@ class Citations extends Plugin
         if (!$isManager) {
             // redirect to browse with admonishment
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
                 'warning',
             );
@@ -843,20 +848,20 @@ class Citations extends Plugin
             // this file already order it this way.
             if (
                 $citation->scope != self::PLUGIN_SCOPE
-                || $citation->scope_id != $this->group->get('gidNumber')
+                || $citation->scope_id != $this->groupOrFail()->get('gidNumber')
             ) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
 
             if ($citation->save()) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt($string),
                     'success',
                 );
             } else {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
@@ -871,7 +876,7 @@ class Citations extends Plugin
             // when no selection has been made
             if (empty($citationIDs)) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
@@ -894,7 +899,7 @@ class Citations extends Plugin
                 // save the state
                 if (
                     $citation->scope == self::PLUGIN_SCOPE
-                    && $citation->scope_id == $this->group->get('gidNumber') && $citation->save()
+                    && $citation->scope_id == $this->groupOrFail()->get('gidNumber') && $citation->save()
                 ) {
                     array_push($published, $id);
                 }
@@ -902,26 +907,26 @@ class Citations extends Plugin
 
             if (!empty($published)) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt($string),
                     'success',
                 );
             } elseif ($citation->scope != self::PLUGIN_SCOPE) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
                     'error',
                 );
             } else {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
                     'error',
                 );
             }
         } else {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
@@ -940,7 +945,7 @@ class Citations extends Plugin
         if (!$isManager) {
             // redirect to browse with admonishment
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
                 'warning',
             );
@@ -966,20 +971,20 @@ class Citations extends Plugin
             // this file already order it this way.
             if (
                 $citation->scope != self::PLUGIN_SCOPE
-                || $citation->scope_id != $this->group->get('gidNumber')
+                || $citation->scope_id != $this->groupOrFail()->get('gidNumber')
             ) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }
 
             if ($citation->save()) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
                     'success',
                 );
             } else {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
@@ -995,7 +1000,7 @@ class Citations extends Plugin
             // when no selection has been made
             if (empty($citationIDs)) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
@@ -1014,7 +1019,7 @@ class Citations extends Plugin
                 // save the state
                 if (
                     $citation->scope == self::PLUGIN_SCOPE
-                    && $citation->scope_id == $this->group->get('gidNumber') && $citation->save()
+                    && $citation->scope_id == $this->groupOrFail()->get('gidNumber') && $citation->save()
                 ) {
                     array_push($deleted, $id);
                 }
@@ -1022,26 +1027,26 @@ class Citations extends Plugin
 
             if (!empty($deleted)) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt($string),
                     'success',
                 );
             } elseif ($citation->scope != self::PLUGIN_SCOPE) {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
                     'error',
                 );
             } else {
                 App::redirect(
-                    Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
                     'error',
                 );
             }
         } else {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
@@ -1062,13 +1067,13 @@ class Citations extends Plugin
             $display = Request::getString('display', '');
             $format  = Request::getString('citation-format', '');
 
-            $params = json_decode($this->group->get('params'));
+            $params = json_decode($this->groupOrFail()->get('params'));
             if (!$params instanceof \stdClass) {
                 $params = new \stdClass();
             }
 
             // craft a clever name
-            $name = 'custom-group-' . $this->group->cn;
+            $name = 'custom-group-' . $this->groupOrFail()->cn;
 
             // fetch or create new format
             $citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
@@ -1100,12 +1105,12 @@ class Citations extends Plugin
             // update the group parameters
             $gParams = new Registry($params);
             $gParams->merge($params);
-            $this->group->set('params', $gParams->toString());
-            $this->group->update();
+            $this->groupOrFail()->set('params', $gParams->toString());
+            $this->groupOrFail()->update();
 
             // redirect after save
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_SAVED'),
                 'success',
             );
@@ -1117,7 +1122,7 @@ class Citations extends Plugin
             $view->set('group', $this->group);
 
             // get group settings
-            $params = json_decode($this->group->get('params'));
+            $params = json_decode($this->groupOrFail()->get('params'));
 
             $view->set('include_coins', (isset($params->include_coins) ? $params->include_coins : "false"));
             $view->set('coins_only', (isset($params->coins_only) ? $params->coins_only : "false"));
@@ -1140,7 +1145,7 @@ class Citations extends Plugin
 
             // get the name of the current format (see if it's custom)
             // the name of the custom format
-            $name = "custom-group-" . $this->group->cn;
+            $name = "custom-group-" . $this->groupOrFail()->cn;
 
             $custom = \Components\Citations\Models\Format::all()->where('style', 'LIKE', $name)->count();
 
@@ -1186,13 +1191,13 @@ class Citations extends Plugin
 
         if ($view->get('isManager') == false) {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('This function can only be performed by a group manager.'),
                 'warning',
             );
         }
 
-        if ($this->group->isSuperGroup()) {
+        if ($this->groupOrFail()->isSuperGroup()) {
             $view->addTemplatePath($this->path . DS . 'import');
         }
 
@@ -1230,7 +1235,7 @@ class Citations extends Plugin
                     'index.php?option='
                         . $this->componentOption
                         . '&cn='
-                        . $this->group->get('cn')
+                        . $this->groupOrFail()->get('cn')
                         . '&active=citations&action=import',
                 ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_MISSING_FILE'),
@@ -1245,7 +1250,7 @@ class Citations extends Plugin
                     'index.php?option='
                         . $this->componentOption
                         . '&cn='
-                        . $this->group->get('cn')
+                        . $this->groupOrFail()->get('cn')
                         . '&active=citations&action=import',
                 ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_FILE_TOO_BIG'),
@@ -1260,7 +1265,7 @@ class Citations extends Plugin
                     'index.php?option='
                         . $this->componentOption
                         . '&cn='
-                        . $this->group->get('cn')
+                        . $this->groupOrFail()->get('cn')
                         . '&active=citations&action=import',
                 ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
@@ -1269,7 +1274,7 @@ class Citations extends Plugin
         }
 
         // call the plugins
-        $citations = Event::trigger('citation.onImport', [$file, 'group', $this->group->get('gidNumber')]);
+        $citations = Event::trigger('citation.onImport', [$file, 'group', $this->groupOrFail()->get('gidNumber')]);
         $citations = array_values(array_filter($citations));
 
         // did we get citations from the citation plugins
@@ -1279,7 +1284,7 @@ class Citations extends Plugin
                     'index.php?option='
                         . $this->componentOption
                         . '&cn='
-                        . $this->group->get('cn')
+                        . $this->groupOrFail()->get('cn')
                         . '&active=citations&action=import',
                 ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
@@ -1318,7 +1323,7 @@ class Citations extends Plugin
         // get group ID
         $group = Request::getString('group');
 
-        if ($this->group->isSuperGroup()) {
+        if ($this->groupOrFail()->isSuperGroup()) {
             $view->addTemplatePath($this->path . DS . 'import');
         }
 
@@ -1336,7 +1341,7 @@ class Citations extends Plugin
         $view = $this->view('saved', 'import');
         $view->set('group', $this->group);
         $view->set('messages', null);
-        $config  = new \Hubzero\Config\Registry($this->group->get('params'));
+        $config  = new \Hubzero\Config\Registry($this->groupOrFail()->get('params'));
 
         Request::checkToken();
 
@@ -1358,7 +1363,9 @@ class Citations extends Plugin
         // check to make sure we have citations
         if (!$cites_require_attention && !$cites_require_no_attention) {
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=import'),
+                Route::url(
+                    'index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations&action=import',
+                ),
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
@@ -1366,7 +1373,7 @@ class Citations extends Plugin
 
         $this->importer->set('user', User::get('id'));
         $this->importer->set('scope', 'group');
-        $this->importer->set('scope_id', $this->group->get('gidNumber'));
+        $this->importer->set('scope_id', $this->groupOrFail()->get('gidNumber'));
         $this->importer->setTags(true);
         $this->importer->setBadges(true);
 
@@ -1422,7 +1429,7 @@ class Citations extends Plugin
 
             // redirect after save
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+                Route::url('index.php?option=com_groups&cn=' . $this->groupOrFail()->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
                 'success',
             );
@@ -1444,7 +1451,7 @@ class Citations extends Plugin
                             'index.php?option='
                                 . $this->option
                                 . DS
-                                . $this->group->get('cn')
+                                . $this->groupOrFail()->get('cn')
                                 . DS
                                 . $this->pluginName
                                 . '&action='
@@ -1564,8 +1571,8 @@ class Citations extends Plugin
         }
 
         // see if we have members too
-        $config = json_decode($this->group->get('params'));
-        $members = $this->group->get('members');
+        $config = json_decode($this->groupOrFail()->get('params'));
+        $members = $this->groupOrFail()->get('members');
 
         // get the ones for this group
         if (isset($config->display) && $config->display == 'member') {
@@ -1744,5 +1751,20 @@ class Citations extends Plugin
     public function onGroupMemberAfter($group, $profile)
     {
         return null;
+    }
+
+    /**
+     * The group, which the calls using it need set
+     *
+     * @return  \Hubzero\User\Group
+     * @throws  \LogicException  When it is not
+     */
+    protected function groupOrFail()
+    {
+        if ($this->group === null) {
+            throw new \LogicException(static::class . '::$group is not set');
+        }
+
+        return $this->group;
     }
 }

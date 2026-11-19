@@ -73,7 +73,7 @@ class Answer extends Relational
      * Generates automatic modified field value
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string
+     * @return  string|null
      */
     public function automaticModified($data)
     {

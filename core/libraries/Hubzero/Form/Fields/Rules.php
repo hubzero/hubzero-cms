@@ -81,7 +81,7 @@ class Rules extends Field
         } else {
             // Find the asset id of the content.
             // Note that for global configuration, com_config injects asset_id = 1 into the form.
-            $assetId = $this->form->getValue($assetField);
+            $assetId = $this->formValue($assetField);
         }
 
         // Full width format.

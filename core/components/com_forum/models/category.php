@@ -103,7 +103,7 @@ class Category extends Relational
     {
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
 
     /**
@@ -139,7 +139,7 @@ class Category extends Relational
         if (!isset($data['scope']) || !$data['scope']) {
             $data['scope'] = 'site';
         }
-        return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
+        return (string) preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
     }
 
     /**

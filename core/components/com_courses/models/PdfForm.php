@@ -142,7 +142,7 @@ class PdfForm
 			ORDER BY title',
         );
 
-        return $dbh->loadAssocList();
+        return $dbh->loadAssocList() ?? [];
     }
 
     /**

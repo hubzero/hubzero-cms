@@ -855,7 +855,7 @@ class SqlsrvDriver extends BaseSqlDriver
     public function getTableList()
     {
         $this->setQuery("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'");
-        return $this->loadColumn();
+        return $this->loadColumn() ?? [];
     }
 
     /**
@@ -984,7 +984,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getPrimaryKey($table)
     {

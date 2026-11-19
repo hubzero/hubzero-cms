@@ -97,7 +97,7 @@ abstract class Mailto
     public static function cleanBody($body)
     {
         // Strip all email headers from a string
-        return preg_replace("/((From:|To:|Cc:|Bcc:|Subject:|Content-type:) ([\S]+))/", '', $body);
+        return (string) preg_replace("/((From:|To:|Cc:|Bcc:|Subject:|Content-type:) ([\S]+))/", '', $body);
     }
 
     /**
@@ -108,7 +108,7 @@ abstract class Mailto
      */
     public static function cleanSubject($subject)
     {
-        return preg_replace("/((From:|To:|Cc:|Bcc:|Content-type:) ([\S]+))/", '', $subject);
+        return (string) preg_replace("/((From:|To:|Cc:|Bcc:|Content-type:) ([\S]+))/", '', $subject);
     }
 
     /**

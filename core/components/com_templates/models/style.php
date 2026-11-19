@@ -67,7 +67,7 @@ class Style extends Relational
      */
     public function automaticTemplate($data)
     {
-        return preg_replace("/[^A-Z0-9_\.-]/i", '', trim($data['template']));
+        return (string) preg_replace("/[^A-Z0-9_\.-]/i", '', trim($data['template']));
     }
 
     /**

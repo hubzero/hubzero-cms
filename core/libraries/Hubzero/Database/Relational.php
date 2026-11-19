@@ -768,7 +768,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         foreach (self::$pluralRules as $rule => $replacement) {
             if (preg_match($rule, $word)) {
-                return preg_replace($rule, $replacement, $word);
+                return (string) preg_replace($rule, $replacement, $word);
             }
         }
 
@@ -2965,7 +2965,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             case 'raw':
             default:
                 $content = stripslashes($this->get($field, '') ?? '');
-                return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+                return (string) preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
         }
     }
 
@@ -6886,6 +6886,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $relatedKey = $relationship->getRelatedKey();
         $localKey = $relationship->getLocalKey();
         $localValue = $this->get($localKey);
+
+        // A polymorphic belongs-to has no one related model to delete through
+        if (!$relatedModel) {
+            return true;
+        }
 
         // Skip if no local value (model not saved)
         if ($localValue === null) {

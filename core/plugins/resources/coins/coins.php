@@ -62,7 +62,7 @@ class Coins extends Plugin
      * Return data on a resource for the /browse list
      *
      * @param   object  $model  Current model
-     * @return  string
+     * @return  string|null
      */
     public function onResourcesList($model)
     {

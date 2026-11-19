@@ -137,7 +137,7 @@ class Comment extends ItemComment
             case 'raw':
             default:
                 $content = stripslashes($this->get($field, ''));
-                return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+                return (string) preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
         }
     }
 

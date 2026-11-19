@@ -213,6 +213,7 @@ class ComparatorTest extends TestCase
         ]);
 
         $diff = $this->comparator->compareColumns($col1, $col2);
+        $this->assertNotNull($diff);
 
         $changes = $diff->getChanges();
         $this->assertContains('type', $changes);

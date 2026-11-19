@@ -503,7 +503,7 @@ class Uri
      * Get URI port
      * Returns the port number, or null if no port was specified.
      *
-     * @return  integer  The URI port number.
+     * @return  integer|null  The URI port number.
      */
     public function getPort()
     {

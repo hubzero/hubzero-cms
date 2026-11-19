@@ -33,17 +33,17 @@ class IdPResponseTest extends Basic
     private $dir;
 
     /**
-     * @var  \Components\Saml\Models\IdP|null
+     * @var  \Components\Saml\Models\IdP
      */
     private $idp;
 
     /**
-     * @var  \Components\Saml\Tests\StubSamlSp|null
+     * @var  \Components\Saml\Tests\StubSamlSp
      */
     private $sp;
 
     /**
-     * @var  \Components\Saml\Tests\StubSamlUser|null
+     * @var  \Components\Saml\Tests\StubSamlUser
      */
     private $user;
 

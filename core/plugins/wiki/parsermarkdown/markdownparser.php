@@ -241,7 +241,7 @@ class MarkdownParser
     private function math($text)
     {
         Html::behavior('math');
-        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
+        return (string) preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
     }
 
     /**

@@ -2277,7 +2277,7 @@ class Curation extends Obj
      */
     public function convertToCuration($pub = null)
     {
-        $pub     = $pub ? $pub : $this->pub;
+        $pub     = \Components\Publications\Models\Publication::required($pub ? $pub : $this->pub);
         $oldFlow = false;
 
         // Load attachments

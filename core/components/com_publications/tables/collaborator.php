@@ -31,7 +31,7 @@ class Collaborator extends Table
      *
      * @param   string  $name
      *
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getCollaboratorByName($name)
     {

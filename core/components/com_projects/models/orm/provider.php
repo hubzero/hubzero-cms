@@ -70,6 +70,6 @@ class Provider extends Relational
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['name']);
         $alias = strip_tags($alias);
 
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
 }

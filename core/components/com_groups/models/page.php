@@ -102,7 +102,8 @@ class Page extends Model
      * Load Page Version
      *
      * @param   mixed   $vid  Version Id
-     * @return  \Components\Groups\Models\Page\Version|null  Null when that version number does not exist
+     * @return  ($vid is null ? \Components\Groups\Models\Page\Version : \Components\Groups\Models\Page\Version|null)
+     *          Null when that version number does not exist
      */
     public function version($vid = null)
     {
@@ -113,7 +114,7 @@ class Page extends Model
         if ($this->versions()->count() > 0) {
             // return version object
             if ($vid == null || $vid == 0 || $vid == 'current') {
-                $version = $this->versions()->first();
+                $version = $this->versions()->first() ?? $version;
             } elseif (is_numeric($vid)) {
                 $version = $this->versions()->fetch('version', (int) $vid);
             }

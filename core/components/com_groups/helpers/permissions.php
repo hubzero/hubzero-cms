@@ -73,7 +73,7 @@ class Permissions
             . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
         $db->setQuery($sql);
 
-        return $db->loadAssocList();
+        return $db->loadAssocList() ?? [];
     }
 
     /**

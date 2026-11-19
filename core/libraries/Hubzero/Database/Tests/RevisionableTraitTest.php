@@ -164,6 +164,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         $this->assertTrue($result);
 
         $revision = $article->findRevision(1);
+        $this->assertNotNull($revision);
         $this->assertEquals('Updated the title', $revision->log);
     }
 

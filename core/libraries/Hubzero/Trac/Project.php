@@ -496,7 +496,7 @@ class Project
      * Property accessor
      *
      * @param   string  $key
-     * @return  string
+     * @return  string|null
      */
     public function get($key)
     {

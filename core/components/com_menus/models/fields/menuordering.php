@@ -36,7 +36,7 @@ class MenuOrdering extends Select
         $options = [];
 
         // Get the parent
-        $parent_id = $this->form->getValue('parent_id', null, 0);
+        $parent_id = $this->formValue('parent_id', null, 0);
 
         if (empty($parent_id)) {
             return false;
@@ -53,7 +53,7 @@ class MenuOrdering extends Select
         $query->where('a.published', '>=', '0');
         $query->whereEquals('a.parent_id', (int) $parent_id);
 
-        if ($menuType = $this->form->getValue('menutype')) {
+        if ($menuType = $this->formValue('menutype')) {
             $query->whereEquals('a.menutype', $menuType);
         } else {
             $query->where('a.menutype', '!=', '');
@@ -87,7 +87,7 @@ class MenuOrdering extends Select
      */
     protected function getInput()
     {
-        if ($this->form->getValue('id', null, 0) == 0) {
+        if ($this->formValue('id', null, 0) == 0) {
             return '<span class="readonly">' . Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_TEXT') . '</span>';
         }
 

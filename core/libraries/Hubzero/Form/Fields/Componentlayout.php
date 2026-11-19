@@ -44,7 +44,7 @@ class Componentlayout extends Field
         $clientId = $element['client_id'];
 
         if (is_null($clientId) && $this->form instanceof Form) {
-            $clientId = $this->form->getValue('client_id');
+            $clientId = $this->formValue('client_id');
         }
         $clientId = (int) $clientId;
 
@@ -54,7 +54,7 @@ class Componentlayout extends Field
         $extn = (string) $element['extension'];
 
         if (empty($extn) && ($this->form instanceof Form)) {
-            $extn = $this->form->getValue('extension');
+            $extn = $this->formValue('extension');
         }
 
         $extn = preg_replace('#\W#', '', $extn);
@@ -66,7 +66,7 @@ class Componentlayout extends Field
         // Get the style.
         $template_style_id = '';
         if ($this->form instanceof Form) {
-            $template_style_id = $this->form->getValue('template_style_id');
+            $template_style_id = $this->formValue('template_style_id');
         }
 
         $template_style_id = preg_replace('#\W#', '', $template_style_id ? $template_style_id : '');

@@ -50,6 +50,9 @@ class Toolbar extends Facade
 
         $html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '"><h2>' . $title . '</h2></div>';
         $app = static::getApplication();
+        if (!$app) {
+            return;
+        }
 
         $app->set('ComponentTitle', $html);
 

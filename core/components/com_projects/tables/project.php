@@ -742,7 +742,7 @@ class Project extends Table
      * Get project alias from ID
      *
      * @param   integer  $id
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getAlias($id = 0)
     {

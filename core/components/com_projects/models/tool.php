@@ -325,7 +325,7 @@ class Tool extends Model
      * Return a formatted created timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function created($as = '')
     {
@@ -336,7 +336,7 @@ class Tool extends Model
      * Return a formatted created timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function statusChanged($as = '')
     {

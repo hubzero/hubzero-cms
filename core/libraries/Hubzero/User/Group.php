@@ -1356,7 +1356,7 @@ class Group extends Obj
 					AND u.id=t.uidNumber
 					AND LOWER(u.name) LIKE " . $db->quote('%' . strtolower($q) . '%') . ";";
         $db->setQuery($query);
-        return $db->loadColumn();
+        return $db->loadColumn() ?? [];
     }
 
     /**

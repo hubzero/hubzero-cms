@@ -55,7 +55,7 @@ class Zone extends Relational
      */
     public function automaticZone($data)
     {
-        return preg_replace("/[^A-Za-z0-9\-\_\.]/", '', strtolower($data['zone']));
+        return (string) preg_replace("/[^A-Za-z0-9\-\_\.]/", '', strtolower($data['zone']));
     }
 
     /**

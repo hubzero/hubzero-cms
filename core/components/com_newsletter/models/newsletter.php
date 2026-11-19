@@ -128,7 +128,7 @@ class Newsletter extends Relational
      * Generates automatic created field value
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string
+     * @return  string|null
      */
     public function automaticModified($data)
     {

@@ -47,9 +47,9 @@ class ModuleOrder extends Field
 
         $html[] = '<script type="application/json" id="moduleorder">';
 
-        $ordering = $this->form->getValue('ordering');
-        $position = $this->form->getValue('position');
-        $clientId = $this->form->getValue('client_id');
+        $ordering = $this->formValue('ordering');
+        $position = $this->formValue('position');
+        $clientId = $this->formValue('client_id');
 
         $data = new \stdClass();
         $data->originalOrder = $ordering;

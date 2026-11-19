@@ -148,7 +148,7 @@ class MorphMany extends MorphOne
      */
     public function create(array $attributes = [])
     {
-        $related = $this->related;
+        $related = $this->relatedOrFail();
         $model   = $related::blank();
 
         foreach ($attributes as $key => $value) {

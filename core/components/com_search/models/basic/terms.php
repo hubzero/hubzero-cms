@@ -114,7 +114,7 @@ class Terms extends Obj
             return $this->raw;
         }
 
-        return preg_replace('/^' . implode(':', array_map('preg_quote', $section)) . ':/', '', $this->raw);
+        return (string) preg_replace('/^' . implode(':', array_map('preg_quote', $section)) . ':/', '', $this->raw);
     }
 
     /**

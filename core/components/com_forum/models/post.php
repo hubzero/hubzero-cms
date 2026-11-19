@@ -263,7 +263,7 @@ class Post extends Relational
         if (!isset($data['scope']) || !$data['scope']) {
             $data['scope'] = 'site';
         }
-        return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
+        return (string) preg_replace("/[^a-zA-Z0-9]/", '', strtolower($data['scope']));
     }
 
     /**
@@ -302,7 +302,7 @@ class Post extends Relational
      * Generates automatic created field value
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string
+     * @return  string|null
      */
     public function automaticModified($data)
     {

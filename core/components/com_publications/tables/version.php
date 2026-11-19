@@ -151,7 +151,7 @@ class Version extends Table
      * @param   integer|null  $pid      Pub ID
      * @param   string   $version  Version number or name
      * @param   string   $select   Select query
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getAttribute($pid = null, $version = 'dev', $select = '')
     {
@@ -355,7 +355,7 @@ class Version extends Table
      *
      * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getPrevPublication($pid, $version_number)
     {
@@ -374,7 +374,7 @@ class Version extends Table
      *
      * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getNextPublication($pid, $version_number)
     {
@@ -639,7 +639,7 @@ class Version extends Table
      * Get publication version by ID
      *
      * @param   integer|null $vid    Publication Version ID
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getPubVersion($vid = null)
     {

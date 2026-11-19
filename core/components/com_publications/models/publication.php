@@ -417,7 +417,7 @@ class Publication extends Obj
      * Return a formatted created timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function created($as = '')
     {
@@ -428,7 +428,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function modified($as = '')
     {
@@ -439,7 +439,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function published($as = '')
     {
@@ -457,7 +457,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function unpublished($as = '')
     {
@@ -468,7 +468,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function submitted($as = '')
     {
@@ -479,7 +479,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function accepted($as = '')
     {
@@ -490,7 +490,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function archived($as = '')
     {
@@ -501,7 +501,7 @@ class Publication extends Obj
      * Return a formatted modified timestamp
      *
      * @param   string  $as  What data to return
-     * @return  string
+     * @return  string|null
      */
     public function released($as = '')
     {
@@ -2675,5 +2675,21 @@ class Publication extends Obj
         }
 
         return $this->tblCollaborator->getCollaboratorByName($name);
+    }
+
+    /**
+     * The publication a method was given, for the methods that cannot work without one
+     *
+     * @param   self|null  $pub
+     * @return  self
+     * @throws  \LogicException  When there is none
+     */
+    public static function required($pub)
+    {
+        if (!$pub) {
+            throw new \LogicException('A publication is needed here');
+        }
+
+        return $pub;
     }
 }

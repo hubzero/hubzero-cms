@@ -210,6 +210,7 @@ class UpsertTest extends AbstractDriverTestCase
             ->execute();
 
         $row = $this->getRowByCode($driver, 'A001');
+        $this->assertNotNull($row);
 
         $this->assertSame(
             99,
@@ -247,6 +248,7 @@ class UpsertTest extends AbstractDriverTestCase
             ->execute();
 
         $row = $this->getRowByCode($driver, 'B001');
+        $this->assertNotNull($row);
 
         $this->assertSame(
             'Beta Updated',
@@ -282,6 +284,7 @@ class UpsertTest extends AbstractDriverTestCase
             ->execute();
 
         $beta = $this->getRowByCode($driver, 'B001');
+        $this->assertNotNull($beta);
 
         $this->assertSame(
             'Beta',
@@ -352,6 +355,7 @@ class UpsertTest extends AbstractDriverTestCase
         );
 
         $row = $this->getRowByCode($driver, 'C001');
+        $this->assertNotNull($row);
         $this->assertSame(
             'Charlie Updated',
             $row->name,
@@ -426,6 +430,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(2, $count, "$dbName: Should report 2 rows");
 
         $row1 = $this->getRowByCode($driver, 'X01');
+        $this->assertNotNull($row1);
         $this->assertSame(
             'X-One Updated',
             $row1->name,
@@ -434,6 +439,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(100, (int) $row1->value);
 
         $row2 = $this->getRowByCode($driver, 'X02');
+        $this->assertNotNull($row2);
         $this->assertSame('X-Two Updated', $row2->name);
         $this->assertSame(200, (int) $row2->value);
     }
@@ -465,6 +471,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(2, $count);
 
         $existing = $this->getRowByCode($driver, 'M01');
+        $this->assertNotNull($existing);
         $this->assertSame('Updated', $existing->name);
         $this->assertSame(99, (int) $existing->value);
 
@@ -594,6 +601,7 @@ class UpsertTest extends AbstractDriverTestCase
 
         // Verify in database
         $row = $this->getRowByCode($driver, 'U001');
+        $this->assertNotNull($row);
         $this->assertSame('Modified', $row->name);
     }
 
@@ -641,6 +649,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(2, $count);
 
         $r01 = $this->getRowByCode($driver, 'R01');
+        $this->assertNotNull($r01);
         $this->assertSame('Updated R', $r01->name);
 
         $r02 = $this->getRowByCode($driver, 'R02');

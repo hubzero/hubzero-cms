@@ -134,11 +134,13 @@ class Loader
         }
 
         if (count($result) == 0) {
-            if ($this->outline()) {
-                $result[0] = $this->byName('mod_' . $position);
-                $result[0]->title    = $position;
-                $result[0]->content  = $position;
-                $result[0]->position = $position;
+            // A mod_ name always gives a module, a dummy one if need be
+            $module = $this->outline() ? $this->byName('mod_' . $position) : null;
+            if ($module) {
+                $module->title    = $position;
+                $module->content  = $position;
+                $module->position = $position;
+                $result[0] = $module;
             }
         }
 

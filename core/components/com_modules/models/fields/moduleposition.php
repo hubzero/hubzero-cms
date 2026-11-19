@@ -46,7 +46,7 @@ class ModulePosition extends Text
             }
         }
         if (!isset($clientId) && $this->form instanceof Form) {
-            $clientId = $this->form->getValue('client_id');
+            $clientId = $this->formValue('client_id');
         }
         $clientId = (int) $clientId;
 

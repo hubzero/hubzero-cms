@@ -40,7 +40,7 @@ class Menutype extends Select
 
         // Initialise variables.
         $html     = [];
-        $recordId = (int) $this->form->getValue('id');
+        $recordId = (int) $this->formValue('id');
         $size     = ($v = $element['size']) ? ' size="' . $v . '"' : '';
         $class    = ($v = $element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
 
@@ -62,7 +62,7 @@ class Menutype extends Select
                 break;
 
             default:
-                $link = $this->form->getValue('link');
+                $link = $this->formValue('link');
                 // Clean the link back to the option, view and layout
                 $value = Lang::txt(\Hubzero\Utility\Arr::getValue($rlu, MenusHelper::getLinkKey($link)));
                 break;

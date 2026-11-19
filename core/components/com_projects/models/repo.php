@@ -221,9 +221,9 @@ class Repo extends Obj
 
         // Perform request
         try {
-            $result = $this->adapter->$call($params);
-            if ($this->adapter->getError()) {
-                $this->setError($this->adapter->getError());
+            $result = $this->adapter()->$call($params);
+            if ($this->adapter()->getError()) {
+                $this->setError($this->adapter()->getError());
             }
             return $result;
         } catch (Exception $e) {
@@ -519,7 +519,7 @@ class Repo extends Obj
             $type = $file->get('type');
         }
 
-        $this->adapter->history($params, $versions, $timestamps);
+        $this->adapter()->history($params, $versions, $timestamps);
 
         // Sort by time, most recent first
         array_multisort($timestamps, SORT_DESC, $versions);
@@ -537,7 +537,7 @@ class Repo extends Obj
      */
     public function getTrash()
     {
-        return $this->adapter->getTrash();
+        return $this->adapter()->getTrash();
     }
 
     /**
@@ -627,7 +627,7 @@ class Repo extends Obj
             return false;
         }
 
-        return $this->adapter->diff($params);
+        return $this->adapter()->diff($params);
     }
 
     /**
@@ -721,7 +721,7 @@ class Repo extends Obj
         if (!($file instanceof Models\File)) {
             return false;
         }
-        return $this->adapter->getLastRevision($params);
+        return $this->adapter()->getLastRevision($params);
     }
 
     /**
@@ -1403,7 +1403,7 @@ class Repo extends Obj
         }
 
         // Initialize
-        $this->adapter->ini();
+        $this->adapter()->ini();
 
         return true;
     }

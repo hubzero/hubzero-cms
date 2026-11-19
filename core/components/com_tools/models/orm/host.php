@@ -55,7 +55,7 @@ class Host extends Relational
      */
     public function automaticHostname($data)
     {
-        return preg_replace("/[^A-Za-z0-9-.]/", '', strtolower($data['hostname']));
+        return (string) preg_replace("/[^A-Za-z0-9-.]/", '', strtolower($data['hostname']));
     }
 
     /**

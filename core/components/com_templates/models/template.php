@@ -115,7 +115,7 @@ class Template extends Relational
      */
     public function automaticElement($data)
     {
-        return preg_replace("/[^A-Z0-9_\.-]/i", '', trim($data['element']));
+        return (string) preg_replace("/[^A-Z0-9_\.-]/i", '', trim($data['element']));
     }
 
     /**

@@ -69,7 +69,7 @@ class Page extends Table
         $this->db->setQuery($sql);
 
         if (isset($filters['returnas']) && $filters['returnas'] == 'array') {
-            return $this->db->loadAssocList();
+            return $this->db->loadAssocList() ?? [];
         } else {
             return $this->db->loadObjectList();
         }

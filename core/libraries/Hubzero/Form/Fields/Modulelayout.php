@@ -40,7 +40,7 @@ class Modulelayout extends Field
         $clientId = $element['client_id'];
 
         if (is_null($clientId) && $this->form instanceof Form) {
-            $clientId = $this->form->getValue('client_id');
+            $clientId = $this->formValue('client_id');
         }
         $clientId = (int) $clientId;
 
@@ -50,7 +50,7 @@ class Modulelayout extends Field
         $module = (string) $element['module'];
 
         if (empty($module) && ($this->form instanceof Form)) {
-            $module = $this->form->getValue('module');
+            $module = $this->formValue('module');
         }
 
         $module = preg_replace('#\W#', '', $module);
@@ -62,7 +62,7 @@ class Modulelayout extends Field
         // Get the style.
         $template_style_id = '';
         if ($this->form instanceof Form) {
-            $template_style_id = $this->form->getValue('template_style_id');
+            $template_style_id = $this->formValue('template_style_id');
         }
 
         $template_style_id = preg_replace('#\W#', '', $template_style_id == null ? '' : $template_style_id);

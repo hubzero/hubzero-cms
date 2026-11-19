@@ -61,7 +61,7 @@ class Sanitize
         return trim((string) preg_replace(
             '/\s{2,}/u',
             ' ',
-            preg_replace('/[\n\r\t]+/', ' ', $str == null ? '' : $str),
+            preg_replace('/[\n\r\t]+/', ' ', (string) ($str == null ? '' : $str)),
         ));
     }
 
@@ -79,7 +79,7 @@ class Sanitize
             '/<img[^>]*>/i' => '',
         ];
 
-        return preg_replace(array_keys($preg), array_values($preg), $str);
+        return (string) preg_replace(array_keys($preg), array_values($preg), $str);
     }
 
     /**
@@ -90,7 +90,7 @@ class Sanitize
      */
     public static function stripLinks($text)
     {
-        return preg_replace('|<a\s+[^>]+>|im', '', preg_replace('|<\/a>|im', '', $text));
+        return (string) preg_replace('|<a\s+[^>]+>|im', '', preg_replace('|<\/a>|im', '', $text));
     }
 
     /**
@@ -108,7 +108,7 @@ class Sanitize
             . '<style[^>]*>.*?<\/style>|'
             . '<\?php.*?\?>|'
             . '<!--.*?-->/is';
-        return preg_replace($regex, '', $str);
+        return (string) preg_replace($regex, '', $str);
     }
 
     /**
@@ -319,8 +319,11 @@ class Sanitize
         $config = self::buildHtmlPurifierConfig($options);
         $htmlPurifierWhitelist  = $config->getHTMLDefinition(true);
 
-        self::addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist);
-        self::addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist);
+        // The raw definition (not the optimized one) is always there to add to
+        if ($htmlPurifierWhitelist) {
+            self::addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist);
+            self::addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist);
+        }
 
         $purifier = new \HTMLPurifier($config);
 
@@ -387,7 +390,7 @@ class Sanitize
     /**
      * Adds elements to HTML purifier whitelist
      *
-     * @param    \HTMLPurifier_HTMLDefinition|null   $htmlPurifierWhitelist HTML purifier whitelist
+     * @param    \HTMLPurifier_HTMLDefinition   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
     protected static function addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist)
@@ -510,7 +513,7 @@ class Sanitize
     /**
      * Adds attributes to HTML purifier whitelist
      *
-     * @param    \HTMLPurifier_HTMLDefinition|null   $htmlPurifierWhitelist HTML purifier whitelist
+     * @param    \HTMLPurifier_HTMLDefinition   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
     protected static function addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
@@ -708,7 +711,7 @@ class Sanitize
             return '';
         }
 
-        return preg_replace(
+        return (string) preg_replace(
             [
                 '/[^\P{C}\s]/u',
                 '/:/u',

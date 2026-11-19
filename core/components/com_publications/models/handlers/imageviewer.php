@@ -97,8 +97,8 @@ class ImageViewer extends Base
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
-            $this->config->params->thumbSuffix,
-            $this->config->params->thumbFormat,
+            $this->configOrFail()->params->thumbSuffix,
+            $this->configOrFail()->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -163,8 +163,8 @@ class ImageViewer extends Base
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
-            $this->config->params->thumbSuffix,
-            $this->config->params->thumbFormat,
+            $this->configOrFail()->params->thumbSuffix,
+            $this->configOrFail()->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -249,8 +249,8 @@ class ImageViewer extends Base
 
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
-                $this->config->params->thumbSuffix,
-                $this->config->params->thumbFormat,
+                $this->configOrFail()->params->thumbSuffix,
+                $this->configOrFail()->params->thumbFormat,
             );
             $thumbPath = dirname($fpath) . DS . $thumbName;
 
@@ -324,8 +324,8 @@ class ImageViewer extends Base
 
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
-                $this->config->params->thumbSuffix,
-                $this->config->params->thumbFormat,
+                $this->configOrFail()->params->thumbSuffix,
+                $this->configOrFail()->params->thumbFormat,
             );
             $title = $attach->title ? $attach->title : $attConfigs->title;
             $title = $title ? $title : basename($attach->path);
@@ -399,8 +399,8 @@ class ImageViewer extends Base
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($fpath),
-            $this->config->params->thumbSuffix,
-            $this->config->params->thumbFormat,
+            $this->configOrFail()->params->thumbSuffix,
+            $this->configOrFail()->params->thumbFormat,
         );
         $thumbPath = $configs->pubPath . DS . $thumbName;
 
@@ -421,7 +421,7 @@ class ImageViewer extends Base
             Filesystem::copy($fpath, $thumbPath);
             $hi = new \Hubzero\Image\Processor($thumbPath);
             if (count($hi->getErrors()) == 0) {
-                $hi->resize($this->config->params->thumbWidth, false, true, true);
+                $hi->resize($this->configOrFail()->params->thumbWidth, false, true, true);
                 $hi->save($thumbPath);
             } else {
                 return false;
@@ -558,5 +558,20 @@ class ImageViewer extends Base
     public function checkRequired($attachments)
     {
         return true;
+    }
+
+    /**
+     * The config, which the calls using it need set
+     *
+     * @return  \stdClass
+     * @throws  \LogicException  When it is not
+     */
+    protected function configOrFail()
+    {
+        if ($this->config === null) {
+            throw new \LogicException(static::class . '::$config is not set');
+        }
+
+        return $this->config;
     }
 }

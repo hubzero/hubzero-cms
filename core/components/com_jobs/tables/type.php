@@ -58,7 +58,7 @@ class Type extends Table
      *
      * @param   integer|null  $id       Type ID
      * @param   string   $default  Default value to return
-     * @return  string|false
+     * @return  string|false|null
      */
     public function getType($id = null, $default = 'Unspecified')
     {

@@ -492,7 +492,7 @@ class Citations extends AdminController
      * Get the params for a citation
      *
      * @param   integer  $citation  Citation ID
-     * @return  string
+     * @return  string|null
      */
     private function getParams($citation = 0)
     {

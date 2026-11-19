@@ -76,7 +76,7 @@ class Popup extends Button
      */
     public function fetchId($type, $name)
     {
-        return $this->parent->getName() . '-popup-' . $name;
+        return $this->parentOrFail()->getName() . '-popup-' . $name;
     }
 
     /**

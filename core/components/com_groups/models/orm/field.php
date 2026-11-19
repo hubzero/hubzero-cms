@@ -205,14 +205,14 @@ class Field extends Relational
         $name = strip_tags($name);
         $name = trim($name);
 
-        return preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($name));
+        return (string) preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($name));
     }
 
     /**
      * Generates automatic modified field value
      *
      * @param   array<mixed>   $data  the data being saved
-     * @return  string
+     * @return  string|null
      */
     public function automaticModified($data)
     {

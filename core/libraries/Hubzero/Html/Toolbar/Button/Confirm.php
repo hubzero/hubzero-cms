@@ -85,7 +85,7 @@ class Confirm extends Button
      */
     public function fetchId($type = 'Confirm', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
     {
-        return $this->parent->getName() . '-' . $name;
+        return $this->parentOrFail()->getName() . '-' . $name;
     }
 
     /**

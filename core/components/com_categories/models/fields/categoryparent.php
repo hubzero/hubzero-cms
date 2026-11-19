@@ -43,11 +43,11 @@ class CategoryParent extends Select
         // For categories the old category is the category id 0 for new category.
         if ($element['parent']) {
             $oldCat = Request::getInt('id', 0);
-            $oldParent = $this->form->getValue($name);
+            $oldParent = $this->formValue($name);
         } else {
             // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
-            $oldCat = $this->form->getValue($name);
+            $oldCat = $this->formValue($name);
         }
 
         $db    = App::get('db');
@@ -61,7 +61,7 @@ class CategoryParent extends Select
             ->joinRaw('#__categories AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left');
 
         // Filter by the type
-        if ($extension = $this->form->getValue('extension')) {
+        if ($extension = $this->formValue('extension')) {
             $query
                 ->whereEquals('a.extension', $extension, 1)
                 ->orWhereEquals('a.parent_id', '0', 1)
@@ -70,7 +70,7 @@ class CategoryParent extends Select
 
         if ($element['parent']) {
             // Prevent parenting to children of this item.
-            if ($id = $this->form->getValue('id')) {
+            if ($id = $this->formValue('id')) {
                 $query->joinRaw('#__categories AS p', 'p.id = ' . (int) $id, 'left');
                 $query->whereRaw('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 

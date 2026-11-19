@@ -292,6 +292,9 @@ class Publications extends Plugin
 				ON `#__publications`.id = `#__publication_versions`.publication_id
 				WHERE `#__publications`.id = {$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get the name of the author
                 if (isset($row->latestVersion)) {

@@ -203,7 +203,7 @@ class Str
                 $replace[] = sprintf($options['regex'], $segment);
             }
 
-            return preg_replace($replace, $with, $text);
+            return (string) preg_replace($replace, $with, $text);
         }
 
         $phrase = '(' . preg_quote($phrase, '|') . ')';
@@ -211,7 +211,7 @@ class Str
             $phrase = "(?![^<]+>)$phrase(?![^<]+>)";
         }
 
-        return preg_replace(sprintf($options['regex'], $phrase), $options['format'], $text);
+        return (string) preg_replace(sprintf($options['regex'], $phrase), $options['format'], $text);
     }
 
     /**

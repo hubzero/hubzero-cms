@@ -613,7 +613,7 @@ class Tags extends \Hubzero\Base\Obj
 					AND ta.objectid=r.id";
 
         $this->db->setQuery($query);
-        return $this->db->loadColumn();
+        return $this->db->loadColumn() ?? [];
     }
 
     /**
@@ -621,7 +621,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      integer $id
      *
-     * @return     string
+     * @return     string|null
      */
     public function countTags($id)
     {
@@ -666,7 +666,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      int $vid publication version id
      *
-     * @return     \stdClass|false
+     * @return     \stdClass|false|null
      */
     public function getFOSTag($vid)
     {

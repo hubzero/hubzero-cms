@@ -61,7 +61,7 @@ class Link extends Button
      */
     public function fetchId($type = 'Link', $name = '')
     {
-        return $this->parent->getName() . '-' . $name;
+        return $this->parentOrFail()->getName() . '-' . $name;
     }
 
     /**

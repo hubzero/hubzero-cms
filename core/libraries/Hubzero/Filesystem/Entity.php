@@ -273,7 +273,7 @@ class Entity extends Obj
      **/
     public function isLocal()
     {
-        return $this->hasAdapterOrFail()->adapter->isLocal();
+        return $this->adapterOrFail()->isLocal();
     }
 
     /**
@@ -420,7 +420,7 @@ class Entity extends Obj
     public function getTimestamp()
     {
         if (!isset($this->timestamp)) {
-            $this->timestamp = $this->hasAdapterOrFail()->adapter->getTimestamp($this->getPath());
+            $this->timestamp = $this->adapterOrFail()->getTimestamp($this->getPath());
         }
 
         return $this->timestamp;
@@ -471,7 +471,7 @@ class Entity extends Obj
     {
         // Don't let this confuse you...we're getting the actual filesystem adapter from
         // our adapter variable, which is really the filesystem class itself...words can be confusing.
-        return $this->hasAdapterOrFail()->adapter->applyPathPrefix($this->getPath());
+        return $this->adapterOrFail()->applyPathPrefix($this->getPath());
     }
 
     /**
@@ -489,13 +489,28 @@ class Entity extends Obj
     }
 
     /**
+     * The adapter, for the calls that need one
+     *
+     * @return  \Hubzero\Filesystem\Flysystem
+     * @throws  \Exception  When there is none
+     **/
+    protected function adapterOrFail()
+    {
+        if (!isset($this->adapter)) {
+            throw new \Exception('No adapter set', 500);
+        }
+
+        return $this->adapter;
+    }
+
+    /**
      * Checks to see if entity exists on filesystem
      *
      * @return  bool
      **/
     public function exists()
     {
-        return $this->hasAdapterOrFail()->adapter->has($this->getPath());
+        return $this->adapterOrFail()->has($this->getPath());
     }
 
     /**
@@ -517,7 +532,7 @@ class Entity extends Obj
     public function move($to)
     {
         $dest   = $to . '/' . $this->getDisplayName() . '.' . $this->getExtension();
-        $return = $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $dest);
+        $return = $this->adapterOrFail()->rename($this->getPath(), $dest);
 
         // Update the internal path
         if ($return) {
@@ -536,7 +551,7 @@ class Entity extends Obj
     public function rename($to)
     {
         $dest   = $this->getParent() . '/' . $to;
-        $return = $this->hasAdapterOrFail()->adapter->rename($this->getPath(), $dest);
+        $return = $this->adapterOrFail()->rename($this->getPath(), $dest);
 
         // Update the internal path
         if ($return) {
@@ -555,7 +570,7 @@ class Entity extends Obj
     public function copy($to)
     {
         if (is_string($to)) {
-            return $this->hasAdapterOrFail()->adapter->copy($this->getPath(), $to);
+            return $this->adapterOrFail()->copy($this->getPath(), $to);
         } else {
             return Manager::copy($this, $to);
         }

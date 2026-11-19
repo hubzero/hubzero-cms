@@ -52,4 +52,19 @@ class BlockElement extends Obj
     {
         return $this->name;
     }
+
+    /**
+     * The parent, which the calls using it need set
+     *
+     * @return  BlockElements
+     * @throws  \LogicException  When it is not
+     */
+    protected function parentOrFail()
+    {
+        if ($this->parent === null) {
+            throw new \LogicException(static::class . '::$parent is not set');
+        }
+
+        return $this->parent;
+    }
 }

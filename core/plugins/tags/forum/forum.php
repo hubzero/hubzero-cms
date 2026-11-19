@@ -37,7 +37,7 @@ class Forum extends Plugin
         $dbh->setQuery(
             'SELECT DISTINCT gidNumber FROM `#__xgroups_members` WHERE uidNumber=' . $uid,
         );
-        return $dbh->loadColumn();
+        return $dbh->loadColumn() ?? [];
     }
 
     /**

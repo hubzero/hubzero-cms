@@ -148,6 +148,8 @@ class Attachments extends Obj
      */
     public function attach($name, $element = null, $elementId = 0, $pub = null, $params = null)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         // Load attachment type
         $type = $this->loadAttach($name);
 
@@ -180,6 +182,8 @@ class Attachments extends Obj
      */
     public function serve($name = null, $element = null, $elementId = 0, $pub = null, $params = null, $itemId = null)
     {
+        $pub = \Components\Publications\Models\Publication::required($pub);
+
         if ($name === null) {
             return false;
         }

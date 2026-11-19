@@ -50,13 +50,13 @@ class CategoryEdit extends Select
         // For categories the old category is the category id or 0 for new category.
         if ($element['parent'] || Request::getCmd('option') == 'com_categories') {
             $oldCat = Request::getInt('id', 0);
-            $oldParent = $this->form->getValue($name, null, 0);
+            $oldParent = $this->formValue($name, null, 0);
             $extElement = $element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('extension', 'com_content');
         } else {
             // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
-            $oldCat = $this->form->getValue($name, null, 0);
+            $oldCat = $this->formValue($name, null, 0);
             $extElement = $element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('option', 'com_content');
         }
