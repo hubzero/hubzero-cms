@@ -180,14 +180,15 @@ class Asset extends Base
 
         if ($value && $this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->loadForScope(
-                $this->get('id'),
-                $this->scope,
-                $this->get('section_id'),
-            );
+            $dt->loadForScope($this->get('id'), $this->scope, $this->get('section_id'));
+            // A row not there yet is this entry's in this section
+            $dt->set('scope', $this->scope);
+            $dt->set('scope_id', $this->get('id'));
+            $dt->set('section_id', $this->get('section_id'));
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
-            if (!$dt->store()) {
+            // check() writes a blank date as NULL, which strict SQL needs
+            if (!$dt->check() || !$dt->store()) {
                 $this->setError($dt->getError());
             }
         }
