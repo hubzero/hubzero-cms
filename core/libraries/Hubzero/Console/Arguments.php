@@ -275,7 +275,8 @@ class Arguments
                 }
             }
 
-            if (class_exists($namespace)) {
+            // Not class_exists(): a facade alias would pass for a command (see isCommand)
+            if (self::isCommand($namespace)) {
                 $class = $namespace;
                 break;
             }
