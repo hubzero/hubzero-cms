@@ -25,7 +25,7 @@ class Profile extends Obj
      *
      * @var  array<int, string>
      */
-    private const INTERNAL = ['plainPassword', 'paramsRegistry'];
+    private const INTERNAL = ['plainPassword', 'paramsRegistry', 'errors'];
 
     /**
      * ID (primary key)

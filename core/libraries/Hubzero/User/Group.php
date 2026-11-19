@@ -35,7 +35,7 @@ class Group extends Obj
      *
      * @var  array<int, string>
      */
-    private const INTERNAL = ['updatedKeys', 'listKeys'];
+    private const INTERNAL = ['updatedKeys', 'listKeys', 'errors'];
 
     /**
      * Group ID
