@@ -302,7 +302,6 @@ var Conditions = {
 };
 
 Hubzero.submitbutton = function(task) {
-{
 	var query = {},
 		component = false;
 

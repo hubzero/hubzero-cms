@@ -782,9 +782,8 @@ if ($this->message) { ?>
                         max: new Date('<?php echo $to; ?>'),
                         tickFormatter: function (val, axis) {
                             var d = new Date(val);
-                            //return month_short[d.getUTCMonth()] + ' ' + d
-                                . getFullYear();//d
-                                . getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                            //return month_short[d.getUTCMonth()] + ' ' + d.getFullYear();
+                            //d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
                             return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
                         }//,
                         //zoomRange: [0.1, 1],

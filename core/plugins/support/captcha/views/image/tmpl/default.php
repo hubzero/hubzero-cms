@@ -56,9 +56,11 @@ if (Request::isSecure()) {
                 <script type="text/javascript">
                     //<![CDATA[
                     function reloadCapthcha<?php echo $this->total; ?>(instanceNo) {
-                        var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>
-                        &controller=<?php echo $this->controller; ?>&task=<?php echo $this->task; ?>
-                        &no_html=1&showCaptcha=True&instanceNo=" + instanceNo + "&time=" + new Date().getTime();
+                        // One string: a line break inside the quotes ends the script
+                        var captchaSrc = "<?php
+                            echo $base . 'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=' . $this->task;
+                        ?>&no_html=1&showCaptcha=True&instanceNo=" + instanceNo + "&time=" + new Date().getTime();
                         document.getElementById('captchaCode' + instanceNo).src = captchaSrc;
                     }
                     //]]>

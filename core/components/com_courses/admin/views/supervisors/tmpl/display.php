@@ -24,6 +24,8 @@ $course = \Components\Courses\Models\Course::getInstance($this->model->get('cour
 $roles = $course->offering(0)->roles(['alias' => '!student']);
 $offerings = $course->offerings();
 
+// managers.js needs jQuery, which this page (shown in a frame) would not load otherwise
+Html::behavior('framework');
 $this->js('managers.js');
 ?>
 <?php if ($this->getError()) { ?>

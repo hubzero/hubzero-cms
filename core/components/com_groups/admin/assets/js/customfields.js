@@ -9,6 +9,11 @@ var colors = ['#f0e7f4', '#e9f1fa', '#f9fbe5', '#ecf8f6', '#fbf7dc', '#FEEFB2', 
 var current = 0;
 
 jQuery(document).ready(function($){
+	// Only the custom fields editor has a schema to build; a group's own edit form loads this too
+	if (!$('#schema').length) {
+		return;
+	}
+
 	var $fbPages = $(document.getElementById("item-form"));
 	var addPageTab = document.getElementById("add-page-tab");
 	var extraFields = { 

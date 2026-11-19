@@ -20,6 +20,8 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{course: mixed} $this
  */
 
+// managers.js needs jQuery, which this page (shown in a frame) would not load otherwise
+Html::behavior('framework');
 $this->js('managers.js');
 
 $roles = $this->course->offering(0)->roles(['alias' => '!student']);
