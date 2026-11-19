@@ -1071,8 +1071,10 @@ abstract class Cart
     {
         $db = App::get('db');
 
-        $sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', `tiPaymentDetails` = "
-            . "'{$paymentInfo[1]}' WHERE `tId` = {$tId}";
+        // Quoted: the details come from a payment gateway's postback
+        $sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = " . $db->quote((string) ($paymentInfo[0] ?? ''))
+            . ", `tiPaymentDetails` = " . $db->quote((string) ($paymentInfo[1] ?? ''))
+            . " WHERE `tId` = " . (int) $tId;
         $db->setQuery($sql);
         $db->query();
 
