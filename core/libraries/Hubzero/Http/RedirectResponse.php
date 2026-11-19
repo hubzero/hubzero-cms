@@ -127,6 +127,11 @@ class RedirectResponse extends BaseRedirectResponse
         // Only the first line: a line break in a header would end it
         $url = (preg_split("/[\r\n]/", $url) ?: [''])[0];
 
+        // A header is not HTML. Route::url() escapes '&' for HTML unless told
+        // not to, and hundreds of redirects pass it straight here; a browser
+        // reads '&amp;saved=1' as a parameter named 'amp;saved'.
+        $url = str_replace('&amp;', '&', $url);
+
         // "index.php?..." is relative to the client's entry point, not to the
         // path a routed page happens to be on
         if ($this->request && preg_match('/^index2?\.php/', $url)) {

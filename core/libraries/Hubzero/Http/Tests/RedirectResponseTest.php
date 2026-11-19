@@ -74,6 +74,11 @@ class RedirectResponseTest extends Basic
         $this->assertStringStartsWith('<!DOCTYPE html>', $body);
         $this->assertStringContainsString('/groups', $body);
 
+        $redirect = new RedirectResponse('/wishlist/publication/1/wish/16?active=wishlist&amp;saved=3');
+        $this->sendFrom($redirect, '/index.php', '/wishlist/4/add');
+
+        $this->assertEquals('/wishlist/publication/1/wish/16?active=wishlist&saved=3', $redirect->getTargetUrl());
+
         $redirect = new RedirectResponse("https://example.org/a\r\nX-Injected: 1");
         $this->sendFrom($redirect, '/index.php', '/');
 
