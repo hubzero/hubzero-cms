@@ -337,6 +337,26 @@ class Version
     private $updatedkeys = [];
 
     /**
+     * The properties that hold the model's own state rather than a column.
+     * clear(), sqlUpdate() and the magic accessors used to tell them apart by
+     * a leading underscore, which these names no longer have.
+     *
+     * @var list<string>
+     */
+    private const INTERNAL = ['listKeys', 'updateAll', 'propertyattrmap', 'updatedkeys'];
+
+    /**
+     * Whether a property is the model's own state rather than a column
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    private static function isInternal($name)
+    {
+        return $name === '' || $name[0] === '_' || in_array($name, self::INTERNAL, true);
+    }
+
+    /**
      * Constructor
      *
      * @return   void
@@ -357,7 +377,7 @@ class Version
         $this->updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
-            if ($key[0] != '_') {
+            if (!self::isInternal($key)) {
                 unset($this->$key);
 
                 if (!in_array($key, $this->listKeys)) {
@@ -658,7 +678,7 @@ class Version
         $first = true;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_') || in_array($property, $this->listKeys)) {
+            if (self::isInternal($property) || in_array($property, $this->listKeys)) {
                 continue;
             }
 
@@ -923,7 +943,7 @@ class Version
      */
     public function __get($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || self::isInternal($property)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -986,7 +1006,7 @@ class Version
      */
     public function __set($property, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || self::isInternal($property)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -1021,7 +1041,7 @@ class Version
      */
     public function __isset($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || self::isInternal($property)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -1043,7 +1063,7 @@ class Version
      */
     public function __unset($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, $property) || self::isInternal($property)) {
             if (empty($property)) {
                 $property = '(null)';
             }
