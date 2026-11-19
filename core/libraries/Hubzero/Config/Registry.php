@@ -48,7 +48,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 
         // Optionally load supplied data.
         if ($data) {
-            $this->parse($data, $format);
+            $this->parse($data, (string) $format);
         }
     }
 

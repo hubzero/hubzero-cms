@@ -422,9 +422,9 @@ class Questions extends Plugin
             $toolname = $this->modelOrFail()->alias;
 
             $rev = $objV->getCurrentVersionProperty($toolname, 'revision');
-            $authors = $TA->getToolAuthors('', 0, $toolname, $rev);
+            $authors = $TA->getToolAuthors('', 0, $toolname, (string) $rev);
 
-            if (count($authors) > 0) {
+            if (count($authors ?? []) > 0) {
                 foreach ($authors as $author) {
                     $receivers[] = $author->uidNumber;
                 }
@@ -504,7 +504,7 @@ class Questions extends Plugin
                     '<a href="'
                         . Route::url($row->link())
                         . '">'
-                        . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [

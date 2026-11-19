@@ -1827,7 +1827,7 @@ class Calendar extends Plugin
                         $output .= ($registrant->attending_dinner == 1) ? 'Yes,' : 'No,';
                         break;
                     case 'race':
-                        $output .= $this->escapeCsv($race) . ',';
+                        $output .= $this->escapeCsv((string) $race) . ',';
                         break;
                     case 'registered':
                         $output .= $this->escapeCsv(Date::of($registrant->registered)->toLocal('Y-m-d H:i:s'));

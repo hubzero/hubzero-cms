@@ -202,7 +202,7 @@ Examples:
             if (
                 $attach->filename
                 && file_exists($this->path($attach->filename))
-                || file_exists($this->path($attach->filename, true))
+                || file_exists($this->path((string) $attach->filename, true))
             ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {

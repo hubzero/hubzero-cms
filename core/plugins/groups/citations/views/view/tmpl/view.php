@@ -180,7 +180,7 @@ $area = Request::getString('area', 'about');
                 $template = \Components\Citations\Models\Format::getDefault();
 
                 $cf = new \Components\Citations\Helpers\Format();
-                $cf->setTemplate($template->format);
+                $cf->setTemplate((string) $template->format);
                 echo strip_tags($cf->formatCitation($citation, null, false, $config));
             ?>
             <div class="download">

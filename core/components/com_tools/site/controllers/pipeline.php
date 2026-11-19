@@ -992,7 +992,7 @@ class Pipeline extends SiteController
             if ($hztv === false) {
                 Log::debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
                 $hztv = \Components\Tools\Models\Version::createInstance(
-                    $tool['toolname'],
+                    (string) $tool['toolname'],
                     $tool['toolname'] . $dev_suffix,
                 );
 
@@ -1045,7 +1045,7 @@ class Pipeline extends SiteController
             }
         }
 
-        $this->setTracAccess($tool['toolname'], $hztv->codeaccess, $hztv->wikiaccess);
+        $this->setTracAccess((string) $tool['toolname'], $hztv->codeaccess, $hztv->wikiaccess);
 
         if ($this->_error) {
             App::abort(500, $this->_error);
@@ -1558,7 +1558,7 @@ class Pipeline extends SiteController
 
             // If the tool was cancelled ...
             if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned')) {
-                $r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
+                $r = \Components\Resources\Models\Entry::oneByAlias((string) $hzt->toolname);
 
                 if ($r->id) {
                     $rstatus = 2;

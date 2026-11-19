@@ -661,7 +661,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         //get tool access
-        $toolAccess = \Components\Tools\Helpers\Utils::getToolAccess($app->name, $result->get('username'));
+        $toolAccess = \Components\Tools\Helpers\Utils::getToolAccess((string) $app->name, $result->get('username'));
 
         //do we have access
         if ($toolAccess->valid != 1) {
@@ -870,7 +870,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Get tool access
-        $toolAccess = \Components\Tools\Helpers\Utils::getToolAccess($app->name, $profile->get('username'));
+        $toolAccess = \Components\Tools\Helpers\Utils::getToolAccess((string) $app->name, $profile->get('username'));
 
         // Do we have access
         if ($toolAccess->valid != 1) {

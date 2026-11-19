@@ -1128,7 +1128,7 @@ class Translator extends Obj
             ->where('published', '=', 1);
         $db->setQuery($query->toString());
 
-        return $db->loadObjectList($key);
+        return $db->loadObjectList((string) $key);
     }
 
     /**

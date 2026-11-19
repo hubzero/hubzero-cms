@@ -382,7 +382,7 @@ class ValidateTest extends Basic
 
         foreach ($tests as $test) {
             list($value, $result) = $test;
-            $this->assertSame($result, Validate::posixUsername($value), var_export($value, true));
+            $this->assertSame($result, Validate::posixUsername((string) $value), var_export($value, true));
         }
     }
 
@@ -414,7 +414,7 @@ class ValidateTest extends Basic
 
         foreach ($tests as $test) {
             list($value, $result) = $test;
-            $this->assertSame($result, Validate::homeDirectory($value), var_export($value, true));
+            $this->assertSame($result, Validate::homeDirectory((string) $value), var_export($value, true));
         }
     }
 

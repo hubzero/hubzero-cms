@@ -40,9 +40,9 @@ class ACL extends Obj
     /**
      * Raw data from database
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      */
-    private $rawData;
+    private $rawData = [];
 
     /**
      * User's groups
@@ -68,7 +68,7 @@ class ACL extends Obj
 				LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id";
 
         $this->db->setQuery($sql);
-        $this->rawData = $this->db->loadAssocList();
+        $this->rawData = $this->db->loadAssocList() ?? [];
 
         if (!$this->user->isGuest()) {
             $this->memberGroups = UserHelper::getGroups($this->user->get('id'));
@@ -120,7 +120,7 @@ class ACL extends Obj
         // Check user's groups
         if ($this->memberGroups) {
             foreach ($this->memberGroups as $ug) {
-                foreach ($this->rawData ?? [] as $line) {
+                foreach ($this->rawData as $line) {
                     // Get the aco permission
                     if (
                         $line['aro_model'] == 'group'
@@ -161,7 +161,7 @@ class ACL extends Obj
         $userspecific = false;
         // Check individual
         $permission = 0;
-        foreach ($this->rawData ?? [] as $line) {
+        foreach ($this->rawData as $line) {
             // Get the aco permission
             if (
                 $line['aro_model'] == 'user'

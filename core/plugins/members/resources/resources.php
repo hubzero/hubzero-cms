@@ -228,7 +228,7 @@ class Resources extends Plugin
 
             // Check the area of return. If we are returning results for a specific area/category
             // we'll need to modify the query a bit
-            if (count($areas) == 1 && !isset($areas['resources'])) {
+            if (count($areas ?? []) == 1 && !isset($areas['resources'])) {
                 $filters['type'] = (isset($areas[0], $cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
                 if (!$filters['type']) {
                     unset($filters['type']);

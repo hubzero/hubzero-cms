@@ -478,7 +478,7 @@ class Request extends BaseRequest
     {
         $ip = $this->getClientIp();
 
-        $normalized = \Hubzero\Utility\Ip::normalize($ip);
+        $normalized = \Hubzero\Utility\Ip::normalize((string) $ip);
 
         return $normalized !== '' ? $normalized : $ip;
     }

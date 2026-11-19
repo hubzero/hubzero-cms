@@ -1719,7 +1719,7 @@ class AseDriver extends BaseSqlDriver
         // ASE forbids ORDER BY in derived tables. We strip the ORDER BY from
         // inside parenthesized subqueries that end with ") AS alias".
         if (preg_match('/ORDER\s+BY\b.*?\)\s*AS\s/is', (string) $sql)) {
-            $sql = $this->stripOrderByFromDerivedTables($sql);
+            $sql = $this->stripOrderByFromDerivedTables((string) $sql);
             $changed = true;
         }
 
@@ -1752,7 +1752,7 @@ class AseDriver extends BaseSqlDriver
         }
 
         if ($changed) {
-            $this->prepare($sql);
+            $this->prepare((string) $sql);
         }
     }
 

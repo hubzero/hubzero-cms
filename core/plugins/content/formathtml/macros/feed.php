@@ -162,7 +162,8 @@ class Feed extends Macro
         $html  = '<div class="item">';
         $html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->get_title()) . '</h4>';
         $html .= '<p>' . \Hubzero\Utility\Sanitize::html((string) $item->get_description()) . '</p>';
-        $html .= '<a rel="external" href="' . $this->safeLink($item->get_permalink()) . '">Read More &rsaquo;</a>';
+        $html .= '<a rel="external" href="' . $this->safeLink((string) $item->get_permalink()) . '">'
+            . 'Read More &rsaquo;</a>';
         $html .= '</div>';
         return $html;
     }

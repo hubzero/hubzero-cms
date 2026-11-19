@@ -218,7 +218,7 @@ if ($this->publication->params->get('show_metadata')) {
         $cite = null;
     }
 
-    $citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $this->publication, $citations);
+    $citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $this->publication, (string) $citations);
     ?>
     <h3 id="citethis"><?php echo Lang::txt('COM_PUBLICATIONS_CITE_THIS'); ?></h3>
     <div class="pub-content">

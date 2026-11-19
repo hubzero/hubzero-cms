@@ -431,6 +431,8 @@ class ApiController implements ControllerInterface
             }
 
             if ($this->isDynamic && $endpoint['name'] != 'index') {
+                // A uri tag is text; anything else has no placeholders to fill
+                $endpoint['uri'] = is_string($endpoint['uri']) ? $endpoint['uri'] : '';
                 $endpoint['uri'] = str_replace('{component}', $output->component, $endpoint['uri']);
                 $endpoint['uri'] = str_replace('{controller}', (string) $this->controller, $endpoint['uri']);
                 $endpoint['uri'] = str_replace('{primary key}', '{' . $model->getPrimaryKey() . '}', $endpoint['uri']);
@@ -1034,7 +1036,7 @@ class ApiController implements ControllerInterface
         if (!$this->modelClass) {
             // If no model name is explicitely set then derive the
             // name (singular) from the controller name (plural)
-            $this->modelClass = \Hubzero\Utility\Inflector::singularize($this->controller);
+            $this->modelClass = \Hubzero\Utility\Inflector::singularize((string) $this->controller);
 
             // Does the model name include the namespace?
             // We need a fully qualified name

@@ -497,7 +497,7 @@ class Ticketsv2r1 extends ApiController
         $ticket->set('open', 1);
 
         if (Request::get('group', null)) {
-            $group_model = \Components\Groups\Models\Orm\Group::oneByCn(Request::getString('group'));
+            $group_model = \Components\Groups\Models\Orm\Group::oneByCn((string) Request::getString('group'));
             if ($group_model->get('gidNumber', null)) {
                 $ticket->set('group_id', $group_model->get('gidNumber'));
             } else {

@@ -139,7 +139,7 @@ class Help extends Button
             // Component help URL overrides user and global.
             if ($useComponent) {
                 // Look for help URL in component parameters.
-                $params = Component::params($component);
+                $params = Component::params((string) $component);
                 $url = $params->get('helpURL');
 
                 if ($url == '') {

@@ -352,7 +352,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');
 
             // Create the link
-            if (\Hubzero\Auth\Link::getInstance($hzad->id, $id)) {
+            if (\Hubzero\Auth\Link::getInstance($hzad->id, (string) $id)) {
                 // This account is already linked to another hub account
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),

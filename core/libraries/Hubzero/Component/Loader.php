@@ -430,7 +430,7 @@ class Loader
             }
 
             if ($node->nodeName == 'title') {
-                Document::setTitle($node->nodeValue);
+                Document::setTitle((string) $node->nodeValue);
                 // Oddly concatenated titles
             }
 

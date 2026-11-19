@@ -86,7 +86,7 @@ class TestableTranslator extends Translator
             $lang = $this->lang;
         }
 
-        $path = self::getLanguagePath($basePath, $lang);
+        $path = self::getLanguagePath((string) $basePath, $lang);
 
         $internal = $extension == 'hubzero' || $extension == '';
         $filename = $internal ? $lang : $lang . '.' . $extension;

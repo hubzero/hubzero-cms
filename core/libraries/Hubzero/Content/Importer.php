@@ -133,7 +133,7 @@ class Importer
         };
 
         // set the adapter if we found one
-        $responded = array_filter($this->adapters, $respondsTo);
+        $responded = array_filter($this->adapters ?? [], $respondsTo);
         if ($adapter = array_shift($responded)) {
             $this->setAdapter(new $adapter());
         }

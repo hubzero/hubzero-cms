@@ -85,8 +85,8 @@ class Tools extends Plugin
                 $toolname = (string) preg_replace('/tool:/', '', $tag);
                 if (trim($toolname)) {
                     $rev = $objV->getCurrentVersionProperty($toolname, 'revision');
-                    $authors = $TA->getToolAuthors('', 0, $toolname, $rev);
-                    if (count($authors) > 0) {
+                    $authors = $TA->getToolAuthors('', 0, $toolname, (string) $rev);
+                    if (count($authors ?? []) > 0) {
                         foreach ($authors as $author) {
                             $recipients[] = $author->uidNumber;
                         }

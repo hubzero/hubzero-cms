@@ -56,7 +56,7 @@ $defaultTitle = $this->manifest->params->title
             ? str_replace(
                 '{pubtitle}',
                 $this->pub->title,
-                $this->manifest->params->title,
+                (string) $this->manifest->params->title,
             )
             : null;
 $defaultTitle = $this->manifest->params->title

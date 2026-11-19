@@ -65,7 +65,7 @@ class FeedYoutube extends Module
             $this->feed->image->title = $rssDoc->get_image_title();
 
             // Items
-            $items = $rssDoc->get_items();
+            $items = $rssDoc->get_items() ?? [];
 
             // Feed elements
             if ($this->params->get('pick_random', 0)) {

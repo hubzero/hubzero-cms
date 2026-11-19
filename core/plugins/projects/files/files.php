@@ -422,7 +422,7 @@ class Files extends Plugin
                 // New connected methods
             case 'connections':
                 $controller = new Connections($this, $this->componentOption, $connection);
-                $arr['html'] = $controller->execute($ctask);
+                $arr['html'] = $controller->execute((string) $ctask);
                 break;
                 // File browser
             case 'browse':
@@ -973,7 +973,7 @@ class Files extends Plugin
                 ]);
             } else {
                 Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
-                App::redirect($url);
+                App::redirect((string) $url);
             }
         }
 
@@ -993,7 +993,7 @@ class Files extends Plugin
         }
 
         // Redirect
-        App::redirect($url);
+        App::redirect((string) $url);
     }
 
     /**

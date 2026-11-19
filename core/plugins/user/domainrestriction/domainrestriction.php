@@ -370,7 +370,7 @@ class Domainrestriction extends Plugin
             }
         }
 
-        $emailuser = $this->parseEmail($user->email);
+        $emailuser = $this->parseEmail((string) $user->email);
         $excluded = json_decode(str_replace('*', $emailuser, base64_decode($this->params->get('excludeauto', 'W10K'))));
 
         if (count($excluded) && in_array(strtolower((string) $user->email), $excluded)) {

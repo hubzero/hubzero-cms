@@ -187,7 +187,7 @@ class QualifiedDC extends DublinCore
                             $res  = $val['value'];
                             $term = $val['type'];
                             // Make sure it's a valid modifier
-                            if (!in_array($term, $attrs)) {
+                            if (!in_array($term, $attrs ?? [])) {
                                 $term = '';
                             }
                         } else {

@@ -229,7 +229,7 @@ class Sanitize
 
         // Remove really unwanted tags
         $string = self::stripTags(
-            $string,
+            (string) $string,
             'applet',
             'meta',
             'xml',

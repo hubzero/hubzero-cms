@@ -1364,7 +1364,7 @@ class Team extends Plugin
                 ->addFrom($from['email'], $from['name'])
                 ->addPart($message['plaintext'], 'text/plain')
                 ->addPart($message['multipart'], 'text/html')
-                ->setTo($recipient->email, $recipient->name);
+                ->setTo($recipient->email, (string) $recipient->name);
 
             if ($email->send()) {
                 return true;

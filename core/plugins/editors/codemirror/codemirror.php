@@ -149,7 +149,7 @@ class Codemirror extends Plugin
         }
 
         // Must pass the field id to the buttons in this editor.
-        $buttons = $this->displayButtons($id, $buttons, $asset, $author);
+        $buttons = $this->displayButtons($id, $buttons, (string) $asset, $author);
 
         $compressed = Config::get('debug') ? '-uncompressed' : '';
 

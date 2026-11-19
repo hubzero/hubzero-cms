@@ -335,7 +335,7 @@ class SolrQueryAdapter implements QueryInterface
         $this->facetSet = $this->query->getFacetSet();
 
         $string = $this->makeQueryString($query);
-        $this->facetSet->createFacetQuery($name)->setQuery($string);
+        $this->facetSet->createFacetQuery($name)->setQuery((string) $string);
 
         return $this;
     }

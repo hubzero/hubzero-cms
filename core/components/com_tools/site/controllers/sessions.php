@@ -591,7 +591,7 @@ class Sessions extends SiteController
         $app->title   = stripslashes($tv->title);
 
         // Check if they have access to run this tool
-        $hasaccess = $this->getToolAccess($app->name);
+        $hasaccess = $this->getToolAccess((string) $app->name);
         //$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
         //Log::debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip
@@ -612,7 +612,7 @@ class Sessions extends SiteController
         //die($app->ip . $country);
 
         // Log the launch attempt
-        $this->recordUsage($app->toolname, User::get('id'));
+        $this->recordUsage((string) $app->toolname, User::get('id'));
 
         // Get the middleware database
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();

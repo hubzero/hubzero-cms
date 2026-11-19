@@ -109,7 +109,7 @@ class Params extends Relational
      */
     public static function getDefaultParams($folder = null, $element = null)
     {
-        $plugin = \Plugin::byType($folder, $element);
+        $plugin = \Plugin::byType((string) $folder, $element);
 
         // No such plugin (byType() gives an empty array), or no plugin named
         if (!$plugin instanceof \stdClass) {

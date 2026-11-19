@@ -216,7 +216,7 @@ class Db2Grammar extends BaseSchemaGrammar
     {
         $name = $fk->getName();
         $sql = "CONSTRAINT {$name} FOREIGN KEY (" . $this->wrap($fk->getColumn()) . ") ";
-        $sql .= "REFERENCES " . $this->wrap($fk->getReferencedTable());
+        $sql .= "REFERENCES " . $this->wrap((string) $fk->getReferencedTable());
         $sql .= " (" . $this->wrap($fk->getReferencedColumn()) . ")";
         $sql .= " ON DELETE " . $fk->getOnDelete();
 

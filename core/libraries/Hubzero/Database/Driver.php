@@ -1913,7 +1913,7 @@ abstract class Driver implements LoggerAwareInterface
         $this->timer += $time;
 
         // Add to detailed query log if enabled
-        $this->logQuery($query, $this->bindings, $timeMs);
+        $this->logQuery((string) $query, $this->bindings, $timeMs);
 
         // PSR-3 logging: slow queries as warnings
         if ($this->slowQueryThreshold > 0 && $time > $this->slowQueryThreshold) {

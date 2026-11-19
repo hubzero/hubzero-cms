@@ -56,7 +56,7 @@ class Moderator
         if (is_file($identifier == null ? '' : $identifier)) {
             $this->path = (string) $identifier;
         } else {
-            $this->decompose($identifier);
+            $this->decompose((string) $identifier);
         }
 
         // We assume that if session_id and secret aren't included, that we're

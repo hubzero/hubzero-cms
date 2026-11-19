@@ -59,7 +59,7 @@ class FileWriter
      */
     public function write($contents, $group, $client = null)
     {
-        $path = $this->getPath($client, $group);
+        $path = $this->getPath((string) $client, $group);
 
         if (!$path) {
             return false;

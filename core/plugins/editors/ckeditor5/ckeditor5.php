@@ -316,7 +316,7 @@ class Ckeditor5 extends Plugin
             . '</textarea>'
             . $script;
         if (App::isAdmin()) {
-            $editor .= $this->displayButtons($id, $buttons, $asset, $author);
+            $editor .= $this->displayButtons($id, $buttons, (string) $asset, $author);
         }
         return $editor;
     }

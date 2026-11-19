@@ -964,7 +964,7 @@ class Doi extends Obj
      *
      * @param   string  $url
      * @param   string   $postvals
-     * @param   string   &$doi
+     * @param   string|null   &$doi
      *
      * @return  boolean
      */

@@ -68,10 +68,10 @@ class ExpireInactiveTest extends Basic
 
         $xml    = simplexml_load_file($file);
         $this->assertNotFalse($xml);
-        $legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name'));
+        $legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name') ?: []);
         $config = array_map(
             'strval',
-            $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name'),
+            $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name') ?: [],
         );
         $this->assertSame(['members_expireinactive_months', 'members_expireinactive_exempt_group'], $legacy);
         $this->assertSame($legacy, $config);

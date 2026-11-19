@@ -907,7 +907,7 @@ class Group extends Obj
     {
         $users = $this->userids($value);
 
-        $this->__set($key, array_merge($this->__get($key), $users));
+        $this->__set((string) $key, array_merge($this->__get((string) $key), $users));
     }
 
     /**
@@ -921,7 +921,7 @@ class Group extends Obj
     {
         $users = $this->userids($value);
 
-        $this->__set($key, array_diff($this->__get($key), $users));
+        $this->__set((string) $key, array_diff($this->__get((string) $key), $users));
     }
 
     /**

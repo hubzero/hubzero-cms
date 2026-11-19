@@ -172,7 +172,7 @@ class JoinBuilder
             throw new InvalidArgumentException('JoinBuilder requires at least one join predicate.');
         }
 
-        $this->query->joinOn($this->table, $this->conditions, $this->type);
+        $this->query->joinOn((string) $this->table, $this->conditions, $this->type);
         return $this->query;
     }
 

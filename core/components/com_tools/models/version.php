@@ -954,7 +954,7 @@ class Version
                     $query = null;
                 }
 
-                $db->setQuery($query);
+                $db->setQuery((string) $query);
 
                 $result = $db->loadColumn();
 

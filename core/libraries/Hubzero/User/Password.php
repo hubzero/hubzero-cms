@@ -1024,7 +1024,7 @@ class Password
         $length = strlen($hex);
         for ($i = 0; $i < $length; $i += 2) {
             $tmp = sscanf(substr($hex, $i, 2), '%x');
-            $bin .= chr(array_shift($tmp));
+            $bin .= chr((int) ($tmp[0] ?? 0));
         }
         return $bin;
     }

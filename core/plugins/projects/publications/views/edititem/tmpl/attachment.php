@@ -37,7 +37,7 @@ $element = $this->pub->curation('blocks', $this->step, 'elements', $this->elemen
 
 // Customize title
 $defaultTitle = $element->params->title
-                ? str_replace('{pubtitle}', $this->pub->title, $element->params->title)
+                ? str_replace('{pubtitle}', (string) $this->pub->title, (string) $element->params->title)
                 : null;
 $defaultTitle = $element->params->title
                 ? str_replace('{pubversion}', $this->pub->version_label, $defaultTitle)

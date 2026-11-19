@@ -192,7 +192,7 @@ class Pipeline extends AdminController
         if ($oldstate != $row->state && file_exists(Component::path('com_resources') . '/models/entry.php')) {
             // Trash the associated resource page
 
-            $resource = Entry::oneByAlias($row->toolname);
+            $resource = Entry::oneByAlias((string) $row->toolname);
 
             if ($resource->get('id')) {
                 if ($row->state == 7 || $row->state == 8) { // published

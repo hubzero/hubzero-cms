@@ -117,7 +117,7 @@ class History
 
         if ($results) {
             foreach ($results as $result) {
-                $compare = \Hubzero\User\Password::comparePasswords($result->passhash, $password);
+                $compare = \Hubzero\User\Password::comparePasswords($result->passhash, (string) $password);
                 if ($compare) {
                     return true;
                 }

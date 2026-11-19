@@ -2443,7 +2443,7 @@ class Wishlists extends SiteController
 
         if ($row->get('created_by') != User::get('id')) {
             App::redirect(
-                Request::getString('HTTP_REFERER', null, 'server'),
+                (string) Request::getString('HTTP_REFERER', null, 'server'),
                 Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
                 'error',
             );
@@ -2492,7 +2492,7 @@ class Wishlists extends SiteController
 
         // Go back to the page
         App::redirect(
-            Request::getString('HTTP_REFERER', null, 'server'),
+            (string) Request::getString('HTTP_REFERER', null, 'server'),
         );
     }
 

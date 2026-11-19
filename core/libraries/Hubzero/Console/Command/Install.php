@@ -1096,7 +1096,7 @@ class Install extends Base implements CommandInterface
         $error = null;
 
         if (!Install\Answers::load($answerFile, $error)) {
-            $this->output->error($error);
+            $this->output->error((string) $error);
         }
 
         $this->output->addLine('Reading the answers in ' . ($answerFile === '-' ? 'standard input' : $answerFile));

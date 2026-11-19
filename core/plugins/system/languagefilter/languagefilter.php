@@ -271,7 +271,7 @@ class Languagefilter extends Plugin
                     '/',
                 ));
             } else {
-                $uri->setPath($uri->getPath());
+                $uri->setPath((string) $uri->getPath());
             }
         } else {
             $uri->setUriVar('lang', $sef);

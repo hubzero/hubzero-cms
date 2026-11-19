@@ -597,7 +597,7 @@ class Account extends Plugin
         }
 
         // No errors, so let's move on - encrypt the password and update the profile
-        $result = \Hubzero\User\Password::changePassword($this->user->get('id'), $password1);
+        $result = \Hubzero\User\Password::changePassword($this->user->get('id'), (string) $password1);
 
         // Save the changes
         if (!$result) {
@@ -895,7 +895,7 @@ class Account extends Plugin
             !($ssh = $this->sshDirectory(true, $error))
             || !($auth = $this->authorizedKeysPath($ssh, $error))
         ) {
-            $this->logUnsafePath('write', $error);
+            $this->logUnsafePath('write', (string) $error);
 
             App::abort(500, Lang::txt((string) $error));
         }
@@ -934,7 +934,7 @@ class Account extends Plugin
             !($ssh = $this->sshDirectory(true, $error))
             || !($auth = $this->authorizedKeysPath($ssh, $error))
         ) {
-            $this->logUnsafePath('read', $error);
+            $this->logUnsafePath('read', (string) $error);
 
             return false;
         }

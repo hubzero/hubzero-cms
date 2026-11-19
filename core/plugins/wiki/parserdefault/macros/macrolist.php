@@ -94,7 +94,7 @@ class Macrolist extends WikiMacro
                 $description .= '<p><em>Group wikis only.</em></p>';
             }
 
-            $entries[strtolower((string) $label)] = $this->entry($label, $description);
+            $entries[strtolower((string) $label)] = $this->entry((string) $label, $description);
         }
 
         ksort($entries);

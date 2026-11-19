@@ -315,7 +315,7 @@ class Mysql implements
         }
 
         // load profile object, make sure its valid
-        $profile = \Hubzero\User\User::oneByUsername($username);
+        $profile = \Hubzero\User\User::oneByUsername((string) $username);
 
         if (!$profile->get('id')) {
             return false;

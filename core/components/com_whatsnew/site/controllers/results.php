@@ -189,7 +189,7 @@ class Results extends SiteController
         }
 
         // Set the page title
-        $title = Lang::txt(strtoupper($this->option)) . ': ' . $this->text($period);
+        $title = Lang::txt(strtoupper($this->option)) . ': ' . $this->text((string) $period);
 
         Document::setTitle($title);
 
@@ -201,7 +201,7 @@ class Results extends SiteController
             );
         }
         Pathway::append(
-            $this->text($period),
+            $this->text((string) $period),
             'index.php?option=' . $this->option . '&period=' . $period,
         );
 

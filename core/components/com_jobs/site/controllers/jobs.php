@@ -306,7 +306,7 @@ class Jobs extends SiteController
 
         // Go back to the page
         App::redirect(
-            Request::getString('HTTP_REFERER', null, 'server'),  // What page they came from
+            (string) Request::getString('HTTP_REFERER', null, 'server'),  // What page they came from
         );
     }
 

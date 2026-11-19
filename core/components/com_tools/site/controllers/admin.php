@@ -661,7 +661,7 @@ class Admin extends SiteController
 
                 // unpublish previous version
                 if (!$new) {
-                    if ($hzt->unpublishVersion($hztv_cur->instance)) {
+                    if ($hzt->unpublishVersion((string) $hztv_cur->instance)) {
                         $this->setMessage(Lang::txt('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSION_DB'));
                     } else {
                         $this->setError(Lang::txt('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_DB'));

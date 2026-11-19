@@ -166,7 +166,7 @@ class Citations extends Plugin
         $template = \Components\Citations\Models\Format::getDefault();
 
         $formatter = new \Components\Citations\Helpers\Format();
-        $formatter->setTemplate($template->format);
+        $formatter->setTemplate((string) $template->format);
 
         // Start building the HTML
         $html  = "\t" . '<li class="citation-entry">' . "\n";

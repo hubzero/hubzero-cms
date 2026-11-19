@@ -183,7 +183,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             ->setRedirectUri(self::getRedirectUri('orcid'));
 
         // Authenticate the user
-        $oauth->authenticate(Request::getString('code'));
+        $oauth->authenticate((string) Request::getString('code'));
 
         // Check for successful authentication
         if ($oauth->isAuthenticated()) {
