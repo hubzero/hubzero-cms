@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{_tmp_doc: mixed, currentDoc: mixed} $this
+ * @var \Hubzero\Component\View&object{currentDoc: mixed} $this
  */
 
 $currentDoc = $this->currentDoc;
@@ -89,7 +89,7 @@ $imgAlt = $this->escape(
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    ['com_media.file', &$this->_tmp_doc, &$params],
+    ['com_media.file', &$currentDoc, &$params],
 );
 
 $docUrl = MediaHelper::baseUrl() . $this->currentDoc['path'];
@@ -190,5 +190,5 @@ $escapedName = $this->escape($this->currentDoc['name']);
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    ['com_media.file', &$this->_tmp_doc, &$params],
+    ['com_media.file', &$currentDoc, &$params],
 );

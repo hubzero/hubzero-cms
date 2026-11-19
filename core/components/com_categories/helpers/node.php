@@ -313,7 +313,7 @@ class Node extends Obj
             if ($parent && count($parent->children) > 1) {
                 end($parent->children);
                 $this->leftSibling = prev($parent->children);
-                $this->leftSibling->_rightsibling = &$this;
+                $this->leftSibling->rightSibling = &$this;
             }
         }
     }

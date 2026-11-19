@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{_tmp_img: mixed, currentImg: mixed} $this
+ * @var \Hubzero\Component\View&object{currentImg: mixed} $this
  */
 
 $currentImg = $this->currentImg;
@@ -65,7 +65,7 @@ $imgAlt = Lang::txt(
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    ['com_media.file', &$this->_tmp_img, &$params],
+    ['com_media.file', &$currentImg, &$params],
 );
 
 $imgUrl = MediaHelper::baseUrl() . $this->currentImg['path'];
@@ -164,5 +164,5 @@ $escapedName = $this->escape($this->currentImg['name']);
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    ['com_media.file', &$this->_tmp_img, &$params],
+    ['com_media.file', &$currentImg, &$params],
 );

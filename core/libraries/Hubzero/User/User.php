@@ -35,7 +35,6 @@ use Hubzero\Facades\Request;
  *
  * @property-read  mixed  $groups  What groups() gives
  *
- * @property  mixed  $_authLevels
  * @property  mixed  $auth_link_id
  * @property  mixed  $password
  */
@@ -975,7 +974,7 @@ class User extends \Hubzero\Database\Relational
             $this->authLevels = [];
         }
 
-        if (empty($this->_authLevels)) {
+        if (empty($this->authLevels)) {
             $this->authLevels = Access::getAuthorisedViewLevels($this->get('id'));
         }
 
