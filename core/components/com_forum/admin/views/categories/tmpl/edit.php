@@ -113,7 +113,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <label for="field-title">
                         <?php echo $titleLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
                     </label><br />
-                    <?php $titleVal = $this->escape(stripslashes($this->row->title)); ?>
+                    <?php $titleVal = $this->escape(stripslashes((string) $this->row->title)); ?>
                     <input type="text"
                         name="fields[title]"
                         id="field-title"
@@ -124,7 +124,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS'); ?>:</label><br />
-                    <?php $aliasVal = $this->escape(stripslashes($this->row->alias)); ?>
+                    <?php $aliasVal = $this->escape(stripslashes((string) $this->row->alias)); ?>
                     <input type="text"
                         name="fields[alias]"
                         id="field-alias"
@@ -135,7 +135,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                 <div class="input-wrap">
                     <label for="field-description"><?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?></label><br />
-                    <?php $descVal = $this->escape(stripslashes($this->row->description)); ?>
+                    <?php $descVal = $this->escape(stripslashes((string) $this->row->description)); ?>
                     <textarea name="fields[description]"
                         id="field-description"
                         cols="35"

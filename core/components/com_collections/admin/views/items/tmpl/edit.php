@@ -123,7 +123,7 @@ $accessSelected = function ($value) use ($view) {
                             <?php
                             $titleLabel = Lang::txt('COM_COLLECTIONS_FIELD_TITLE');
                             $titleVal = $this->escape(
-                                stripslashes($this->row->get('title')),
+                                stripslashes((string) $this->row->get('title')),
                             );
                             ?>
                             <label for="field-title">
@@ -140,7 +140,7 @@ $accessSelected = function ($value) use ($view) {
                             <?php
                             $urlLabel = Lang::txt('COM_COLLECTIONS_FIELD_URL');
                             $urlVal = $this->escape(
-                                stripslashes($this->row->get('url')),
+                                stripslashes((string) $this->row->get('url')),
                             );
                             ?>
                             <label for="field-url">

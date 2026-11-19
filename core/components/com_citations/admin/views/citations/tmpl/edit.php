@@ -808,7 +808,7 @@ if ($this->getError()) {
                     <?php
                     $manualLabel = Lang::txt('MANUAL_FORMAT_CITATION');
                     $formattedContent = stripslashes(
-                        $this->row->get('formatted', ''),
+                        (string) $this->row->get('formatted', ''),
                     );
                     ?>
                     <label for="citation-formatted">

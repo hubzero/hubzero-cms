@@ -244,7 +244,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 ?>
                 <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_GROUPS') ?></a> >
                     (<?= $this->escape(stripslashes($this->group->get('cn'))) ?>)
-                    <?= $this->escape(stripslashes($this->group->get('description'))) ?></th>
+                    <?= $this->escape(stripslashes((string) $this->group->get('description'))) ?></th>
             </tr>
             <tr>
                 <th scope="col">

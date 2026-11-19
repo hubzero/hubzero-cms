@@ -257,7 +257,7 @@ $this->js();
                     <?php
                     $commentsLabel = Lang::txt('PLG_COURSES_REVIEWS_YOUR_COMMENTS');
                     $requiredLabel = Lang::txt('PLG_COURSES_REVIEWS_REQUIRED');
-                    $editorContent = $this->escape(stripslashes($comment->get('content')));
+                    $editorContent = $this->escape(stripslashes((string) $comment->get('content')));
                     $editorHtml = $this->editor(
                         'comment[content]',
                         $editorContent,

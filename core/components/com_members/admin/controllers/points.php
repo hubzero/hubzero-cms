@@ -52,7 +52,9 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('', 'deposit', null, 0, '', null, 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('', 'deposit', null, 0, '', null, 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'deposit', null, 0, '', null, 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('', 'deposit', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('', 'deposit', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get overall earnings on Answers
@@ -85,7 +87,9 @@ class Points extends AdminController
                 $lastmonth,
                 $calc = 2,
             ),
-            'avg'           => round(Transaction::getTotals('answers', 'deposit', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('answers', 'deposit', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get overall earnings on Wishes
@@ -98,7 +102,9 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('wish', 'deposit', null, 0, '', null, 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('wish', 'deposit', null, 0, '', null, 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'deposit', null, 0, '', null, 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('wish', 'deposit', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('wish', 'deposit', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get overall spending
@@ -111,7 +117,9 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('', 'withdraw', null, 0, '', null, 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('', 'withdraw', null, 0, '', null, 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'withdraw', null, 0, '', null, 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('', 'withdraw', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('', 'withdraw', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get overall spending in Store
@@ -124,7 +132,9 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('store', 'withdraw', null, 0, '', null, 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('store', 'withdraw', null, 0, '', null, 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('store', 'withdraw', null, 0, '', null, 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('store', 'withdraw', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('store', 'withdraw', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get overall spending on Answers
@@ -157,7 +167,7 @@ class Points extends AdminController
                 $lastmonth,
                 $calc = 2,
             ),
-            'avg'           => round(Transaction::getTotals(
+            'avg'           => round((float) Transaction::getTotals(
                 'answers',
                 'withdraw',
                 null,
@@ -180,7 +190,9 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('wish', 'withdraw', null, 0, '', null, 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('wish', 'withdraw', null, 0, '', null, 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'withdraw', null, 0, '', null, 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('wish', 'withdraw', null, 0, '', null, 1, '', $calc = 1)),
+            'avg'           => round(
+                (float) Transaction::getTotals('wish', 'withdraw', null, 0, '', null, 1, '', $calc = 1),
+            ),
         ];
 
         // Get royalties
@@ -213,7 +225,7 @@ class Points extends AdminController
                 $lastmonth,
                 $calc = 2,
             ),
-            'avg'           => round(Transaction::getTotals(
+            'avg'           => round((float) Transaction::getTotals(
                 '',
                 'deposit',
                 null,
@@ -285,7 +297,7 @@ class Points extends AdminController
                 $calc = 2,
             ),
             'avg'           => round(
-                Transaction::getTotals('answers', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
+                (float) Transaction::getTotals('answers', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
             ),
         ];
 
@@ -330,7 +342,7 @@ class Points extends AdminController
                 $calc = 2,
             ),
             'avg'           => round(
-                Transaction::getTotals('review', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
+                (float) Transaction::getTotals('review', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
             ),
         ];
 
@@ -393,7 +405,7 @@ class Points extends AdminController
                 $calc = 2,
             ),
             'avg'           => round(
-                Transaction::getTotals('resource', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
+                (float) Transaction::getTotals('resource', 'deposit', null, $royalty = 1, '', null, 1, '', $calc = 1),
             ),
         ];
         $this->view->set('stats', $viewStats);

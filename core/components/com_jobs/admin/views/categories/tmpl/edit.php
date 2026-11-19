@@ -42,10 +42,10 @@ $invalidMsg = $this->escape(
     Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $categoryValue = $this->escape(
-    stripslashes($this->row->category),
+    stripslashes((string) $this->row->category),
 );
 $descriptionValue = $this->escape(
-    stripslashes($this->row->description),
+    stripslashes((string) $this->row->description),
 );
 ?>
 

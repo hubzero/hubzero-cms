@@ -101,7 +101,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                             $ownerIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID');
                             $objectIdVal = $this->escape(
-                                stripslashes($this->row->get('object_id')),
+                                stripslashes((string) $this->row->get('object_id')),
                             );
                             ?>
                             <label for="field-object_id">
@@ -122,7 +122,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <?php
                     $titleLabel = Lang::txt('COM_COLLECTIONS_FIELD_TITLE');
-                    $titleVal = $this->escape(stripslashes($this->row->get('title')));
+                    $titleVal = $this->escape(stripslashes((string) $this->row->get('title')));
                     ?>
                     <label for="field-title">
                         <?php echo $titleLabel; ?>:
@@ -140,7 +140,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap"
                     data-hint="<?php echo $aliasHint; ?>">
                     <?php $aliasLabel = Lang::txt('COM_COLLECTIONS_FIELD_ALIAS'); ?>
-                    <?php $aliasVal = $this->escape(stripslashes($this->row->get('alias'))); ?>
+                    <?php $aliasVal = $this->escape(stripslashes((string) $this->row->get('alias'))); ?>
                     <label for="field-alias"><?php echo $aliasLabel; ?>:</label>
                     <input type="text"
                         name="fields[alias]"

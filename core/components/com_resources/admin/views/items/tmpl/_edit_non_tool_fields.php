@@ -54,7 +54,7 @@ $time = $this->time;
                name="fields[alias]"
                id="field-alias"
                maxlength="250"
-               value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>"
+               value="<?php echo $this->escape(stripslashes((string) $this->row->alias)); ?>"
                />
     </div>
 
@@ -205,7 +205,7 @@ $time = $this->time;
     <?php
     echo $this->editor(
         'fields[introtext]',
-        $this->escape(stripslashes($this->row->get('introtext'))),
+        $this->escape(stripslashes((string) $this->row->get('introtext'))),
         45,
         5,
         'field-introtext',

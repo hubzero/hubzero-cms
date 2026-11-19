@@ -93,7 +93,7 @@ $stateSelected = function ($value) use ($view) {
                         name="fields[title]"
                         id="field-title"
                         class="required"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('title'))); ?>" />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
@@ -101,7 +101,7 @@ $stateSelected = function ($value) use ($view) {
                         type="text"
                         name="fields[alias]"
                         id="field-alias"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('alias'))); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
             </fieldset>

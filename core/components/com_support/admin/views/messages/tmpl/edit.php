@@ -70,7 +70,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         type="text"
                         name="fields[title]"
                         id="field-title"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>"
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('title'))); ?>"
                     />
                 </div>
 
@@ -85,7 +85,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         class="required"
                         cols="35"
                         rows="10"
-                    ><?php echo $this->escape(stripslashes($this->row->get('message'))); ?></textarea>
+                    ><?php echo $this->escape(stripslashes((string) $this->row->get('message'))); ?></textarea>
                 </div>
             </fieldset>
         </div>

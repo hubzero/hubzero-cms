@@ -298,7 +298,7 @@ class Xusers extends Plugin
         if (!is_object($xprofile)) {
             $params = Component::params('com_members');
 
-            $hubHomeDir = rtrim($params->get('homedir'), '/');
+            $hubHomeDir = rtrim((string) $params->get('homedir'), '/');
 
             if (empty($hubHomeDir)) {
                 $hubHomeDir = \Hubzero\User\User::hubHomeDirectory();

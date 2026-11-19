@@ -65,7 +65,7 @@ $this->js();
                            class="required"
                            size="35"
                            maxlength="100"
-                           value="<?php echo $this->escape(stripslashes($this->row->title)); ?>"
+                           value="<?php echo $this->escape(stripslashes((string) $this->row->title)); ?>"
                            />
                 </div>
 
@@ -76,7 +76,7 @@ $this->js();
                            id="field-name"
                            size="35"
                            maxlength="100"
-                           value="<?php echo $this->escape(stripslashes($this->row->name)); ?>"
+                           value="<?php echo $this->escape(stripslashes((string) $this->row->name)); ?>"
                            /><br
                            />
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
@@ -89,7 +89,7 @@ $this->js();
                            id="field-url"
                            size="35"
                            maxlength="100"
-                           value="<?php echo $this->escape(stripslashes($this->row->url)); ?>"
+                           value="<?php echo $this->escape(stripslashes((string) $this->row->url)); ?>"
                            /><br
                            />
                 </div>
@@ -110,7 +110,7 @@ $this->js();
                               cols="45"
                               rows="15"><?php
                                 echo
-                                $this->escape(stripslashes($this->row->text));
+                                $this->escape(stripslashes((string) $this->row->text));
                                 ?></textarea>
                 </div>
 

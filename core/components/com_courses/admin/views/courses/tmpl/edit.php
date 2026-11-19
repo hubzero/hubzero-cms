@@ -274,7 +274,7 @@ $stateSelected = function ($value) use ($view) {
 
                 <?php
                 if ($this->row->exists()) {
-                    $logo = stripslashes($this->row->get('logo'));
+                    $logo = stripslashes((string) $this->row->get('logo'));
                     $pics = explode(DS, $logo);
                     $file = end($pics);
                     ?>

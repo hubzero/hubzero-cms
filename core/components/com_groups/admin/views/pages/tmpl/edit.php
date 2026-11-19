@@ -79,14 +79,14 @@ $privacySelected = function ($value) use ($view) {
                     <label for="field-title"><?= Lang::txt('COM_GROUPS_PAGES_TITLE') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <input type="text" name="page[title]" id="field-title" class="required"
-                        value="<?= $this->escape(stripslashes($this->page->get('title'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->page->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-alias"><?= Lang::txt('COM_GROUPS_PAGES_ALIAS') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></label><br />
                     <input type="text" name="page[alias]" id="field-alias" class="required"
-                        value="<?= $this->escape(stripslashes($this->page->get('alias'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->page->get('alias'))) ?>" />
                 </div>
             </fieldset>
 
@@ -201,7 +201,7 @@ $privacySelected = function ($value) use ($view) {
                     <label for="field-content"><?= Lang::txt('COM_GROUPS_PAGES_CONTENT') ?>:</span></label><br />
                     <?= $this->editor(
                         'pageversion[content]',
-                        $this->escape(stripslashes($this->version->get('content'))),
+                        $this->escape(stripslashes((string) $this->version->get('content'))),
                         50,
                         30,
                         'field-content',

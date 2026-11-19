@@ -113,29 +113,29 @@ $invalidMsg = $this->escape(
 );
 $requiredLabel = Lang::txt('JOPTION_REQUIRED');
 $companyNameValue = $this->escape(
-    stripslashes($this->row->companyName),
+    stripslashes((string) $this->row->companyName),
 );
 $companyWebsiteValue = $this->escape(
-    stripslashes($this->row->companyWebsite),
+    stripslashes((string) $this->row->companyWebsite),
 );
 $companyLocationValue = $this->escape(
-    stripslashes($this->row->companyLocation),
+    stripslashes((string) $this->row->companyLocation),
 );
 $locationHint = Lang::txt('COM_JOBS_FIELD_LOCATION_HINT');
-$titleValue = $this->escape(stripslashes($this->row->title));
+$titleValue = $this->escape(stripslashes((string) $this->row->title));
 $descHint = Lang::txt('COM_JOBS_FIELD_DESCRIPTION_HINT');
 $externalUrlHint = Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT');
 $applyExternalValue = $this->escape(
-    stripslashes($this->row->applyExternalUrl),
+    stripslashes((string) $this->row->applyExternalUrl),
 );
 $contactNameValue = $this->escape(
-    stripslashes($this->row->contactName),
+    stripslashes((string) $this->row->contactName),
 );
 $contactEmailValue = $this->escape(
-    stripslashes($this->row->contactEmail),
+    stripslashes((string) $this->row->contactEmail),
 );
 $contactPhoneValue = $this->escape(
-    stripslashes($this->row->contactPhone),
+    stripslashes((string) $this->row->contactPhone),
 );
 ?>
 
@@ -272,7 +272,7 @@ $contactPhoneValue = $this->escape(
                     </label><br />
                     <?php
                     $descValue = $this->escape(
-                        stripslashes($this->row->description),
+                        stripslashes((string) $this->row->description),
                     );
                     echo $this->editor(
                         'description',

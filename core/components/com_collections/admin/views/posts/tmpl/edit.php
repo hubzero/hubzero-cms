@@ -82,7 +82,7 @@ $validationMsg = $this->escape(
                             $itemIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_ITEM_ID');
                             $reqTxt = Lang::txt('JOPTION_REQUIRED');
                             $itemIdVal = $this->escape(
-                                stripslashes($this->row->get('item_id')),
+                                stripslashes((string) $this->row->get('item_id')),
                             );
                             ?>
                             <label for="field-item_id">
@@ -102,7 +102,7 @@ $validationMsg = $this->escape(
                             <?php
                             $collIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_COLLECTION_ID');
                             $collIdVal = $this->escape(
-                                stripslashes($this->row->get('collection_id')),
+                                stripslashes((string) $this->row->get('collection_id')),
                             );
                             ?>
                             <label for="field-collection_id">

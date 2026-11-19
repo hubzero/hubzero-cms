@@ -81,13 +81,13 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-title"><?= Lang::txt('COM_FORUM_FIELD_TITLE') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <input type="text" name="fields[title]" id="field-title" class="required" maxlength="250"
-                        value="<?= $this->escape(stripslashes($this->row->get('title'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->row->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS'); ?>:</label><br />
                     <input type="text" name="fields[alias]" id="field-alias" maxlength="250"
-                        value="<?= $this->escape(stripslashes($this->row->get('alias'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->row->get('alias'))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?></span>
                 </div>
             </fieldset>

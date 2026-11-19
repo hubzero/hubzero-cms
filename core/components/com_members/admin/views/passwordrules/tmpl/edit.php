@@ -67,7 +67,7 @@ $this->js();
                         type="text"
                         name="fields[description]"
                         id="field-description"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('description'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('description'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <?php $text = Lang::txt('COM_MEMBERS_PASSWORD_RULES_FAILURE_MESSAGE'); ?>
@@ -76,7 +76,7 @@ $this->js();
                         type="text"
                         name="fields[failuremsg]"
                         id="field-failuremsg"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('failuremsg'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('failuremsg'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-value"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_VALUE'); ?>:</label>
@@ -84,7 +84,7 @@ $this->js();
                         type="text"
                         name="fields[value]"
                         id="field-value"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('value'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('value'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-group"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_GROUP'); ?>:</label>
@@ -92,7 +92,7 @@ $this->js();
                         type="text"
                         name="fields[grp]"
                         id="field-group"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('grp'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('grp'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-class"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_CLASS'); ?>:</label>
@@ -100,7 +100,7 @@ $this->js();
                         type="text"
                         name="fields[class]"
                         id="field-class"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('class'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('class'))); ?>"/>
                 </div>
             </fieldset>
         </div>

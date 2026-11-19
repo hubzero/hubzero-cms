@@ -67,7 +67,7 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-name"><?= Lang::txt('COM_DEVELOPER_FIELD_NAME') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <input type="text" name="fields[name]" id="field-name" maxlength="250" class="required"
-                        value="<?= $this->escape(stripslashes($this->row->get('name'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->row->get('name'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
@@ -81,7 +81,7 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-redirect_uri"><?= Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <?php
-                        $uris = explode(' ', $this->row->get('redirect_uri'));
+                        $uris = explode(' ', (string) $this->row->get('redirect_uri'));
                         $uris = implode(PHP_EOL, $uris);
                     ?>
                     <textarea name="fields[redirect_uri]" id="field-redirect_uri" class="required"

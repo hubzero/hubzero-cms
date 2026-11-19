@@ -30,7 +30,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 
-$text = preg_replace("/\r\n/", "\r", trim($this->row->text));
+$text = preg_replace("/\r\n/", "\r", trim((string) $this->row->text));
 
 ?>
 

@@ -162,7 +162,7 @@ class Html
                 if ($value == $group->cn) {
                     $html .= ' selected="selected"';
                 }
-                $html .= '>' . stripslashes($group->description) . '</option>' . "\n";
+                $html .= '>' . stripslashes((string) $group->description) . '</option>' . "\n";
             }
         }
         $html .= '</select>' . "\n";

@@ -80,7 +80,7 @@ $stateSelected = function ($value) use ($view) {
                            id="field-type"
                            maxlength="100"
                            class="required"
-                           value="<?php echo $this->escape(stripslashes($this->row->type)); ?>"
+                           value="<?php echo $this->escape(stripslashes((string) $this->row->type)); ?>"
                            />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
@@ -106,7 +106,7 @@ $stateSelected = function ($value) use ($view) {
                             } ?>
                     id="field-alias"
                     maxlength="100"
-                    value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>"
+                    value="<?php echo $this->escape(stripslashes((string) $this->row->alias)); ?>"
                     /><br />
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
@@ -258,7 +258,7 @@ $stateSelected = function ($value) use ($view) {
                     <?php
                     echo $this->editor(
                         'type[description]',
-                        stripslashes($this->row->description),
+                        stripslashes((string) $this->row->description),
                         45,
                         10,
                         'field-description',
