@@ -25,14 +25,14 @@ class Item extends Obj
     /**
      * The number of rows as a base offset.
      *
-     * @var  int|string
+     * @var  int|string|null
      */
     public $base;
 
     /**
      * The link URL.
      *
-     * @var  string
+     * @var  string|null
      */
     public $link;
 

@@ -39,7 +39,7 @@ class Myprojects extends Module
      */
     protected $rows;
     /**
-     * @var  string
+     * @var  string|null
      */
     protected $total;
 

@@ -46,7 +46,7 @@ class Editor extends Obj
     /**
      * Object asset
      *
-     * @var  string
+     * @var  string|null
      */
     protected $asset;
 

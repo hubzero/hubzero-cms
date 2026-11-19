@@ -21,7 +21,7 @@ class Processor extends Obj
     /**
      * Path to image
      *
-     * @var  string
+     * @var  string|null
      */
     private $source;
 
@@ -136,7 +136,7 @@ class Processor extends Obj
     private function openImage()
     {
         try {
-            if (!is_file($this->source) || !is_readable($this->source)) {
+            if (!is_file((string) $this->source) || !is_readable((string) $this->source)) {
                 return false;
             }
 
@@ -214,7 +214,7 @@ class Processor extends Obj
 
         if ($this->image_type == IMAGETYPE_JPEG) {
             try {
-                $this->exif_data = exif_read_data($this->source);
+                $this->exif_data = exif_read_data((string) $this->source);
             } catch (Exception $e) {
                 $this->exif_data = [];
             }
@@ -459,7 +459,7 @@ class Processor extends Obj
         }
 
         try {
-            $this->exif_data = exif_read_data($this->source);
+            $this->exif_data = exif_read_data((string) $this->source);
         } catch (Exception $e) {
             $this->exif_data = [];
         }
@@ -549,7 +549,7 @@ class Processor extends Obj
      */
     public function display()
     {
-        if (!is_file($this->source) || !is_readable($this->source)) {
+        if (!is_file((string) $this->source) || !is_readable((string) $this->source)) {
             return;
         }
 
@@ -590,7 +590,7 @@ class Processor extends Obj
 
         // Encode and build data uri
         $base64 = base64_encode((string) $image_data);
-        $image_atts = getimagesize($this->source);
+        $image_atts = getimagesize((string) $this->source);
         $mime = $image_atts ? $image_atts['mime'] : 'application/octet-stream';
 
         return 'data:' . $mime . ';base64,' . $base64;

@@ -40,7 +40,7 @@ class ACL extends Obj
     /**
      * Raw data from database
      *
-     * @var array<mixed>
+     * @var array<mixed>|null
      */
     private $rawData;
 

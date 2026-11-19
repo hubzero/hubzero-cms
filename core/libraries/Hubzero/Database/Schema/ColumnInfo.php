@@ -58,14 +58,14 @@ class ColumnInfo
     /**
      * Numeric precision (for decimal, float, etc.)
      *
-     * @var int
+     * @var int|null
      */
     protected $precision;
 
     /**
      * Numeric scale (for decimal)
      *
-     * @var int
+     * @var int|null
      */
     protected $scale;
 

@@ -29,7 +29,7 @@ class Cloud extends \Hubzero\Base\Obj
     /**
      * The object to be tagged
      *
-     * @var integer
+     * @var integer|null
      */
     protected $scopeId;
 

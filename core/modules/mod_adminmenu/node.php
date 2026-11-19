@@ -56,7 +56,7 @@ class Node extends Obj
     /**
      * Link Target
      *
-     * @var  string
+     * @var  string|null
      */
     public $target;
 

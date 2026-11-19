@@ -26,7 +26,7 @@ class Nogit extends Obj
     /**
      * Full path to Git repo
      *
-     * @var string
+     * @var string|null
      */
     private $path;
 

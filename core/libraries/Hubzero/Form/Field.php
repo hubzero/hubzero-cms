@@ -117,7 +117,7 @@ abstract class Field
     /**
      * The group of the field.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $group;
 

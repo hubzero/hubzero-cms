@@ -67,14 +67,14 @@ class ColumnBuilder
     /**
      * New column name (for renames)
      *
-     * @var string
+     * @var string|null
      */
     protected $newColumn;
 
     /**
      * Raw SQL column definition (when not using abstract types)
      *
-     * @var string
+     * @var string|null
      */
     protected $definition;
 

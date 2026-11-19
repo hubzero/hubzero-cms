@@ -20,7 +20,7 @@ class Terms extends Obj
     /**
      * Raw search term
      *
-     * @var  string
+     * @var  string|null
      */
     private $raw;
 
@@ -114,7 +114,11 @@ class Terms extends Obj
             return $this->raw;
         }
 
-        return (string) preg_replace('/^' . implode(':', array_map('preg_quote', $section)) . ':/', '', $this->raw);
+        return (string) preg_replace(
+            '/^' . implode(':', array_map('preg_quote', $section)) . ':/',
+            '',
+            (string) $this->raw,
+        );
     }
 
     /**
@@ -221,7 +225,7 @@ class Terms extends Obj
         $accumulating_phrase = false;
         $partial = '';
         $sign = '';
-        $raw = trim(strtolower($this->raw));
+        $raw = trim(strtolower((string) $this->raw));
         if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match)) {
             $this->section = explode(':', $match[1]);
             $raw = (string) preg_replace('/^' . preg_quote($match[1], '/') . ':/', '', $raw);

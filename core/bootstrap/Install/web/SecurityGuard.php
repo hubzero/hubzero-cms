@@ -70,7 +70,7 @@ class SecurityGuard
     /**
      * Server secret (loaded/generated once)
      *
-     * @var string
+     * @var string|null
      */
     private $serverSecret;
 

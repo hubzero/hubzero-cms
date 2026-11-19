@@ -16,7 +16,7 @@ class Exception extends \Exception
     /**
      * Error level.
      *
-     * @var  int
+     * @var  int|null
      */
     protected $level;
 
@@ -32,7 +32,7 @@ class Exception extends \Exception
      * Name of the method the error occurred in
      * [Available if backtrace is enabled]
      *
-     * @var  string
+     * @var  string|null
      */
     protected $function;
 
@@ -40,14 +40,14 @@ class Exception extends \Exception
      * Name of the class the error occurred in
      * [Available if backtrace is enabled]
      *
-     * @var  string
+     * @var  string|null
      */
     protected $class;
 
     /**
      * Error type.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $type;
 

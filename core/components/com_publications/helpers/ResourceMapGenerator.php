@@ -80,7 +80,7 @@ class ResourceMapGenerator
      */
     private $intro;
     /**
-     * @var  string
+     * @var  string|null
      */
     private $created_by;
     /**

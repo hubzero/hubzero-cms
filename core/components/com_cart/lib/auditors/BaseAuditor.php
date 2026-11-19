@@ -15,11 +15,11 @@ class BaseAuditor
      */
     public $type;
     /**
-     * @var  int
+     * @var  int|null
      */
     public $pId;
     /**
-     * @var  int
+     * @var  int|null
      */
     public $crtId;
     /**

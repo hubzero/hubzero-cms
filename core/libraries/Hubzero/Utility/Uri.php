@@ -26,14 +26,14 @@ class Uri
     /**
      * Protocol
      *
-     * @var  string
+     * @var  string|null
      */
     protected $scheme;
 
     /**
      * Host
      *
-     * @var  string
+     * @var  string|null
      */
     protected $host;
 
@@ -47,21 +47,21 @@ class Uri
     /**
      * Username
      *
-     * @var  string
+     * @var  string|null
      */
     protected $user;
 
     /**
      * Password
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pass;
 
     /**
      * Path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path;
 
@@ -75,7 +75,7 @@ class Uri
     /**
      * Anchor
      *
-     * @var  string
+     * @var  string|null
      */
     protected $fragment;
 

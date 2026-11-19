@@ -18,7 +18,7 @@ use Hubzero\Facades\App;
 class Sql extends SearchResult
 {
     /**
-     * @var  string
+     * @var  string|null
      */
     protected $sql;
 

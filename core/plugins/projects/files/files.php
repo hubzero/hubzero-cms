@@ -97,7 +97,7 @@ class Files extends Plugin
     /**
      * Repository path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path;
 
@@ -3194,7 +3194,7 @@ class Files extends Plugin
         $subdir = trim($this->subdir, DS);
         $fullpath = $subdir ? $this->path . DS . $subdir : $this->path;
 
-        $get = Filesystem::files($fullpath);
+        $get = Filesystem::files((string) $fullpath);
 
         $files = [];
         if ($get) {

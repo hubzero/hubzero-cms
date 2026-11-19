@@ -21,7 +21,7 @@ class JoinBuilder
     protected $query = null;
 
     /**
-     * @var  string
+     * @var  string|null
      */
     protected $table;
 
