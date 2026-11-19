@@ -220,6 +220,11 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
+        // The trail holds pathway items only
+        if (!($value instanceof Item)) {
+            throw new \InvalidArgumentException('A pathway trail holds Hubzero\\Pathway\\Item objects only.');
+        }
+
         $this->items[$offset] = $value;
     }
 

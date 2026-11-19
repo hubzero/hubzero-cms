@@ -436,9 +436,11 @@ class Languagefilter extends Plugin
                 }
             } else {
                 if (App::isSite()) {
+                    // With no home page for the language, getDefault() gives 0
+                    $home = App::get('menu')->getDefault($lang_code);
                     User::setState(
                         'com_members.edit.profile.redirect',
-                        'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id
+                        'index.php?Itemid=' . ($home instanceof \stdClass ? $home->id : 0)
                         . '&lang=' . self::$lang_codes[$lang_code]->sef,
                     );
                     self::$tag = $lang_code;

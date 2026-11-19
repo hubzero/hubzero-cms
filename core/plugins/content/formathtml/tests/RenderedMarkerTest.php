@@ -144,6 +144,6 @@ class RenderedMarkerTest extends TestCase
 
         $plugin->onContentPrepare('com_blog.entry.content', $article, $params);
 
-        return trim($article->content);
+        return trim($article->content ?? '');
     }
 }

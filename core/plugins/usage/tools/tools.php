@@ -443,7 +443,7 @@ class Tools extends Plugin
                         if ($key == '12') {
                             $nextmonth = 'Jan';
                         } else {
-                            $nextmonth = $arrayMonths[(int) array_search($month, $arrayMonths) + 1];
+                            $nextmonth = $arrayMonths[(int) array_search($month, $arrayMonths) + 1] ?? 'Jan';
                         }
                         $value = $i . '-' . $key;
                         if ($this->checkForData($value, 12) && (intval($key) < $cur_month || $i < $cur_year)) {

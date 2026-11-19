@@ -35,7 +35,8 @@ class Module extends Renderer
 
             $module = App::get('module')->byName($module, $title);
 
-            if (!is_object($module)) {
+            // byName() gives the module's row, or null
+            if (!($module instanceof stdClass)) {
                 if (is_null($content)) {
                     return '';
                 } else {

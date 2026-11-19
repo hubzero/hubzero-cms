@@ -232,7 +232,7 @@ if (!$this->activity->log->get('anonymous')) {
                                         $width,
                                         $height,
                                         $type,
-                                        $attr) = getimagesize(PATH_APP . $to_path . DS . $hashed);
+                                        $attr) = getimagesize(PATH_APP . $to_path . DS . $hashed) ?: [0, 0, 0, ''];
 
                                     $preview['width'] = $width;
                                     $preview['height'] = $height;

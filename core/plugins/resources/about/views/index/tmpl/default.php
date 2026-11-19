@@ -34,7 +34,7 @@ $sef = Route::url($this->model->link());
 // Set the display date
 $thedate = $this->model->datetime;
 if ($this->model->isTool() && $this->model->curtool) {
-    $thedate = $this->model->curtool->released;
+    $thedate = $this->model->curtool->released ?? null;
 }
 if ($thedate == '0000-00-00 00:00:00') {
     $thedate = '';
