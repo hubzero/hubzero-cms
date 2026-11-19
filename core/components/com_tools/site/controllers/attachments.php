@@ -14,7 +14,6 @@ use Components\Resources\Models\Association;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;

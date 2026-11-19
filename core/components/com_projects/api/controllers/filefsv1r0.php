@@ -9,7 +9,6 @@
 namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Project;
-use Components\Projects\Helpers;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Hubzero\Filesystem\Entity;
@@ -23,7 +22,6 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Filesystem;
-use Hubzero\Facades\Plugin;
 
 /**
  * API controller for the projects files

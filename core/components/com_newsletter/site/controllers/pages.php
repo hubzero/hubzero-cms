@@ -14,7 +14,6 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
-use Hubzero\Facades\Component;
 
 class Pages extends SiteController
 {

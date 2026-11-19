@@ -12,7 +12,6 @@ use Components\Members\Models\Member;
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

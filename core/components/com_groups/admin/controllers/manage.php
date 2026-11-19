@@ -19,7 +19,6 @@ use Components\Groups\Models\Orm\Field;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
-use Nofity;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;

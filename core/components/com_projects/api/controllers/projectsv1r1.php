@@ -10,7 +10,6 @@ namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Project;
 use Hubzero\Component\ApiController;
-use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;

@@ -8,7 +8,6 @@
 
 namespace Components\Projects\Site\Controllers;
 
-use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;

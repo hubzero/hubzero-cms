@@ -9,7 +9,6 @@
 namespace Hubzero\Database;
 
 use Hubzero\Base\ServiceProvider;
-use Config;
 
 /**
  * Database service provider

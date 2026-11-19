@@ -10,7 +10,6 @@ namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
 use Hubzero\User\Group;
-use User;
 use Hubzero\Facades\Lang;
 
 /**

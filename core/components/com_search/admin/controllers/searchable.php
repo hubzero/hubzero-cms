@@ -10,18 +10,10 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Search\Models\Solr\Blacklist;
-use Components\Search\Models\Solr\Facet;
 use Components\Search\Models\Solr\Filters\Filter;
 use Components\Search\Models\Solr\Option;
 use Components\Search\Models\Solr\SearchComponent;
-use Hubzero\Search\Query;
-use Hubzero\Search\Index;
-use Components\Search\Helpers\SolrHelper;
-use Components\Search\Helpers\DiscoveryHelper;
-use Components\Developer\Models\Application;
-use Hubzero\Access\Group as Accessgroup;
 use stdClass;
-use Hubzero\Utility\Inflector as Inflector;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;

@@ -9,7 +9,6 @@
 namespace Components\Wiki\Site\Controllers;
 
 use Components\Wiki\Models\Book;
-use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Version;
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Document;

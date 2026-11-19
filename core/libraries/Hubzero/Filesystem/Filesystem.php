@@ -10,8 +10,6 @@ namespace Hubzero\Filesystem;
 
 use Hubzero\Filesystem\Exception\FileNotFoundException;
 use Hubzero\Filesystem\Exception\FileExistsException;
-use FilesystemIterator;
-use DirectoryIterator;
 
 /**
  * Hubzero class for manipulating and reading the filesystem.

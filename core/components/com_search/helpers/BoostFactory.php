@@ -13,7 +13,6 @@ use Components\Search\Helpers\MockProxy;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Date;
-use Hubzero\Facades\Component;
 
 class BoostFactory
 {

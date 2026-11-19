@@ -8,9 +8,6 @@
 
 namespace Components\Search\Models\Solr\Filters;
 
-use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
-
 /**
  * Database model for filters of the type list
  *

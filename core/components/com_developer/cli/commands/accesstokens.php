@@ -10,8 +10,6 @@ namespace Components\Developer\Cli\Commands;
 
 use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Hubzero\Database\Exception\QueryFailedException;
 use Hubzero\Facades\App;
 

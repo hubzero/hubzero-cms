@@ -11,10 +11,7 @@ namespace Modules\Supporttickets;
 use Components\Support\Models\Query;
 use Components\Support\Models\Ticket;
 use Hubzero\Module\Module;
-use Hubzero\Facades\Component;
 use stdClass;
-use Request;
-use Config;
 use Hubzero\Facades\App;
 
 /**

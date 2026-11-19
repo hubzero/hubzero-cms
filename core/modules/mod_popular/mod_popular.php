@@ -11,8 +11,6 @@ namespace Modules\Popular;
 use Hubzero\Module\Module;
 use Components\Content\Models\Article;
 use Components\Categories\Models\Category;
-use Hubzero\Facades\Component;
-use Exception;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

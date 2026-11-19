@@ -16,8 +16,6 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
-use Hubzero\Facades\User;
-use Hubzero\Facades\Component;
 
 class Replies extends SiteController
 {

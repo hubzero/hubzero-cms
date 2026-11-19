@@ -3,7 +3,6 @@
 namespace Plugins\Search\Tickets;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Utility\Sanitize;
 use Hubzero\Facades\App;
 
 /**

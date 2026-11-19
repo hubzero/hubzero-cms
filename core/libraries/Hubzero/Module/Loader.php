@@ -11,9 +11,7 @@ namespace Hubzero\Module;
 use Hubzero\Template\Overrides;
 use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
-use Hubzero\Utility\Sanitize;
 use Hubzero\Config\Registry;
-use Hubzero\Facades\Request;
 
 /**
  * Module loader class

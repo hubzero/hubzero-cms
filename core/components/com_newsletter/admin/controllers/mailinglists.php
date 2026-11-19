@@ -12,7 +12,6 @@ use Components\Newsletter\Helpers\Helper;
 use Components\Newsletter\Models\Mailinglist\Email;
 use Components\Newsletter\Models\Mailinglist;
 use Hubzero\Component\AdminController;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Route;

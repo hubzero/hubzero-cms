@@ -10,7 +10,6 @@ namespace Components\Publications\Models;
 
 use Components\Publications\Models\Publication;
 use Components\Publications\Helpers\ZipHelper;
-use Hubzero\Utility\Arr;
 
 /*
  * Bundle model

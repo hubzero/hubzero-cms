@@ -9,8 +9,6 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Lang;
 
 /**
  * Status table for a Tools

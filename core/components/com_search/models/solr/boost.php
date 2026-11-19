@@ -14,7 +14,6 @@ use Components\Search\Traits\IsUnique;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Lang;
-use Hubzero\Facades\Component;
 
 /**
  * Database model for Solr Boost

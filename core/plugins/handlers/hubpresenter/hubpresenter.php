@@ -3,8 +3,6 @@
 namespace Plugins\Handlers\Hubpresenter;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Filesystem\Manager;
-use Hubzero\Filesystem\File;
 
 /**
  * @package    hubzero-cms

@@ -9,7 +9,6 @@
 namespace Components\Wiki\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Hubzero\Facades\Request;

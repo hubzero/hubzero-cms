@@ -9,7 +9,6 @@
 namespace Hubzero\Oauth;
 
 use OAuth2\Server as OAuth2Server;
-use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Hubzero\Oauth\GrantType\RefreshToken as RefreshTokenGrantType;
 use Hubzero\Oauth\GrantType\SessionToken as SessionTokenGrantType;
 use Hubzero\Oauth\GrantType\ToolSessionToken as ToolSessionTokenGrantType;

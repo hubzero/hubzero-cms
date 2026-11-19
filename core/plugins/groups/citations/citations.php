@@ -23,12 +23,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 use Hubzero\Config\Registry;
-use Components\Tags\Models\Tag;
-use Components\Tags\Models\Cloud;
 use Components\Citations\Models\Citation;
-use Components\Citations\Models\Author;
-use Components\Citations\Models\Type;
-use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
 
 /**

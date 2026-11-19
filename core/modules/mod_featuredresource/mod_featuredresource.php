@@ -11,7 +11,6 @@ namespace Modules\Featuredresource;
 use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
 use Hubzero\Facades\Component;
-use User;
 
 /**
  * Module class for displaying a random featured resource

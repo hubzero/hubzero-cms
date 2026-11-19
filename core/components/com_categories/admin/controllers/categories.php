@@ -10,13 +10,10 @@ namespace Components\Categories\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Inflector;
-use Hubzero\Access\Access;
 use Hubzero\Access\Rules;
-use Hubzero\Access\Asset;
 use Components\Categories\Models\Category;
 use Components\Categories\Admin\Helpers\CategoriesHelper;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;

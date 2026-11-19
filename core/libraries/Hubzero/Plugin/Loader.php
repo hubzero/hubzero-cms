@@ -12,10 +12,8 @@ use Hubzero\Events\Dispatcher;
 use Hubzero\Events\DispatcherInterface;
 use Hubzero\Events\LoaderInterface;
 use Hubzero\Config\Registry;
-use Exception;
 use stdClass;
 use Hubzero\Facades\User;
-use Lang;
 use Hubzero\Facades\App;
 
 /**

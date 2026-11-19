@@ -9,7 +9,6 @@
 namespace Components\Collections\Site\Controllers;
 
 use Components\Collections\Models\Collection;
-use Components\Collections\Models\Orm\Post;
 use Components\Collections\Models\Archive;
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Document;
@@ -17,7 +16,6 @@ use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
-use Hubzero\Facades\Component;
 
 /**
  * Controller class for collections and posts

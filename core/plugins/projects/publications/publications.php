@@ -9,15 +9,6 @@
 namespace Plugins\Projects\Publications;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Utility\Str;
-use Hubzero\Document\Assets;
-use Hubzero\User\Group;
-use Hubzero\Activity\Recipient;
-use Components\Projects\Helpers\Html;
-use Components\Publications\Models\Publication;
-use Components\Publications\Models\Handlers;
-use Components\Publications\Models\Status;
-use Components\Publications\Helpers\Html as PubHtml;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;

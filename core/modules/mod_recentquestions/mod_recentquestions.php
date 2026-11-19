@@ -11,9 +11,7 @@ namespace Modules\Recentquestions;
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
 use Components\Answers\Models\Tags;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
-use Date;
 
 /**
  * Module class for displaying recent questions

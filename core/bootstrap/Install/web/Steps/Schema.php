@@ -10,7 +10,6 @@
 
 namespace Bootstrap\Install\Web\Steps;
 
-use Bootstrap\Install\Web\PhpCli;
 use Hubzero\Database\ConnectionInterface;
 use Hubzero\Database\SqlParser;
 use PDOException;

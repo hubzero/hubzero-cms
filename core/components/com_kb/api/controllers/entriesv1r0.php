@@ -17,13 +17,10 @@ use Hubzero\Access\Viewlevel;
 use Hubzero\Access\Asset;
 use Exception;
 use stdClass;
-use Component;
 use Hubzero\Facades\Request;
 use Route;
 use Lang;
 use Hubzero\Facades\User;
-use Hubzero\Facades\App;
-use Hubzero\Facades\Config;
 
 // article.php brings com_categories' nested model with it, which the
 // category writes below save through

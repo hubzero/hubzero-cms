@@ -9,11 +9,9 @@
 namespace Components\Courses\Site\Controllers;
 
 use Components\Courses\Models;
-use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Base\Obj;
 use Hubzero\Content\Server;
-use Exception;
 use stdClass;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;

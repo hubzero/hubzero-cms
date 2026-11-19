@@ -10,7 +10,6 @@ namespace Components\Jobs\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use stdClass;
-use Date;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
 

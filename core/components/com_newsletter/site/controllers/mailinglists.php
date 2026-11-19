@@ -14,7 +14,6 @@ use Components\Newsletter\Models\Mailinglist;
 use Components\Newsletter\Models\Mailing;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
-use stdClass;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;

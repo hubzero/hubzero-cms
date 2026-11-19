@@ -10,10 +10,8 @@ namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Models\Orm\Handler;
 use Components\Tools\Models\Orm\Rule;
-use Components\Tools\Models\Orm\Tool;
 use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;

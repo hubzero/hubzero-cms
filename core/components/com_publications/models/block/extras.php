@@ -9,7 +9,6 @@
 namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block\Content as Base;
-use stdClass;
 
 /**
  * Content block

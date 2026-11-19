@@ -9,7 +9,6 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Exception;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 

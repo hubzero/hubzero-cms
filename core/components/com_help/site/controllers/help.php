@@ -14,7 +14,6 @@ use Hubzero\Component\View;
 use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
-use Hubzero\Facades\App;
 
 /**
  * Help controller class

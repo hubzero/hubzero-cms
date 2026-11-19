@@ -14,7 +14,6 @@ use Components\Templates\Models\Style;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Cache;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;

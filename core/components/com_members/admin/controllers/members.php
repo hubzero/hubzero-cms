@@ -10,7 +10,6 @@ namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Models\Member;
 use Components\Members\Helpers;
-use Components\Members\Models\Profile;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Profile\Option;
 use Hubzero\Access\Group as Accessgroup;
@@ -18,7 +17,6 @@ use Hubzero\Access\Access;
 use Hubzero\Component\AdminController;
 use Hubzero\User\Profile\Helper as ProfileHelper;
 use Hubzero\Utility\Validate;
-use Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Config;

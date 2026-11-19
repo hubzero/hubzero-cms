@@ -13,7 +13,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Components\Resources\Models\Entry;
 use Hubzero\Facades\Config;
-use Hubzero\Facades\Component;
 
 /**
  * Resources command class

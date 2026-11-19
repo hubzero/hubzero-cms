@@ -14,7 +14,6 @@ use Components\Members\Models\Quota\Log;
 use Components\Tools\Helpers\Utils;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
-use Hubzero\Facades\Component;
 
 /**
  * User quota model

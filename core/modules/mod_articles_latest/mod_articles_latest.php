@@ -9,7 +9,6 @@
 namespace Modules\ArticlesLatest;
 
 use Hubzero\Module\Module;
-use Hubzero\Utility\Arr;
 use Components\Content\Models\Article;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Route;

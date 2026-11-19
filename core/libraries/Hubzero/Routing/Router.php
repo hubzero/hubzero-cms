@@ -11,7 +11,6 @@ namespace Hubzero\Routing;
 use Hubzero\Routing\Router\Rules;
 use Hubzero\Utility\Uri;
 use InvalidArgumentException;
-use Closure;
 
 /**
  * Class to create and parse routes

@@ -9,9 +9,7 @@
 namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Project;
-use Components\Projects\Helpers;
 use Hubzero\Component\ApiController;
-use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;

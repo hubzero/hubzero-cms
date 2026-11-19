@@ -9,10 +9,8 @@
 namespace Components\Wiki\Site\Controllers;
 
 use Components\Wiki\Models\Book;
-use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
-use Exception;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;

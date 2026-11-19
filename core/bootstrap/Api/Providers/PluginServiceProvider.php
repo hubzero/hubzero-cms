@@ -9,7 +9,6 @@
 namespace Bootstrap\Api\Providers;
 
 use Hubzero\Plugin\Loader;
-use Hubzero\Events\DispatcherInterface;
 use Hubzero\Base\ServiceProvider;
 
 /**

@@ -13,8 +13,6 @@ use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Schema\Diff\SchemaDiff;
 use Hubzero\Database\Schema\Diff\TableDiff;
 use Hubzero\Database\Schema\Diff\ColumnDiff;
-use Hubzero\Database\Schema\Diff\IndexDiff;
-use Hubzero\Database\Schema\Diff\ForeignKeyDiff;
 
 /**
  * Diff SQL Generator

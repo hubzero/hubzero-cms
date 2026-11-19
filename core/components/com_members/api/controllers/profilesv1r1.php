@@ -11,7 +11,6 @@ namespace Components\Members\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
-use Components\Members\Helpers\Filters;
 use Hubzero\Facades\Component;
 use Exception;
 use stdClass;

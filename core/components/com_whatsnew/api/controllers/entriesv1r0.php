@@ -13,7 +13,6 @@ use Hubzero\Component\ApiController;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Event;
-use Lang;
 
 /**
  * API controller class for What's New

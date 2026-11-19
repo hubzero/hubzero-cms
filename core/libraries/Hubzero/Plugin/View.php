@@ -9,7 +9,6 @@
 namespace Hubzero\Plugin;
 
 use Hubzero\View\View as AbstractView;
-use Hubzero\Document\Assets;
 use ReflectionClass;
 use Exception;
 use Hubzero\Facades\App;

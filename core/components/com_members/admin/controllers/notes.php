@@ -13,9 +13,7 @@ use Components\Members\Models\Member;
 use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Lang;
-use App;
 
 /**
  * Manage member notes

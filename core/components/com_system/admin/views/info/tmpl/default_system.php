@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Components\System\Helpers\Html\System;
 

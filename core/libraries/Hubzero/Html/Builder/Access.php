@@ -8,7 +8,6 @@
 
 namespace Hubzero\Html\Builder;
 
-use Hubzero\Error\Exception\Exception;
 use Lang;
 use App;
 

@@ -11,7 +11,6 @@ namespace Hubzero\Error\Renderer;
 use Hubzero\Error\RendererInterface;
 use Hubzero\Http\Response;
 use Exception;
-use Closure;
 use Hubzero\Facades\Lang;
 
 /**

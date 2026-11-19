@@ -10,7 +10,6 @@ namespace Hubzero\Database\Drivers\Firebird;
 
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Exception\ConnectionFailedException;
-use Hubzero\Database\Exception\QueryFailedException;
 
 /**
  * Firebird (PDO) database driver

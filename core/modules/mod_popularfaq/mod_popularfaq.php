@@ -10,7 +10,6 @@ namespace Modules\Popularfaq;
 
 use Hubzero\Module\Module;
 use Components\Kb\Models\Archive;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\User;
 
 /**

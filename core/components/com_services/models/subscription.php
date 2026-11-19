@@ -9,7 +9,6 @@
 namespace Components\Services\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
 use Hubzero\Facades\Date;
 
 /**

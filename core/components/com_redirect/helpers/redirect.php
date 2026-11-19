@@ -9,7 +9,6 @@
 namespace Components\Redirect\Helpers;
 
 use Hubzero\Base\Obj;
-use Exception;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;

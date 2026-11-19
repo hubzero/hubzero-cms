@@ -8,7 +8,6 @@
 
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
-use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
 
 // No direct access

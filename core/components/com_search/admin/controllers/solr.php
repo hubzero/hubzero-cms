@@ -10,15 +10,9 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Access\Group as Accessgroup;
-use Hubzero\Search\Query;
-use Hubzero\Search\Index;
 use Components\Search\Models\Solr\Blacklist;
-use Components\Search\Models\Solr\Facet;
-use Components\Search\Models\Solr\SearchComponent;
 use Components\Search\Helpers\SolrHelper;
-use Components\Search\Helpers\DiscoveryHelper;
 use Components\Developer\Models\Application;
-use stdClass;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;

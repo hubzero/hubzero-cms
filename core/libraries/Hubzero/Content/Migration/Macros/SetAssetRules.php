@@ -9,7 +9,6 @@
 namespace Hubzero\Content\Migration\Macros;
 
 use Hubzero\Content\Migration\Macro;
-use Hubzero\Config\Registry;
 use Hubzero\Access\Asset;
 
 /**

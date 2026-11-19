@@ -9,8 +9,6 @@
 namespace Hubzero\Debug;
 
 use Hubzero\Debug\Profile\Mark;
-use Hubzero\Log\Writer;
-use Monolog\Logger as Monolog;
 
 /**
  * Utility class to assist in the process of benchmarking the execution

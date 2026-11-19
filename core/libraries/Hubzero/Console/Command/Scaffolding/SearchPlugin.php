@@ -9,7 +9,6 @@
 namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
-use Hubzero\Utility\Date;
 use Hubzero\Facades\App;
 
 /**

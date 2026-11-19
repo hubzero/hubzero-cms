@@ -10,8 +10,6 @@ namespace Hubzero\Console\Command\Configuration;
 
 use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Hubzero\Facades\App;
 
 /**

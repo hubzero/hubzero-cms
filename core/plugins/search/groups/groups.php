@@ -2,7 +2,6 @@
 
 namespace Plugins\Search\Groups;
 
-use Components\Groups\Models\Orm\Group;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;

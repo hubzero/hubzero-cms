@@ -11,7 +11,6 @@ namespace Components\Newsletter\Site\Controllers;
 use Components\Newsletter\Helpers\Helper;
 use Components\Newsletter\Models\Mailing\Recipient\Action;
 use Hubzero\Component\SiteController;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\App;

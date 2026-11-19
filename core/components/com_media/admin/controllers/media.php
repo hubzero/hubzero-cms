@@ -17,7 +17,6 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
-use Html;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Notify;

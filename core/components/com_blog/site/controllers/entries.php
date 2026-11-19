@@ -17,7 +17,6 @@ use Hubzero\Utility\Sanitize;
 use Exception;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Request;
-use Pathway;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;

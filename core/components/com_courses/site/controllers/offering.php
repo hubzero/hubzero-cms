@@ -8,7 +8,6 @@
 
 namespace Components\Courses\Site\Controllers;
 
-use Components\Courses\Models\Assets\Tool;
 use Components\Courses\Models;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
@@ -16,7 +15,6 @@ use Hubzero\Config\Registry;
 use Exception;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
@@ -24,7 +22,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Notify;
-use Hubzero\Facades\Component;
 
 /**
  * Courses controller class for an offering

@@ -9,7 +9,6 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
 use Hubzero\Facades\Date;
 
 /**

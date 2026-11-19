@@ -10,7 +10,6 @@ namespace Hubzero\Error\Renderer;
 
 use Hubzero\Error\RendererInterface;
 use Hubzero\Notification\Handler;
-use Exception;
 
 /**
  * Displays the custom error page when an uncaught exception occurs.

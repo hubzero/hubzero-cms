@@ -13,10 +13,8 @@ use Hubzero\Image\Processor;
 use Hubzero\Utility\Str;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
-use App;
 use Hubzero\Facades\Component;
 
 /**

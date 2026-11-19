@@ -9,7 +9,6 @@
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Hubzero\Utility\Number;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
 

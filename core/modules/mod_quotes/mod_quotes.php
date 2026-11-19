@@ -10,9 +10,7 @@ namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
-use Date;
 
 /**
  * Module class for displaying quotes

@@ -12,7 +12,6 @@ use Components\Resources\Models\Element as Base;
 use stdClass;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Html;
-use Hubzero\Facades\Component;
 
 /**
  * Renders a category element

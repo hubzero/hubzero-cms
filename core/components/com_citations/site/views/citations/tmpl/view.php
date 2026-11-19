@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;

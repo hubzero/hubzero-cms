@@ -10,7 +10,6 @@ namespace Components\Support\Api\Controllers;
 
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
-use Component;
 use Hubzero\Facades\User;
 
 /**

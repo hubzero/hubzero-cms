@@ -12,8 +12,6 @@ use Plugins\Antispam\Bayesian\Models\MessageHash;
 use Plugins\Antispam\Bayesian\Models\TokenCount;
 use Plugins\Antispam\Bayesian\Models\TokenProb;
 use Hubzero\Spam\Detector\DetectorInterface;
-use Exception;
-use stdClass;
 
 /**
  * Bayesian filter

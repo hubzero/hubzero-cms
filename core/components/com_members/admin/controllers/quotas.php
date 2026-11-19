@@ -12,7 +12,6 @@ use Hubzero\Component\AdminController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Quota;
 use Components\Members\Models\Quota\Category;
-use Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Route;

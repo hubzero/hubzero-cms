@@ -9,8 +9,6 @@
 namespace Hubzero\Console\Command;
 
 use Hubzero\Facades\App;
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Hubzero\System\PrivilegeManager;
 use Hubzero\Utility\Date;
 use Hubzero\Facades\Component;

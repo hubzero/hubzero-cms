@@ -9,8 +9,6 @@
 namespace Components\Content\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Component;
-use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;

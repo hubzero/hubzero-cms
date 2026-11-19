@@ -8,9 +8,7 @@
 
 namespace Components\Search\Helpers;
 
-use Components\Search\Helpers\SolariumBoostQuery as Query;
 use Hubzero\Utility\Arr;
-use Component;
 
 class SolariumBoostQueries
 {

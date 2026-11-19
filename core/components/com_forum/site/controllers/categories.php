@@ -13,7 +13,6 @@ use Hubzero\Utility\Str;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
-use Exception;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;

@@ -8,8 +8,6 @@
 
 namespace Hubzero\Filesystem;
 
-use StdClass;
-
 /**
  * Directory model
  */

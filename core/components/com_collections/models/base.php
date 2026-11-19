@@ -12,7 +12,6 @@ use Components\Members\Models\Member;
 use Hubzero\Base\Model;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
-use User;
 use Hubzero\Facades\Lang;
 
 /**

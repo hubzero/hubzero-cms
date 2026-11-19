@@ -10,8 +10,6 @@ namespace Components\Publications\Api\Controllers;
 
 use Components\Publications\Models\Publication;
 use Hubzero\Component\ApiController;
-use Hubzero\Utility\Date;
-use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;

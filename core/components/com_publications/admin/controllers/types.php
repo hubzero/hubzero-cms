@@ -9,7 +9,6 @@
 namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Publications\Tables;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;

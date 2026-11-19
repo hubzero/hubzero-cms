@@ -8,12 +8,10 @@
 
 namespace Components\Support\Admin\Controllers;
 
-use Components\Support\Helpers\ACL;
 use Components\Support\Helpers\Notifier;
 use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
-use Components\Support\Models\Tags;
 use Components\Support\Models\Query;
 use Components\Support\Models\QueryFolder;
 use Components\Support\Models\Attachment;
@@ -21,8 +19,6 @@ use Components\Support\Models\Watching;
 use Components\Support\Models\Message;
 use Components\Support\Models\Category;
 use Hubzero\Component\AdminController;
-use Hubzero\Browser\Detector;
-use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
 use Hubzero\Utility\Validate;
 use Exception;

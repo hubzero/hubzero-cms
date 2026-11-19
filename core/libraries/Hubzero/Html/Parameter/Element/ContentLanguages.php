@@ -8,8 +8,6 @@
 
 namespace Hubzero\Html\Parameter\Element;
 
-use Hubzero\Html\Parameter\Element;
-use Exception;
 use Hubzero\Facades\App;
 
 /**

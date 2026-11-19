@@ -8,8 +8,6 @@
 
 namespace Hubzero\Events;
 
-use InvalidArgumentException;
-
 /**
  * A listener delegating its methods to an other listener.
  */

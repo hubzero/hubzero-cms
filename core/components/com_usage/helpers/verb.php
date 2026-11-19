@@ -9,7 +9,6 @@
 namespace Components\Usage\Helpers;
 
 use Exception;
-use App;
 use stdClass;
 use Hubzero\Facades\Config;
 

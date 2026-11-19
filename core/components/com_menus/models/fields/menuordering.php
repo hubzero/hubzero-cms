@@ -8,7 +8,6 @@
 
 namespace Hubzero\Form\Fields;
 
-use Exception;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 

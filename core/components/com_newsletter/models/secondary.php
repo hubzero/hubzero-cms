@@ -9,8 +9,6 @@
 namespace Components\Newsletter\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
 
 /**
  * Newsletter model for secondary story

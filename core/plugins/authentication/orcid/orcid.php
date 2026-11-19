@@ -8,7 +8,6 @@
 
 namespace Plugins\Authentication\Orcid;
 
-use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Document;

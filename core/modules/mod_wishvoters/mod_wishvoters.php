@@ -10,7 +10,6 @@ namespace Modules\Wishvoters;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Models\Wishlist;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 

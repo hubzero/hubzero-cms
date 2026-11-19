@@ -11,7 +11,6 @@ namespace Components\Projects\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Projects\Models\Project;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

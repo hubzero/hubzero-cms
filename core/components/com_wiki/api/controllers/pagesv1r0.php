@@ -10,12 +10,10 @@ namespace Components\Wiki\Api\Controllers;
 
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
-use Components\Wiki\Models\Version;
 use Components\Wiki\Models\Author;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Hubzero\Facades\Request;
-use Event;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

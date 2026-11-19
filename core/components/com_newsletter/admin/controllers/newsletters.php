@@ -12,8 +12,6 @@ use Components\Newsletter\Models\Newsletter;
 use Components\Newsletter\Models\Template;
 use Components\Newsletter\Models\Mailinglist;
 use Components\Newsletter\Models\Mailing;
-use Components\Newsletter\Models\Primary;
-use Components\Newsletter\Models\Secondary;
 use Components\Newsletter\Models\Mailing\Recipient;
 use Components\Members\Models\Member;
 use Hubzero\Component\AdminController;

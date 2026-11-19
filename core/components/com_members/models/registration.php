@@ -9,7 +9,6 @@
 namespace Components\Members\Models;
 
 use Components\Members\Models\Profile\Field;
-use Components\Members\Tables;
 use Components\Members\Helpers;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;

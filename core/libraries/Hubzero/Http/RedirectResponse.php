@@ -8,7 +8,6 @@
 
 namespace Hubzero\Http;
 
-use InvalidArgumentException;
 use Hubzero\Session\Manager as SessionStore;
 use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 

@@ -21,7 +21,6 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;
-use Hubzero\Facades\Log;
 use Hubzero\Facades\Plugin;
 
 /**

@@ -8,7 +8,6 @@
 
 namespace Hubzero\Database\Drivers\Cubrid;
 
-use Hubzero\Database\ConnectionInterface;
 use Hubzero\Database\Exception\ConnectionFailedException;
 
 /**

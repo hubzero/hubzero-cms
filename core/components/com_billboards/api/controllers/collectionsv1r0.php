@@ -9,7 +9,6 @@
 namespace Components\Billboards\Api\Controllers;
 
 use Components\Billboards\Models\Collection;
-use Components\Billboards\Models\Billboard;
 use Hubzero\Component\ApiController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;

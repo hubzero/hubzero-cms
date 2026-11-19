@@ -10,7 +10,6 @@ namespace Modules\Quicktips;
 
 use Hubzero\Module\Module;
 use Hubzero\Database\Expression;
-use Cache;
 use Hubzero\Facades\Date;
 
 /**

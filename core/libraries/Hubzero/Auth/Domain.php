@@ -9,7 +9,6 @@
 namespace Hubzero\Auth;
 
 use Hubzero\Database\Relational;
-use Date;
 
 /**
  * Authentication Domain

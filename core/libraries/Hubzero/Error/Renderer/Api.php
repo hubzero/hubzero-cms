@@ -10,7 +10,6 @@ namespace Hubzero\Error\Renderer;
 
 use Hubzero\Error\RendererInterface;
 use Hubzero\Http\Response;
-use Exception;
 
 /**
  * Displays plain error info when an uncaught exception occurs.

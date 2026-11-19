@@ -12,7 +12,6 @@ use Components\Courses\Tables;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Component;
-use User;
 use Hubzero\Facades\Date;
 use stdClass;
 use Hubzero\Facades\App;

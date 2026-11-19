@@ -9,7 +9,6 @@
 namespace Components\Resources\Models\Format;
 
 use Components\Resources\Models\Format as Base;
-use stdClass;
 
 /**
  * PHP class format handler

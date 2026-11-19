@@ -12,7 +12,6 @@ use Hubzero\Database\Nested;
 use Hubzero\Database\Rows;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Component;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;

@@ -2,8 +2,6 @@
 
 namespace Components\Cron\Helpers;
 
-use InvalidArgumentException;
-
 /**
  * Abstract CRON expression field
  *

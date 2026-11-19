@@ -14,9 +14,7 @@ use Hubzero\Activity\Subscription;
 use Hubzero\Activity\Recipient;
 use Hubzero\Utility\Date;
 use Exception;
-use stdClass;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 

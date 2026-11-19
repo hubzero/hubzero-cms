@@ -12,11 +12,8 @@ namespace Plugins\Projects\Files;
 
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Connection;
-use Components\Projects\Models\Orm\Provider;
 use Hubzero\Filesystem\Collection;
 use Hubzero\Filesystem\Entity;
-use Hubzero\Filesystem\Manager;
-use Hubzero\View\View;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Filesystem;

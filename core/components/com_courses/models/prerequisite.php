@@ -8,7 +8,6 @@
 
 namespace Components\Courses\Models;
 
-use Components\Courses\Tables;
 use Hubzero\Facades\App;
 
 /**

@@ -11,10 +11,7 @@ namespace Components\Menus\Helpers;
 use Components\Menus\Models\Menu;
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
-use Submenu;
-use Route;
 use Hubzero\Facades\User;
-use Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 

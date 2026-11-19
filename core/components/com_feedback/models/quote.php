@@ -8,7 +8,6 @@
 
 namespace Components\Feedback\Models;
 
-use Components\Members\Models\Member;
 use Hubzero\Database\Relational;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Lang;

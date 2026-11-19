@@ -8,7 +8,6 @@
 
 namespace Components\Courses\Models\Assets;
 
-use Components\Courses\Models\Base;
 use Components\Courses\Models\Asset;
 
 /**

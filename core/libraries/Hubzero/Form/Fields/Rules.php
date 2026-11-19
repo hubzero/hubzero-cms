@@ -11,7 +11,6 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Field;
 use Hubzero\Access\Access;
 use Hubzero\Html\Builder\Behavior;
-use Exception;
 use Hubzero\Facades\App;
 
 /**

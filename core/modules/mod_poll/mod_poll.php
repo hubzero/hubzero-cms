@@ -10,7 +10,6 @@ namespace Modules\Poll;
 
 use Hubzero\Module\Module;
 use Components\Poll\Models\Poll as PollModel;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\App;
 
 /**

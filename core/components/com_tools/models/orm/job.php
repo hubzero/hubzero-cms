@@ -9,7 +9,6 @@
 namespace Components\Tools\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Lang;
 
 /**
  * Tool job model

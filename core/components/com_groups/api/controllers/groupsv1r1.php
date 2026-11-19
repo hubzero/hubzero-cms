@@ -11,7 +11,6 @@ namespace Components\Groups\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Route;

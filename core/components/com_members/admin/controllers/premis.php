@@ -12,8 +12,6 @@ use Hubzero\Component\AdminController;
 use Components\Members\Helpers\Premis as PremisHelper;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
-use Config;
-use Route;
 use Hubzero\Facades\Lang;
 use App;
 use User;

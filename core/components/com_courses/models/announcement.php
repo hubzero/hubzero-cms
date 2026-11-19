@@ -8,9 +8,7 @@
 
 namespace Components\Courses\Models;
 
-use Hubzero\Base\Model;
 use Hubzero\Utility\Str;
-use Components\Courses\Tables;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 

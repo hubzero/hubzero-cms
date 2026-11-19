@@ -9,8 +9,6 @@
 namespace Components\Groups\Models\Page;
 
 use Components\Groups\Models\Page;
-use Components\Groups\Tables;
-use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;

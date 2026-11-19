@@ -10,7 +10,6 @@ namespace Components\Plugins\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
-use Filesystem;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

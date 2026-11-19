@@ -11,7 +11,6 @@ namespace Components\Developer\Site\Controllers;
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Session;
-use Exception;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Plugin;

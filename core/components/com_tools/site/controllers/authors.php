@@ -13,7 +13,6 @@ use Components\Resources\Models\Entry;
 use Components\Resources\Models\Author;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

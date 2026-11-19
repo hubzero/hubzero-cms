@@ -9,7 +9,6 @@
 namespace Bootstrap\Api\Providers;
 
 use Hubzero\Base\Middleware;
-use Hubzero\Http\RedirectResponse;
 use Hubzero\Http\Request;
 use Hubzero\Routing\Manager;
 

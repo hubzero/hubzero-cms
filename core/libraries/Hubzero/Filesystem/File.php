@@ -8,8 +8,6 @@
 
 namespace Hubzero\Filesystem;
 
-use Hubzero\Filesystem\Util\MimeType;
-
 /**
  * File model
  */

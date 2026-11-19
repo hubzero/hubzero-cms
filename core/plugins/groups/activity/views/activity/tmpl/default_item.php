@@ -12,7 +12,6 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
-use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();

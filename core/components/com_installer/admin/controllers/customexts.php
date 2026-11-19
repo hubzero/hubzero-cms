@@ -14,8 +14,6 @@ use Components\Installer\Admin\Models\CustomExtensions;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
-use Event;
-use Route;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;

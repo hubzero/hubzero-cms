@@ -8,8 +8,6 @@
 
 namespace Hubzero\Console\Command\Repository;
 
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 

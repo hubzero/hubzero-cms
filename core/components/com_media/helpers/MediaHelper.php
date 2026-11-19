@@ -10,7 +10,6 @@ namespace Components\Media\Helpers;
 
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Component;
-use Notify;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 

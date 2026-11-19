@@ -10,7 +10,6 @@ use Components\Projects\Helpers\Html as ProjectsHtml;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
-use Hubzero\Facades\Session;
 
 // @phpcs:disable PSR1.Files.SideEffects
 

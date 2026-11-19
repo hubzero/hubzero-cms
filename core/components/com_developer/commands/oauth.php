@@ -10,8 +10,6 @@ namespace Components\Developer\Commands;
 
 use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Components\Developer\Models\Application;
 use Hubzero\User\User;
 

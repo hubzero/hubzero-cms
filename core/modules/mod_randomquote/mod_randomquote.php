@@ -10,7 +10,6 @@ namespace Modules\Randomquote;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\App;
 
 /**

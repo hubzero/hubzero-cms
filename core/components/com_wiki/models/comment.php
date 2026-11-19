@@ -14,7 +14,6 @@ use Hubzero\Utility\Str;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Date;
-use User;
 use Hubzero\Facades\Event;
 
 /**

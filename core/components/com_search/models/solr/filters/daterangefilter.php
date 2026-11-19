@@ -8,8 +8,6 @@
 
 namespace Components\Search\Models\Solr\Filters;
 
-use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
 use Hubzero\Facades\Date;
 
 /**

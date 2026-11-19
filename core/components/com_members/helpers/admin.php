@@ -9,8 +9,6 @@
 namespace Components\Members\Helpers;
 
 use Hubzero\Base\Obj;
-use Request;
-use Submenu;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Html;

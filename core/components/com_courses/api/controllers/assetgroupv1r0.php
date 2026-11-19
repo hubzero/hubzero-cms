@@ -9,7 +9,6 @@
 namespace Components\Courses\Api\Controllers;
 
 use Hubzero\Config\Registry;
-use Components\Courses\Models\Assets\Handler;
 use Components\Courses\Models\Assetgroup;
 use Components\Courses\Models\Assets\Tool;
 use Hubzero\Facades\App;

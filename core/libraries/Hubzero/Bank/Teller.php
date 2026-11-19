@@ -9,7 +9,6 @@
 namespace Hubzero\Bank;
 
 use Hubzero\Base\Obj;
-use Hubzero\Utility\Date;
 
 /**
  * Teller class for controlling bank transactions

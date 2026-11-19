@@ -14,7 +14,6 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;

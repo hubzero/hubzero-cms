@@ -9,7 +9,6 @@
 namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
-use Components\Courses\Tables;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;
 

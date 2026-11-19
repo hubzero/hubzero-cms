@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\App;
-use Hubzero\Facades\Lang;
-
 // The v2.1 API routes exactly as v2.0 does; the loader includes this file
 // for /api/v2.1/support/... and the one parse() implementation lives in
 // routerv2_0.php (this file used to be a byte-for-byte copy of it).

@@ -9,7 +9,6 @@
 namespace Components\Media\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Media\Models\Files;
 use Components\Media\Helpers\MediaHelper;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;

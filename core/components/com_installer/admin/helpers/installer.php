@@ -12,13 +12,8 @@ use Hubzero\Facades\Submenu;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
-use Hubzero\Base\Obj;
-use Hubzero\Access\Access;
-use Hubzero\Form\Field;
-use Filesystem;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\App;
-use Components\Installer\Admin\Models\Extension;
 
 /**
  * Installer helper.

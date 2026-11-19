@@ -8,8 +8,6 @@
 
 namespace Components\Courses\Api\Controllers;
 
-use Components\Courses\Models\Course;
-use Components\Courses\Models\Member;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

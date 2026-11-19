@@ -9,7 +9,6 @@
 namespace Components\Courses\Models;
 
 use Hubzero\Utility\Str;
-use Components\Courses\Tables;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;

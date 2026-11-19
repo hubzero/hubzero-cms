@@ -8,7 +8,6 @@
 
 namespace Components\Projects\Site\Controllers;
 
-use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description;

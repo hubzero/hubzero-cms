@@ -8,10 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Components\Search\Models\Solr\SearchComponent;
-use Component;
 
 /**
  * Migration class

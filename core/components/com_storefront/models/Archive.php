@@ -9,7 +9,6 @@
 namespace Components\Storefront\Models;
 
 use Components\Storefront\Models\Warehouse;
-use Components\Storefront\Models\Sku;
 use Hubzero\Facades\App;
 
 /**

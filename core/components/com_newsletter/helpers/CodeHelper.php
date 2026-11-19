@@ -12,7 +12,6 @@ use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;
 use Components\Newsletter\Secrets\PageCode;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 
 class CodeHelper
 {

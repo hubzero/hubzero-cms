@@ -10,8 +10,6 @@ namespace Components\Developer\Cli\Commands;
 
 use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 
 /**
  * Developer documentation command class

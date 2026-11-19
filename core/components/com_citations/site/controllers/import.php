@@ -13,15 +13,12 @@ use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
 use Hubzero\Component\SiteController;
 use Exception;
-use Filesystem;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
-use Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 

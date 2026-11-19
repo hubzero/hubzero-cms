@@ -9,7 +9,6 @@
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Component;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Date;
 

@@ -8,7 +8,6 @@
 
 namespace Hubzero\Database\Drivers\Informix;
 
-use Hubzero\Database\ConnectionInterface;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\Exception\QueryFailedException;

@@ -8,7 +8,6 @@
 
 namespace Hubzero\Module;
 
-use Hubzero\Document\Assets;
 use Hubzero\Utility\Date;
 use Hubzero\Facades\App;
 

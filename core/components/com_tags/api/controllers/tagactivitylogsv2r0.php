@@ -12,7 +12,6 @@ use Components\Tags\Helpers\ActivityLogPresenter;
 use Components\Tags\Models\Log;
 use Hubzero\Component\ApiController;
 use Hubzero\Facades\Request;
-use Hubzero\Facades\Component;
 use User;
 use Lang;
 use Exception;

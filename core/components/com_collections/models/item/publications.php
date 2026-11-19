@@ -13,7 +13,6 @@ use Components\Publications\Models\Publication;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
-use Hubzero\Facades\Component;
 
 /**
  * Collections model for an item

@@ -8,9 +8,6 @@
 
 namespace Hubzero\Console\Command;
 
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
-
 /**
  * Help class for rendering utility-wide help documentation
  *

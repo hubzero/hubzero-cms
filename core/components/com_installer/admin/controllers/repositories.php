@@ -15,7 +15,6 @@ use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Event;
 use StdClass;
-use Route;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

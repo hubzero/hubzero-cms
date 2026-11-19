@@ -10,15 +10,11 @@ namespace Components\Content\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Inflector;
-use Hubzero\Access\Access;
 use Hubzero\Access\Rules;
-use Hubzero\Access\Asset;
 use Components\Content\Models\Article;
 use Components\Content\Models\Frontpage as Featured;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Cache;
 use Hubzero\Facades\Lang;

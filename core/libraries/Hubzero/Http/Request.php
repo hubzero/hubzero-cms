@@ -8,7 +8,6 @@
 
 namespace Hubzero\Http;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Hubzero\Spam\Honeypot;
 use Hubzero\Facades\App;

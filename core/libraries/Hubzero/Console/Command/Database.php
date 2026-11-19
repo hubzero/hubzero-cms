@@ -10,7 +10,6 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Facades\App;
 use Hubzero\Utility\Date;
-use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;
 use Hubzero\Console\Command\Database\SchemaConverter;
 use Hubzero\Database\DatabaseManager;

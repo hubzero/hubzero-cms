@@ -10,9 +10,7 @@ namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
-use User;
 use Hubzero\Facades\App;
 
 /**

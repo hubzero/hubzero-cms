@@ -12,8 +12,6 @@ use Components\Poll\Models\Poll;
 use Components\Poll\Models\Option;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
-use Exception;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\User;

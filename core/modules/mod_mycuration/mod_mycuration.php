@@ -9,7 +9,6 @@
 namespace Modules\Mycuration;
 
 use Hubzero\Module\Module;
-use Publication;
 use Hubzero\Facades\Component;
 
 /**

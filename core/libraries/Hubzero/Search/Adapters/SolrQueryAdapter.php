@@ -10,9 +10,7 @@ namespace Hubzero\Search\Adapters;
 
 use Hubzero\Search\QueryInterface;
 use Solarium;
-use GuzzleHttp\Client;
 use Hubzero\Facades\Event;
-use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
 
 /**

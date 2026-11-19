@@ -16,7 +16,6 @@ use Components\Support\Helpers\Utilities;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

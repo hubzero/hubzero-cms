@@ -12,7 +12,6 @@ use Hubzero\Container\Container;
 use Hubzero\Oauth\Server;
 use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Hubzero\Config\Registry;
-use Exception;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;

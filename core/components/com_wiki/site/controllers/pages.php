@@ -14,7 +14,6 @@ use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Version;
 use Components\Wiki\Models\Author;
 use Components\Wiki\Models\Attachment;
-use Exception;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Cache;

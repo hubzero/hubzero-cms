@@ -8,7 +8,6 @@
 
 namespace Hubzero\Form\Fields;
 
-use Hubzero\Form\Field;
 use Hubzero\Html\Builder\Select as Dropdown;
 
 /**

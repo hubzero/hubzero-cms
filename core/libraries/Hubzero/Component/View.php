@@ -9,7 +9,6 @@
 namespace Hubzero\Component;
 
 use Hubzero\View\View as AbstractView;
-use Hubzero\Document\Assets;
 
 /**
  * Class for a component View

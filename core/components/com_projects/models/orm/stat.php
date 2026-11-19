@@ -9,8 +9,6 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
 
 /**
  * Projects Stat model

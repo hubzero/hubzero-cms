@@ -13,7 +13,6 @@ use Hubzero\User\Password;
 use Components\Courses\Models\Course;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
-use Lang;
 
 /**
  * Helper for PREMIS bulk registration and course enrollment

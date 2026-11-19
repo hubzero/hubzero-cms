@@ -9,7 +9,6 @@
 namespace Hubzero\Form\Fields\Modal;
 
 use Hubzero\Form\Field;
-use Exception;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Route;

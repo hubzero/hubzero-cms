@@ -10,11 +10,8 @@ namespace Components\Newsletter\Api\Controllers;
 
 use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\ApiController;
-use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
-use Route;
-use Lang;
 
 /**
  * API controller class for newsletters

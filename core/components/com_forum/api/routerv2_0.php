@@ -9,7 +9,6 @@
 namespace Components\Forum\Api;
 
 use Hubzero\Component\Router\Base;
-use Exception;
 
 /**
  * Routing class for the component

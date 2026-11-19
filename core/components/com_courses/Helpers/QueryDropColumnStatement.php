@@ -8,8 +8,6 @@
 
 namespace Components\Courses\Helpers;
 
-use Hubzero\Utility\Arr;
-
 class QueryDropColumnStatement
 {
     /**

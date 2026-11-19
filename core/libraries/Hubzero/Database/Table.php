@@ -8,7 +8,6 @@
 
 namespace Hubzero\Database;
 
-use RuntimeException;
 use Exception;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Event;

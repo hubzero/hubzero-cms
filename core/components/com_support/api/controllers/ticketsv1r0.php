@@ -14,7 +14,6 @@ use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

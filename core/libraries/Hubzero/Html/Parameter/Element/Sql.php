@@ -10,7 +10,6 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
-use Exception;
 use Hubzero\Facades\App;
 
 /**

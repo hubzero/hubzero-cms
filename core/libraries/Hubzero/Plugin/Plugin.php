@@ -8,7 +8,6 @@
 
 namespace Hubzero\Plugin;
 
-use Hubzero\Document\Assets;
 use Hubzero\Config\Registry;
 use Hubzero\Facades\App;
 

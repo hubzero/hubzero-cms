@@ -8,12 +8,9 @@
 
 namespace Components\Content\Site\Helpers;
 
-use Hubzero\Utility\Arr;
-use Hubzero\Utility\Uri;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
-use Component;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;

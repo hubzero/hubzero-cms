@@ -9,7 +9,6 @@
 namespace Plugins\Antispam\Babajispam;
 
 use Hubzero\Spam\Detector\DetectorInterface;
-use Exception;
 
 /**
  * Spam detector for Babajispam

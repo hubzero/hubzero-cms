@@ -11,14 +11,10 @@ namespace Components\Resources\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Components\Plugins\Models\Plugin;
-use Exception;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Event;
-use Route;
 use Hubzero\Facades\Cache;
 use Hubzero\Facades\Lang;
-use App;
 use Hubzero\Facades\Notify;
 
 /**

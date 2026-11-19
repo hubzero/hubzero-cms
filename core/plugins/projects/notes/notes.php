@@ -10,7 +10,6 @@
 
 namespace Plugins\Projects\Notes;
 
-use Hubzero\Utility\Str;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;

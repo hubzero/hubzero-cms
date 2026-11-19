@@ -8,7 +8,6 @@
 
 namespace Components\Usage\Helpers;
 
-use Exception;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Lang;

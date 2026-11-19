@@ -9,9 +9,6 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Route;
-use Lang;
-use App;
 
 /**
  * System controller class for info

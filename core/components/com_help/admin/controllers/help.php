@@ -16,7 +16,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
-use Hubzero\Facades\Filesystem;
 
 /**
  * Help controller class

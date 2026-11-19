@@ -8,7 +8,6 @@
 
 namespace Hubzero\Session;
 
-use Hubzero\Session\Storage;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Config;
 

@@ -10,7 +10,6 @@ namespace Components\Search\Helpers;
 
 use Components\Search\Helpers\MockProxy;
 use Hubzero\Utility\Arr;
-use Component;
 
 class BoostQueryHelper
 {

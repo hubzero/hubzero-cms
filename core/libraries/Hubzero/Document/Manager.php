@@ -8,7 +8,6 @@
 
 namespace Hubzero\Document;
 
-use Closure;
 use InvalidArgumentException;
 use Exception;
 

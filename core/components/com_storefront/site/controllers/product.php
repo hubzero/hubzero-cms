@@ -12,7 +12,6 @@ use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product as P;
 use Components\Cart\Models\CurrentCart;
 use Components\Cart\Helpers\Audit;
-use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Lang;

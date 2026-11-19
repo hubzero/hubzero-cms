@@ -10,7 +10,6 @@ namespace Hubzero\Events;
 
 use Hubzero\Base\Traits\ErrorBag;
 use InvalidArgumentException;
-use Serializable;
 use ArrayAccess;
 use Countable;
 

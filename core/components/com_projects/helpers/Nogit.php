@@ -11,7 +11,6 @@ namespace Components\Projects\Helpers;
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Manager;
 use Hubzero\Facades\Component;
-use Hubzero\Facades\Lang;
 
 /**
  * Projects Git helper class

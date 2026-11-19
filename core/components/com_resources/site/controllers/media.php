@@ -13,13 +13,11 @@ use Components\Resources\Models\MediaTracking;
 use Components\Resources\Models\MediaTracking\Detailed;
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Filesystem;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
-use Component;
 
 /**
  * Resources controller class for media

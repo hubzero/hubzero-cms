@@ -13,7 +13,6 @@ use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Event;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;

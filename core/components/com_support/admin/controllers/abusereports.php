@@ -18,7 +18,6 @@ use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;

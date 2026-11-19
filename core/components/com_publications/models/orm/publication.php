@@ -9,7 +9,6 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
-use stdClass;
 use Hubzero\Facades\Component;
 
 /**

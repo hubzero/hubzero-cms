@@ -10,11 +10,9 @@ namespace Components\Answers\Models;
 
 use Components\Answers\Helpers\Economy;
 use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;

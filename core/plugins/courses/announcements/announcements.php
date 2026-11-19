@@ -9,7 +9,6 @@
 namespace Plugins\Courses\Announcements;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Utility\Date;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Lang;

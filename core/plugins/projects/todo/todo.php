@@ -11,10 +11,7 @@
 namespace Plugins\Projects\Todo;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Utility\Sanitize;
-use Hubzero\Utility\Str;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;

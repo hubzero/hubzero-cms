@@ -12,7 +12,6 @@ use Hubzero\Component\AdminController;
 use Components\Support\Models\Category;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;

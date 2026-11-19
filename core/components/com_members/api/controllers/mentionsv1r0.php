@@ -10,12 +10,9 @@ namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Members\Models\Member;
-use Component;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
-use Route;
-use Lang;
 use Hubzero\Facades\User;
 
 /**

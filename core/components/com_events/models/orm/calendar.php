@@ -9,7 +9,6 @@
 namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
-use User;
 use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Request;

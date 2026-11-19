@@ -10,7 +10,6 @@ namespace Components\Events\Site\Controllers;
 
 use Components\Events\Tables\Configs;
 use Components\Events\Tables\Event;
-use Components\Events\Tables\Calendar;
 use Components\Events\Tables\Category;
 use Components\Events\Tables\Page;
 use Components\Events\Models\Tags;
@@ -19,9 +18,6 @@ use Components\Events\Helpers\Html;
 use Components\Events\Tables\Respondent;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
-use Hubzero\Utility\Sanitize;
-use DateTimezone;
-use DateTime;
 use Hubzero\Facades\Document;
 use Exception;
 use Hubzero\Facades\Request;

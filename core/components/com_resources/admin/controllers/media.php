@@ -14,7 +14,6 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Html;
-use Component;
 
 /**
  * Methods for listing and managing files and folders

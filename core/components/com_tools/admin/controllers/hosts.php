@@ -16,9 +16,7 @@ use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Lang;
-use App;
 
 /**
  * Tools controller class for hosts

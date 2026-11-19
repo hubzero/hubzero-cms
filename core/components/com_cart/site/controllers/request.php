@@ -9,7 +9,6 @@
 namespace Components\Cart\Site\Controllers;
 
 use Exception;
-use Hubzero\Facades\Component;
 
 /**
  * Cart AJAX requests

@@ -12,7 +12,6 @@ use Hubzero\Component\AdminController;
 use Hubzero\Item\Comment;
 use Components\Wishlist\Models\Wishlist;
 use Components\Wishlist\Models\Wish;
-use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;

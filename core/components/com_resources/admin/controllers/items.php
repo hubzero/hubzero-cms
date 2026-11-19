@@ -21,7 +21,6 @@ use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Badges;
 use Components\Resources\Helpers\Html;
-use Components\Resources\Helpers\Helper;
 use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Str;
@@ -35,7 +34,6 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\User;
-use Hubzero\Facades\Component;
 
 /**
  * Manage resource entries

@@ -8,7 +8,6 @@
 
 namespace Components\Collections\Api\Controllers;
 
-use Components\Collections\Models\Archive;
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Post;
 use Components\Collections\Models\Item;

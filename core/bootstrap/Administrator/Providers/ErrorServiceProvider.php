@@ -11,7 +11,6 @@ namespace Bootstrap\Administrator\Providers;
 use Hubzero\Error\Handler;
 use Hubzero\Error\Renderer\Page;
 use Hubzero\Error\Renderer\Plain;
-use Hubzero\Error\Renderer\Api;
 use Hubzero\Base\ServiceProvider;
 
 /**

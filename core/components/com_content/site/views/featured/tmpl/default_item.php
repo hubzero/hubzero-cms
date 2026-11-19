@@ -8,7 +8,6 @@
 
 use Hubzero\Facades\App;
 use Hubzero\Facades\Date;
-use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Components\Content\Site\Helpers\HtmlIcon;

@@ -9,7 +9,6 @@
 namespace Plugins\Filesystem\Dropbox;
 
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox as VendorDropboxOauthClient;
-use Hubzero\Utility\Arr;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Request;
 

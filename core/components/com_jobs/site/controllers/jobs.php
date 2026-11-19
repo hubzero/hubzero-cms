@@ -16,7 +16,6 @@ use Components\Jobs\Tables\Job;
 use Components\Jobs\Tables\Prefs;
 use Components\Jobs\Tables\Resume;
 use Components\Jobs\Tables\Seeker;
-use Components\Jobs\Tables\Shortlist;
 use Components\Jobs\Tables\Stats;
 use Components\Jobs\Tables\Type;
 use Components\Services\Models\Subscription;

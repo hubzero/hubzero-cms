@@ -9,7 +9,6 @@
 namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block\Description as Base;
-use stdClass;
 
 /**
  * Release Notes block

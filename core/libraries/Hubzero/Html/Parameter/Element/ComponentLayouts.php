@@ -8,7 +8,6 @@
 
 namespace Hubzero\Html\Parameter\Element;
 
-use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
 use Hubzero\Filesystem\Util;
 use Hubzero\Facades\App;

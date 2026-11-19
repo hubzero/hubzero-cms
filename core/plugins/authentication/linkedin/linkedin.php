@@ -2,7 +2,6 @@
 
 namespace Plugins\Authentication\Linkedin;
 
-use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;

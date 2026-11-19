@@ -12,7 +12,6 @@ use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Post;
 use Hubzero\User\Group;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\User;
 
 /**

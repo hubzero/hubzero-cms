@@ -12,7 +12,6 @@ use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Tags\Models\Cloud;
 use Hubzero\Component\ApiController;
-use Component;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\User;
 use Exception;

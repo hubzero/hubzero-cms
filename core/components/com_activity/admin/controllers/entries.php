@@ -10,14 +10,7 @@ namespace Components\Activity\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Activity\Log as Activity;
-use Request;
-use Config;
-use Notify;
-use Route;
-use User;
-use Lang;
 use Hubzero\Facades\Date;
-use App;
 
 /**
  * Activity controller class for entries

@@ -9,7 +9,6 @@
 namespace Modules\Version;
 
 use Hubzero\Module\Module;
-use App;
 
 /**
  * Module class for displaying CMS version

@@ -9,7 +9,6 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Filesystem;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Component;
@@ -18,7 +17,6 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;
-use Hubzero\User\Group;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;

@@ -14,7 +14,6 @@ use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
 use Google_Service_Drive_Permission;
 use Google_Service_Oauth2;
-use Google_Http_Request;
 use Hubzero\Base\Obj;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Plugin;

@@ -14,7 +14,6 @@ use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use InvalidArgumentException;
 use RuntimeException;
-use DirectoryIterator;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;

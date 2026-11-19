@@ -9,7 +9,6 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Facades\App;
-use Exception;
 
 /**
  * Form Field class

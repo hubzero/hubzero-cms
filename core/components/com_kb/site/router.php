@@ -10,7 +10,6 @@ namespace Components\Kb\Site;
 
 use Hubzero\Component\Router\Base;
 use Components\Kb\Models\Category;
-use Components\Kb\Models\Article;
 
 /**
  * Routing class for the component

@@ -12,7 +12,6 @@ use Hubzero\Component\ApiController;
 use Hubzero\User\Group;
 use Exception;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;

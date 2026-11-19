@@ -11,7 +11,6 @@ namespace Hubzero\Component;
 use Hubzero\Component\Exception\InvalidTaskException;
 use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Base\Obj;
-use Hubzero\Document\Assets;
 use ReflectionClass;
 use ReflectionMethod;
 use Lang;

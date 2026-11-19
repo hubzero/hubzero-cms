@@ -9,7 +9,6 @@
 namespace Plugins\Courses\Notes;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Utility\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;

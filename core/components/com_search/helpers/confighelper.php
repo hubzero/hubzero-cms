@@ -8,7 +8,6 @@
 
 namespace Components\Search\Helpers;
 
-use Hubzero\Utility\Date;
 use Hubzero\User\Group;
 use Hubzero\Facades\Filesystem;
 

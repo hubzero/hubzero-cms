@@ -12,7 +12,6 @@ use Hubzero\Module\Module;
 use Components\Members\Models\Incremental\Options;
 use Components\Members\Models\Incremental\Groups;
 use Components\Members\Models\Incremental\Awards;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;

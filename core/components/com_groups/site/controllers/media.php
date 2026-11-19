@@ -9,7 +9,6 @@
 namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
-use Hubzero\Utility;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;

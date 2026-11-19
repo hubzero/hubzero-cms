@@ -9,8 +9,6 @@
 namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
 
 /**
  * UsersCategory model

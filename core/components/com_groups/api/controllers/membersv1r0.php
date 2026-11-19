@@ -10,7 +10,6 @@ namespace Components\Groups\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Exception;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 use User;

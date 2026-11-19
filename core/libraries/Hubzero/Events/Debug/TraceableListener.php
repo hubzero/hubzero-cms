@@ -9,7 +9,6 @@
 namespace Hubzero\Events\Debug;
 
 //use Hubzero\Stopwatch\Stopwatch;
-use Hubzero\Events\DispatcherInterface;
 use Hubzero\Events\Event;
 use Closure;
 

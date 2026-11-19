@@ -10,7 +10,6 @@ namespace Components\Plugins\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Plugins\Models\Plugin;
-use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Event;

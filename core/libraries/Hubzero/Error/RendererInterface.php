@@ -8,8 +8,6 @@
 
 namespace Hubzero\Error;
 
-use Exception;
-
 /**
  * Error renderer interface
  */

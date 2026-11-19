@@ -14,7 +14,6 @@ use Components\Events\Tables\Page;
 use Components\Events\Tables\Respondent;
 use Components\Events\Tables\Category;
 use Components\Events\Models\Tags;
-use Components\Events\Helpers\Html;
 use Hubzero\Component\AdminController;
 use Exception;
 use Hubzero\Facades\App;

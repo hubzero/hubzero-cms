@@ -9,7 +9,6 @@
 namespace Hubzero\Console;
 
 use Hubzero\Config\Registry;
-use Hubzero\Error\Exception\RuntimeException;
 
 /**
  * Console configuration class

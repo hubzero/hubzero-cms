@@ -16,7 +16,6 @@ use Components\Collections\Models\Item;
 use Components\Collections\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Item\Comment;
-use Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;

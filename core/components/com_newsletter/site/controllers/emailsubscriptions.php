@@ -11,13 +11,10 @@ namespace Components\Newsletter\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Helpers\SubscriptionsHelper;
-use Components\Newsletter\Models\EmailSubscription;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
-use Hubzero\Facades\User;
 
 class Emailsubscriptions extends SiteController
 {

@@ -10,7 +10,6 @@ namespace Hubzero\User;
 
 use Hubzero\Base\Obj;
 use Hubzero\User\Profile\Helper as ProfileHelper;
-use Hubzero\User\Password;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
 use Hubzero\Facades\Event;

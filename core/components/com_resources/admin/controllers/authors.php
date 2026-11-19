@@ -13,7 +13,6 @@ use Components\Resources\Models\Author\Role;
 use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use App;
 use User;
 use Lang;

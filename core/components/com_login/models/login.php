@@ -12,7 +12,6 @@ use Hubzero\Base\Obj;
 use Hubzero\Utility\Uri;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 
 /**

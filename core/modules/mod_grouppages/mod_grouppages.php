@@ -10,7 +10,6 @@ namespace Modules\Grouppages;
 
 use Hubzero\Module\Module;
 use Components\Groups\Models;
-use Hubzero\Facades\Component;
 
 /**
  * Module class for showing group pages

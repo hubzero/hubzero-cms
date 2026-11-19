@@ -12,7 +12,6 @@ use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;
-use Hubzero\Facades\Component;
 
 /**
  * Database model for search filters

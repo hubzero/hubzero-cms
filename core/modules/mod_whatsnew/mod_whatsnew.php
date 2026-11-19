@@ -10,11 +10,9 @@ namespace Modules\Whatsnew;
 
 use Hubzero\Module\Module;
 use Components\Whatsnew\Helpers\Period;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Route;
-use Lang;
 use Hubzero\Facades\User;
 
 /**

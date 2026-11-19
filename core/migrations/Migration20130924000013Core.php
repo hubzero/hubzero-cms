@@ -9,7 +9,6 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
-use Hubzero\Database\Expression;
 
 /**
  * Migration script for other changes

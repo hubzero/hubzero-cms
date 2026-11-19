@@ -10,7 +10,6 @@ namespace Components\Templates\Models;
 
 use Hubzero\Base\Obj;
 use Hubzero\Facades\Filesystem;
-use stdClass;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;

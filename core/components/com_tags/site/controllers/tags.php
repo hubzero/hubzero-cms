@@ -12,7 +12,6 @@ use Hubzero\Component\SiteController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Utility\Str;
-use Hubzero\Utility\Sanitize;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Pathway;

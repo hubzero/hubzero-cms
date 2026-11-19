@@ -9,7 +9,6 @@
 namespace Hubzero\Api\Doc;
 
 use ReflectionClass;
-use phpDocumentor\Reflection\DocBlock;
 use Hubzero\Facades\App;
 
 /**

@@ -9,7 +9,6 @@
 namespace Components\Publications\Models\Handlers;
 
 use Components\Publications\Models\Handler as Base;
-use stdClass;
 
 /**
  * DataStore Lite Handler

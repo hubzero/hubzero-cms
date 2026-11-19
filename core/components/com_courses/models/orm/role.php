@@ -9,8 +9,6 @@
 namespace Components\Courses\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
-use Component;
 
 /**
  * Model class for role

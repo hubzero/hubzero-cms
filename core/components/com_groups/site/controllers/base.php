@@ -19,7 +19,6 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Document;
-use Hubzero\Facades\Component;
 
 /**
  * Groups controller class

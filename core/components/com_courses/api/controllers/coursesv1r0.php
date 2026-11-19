@@ -11,10 +11,7 @@ namespace Components\Courses\Api\Controllers;
 use Components\Courses\Tables\Course;
 use Components\Courses\Models\Course as CourseModel;
 use Hubzero\Facades\App;
-use Config;
 use Hubzero\Facades\Request;
-use Date;
-use Component;
 use stdClass;
 use Hubzero\Facades\User;
 

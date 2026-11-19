@@ -8,10 +8,8 @@
 
 namespace Components\Groups\Models;
 
-use Components\Groups\Tables;
 use Hubzero\Base\Model;
 use Hubzero\Base\Model\ItemList;
-use Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Route;
 

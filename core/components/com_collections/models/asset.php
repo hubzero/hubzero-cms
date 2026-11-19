@@ -8,7 +8,6 @@
 
 namespace Components\Collections\Models;
 
-use Hubzero\Image\Processor;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;

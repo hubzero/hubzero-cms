@@ -8,7 +8,6 @@
 
 namespace Components\Config\Models;
 
-use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Hubzero\Base\Obj;
 use Exception;

@@ -12,7 +12,6 @@ use Components\Events\Models\Orm\Respondent;
 use Components\Events\Models\Orm\Event;
 use Components\Events\Helpers\Csv;
 use Hubzero\Component\AdminController;
-use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Route;

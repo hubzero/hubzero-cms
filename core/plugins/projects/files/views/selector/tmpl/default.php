@@ -25,7 +25,6 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-use Components\Projects\Models\Orm\Project;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;

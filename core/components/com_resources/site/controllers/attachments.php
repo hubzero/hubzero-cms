@@ -16,7 +16,6 @@ use Hubzero\Utility\Validate;
 use Hubzero\Utility\Str;
 use Hubzero\Utility\Number;
 use Hubzero\Facades\Filesystem;
-use Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;

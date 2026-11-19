@@ -9,8 +9,6 @@
 namespace Components\Installer\Admin\Models;
 
 use Hubzero\Database\Relational;
-use Filesystem;
-use Hubzero\Form\Form;
 use Hubzero\Facades\Lang;
 use Hubzero\Config\Registry;
 use Hubzero\Facades\User;

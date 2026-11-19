@@ -14,7 +14,6 @@ use Hubzero\Access\Access;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Event;
-use Route;
 use Hubzero\Facades\Lang;
 use App;
 use Hubzero\Facades\User;

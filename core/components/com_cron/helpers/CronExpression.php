@@ -2,7 +2,6 @@
 
 namespace Components\Cron\Helpers;
 
-use DateInterval;
 use DateTime;
 use RuntimeException;
 use InvalidArgumentException;

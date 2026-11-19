@@ -10,7 +10,6 @@ namespace Components\Groups\Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Components\Groups\Models\Orm\Field;
-use Components\Groups\Models\Orm\Answer;
 use Components\Groups\Models\Orm\Group;
 
 /**

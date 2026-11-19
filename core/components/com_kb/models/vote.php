@@ -9,12 +9,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Config\Registry;
-use stdClass;
-use Request;
-use Route;
-use Lang;
-use Date;
 use User;
 
 /**

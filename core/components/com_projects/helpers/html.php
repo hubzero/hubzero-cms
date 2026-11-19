@@ -8,11 +8,9 @@
 
 namespace Components\Projects\Helpers;
 
-use Exception;
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Facades\Filesystem;
-use StdClass;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;

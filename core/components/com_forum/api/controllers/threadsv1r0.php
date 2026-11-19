@@ -14,7 +14,6 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
-use Component;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;

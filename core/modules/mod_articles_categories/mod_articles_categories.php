@@ -10,7 +10,6 @@ namespace Modules\ArticlesCategories;
 
 use Hubzero\Module\Module;
 use Components\Categories\Models\Category;
-use Hubzero\Facades\Component;
 
 /**
  * Module class for displaying a list of categories

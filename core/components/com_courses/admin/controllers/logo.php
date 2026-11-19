@@ -12,7 +12,6 @@ use Hubzero\Component\AdminController;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
-use App;
 use Hubzero\Facades\Component;
 
 /**

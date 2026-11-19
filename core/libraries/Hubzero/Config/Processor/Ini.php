@@ -10,7 +10,6 @@ namespace Hubzero\Config\Processor;
 
 use Hubzero\Config\Processor as Base;
 use Hubzero\Config\Exception\ParseException;
-use Exception;
 use stdClass;
 
 /**

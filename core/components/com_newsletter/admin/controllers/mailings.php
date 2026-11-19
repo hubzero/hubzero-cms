@@ -9,14 +9,10 @@
 namespace Components\Newsletter\Admin\Controllers;
 
 use Components\Newsletter\Models\Mailing;
-use Components\Newsletter\Models\Mailing\Recipient;
 use Components\Newsletter\Models\Mailing\Recipient\Action;
-use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\AdminController;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 

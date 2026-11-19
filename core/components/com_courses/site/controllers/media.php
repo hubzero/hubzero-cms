@@ -12,7 +12,6 @@ use Hubzero\Component\SiteController;
 use Components\Courses\Models\Course;
 use Components\Resources\Models\MediaTracking\Detailed;
 use Components\Resources\Models\MediaTracking;
-use stdClass;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;

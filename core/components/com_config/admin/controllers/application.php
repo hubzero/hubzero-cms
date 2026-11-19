@@ -10,7 +10,6 @@ namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
-use Hubzero\Error;
 use Exception;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Notify;

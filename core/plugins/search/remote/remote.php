@@ -2,10 +2,7 @@
 
 namespace Plugins\Search\Remote;
 
-use Components\Search\Helpers\DiscoveryHelper;
-use Components\Search\Models\Solr\Blacklist;
 use Components\Search\Models\Solr\SearchComponent;
-use GuzzleHttp\Client;
 use Hubzero\Plugin\Plugin;
 
 /**

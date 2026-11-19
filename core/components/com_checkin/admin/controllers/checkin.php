@@ -10,7 +10,6 @@ namespace Components\Checkin\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Checkin\Models\Inspector;
-use Exception;
 use Hubzero\Facades\Submenu;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;

@@ -14,7 +14,6 @@ use Hubzero\User\User;
 use Hubzero\User\Password;
 use Hubzero\Access\Map;
 use Hubzero\Base\Application;
-use Hubzero\Database\ConnectionInterface;
 use PDOException;
 use Hubzero\Facades\App;
 

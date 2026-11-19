@@ -12,7 +12,6 @@ use Hubzero\Component\SiteController;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Screenshot;
 use Hubzero\Facades\Document;
-use Pathway;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;

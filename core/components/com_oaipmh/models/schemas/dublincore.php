@@ -12,7 +12,6 @@ use Components\Oaipmh\Models\Xml\Response;
 use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
 use Hubzero\Base\Traits\Escapable;
-use Date;
 
 /**
  * Dublin Core schema handler

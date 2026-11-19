@@ -9,7 +9,6 @@
 namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Models\Import\Hook;
-use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;

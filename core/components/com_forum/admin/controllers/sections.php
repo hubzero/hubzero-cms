@@ -13,7 +13,6 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;

@@ -9,7 +9,6 @@
 namespace Modules\RelatedItems;
 
 use Hubzero\Module\Module;
-use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;

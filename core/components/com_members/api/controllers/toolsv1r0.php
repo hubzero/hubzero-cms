@@ -13,7 +13,6 @@ use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
 use Hubzero\Facades\Request;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;

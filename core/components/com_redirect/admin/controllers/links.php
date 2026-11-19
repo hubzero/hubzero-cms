@@ -11,12 +11,10 @@ namespace Components\Redirect\Admin\Controllers;
 use Components\Redirect\Helpers\Redirect as Helper;
 use Components\Redirect\Models\Link;
 use Hubzero\Component\AdminController;
-use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
-use App;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Submenu;
 

@@ -13,7 +13,6 @@ use Hubzero\Template\Overrides;
 use Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
-use Html;
 use stdClass;
 
 /**

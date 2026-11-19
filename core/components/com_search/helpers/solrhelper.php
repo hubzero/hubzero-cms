@@ -8,7 +8,6 @@
 
 namespace Components\Search\Helpers;
 
-use stdClass;
 use Solarium;
 use Hubzero\Facades\Component;
 

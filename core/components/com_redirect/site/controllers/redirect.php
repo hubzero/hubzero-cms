@@ -10,16 +10,7 @@ namespace Components\Redirect\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\Facades\Component;
-use Exception;
-use Document;
-use Pathway;
 use Hubzero\Facades\Request;
-use Plugin;
-use Notify;
-use Route;
-use Event;
-use Lang;
-use User;
 use Hubzero\Facades\App;
 
 /**

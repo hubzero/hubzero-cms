@@ -9,7 +9,6 @@
 namespace Modules\Billboards;
 
 use Hubzero\Module\Module;
-use Component;
 use Components\Billboards\Models\Billboard;
 
 /**

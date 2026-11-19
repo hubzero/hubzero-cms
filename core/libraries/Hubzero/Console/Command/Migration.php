@@ -8,8 +8,6 @@
 
 namespace Hubzero\Console\Command;
 
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
 use Hubzero\Facades\Component;
 
 /**

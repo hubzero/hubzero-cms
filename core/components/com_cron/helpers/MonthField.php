@@ -3,7 +3,6 @@
 namespace Components\Cron\Helpers;
 
 use DateTime;
-use DateInterval;
 
 /**
  * Month field.  Allows: * , / -

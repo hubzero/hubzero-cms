@@ -14,7 +14,6 @@ use Exception;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 
 /**
  * Hubzero helper class for retrieving wiki parser

@@ -10,7 +10,6 @@ namespace Components\Courses\Admin\Controllers;
 
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
-use Exception;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;

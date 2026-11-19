@@ -11,7 +11,6 @@ namespace Components\Groups\Models\Orm;
 use Hubzero\Database\Relational;
 use Hubzero\Content\Moderator;
 use Hubzero\Utility\Validate;
-use stdClass;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Date;

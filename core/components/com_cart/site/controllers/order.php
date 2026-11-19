@@ -10,7 +10,6 @@ namespace Components\Cart\Site\Controllers;
 
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
-use Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Event;

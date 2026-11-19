@@ -9,11 +9,8 @@
 namespace Components\Templates\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Templates\Models\Style;
 use Components\Templates\Models\Template;
 use Hubzero\Facades\Request;
-use Notify;
-use Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;

@@ -13,7 +13,6 @@ use Hubzero\Form\Form;
 use Hubzero\Base\ClientManager;
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Filesystem\Util;
-use Exception;
 use Hubzero\Facades\App;
 
 /**

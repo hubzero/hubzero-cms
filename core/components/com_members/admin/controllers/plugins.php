@@ -12,14 +12,9 @@ use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Components\Plugins\Models\Plugin;
 use Hubzero\Facades\Request;
-use Config;
-use Route;
 use Hubzero\Facades\Event;
-use User;
-use Html;
 use Hubzero\Facades\Cache;
 use Hubzero\Facades\Lang;
-use App;
 use Hubzero\Facades\Notify;
 
 /**

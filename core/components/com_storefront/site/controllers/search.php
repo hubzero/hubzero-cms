@@ -13,7 +13,6 @@ use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
-use App;
 
 /**
  * Product browsing controller class

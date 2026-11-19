@@ -9,7 +9,6 @@
 namespace Hubzero\Base;
 
 use Hubzero\Base\Traits\ErrorBag;
-use Exception;
 
 /**
  * Object Class

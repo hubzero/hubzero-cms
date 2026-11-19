@@ -10,9 +10,7 @@ namespace Modules\Mysubmissions;
 
 use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\User;
-use App;
 
 /**
  * Module class for displaying a user's submissions and their progress

@@ -9,7 +9,6 @@
 namespace Plugins\Cron\Search;
 
 use Hubzero\Plugin\Plugin;
-use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\SearchComponent as SearchComponent;

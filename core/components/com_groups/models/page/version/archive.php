@@ -8,12 +8,10 @@
 
 namespace Components\Groups\Models\Page\Version;
 
-use Components\Groups\Models\Page;
 use Components\Groups\Models\Page\Version;
 use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
-use Request;
 use Hubzero\Facades\App;
 
 /**

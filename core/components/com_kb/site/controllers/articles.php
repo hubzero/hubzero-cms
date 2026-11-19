@@ -16,7 +16,6 @@ use Components\Kb\Models\Vote;
 use Hubzero\Component\SiteController;
 use Exception;
 use Hubzero\Facades\Document;
-use Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;

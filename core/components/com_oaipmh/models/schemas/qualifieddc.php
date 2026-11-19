@@ -8,10 +8,7 @@
 
 namespace Components\Oaipmh\Models\Schemas;
 
-use Components\Oaipmh\Models\Xml\Response;
-use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
-use Date;
 
 /**
  * Qualified Dublin Core schema handler

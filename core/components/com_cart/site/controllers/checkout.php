@@ -8,7 +8,6 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;

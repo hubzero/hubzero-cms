@@ -10,7 +10,6 @@ namespace Modules\Wishlist;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Models\Wishlist as WishlistModel;
-use Hubzero\Facades\Component;
 
 /**
  * Module class for com_wishlist data

@@ -8,8 +8,6 @@
 
 namespace Hubzero\Html;
 
-use Hubzero\Html\Builder\Behavior;
-
 /**
  * Utility class for creating HTML Grids
  */

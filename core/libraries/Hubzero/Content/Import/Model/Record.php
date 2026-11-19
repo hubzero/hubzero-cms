@@ -9,7 +9,6 @@
 namespace Hubzero\Content\Import\Model;
 
 use Hubzero\Base\Obj;
-use Exception;
 use stdClass;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;

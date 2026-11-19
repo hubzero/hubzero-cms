@@ -8,8 +8,6 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Console\Config;
-
 /**
  * Simple event system for command line hooks
  **/

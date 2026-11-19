@@ -14,7 +14,6 @@ use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use DateTimezone;
-use DateTime;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Request;

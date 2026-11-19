@@ -13,7 +13,6 @@ use Hubzero\Config\Registry;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables\Reason;
 use Hubzero\Facades\Request;
-use Session;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Route;

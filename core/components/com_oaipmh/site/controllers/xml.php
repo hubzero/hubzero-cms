@@ -12,7 +12,6 @@ use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Request;
-use Session;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Date;

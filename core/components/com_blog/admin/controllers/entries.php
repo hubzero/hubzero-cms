@@ -13,7 +13,6 @@ use Components\Blog\Models\Entry;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
-use Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;

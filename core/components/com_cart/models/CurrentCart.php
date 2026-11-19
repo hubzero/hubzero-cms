@@ -10,7 +10,6 @@ namespace Components\Cart\Models;
 
 use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\Helper;
-use Hubzero\Base\Model;
 use Hubzero\Facades\User;
 use Components\Storefront\Models\Product;
 use Hubzero\Facades\App;
