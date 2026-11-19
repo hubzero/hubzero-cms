@@ -84,7 +84,7 @@ class Latestblog extends Module
 
                     $group = $gf->item();
 
-                    if (is_object($group)) {
+                    if ($group instanceof \Hubzero\User\Group) {
                         $blog_access = GroupHelper::getPluginAccess($group, 'blog');
 
                         if (

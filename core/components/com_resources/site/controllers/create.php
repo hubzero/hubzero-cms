@@ -436,7 +436,7 @@ class Create extends SiteController
      * Recursive method for loading hierarchical focus areas (tags)
      *
      * @param   string   $type
-     * @param   array<mixed>|null    $labels
+     * @param   string|null   $labels        The focus-area tags as a quoted SQL list; null to look them up
      * @param   integer|null  $parent_id     Tag ID
      * @param   string|null   $parent_label  Tag
      * @return  array<mixed>

@@ -2037,7 +2037,7 @@ class Connect extends Obj
     /**
      * Run cURL
      *
-     * @param   string  $url
+     * @param   non-empty-string  $url
      * @param   string  $method
      * @param   array<mixed>|null   $postvals
      * @return  bool|string string

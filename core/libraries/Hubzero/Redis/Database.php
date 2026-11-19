@@ -107,7 +107,12 @@ class Database
      */
     public function command($method, array $parameters = [])
     {
-        return call_user_func_array([$this->clients['default'], $method], $parameters);
+        $callback = [$this->clients['default'], $method];
+        if (!is_callable($callback)) {
+            throw new \BadMethodCallException('Unknown Redis command "' . $method . '".');
+        }
+
+        return call_user_func_array($callback, $parameters);
     }
 
     /**

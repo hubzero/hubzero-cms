@@ -29,6 +29,11 @@ class Grid extends AbstractHelper
 
         $method = array_shift($args);
 
-        return call_user_func_array(['\\Hubzero\\Html\\Builder\\Grid', $method], $args);
+        $callback = [\Hubzero\Html\Builder\Grid::class, $method];
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException(__METHOD__ . '(); Unknown grid helper "' . $method . '".');
+        }
+
+        return call_user_func_array($callback, $args);
     }
 }

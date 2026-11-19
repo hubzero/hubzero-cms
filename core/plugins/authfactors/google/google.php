@@ -109,10 +109,13 @@ class Google extends Plugin
         $period       = $totp->getPeriod();
         $verification = false;
 
-        foreach ([-1, 0, 1] as $offset) {
-            if ($totp->verify($entered_code, $now + ($offset * $period), 0)) {
-                $verification = true;
-                break;
+        // No code entered is no match
+        if ($entered_code !== null && $entered_code !== '') {
+            foreach ([-1, 0, 1] as $offset) {
+                if ($totp->verify($entered_code, max(0, $now + ($offset * $period)), 0)) {
+                    $verification = true;
+                    break;
+                }
             }
         }
 

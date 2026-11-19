@@ -458,7 +458,7 @@ class Forum extends Plugin
             if (in_array(User::get('id'), $this->members)) {
                 $this->params->set('access-view-' . $assetType, true);
             }
-            if (isset($this->thread) && is_object($this->thread)) {
+            if (isset($this->thread) && $this->thread instanceof \Components\Forum\Models\Post) {
                 if (!$this->thread->get('state')) {
                     $this->params->set('access-view-' . $assetType, false);
                 }

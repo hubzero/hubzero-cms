@@ -455,7 +455,7 @@ class PdfFormDeployment
     /**
      * Get real time limit
      *
-     * @return string
+     * @return float|int|string  Minutes: the time limit, or less when the deployment ends sooner
      **/
     public function getRealTimeLimit()
     {

@@ -260,7 +260,7 @@ class Feed extends Plugin
 
         // Acting member
         $member = $model->member();
-        if ($member && !is_object($member->params)) {
+        if ($member && !($member->params instanceof \Hubzero\Config\Registry)) {
             $member->params = new \Hubzero\Config\Registry($member->params);
         }
 

@@ -503,7 +503,7 @@ class View
     /**
      * Get Stylesheets for URL (with cURL)
      *
-     * @param   string  $url
+     * @param   non-empty-string  $url
      * @return  array<mixed>
      */
     private static function stylesheetsForUrl($url)

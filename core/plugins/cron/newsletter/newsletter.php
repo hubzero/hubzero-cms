@@ -117,7 +117,11 @@ class Newsletter extends Plugin
 
             // add unsubscribe link - placeholder & in header (must do after adding tracking!!)
             $queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);
-            $queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
+            $queuedEmail->headers   = str_replace(
+                "{{UNSUBSCRIBE_LINK}}",
+                $unsubscribeLink,
+                (string) $queuedEmail->headers,
+            );
             $queuedEmail->headers   = str_replace(
                 "{{UNSUBSCRIBE_MAILTO_LINK}}",
                 $unsubscribeMailtoLink,
