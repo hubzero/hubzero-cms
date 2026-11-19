@@ -362,7 +362,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
     <?php if ($this->row->get('parent')) { ?>
         <input type="hidden" name="fields[category_id]" value="<?php echo $this->row->get('category_id'); ?>" />
     <?php } else { ?>
-        <input type="hidden" name="fields[parent]" value="<?php echo $this->row->get('parent'); ?>" />
+        <input type="hidden" name="fields[parent]" value="<?php echo (int) $this->row->get('parent'); ?>" />
     <?php } ?>
     <input type="hidden" name="fields[thread]" value="<?php echo $this->row->get('thread'); ?>" />
     <input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />

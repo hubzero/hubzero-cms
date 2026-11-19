@@ -142,7 +142,7 @@ class DataDefinitionNew
 
     /**
      * @param   string  $var
-     * @return  array<string>|string
+     * @return  string
      */
     public static function formatVar($var)
     {

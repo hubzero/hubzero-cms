@@ -1864,14 +1864,14 @@ class File extends Base
                         ? str_replace(
                             '{pubtitle}',
                             $view->pub->title,
-                            $view->manifest->params->title,
+                            (string) $view->manifest->params->title,
                         )
                         : null;
         $defaultTitle   = $view->manifest->params->title
                         ? str_replace(
                             '{pubversion}',
                             $view->pub->version_label,
-                            $defaultTitle,
+                            (string) $defaultTitle,
                         )
                         : null;
 

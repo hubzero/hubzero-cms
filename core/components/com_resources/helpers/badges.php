@@ -126,7 +126,7 @@ class Badges
     /**
      * Save a tag record
      *
-     * @param   object   $tag         Unsaved tag ORM model
+     * @param   \Components\Tags\Models\Tag  $tag  Unsaved tag ORM model
      * @param   string   $tagName     Name of the tag
      * @param   string   $rawTagName  Display name of tag
      * @param   integer  $taggerId    ID of user who associated tag w/ record

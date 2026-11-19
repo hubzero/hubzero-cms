@@ -2127,7 +2127,7 @@ class Connect extends Obj
      *
      * @param   string  $service       Service name (google or dropbox)
      * @param   string  $refreshToken  Stored refresh token
-     * @return  mixed   JSON string or false
+     * @return  \stdClass|false  The refreshed access token, or false
      */
     public function refreshToken($service, $refreshToken = '')
     {
@@ -2160,7 +2160,8 @@ class Connect extends Obj
 
             // return JSON refreshed access token object
             try {
-                return json_decode((string) $this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
+                $token = json_decode((string) $this->runCurl(self::GOOGLE_OAUTH2_TOKEN_URI, 'POST', $postvals));
+                return $token instanceof \stdClass ? $token : false;
             } catch (Exception $e) {
                 $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
                 return false;

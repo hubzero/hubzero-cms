@@ -163,8 +163,10 @@ class Assetgroup extends Base
 
         if ($idx !== null) {
             if (is_numeric($idx)) {
-                if (isset($this->children[$idx])) {
-                    return $this->children[$idx];
+                // The children are an iterator, not an array; fetch() reads one by index
+                $child = $this->children->fetch($idx);
+                if ($child !== null) {
+                    return $child;
                 } else {
                     $this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
                     return false;

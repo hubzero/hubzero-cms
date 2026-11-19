@@ -914,7 +914,7 @@ class Google extends Obj
     public static function getParentID($parents = [])
     {
         if (!empty($parents)) {
-            if (is_object($parents[0])) {
+            if (is_object($parents[0]) && method_exists($parents[0], 'getId')) {
                 return $parents[0]->getId();
             }
 

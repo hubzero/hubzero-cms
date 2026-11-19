@@ -181,12 +181,12 @@ $this
                             if ($previousVersion == 0) {
                                 $previous = [];
                             } else {
-                                $previous = $this->page->version($previousVersion);
+                                $previousPage = $this->page->version($previousVersion);
 
-                                // make view OK with the LIMIT
-                                if (!empty($previous)) {
-                                    $previous = explode("\n", $previous->content('raw'));
-                                }
+                                // make view OK with the LIMIT; a missing version has no lines
+                                $previous = !empty($previousPage)
+                                    ? explode("\n", $previousPage->content('raw'))
+                                    : [];
                             }
 
                                 // define function to format context's

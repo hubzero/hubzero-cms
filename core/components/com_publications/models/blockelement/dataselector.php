@@ -44,7 +44,7 @@ class Dataselector extends Base
      * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string   $viewname
-     * @param   object|null   $status
+     * @param   \stdClass|null   $status
      * @param   \stdClass|null   $master
      * @param   integer  $order
      * @return  string
@@ -115,7 +115,7 @@ class Dataselector extends Base
      * @param   integer  $elementId
      * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $status
+     * @param   \stdClass|null   $status
      * @param   \stdClass|null   $master
      * @param   string   $viewname
      * @return  string
@@ -171,7 +171,7 @@ class Dataselector extends Base
      * @param   integer  $elementId
      * @param   \stdClass   $manifest
      * @param   \Components\Publications\Models\Publication|null  $pub
-     * @param   object|null   $status
+     * @param   \stdClass|null   $status
      * @param   integer  $active
      * @param   integer  $collapse
      * @param   integer  $total

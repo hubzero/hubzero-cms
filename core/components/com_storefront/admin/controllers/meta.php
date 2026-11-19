@@ -100,7 +100,7 @@ class Meta extends AdminController
 
         $obj = new Archive();
 
-        if (is_object($row)) {
+        if (is_object($row) && method_exists($row, 'getId')) {
             $this->view->set('row', $row);
             $this->view->task = 'edit';
 

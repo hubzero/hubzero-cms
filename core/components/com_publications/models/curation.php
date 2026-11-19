@@ -81,9 +81,9 @@ class Curation extends Obj
     /**
      * Current block
      *
-     * @var  object|array<mixed>
+     * @var  \stdClass|null  The block being worked on; none until one is set
      */
-    public $block = [];
+    public $block = null;
 
     /**
      * Current block name

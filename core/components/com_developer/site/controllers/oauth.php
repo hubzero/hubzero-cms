@@ -144,7 +144,9 @@ class Oauth extends SiteController
 
         // load token details
         $storage = $this->server->getStorage('access_token');
-        $tokenDetails = $storage->getAccessToken($token);
+        $tokenDetails = $storage instanceof \OAuth2\Storage\AccessTokenInterface
+            ? $storage->getAccessToken($token)
+            : null;
 
         // return token details
         echo json_encode($tokenDetails);

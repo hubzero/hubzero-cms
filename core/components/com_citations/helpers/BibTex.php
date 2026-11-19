@@ -668,8 +668,8 @@ class BibTex
     public function extractAuthors($entry)
     {
         $entry       = $this->unwrap($entry);
-        $authorarray = [];
         $authorarray = preg_split('# and #', $entry) ?: [];
+        $authors     = [];
 
         for ($i = 0; $i < count($authorarray); $i++) {
             $author = trim($authorarray[$i]);
@@ -736,7 +736,7 @@ class BibTex
                         }
                     }
                     //The last entry is always the last!
-                    $last .= ' ' . $tmparray[$size - 1];
+                    $last .= ' ' . ($tmparray[$size - 1] ?? '');
                 }
             } else { //Version 2 and 3
                 $tmparray     = [];
@@ -784,14 +784,14 @@ class BibTex
                 //Everything in the last entry is first
                 $first = $tmparray[count($tmparray) - 1];
             }
-            $authorarray[$i] = [
+            $authors[$i] = [
                 'first' => trim($first),
                 'von' => trim($von),
                 'last' => trim($last),
                 'jr' => trim($jr),
             ];
         }
-        return $authorarray;
+        return $authors;
     }
 
     /**

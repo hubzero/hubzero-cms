@@ -231,7 +231,9 @@ class Setup extends Base
         }
 
         // Next screen requested
-        $this->next = $setup && isset($setupSteps[$step]) ? $setupSteps[$step] : $this->section;
+        $this->next = $setup && (is_int($step) || is_string($step)) && isset($setupSteps[$step])
+            ? $setupSteps[$step]
+            : $this->section;
 
         // Are we allowed to save this step?
         $current = array_search($this->section, $setupSteps);

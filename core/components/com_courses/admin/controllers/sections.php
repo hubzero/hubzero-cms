@@ -604,7 +604,7 @@ class Sections extends AdminController
                         'limit'    => 1,
                         'start'    => 0,
                     ]);
-                    foreach ($sections as $section) {
+                    foreach (is_iterable($sections) ? $sections : [] as $section) {
                         $section->makeDefault();
                     }
                 }

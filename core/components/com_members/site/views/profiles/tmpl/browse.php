@@ -235,10 +235,11 @@ $sortDirSelected = function ($value) use ($view) {
                 $qs = [];
                 foreach ($this->filters['q'] as $i => $q) :
                     if (is_array($q['value'])) {
-                        $qs[$i] = [];
+                        $parts = [];
                         foreach ($q['value'] as $key => $val) {
-                            $qs[$i][] = '&q[' . $q['field'] . '][]=' . $val;
+                            $parts[] = '&q[' . $q['field'] . '][]=' . $val;
                         }
+                        $qs[$i] = $parts;
                     } elseif ($q['field'] == 'search') {
                         $qs[$i] = '&' . $q['field'] . '=' . $q['value'];
                     } else {

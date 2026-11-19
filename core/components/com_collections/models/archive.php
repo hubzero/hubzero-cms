@@ -8,6 +8,7 @@
 
 namespace Components\Collections\Models;
 
+use Hubzero\Config\Registry;
 use Components\Collections\Tables;
 use Hubzero\Base\Obj;
 use Hubzero\Base\ItemList;
@@ -479,7 +480,7 @@ class Archive extends Obj
                             'state'       => 1,
                         ]);
                         if ($groups) {
-                            if (!isset($usergroup->params) || !is_object($usergroup->params)) {
+                            if (!isset($usergroup->params) || !($usergroup->params instanceof Registry)) {
                                 $usergroup->params = Params::getCustomParams(
                                     $usergroup->gidNumber,
                                     'groups',

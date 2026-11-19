@@ -209,20 +209,21 @@ class Description extends Base
                     $lastRecord = $pub->_curationModel->getLastUpdate($id, $this->name, $blockId);
                     $changed++;
 
-                    // Record update time
-                    $data = new stdClass();
-                    $data->updated    = Date::toSql();
-                    $data->updated_by = $actor;
+                    // Record update time (in its own variable: $data is the metadata,
+                    // which later elements still read as an array)
+                    $update = new stdClass();
+                    $update->updated    = Date::toSql();
+                    $update->updated_by = $actor;
 
                     // Unmark as skipped
                     if ($lastRecord && $lastRecord->review_status == 3) {
-                        $data->review_status = 0;
-                        $data->update = '';
+                        $update->review_status = 0;
+                        $update->update = '';
                     }
                     if ($value) {
-                        $data->update = ''; // remove dispute message if requirement satisfied
+                        $update->update = ''; // remove dispute message if requirement satisfied
                     }
-                    $pub->_curationModel->saveUpdate($data, $id, $this->name, $pub, $blockId);
+                    $pub->_curationModel->saveUpdate($update, $id, $this->name, $pub, $blockId);
                 }
                 $row->$field = $value;
             }

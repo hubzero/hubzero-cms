@@ -87,7 +87,7 @@ class Cleanser extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&client=' . $this->model->client()->id, false),
+            Route::url('index.php?option=' . $this->option . '&client=' . ($this->model->client()->id ?? 0), false),
         );
     }
 

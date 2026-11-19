@@ -327,8 +327,8 @@ class SearchComponent extends Relational
 
     /**
      * Add site code for instances where solr is used for multiple sites
-     * @param object $searchResult stdClass object containing search document
-     * @return object
+     * @param \stdClass $searchResult stdClass object containing search document
+     * @return \stdClass
      */
     public static function addDomainNameSpace($searchResult)
     {

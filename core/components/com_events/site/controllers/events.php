@@ -2102,8 +2102,8 @@ class Events extends SiteController
         }
 
         // Verify that the event doesn't start after it ends or ends before it starts.
-        $pubdow = strtotime($row->publish_down);
-        $pubup = strtotime($row->publish_up);
+        $pubdow = strtotime(is_scalar($row->publish_down) ? (string) $row->publish_down : '');
+        $pubup = strtotime(is_scalar($row->publish_up) ? (string) $row->publish_up : '');
         if ($pubdow <= $pubup) {
             // Set the error message
             $this->setError(Lang::txt('EVENTS_EVENT_MUST_END_AFTER_START'));
