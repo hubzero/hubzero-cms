@@ -55,7 +55,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
             }
 
             // make sure we have object
-            if (!isset($params) || !is_object($params)) {
+            if (!isset($params) || !($params instanceof \stdClass)) {
                 $params = new \stdClass();
             }
 

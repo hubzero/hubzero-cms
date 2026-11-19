@@ -71,16 +71,18 @@ class Migration20161111173852PlgSystemCache extends Base
      * Convert string to object
      *
      * @param   string  $params
-     * @return  object
+     * @return  \stdClass
      **/
     private function params($params)
     {
         $original = $params;
         $params = json_decode($params);
         if (json_last_error() !== JSON_ERROR_NONE && $original !== '') {
-            $params = parse_ini_string($original, false, INI_SCANNER_RAW);
+            // Older params are INI; read them into an object like the JSON ones,
+            // since the caller sets a property on what comes back
+            $params = (object) (parse_ini_string($original, false, INI_SCANNER_RAW) ?: []);
         }
-        if (!isset($params) || !$params) {
+        if (!($params instanceof \stdClass)) {
             $params = new \stdClass();
         }
         return $params;

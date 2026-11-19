@@ -77,13 +77,16 @@ class Migration20140305142845Core extends Base
         $this->callback('progress', 'done');
 
         // Update configuration file with new timezone
+        // An unreadable configuration is left alone, not overwritten with nothing
         $configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
-        $configuration = preg_replace(
-            '/(var \$offset[\s]*=[\s]*[\'"]*)UTC([\'"]*)/',
-            '$1' . $tz . '$2',
-            $configuration,
-        );
-        file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
+        if ($configuration !== false) {
+            $configuration = preg_replace(
+                '/(var \$offset[\s]*=[\s]*[\'"]*)UTC([\'"]*)/',
+                '$1' . $tz . '$2',
+                $configuration,
+            );
+            file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
+        }
 
         return null;
     }

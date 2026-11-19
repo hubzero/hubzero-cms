@@ -36,7 +36,7 @@ class Migration20150826208413ComContent extends Base
                     if (empty($r->attribs)) {
                         $attribs = "{}";
                     } else {
-                        $attribs = $r->attribs;
+                        $attribs = (string) $r->attribs;
                         $attribs = preg_replace("/^{\"{\\\\\"{/", "{", $attribs);
                         $attribs = preg_replace("/^{\"{/", "{", $attribs);
                         $attribs = preg_replace("/}\\\\\":\\\\\\\"\\\\\"}\":\"\"}$/", "}", $attribs);

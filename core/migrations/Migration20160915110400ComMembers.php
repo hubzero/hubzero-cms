@@ -40,7 +40,7 @@ class Migration20160915110400ComMembers extends Base
             if ($config) {
                 $config = json_decode($config);
                 if (is_object($config)) {
-                    $access = (int) $config->privacy;
+                    $access = (int) ($config->privacy ?? 0);
                     $access = $access ?: 1;
                 }
             }

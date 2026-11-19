@@ -58,7 +58,11 @@ class Migration20171218000000ComStore extends Base
      **/
     private function rrmdir($src)
     {
+        // A directory that can't be opened is left as it is
         $dir = opendir($src);
+        if ($dir === false) {
+            return;
+        }
         while (false !== ($file = readdir($dir))) {
             if ($file != '.' && $file != '..') {
                 $full = $src . '/' . $file;
