@@ -46,7 +46,11 @@ class LayoutPathTest extends Basic
         parent::setUp();
 
         $this->env = Environment::create();
-        $this->loader = new Loader(Facade::getApplication());
+        $app = Facade::getApplication();
+        if (!$app) {
+            $this->fail('The test bootstrap sets no application');
+        }
+        $this->loader = new Loader($app);
     }
 
     /**

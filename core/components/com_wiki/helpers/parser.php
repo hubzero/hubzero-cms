@@ -192,8 +192,8 @@ class Parser extends Obj
      */
     public static function tocSettings($domain = null, $domain_id = null)
     {
-        $mode      = Settings::get('automatic_toc', 'inline', $domain, $domain_id);
-        $threshold = (int) Settings::get('toc_threshold', 4, $domain, $domain_id);
+        $mode      = Settings::get('automatic_toc', 'inline', $domain, (int) $domain_id);
+        $threshold = (int) Settings::get('toc_threshold', 4, $domain, (int) $domain_id);
 
         if (!in_array($mode, ['inline', 'sidebar', 'off'], true)) {
             $mode = 'inline';

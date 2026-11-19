@@ -122,7 +122,7 @@ $this
                 break;
         }
             $this
-                 ->view($layout)
+                 ->view((string) $layout)
                  ->set('step', $this->step)
                  ->set('option', $this->option)
                  ->set('controller', $this->controller)

@@ -5413,8 +5413,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * static (scope_id), rather than dynamic based on the model name.
      *
      * @param   string       $model       The name of the model to relate to the current one
-     * @param   string|null  $relatedKey  The foreign key used to associate the many back to the model
-     * @param   string|null  $shifter     The many side field used to differentiate/shift models
+     * @param   string       $relatedKey  The foreign key used to associate the many back to the model
+     * @param   string       $shifter     The many side field used to differentiate/shift models
      * @param   string|null  $thisKey     The local key used to associate the many back to the model
      * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      **/
@@ -5457,7 +5457,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string       $model             The name of the model to relate to the current one
      * @param   string|null       $associativeTable  The name of the intermediate table used to associate model->related
-     * @param   string|null  $thisKey           The local key used on the associative table
+     * @param   string       $thisKey           The local key used on the associative table
      * @param   string       $shifter           The many side field used to differentiate/shift models
      * @param   string|null       $relatedKey        The related key used on the associative table
      * @return  \Hubzero\Database\Relationship\ManyShiftsToMany

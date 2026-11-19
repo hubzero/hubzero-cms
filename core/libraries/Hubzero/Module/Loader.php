@@ -194,10 +194,12 @@ class Loader
             $style = ['style' => $style];
         }
 
-        return $this->render(
-            $this->byName($name),
-            $style,
-        );
+        $module = $this->byName($name);
+        if (!$module) {
+            return '';
+        }
+
+        return $this->render($module, $style);
     }
 
     /**

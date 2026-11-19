@@ -1024,7 +1024,7 @@ abstract class Driver implements LoggerAwareInterface
 
         foreach ($attributes as $attribute => $value) {
             try {
-                if (method_exists($this->connection, 'setAttribute')) {
+                if ($this->connection !== null && method_exists($this->connection, 'setAttribute')) {
                     $this->connection->setAttribute($attribute, $value);
                 } elseif ($this->connection instanceof \PDO) {
                     $this->connection->setAttribute($attribute, $value);

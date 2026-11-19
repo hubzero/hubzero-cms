@@ -914,7 +914,7 @@ class Migration
                 }
 
                 // Instantiate our class
-                $class = new $classname($this->db, $this->callbacks);
+                $class = new $classname($this->dbOrFail(), $this->callbacks);
                 $hookTiming = $class->getOption('timing');
 
                 if ($hookTiming != $timing && $hookTiming != 'onAll') {

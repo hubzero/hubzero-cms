@@ -319,7 +319,7 @@ class CharacterClassTest extends Basic
 
         $classNames = array_map(function ($class) {
             return $class['name'];
-        }, CharacterClass::$classes);
+        }, CharacterClass::$classes ?? []);
 
         $this->assertContains($expectedName, $classNames);
     }

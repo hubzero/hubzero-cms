@@ -1552,7 +1552,7 @@ class Form
                     if ($element['label']) {
                         $message = Lang::txt($element['label']);
                     } else {
-                        $message = Lang::txt($element['name']);
+                        $message = Lang::txt((string) $element['name']);
                     }
                     $message = Lang::txt('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $message);
                 }

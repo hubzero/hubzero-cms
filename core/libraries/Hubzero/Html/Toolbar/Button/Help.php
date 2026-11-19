@@ -197,6 +197,8 @@ class Help extends Button
             $hver[2],// {maintenance}
         ];
 
+        $replace = array_map('strval', $replace);
+
         // If the help file is local then check it exists.
         // If it doesn't then fallback to English.
         if ($local) {

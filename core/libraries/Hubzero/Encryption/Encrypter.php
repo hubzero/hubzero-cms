@@ -54,7 +54,7 @@ class Encrypter
      */
     public function decrypt($data)
     {
-        return $this->cipher->decrypt($data, $this->key);
+        return $this->cipher->decrypt($data, $this->keyOrFail());
     }
 
     /**
@@ -65,7 +65,7 @@ class Encrypter
      */
     public function encrypt($data)
     {
-        return $this->cipher->encrypt($data, $this->key);
+        return $this->cipher->encrypt($data, $this->keyOrFail());
     }
 
     /**
@@ -221,5 +221,20 @@ class Encrypter
 
         // They are only identical strings if $result is exactly 0...
         return $result === 0;
+    }
+
+    /**
+     * The key, which encrypting and decrypting need
+     *
+     * @return  Key
+     * @throws  \RuntimeException  When none was given
+     */
+    private function keyOrFail()
+    {
+        if (!$this->key) {
+            throw new \RuntimeException('No encryption key is set');
+        }
+
+        return $this->key;
     }
 }

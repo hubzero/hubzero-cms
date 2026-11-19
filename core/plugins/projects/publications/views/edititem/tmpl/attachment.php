@@ -40,7 +40,7 @@ $defaultTitle = $element->params->title
                 ? str_replace('{pubtitle}', (string) $this->pub->title, (string) $element->params->title)
                 : null;
 $defaultTitle = $element->params->title
-                ? str_replace('{pubversion}', $this->pub->version_label, $defaultTitle)
+                ? str_replace('{pubversion}', $this->pub->version_label, (string) $defaultTitle)
                 : null;
 
 if ($this->row->type == 'file') {

@@ -32,9 +32,9 @@ class Download
     protected $format = 'Bibtex';
 
     /**
-     * Citation object
+     * Citation object, null until one is set
      *
-     * @var \Components\Citations\Models\Citation
+     * @var \Components\Citations\Models\Citation|null
      */
     protected $reference;
 

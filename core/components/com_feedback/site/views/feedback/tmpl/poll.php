@@ -42,7 +42,10 @@ $this->css();
 
         <?php if (Module::isEnabled('mod_poll')) { ?>
             <div class="introtext">
-                <?php echo Module::render(Module::byName('mod_poll')); ?>
+                <?php
+                $poll = Module::byName('mod_poll');
+                echo $poll ? Module::render($poll) : '';
+                ?>
             </div>
         <?php } else { ?>
             <p class="warning"><?php echo Lang::txt('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>

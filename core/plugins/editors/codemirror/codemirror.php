@@ -243,7 +243,7 @@ class Codemirror extends Plugin
      * @param  string  $name
      * @param  mixed   $buttons [array with button objects | boolean true to display buttons]
      * @param  string  $asset
-     * @param  object  $author
+     * @param  object|null  $author
      *
      * @return string HTML
      */

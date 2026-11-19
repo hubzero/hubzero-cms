@@ -1211,7 +1211,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             SELECT rf.RDB\$FIELD_NAME FROM RDB\$RELATION_FIELDS rf
             WHERE rf.RDB\$RELATION_NAME = 'MIG_REPLACE_VIEW'
         ");
-        $columns = array_map('trim', $driver->loadColumn());
+        $columns = array_map('trim', $driver->loadColumn() ?? []);
 
         $this->assertContains('ID', $columns);
         $this->assertContains('NAME', $columns);

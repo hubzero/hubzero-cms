@@ -188,7 +188,7 @@ class Mytools extends Module
                         $cls = 'favds';
                     }
                     if ($this->supportedtag) {
-                        if (in_array($tool->toolname, $this->supportedtagusage)) {
+                        if (in_array($tool->toolname, $this->supportedtagusage ?? [])) {
                             $cls .= ($cls) ? ' supported' : 'supported';
                         }
                     }

@@ -160,7 +160,9 @@ class PrivilegeNotifier
             return $this->promptRootConfirmation();
         } finally {
             if ($this->stream !== $saved) {
-                fclose($this->stream);
+                if ($this->stream) {
+                    fclose($this->stream);
+                }
                 $this->stream = $saved;
             }
         }

@@ -38,7 +38,7 @@ class Basic extends SiteController
             'index.php?option=com_search',
         );
 
-        $terms = new Terms(Request::getString('terms'));
+        $terms = new Terms((string) Request::getString('terms'));
 
         // Set the document title
         $title = $terms->isSet()

@@ -804,7 +804,7 @@ class OciDriver extends BaseSqlDriver
         $this->setQuery(
             "SELECT table_name FROM user_tables ORDER BY table_name",
         );
-        return array_map('strtolower', $this->loadColumn());
+        return array_map('strtolower', $this->loadColumn() ?? []);
     }
 
     /**

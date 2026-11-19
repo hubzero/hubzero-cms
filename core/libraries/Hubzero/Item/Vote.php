@@ -187,6 +187,6 @@ class Vote extends Relational
      */
     public function hasVoted($item_type, $item_id, $user_id = null, $ip = null)
     {
-        return self::oneByScope($item_id, $item_type, $user_id, $ip)->get('id');
+        return self::oneByScope($item_id, $item_type, (int) $user_id, $ip)->get('id');
     }
 }

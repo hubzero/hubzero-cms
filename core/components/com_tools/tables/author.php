@@ -186,7 +186,7 @@ class Author extends Table
         }
 
         $dev_authors = $this->getToolAuthors('dev', $rid);
-        $dev_authors = Utils::transform($dev_authors, 'uidNumber');
+        $dev_authors = Utils::transform($dev_authors ?? [], 'uidNumber');
 
         if ($dev_authors && $version == 'dev') {
             // update

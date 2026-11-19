@@ -459,7 +459,7 @@ class Tool extends Table
             $developers = $this->getToolDevelopers($toolid);
             $authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
 
-            $this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option);
+            $this->buildToolStatus($toolinfo, $developers, $authors ?? [], $version ?? [], $status, $option);
         } else {
             $status = [];
         }

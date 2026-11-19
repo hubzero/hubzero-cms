@@ -118,7 +118,7 @@ class Document extends Obj
         // loop through all includes and render
         foreach ($this->tags as $tag => $props) {
             $replace[] = $tag;
-            $with[]    = $this->getBuffer($tag, $props['type'], $props['name'], $props['params']);
+            $with[]    = (string) $this->getBuffer($tag, $props['type'], $props['name'], $props['params']);
         }
 
         // replace group includes

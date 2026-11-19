@@ -538,7 +538,7 @@ class Service extends Obj
                 $start,
                 $from,
                 $until,
-                $set,
+                (string) $set,
                 $this->get('metadataPrefix'),
             );
 

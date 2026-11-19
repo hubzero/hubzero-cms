@@ -199,7 +199,7 @@ class Input
 
             return '<span class="input-datetime">' . self::text($name, $value, $options) . '</span>';
         } else {
-            $value = (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : '');
+            $value = (0 !== (int) $value ? with(new Date((string) $value))->format('Y-m-d H:i:s') : '');
 
             return self::text($name
                 . 'disabled', (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : ''), $options)

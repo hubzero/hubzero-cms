@@ -495,7 +495,7 @@ class Collection extends Base
      */
     public function unfollow($follower_id = null, $follower_type = 'member')
     {
-        $follow = new Following($this->get('id'), 'collection', $follower_id, $follower_type);
+        $follow = new Following($this->get('id'), 'collection', (int) $follower_id, $follower_type);
 
         if (!$follow->exists()) {
             $this->setError(Lang::txt('Item is not being followed'));

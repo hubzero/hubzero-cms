@@ -315,7 +315,8 @@ class Relationships extends AdminController
                 ],
             ];
             foreach ($queries as $type => $sql) {
-                $ex = array_flip(array_map($normalize, $tag[$type]));
+                // array_flip() skips what is not a string anyway
+                $ex = array_flip(array_filter(array_map($normalize, $tag[$type]), 'is_string'));
                 if (isset($_POST[$type])) {
                     foreach ($_POST[$type] as $n_tag) {
                         $norm_n_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($n_tag));

@@ -365,7 +365,7 @@ class Archive extends Obj
                 }
 
                 $this->db->setQuery($query);
-                $ids = array_merge($ids, $this->db->loadColumn());
+                $ids = array_merge($ids, $this->db->loadColumn() ?? []);
             }
 
             return $ids;

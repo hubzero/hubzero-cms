@@ -2873,7 +2873,7 @@ abstract class BaseSqlDriver extends PdoDriver
         parent::resetSessionState($options);
 
         if (
-            method_exists($this->connection, 'isConnected')
+            $this->connection !== null && method_exists($this->connection, 'isConnected')
             && !$this->connection->isConnected()
         ) {
             return;

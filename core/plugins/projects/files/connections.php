@@ -507,7 +507,7 @@ class Connections
     {
         $canManage = $this->connectionManageableByUser();
 
-        if ($this->isRateLimited($error)) {
+        if ($error && $this->isRateLimited($error)) {
             $message = $canManage
                 ? Lang::txt(
                     'GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to '

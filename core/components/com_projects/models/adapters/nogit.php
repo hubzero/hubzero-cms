@@ -110,7 +110,7 @@ class Nogit extends Models\Adapter
                 continue;
             }
             // Load basic file metadata
-            $file = new Models\File($item, $this->path);
+            $file = new Models\File($item, (string) $this->path);
             if ($this->shouldSkipFile($file)) {
                 continue;
             }

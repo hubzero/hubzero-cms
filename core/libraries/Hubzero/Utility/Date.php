@@ -701,7 +701,7 @@ class Date extends DateTime
 
         // If the returned time should not be local use GMT.
         if ($local == false) {
-            parent::setTimezone(self::$gmt);
+            parent::setTimezone(self::$gmt ?? new \DateTimeZone('GMT'));
         }
 
         // Format the date.

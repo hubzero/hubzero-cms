@@ -36,7 +36,7 @@ class Select extends Element
         foreach ($node->children() as $option) {
             $val  = $option['value'];
             $text = (string) $option;
-            $options[] = Builder\Select::option($val, App::get('language')->txt($text));
+            $options[] = Builder\Select::option((string) $val, App::get('language')->txt($text));
         }
         return $options;
     }

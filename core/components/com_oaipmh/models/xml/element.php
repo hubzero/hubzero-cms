@@ -56,6 +56,9 @@ class Element
     {
         // At the top the current node is the document; reference its root element
         $element = $this->current instanceof \DOMElement ? $this->current : $this->dom->documentElement;
+        if ($element === null) {
+            throw new \RuntimeException('The document has no root element to reference');
+        }
         $name = new self($element);
 
         return $this;

@@ -88,7 +88,7 @@ final class Version
 
                 // Fetch the latest version number from the array
                 static::$latestVersion = (string) array_reduce($tags, function ($a, $b) {
-                    return version_compare($a, $b, '>') ? $a : $b;
+                    return version_compare((string) $a, (string) $b, '>') ? $a : $b;
                 });
             } elseif ($service == self::VERSION_SERVICE_HUBZERO) {
                 $handle = fopen('http://hubzero.org/api/hz-version?v=1', 'r');

@@ -128,7 +128,7 @@ if (
         $ra         = new \Components\Publications\Tables\Audience($database);
         $audience   = $ra->getAudience(
             $this->publication->id,
-            $this->publication->version_id,
+            (int) $this->publication->version_id,
             $getlabels = 1,
             $numlevels = 4,
         );

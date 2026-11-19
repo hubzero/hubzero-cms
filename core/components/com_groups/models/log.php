@@ -83,7 +83,7 @@ class Log extends Model
         $instance = new self();
 
         // merge defaults with passed in options
-        $details = array_merge(self::logDefaults(), $options);
+        $details = array_merge(self::logDefaults(), $options ?? []);
 
         // if we passed in a string lets normalize to array
         if (is_string($details['comments'])) {

@@ -94,7 +94,7 @@ class Redirect extends Plugin
 
             // If a redirect exists and is published, permanently redirect.
             if ($link->get('id') && $link->isPublished()) {
-                $redirect = new \Hubzero\Http\RedirectResponse($link->new_url, $link->get('status_code', 301));
+                $redirect = new \Hubzero\Http\RedirectResponse((string) $link->new_url, $link->get('status_code', 301));
                 $redirect->setRequest(App::get('request'));
                 $redirect->send();
 

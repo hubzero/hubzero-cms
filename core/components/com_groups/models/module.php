@@ -152,7 +152,7 @@ class Module extends Model
         }
 
         // attempt to load menu for this page
-        if ($menus->fetch('pageid', $pageid) !== null) {
+        if ($menus->fetch('pageid', (int) $pageid) !== null) {
             return true;
         }
 

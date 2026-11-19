@@ -3201,7 +3201,7 @@ class Files extends Plugin
             foreach ($get as $file) {
                 if (substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
                     $file = str_replace($this->path . DS, '', $file);
-                    $entry = new \Components\Projects\Models\File(trim($file), $this->path);
+                    $entry = new \Components\Projects\Models\File(trim($file), (string) $this->path);
                     $files[] = $entry;
                 }
             }

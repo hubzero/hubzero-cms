@@ -63,7 +63,7 @@ $defaultTitle = $this->manifest->params->title
             ? str_replace(
                 '{pubversion}',
                 $this->pub->version_label,
-                $defaultTitle,
+                (string) $defaultTitle,
             )
             : null;
 

@@ -47,7 +47,7 @@ class Sessionsv1r0 extends ApiController
 
         // Administrators get the full inventory; everyone else the published,
         // non-private tools and their published revisions
-        $tools = \Components\Tools\Models\Tool::getAllTools(User::authorise('core.admin'));
+        $tools = \Components\Tools\Models\Tool::getAllTools((bool) User::authorise('core.admin'));
 
         //get the supported tag
         $rconfig = Component::params('com_resources');

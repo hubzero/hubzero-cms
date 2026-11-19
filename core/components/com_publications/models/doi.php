@@ -1062,7 +1062,7 @@ class Doi extends Obj
             return false;
         }
 
-        return $doi;
+        return $doi ?: false;
     }
     /**
      * Register the DOI name and associated URL. This is the second step to finish the DOI registration on DataCite.

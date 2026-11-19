@@ -581,11 +581,11 @@ class Grid
 
             $tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));
             $publish_up   = ($publish_up != $nullDate) ? with(new Date(
-                $publish_up,
+                (string) $publish_up,
                 'UTC',
             ))->setTimeZone($tz) : false;
             $publish_down = ($publish_down != $nullDate) ? with(new Date(
-                $publish_down,
+                (string) $publish_down,
                 'UTC',
             ))->setTimeZone($tz) : false;
             // Create tip text, only we have publish up or down settings

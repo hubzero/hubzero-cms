@@ -39,7 +39,7 @@ class Formatter
                 return $url;
             }
             return $label . ' (' . $url . ')';
-        }, $t);
+        }, (string) $t);
 
         $t = (string) preg_replace('/<\s*br\s*\/?\s*>/i', "\n", $t);
         $t = (string) preg_replace('/<\s*li[^>]*>/i', "\n\xE2\x80\xA2 ", $t); // bullet each list item

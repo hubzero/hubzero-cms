@@ -167,7 +167,7 @@ class PdfFormRespondent
 
         // Load gradebook entry
         $gradebook = new Tables\GradeBook($database);
-        $gradebook->loadByUserAndAssetId($this->member_id, $asset_id);
+        $gradebook->loadByUserAndAssetId($this->member_id, (string) $asset_id);
 
         if (!$gradebook->get('id')) {
             $grade = [

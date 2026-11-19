@@ -188,7 +188,7 @@ class Passport implements ProviderInterface
 
         $assertionsData = (string) json_encode($assertions);
 
-        if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
+        if ($this->request_type == 'oauth' && $this->request instanceof \OAuth) {
             $url = self::PASSPORT_API_ENDPOINT . 'assertions/';
 
             // OAuth signs the request; curl sends it, as OAuth::fetch() takes
@@ -284,7 +284,7 @@ class Passport implements ProviderInterface
         $query_params = implode('%20', $emailAddresses);
         $url = self::PASSPORT_API_ENDPOINT . "assertions?emailAddresses=" . $query_params;
 
-        if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
+        if ($this->request_type == 'oauth' && $this->request instanceof \OAuth) {
             $this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
             try {
                 $this->request->fetch($url, [], OAUTH_HTTP_METHOD_GET, ['Content-Type' => 'application/json']);

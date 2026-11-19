@@ -194,7 +194,7 @@ class Attachments extends Obj
         // Load attachment type
         $type = $this->loadAttach($name);
 
-        if ($type === false) {
+        if ($type === false || !$element) {
             return false;
         }
 

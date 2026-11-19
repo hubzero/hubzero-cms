@@ -27,5 +27,5 @@ if ($name && !User::isGuest()) {
     }
 
     $module = Module::byName($name);
-    echo Module::render($module);
+    echo $module ? Module::render($module) : '';
 }
