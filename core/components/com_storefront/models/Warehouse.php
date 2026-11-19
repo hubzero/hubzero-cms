@@ -1215,7 +1215,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   string  $return
      * @param   bool  $showOnlyActive
      * @param   mixed  $filters
-     * @return  ($return is 'count' ? int : array<mixed>|null)
+     * @return  ($return is 'count' ? int : array<mixed>)
      */
     public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
     {
@@ -1273,7 +1273,7 @@ class Warehouse extends \Hubzero\Base\Obj
         } elseif ($return == 'all') {
             $res = $this->database->loadObjectList();
         } else {
-            $res = $this->database->loadColumn();
+            $res = $this->database->loadColumn() ?? [];
         }
 
         return $res;

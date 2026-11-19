@@ -73,7 +73,7 @@ class RecommendedTags
 			WHERE to1.tbl = \'resources\' AND to1.objectid = ' . $rid,
         );
         if (!$existing) {
-            foreach ($dbh->loadAssocList() as $tag) {
+            foreach ($dbh->loadAssocList() ?? [] as $tag) {
                 if ($tag['is_focus_area']) {
                     $this->focus_areas[] = $tag['raw_tag'];
                     $this->existing_fa_map[strtolower($tag['raw_tag'])] = true;
@@ -100,7 +100,7 @@ class RecommendedTags
             . '= (SELECT id FROM #__tags WHERE tag = \'endorsed\')');
 
         $tags = [];
-        foreach ($dbh->loadAssocList() as $row) {
+        foreach ($dbh->loadAssocList() ?? [] as $row) {
             $tags[\Hubzero\Utility\Inflector::singularize($row['raw_tag'])] = $row['is_endorsed']
                 ? self::ENDORSED_TAG
                 : self::REGULAR_TAG;

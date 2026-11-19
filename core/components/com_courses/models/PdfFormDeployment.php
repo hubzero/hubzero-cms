@@ -131,7 +131,7 @@ class PdfFormDeployment
             . 'FROM #__courses_form_deployments WHERE form_id = ' . (int) $formId,
         );
 
-        foreach ($dbh->loadAssocList() as $depData) {
+        foreach ($dbh->loadAssocList() ?? [] as $depData) {
             $dep = new self();
             foreach ($depData as $k => $v) {
                 $dep->$k = $v;

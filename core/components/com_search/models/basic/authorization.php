@@ -92,7 +92,7 @@ class Authorization
             );
 
             $this->groups = [];
-            foreach ($dbh->loadAssocList() as $row) {
+            foreach ($dbh->loadAssocList() ?? [] as $row) {
                 $this->groups[$row['gidNumber']] = $row['cn'];
             }
         }

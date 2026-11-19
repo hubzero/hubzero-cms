@@ -108,7 +108,7 @@ class Detector implements DetectorInterface
         $tokens = $this->getTokensProb($words[1]);
         $tokens_prob = [];
         foreach ($words[1] as $word) {
-            foreach ($tokens as $token) {
+            foreach ($tokens ?? [] as $token) {
                 if ($token->get('token') == $word) {
                     $tokens_prob[] = $token;
                     break;

@@ -591,7 +591,7 @@ class PdfForm
 
         $rv = [];
 
-        foreach ($dbh->loadAssocList() as $answer) {
+        foreach ($dbh->loadAssocList() ?? [] as $answer) {
             if (!isset($rv[$answer['page']])) {
                 $rv[$answer['page']] = [];
             }
@@ -640,7 +640,7 @@ class PdfForm
         $rv = [];
         $complete = true;
 
-        foreach ($dbh->loadAssocList() as $row) {
+        foreach ($dbh->loadAssocList() ?? [] as $row) {
             if (isset($answers['question-' . $row['id']])) {
                 $rv[$row['id']] = [$answers['question-' . $row['id']], $row['answer_id']];
             } else {

@@ -397,7 +397,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {

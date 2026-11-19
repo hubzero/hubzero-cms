@@ -167,7 +167,7 @@ class Request
             $dbh->setQuery(
                 'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')',
             );
-            foreach ($dbh->loadAssocList() as $row) {
+            foreach ($dbh->loadAssocList() ?? [] as $row) {
                 if (!array_key_exists($row['tbl'], $this->object_tags)) {
                     $this->object_tags[$row['tbl']] = [];
                 }

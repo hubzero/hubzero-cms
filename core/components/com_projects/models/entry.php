@@ -329,7 +329,7 @@ class Entry extends Model
                     if (!$this->comments) {
                         $c = $this->comments('list', $filters);
                     }
-                    foreach ($this->comments as $com) {
+                    foreach ($this->comments ?? [] as $com) {
                         $this->commentsCount++;
                     }
                 }

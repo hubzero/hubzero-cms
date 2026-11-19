@@ -495,12 +495,12 @@ class Sessionsv1r0 extends ApiController
         // replace loader > example references to external files with the file
         // contents
         // these are needed to generate complete interfaces
-        foreach ($xml->xpath('//loader') as $loader) {
+        foreach ($xml->xpath('//loader') ?: [] as $loader) {
             $match = [];
             // the text of the <example> either refers to a specific filename or
             // more likely a glob (*.xml)
             // there can be any number of these
-            foreach ($loader->xpath('//example') as $example) {
+            foreach ($loader->xpath('//example') ?: [] as $example) {
                 $match[] = "$example";
                 // this removes the node from <loader>
                 unset($example[0]);

@@ -75,7 +75,7 @@ class Groups
 			INNER JOIN `#__incremental_registration_labels` irl ON irl.id = irglr.label_id
 			ORDER BY hours',
         );
-        foreach (self::getDbh()->loadAssocList() as $row) {
+        foreach (self::getDbh()->loadAssocList() ?? [] as $row) {
             if (!isset($groups[$row['group_id']])) {
                 $groups[$row['group_id']] = [
                     'hours' => $row['hours'],

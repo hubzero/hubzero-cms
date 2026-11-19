@@ -154,7 +154,7 @@ class License extends Table
      * Get licenses
      *
      * @param   array<mixed>   $filters  Filters to build query from
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public function getLicenses($filters = [])
     {
@@ -218,7 +218,7 @@ class License extends Table
     /**
      * Get default license
      *
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public function getDefaultLicense()
     {

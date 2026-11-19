@@ -31,9 +31,9 @@ class Whosonline extends Module
      */
     protected $loggedInList;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $rows;
+    public $rows = [];
 
     /**
      * Display module contents

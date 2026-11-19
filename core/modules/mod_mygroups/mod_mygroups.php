@@ -19,9 +19,9 @@ use Hubzero\Facades\User;
 class Mygroups extends Module
 {
     /**
-     * @var  array<int, \stdClass>|null
+     * @var  array<int, \stdClass>
      */
-    public $allgroups;
+    public $allgroups = [];
     /** @var int */
     public $limit;
     /**

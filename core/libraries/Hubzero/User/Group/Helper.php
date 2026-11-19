@@ -37,7 +37,7 @@ class Helper
      * Get popular groups
      *
      * @param   integer  $limit
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public static function getPopularGroups($limit = 0)
     {
@@ -69,7 +69,7 @@ class Helper
      * Gets featured groups
      *
      * @param   string  $groupList
-     * @return  array<mixed>|null
+     * @return  array<mixed>
      */
     public static function getFeaturedGroups($groupList)
     {

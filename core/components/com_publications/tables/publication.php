@@ -393,7 +393,7 @@ class Publication extends Table
      *
      * @param   array<mixed>    $filters
      * @param   boolean  $admin
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public function getRecords($filters = [], $admin = false)
     {

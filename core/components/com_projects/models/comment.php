@@ -210,7 +210,7 @@ class Comment extends Model
                     if (!$this->comments) {
                         $this->replies('list', $filters);
                     }
-                    foreach ($this->comments as $com) {
+                    foreach ($this->comments ?? [] as $com) {
                         $this->commentsCount++;
                         if ($com->replies()) {
                             foreach ($com->replies() as $rep) {

@@ -131,7 +131,7 @@ class Questions extends Plugin
 
         $questions = [];
         $seen_answers = [];
-        foreach ($dbh->loadAssocList() as $row) {
+        foreach ($dbh->loadAssocList() ?? [] as $row) {
             if (!array_key_exists($row['qid'], $questions)) {
                 $questions[$row['qid']] = new \Components\Search\Models\Basic\Result\AssocScalar([
                     'title'           => $row['subject'],

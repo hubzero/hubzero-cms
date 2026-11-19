@@ -171,7 +171,7 @@ class Set extends Obj implements Iterator
         if (is_null(self::$plugin_weights) && $terms->any()) {
             self::$plugin_weights = [];
             $this->db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
-            foreach ($this->db->loadAssocList() as $weight) {
+            foreach ($this->db->loadAssocList() ?? [] as $weight) {
                 self::$plugin_weights[$weight['plugin']] = $weight['weight'];
             }
         }

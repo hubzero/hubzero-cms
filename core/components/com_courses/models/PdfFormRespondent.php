@@ -239,7 +239,7 @@ class PdfFormRespondent
         //       want to increment the total count, as that question has already been counted.
         $questionIds = [];
 
-        foreach ($dbh->loadAssocList() as $answer) {
+        foreach ($dbh->loadAssocList() ?? [] as $answer) {
             // If the answer is correct, increment correct count
             if ($answer['answer_id'] == $answer['correct_answer_id']) {
                 ++$rv['summary']['correct'];

@@ -28,7 +28,7 @@ class DispatchTest extends TestCase
         $manifest = simplexml_load_file(dirname(__DIR__) . '/image.xml');
         $this->assertNotFalse($manifest);
         $values   = [];
-        foreach ($manifest->xpath('//field[@name="imageFunction"]/option') as $option) {
+        foreach ($manifest->xpath('//field[@name="imageFunction"]/option') ?: [] as $option) {
             $values[] = (string) $option['value'];
         }
         $this->assertNotEmpty($values);

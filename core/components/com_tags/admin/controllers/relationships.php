@@ -94,7 +94,7 @@ class Relationships extends AdminController
             $idx_map = [$rv['id'] => $t_idx];
             $follow = [];
             $max_weight = null;
-            foreach ($this->database->loadAssocList() as $idx => $row) {
+            foreach ($this->database->loadAssocList() ?? [] as $idx => $row) {
                 if (is_null($max_weight)) {
                     $max_weight = $row['count'];
                 }
@@ -122,7 +122,7 @@ class Relationships extends AdminController
 					ORDER BY count DESC
 					LIMIT 10',
                 );
-                foreach ($this->database->loadAssocList() as $inner_idx => $row) {
+                foreach ($this->database->loadAssocList() ?? [] as $inner_idx => $row) {
                     $max_weight = max($max_weight, $row['count']);
                     if ($row['count'] == 1) {
                         break;
@@ -200,7 +200,7 @@ class Relationships extends AdminController
                     : ($tag['type'] == 'parent' ? $parents : "$parents UNION $children"),
                 );
 
-                foreach ($this->database->loadAssocList() as $subTag) {
+                foreach ($this->database->loadAssocList() ?? [] as $subTag) {
                     if (!array_key_exists($subTag['id'], $tagIdMap)) {
                         if ($subTag['direction'] == 'in' || $subTag['label'] != 'parent') {
                             $subTag['type'] = $subTag['label'];
@@ -249,7 +249,7 @@ class Relationships extends AdminController
                 "SELECT raw_tag FROM `#__tags` WHERE raw_tag LIKE " . $this->database->quote('%' . $_GET['term'] . '%'),
             );
             $later = [];
-            foreach ($this->database->loadColumn() as $tag) {
+            foreach ($this->database->loadColumn() ?? [] as $tag) {
                 $tag = stripslashes($tag);
                 if (strpos($tag, $_GET['term']) === 0) {
                     $suggestions[] = $tag;

@@ -167,7 +167,7 @@ class Unit extends Table
      * Get an object list of course offering units
      *
      * @param  array<mixed> $filters
-     * @return array<int, \stdClass>|null Return course units
+     * @return array<int, \stdClass> Return course units
      */
     public function find($filters = [])
     {

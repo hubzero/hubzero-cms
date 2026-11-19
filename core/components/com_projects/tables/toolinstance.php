@@ -111,7 +111,7 @@ class ToolInstance extends Table
      * Get all instances
      *
      * @param   integer  $includedev
-     * @return  array<int, \stdClass>|null
+     * @return  array<int, \stdClass>
      */
     public function getAll($includedev = 1)
     {

@@ -41,7 +41,7 @@ class Type extends Table
     /**
      * Get types
      *
-     * @return  array<int, \stdClass>|null  or null
+     * @return  array<int, \stdClass>  or null
      */
     public function getTypes()
     {

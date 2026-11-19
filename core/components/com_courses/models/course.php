@@ -622,7 +622,7 @@ class Course extends Base
      * Get a list of pages for a course
      *
      * @param      array<mixed> $filters Filters to apply
-     * @return     ($filters is array{count: true} ? int : array<string, Page>|null)
+     * @return     ($filters is array{count: true} ? int : array<string, Page>)
      */
     public function pages($filters = [])
     {
@@ -642,7 +642,9 @@ class Course extends Base
             return (int) $tbl->count($filters);
         }
 
-        if (!isset($this->pages)) {
+        $pages = $this->pages;
+
+        if ($pages === null) {
             $tbl = new Tables\Page($this->db);
 
             $results = [];
@@ -653,10 +655,11 @@ class Course extends Base
                 }
             }
 
-            $this->pages = $results;
+            $pages = $results;
+            $this->pages = $pages;
         }
 
-        return $this->pages;
+        return $pages;
     }
 
     /**
