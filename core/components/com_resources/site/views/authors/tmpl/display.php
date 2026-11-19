@@ -123,7 +123,7 @@ if ($this->contributors) {
                         <span class="author-name"><?php echo $this->escape($name); ?></span><br />
                         <input type="text" name="authors[<?= $contributor->authorid ?>][organization]"
                             id="organization-<?= $contributor->authorid ?>" size="35"
-                            value="<?= $this->escape(stripslashes($contributor->organization)) ?>"
+                            value="<?= $this->escape(stripslashes((string) $contributor->organization)) ?>"
                             placeholder="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION') ?>" />
                         <?php
                         //echo ($contributor->org)

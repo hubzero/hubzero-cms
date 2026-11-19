@@ -1389,7 +1389,7 @@ class Create extends SiteController
                 $activity = 'published';
             } else {
                 $apu = $this->config->get('autoapproved_users');
-                $apu = explode(',', $apu);
+                $apu = explode(',', (string) $apu);
                 $apu = array_map('trim', $apu);
 
                 if (in_array(User::get('username'), $apu)) {
