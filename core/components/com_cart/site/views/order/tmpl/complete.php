@@ -64,8 +64,8 @@ defined('_HZEXEC_') or die('Restricted access');
                     } elseif ($productType == 'Software Download') {
                         // If software
                         $status = 'Ready';
-                        $downloadUrl = Route::url('index.php?option=com_cart')
-                            . 'download/' . $this->transactionInfo->tId
+                        $downloadUrl = rtrim(Route::url('index.php?option=com_cart'), '/')
+                            . '/download/' . $this->transactionInfo->tId
                             . '/' . $info->sId;
                         $action = '<a href="' . $downloadUrl;
                         $action .= '" target="_blank" rel="noopener">Download</a>';

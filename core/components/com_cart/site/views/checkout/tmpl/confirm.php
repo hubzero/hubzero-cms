@@ -151,7 +151,7 @@ if ($this->paymentStatus == 'ok') {
                 echo '</p>';
             }
             echo '<a href="';
-            echo Route::url('index.php?option=com_cart') . 'checkout?update=true';
+            echo rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout?update=true';
             echo '">Change</a>';
             echo '</div>';
         };

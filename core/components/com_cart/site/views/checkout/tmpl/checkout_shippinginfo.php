@@ -41,7 +41,7 @@ defined('_HZEXEC_') or die('Restricted access');
     }
 
     echo '<a href="';
-    echo Route::url('index.php?option=com_cart') . 'checkout/shipping?update=true';
+    echo rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout/shipping?update=true';
     echo '">Change</a>';
     ?>
 

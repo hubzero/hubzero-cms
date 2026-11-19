@@ -25,7 +25,8 @@ $this
      ->js()
     ->js('download.js');
 
-$link = Route::url('index.php?option=com_cart', true, 0) . 'download/' . $this->tId . '/' . $this->sId . '/direct';
+$link = rtrim(Route::url('index.php?option=com_cart', true, 0), '/')
+    . '/download/' . $this->tId . '/' . $this->sId . '/direct';
 
 ?>
 

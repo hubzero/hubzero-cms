@@ -35,7 +35,7 @@ $this
     <div id="content-header-extra">
         <p>
             <?php
-            $ordersUrl = Route::url('index.php?option=com_cart') . 'orders';
+            $ordersUrl = rtrim(Route::url('index.php?option=com_cart'), '/') . '/orders';
             $ordersLabel = Lang::txt('COM_CART_ORDERS');
             ?>
             <a class="btn" href="<?php echo $ordersUrl; ?>"><?php echo $ordersLabel; ?></a>

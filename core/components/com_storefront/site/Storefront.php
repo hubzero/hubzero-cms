@@ -60,7 +60,7 @@ class Storefront extends AbstractComponent
                 // Redirect to the landing page
                 if ($controllerRequested == 'storefront') {
                     App::redirect(
-                        Route::url('index.php?option=com_storefront') . 'overview',
+                        rtrim(Route::url('index.php?option=com_storefront'), '/') . '/overview',
                     );
                 }
                 // Require login

@@ -347,7 +347,7 @@ class CurrentCart extends Cart
         if ($where == 'home') {
             $redirect_url  = Route::url('index.php?option=' . 'com_cart');
         } else {
-            $redirect_url  = Route::url('index.php?option=' . 'com_cart') . 'checkout/' . $where;
+            $redirect_url  = rtrim(Route::url('index.php?option=' . 'com_cart'), '/') . '/checkout/' . $where;
         }
 
         App::redirect(

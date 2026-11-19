@@ -152,7 +152,7 @@ if (!empty($this->notifications)) {
                 echo '</p>';
             }
             echo '<a href="';
-            echo Route::url('index.php?option=com_cart') . 'checkout/notes';
+            echo rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout/notes';
             echo '">Change</a>';
             echo '</div>';
         };

@@ -78,7 +78,7 @@ $this
                     $categoryId = $category->cAlias;
                 }
 
-                echo Route::url('index.php?option=' . $this->option) . 'browse/' . $categoryId;
+                echo rtrim(Route::url('index.php?option=' . $this->option), '/') . '/browse/' . $categoryId;
                 echo '">';
                 echo '<div class="content">';
                 echo '<h3>' . $category->cName . '</h3>';

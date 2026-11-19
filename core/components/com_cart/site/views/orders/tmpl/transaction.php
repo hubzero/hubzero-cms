@@ -67,8 +67,8 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal
             } elseif ($productType == 'Software Download') {
                 // If software
                 if ($info->available) {
-                    $downloadUrl = Route::url('index.php?option=com_cart')
-                        . 'download/' . $this->transaction->tInfo->tId
+                    $downloadUrl = rtrim(Route::url('index.php?option=com_cart'), '/')
+                        . '/download/' . $this->transaction->tInfo->tId
                         . '/' . $info->sId . '/direct';
                     $action = '<a href="' . $downloadUrl;
                     $action .= '" target="_blank" download="download" rel="noopener">Download</a>';

@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die('Restricted access');
     echo '<p>' . $this->paymentInfo . '</p>';
 
     echo '<a href="';
-    echo Route::url('index.php?option=com_cart') . 'checkout/payment?update=true';
+    echo rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout/payment?update=true';
     echo '">Change</a>';
     ?>
 
