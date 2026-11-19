@@ -577,7 +577,7 @@ class Resources extends SiteController
                 $rt = new Tags($bits['id']);
 
                 // Get tags that have been assigned
-                $bits['tags'] = $rt->getTagsWithObjects($bits['id'], $bits['type'], $bits['tg2']);
+                $bits['tags'] = $rt->getTagsWithObjects($bits['id'], $bits['type'], (string) $bits['tg2']);
 
                 $bits['type'] = Type::oneOrNew($bits['type']);
                 break;
@@ -610,11 +610,11 @@ class Resources extends SiteController
 
                 // Get resources assigned to this tag
                 $bits['tools'] = $rt->getObjectsOnTag(
-                    $bits['tag'],
+                    (string) $bits['tag'],
                     $bits['id'],
                     $bits['type'],
                     $bits['sortby'],
-                    $bits['tag2'],
+                    (string) $bits['tag2'],
                     $bits['filter'],
                 );
 

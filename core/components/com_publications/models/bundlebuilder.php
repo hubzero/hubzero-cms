@@ -631,7 +631,7 @@ class BundleBuilder
         $innerMap = null;
         if ($r['inner_exists']) {
             $zip = new ZipArchive();
-            if ($zip->open($inner) === true) {
+            if ($zip->open((string) $inner) === true) {
                 $innerMap = [];
                 for ($i = 0; $i < $zip->numFiles; $i++) {
                     $s = $zip->statIndex($i);

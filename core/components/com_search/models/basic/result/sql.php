@@ -40,7 +40,7 @@ class Sql extends SearchResult
      */
     public function getSql()
     {
-        return $this->sql;
+        return (string) $this->sql;
     }
 
     /**
@@ -52,7 +52,7 @@ class Sql extends SearchResult
     public function toAssociative()
     {
         $db = App::get('db');
-        $db->setQuery($this->sql);
+        $db->setQuery((string) $this->sql);
 
         if (!($rows = $db->loadAssocList())) {
             $rows = [];

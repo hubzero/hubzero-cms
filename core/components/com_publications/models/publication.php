@@ -1678,7 +1678,7 @@ class Publication extends Obj
     {
         $this->getCitations();
 
-        return count($this->_citations);
+        return count($this->_citations ?? []);
     }
 
     /**

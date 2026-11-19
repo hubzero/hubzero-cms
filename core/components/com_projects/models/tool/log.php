@@ -109,7 +109,7 @@ class Log extends Model
      * getLastUpdate
      *
      * @param   boolean  $statusChange
-     * @return  \stdClass
+     * @return  \stdClass|null
      */
     public function getLastUpdate($statusChange = false)
     {

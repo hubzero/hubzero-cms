@@ -265,7 +265,9 @@ class Elements
         $handler = Format::getInstance($format);
 
         $obj = $handler->stringToObject($data, $options);
-        $this->loadObject($obj);
+        if ($obj) {
+            $this->loadObject($obj);
+        }
 
         return true;
     }

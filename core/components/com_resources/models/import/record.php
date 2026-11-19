@@ -44,9 +44,9 @@ class Record extends Obj
      */
     private $mode;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    private $options;
+    private $options = [];
     /**
      * @var  \Hubzero\Database\Driver
      */

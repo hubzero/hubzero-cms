@@ -1679,7 +1679,7 @@ class Curation extends Obj
             $changelog .= '</ul>';
         }
 
-        return $changelog;
+        return (string) $changelog;
     }
 
     /**

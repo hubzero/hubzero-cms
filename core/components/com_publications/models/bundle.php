@@ -104,7 +104,7 @@ class Bundle
             $this->expandBundleFile($this->contents);
         }
 
-        return $this->contents;
+        return $this->contents ?? [];
     }
 
     /**

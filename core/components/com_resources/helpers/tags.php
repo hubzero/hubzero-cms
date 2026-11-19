@@ -409,7 +409,7 @@ class Tags extends Cloud
             $tags = $this->getTopTags($limit);
             $retval = $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
         }
-        return $retval;
+        return (string) $retval;
     }
 
     /**

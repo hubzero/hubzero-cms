@@ -99,7 +99,7 @@ class Terms extends Obj
      */
     public function getRaw()
     {
-        return $this->raw;
+        return (string) $this->raw;
     }
 
     /**

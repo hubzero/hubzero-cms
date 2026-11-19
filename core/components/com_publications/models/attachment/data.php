@@ -51,7 +51,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass   $blockParams
+     * @param   \stdClass|null   $blockParams
      * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -80,8 +80,10 @@ class Data extends Base
         //    . $pub->version_id . '&amp;task=serve';
 
         // Get default title
-        $title = isset($element->title) ? str_replace('{pubtitle}', (string) $pub->title, $element->title) : null;
-        $configs->title = str_replace('{pubversion}', (string) $pub->version_label, $title);
+        $title = isset($element->title)
+            ? str_replace('{pubtitle}', (string) $pub->title, (string) $element->title)
+            : null;
+        $configs->title = str_replace('{pubversion}', (string) $pub->version_label, (string) $title);
 
         // Fancy launcher?
         $configs->fancyLauncher = isset($typeParams->fancyLauncher)
@@ -98,7 +100,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass    $blockParams
+     * @param   \stdClass|null    $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
      */
@@ -153,7 +155,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass   $blockParams
+     * @param   \stdClass|null   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
      * @return  string   HTML
@@ -258,7 +260,7 @@ class Data extends Base
      * @param   \stdClass   $elementparams
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass   $blockParams
+     * @param   \stdClass|null   $blockParams
      * @param   array<mixed>    $attachments
      * @param   \Components\Publications\Tables\Version   $oldVersion
      * @param   \Components\Publications\Tables\Version   $newVersion
@@ -356,8 +358,8 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass   $blockParams
-     * @param   integer  $itemId
+     * @param   \stdClass|null   $blockParams
+     * @param   integer|null  $itemId
      * @return  boolean
      */
     public function serve($element, $elementId, $pub, $blockParams, $itemId = 0)
@@ -402,7 +404,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass   $blockParams
+     * @param   \stdClass|null   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
      */
@@ -575,7 +577,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass    $blockParams
+     * @param   \stdClass|null    $blockParams
      * @return  boolean
      */
     public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -617,7 +619,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass    $blockParams
+     * @param   \stdClass|null    $blockParams
      * @return  boolean
      */
     public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -752,7 +754,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass    $blockParams
+     * @param   \stdClass|null    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
      * @return  boolean
@@ -846,7 +848,7 @@ class Data extends Base
      * @param   \stdClass   $element
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
-     * @param   \stdClass    $blockParams
+     * @param   \stdClass|null    $blockParams
      * @param   boolean  $authorized
      * @return  string|false
      */

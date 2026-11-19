@@ -115,7 +115,7 @@ class RecommendedTags
 			INNER JOIN #__document_text_data dtd ON dtd.id = drr.document_id
 			WHERE ra.parent_id = ' . $rid,
         );
-        $words = preg_split('/\W+/', join(' ', $dbh->loadColumn())) ?: [];
+        $words = preg_split('/\W+/', join(' ', $dbh->loadColumn() ?? [])) ?: [];
         $word_count = count($words);
         if (!$words[$word_count - 1]) {
             array_pop($words);

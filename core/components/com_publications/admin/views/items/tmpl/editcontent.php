@@ -99,14 +99,14 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                                     ? str_replace(
                                         '{pubtitle}',
                                         $this->pub->title,
-                                        $element->params->title,
+                                        (string) $element->params->title,
                                     )
                                     : null;
                     $defaultTitle = $element->params->title
                                     ? str_replace(
                                         '{pubversion}',
                                         $this->pub->version_label,
-                                        $defaultTitle,
+                                        (string) $defaultTitle,
                                     )
                                     : null;
 

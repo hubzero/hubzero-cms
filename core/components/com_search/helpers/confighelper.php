@@ -155,7 +155,7 @@ class ConfigHelper
             $replacement = $this->{str_replace('_', '', $macroname)}($argument, $row);
             $path = (preg_replace("(\\[\[" . $macroname . "\(" . $argument . "\)\\]\])", $replacement, (string) $path));
         }
-        return $path;
+        return (string) $path;
     }
 
     /**

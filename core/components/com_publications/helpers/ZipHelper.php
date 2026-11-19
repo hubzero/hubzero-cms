@@ -31,7 +31,7 @@ class ZipHelper
      * Load bundle archive
      *
      * @param    string  $path
-     * @return   \ZipArchive  \ZipArchive
+     * @return   \ZipArchive|null  \ZipArchive
      */
     protected static function getArchive($path)
     {
@@ -48,7 +48,7 @@ class ZipHelper
     /**
      * Builds a hierarchical array of archive contents
      *
-     * @param   \ZipArchive  $archive  \ZipArchive
+     * @param   \ZipArchive|null  $archive  \ZipArchive
      * @return  array<mixed>
      */
     protected static function parseArchiveContents($archive)

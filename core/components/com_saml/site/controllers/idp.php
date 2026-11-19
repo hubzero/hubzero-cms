@@ -128,7 +128,7 @@ class Idp extends SiteController
         $issuer = $message->getIssuer() ? $message->getIssuer()->getValue() : '';
 
         // Resolve the issuer against the trust store
-        $sp = ServiceProvider::oneByEntityId($issuer);
+        $sp = ServiceProvider::oneByEntityId((string) $issuer);
 
         if (!$sp || !$sp->get('id') || !$sp->isEnabled()) {
             $this->log('login rejected: untrusted issuer "' . $issuer . '"');
@@ -361,7 +361,7 @@ class Idp extends SiteController
 
         $issuer = $message->getIssuer() ? $message->getIssuer()->getValue() : '';
 
-        $sp = ServiceProvider::oneByEntityId($issuer);
+        $sp = ServiceProvider::oneByEntityId((string) $issuer);
 
         if (!$sp || !$sp->get('id') || !$sp->isEnabled()) {
             $this->log('logout rejected: untrusted issuer "' . $issuer . '"');
@@ -392,7 +392,7 @@ class Idp extends SiteController
         } else {
             // SessionIndex is optional; resolve the subject-only form by
             // matching the NameID this SP would have been issued
-            $samlSession = $this->sessionForNameId($sp, $nameId);
+            $samlSession = $this->sessionForNameId($sp, (string) $nameId);
         }
 
         if ($samlSession && $samlSession->get('id') && (int) $samlSession->get('sp_id') == (int) $sp->get('id')) {
@@ -439,7 +439,7 @@ class Idp extends SiteController
         }
 
         // Respond to the registered SLO endpoint via the HTTP-Redirect binding
-        $response = $this->idp->createSAMLLogoutResponse($sp, $message->getID(), $status);
+        $response = $this->idp->createSAMLLogoutResponse($sp, (string) $message->getID(), $status);
 
         $redirectBinding = $this->idp->bindingFactory()->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT);
 

@@ -343,7 +343,7 @@ if ($mode != 'preview') {
             ->children()
             ->whereEquals('standalone', 1)
             ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-            ->order(($filters['sortby'] == 'date' ? 'created' : $filters['sortby']), 'asc')
+            ->order(($filters['sortby'] == 'date' ? 'created' : (string) $filters['sortby']), 'asc')
             ->limit($filters['limit'])
             ->start($filters['start'])
             ->rows();

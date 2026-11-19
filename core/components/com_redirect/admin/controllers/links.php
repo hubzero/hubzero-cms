@@ -324,7 +324,7 @@ class Links extends AdminController
             'report'    => -3,
         ];
 
-        $value = \Hubzero\Utility\Arr::getValue($data, $this->task, 0, 'int');
+        $value = \Hubzero\Utility\Arr::getValue($data, (string) $this->task, 0, 'int');
 
         if (empty($ids)) {
             Notify::error(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'));

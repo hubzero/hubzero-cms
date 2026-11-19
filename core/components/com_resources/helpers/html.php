@@ -107,7 +107,7 @@ class Html
             $content,
         );
 
-        return $content;
+        return (string) $content;
     }
 
     /**

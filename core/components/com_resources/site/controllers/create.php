@@ -522,7 +522,7 @@ class Create extends SiteController
 
         // Get focus areas
         $this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->database->quote($id));
-        $fas = $this->loadFocusAreas($this->database->loadResult());
+        $fas = $this->loadFocusAreas((string) $this->database->loadResult());
         $focusareas = [];
         foreach ($fas as $tag => $fa) {
             if (!isset($focusareas[$fa['label']])) {
@@ -1548,7 +1548,7 @@ class Create extends SiteController
         }
 
         // Output HTML
-        $this->setView($this->controller, 'thanks');
+        $this->setView((string) $this->controller, 'thanks');
 
         $this->view
             ->set('title', $this->_title)

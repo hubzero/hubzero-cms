@@ -412,7 +412,7 @@ class Curation extends SiteController
                         . trim(Route::url($this->pubOrFail()->link('version')), DS);
 
                     Helpers\Html::notify(
-                        $this->pub,
+                        $this->pubOrFail(),
                         [$owner],
                         Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
                         $message,

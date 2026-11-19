@@ -199,7 +199,7 @@ class Blocks extends Obj
         }
 
         // Load block
-        $block = $this->loadBlock($name);
+        $block = $this->loadBlock((string) $name);
 
         if ($block === false) {
             return false;

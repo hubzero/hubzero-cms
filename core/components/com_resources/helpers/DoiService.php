@@ -520,7 +520,7 @@ class DoiService extends Obj
             return false;
         }
 
-        return $doi;
+        return $doi ?: false;
     }
 
     /**
