@@ -55,7 +55,10 @@ if ($form_redirect = Request::getString('return', '', 'get')) {
     $form_redirect = urldecode($form_redirect);
 }
 $current = Request::path();
-if (!$form_redirect && !in_array($current, ['/register/update', '/members/update', '/members/register/update'])) {
+// The registration page is no place to come back to: after confirming, a
+// signed-in member sent there was told that only guests may register. With no
+// return, confirmation goes to the configured page instead.
+if (!$form_redirect && !preg_match('#^/(members/)?register(/|$)#', $current)) {
     $form_redirect = Request::current();
 }
 ?>
