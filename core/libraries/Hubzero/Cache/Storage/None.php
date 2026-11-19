@@ -57,7 +57,7 @@ class None implements StorageInterface
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  bool
      */
     public function add($key, $value, $minutes)
@@ -70,7 +70,7 @@ class None implements StorageInterface
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  bool
      */
     public function put($key, $value, $minutes)

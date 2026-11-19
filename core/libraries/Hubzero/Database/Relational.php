@@ -870,7 +870,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $registry = static::getRelationshipRegistry();
         if ($registry->has(static::class, $name)) {
             $resolver = $registry->get(static::class, $name);
-            return call_user_func_array($resolver, [$this]);
+            if ($resolver !== null) {
+                return call_user_func_array($resolver, [$this]);
+            }
         }
 
         // This method doesn't exist

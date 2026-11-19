@@ -46,7 +46,7 @@ class Memory extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  bool
      */
     public function add($key, $value, $minutes)
@@ -63,7 +63,7 @@ class Memory extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  bool
      */
     public function put($key, $value, $minutes)

@@ -276,7 +276,7 @@ class Query
     /**
      * Constructs a new query instance
      *
-     * @param   \Hubzero\Database\Driver  $connection  The database connection to use in the query builder
+     * @param   \Hubzero\Database\Driver|null  $connection  The database connection to use in the query builder
      * @return  void
      **/
     public function __construct($connection)

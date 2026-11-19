@@ -125,7 +125,11 @@ class Composer
     private static function getFactory()
     {
         self::init();
-        return self::$factory;
+        $value = self::$factory;
+        if ($value === null) {
+            throw new \RuntimeException('Composer could not be set up');
+        }
+        return $value;
     }
 
     /**
@@ -136,7 +140,11 @@ class Composer
     private static function getComposer()
     {
         self::init();
-        return self::$composer;
+        $value = self::$composer;
+        if ($value === null) {
+            throw new \RuntimeException('Composer could not be set up');
+        }
+        return $value;
     }
 
     /**
@@ -166,7 +174,11 @@ class Composer
     private static function getIO()
     {
         self::init();
-        return self::$io;
+        $value = self::$io;
+        if ($value === null) {
+            throw new \RuntimeException('Composer could not be set up');
+        }
+        return $value;
     }
 
     /**
@@ -178,7 +190,7 @@ class Composer
     {
         self::init();
         if (!self::$repositoryManager) {
-            self::$repositoryManager = self::$composer->getRepositoryManager();
+            self::$repositoryManager = self::getComposer()->getRepositoryManager();
         }
         return self::$repositoryManager;
     }
@@ -356,7 +368,7 @@ class Composer
     private static function getConfig()
     {
         self::init();
-        return self::$composer->getConfig();
+        return self::getComposer()->getConfig();
     }
 
     /**

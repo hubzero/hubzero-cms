@@ -29,9 +29,9 @@ class Mygroups extends Module
      */
     public $moduleclass;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $recentgroups;
+    public $recentgroups = [];
 
     /**
      * Get groups for a user

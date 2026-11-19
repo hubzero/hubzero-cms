@@ -129,7 +129,8 @@ $base = $this->offering->link();
                                     break;
                             }
                             if (
-                                !$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group'
+                                !$obj
+                                || !$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group'
                                 && !$obj->get('parent'))
                             ) {
                                 // skip containers

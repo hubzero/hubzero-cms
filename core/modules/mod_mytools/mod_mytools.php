@@ -21,9 +21,9 @@ use Hubzero\Facades\User;
 class Mytools extends Module
 {
     /**
-     * @var  array<string, App>|null
+     * @var  array<string, App>
      */
-    public $alltools;
+    public $alltools = [];
     /**
      * @var  bool
      */
@@ -31,21 +31,21 @@ class Mytools extends Module
     /** @var string */
     public $fav;
     /**
-     * @var  array<int, string>|null
+     * @var  array<int, string>
      */
-    public $favs;
+    public $favs = [];
     /**
-     * @var  array<string, App>|null
+     * @var  array<string, App>
      */
-    public $favtools;
+    public $favtools = [];
     /** @var bool */
     protected $launch_page;
     /** @var int */
     public $no_html;
     /**
-     * @var  array<string, App>|null
+     * @var  array<string, App>
      */
-    public $rectools;
+    public $rectools = [];
     /** @var \Components\Resources\Helpers\Tags */
     protected $rt;
     /**

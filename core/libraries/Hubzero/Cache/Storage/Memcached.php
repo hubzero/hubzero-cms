@@ -114,7 +114,7 @@ class Memcached extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  mixed
      */
     public function add($key, $value, $minutes)
@@ -127,7 +127,7 @@ class Memcached extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $minutes
+     * @param   int|null     $minutes
      * @return  bool
      */
     public function put($key, $value, $minutes)

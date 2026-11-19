@@ -392,6 +392,7 @@ class ProgressTest extends Basic
             });
         });
 
+        $this->assertNotNull($results);
         $this->assertArrayHasKey('foo', $results);
         $this->assertArrayHasKey('bar', $results);
         $this->assertArrayHasKey('baz', $results);
