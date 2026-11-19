@@ -85,9 +85,9 @@ class Translator extends Obj
     /**
      * The language to load.
      *
-     * @var string|null
+     * @var string
      */
-    protected $lang = null;
+    protected $lang = '';
 
     /**
      * A nested array of language files that have been loaded
@@ -106,9 +106,9 @@ class Translator extends Obj
     /**
      * Translations
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      */
-    protected $strings = null;
+    protected $strings = [];
 
     /**
      * An array of used text, used during debugging.
@@ -1197,7 +1197,7 @@ class Translator extends Obj
      */
     public function setLanguage($lang)
     {
-        $previous = $this->lang ?? null;
+        $previous = $this->lang;
         $this->lang = $lang;
         $this->metadata = $this->getMetadata($this->lang);
 

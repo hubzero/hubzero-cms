@@ -37,7 +37,7 @@ class Session implements MessageStore
      * Store a message
      *
      * @param   array<mixed>   $data
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  void
      */
     public function store($data, $domain)
@@ -51,7 +51,7 @@ class Session implements MessageStore
     /**
      * Return a list of messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  array<mixed>
      */
     public function retrieve($domain)
@@ -68,7 +68,7 @@ class Session implements MessageStore
     /**
      * Clear all messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  void
      */
     public function clear($domain)
@@ -79,7 +79,7 @@ class Session implements MessageStore
     /**
      * Return a count of messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  integer
      */
     public function total($domain)
@@ -92,7 +92,7 @@ class Session implements MessageStore
     /**
      * Get the storage key
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  string
      */
     private function key($domain)

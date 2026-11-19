@@ -381,8 +381,8 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      * treated as a brand new user. Where exactly one link in this domain
      * carries the same verified email, adopt that row instead.
      *
-     * @param   string  $id     Current (v2) LinkedIn member ID
-     * @param   string  $email  Verified email address reported by LinkedIn
+     * @param   string|null  $id     Current (v2) LinkedIn member ID
+     * @param   string|null  $email  Verified email address reported by LinkedIn
      * @return  void
      */
     private function migrateLegacyLink($id, $email)

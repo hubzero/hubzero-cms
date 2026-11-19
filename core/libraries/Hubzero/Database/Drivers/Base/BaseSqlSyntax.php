@@ -1472,8 +1472,8 @@ abstract class BaseSqlSyntax
      * Sets a join element on the query
      *
      * @param   string  $table     The table join
-     * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $leftKey   The left side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @param   string  $type      The join type to perform
      * @return  void
      */

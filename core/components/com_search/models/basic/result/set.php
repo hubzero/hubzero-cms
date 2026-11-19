@@ -299,7 +299,7 @@ class Set extends Obj implements Iterator
      */
     public static function getTagWeightModifier()
     {
-        return array_key_exists('tagmod', self::$plugin_weights) ? self::$plugin_weights['tagmod'] : 1.3;
+        return array_key_exists('tagmod', self::pluginWeights()) ? self::pluginWeights()['tagmod'] : 1.3;
     }
 
     /**
@@ -443,7 +443,7 @@ class Set extends Obj implements Iterator
 
         // call weighters
         $any_all_weighters = !!count($weighters['all']);
-        @list($term_plugin, $term_section) = $this->terms->getSection();
+        @list($term_plugin, $term_section) = $this->terms->getSection() ?? [null, null];
         $flat_results = $this->processed_results;
         foreach ($flat_results as $res) {
             $pluginName = ucfirst($res->getPlugin());
@@ -461,8 +461,8 @@ class Set extends Obj implements Iterator
             $pluginMatch = !$term_plugin || $term_plugin == $plugin;
             $sectionMatch = !$term_section || $term_section == $res->getSectionKey();
             if ($pluginMatch && $sectionMatch) {
-                if (array_key_exists($plugin, self::$plugin_weights)) {
-                    $res->adjustWeight(self::$plugin_weights[$plugin], $plugin . ' base weight');
+                if (array_key_exists($plugin, self::pluginWeights())) {
+                    $res->adjustWeight(self::pluginWeights()[$plugin], $plugin . ' base weight');
                 }
                 $used = [];
                 $pluginWeighters = array_key_exists($plugin, $weighters)
@@ -473,10 +473,10 @@ class Set extends Obj implements Iterator
                     if (!array_key_exists($name, $used)) {
                         $used[$name] = true;
                         $adj = 2 * $mtd->invokeArgs(null, [$this->terms, &$res]);
-                        if (array_key_exists($name, self::$plugin_weights)) {
+                        if (array_key_exists($name, self::pluginWeights())) {
                             // adj is 0..1
                             // weight is 0..1
-                            $adj *= (0.5 + self::$plugin_weights[$name]);
+                            $adj *= (0.5 + self::pluginWeights()[$name]);
                         }
                         $res->adjustWeight($adj, $name);
                     }
@@ -616,10 +616,10 @@ class Set extends Obj implements Iterator
             'b' => 0,
         ];
         if (($relevance_diff = $a->getWeight() - $b->getWeight())) {
-            $weight[$relevance_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortrelevance'];
+            $weight[$relevance_diff > 0 ? 'a' : 'b'] += self::pluginWeights()['sortrelevance'];
         }
         if (($date_diff = $a->getDate() - $b->getDate())) {
-            $weight[$date_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortnewer'];
+            $weight[$date_diff > 0 ? 'a' : 'b'] += self::pluginWeights()['sortnewer'];
         }
 
         foreach ($this->sorters as $plugin => $sorter) {
@@ -627,8 +627,8 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $pluginWeight = array_key_exists($plugin, self::$plugin_weights)
-                ? self::$plugin_weights[$plugin]
+            $pluginWeight = array_key_exists($plugin, self::pluginWeights())
+                ? self::pluginWeights()[$plugin]
                 : 1;
             $weight[$res > 0 ? 'a' : 'b'] += $pluginWeight;
         }
@@ -719,7 +719,7 @@ class Set extends Obj implements Iterator
      */
     public function getPluginListCount()
     {
-        @list($term_plugin, $term_section) = $this->terms->getSection();
+        @list($term_plugin, $term_section) = $this->terms->getSection() ?? [null, null];
 
         if ($term_plugin && $term_section) {
             return $this->result_counts[$term_plugin]['sections'][$term_section]['count'];
@@ -740,7 +740,7 @@ class Set extends Obj implements Iterator
      */
     public function getPluginCount()
     {
-        list($term_plugin, $term_section) = $this->terms->getSection();
+        list($term_plugin, $term_section) = $this->terms->getSection() ?? [null, null];
 
         if ($term_plugin) {
             return $this->result_counts[$term_plugin]['count'];
@@ -828,5 +828,15 @@ class Set extends Obj implements Iterator
     public function valid()
     {
         return isset($this->shown_results[$this->pos]);
+    }
+
+    /**
+     * The plugin weights, none until they are loaded
+     *
+     * @return  array<mixed>
+     */
+    private static function pluginWeights()
+    {
+        return self::$plugin_weights ?? [];
     }
 }

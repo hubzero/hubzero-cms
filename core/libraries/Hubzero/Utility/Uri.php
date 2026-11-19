@@ -406,7 +406,7 @@ class Uri
      * Get URI scheme (protocol)
      * ie. http, https, ftp, etc...
      *
-     * @return  string  The URI scheme.
+     * @return  string|null  The URI scheme.
      */
     public function getScheme()
     {
@@ -431,7 +431,7 @@ class Uri
      * Get URI username
      * Returns the username, or null if no username was specified.
      *
-     * @return  string  The URI username.
+     * @return  string|null  The URI username.
      */
     public function getUser()
     {
@@ -455,7 +455,7 @@ class Uri
      * Get URI password
      * Returns the password, or null if no password was specified.
      *
-     * @return  string  The URI password.
+     * @return  string|null  The URI password.
      */
     public function getPass()
     {
@@ -479,7 +479,7 @@ class Uri
      * Get URI host
      * Returns the hostname/ip or null if no hostname/ip was specified.
      *
-     * @return  string  The URI host.
+     * @return  string|null  The URI host.
      */
     public function getHost()
     {
@@ -526,7 +526,7 @@ class Uri
     /**
      * Gets the URI path string.
      *
-     * @return  string  The URI path string.
+     * @return  string|null  The URI path string.
      */
     public function getPath()
     {
@@ -550,7 +550,7 @@ class Uri
      * Get the URI archor string
      * Everything after the "#".
      *
-     * @return  string  The URI anchor string.
+     * @return  string|null  The URI anchor string.
      */
     public function getFragment()
     {

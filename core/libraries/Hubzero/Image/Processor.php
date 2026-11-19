@@ -141,7 +141,7 @@ class Processor extends Obj
             }
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo ? finfo_file($finfo, $this->source) : false;
+            $mimeType = $finfo ? finfo_file($finfo, (string) $this->source) : false;
             if ($finfo) {
                 finfo_close($finfo);
             }
@@ -151,7 +151,7 @@ class Processor extends Obj
                 return false;
             }
 
-            $image_atts = getimagesize($this->source);
+            $image_atts = getimagesize((string) $this->source);
             if (empty($image_atts)) {
                 return false;
             }
@@ -159,16 +159,16 @@ class Processor extends Obj
             switch ($image_atts['mime']) {
                 case 'image/jpeg':
                     $this->image_type = IMAGETYPE_JPEG;
-                    $this->resource   = imagecreatefromjpeg($this->source);
+                    $this->resource   = imagecreatefromjpeg((string) $this->source);
                     break;
                 case 'image/gif':
                     $this->image_type = IMAGETYPE_GIF;
-                    $this->resource   = imagecreatefromgif($this->source);
+                    $this->resource   = imagecreatefromgif((string) $this->source);
                     break;
                 case 'image/png':
                 case 'image/x-png':
                     $this->image_type = IMAGETYPE_PNG;
-                    $this->resource   = imagecreatefrompng($this->source);
+                    $this->resource   = imagecreatefrompng((string) $this->source);
                     break;
                 default:
                     return false;
@@ -554,7 +554,7 @@ class Processor extends Obj
         }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo ? finfo_file($finfo, $this->source) : false;
+        $mimeType = $finfo ? finfo_file($finfo, (string) $this->source) : false;
         if ($finfo) {
             finfo_close($finfo);
         }
@@ -564,10 +564,10 @@ class Processor extends Obj
             return;
         }
 
-        if (exif_imagetype($this->source) == false) {
+        if (exif_imagetype((string) $this->source) == false) {
             return;
         }
-        $image_atts = getimagesize($this->source);
+        $image_atts = getimagesize((string) $this->source);
 
         if ($image_atts) {
             header('Content-type: ' . $image_atts['mime']);

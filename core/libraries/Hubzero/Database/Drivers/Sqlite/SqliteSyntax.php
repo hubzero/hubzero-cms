@@ -507,8 +507,8 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * column-to-column joins.
      *
      * @param   string  $table     The table join
-     * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $leftKey   The left side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @param   string  $type      The join type to perform
      * @return  void
      * @throws  UnsupportedSyntaxException

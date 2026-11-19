@@ -2735,7 +2735,7 @@ class Query
     {
         // If a closure was passed, execute it with a fresh Query
         if (is_callable($query)) {
-            $newQuery = new self($this->connection);
+            $newQuery = new self($this->connectionOrFail());
             $query($newQuery);
             $query = $newQuery;
         }
@@ -4758,7 +4758,7 @@ class Query
         $selectBindings = $this->syntax->getInsertSelectBindings();
 
         // Execute the SELECT to get the rows
-        $this->connectionOrFail()->prepare($selectSql)->bind($selectBindings);
+        $this->connectionOrFail()->prepare((string) $selectSql)->bind($selectBindings);
         $rows = $this->connectionOrFail()->loadObjectList();
 
         if (empty($rows)) {
@@ -5116,7 +5116,8 @@ class Query
      **/
     public function toString()
     {
-        return $this->connectionOrFail()
+        // Prepared, so there is a statement to give
+        return (string) $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->toString();
@@ -5526,7 +5527,7 @@ class Query
     protected function buildSubquery(callable $callback): array
     {
         // Create a fresh query instance with the same connection
-        $subquery = new self($this->connection);
+        $subquery = new self($this->connectionOrFail());
 
         // Execute the callback to build the subquery
         $callback($subquery);

@@ -17,7 +17,7 @@ interface MessageStore
      * Store a message
      *
      * @param   array<mixed>   $data
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  void
      */
     public function store($data, $domain);
@@ -25,7 +25,7 @@ interface MessageStore
     /**
      * Return a list of messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  array<mixed>
      */
     public function retrieve($domain);
@@ -33,7 +33,7 @@ interface MessageStore
     /**
      * Clear all messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  void
      */
     public function clear($domain);
@@ -41,7 +41,7 @@ interface MessageStore
     /**
      * Return a count of messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  integer
      */
     public function total($domain);

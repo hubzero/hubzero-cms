@@ -87,6 +87,7 @@ class Sef extends Plugin
      *
      * @param   mixed  $buffer
      * @return  void
+     * @phpstan-assert !null $buffer  It aborts the request when a PCRE call failed
      */
     private function checkBuffer($buffer)
     {

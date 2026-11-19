@@ -103,12 +103,12 @@ class Connect extends Obj
     /**
      * Constructor
      *
-     * @param   \Components\Projects\Models\Project|null   $model   Project
+     * @param   \Components\Projects\Models\Project   $model   Project
      * @param   integer  $userid  User ID
      * @param   string   $zone    Default time zone
      * @return  void
      */
-    public function __construct($model = null, $userid = 0, $zone = 'UTC')
+    public function __construct($model, $userid = 0, $zone = 'UTC')
     {
         $this->db   = App::get('db');
         $this->model = $model;
@@ -765,6 +765,8 @@ class Connect extends Obj
             $mimeType  = $file->getMimeType();
             $md5       = $file->getMd5Hash();
             $parentId  = $parentId ? $parentId : $file->get('remoteParent');
+        } elseif (!$file) {
+            return false;
         } else {
             $title     = $file['title'];
             $localPath = $file['fullPath'];

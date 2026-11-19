@@ -173,7 +173,8 @@ class Palette
      */
     public function properties()
     {
-        if (!$this->isValid()) {
+        $rgb = $this->rgb;
+        if ($rgb === null) {
             return [];
         }
 
@@ -182,8 +183,8 @@ class Palette
 
         // The band across the head of a component is a wash of the accent, and
         // the accent's own hover colour lands on it.
-        $wash = self::mix($this->rgb, $white, 0.92);
-        $edge = self::mix($this->rgb, $white, 0.70);
+        $wash = self::mix($rgb, $white, 0.92);
+        $edge = self::mix($rgb, $white, 0.70);
 
         // Accent-coloured text lands on two near-white grounds: that wash, and
         // the surface tint panels are painted in - @colorSurface, which has to
@@ -192,8 +193,8 @@ class Palette
         // darker of them clears plain white as well.
         $surface = [0xF6, 0xF8, 0xFA];
 
-        $onWash    = self::darkenTo($this->rgb, $wash, 4.5);
-        $onSurface = self::darkenTo($this->rgb, $surface, 4.5);
+        $onWash    = self::darkenTo($rgb, $wash, 4.5);
+        $onSurface = self::darkenTo($rgb, $surface, 4.5);
 
         $accent = (self::luminance($onWash) <= self::luminance($onSurface))
             ? $onWash
@@ -201,8 +202,8 @@ class Palette
 
         // The shade under it carries links, buttons and the footer's ground,
         // where a little more room is worth having.
-        $dark  = self::darkenTo($this->rgb, $white, 7.0);
-        $light = self::mix($this->rgb, $white, 0.25);
+        $dark  = self::darkenTo($rgb, $white, 7.0);
+        $light = self::mix($rgb, $white, 0.25);
 
         // Over the darker shade, which is at least 7:1 on white, white always
         // wins - but say so by measuring rather than by assuming, because the

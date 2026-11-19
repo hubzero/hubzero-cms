@@ -214,7 +214,7 @@ class Link extends Relational
      * @param   string  $type
      * @param   string  $authenticator
      * @param   string|null  $domain
-     * @param   string  $username
+     * @param   string|null  $username
      * @return  mixed   object on success and false on failure
      */
     public static function find($type, $authenticator, $domain, $username)
