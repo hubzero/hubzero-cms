@@ -12,17 +12,13 @@ use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Cache\Auditor;
 
 /**
- * APC storage for Cache manager
+ * APC storage for Cache manager, backed by the APCu extension
+ *
+ * The original APC extension does not exist for PHP 7 and later; APCu is its
+ * user cache, so the handler keeps its name and uses APCu.
  */
 class Apc extends None
 {
-    /**
-     * Indicates if APCu is supported.
-     *
-     * @var  bool
-     */
-    protected $apcu = false;
-
     /**
      * Create a new file cache store instance.
      *
@@ -33,10 +29,8 @@ class Apc extends None
     {
         parent::__construct($options);
 
-        $this->apcu = function_exists('apcu_fetch');
-
         if (!self::isAvailable()) {
-            throw new RuntimeException('Cannot use Apc cache storage. Apc extension is not loaded.');
+            throw new RuntimeException('Cannot use Apc cache storage. APCu extension is not loaded.');
         }
     }
 
@@ -47,7 +41,7 @@ class Apc extends None
      */
     public static function isAvailable()
     {
-        return extension_loaded('apc');
+        return extension_loaded('apcu');
     }
 
     /**
@@ -63,7 +57,7 @@ class Apc extends None
         $key = $this->id($key);
         $seconds = $minutes * 60;
 
-        return $this->apcu ? apcu_add($key, $value, $seconds) : apc_add($key, $value, $seconds);
+        return apcu_add($key, $value, $seconds);
     }
 
     /**
@@ -79,7 +73,7 @@ class Apc extends None
         $key = $this->id($key);
         $seconds = $minutes * 60;
 
-        return $this->apcu ? apcu_store($key, $value, $seconds) : apc_store($key, $value, $seconds);
+        return apcu_store($key, $value, $seconds);
     }
 
     /**
@@ -103,7 +97,7 @@ class Apc extends None
     public function get($key)
     {
         $key = $this->id($key);
-        return $this->apcu ? apcu_fetch($key) : apc_fetch($key);
+        return apcu_fetch($key);
     }
 
     /**
@@ -115,7 +109,7 @@ class Apc extends None
     public function has($key)
     {
         $key = $this->id($key);
-        return $this->apcu ? apcu_exists($key) : apc_exists($key);
+        return apcu_exists($key);
     }
 
     /**
@@ -127,7 +121,13 @@ class Apc extends None
     public function forget($key)
     {
         $key = $this->id($key);
-        return $this->apcu ? apcu_delete($key) : apc_delete($key);
+
+        // Like the other stores, an item that is not there counts as removed
+        if (!apcu_exists($key)) {
+            return true;
+        }
+
+        return apcu_delete($key);
     }
 
     /**
@@ -140,11 +140,11 @@ class Apc extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
+        $allinfo = apcu_cache_info() ?: [];
 
         foreach ($allinfo['cache_list'] as $key) {
             if (strpos($key['info'], $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
-                $this->apcu ? apcu_delete($key['info']) : apc_delete($key['info']);
+                apcu_delete($key['info']);
             }
         }
         return true;
@@ -159,13 +159,12 @@ class Apc extends None
     {
         $hash = $this->options['hash'];
 
-        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
-
-        $keys = $allinfo['cache_list'];
+        $allinfo = apcu_cache_info() ?: [];
 
         foreach ($allinfo['cache_list'] as $key) {
-            if (strpos($key['info'], $hash . '-cache-')) {
-                $this->apcu ? apcu_fetch($key['info']) : apc_fetch($key['info']);
+            // Fetching an expired entry is what removes it
+            if (strpos($key['info'], $hash . '-cache-') === 0) {
+                apcu_fetch($key['info']);
             }
         }
 
@@ -179,7 +178,7 @@ class Apc extends None
      */
     public function all()
     {
-        $allinfo = ($this->apcu ? apcu_cache_info() : apc_cache_info('user')) ?: [];
+        $allinfo = apcu_cache_info() ?: [];
 
         $keys = $allinfo['cache_list'];
 

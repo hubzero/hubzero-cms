@@ -13,9 +13,10 @@ use Exception;
 use Hubzero\Facades\Lang;
 
 /**
- * APC session storage handler
+ * APC session storage handler, backed by the APCu extension
  *
- * Inspired by Joomla's JSessionStorageApc class
+ * Inspired by Joomla's JSessionStorageApc class. The original APC extension does
+ * not exist for PHP 7 and later; APCu is its user cache.
  */
 class Apc extends Store
 {
@@ -55,7 +56,7 @@ class Apc extends Store
     #[\ReturnTypeWillChange]
     public function read($id)
     {
-        return (string) apc_fetch($this->key($id));
+        return (string) apcu_fetch($this->key($id));
     }
 
     /**
@@ -68,7 +69,7 @@ class Apc extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        return apc_store($this->key($id), $data, (int) ini_get("session.gc_maxlifetime"));
+        return apcu_store($this->key($id), $data, (int) ini_get("session.gc_maxlifetime"));
     }
 
     /**
@@ -80,7 +81,7 @@ class Apc extends Store
     #[\ReturnTypeWillChange]
     public function destroy($id)
     {
-        return apc_delete($this->key($id));
+        return apcu_delete($this->key($id));
     }
 
     /**
@@ -101,6 +102,6 @@ class Apc extends Store
      */
     public static function isAvailable()
     {
-        return extension_loaded('apc');
+        return extension_loaded('apcu');
     }
 }
