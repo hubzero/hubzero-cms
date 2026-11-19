@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 $this->css('enroll');
 ?>
 
-<form class="gauth2fa" action="<?php echo Request::current(); ?>" method="POST">
+<form class="gauth2fa" action="<?php echo $this->escape(Request::current()); ?>" method="POST">
     <div class="title">Google Authenticator</div>
     <p class="subtitle"> Enter the currnet code from the Google Authenticator App.</p>
 

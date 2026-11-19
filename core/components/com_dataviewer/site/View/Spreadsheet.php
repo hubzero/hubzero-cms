@@ -538,7 +538,8 @@ class Spreadsheet
                         print '<th><input title="' . $title . '" type="text" placeholder="' . $label
                         . '" disabled=disabled /></th>';
                     } elseif (isset($filted_view[$id])) {
-                        print '<th><input type="text" placeholder="' . $filted_view[$id]
+                        print '<th><input type="text" placeholder="'
+                        . htmlspecialchars((string) $filted_view[$id], ENT_QUOTES, 'UTF-8')
                         . '" disabled=disabled style="background: yellow;" /></th>';
                     } else {
                         print '<th><input title="' . $title . '" type="text" placeholder="' . $label
@@ -587,7 +588,7 @@ class Spreadsheet
             dv_show_filters = <?php print $dv_show_filters; ?>;
             dv_settings.show_charts = <?php print Request::getInt('show_chart', 'undefined'); ?>;
             dv_show_customizer = <?php print ($show_customizer) ? 'true' : 'false'; ?>;
-            var dv_show_maps = <?php print Request::getString('show_map', 'undefined'); ?>;
+            var dv_show_maps = <?php print Request::getString('show_map', '') !== '' ? 'true' : 'undefined'; ?>;
         </script>
 
             <?php
@@ -595,7 +596,7 @@ class Spreadsheet
                 . $custom_view_url . $custom_field_url;
             ?>
         <form style="display: none;" id="dv-spreadsheet-dl" method="POST"
-            action="<?php print $downloadAction; ?>">
+            action="<?php print htmlspecialchars($downloadAction, ENT_QUOTES, 'UTF-8'); ?>">
         </form>
     </div>
             <?php

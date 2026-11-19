@@ -412,7 +412,7 @@ class Import extends SiteController
      */
     public function getformatTask()
     {
-        echo 'format' . Request::getString('format', 'apa');
+        echo 'format' . htmlspecialchars(Request::getString('format', 'apa'), ENT_QUOTES, 'UTF-8');
     }
 
     /**

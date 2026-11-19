@@ -289,7 +289,8 @@ class Categories extends AdminController
      */
     public function elementTask()
     {
-        $ctrl = Request::getString('ctrl', 'fields');
+        // A control name, printed into id and name attributes
+        $ctrl = Request::getCmd('ctrl', 'fields');
 
         $option = new stdClass();
         $option->label = '';
