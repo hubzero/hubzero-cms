@@ -156,7 +156,7 @@ $formAction = Route::url(
                             $desc = $this->escape($item->get('description'));
                             $menutypeEsc = $this->escape($menutype);
                             echo '<a href="' . $editUrl
-                                . ' title=' . $desc . '">'
+                                . '" title="' . $desc . '">'
                                 . $menutypeEsc . '</a>';
                             ?>)
                         <?php else : ?>

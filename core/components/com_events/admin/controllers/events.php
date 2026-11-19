@@ -453,10 +453,19 @@ class Events extends AdminController
             $row->created_by = User::get('id');
         }
 
-        // Set some fields and do some cleanup work
+        // The form does not post the scope: an existing event keeps its own, so a
+        // group's event is not taken for a site event below and in check()
+        if (!$row->scope && $row->id) {
+            $stored = new Event($this->database);
+            $stored->load($row->id);
+            $row->scope    = $stored->scope;
+            $row->scope_id = $stored->scope_id;
+        }
+
+        // A group's calendar has no site categories, so only a site event needs one
         if ($row->catid) {
             $row->catid = intval($row->catid);
-        } elseif (!$row->catid) {
+        } elseif ($row->scope != 'group') {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('EVENT_CAL_LANG_EVENT_REQUIRED'),

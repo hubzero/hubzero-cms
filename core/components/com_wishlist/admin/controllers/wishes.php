@@ -363,7 +363,11 @@ class Wishes extends AdminController
             $page->set('id', null);
         }
 
-        if (!$page->save()) {
+        // A wish need not have a plan: an empty plan section on a wish that has
+        // none is no plan, not one to refuse for its missing text
+        $hasPlan = !$page->isNew() || trim(strip_tags((string) $page->get('pagetext'))) !== '';
+
+        if ($hasPlan && !$page->save()) {
             Notify::error($page->getError());
             $this->editTask($row);
 
