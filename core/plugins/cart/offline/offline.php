@@ -78,10 +78,10 @@ class Offline extends Plugin
     }
 
     /**
-     * Return a list of filters that can be applied
+     * Refuse a payment postback for the offline provider, which has no gateway
      *
-     * @param   mixed  $postData
-     * @return  array<mixed>|false
+     * @param   mixed  $postData  The postback, unused
+     * @return  array<mixed>|false  False for other providers
      */
     public function onPostback($postData)
     {
@@ -90,40 +90,14 @@ class Offline extends Plugin
             return false;
         }
 
-        // get the transaction Id
-        // Get transaction ID
-        $customData = explode('-', $postData['custom']);
-        $tId = $customData[1];
-
-        $response = [];
-        $response['status'] = 'ok';
-
-        if (!$tId) {
-            // Transaction id couldn't be extracted
-            $response['status'] = 'error';
-            $response['error'] = 'Postback did not have the valid transaction ID ';
-        }
-
-        $tInfo = Cart::getTransactionFacts($tId);
-
-        if (!$tInfo) {
-            // Transaction doesn't exist, set error
-            $response['status'] = 'error';
-            $response['error'] =  'Incoming payment for the transaction that does not exist: ' . $tId;
-        }
-
-        // Some verification would take place here...
-
-        if ($response['status'] == 'ok') {
-            $message = 'Transaction completed. ';
-            $message .= 'Transaction ID: ' . $tId;
-            $response['msg'] = $message;
-
-            $response['tInfo'] = $tInfo;
-            $response['payment'] = ['Offline', false];
-        }
-
-        return $response;
+        // Offline has no gateway to post back: the member confirms the order on
+        // the hub (cart/order/pay), which checks it is theirs. Accepting a
+        // postback here completed any transaction for whoever posted its ID,
+        // with a token anyone can compute.
+        return [
+            'status' => 'error',
+            'error'  => 'The offline payment provider takes no postback; order not completed.',
+        ];
     }
 
     /**

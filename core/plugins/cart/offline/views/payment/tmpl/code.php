@@ -6,7 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Html;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -18,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 ?>
 
-<?php echo '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">'; ?>
+<form method="post" action="<?= Route::url('index.php?option=com_cart&controller=order&task=pay') ?>">
 
     <?php
 
@@ -32,5 +33,6 @@ defined('_HZEXEC_') or die();
     ?>
 
     <input type="hidden" name="provider" value="offline">
+    <?= Html::input('token') ?>
     <input type="submit" value="Pay with offline" />
 </form>

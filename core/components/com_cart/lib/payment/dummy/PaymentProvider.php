@@ -8,8 +8,6 @@
 
 namespace Components\Cart\Lib\Payment\Dummy;
 
-use Hubzero\Facades\Request;
-
 /**
  * UPay payment provider
  */
@@ -59,7 +57,8 @@ class PaymentProvider
      */
     public function getPaymentCode()
     {
-        $code  = '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">';
+        $code  = '<form method="post" action="'
+            . \Hubzero\Facades\Route::url('index.php?option=com_cart&controller=order&task=pay') . '">';
         $code .= '<input type="hidden" value="dodummypayment" name="cmd">';
 
         foreach ($this->buttonVars as $k => $v) {

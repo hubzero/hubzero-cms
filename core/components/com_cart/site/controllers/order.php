@@ -20,6 +20,7 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Plugin;
 use Hubzero\Facades\User;
 
 /**
@@ -177,6 +178,68 @@ class Order extends ComponentController
     }
 
     /**
+     * Pay with the offline provider
+     *
+     * Offline takes payment outside the hub (or not at all, when testing), so
+     * no gateway posts back: the member confirms the order here and it
+     * completes. Its button used to post to a test controller removed long
+     * ago, which left the order waiting for payment that could never arrive.
+     *
+     * The transaction token is no proof of anything on its own, since it is
+     * built from a salt in the source; the order has to be the signed-in
+     * member's own, on a form of the hub's, and waiting for payment.
+     *
+     * @return  void
+     */
+    public function payTask()
+    {
+        if (
+            Request::getMethod() != 'POST'
+            || Request::getWord('provider', '', 'post') != 'offline'
+            || !Plugin::isEnabled('cart', 'offline')
+        ) {
+            App::abort(404, Lang::txt('Page not found'));
+        }
+
+        Request::checkToken();
+
+        $custom = explode('-', Request::getString('custom', '', 'post'), 2);
+        $token = $custom[0];
+        $tId = (int) ($custom[1] ?? 0);
+
+        if (!$tId || !Cart::verifySecurityToken($token, $tId)) {
+            App::abort(403, 'Error processing your order. Failed to verify security token.');
+        }
+
+        $tInfo = Cart::getTransactionFacts($tId);
+
+        if (
+            !$tInfo
+            || User::isGuest()
+            || Cart::getCartUser($tInfo->info->crtId ?? null) !== (int) User::get('id')
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        if (($tInfo->info->tStatus ?? '') != 'awaiting payment') {
+            Notify::error('This order is not waiting for payment.');
+            App::redirect(Route::url('index.php?option=' . $this->option, false));
+        }
+
+        $logger = new CartMessenger('Payment Offline');
+        $logger->setMessage('Transaction completed. Transaction ID: ' . $tId);
+        $logger->setPostback($_POST);
+        $logger->log(LoggingLevel::INFO);
+
+        $this->completeOrder($tInfo, ['Offline', false]);
+
+        App::redirect(
+            rtrim(Route::url('index.php?option=' . $this->option, false), '/')
+                . '/order/complete?provider=offline&custom=' . urlencode($token . '-' . $tId),
+        );
+    }
+
+    /**
      * Payment gateway postback: make sure everything checks out and complete transaction
      *
      * @return  void
@@ -225,7 +288,7 @@ class Order extends ComponentController
      * Complete transaction
      *
      * @param   \stdClass   $tInfo
-     * @param   boolean  $paymentInfo
+     * @param   array<int, mixed>|false  $paymentInfo  Provider name and payment details
      * @return  bool
      */
     private function completeOrder($tInfo, $paymentInfo = false)
