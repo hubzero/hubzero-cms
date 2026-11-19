@@ -112,8 +112,8 @@ class Spreadsheet
             // Custom views
             $custom_view = Request::getString('custom_view', false);
             $custom_view_url = '';
-            if ($custom_field) {
-                $custom_view_url = '&custom_view=' . $custom_field;
+            if ($custom_view) {
+                $custom_view_url = '&custom_view=' . $custom_view;
             }
 
             // overrides
