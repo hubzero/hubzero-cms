@@ -109,49 +109,34 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Prepares the Response before it is sent to the client.
+     * Send the response, first making a bare "index.php" target point at the
+     * client's own entry point
      *
-     * This method tweaks the Response to ensure that it is
-     * compliant with RFC 2616. Most of the changes are based on
-     * the Request that is "associated" with this Response.
+     * The target, not the content: the content is the HTML page Symfony
+     * builds from the target, and reading that as the address put a mangled
+     * copy of the first line of it in the body while leaving the Location
+     * header untouched. Other relative and root-relative targets are left to
+     * the browser, which resolves them against the page it is on.
      *
      * @return  $this  The current response.
      */
     public function send()
     {
-        if ($this->request) {
-            $url = $this->getContent();
+        $url = $this->getTargetUrl();
 
-            // Check for relative internal links.
-            if (preg_match('/^index2?\.php/', (string) $url)) {
-                $url = $this->request->base() . $url;
-            }
+        // Only the first line: a line break in a header would end it
+        $url = (preg_split("/[\r\n]/", $url) ?: [''])[0];
 
-            // Strip out any line breaks.
-            $url = preg_split("/[\r\n]/", (string) $url) ?: [];
-            $url = $url[0];
-
-            // If we don't start with a http we need to fix this before we proceed.
-            // We could validly start with something else (e.g. ftp), though this would
-            // be unlikely and isn't supported by this API.
-            if (!preg_match('/^http/i', $url)) {
-                $prefix = $this->request->scheme() . $this->request->getUserInfo() . $this->request->host();
-
-                if ($url[0] == '/') {
-                    // We just need the prefix since we have a path relative to the root.
-                    $url = $prefix . $url;
-                } else {
-                    // It's relative to where we are now, so lets add that.
-                    $parts = explode('/', $this->request->path());
-                    array_pop($parts);
-                    $path = implode('/', $parts) . '/';
-                    $url = $prefix . $path . $url;
-                }
-            }
-
-            $this->setContent($url);
+        // "index.php?..." is relative to the client's entry point, not to the
+        // path a routed page happens to be on
+        if ($this->request && preg_match('/^index2?\.php/', $url)) {
+            $url = rtrim($this->request->base(true), '/') . '/' . $url;
         }
 
-        return parent::send(); //prepare($request);
+        if ($url !== '' && $url !== $this->getTargetUrl()) {
+            $this->setTargetUrl($url);
+        }
+
+        return parent::send();
     }
 }
