@@ -19,7 +19,7 @@ abstract class Facade
     /**
      * The application instance being facaded.
      *
-     * @var  object  \Hubzero\Base\Application
+     * @var  \Hubzero\Container\Container|null  The application (a bare container in tests)
      */
     protected static $app;
 
@@ -40,7 +40,7 @@ abstract class Facade
     /**
      * Get the application instance behind the facade.
      *
-     * @return  \Hubzero\Base\Application|null  Null until an application is set
+     * @return  \Hubzero\Container\Container|null  Null until an application is set
      */
     public static function getApplication()
     {
@@ -50,7 +50,7 @@ abstract class Facade
     /**
      * Set the application instance.
      *
-     * @param   object  $app  \Hubzero\Base\Application
+     * @param   \Hubzero\Container\Container  $app  The application (a bare container in tests)
      * @return  void
      */
     public static function setApplication($app)
@@ -66,7 +66,7 @@ abstract class Facade
      */
     public static function swap($instance)
     {
-        static::$app[static::getAccessor()] = $instance;
+        static::$app->offsetSet(static::getAccessor(), $instance);
     }
 
     /**

@@ -57,6 +57,7 @@ class EntryTest extends Basic
         $this->store = new Memory();
 
         $app = \Hubzero\Facades\Facade::getApplication();
+        $this->assertInstanceOf(\Hubzero\Container\Container::class, $app);
         $store = $this->store;
         $app['cache.store'] = function () use ($store) {
             return $store;
@@ -124,6 +125,7 @@ class EntryTest extends Basic
             PHP);
 
         $app = \Hubzero\Facades\Facade::getApplication();
+        $this->assertInstanceOf(\Hubzero\Container\Container::class, $app);
         $app['language'] = function () {
             return new class {
                 /**

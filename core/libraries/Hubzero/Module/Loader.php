@@ -23,9 +23,9 @@ use Hubzero\Facades\Request;
 class Loader
 {
     /**
-     * The application implementation.
+     * The application implementation (a bare container in tests).
      *
-     * @var  \Hubzero\Base\Application
+     * @var  \Hubzero\Container\Container
      */
     protected $app;
 
@@ -39,7 +39,7 @@ class Loader
     /**
      * Constructor
      *
-     * @param   \Hubzero\Base\Application $app
+     * @param   \Hubzero\Container\Container  $app  The application (a bare container in tests)
      * @param   \Hubzero\Debug\Profiler|null  $profiler
      * @return  void
      */
@@ -452,7 +452,12 @@ class Loader
                 ->whereEquals('mm.menuid', (int) $Itemid, 1)->orWhere('mm.menuid', '<=', '0', 1)->resetDepth();
 
             // Filter by language
-            if ($this->app->isSite() && $this->app->get('language.filter')) {
+            // Only the application knows its client; a bare container (tests) is no site
+            if (
+                $this->app instanceof \Hubzero\Base\Application
+                && $this->app->isSite()
+                && $this->app->get('language.filter')
+            ) {
                 $query->whereIn('m.language', [$lang, '*']);
             }
 
