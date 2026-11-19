@@ -299,8 +299,8 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
         }
 
         // Make sure we have a scistarter account
-        if ($account->user_id > 0) {
-            $username = (string) $account->email;
+        if (($account->user_id ?? 0) > 0) {
+            $username = (string) ($account->email ?? '');
 
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'scistarter', '');
 

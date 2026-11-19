@@ -42,6 +42,6 @@ $item_heading = $params->get('item_heading', 'h4');
 
 <?php echo $item->introtext; ?>
 
-<?php if (isset($item->link) && $item->readmore != 0 && $params->get('readmore')) :
-    echo '<a class="readmore" href="' . $item->link . '">' . $item->linkText . '</a>';
+<?php if (isset($item->link) && !empty($item->readmore) && $params->get('readmore')) :
+    echo '<a class="readmore" href="' . $item->link . '">' . ($item->linkText ?? '') . '</a>';
 endif;

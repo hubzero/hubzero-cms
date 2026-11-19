@@ -167,7 +167,8 @@ $this
 
                                     if (!empty($row->reviewed_by)) {
                                         $reviewed = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED'))
-                                            . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y')
+                                            . ' <span class="prominent">'
+                                            . Date::of($row->reviewed ?? null)->toLocal('M d, Y')
                                             . '</span> ';
 
                                         $reviewer = User::getInstance($row->reviewed_by);

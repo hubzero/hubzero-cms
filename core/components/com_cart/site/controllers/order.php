@@ -103,7 +103,7 @@ class Order extends ComponentController
 
         if (
             empty($tInfo->info->tStatus)
-            || $tInfo->info->tiCustomerStatus != 'unconfirmed'
+            || ($tInfo->info->tiCustomerStatus ?? '') != 'unconfirmed'
             || $tInfo->info->tStatus != 'completed'
         ) {
             Notify::error('Error processing your order...');

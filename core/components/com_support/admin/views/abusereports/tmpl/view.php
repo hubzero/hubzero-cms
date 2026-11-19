@@ -30,7 +30,7 @@ $reporter = User::getInstance($this->report->created_by);
 $link = '';
 
 if (is_object($this->reported)) {
-    $author = User::getInstance($this->reported->author);
+    $author = User::getInstance($this->reported->author ?? 0);
 
     if ($author->get('username')) {
         $this->set('title', $this->title . ($author->get('username')));
@@ -66,7 +66,9 @@ Html::behavior('modal', 'a.modals');
                                 // is what the site twin (site/views/abuse/tmpl/display.php) does.?>
                                 <p>
                                     <?= (is_object($this->reported))
-                                        ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text))
+                                        ? \Hubzero\Utility\Sanitize::html(
+                                            stripslashes((string) ($this->reported->text ?? '')),
+                                        )
                                         : '' ?>
                                 </p>
                                 <?= is_object($this->reported)

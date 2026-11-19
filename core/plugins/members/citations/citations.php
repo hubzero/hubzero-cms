@@ -382,7 +382,7 @@ class Citations extends Plugin
                 $f = array_map('trim', explode("\n", $f));
                 $f = array_values(array_filter($f));
 
-                $fields[strtolower(str_replace(' ', '', $type->type_title))] = $f;
+                $fields[strtolower(str_replace(' ', '', $type->type_title ?? ''))] = $f;
             }
         }
 

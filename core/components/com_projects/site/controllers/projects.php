@@ -472,7 +472,7 @@ class Projects extends Base
 
             // Redirect to publication
             $pub = $this->model->getPublication();
-            if ($pub && $pub->id) {
+            if (!empty($pub->id)) {
                 App::redirect(Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id));
             } else {
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);

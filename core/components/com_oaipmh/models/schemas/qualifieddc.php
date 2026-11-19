@@ -96,7 +96,7 @@ class QualifiedDC extends DublinCore
             $gran = 'Y-m-d\Th:i:s\Z';
         }
 
-        $datestamp = strtotime($result->date);
+        $datestamp = strtotime($result->date ?? '');
         $datestamp = gmdate($gran, $datestamp);
         if (!empty($datestamp)) {
             $this->response->element('datestamp', $datestamp)->end();

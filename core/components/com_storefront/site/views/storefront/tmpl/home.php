@@ -65,7 +65,7 @@ $this
                         '/site/storefront/collections',
                     );
                     $imgPath = '/app/' . trim($collectionsFolder, DS)
-                        . DS . $category->cId . DS;
+                        . DS . ($category->cId ?? '') . DS;
                     echo "'" . $imgPath . $category->imgName . "'";
                     echo ')"></div>';
                 }

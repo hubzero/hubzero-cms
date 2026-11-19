@@ -143,7 +143,7 @@ $this->css();
                 if (isset($row->offering_alias)) {
                     $sfx .= '&offering=' . $row->offering_alias;
                 }
-                if (isset($row->section_alias) && !$row->is_default) {
+                if (isset($row->section_alias) && empty($row->is_default)) {
                     $sfx .= ':' . $row->section_alias;
                 }
 

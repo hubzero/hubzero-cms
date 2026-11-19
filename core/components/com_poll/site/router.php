@@ -57,7 +57,7 @@ class Router extends Base
                         && isset($query['view']) && $query['view'] != 'category'
                         && isset($item->query['id']) && $item->query['id'] == $query['id']
                     ) {
-                        $itemid = $item->id;
+                        $itemid = $item->id ?? null;
                     }
                 }
             }
@@ -72,7 +72,7 @@ class Router extends Base
                         // Check for an undealt with newsfeed id.
                         if (isset($query['id'])) {
                             // This menu item links to the newsfeed view but we need to append the newsfeed id to it.
-                            $itemid = $item->id;
+                            $itemid = $item->id ?? null;
                             $segments[] = isset($query['alias']) ? $query['id'] . ':' . $query['alias'] : $query['id'];
                             break;
                         }

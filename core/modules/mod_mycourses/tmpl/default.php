@@ -46,7 +46,7 @@ $total = count($this->courses);
                     if (isset($course->offering_alias)) {
                         $sfx .= '&offering=' . $course->offering_alias;
                     }
-                    if (isset($course->section_alias) && !$course->is_default) {
+                    if (isset($course->section_alias) && empty($course->is_default)) {
                         $sfx .= ':' . $course->section_alias;
                     }
                     //$status = $this->getStatus($group);
