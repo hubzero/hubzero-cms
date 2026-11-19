@@ -20,6 +20,6 @@ class Toolbar extends Renderer
      */
     public function render()
     {
-        return View::displayToolbar($this->group, 'id="group_options"', true);
+        return View::displayToolbar($this->groupOrFail(), 'id="group_options"', true);
     }
 }

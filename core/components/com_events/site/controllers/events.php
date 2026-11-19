@@ -836,7 +836,7 @@ class Events extends SiteController
         Document::setTitle(
             Lang::txt(strtoupper($this->name))
                 . ': '
-                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task))
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper((string) $this->task))
                 . ': '
                 . stripslashes($row->title),
         );
@@ -895,7 +895,7 @@ class Events extends SiteController
             'option' => $this->option,
             'title' => Lang::txt(strtoupper($this->name))
                 . ': '
-                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper((string) $this->task)),
             'task' => $this->task,
             'year' => $eyear,
             'month' => $emonth,
@@ -1737,7 +1737,7 @@ class Events extends SiteController
         Document::setTitle(
             Lang::txt(strtoupper($this->name))
                 . ': '
-                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper((string) $this->task)),
         );
 
         // Set the pathway
@@ -1752,7 +1752,7 @@ class Events extends SiteController
             $p .= '&id=' . $row->id;
         }
         Pathway::append(
-            Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
+            Lang::txt(strtoupper($this->name) . '_' . strtoupper((string) $this->task)),
             $p,
         );
         if ($row->id) {
@@ -1767,7 +1767,7 @@ class Events extends SiteController
         $this->view->option = $this->option;
         $this->view->set('title', Lang::txt(strtoupper($this->name))
             . ': '
-            . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)));
+            . Lang::txt(strtoupper($this->name) . '_' . strtoupper((string) $this->task)));
         $this->view->task = $this->task;
         $this->view->set('config', $this->config);
         $this->view->set('row', $row);

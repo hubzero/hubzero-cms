@@ -93,7 +93,7 @@ class Node extends Obj
         }
         $this->link   = $link ? \Hubzero\Utility\Str::ampReplace($link) : '';
         $this->class  = $class;
-        $this->active = $active;
+        $this->active = (bool) $active;
 
         $this->id = null;
         if (!empty($link) && $link !== '#') {

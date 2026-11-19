@@ -96,7 +96,7 @@ class Download
     /**
      * Set the reference
      *
-     * @param   \Components\Citations\Models\Citation  $reference
+     * @param   \Components\Citations\Models\Citation|null  $reference
      * @return  void
      */
     public function setReference($reference)

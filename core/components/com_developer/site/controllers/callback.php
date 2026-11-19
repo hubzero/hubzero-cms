@@ -47,7 +47,7 @@ class Callback extends SiteController
             App::redirect($localOriginUrl);
         }
 
-        $accessToken = $oauthClient->getAccessToken($authorizationCode);
+        $accessToken = $oauthClient->getAccessToken((string) $authorizationCode);
 
         //if this is a new connection, we can save the token on the server to ensure that it is used next time
         if ($connectionId) {

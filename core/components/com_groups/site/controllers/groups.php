@@ -325,7 +325,7 @@ class Groups extends Base
             $pages = Helpers\Pages::addHomePage($group, $pages);
 
             // Fetch the active page
-            $activePage = Helpers\Pages::getActivePage($group, $pages);
+            $activePage = $pages ? Helpers\Pages::getActivePage($group, $pages) : null;
 
             // Are we on the login?
             if ($this->view->get('trueTab') == 'login') {

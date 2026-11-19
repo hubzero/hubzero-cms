@@ -156,7 +156,7 @@ class Importer
         $this->autoDetectAdapter($import);
 
         // call count on adapter
-        return $this->getAdapter()->count($import);
+        return $this->adapterOrFail()->count($import);
     }
 
     /**
@@ -171,7 +171,7 @@ class Importer
         $this->autoDetectAdapter($import);
 
         // call count on adapter
-        return $this->getAdapter()->headers($import);
+        return $this->adapterOrFail()->headers($import);
     }
 
     /**
@@ -191,6 +191,22 @@ class Importer
         $import->markRun($dryRun);
 
         // call process on adapter
-        return $this->getAdapter()->process($import, $callbacks, (bool) $dryRun);
+        return $this->adapterOrFail()->process($import, $callbacks, (bool) $dryRun);
+    }
+
+    /**
+     * The adapter, for the calls that need one
+     *
+     * @return  \Hubzero\Content\Import\Adapter
+     * @throws  \RuntimeException  When none could handle the import
+     */
+    private function adapterOrFail()
+    {
+        $adapter = $this->getAdapter();
+        if ($adapter === null) {
+            throw new \RuntimeException('No import adapter can handle this file');
+        }
+
+        return $adapter;
     }
 }

@@ -21,7 +21,7 @@ class GetParams extends Macro
      *
      * @param   string  $element     com_xyz
      * @param   bool    $returnRaw  whether or not to return jregistry object or raw param string
-     * @return  \Hubzero\Config\Registry|string
+     * @return  \Hubzero\Config\Registry|string|null
      **/
     public function __invoke($element, $returnRaw = false)
     {

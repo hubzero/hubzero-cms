@@ -152,6 +152,10 @@ class Detector implements DetectorInterface
             $dbList = [];
 
             $storage = $this->getModel();
+            if (!$storage) {
+                // No word list to check against
+                return false;
+            }
             $rows = $storage->rows();
 
             if ($rows->count()) {

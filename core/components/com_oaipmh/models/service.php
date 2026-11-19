@@ -196,7 +196,7 @@ class Service extends Obj
     /**
      * Get schema
      *
-     * @return  \Components\Oaipmh\Models\Schema
+     * @return  \Components\Oaipmh\Models\Schema|null
      */
     public function getSchema()
     {

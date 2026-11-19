@@ -20,6 +20,6 @@ class Menu extends Renderer
      */
     public function render()
     {
-        return View::displaySections($this->group, 'class="cf"');
+        return View::displaySections($this->groupOrFail(), 'class="cf"');
     }
 }

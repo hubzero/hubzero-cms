@@ -61,7 +61,7 @@ class Sanitize
         return trim((string) preg_replace(
             '/\s{2,}/u',
             ' ',
-            preg_replace('/[\n\r\t]+/', ' ', (string) ($str == null ? '' : $str)),
+            (string) preg_replace('/[\n\r\t]+/', ' ', (string) ($str == null ? '' : $str)),
         ));
     }
 
@@ -90,7 +90,7 @@ class Sanitize
      */
     public static function stripLinks($text)
     {
-        return (string) preg_replace('|<a\s+[^>]+>|im', '', preg_replace('|<\/a>|im', '', $text));
+        return (string) preg_replace('|<a\s+[^>]+>|im', '', (string) preg_replace('|<\/a>|im', '', $text));
     }
 
     /**
@@ -196,7 +196,7 @@ class Sanitize
             '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a'
                 . '[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2nojavascript...',
-            $string,
+            (string) $string,
         );
         $string = (string) preg_replace(
             '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r'
@@ -679,7 +679,7 @@ class Sanitize
                 }
                 return $str;
             },
-            $source,
+            (string) $source,
         );
 
         return $source;

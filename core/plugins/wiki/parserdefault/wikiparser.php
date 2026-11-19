@@ -1313,7 +1313,7 @@ class WikiParser
             '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r'
                 . '[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2novbscript...',
-            $string,
+            (string) $string,
         );
 
         // <span style="width: expression(alert('Ping!'));"></span>
@@ -1345,7 +1345,7 @@ class WikiParser
                 '#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer'
                     . '|bgsound|title|base)[^>]*>#i',
                 '',
-                $string,
+                (string) $string,
             );
         } while ($oldstring != $string);
 

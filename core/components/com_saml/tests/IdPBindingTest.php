@@ -167,6 +167,7 @@ class IdPBindingTest extends Basic
 
         $message = $this->idp->readSAMLRequest($this->arrive('GET', $location))->getMessage();
 
+        $this->assertNotNull($message);
         $this->assertFalse($this->idp->validateRequestSignature($message, $this->sp('sp')));
     }
 
@@ -184,6 +185,7 @@ class IdPBindingTest extends Basic
         $sp = ServiceProvider::blank()->set('signing_cert', base64_encode('not a certificate'));
 
         $this->assertNull($sp->certificate());
+        $this->assertNotNull($message);
         $this->assertFalse($this->idp->validateRequestSignature($message, $sp));
     }
 

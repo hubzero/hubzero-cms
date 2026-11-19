@@ -26,7 +26,7 @@ class Content extends Renderer
         // based on which scope display content
         switch ($scope) {
             case 'before':
-                View::displayBeforeSectionsContent($this->group);
+                View::displayBeforeSectionsContent($this->groupOrFail());
 
                 return;
             default:

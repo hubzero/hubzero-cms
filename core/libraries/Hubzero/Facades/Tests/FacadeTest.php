@@ -33,7 +33,9 @@ class FacadeTest extends Basic
 
     public function tearDown(): void
     {
-        Facade::setApplication($this->app);
+        if ($this->app) {
+            Facade::setApplication($this->app);
+        }
     }
 
     /**

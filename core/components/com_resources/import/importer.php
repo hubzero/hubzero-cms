@@ -96,7 +96,7 @@ class Importer
     /**
      * Method to get adapater
      *
-     * @return  \Components\Resources\Import\Interfaces\Adapter  ResourcesImportInterface
+     * @return  \Components\Resources\Import\Interfaces\Adapter|null  ResourcesImportInterface
      */
     public function getAdapter()
     {

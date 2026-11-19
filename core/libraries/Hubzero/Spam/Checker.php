@@ -69,7 +69,7 @@ class Checker
     /**
      * Get string processor
      *
-     * @return  \Hubzero\Spam\StringProcessor\StringProcessorInterface
+     * @return  \Hubzero\Spam\StringProcessor\StringProcessorInterface|null
      */
     public function getStringProcessor()
     {

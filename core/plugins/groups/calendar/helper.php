@@ -34,7 +34,7 @@ class Helper
             '#\b((?<!href=")(https?://www[.]|(?:https?|ftps?)://|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|'
                 . '([^[:punct:]\s]|/)))#',
             '<a class="ext-link" rel="external" href="$1">$1</a>',
-            $text,
+            (string) $text,
         );
 
         //return auto-linked text

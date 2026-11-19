@@ -588,7 +588,7 @@ class FirebirdDriver extends BaseSqlDriver
                 function ($matches) {
                     return $matches[1] . '"VALUE"' . $matches[3];
                 },
-                $query,
+                (string) $query,
             );
 
             // Automatically add RETURNING "ID" for INSERT statements that target

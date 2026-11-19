@@ -979,7 +979,7 @@ class Publication extends Obj
     /**
      * Get group property
      *
-     * @param   array<mixed>|false  $groups
+     * @param   array<mixed>|false|null  $groups
      * @param   string       $get
      * @return  array<int, mixed>
      */

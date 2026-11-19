@@ -336,7 +336,7 @@ class Ldap
 
         // If there was no database entry, but there was an ldap entry, delete the ldap entry
         if (!empty($ldapinfo) && empty($dbinfo)) {
-            $dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+            $dn = "uid=" . ($ldapinfo['uid'] ?? '') . ",ou=users," . $hubLDAPBaseDN;
 
             $result = ldap_delete($conn, $dn);
 
@@ -358,7 +358,7 @@ class Ldap
         $entry = [];
 
         foreach ($dbinfo as $key => $value) {
-            if ($ldapinfo[$key] != $dbinfo[$key]) {
+            if (($ldapinfo[$key] ?? null) != $dbinfo[$key]) {
                 if ($dbinfo[$key] === null) {
                     $entry[$key] = [];
                 } else {
@@ -372,7 +372,7 @@ class Ldap
             return true;
         }
 
-        $dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+        $dn = "uid=" . ($ldapinfo['uid'] ?? '') . ",ou=users," . $hubLDAPBaseDN;
 
         // See if we're changing uid...if so, we need to do a rename
         if (array_key_exists('uid', $entry)) {
@@ -529,7 +529,7 @@ class Ldap
 
         // If there was no database entry, but there was an ldap entry, delete the ldap entry
         if (!empty($ldapinfo) && empty($dbinfo)) {
-            $dn = "cn=" . $ldapinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
+            $dn = "cn=" . ($ldapinfo['cn'] ?? '') . ",ou=groups," . $hubLDAPBaseDN;
 
             $result = ldap_delete($conn, $dn);
 
@@ -550,7 +550,7 @@ class Ldap
         }
 
         foreach ($dbinfo as $key => $value) {
-            if ($ldapinfo[$key] != $dbinfo[$key]) {
+            if (($ldapinfo[$key] ?? null) != $dbinfo[$key]) {
                 if ($dbinfo[$key] === null) {
                     $entry[$key] = [];
                 } else {
@@ -564,7 +564,7 @@ class Ldap
             return true;
         }
 
-        $dn = "cn=" . $ldapinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
+        $dn = "cn=" . ($ldapinfo['cn'] ?? '') . ",ou=groups," . $hubLDAPBaseDN;
 
         // See if we're changing cn...if so, we need to do a rename
         if (array_key_exists('cn', $entry)) {

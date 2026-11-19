@@ -678,7 +678,7 @@ class DoiService extends Obj
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
             CURLOPT_USERPWD         => $userpwd,
-            CURLOPT_POSTFIELDS      => $postvals,
+            CURLOPT_POSTFIELDS      => (string) $postvals,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => [
                 'Content-Type: text/plain; charset=UTF-8',

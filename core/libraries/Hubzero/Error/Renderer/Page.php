@@ -64,10 +64,11 @@ class Page implements RendererInterface
     public function render($error)
     {
         try {
-            if (!$this->document) {
+            if (!$this->document || !$this->template) {
                 // We're probably in an CLI environment
                 exit($error->getMessage());
             }
+            $templateLoader = $this->template;
 
             $this->document->setType('error');
 
@@ -80,7 +81,7 @@ class Page implements RendererInterface
 
             $this->document->setTitle(Lang::txt('Error') . ': ' . $error->getCode());
 
-            $template = $this->template->load();
+            $template = $templateLoader->load();
 
             $data = $this->document->render(
                 false,

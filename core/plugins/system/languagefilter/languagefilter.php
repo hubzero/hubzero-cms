@@ -267,7 +267,7 @@ class Languagefilter extends Plugin
             ) {
                 //$uri->setPath($uri->getPath() . '/' . $sef);
                 $uri->setPath('/' . trim($sef, '/') . '/' . ltrim(
-                    $uri->getPath(),
+                    (string) $uri->getPath(),
                     '/',
                 ));
             } else {
@@ -302,7 +302,7 @@ class Languagefilter extends Plugin
 
         if (self::$mode_sef) {
             $path = $uri->getPath();
-            $parts = explode('/', $path);
+            $parts = explode('/', (string) $path);
 
             $sef = $parts[0];
 

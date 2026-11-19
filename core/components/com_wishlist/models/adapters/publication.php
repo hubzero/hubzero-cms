@@ -68,7 +68,7 @@ class Publication extends Base
      */
     public function title()
     {
-        return $this->item->title;
+        return (string) $this->item?->title;
     }
 
     /**
@@ -261,7 +261,7 @@ class Publication extends Base
                 'index.php?option=com_publications',
             );
             Pathway::append(
-                stripslashes($this->item->title),
+                stripslashes((string) $this->item?->title),
                 'index.php?option=com_publications&id=' . $this->get('referenceid'),
             );
             Pathway::append(

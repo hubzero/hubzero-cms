@@ -605,7 +605,7 @@ class GradeBook extends Base
      **/
     public function refresh($member_id = null)
     {
-        $this->table->syncGrades($this->course, $member_id);
+        $this->table->syncGrades($this->courseOrFail(), $member_id);
 
         // Compute unit and course scores as well
         $this->calculateScores($member_id);

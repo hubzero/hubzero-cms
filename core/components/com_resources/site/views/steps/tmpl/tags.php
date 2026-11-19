@@ -49,7 +49,7 @@ if (!function_exists('stem')) {
         return preg_replace(
             $prefixPattern,
             '',
-            preg_replace($suffixPattern, '', (string) $str),
+            (string) preg_replace($suffixPattern, '', (string) $str),
         );
     }
 }

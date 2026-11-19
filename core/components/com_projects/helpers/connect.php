@@ -2059,7 +2059,7 @@ class Connect extends Obj
             $options = [
                 CURLOPT_URL => $url,
                 CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => $postvals,
+                CURLOPT_POSTFIELDS => $postvals ?? [],
                 CURLOPT_RETURNTRANSFER => true,
             ];
             curl_setopt_array($ch, $options);

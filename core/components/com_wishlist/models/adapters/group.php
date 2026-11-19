@@ -68,7 +68,7 @@ class Group extends Base
      */
     public function title()
     {
-        return $this->item->get('cn') . ' ' . Lang::txt('COM_WISHLIST_NAME_GROUP');
+        return $this->item?->get('cn') . ' ' . Lang::txt('COM_WISHLIST_NAME_GROUP');
     }
 
     /**
@@ -290,7 +290,7 @@ class Group extends Base
                 'index.php?option=' . $this->get('option'),
             );
             Pathway::append(
-                stripslashes($this->item->get('description')),
+                stripslashes((string) $this->item?->get('description')),
                 'index.php?option=com_groups&cn=' . $this->segments['cn'],
             );
             Pathway::append(

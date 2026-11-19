@@ -161,7 +161,7 @@ class Publication extends Base
      * @param   integer  $elementId
      * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass|null   $blockParams
-     * @param   array<mixed>    $elements
+     * @param   array<mixed>|null    $elements
      * @param   boolean  $authorized
      * @return  string   HTML
      */

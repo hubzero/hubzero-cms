@@ -53,7 +53,7 @@ class Ini extends Base
         if (!$data) {
             $error = error_get_last();
 
-            throw new ParseException($error);
+            throw new ParseException($error ?? ['message' => 'Unable to parse the INI file ' . $path]);
         }
 
         return $data;

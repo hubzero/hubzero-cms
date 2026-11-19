@@ -2611,7 +2611,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the current sql statement
      *
-     * @return  string
+     * @return  string|null
      */
     public function getStatement()
     {
