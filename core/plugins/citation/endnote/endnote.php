@@ -5,6 +5,7 @@ namespace Plugins\Citation\Endnote;
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
 use Hubzero\Facades\Lang;
+use Hubzero\Utility\Str;
 
 /**
  * @package    hubzero-cms
@@ -55,8 +56,8 @@ class Endnote extends Plugin
             return null;
         }
 
-        // Get the file contents
-        $raw_citations = file($file->getPathname());
+        // Get the file contents; older exports are often Latin-1 or Windows-1252, read as such line by line
+        $raw_citations = array_map([Str::class, 'toUtf8'], file($file->getPathname()) ?: []);
 
         // Process the uploaded citation data
         return $this->onImportProcessEndnote($raw_citations ?: []);

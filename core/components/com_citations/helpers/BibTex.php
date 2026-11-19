@@ -2,6 +2,8 @@
 
 namespace Components\Citations\Helpers;
 
+use Hubzero\Utility\Str;
+
 /* vim: set ts=4 sw=4: */
 /**
  * Class for working with BibTex data
@@ -245,9 +247,11 @@ class BibTex
     public function loadFile($filename)
     {
         if (file_exists($filename)) {
-            if (($this->content = @file_get_contents($filename)) === false) {
+            $content = @file_get_contents($filename);
+            if ($content === false) {
                 return new \Exception('Could not open file ' . $filename);
             } else {
+                $this->content = self::toUtf8Lines($content);
                 $this->pos    = 0;
                 $this->oldpos = 0;
                 return true;
@@ -266,9 +270,23 @@ class BibTex
      */
     public function addContent($bibstring)
     {
-        $this->content .= $bibstring;
+        $this->content .= self::toUtf8Lines($bibstring);
 
         return null;
+    }
+
+    /**
+     * Older exports are often Latin-1 or Windows-1252: each line that is not UTF-8 is read as Windows-1252, so a file
+     * that mixes the two keeps its UTF-8 lines as they are
+     *
+     * @param   string  $text
+     * @return  string
+     */
+    private static function toUtf8Lines($text)
+    {
+        $lines = preg_split('/(?<=\n)/', $text) ?: [];
+
+        return implode('', array_map([Str::class, 'toUtf8'], $lines));
     }
 
     /**
