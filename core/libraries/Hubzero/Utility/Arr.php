@@ -371,7 +371,7 @@ class Arr
      */
     protected static function compareObjects($a, $b)
     {
-        $key = self::$sortKey;
+        $key = self::$sortKey ?? [];
 
         // A key with no direction or case of its own takes the previous key's,
         // and the first takes sortObjects()'s defaults

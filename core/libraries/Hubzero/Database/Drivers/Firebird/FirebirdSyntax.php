@@ -345,7 +345,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             }
 
             // No columns specified - SELECT determines columns
-            return $this->insertSelectQuery;
+            return (string) $this->insertSelectQuery;
         }
 
         // Standard INSERT VALUES

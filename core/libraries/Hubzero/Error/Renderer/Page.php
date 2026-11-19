@@ -29,7 +29,7 @@ class Page implements RendererInterface
     /**
      * Template loader
      *
-     * @var  \Hubzero\Template\Loader
+     * @var  \Hubzero\Template\Loader|null
      */
     protected $template;
 

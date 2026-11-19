@@ -281,7 +281,7 @@ class Db2Driver extends BaseSqlDriver
      */
     public function getDatabase()
     {
-        return $this->database;
+        return (string) $this->database;
     }
 
     /**
@@ -1250,7 +1250,7 @@ class Db2Driver extends BaseSqlDriver
             }
         }
 
-        return $this->db2Version;
+        return (string) $this->db2Version;
     }
 
     /**

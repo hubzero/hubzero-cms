@@ -45,10 +45,11 @@ class Img extends AbstractHelper
      */
     private function extension()
     {
-        if ($this->getView() instanceof View) {
-            return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
+        $view = $this->getView();
+        if ($view instanceof View) {
+            return 'plg_' . $view->getFolder() . '_' . $view->getElement();
         }
 
-        return $this->getView()->get('option', Request::getCmd('option'));
+        return $view ? $view->get('option', Request::getCmd('option')) : Request::getCmd('option');
     }
 }

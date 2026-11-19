@@ -54,7 +54,7 @@ class Guard
      */
     public function token()
     {
-        return $this->token;
+        return $this->token ?? [];
     }
 
     /**

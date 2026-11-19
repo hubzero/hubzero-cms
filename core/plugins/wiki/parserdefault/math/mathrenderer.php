@@ -471,6 +471,6 @@ class MathRenderer
     public static function renderMath($tex, $params = [])
     {
         $math = new self($tex, $params);
-        return $math->render();
+        return (string) $math->render();
     }
 }

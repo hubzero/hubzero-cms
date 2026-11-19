@@ -140,6 +140,7 @@ class Date extends DateTime
             self::$gmt = new DateTimeZone('GMT');
             self::$stz = new DateTimeZone(@date_default_timezone_get());
         }
+        $serverZone = self::$stz;
 
         $timezone = self::getTimeZoneObject($timezone, $ignoreDst);
 
@@ -151,7 +152,7 @@ class Date extends DateTime
         parent::__construct($datetime == null ? '' : $datetime, $timezone);
 
         // reset the timezone for 3rd party libraries/extension that does not use Date
-        date_default_timezone_set(self::$stz->getName());
+        date_default_timezone_set($serverZone->getName());
 
         // Set the timezone object for access later.
         $this->tz = $timezone;

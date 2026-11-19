@@ -72,7 +72,11 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function getParent()
     {
-        $this->current = &$this->current->getParent();
+        // The root has no parent; stay on it
+        $parent = $this->current->getParent();
+        if ($parent !== null) {
+            $this->current = $parent;
+        }
     }
 
     /**

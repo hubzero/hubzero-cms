@@ -58,7 +58,7 @@ class Migration20150428103217ComCategories extends Base
                     $this->db
                         ->getQuery()
                         ->update('#__categories')
-                        ->set(['id' => $last->id + 1])
+                        ->set(['id' => (int) $last?->id + 1])
                         ->where('id', '=', $first->id)
                         ->execute();
                 }

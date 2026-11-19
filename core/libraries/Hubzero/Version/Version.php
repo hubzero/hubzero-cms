@@ -87,7 +87,7 @@ final class Version
                 }, $apiResponse);
 
                 // Fetch the latest version number from the array
-                static::$latestVersion = array_reduce($tags, function ($a, $b) {
+                static::$latestVersion = (string) array_reduce($tags, function ($a, $b) {
                     return version_compare($a, $b, '>') ? $a : $b;
                 });
             } elseif ($service == self::VERSION_SERVICE_HUBZERO) {

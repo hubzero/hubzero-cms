@@ -544,7 +544,7 @@ class View
 
         // parse reseults as xml and use xpath to get list of stylesheets
         $domDocumentXml = simplexml_import_dom($domDocument);
-        $ss = $domDocumentXml->xpath('//link[@rel="stylesheet"]');
+        $ss = $domDocumentXml ? ($domDocumentXml->xpath('//link[@rel="stylesheet"]') ?: []) : [];
 
         // array to hold stylesheets for ckeditor
         $stylesheets = [];

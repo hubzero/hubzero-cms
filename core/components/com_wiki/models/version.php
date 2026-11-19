@@ -206,6 +206,6 @@ class Version extends Relational
         $parser = Parser::getInstance();
 
         // Parse the text
-        return $parser->parse($this->get('pagetext'), $wikiconfig, true, true);
+        return (string) $parser->parse($this->get('pagetext'), $wikiconfig, true, true);
     }
 }

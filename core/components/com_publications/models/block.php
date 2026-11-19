@@ -45,10 +45,10 @@ class Block extends Obj
     /**
      * Constructor
      *
-     * @param   Blocks|null  $parent
+     * @param   Blocks  $parent
      * @return  void
      */
-    public function __construct($parent = null)
+    public function __construct($parent)
     {
         $this->parent = $parent;
     }

@@ -39,7 +39,7 @@ class MenuItem extends Element
     {
         $db = App::get('db');
 
-        $menuType = $this->parent->get('menu_type');
+        $menuType = $this->parent?->get('menu_type');
         if (!empty($menuType)) {
             $where = ' WHERE menutype = ' . $db->quote($menuType);
         } else {
@@ -73,7 +73,7 @@ class MenuItem extends Element
             ->select('type')
             ->from('#__menu');
 
-        $menuType = $this->parent->get('menu_type');
+        $menuType = $this->parent?->get('menu_type');
         if (!empty($menuType)) {
             $query->whereEquals('menutype', $menuType);
         }

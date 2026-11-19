@@ -236,7 +236,7 @@ class Info extends Obj
             $tmpPath = Config::get('tmp_path', PATH_APP . '/app/tmp');
             $this->addDirectory($tmpPath, $tmpPath, 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
         }
-        return $this->directories;
+        return $this->directories ?? [];
     }
 
     /**

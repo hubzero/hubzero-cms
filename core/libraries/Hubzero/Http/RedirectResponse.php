@@ -70,7 +70,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Get the request instance.
      *
-     * @return  \Hubzero\Http\Request
+     * @return  \Hubzero\Http\Request|null
      */
     public function getRequest()
     {

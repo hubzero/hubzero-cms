@@ -42,7 +42,7 @@ class Git extends Models\Adapter
     /**
      * Full path to repository
      *
-     * @var  string
+     * @var  string|null
      */
     private $path;
 

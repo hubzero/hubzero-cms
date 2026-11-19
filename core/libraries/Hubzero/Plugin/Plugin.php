@@ -23,7 +23,7 @@ class Plugin
     /**
      * Event object to observe.
      *
-     * @var  object
+     * @var  object|null
      * @deprecated
      */
     protected $subject;

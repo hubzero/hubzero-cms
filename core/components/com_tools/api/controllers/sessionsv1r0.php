@@ -249,7 +249,7 @@ class Sessionsv1r0 extends ApiController
 
         $info = $tv->getVersionInfo($vid, $version);
 
-        $registry = new \Hubzero\Config\Registry($info[0]->params);
+        $registry = new \Hubzero\Config\Registry($info[0]->params ?? null);
         $publishType = $registry->get('publishType', "normal");
         if ($publishType == 'weber=') {
             $publishType = 'jupyter';
@@ -548,7 +548,10 @@ class Sessionsv1r0 extends ApiController
                 // note filename for benefit of xpathers
                 $run[0]->setAttribute('source', str_replace($path . 'examples' . DS, '', $file));
                 // add back into the original document
-                $examples->appendChild($examples->ownerDocument->importNode($run[0], true));
+                $document = $examples->ownerDocument;
+                if ($document) {
+                    $examples->appendChild($document->importNode($run[0], true));
+                }
             }
         }
 

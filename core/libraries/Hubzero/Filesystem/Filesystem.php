@@ -267,7 +267,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return $this->adapterOrFail()->extension($path);
+        return (string) $this->adapterOrFail()->extension($path);
     }
 
     /**

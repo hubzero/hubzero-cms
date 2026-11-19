@@ -24,7 +24,7 @@ class Css extends AbstractHelper
      * @param   string  $stylesheet  Stylesheet or styles to add
      * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
      * @param   string|null  $element     Plugin element. Only used for plugins and if first argument is folder name.
-     * @return  \Hubzero\View\View
+     * @return  \Hubzero\View\View|null
      */
     public function __invoke($stylesheet = '', $extension = null, $element = null)
     {
@@ -55,10 +55,11 @@ class Css extends AbstractHelper
      */
     private function extension()
     {
-        if ($this->getView() instanceof PluginView) {
-            return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
+        $view = $this->getView();
+        if ($view instanceof PluginView) {
+            return 'plg_' . $view->getFolder() . '_' . $view->getElement();
         }
-        return $this->getView()->get('option', Request::getCmd('option'));
+        return $view ? $view->get('option', Request::getCmd('option')) : Request::getCmd('option');
     }
 
     /**

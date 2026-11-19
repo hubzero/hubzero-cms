@@ -186,7 +186,7 @@ class WikiMacro
      */
     public function name()
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     /**

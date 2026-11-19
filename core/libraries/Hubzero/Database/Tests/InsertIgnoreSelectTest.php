@@ -395,7 +395,9 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
-        $count1 = (int) $driver->loadObject()->cnt;
+        $row = $driver->loadObject();
+        $this->assertNotNull($row);
+        $count1 = (int) $row->cnt;
 
         // Reset dest table for closure approach
         $driver->setQuery('DELETE FROM iis_dest_users');
@@ -417,7 +419,9 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
             ->execute();
 
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
-        $count2 = (int) $driver->loadObject()->cnt;
+        $row = $driver->loadObject();
+        $this->assertNotNull($row);
+        $count2 = (int) $row->cnt;
 
         $this->assertEquals($count1, $count2, 'Query object and closure should produce identical results');
         $this->assertEquals(2, $count1, 'Both should insert 2 active users');

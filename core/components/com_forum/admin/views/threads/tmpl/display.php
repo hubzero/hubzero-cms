@@ -55,7 +55,7 @@ $query = $db
     ->select('title')
     ->from('#__viewlevels');
 $db->setQuery($query->toString());
-$access_levels = $db->loadAssocList();
+$access_levels = $db->loadAssocList() ?? [];
 
 $view = $this;
 

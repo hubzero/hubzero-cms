@@ -260,7 +260,7 @@ class User extends Base implements CommandInterface
                                     $log->logged      = with(new Date('now'))->toSql();
                                     $dbo->insertObject('#__users_merge_log', $log);
                                 } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
-                                    if ($e->getPrevious()->getCode() == '23000') {
+                                    if ($e->getPrevious()?->getCode() == '23000') {
                                         $this->output->addLine(
                                             "Ignoring {$table}.{$column} due to integrity constraint violation",
                                             'warning',

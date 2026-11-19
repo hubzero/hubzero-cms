@@ -593,7 +593,12 @@ class Form extends SiteController
             }
         }
 
-        list($complete, $answers) = $dep->getForm()->getQuestionAnswerMap($_POST, $ended);
+        $form = $dep->getForm();
+        if (!$form) {
+            App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
+        }
+
+        list($complete, $answers) = $form->getQuestionAnswerMap($_POST, $ended);
 
         if ($complete) {
             $resp = $dep->getRespondent($this->member, $attempt);

@@ -717,7 +717,7 @@ class Version extends Table
         if (!$toolname) {
             $toolname = $instance;
         }
-        return $toolname;
+        return (string) $toolname;
     }
 
     /**

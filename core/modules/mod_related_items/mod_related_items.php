@@ -48,7 +48,7 @@ class RelatedItems extends Module
     /**
      * Get a list of articles
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @return  array<int, mixed>
      */
     public static function getList($params)

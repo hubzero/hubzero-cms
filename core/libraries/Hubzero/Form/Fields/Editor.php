@@ -66,7 +66,7 @@ class Editor extends Field
         // Get an editor object.
         $editor = $this->getEditor();
 
-        return $editor->display(
+        return (string) $editor->display(
             $this->name,
             htmlspecialchars($this->value ?: '', ENT_COMPAT, 'UTF-8'),
             $width,
@@ -142,6 +142,6 @@ class Editor extends Field
      */
     public function save()
     {
-        return $this->getEditor()->save($this->id);
+        return (string) $this->getEditor()->save($this->id);
     }
 }

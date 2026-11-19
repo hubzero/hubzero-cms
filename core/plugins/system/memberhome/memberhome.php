@@ -51,7 +51,7 @@ class Memberhome extends Plugin
             $menu->setDefault($menuId, $defaultMenu->language);
 
             $item = $menu->getItem($menuId);
-            $vars = $item->query;
+            $vars = $item ? $item->query : [];
             $vars['Itemid'] = $menuId;
 
             foreach ($vars as $key => $var) {

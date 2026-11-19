@@ -30,7 +30,7 @@ $dbh->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#_
 list($popoverText, $awardPer, $testGroup, $repeatType) = $dbh->loadRow() ?? [null, null, null, null];
 $repeatType = (int) $repeatType;
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');
-$recur = $dbh->loadColumn();
+$recur = $dbh->loadColumn() ?? [];
 
 $groups = new Components\Members\Models\Incremental\Groups();
 $possibleCols = $groups->getPossibleColumns();

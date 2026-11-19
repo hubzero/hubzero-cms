@@ -376,7 +376,7 @@ class Request
      */
     public function getMethod()
     {
-        return $this->method;
+        return (string) $this->method;
     }
 
     /**

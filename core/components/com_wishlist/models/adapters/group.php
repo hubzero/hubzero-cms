@@ -19,7 +19,7 @@ class Group extends Base
     /**
      * The group the wish list belongs to
      *
-     * @var  \Hubzero\User\Group
+     * @var  \Hubzero\User\Group|null
      */
     protected $item;
 

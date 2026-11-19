@@ -159,7 +159,7 @@ class Style extends Relational
         // that changed, so home stayed 0 and the client was left without a
         // default style at all.
         if ($this->get('home')) {
-            $query = self::$connection->getQuery();
+            $query = $this->getQuery();
             $query->update($this->getTableName());
             $query->set(['home' => '0']);
             $query->whereEquals('client_id', (int) $this->get('client_id'));

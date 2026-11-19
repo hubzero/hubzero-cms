@@ -34,7 +34,7 @@ use Hubzero\Facades\Request;
  * @property  Tables\Publication                   $publication              The publication, loaded by the constructor
  * @property  \Hubzero\Config\Registry             $params                   Component, version and type parameters
  * @property  int                                  $id                       The publication's id
- * @property  int                                  $version_id               The version's id
+ * @property  int|null                             $version_id               The version's id
  * @property  string                               $base                     The master type's alias
  * @property  string                               $curatorgroup             The master type's curator group
  * @property  string                               $versionAlias             Set by versionAlias()
@@ -2399,7 +2399,7 @@ class Publication extends Obj
     /**
      * Get FOS (Field of Science and Technology) tag according the Subject tag id
      *
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getFOSTag()
     {
@@ -2663,7 +2663,7 @@ class Publication extends Obj
      *
      * @param   string  $name
      *
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function getCollaboratorByName($name)
     {

@@ -120,7 +120,7 @@ class ACL extends Obj
         // Check user's groups
         if ($this->memberGroups) {
             foreach ($this->memberGroups as $ug) {
-                foreach ($this->rawData as $line) {
+                foreach ($this->rawData ?? [] as $line) {
                     // Get the aco permission
                     if (
                         $line['aro_model'] == 'group'
@@ -161,7 +161,7 @@ class ACL extends Obj
         $userspecific = false;
         // Check individual
         $permission = 0;
-        foreach ($this->rawData as $line) {
+        foreach ($this->rawData ?? [] as $line) {
             // Get the aco permission
             if (
                 $line['aro_model'] == 'user'

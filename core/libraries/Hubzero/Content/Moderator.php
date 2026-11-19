@@ -54,7 +54,7 @@ class Moderator
     public function __construct($identifier = null, $session_id = null, $secret = null)
     {
         if (is_file($identifier == null ? '' : $identifier)) {
-            $this->path = $identifier;
+            $this->path = (string) $identifier;
         } else {
             $this->decompose($identifier);
         }

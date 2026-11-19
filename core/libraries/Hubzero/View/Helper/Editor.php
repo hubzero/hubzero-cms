@@ -53,7 +53,7 @@ class Editor extends AbstractHelper
         }
 
         $id = $id ?: str_replace(['[', ']'], '', $name);
-        return $this->instance()->display(
+        return (string) $this->instance()->display(
             $name,
             $content,
             $width,

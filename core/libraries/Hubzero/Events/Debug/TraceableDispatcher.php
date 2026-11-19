@@ -24,14 +24,14 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Logger
      *
-     * @var  \Hubzero\Log\Writer
+     * @var  \Hubzero\Log\Writer|null
      */
     protected $logger;
 
     /**
      * Timer
      *
-     * @var  object
+     * @var  object|null
      */
     protected $stopwatch;
 

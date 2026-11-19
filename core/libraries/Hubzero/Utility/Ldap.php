@@ -307,7 +307,7 @@ class Ldap
             }
         }
 
-        $ldapinfo = null;
+        $ldapinfo = [];
 
         if ($count > 0) {
             $attr = self::firstAttributes($conn, $entry);
@@ -498,7 +498,7 @@ class Ldap
             }
         }
 
-        $ldapinfo = null;
+        $ldapinfo = [];
 
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
@@ -665,7 +665,7 @@ class Ldap
             return false;
         }
 
-        $ldapinfo = null;
+        $ldapinfo = [];
 
         $attr = self::firstAttributes($conn, $entry);
 

@@ -179,6 +179,7 @@ class MigrationFindTest extends TestCase
             }
         }
 
+        $this->assertNotNull($migration);
         $migration->find($extension);
 
         $files = new \ReflectionProperty(Migration::class, 'files')->getValue($migration);

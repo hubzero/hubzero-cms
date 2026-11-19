@@ -129,7 +129,9 @@ class IdPBindingTest extends Basic
         $this->assertNotNull($message);
 
         $this->assertInstanceOf(AuthnRequest::class, $message);
-        $this->assertSame('https://sp.example.com/saml2', $message->getIssuer()->getValue());
+        $issuer = $message->getIssuer();
+        $this->assertNotNull($issuer);
+        $this->assertSame('https://sp.example.com/saml2', $issuer->getValue());
         $this->assertSame('state-123', $message->getRelayState());
         $this->assertTrue($this->idp->validateRequestSignature($message, $this->sp('sp')));
     }

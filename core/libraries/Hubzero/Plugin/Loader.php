@@ -197,12 +197,12 @@ class Loader implements LoaderInterface
 
             // Bail out early if we're not using default args
             if (!$defaults) {
-                return $results;
+                return (bool) $results;
             }
             $loaded[$type] = $results;
         }
 
-        return $loaded[$type];
+        return (bool) $loaded[$type];
     }
 
     /**

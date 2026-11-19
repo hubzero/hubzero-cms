@@ -410,7 +410,7 @@ class Loader
         $body = $bodies->item(0);
         $head = $heads->item(0);
 
-        foreach ($head->childNodes as $node) {
+        foreach ($head ? $head->childNodes : [] as $node) {
             // Text and comments between the tags are nodes too; only elements carry attributes
             if (!$node instanceof \DOMElement) {
                 continue;

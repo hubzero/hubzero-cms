@@ -40,7 +40,7 @@ class Prerequisite extends Base
     /**
      * Track the member id for whom the prereqs apply
      *
-     * @var int
+     * @var int|null
      **/
     protected $member_id;
 

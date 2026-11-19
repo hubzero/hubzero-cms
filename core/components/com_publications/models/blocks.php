@@ -262,7 +262,7 @@ class Blocks extends Obj
             $html = $block->display($pub, $manifest, $viewname, $blockId);
         }
 
-        return $html;
+        return (string) $html;
     }
 
     /**

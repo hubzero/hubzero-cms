@@ -258,6 +258,9 @@ class Xml
                 }
             } elseif ($v['type'] == 'close') {
                 $prev = array_pop($stack);
+                if ($prev === null) {
+                    return false; // a close with no open is malformed input too
+                }
 
                 if (is_object($prev[1])) {
                     $prev[1]->{$prev[0]} = $obj;

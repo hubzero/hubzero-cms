@@ -41,6 +41,6 @@ class Criterion extends Relational
                 ->loadRowList();
         }
 
-        return $violations;
+        return $violations ?? [];
     }
 }

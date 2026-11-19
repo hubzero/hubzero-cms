@@ -49,7 +49,7 @@ class Quickicon extends Module
      * This method returns the array by reference so it can be
      * used to add custom buttons or remove default ones.
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @return  array<mixed>   An array of buttons
      */
     public static function &getButtons($params)

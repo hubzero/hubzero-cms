@@ -27,6 +27,6 @@ class Component extends Renderer
      */
     public function render($component = null, $params = [], $content = null)
     {
-        return $content;
+        return (string) $content;
     }
 }

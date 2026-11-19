@@ -1244,7 +1244,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     );
                 }
 
-                return $result;
+                return (string) $result;
             }
 
             // Standard INSERT VALUES - use parent implementation

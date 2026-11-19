@@ -310,6 +310,7 @@ class ViewLevelGateTest extends Basic
             // stopped, as the application would
         }
 
+        $this->assertNotNull($this->redirect);
         $this->assertSame('JGLOBAL_YOU_MUST_LOGIN_FIRST', $this->redirect['message']);
     }
 

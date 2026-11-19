@@ -443,7 +443,7 @@ class Entity extends Obj
      **/
     public function getPath()
     {
-        return $this->path;
+        return (string) $this->path;
     }
 
     /**

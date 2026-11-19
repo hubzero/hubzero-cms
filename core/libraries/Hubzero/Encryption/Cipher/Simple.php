@@ -36,7 +36,12 @@ class Simple implements Cipher
 
         // Initialise variables.
         $decrypted = '';
-        $tmp = $key->public;
+        $tmp = (string) $key->public;
+
+        // Repeating an empty key below would never end
+        if ($tmp === '') {
+            throw new InvalidArgumentException('Invalid key: it is empty.');
+        }
 
         // Convert the HEX input into an array of integers and get the number of characters.
         $chars = $this->hexToIntArray($data);
@@ -72,7 +77,12 @@ class Simple implements Cipher
 
         // Initialise variables.
         $encrypted = '';
-        $tmp = $key->private;
+        $tmp = (string) $key->private;
+
+        // Repeating an empty key below would never end
+        if ($tmp === '') {
+            throw new InvalidArgumentException('Invalid key: it is empty.');
+        }
 
         // Split up the input into a character array and get the number of characters.
         $chars = preg_split('//', $data, -1, PREG_SPLIT_NO_EMPTY) ?: [];

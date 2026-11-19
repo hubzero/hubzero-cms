@@ -97,7 +97,7 @@ class Importer
     /**
      * Method to get adapater
      *
-     * @return  \Hubzero\Content\Import\Adapter
+     * @return  \Hubzero\Content\Import\Adapter|null
      */
     public function getAdapter()
     {

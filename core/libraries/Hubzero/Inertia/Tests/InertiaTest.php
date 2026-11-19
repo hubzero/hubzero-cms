@@ -160,6 +160,7 @@ namespace Hubzero\Inertia\Tests {
             $this->assertSame('true', $service->headers['X-Inertia']);
             $this->assertSame('X-Inertia', $service->headers['Vary']);
             $this->assertSame('application/json; charset=utf-8', $service->headers['Content-Type']);
+            $this->assertNotNull($service->jsonPayload);
             $this->assertSame('Users/Index', $service->jsonPayload['component']);
             $this->assertSame('sam', $service->jsonPayload['props']['name']);
             $this->assertSame('v-json', $service->jsonPayload['version']);
@@ -182,6 +183,7 @@ namespace Hubzero\Inertia\Tests {
             $this->assertSame('X-Inertia', $service->headers['Vary']);
             $this->assertSame('application/json; charset=utf-8', $service->headers['Content-Type']);
             $this->assertNotNull($service->body);
+            $this->assertNotNull($service->jsonPayload);
             $this->assertSame('Users/Index', $service->jsonPayload['component']);
         }
 

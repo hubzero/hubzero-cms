@@ -106,7 +106,7 @@ class OneToMany extends Relationship
     public function destroyAll()
     {
         // @FIXME: could make this a single query...i.e. delete where id in (...)
-        foreach ($this->related as $model) {
+        foreach ($this->relatedOrFail() as $model) {
             if (!$model->destroy()) {
                 return false;
             }

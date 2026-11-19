@@ -40,7 +40,9 @@ class FlavorTest extends TestCase
         $finder = new Finder([$this->files('shipped')]);
 
         $this->assertSame(['plain', 'tooled'], array_keys($finder->all()));
-        $this->assertSame('The base', $finder->find('plain')->description());
+        $plain = $finder->find('plain');
+        $this->assertNotNull($plain);
+        $this->assertSame('The base', $plain->description());
         $this->assertNull($finder->find('no-such'));
     }
 

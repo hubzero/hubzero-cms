@@ -837,7 +837,7 @@ class Files extends Plugin
 
             $template = $view->loadTemplate();
         }
-        return $template;
+        return (string) $template;
     }
 
     /**

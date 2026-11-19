@@ -242,7 +242,7 @@ class Auth extends SiteController
 
         $status = [];
         $tpl = null;
-        $this->return = $return;
+        $this->return = (string) $return;
 
         foreach ($plugins as $plugin) {
             $className = 'plg' . $plugin->type . $plugin->name;

@@ -441,10 +441,11 @@ class Doi extends Plugin
     public function createRelatedIdentifier(&$xml, $dom, $relatedIdentifiersNodeList, $citation, $relationType)
     {
         $identifier = $this->getIdentifier($citation);
+        $parentNode = $relatedIdentifiersNodeList->item(0);
 
-        if ($identifier) {
+        if ($identifier && $parentNode) {
             $relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($identifier));
-            $relatedIdentifierNode = $relatedIdentifiersNodeList->item(0)->appendChild($relatedIdentifierElement);
+            $relatedIdentifierNode = $parentNode->appendChild($relatedIdentifierElement);
             $relatedIdentifierNode->setAttribute("relatedIdentifierType", key($identifier));
             $relatedIdentifierNode->setAttribute("relationType", $relationType);
             $relatedIdentifierNode->setAttribute("resourceTypeGeneral", $citation[self::KEY_RESOURCETYPEGENERAL]);
@@ -466,9 +467,10 @@ class Doi extends Plugin
     public function insertRelatedIdentifiersNode(&$xml, $dom, $resourceNode, $specNode, $citation, $relationType)
     {
         $identifier = $this->getIdentifier($citation);
-        if ($identifier) {
+        $resource = $resourceNode->item(0);
+        if ($identifier && $resource) {
             $relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
-            $relatedIdentifiersNode = $resourceNode->item(0)->insertBefore(
+            $relatedIdentifiersNode = $resource->insertBefore(
                 $relatedIdentifiersElement,
                 $specNode->item(0),
             );

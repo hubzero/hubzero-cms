@@ -344,7 +344,7 @@ class Product
                 return [];
             }
         }
-        return $this->skus;
+        return $this->skus ?? [];
     }
 
     /**

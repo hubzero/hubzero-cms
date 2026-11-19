@@ -257,7 +257,7 @@ class Slack extends Plugin
             ];
             if (!Component::params('com_support')->get('email_terse')) {
                 $fields = [];
-                foreach ($comment->changelog()->lists() as $type => $log) {
+                foreach ($comment->changelog()->lists() ?? [] as $type => $log) {
                     if (is_array($log) && count($log) > 0) {
                         if ($type != 'changes') {
                             continue;

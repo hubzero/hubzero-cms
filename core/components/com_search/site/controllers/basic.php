@@ -53,7 +53,7 @@ class Basic extends SiteController
         $results->collect(Request::getBool('force-generic'));
 
         $this->view->set('url_terms', urlencode($terms->getRawWithoutSection()));
-        @list($plugin, $section) = $terms->getSection();
+        @list($plugin, $section) = $terms->getSection() ?? [null, null];
 
         $total = 0;
         if ($plugin) {

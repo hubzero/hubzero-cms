@@ -33,7 +33,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->where('folder', '=', 'members')
                 ->where('element', '=', 'dashboard')
                 ->first();
-            $params = json_decode($dashboardPlugin->params);
+            $params = json_decode((string) $dashboardPlugin?->params);
 
             $newDefaults = [];
             if (isset($params->defaults)) {
@@ -74,7 +74,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => json_encode($params)])
-                ->where('extension_id', '=', $dashboardPlugin->extension_id)
+                ->where('extension_id', '=', $dashboardPlugin?->extension_id)
                 ->execute();
 
             // create dashboard prefs table

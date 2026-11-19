@@ -488,7 +488,7 @@ class WikiParser
             }
         }
 
-        return $text;
+        return (string) $text;
     }
 
     /**

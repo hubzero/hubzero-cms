@@ -92,6 +92,9 @@ class Browse extends \Hubzero\Component\SiteController
 
         // Get collection name
         $collection = $this->warehouse->getCollectionInfo((int) $cId);
+        if (!$collection) {
+            App::abort(404, Lang::txt('Collection Not Found'));
+        }
         $collectionName = $collection->cName;
 
         // Get the collection products

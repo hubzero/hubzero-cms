@@ -1411,7 +1411,7 @@ class Manage extends AdminController
         $taskName = 'core.' . $task;
 
         // can user perform task
-        if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $task == 'edit' && $group->get('type') == 0)) {
+        if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $task == 'edit' && $group?->get('type') == 0)) {
             // No access
             return false;
         }

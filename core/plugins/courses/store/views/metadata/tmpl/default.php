@@ -51,7 +51,7 @@ if ($offering->exists()) {
     <?php if (!$this->course->isManager() && !$this->course->isStudent() && $product) { ?>
                     <tr>
                         <td colspan="2">
-                            <strong class="price">$<?php echo $product->skus[0]->data->price; ?></strong>
+                            <strong class="price">$<?php echo $product->skus[0]->data->price ?? ''; ?></strong>
                         </td>
                     </tr>
     <?php } ?>

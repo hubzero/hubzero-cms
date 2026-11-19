@@ -340,7 +340,7 @@ class PrivilegeNotifier
     /**
      * Is the stream a terminal?
      *
-     * @param   resource  $stream
+     * @param   resource|null  $stream
      * @return  bool
      */
     private function isTty($stream): bool
@@ -363,7 +363,7 @@ class PrivilegeNotifier
     /**
      * The stream notices go to: whatever was set, else stderr
      *
-     * @return resource
+     * @return resource|null  None when stderr cannot be opened
      */
     private function stream()
     {
@@ -385,6 +385,9 @@ class PrivilegeNotifier
      */
     private function output(string $text): void
     {
-        fwrite($this->stream(), $text);
+        $stream = $this->stream();
+        if ($stream) {
+            fwrite($stream, $text);
+        }
     }
 }

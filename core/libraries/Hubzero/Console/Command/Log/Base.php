@@ -45,7 +45,7 @@ class Base
      **/
     public static function getDateFormat()
     {
-        return static::$dateFormat;
+        return (string) static::$dateFormat;
     }
 
     /**

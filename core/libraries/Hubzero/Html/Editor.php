@@ -53,7 +53,7 @@ class Editor extends Obj
     /**
      * Object author
      *
-     * @var  object
+     * @var  object|null
      */
     protected $author;
 

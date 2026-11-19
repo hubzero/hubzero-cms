@@ -142,7 +142,13 @@ class PdoConnection implements ConnectionInterface
             $this->connect();
         }
 
-        return $this->pdo;
+        // connect() either sets it or throws
+        $pdo = $this->pdo;
+        if ($pdo === null) {
+            throw new ConnectionFailedException('No database connection.', 500);
+        }
+
+        return $pdo;
     }
 
     /**

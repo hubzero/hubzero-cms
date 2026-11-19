@@ -36,7 +36,7 @@ class TestPlugin extends \Plugins\Members\Account\Account
      */
     protected function webdavHome()
     {
-        return $this->base;
+        return (string) $this->base;
     }
 
     /**

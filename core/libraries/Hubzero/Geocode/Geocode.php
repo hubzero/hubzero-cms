@@ -121,7 +121,7 @@ class Geocode
         // first() throws when nothing was found
         $data = $geocoder->geocode($code);
         if (!$data->isEmpty()) {
-            $country = $data->first()->getCountry()->getName();
+            $country = $data->first()->getCountry()?->getName() ?? $country;
         }
 
         return $country;
@@ -166,7 +166,7 @@ class Geocode
             $continent = $data->first()->getLocality();
         }
 
-        return $continent;
+        return (string) $continent;
     }
 
     /**

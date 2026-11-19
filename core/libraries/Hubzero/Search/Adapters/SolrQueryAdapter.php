@@ -181,7 +181,8 @@ class SolrQueryAdapter implements QueryInterface
     public function getSuggestions($terms)
     {
         // The endpoint is keyed by the configured core name
-        $config = reset($this->config['endpoint']);
+        $endpoints = $this->config['endpoint'] ?? [];
+        $config = reset($endpoints);
 
         // Talk to the configured Solr host, not to whatever host this request named
         $url = 'http://' . $config['host'];
@@ -197,7 +198,7 @@ class SolrQueryAdapter implements QueryInterface
 
         // Derive user permission filters
         $this->restrictAccess();
-        $userPerms = $this->query->getFilterQuery('userPerms')->getQuery();
+        $userPerms = $this->query->getFilterQuery('userPerms')?->getQuery();
         $url .= '&fq=' . urlencode((string) $userPerms);
 
         // Limit rows, not interested in results, just facets

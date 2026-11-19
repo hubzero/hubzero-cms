@@ -107,7 +107,7 @@ class IncrementalRegistration extends Module
                     'SELECT popover_text, award_per FROM `#__incremental_registration_options` '
                     . 'ORDER BY added DESC LIMIT 1',
                 );
-                list($introText, $awardPer) = $dbh->loadRow();
+                list($introText, $awardPer) = $dbh->loadRow() ?? [null, null];
 
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     require $this->getLayoutPath('popover');

@@ -264,7 +264,7 @@ class Support extends Plugin
                     break;
             }
 
-            if ($op) {
+            if ($op && $timestamp) {
                 $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
                     . $op . $database->quote($timestamp->toSql());
             }
@@ -809,7 +809,7 @@ class Support extends Plugin
                     break;
             }
 
-            if ($op) {
+            if ($op && $timestamp) {
                 $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
                     . $op . $database->quote($timestamp->toSql());
             }

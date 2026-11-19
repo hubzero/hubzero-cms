@@ -136,7 +136,7 @@ class Calendar extends Relational
             // get event timezone setting
             // use this in "DTSTART;TZID="
             $tzInfo = CalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
-            $tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
+            $tzName = timezone_name_from_abbr($tzInfo['abbreviation'] ?? '');
 
             // get publish up/down dates in UTC
             $publishUp   = Date::of($event->get('publish_up'));

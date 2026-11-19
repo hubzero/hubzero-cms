@@ -364,7 +364,7 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function getTask()
     {
-        return $this->task;
+        return (string) $this->task;
     }
 
     /**

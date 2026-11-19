@@ -21,6 +21,6 @@ class Raw extends Basic
      **/
     public function build($syntax)
     {
-        return $this->content;
+        return (string) $this->content;
     }
 }

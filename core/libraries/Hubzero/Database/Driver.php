@@ -2352,7 +2352,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function getDatabase()
     {
-        return $this->database;
+        return (string) $this->database;
     }
 
     /**

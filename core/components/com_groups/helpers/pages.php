@@ -151,7 +151,7 @@ class Pages
             $item = App::get('menu')->getActive();
             // Strip the menu route from the URI
             $up = ltrim(Request::path(), '/');
-            $path = trim(substr($up, strlen($item->route)), '/');
+            $path = trim(substr($up, strlen($item ? $item->route : '')), '/');
             // Check if the first segment is the group name.
             // Due to the way some paths are built, a menu item can result
             // in a path like /menualias/cn/page instead of /menualias/page

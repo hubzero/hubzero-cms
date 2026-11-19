@@ -27,9 +27,9 @@ class Container implements ArrayAccess
      * @var  array<mixed>
      */
     private $values = [];
-    /** @var \SplObjectStorage<object, mixed>|null */
+    /** @var \SplObjectStorage<object, mixed> */
     private $factories;
-    /** @var \SplObjectStorage<object, mixed>|null */
+    /** @var \SplObjectStorage<object, mixed> */
     private $protected;
     /**
      * @var  array<mixed>

@@ -32,7 +32,7 @@ class Loader
     /**
      * A profiler for debugging, when debugging or profiling is on
      *
-     * @var  \Hubzero\Debug\Profiler
+     * @var  \Hubzero\Debug\Profiler|null
      */
     protected $profiler;
 

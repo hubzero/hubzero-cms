@@ -111,7 +111,7 @@ class Terms extends Obj
     {
         $section = $this->section;
         if (!$section) {
-            return $this->raw;
+            return (string) $this->raw;
         }
 
         return (string) preg_replace(
@@ -320,6 +320,6 @@ class Terms extends Obj
      */
     public function __toString()
     {
-        return $this->raw;
+        return (string) $this->raw;
     }
 }

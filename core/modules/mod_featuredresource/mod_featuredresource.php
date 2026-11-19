@@ -197,6 +197,6 @@ class Featuredresource extends Module
             //$path .= DS.$versionid;
         }
 
-        return $this->getImage($path);
+        return (string) $this->getImage($path);
     }
 }

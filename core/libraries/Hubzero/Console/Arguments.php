@@ -103,7 +103,7 @@ class Arguments
      **/
     public function getOpts()
     {
-        return $this->opts;
+        return $this->opts ?? [];
     }
 
     /**

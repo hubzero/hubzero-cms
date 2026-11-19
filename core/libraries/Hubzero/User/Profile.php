@@ -1343,7 +1343,7 @@ class Profile extends Obj
      *
      * @param   boolean  $loadsetupfile  Load the XML set up file?
      * @param   string|null   $path           Path to parameters XML file
-     * @return  \Hubzero\Config\Registry   Registry
+     * @return  \Hubzero\Config\Registry|null   Registry
      */
     public function &getParameters($loadsetupfile = false, $path = null)
     {
