@@ -84,6 +84,12 @@ class Viewlevel extends Relational
      */
     public function save()
     {
+        // A level with no groups ticked posts no rules at all; the column has no
+        // default, so a new level needs an empty list rather than nothing
+        if ($this->get('rules') === null) {
+            $this->set('rules', []);
+        }
+
         // Bind the rules as appropriate.
         if (is_array($this->get('rules'))) {
             $this->set('rules', json_encode($this->get('rules')));

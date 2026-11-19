@@ -97,7 +97,9 @@ class Jobs extends AdminController
      */
     public function addTask()
     {
-        $this->editTask();
+        // A new posting starts as a draft; without the flag the form posted an
+        // empty status, which the integer column refuses
+        $this->editTask(1);
     }
 
     /**

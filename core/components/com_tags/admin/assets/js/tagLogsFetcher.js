@@ -95,6 +95,12 @@ const appendLogListItem = (logListItem) => {
 }
 
 $(document).ready(() => {
+	// A new tag has no activity log yet
+	getActivityLog()
+	if (!activityLog) {
+		return
+	}
+
 	getLogContainer()
 
 	logContainer.addEventListener('scroll', logContainerScroll)

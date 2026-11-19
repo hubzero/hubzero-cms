@@ -281,8 +281,9 @@ class Categories extends AdminController
             $category->assetRules = new \Hubzero\Access\Rules($data['rules']);
         }
 
-        // Make sure the chosen section is valid
-        $section = Section::oneOrFail($category->get('section_id'));
+        // Make sure the chosen section is valid; none chosen posts -1, which
+        // gets the message below rather than a not-found page
+        $section = Section::oneOrNew($category->get('section_id'));
 
         if (!$section->get('id')) {
             Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_SECTION'));
