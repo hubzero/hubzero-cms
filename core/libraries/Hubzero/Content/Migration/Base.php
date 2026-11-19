@@ -163,8 +163,13 @@ class Base
             return false;
         }
 
-        // Call function
-        return call_user_func_array([$this->callbacks[$callback], $func], $args);
+        // Call function, if the callback object has it
+        $call = [$this->callbacks[$callback], $func];
+        if (!is_callable($call)) {
+            return false;
+        }
+
+        return call_user_func_array($call, $args);
     }
 
     /**

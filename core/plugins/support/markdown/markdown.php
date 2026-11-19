@@ -26,7 +26,7 @@ class Markdown extends Plugin
     /**
      * Holds the parser for re-use
      *
-     * @var  object|null
+     * @var  \cebe\markdown\Markdown|null
      */
     public static $parser = null;
 
@@ -51,6 +51,9 @@ class Markdown extends Plugin
 
         if (!self::$parser) {
             $cls = '\\cebe\\markdown\\' . $this->params->get('type', 'Markdown');
+            if (!is_a($cls, \cebe\markdown\Markdown::class, true)) {
+                $cls = \cebe\markdown\Markdown::class;
+            }
 
             self::$parser = new $cls();
             self::$parser->html5 = true;

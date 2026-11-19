@@ -138,7 +138,7 @@ class Component extends Obj
     /**
      * Method to validate the form data.
      *
-     * @param   object  $form   The form to validate against.
+     * @param   \Hubzero\Form\Form  $form   The form to validate against.
      * @param   array<mixed>   $data   The data to validate.
      * @param   string|null  $group  The name of the field group to validate.
      * @return  mixed   Array of filtered data if valid, false otherwise.

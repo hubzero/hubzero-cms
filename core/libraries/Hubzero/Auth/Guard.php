@@ -197,7 +197,7 @@ class Guard
 
             $pluginName = $plugin->name;
             $className  = 'plg' . $plugin->type . $plugin->name;
-            if (class_exists($className)) {
+            if (is_a($className, \Hubzero\Plugin\Plugin::class, true)) {
                 $plugin = new $className($this, (array) $plugin);
             } else {
                 // Bail here if the plugin can't be created
@@ -210,8 +210,8 @@ class Guard
 
             $client = $this->app['client']->alias . '_login';
 
-            // Make sure plugin is enabled for a given client
-            if (!$plugin->params->get($client, false)) {
+            // Make sure plugin is enabled for a given client, and can authenticate
+            if (!$plugin->params->get($client, false) || !method_exists($plugin, 'onUserAuthenticate')) {
                 continue;
             }
 

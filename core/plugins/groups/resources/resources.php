@@ -256,7 +256,7 @@ class Resources extends Plugin
                 // They do - do some processing
                 $cats[$i]['title'] = ucfirst($c);
                 $cats[$i]['total'] = 0;
-                $cats[$i]['_sub']  = [];
+                $subs = [];
                 $z = 0;
                 // Loop through each sub-category
                 foreach ($t as $s => $st) {
@@ -265,12 +265,15 @@ class Resources extends Plugin
                         // Add to the parent category's total
                         $cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
                         // Get some info for each sub-category
-                        $cats[$i]['_sub'][$z]['category'] = $s;
-                        $cats[$i]['_sub'][$z]['title']    = $st;
-                        $cats[$i]['_sub'][$z]['total']    = $totals[$i][$z];
+                        $subs[$z] = [
+                            'category' => $s,
+                            'title'    => $st,
+                            'total'    => $totals[$i][$z],
+                        ];
                     }
                     $z++;
                 }
+                $cats[$i]['_sub'] = $subs;
             } else {
                 // No sub-categories - this should be easy
                 $cats[$i]['title'] = $t;

@@ -44,7 +44,7 @@ class Memberhome extends Plugin
         $defaultMenu = $menu->getDefault();
 
         // If routing to the home page...
-        if ($activeMenu == $defaultMenu) {
+        if ($defaultMenu instanceof \stdClass && $activeMenu == $defaultMenu) {
             // Reset the active menu item and
             // overwrite request vars
             $menu->setActive($menuId);
