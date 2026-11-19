@@ -232,7 +232,7 @@ class Node extends Obj
      *
      * @var  array<mixed>
      */
-    protected $path = [];
+    protected $pathSegments = [];
 
     /**
      * Category left of this one
@@ -306,9 +306,9 @@ class Node extends Obj
             $this->parent = & $parent;
 
             if ($this->parent_id != 1 && $parent) {
-                $this->path = $parent->getPath();
+                $this->pathSegments = $parent->getPath();
             }
-            $this->path[] = $this->id . ':' . $this->alias;
+            $this->pathSegments[] = $this->id . ':' . $this->alias;
 
             if ($parent && count($parent->children) > 1) {
                 end($parent->children);
@@ -489,7 +489,7 @@ class Node extends Obj
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->pathSegments;
     }
 
     /**
