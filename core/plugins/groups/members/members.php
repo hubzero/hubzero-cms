@@ -45,14 +45,14 @@ class Members extends Plugin
      * @var  string|null
      */
     protected $authorized;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  mixed
      */
     protected $display_system_users;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**

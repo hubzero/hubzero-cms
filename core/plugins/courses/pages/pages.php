@@ -34,9 +34,9 @@ class Pages extends Plugin
     /**
      * View object
      *
-     * @var \Hubzero\Plugin\View|null
+     * @var \Hubzero\Plugin\View
      */
-    public $view = null;
+    public $view;
 
     /**
      * Return data on a course view (this will be some form of HTML)

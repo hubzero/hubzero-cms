@@ -39,7 +39,7 @@ class Citations extends Plugin
 {
     /** @var string|null */
     protected $action;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  int|null
@@ -50,7 +50,7 @@ class Citations extends Plugin
      */
     protected $importer;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
 

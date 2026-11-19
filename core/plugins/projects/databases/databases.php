@@ -36,7 +36,7 @@ class Databases extends Plugin
      * @var  bool|null
      */
     protected $configured;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  mixed
@@ -51,10 +51,10 @@ class Databases extends Plugin
      */
     protected $gitpath;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
-    /** @var \Components\Projects\Models\Repo|null */
+    /** @var \Components\Projects\Models\Repo */
     protected $repo;
     /**
      * @var  string|null

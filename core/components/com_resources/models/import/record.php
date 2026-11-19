@@ -36,7 +36,7 @@ class Record extends Obj
      */
     public $raw;
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     public $record;
     /**

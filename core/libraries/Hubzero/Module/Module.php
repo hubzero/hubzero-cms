@@ -24,16 +24,16 @@ class Module
     /**
      * Registry
      *
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
-    public $params = null;
+    public $params;
 
     /**
      * Database row
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    public $module = null;
+    public $module;
 
     /**
      * Constructor

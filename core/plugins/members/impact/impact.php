@@ -22,7 +22,7 @@ use Hubzero\Facades\User;
  */
 class Impact extends Plugin
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  string|null

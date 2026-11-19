@@ -17,7 +17,7 @@ use Hubzero\Facades\User;
 class Newsletter extends Module
 {
     /**
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $database;
     /**

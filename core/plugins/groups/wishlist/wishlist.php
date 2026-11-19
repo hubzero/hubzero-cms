@@ -35,11 +35,11 @@ class Wishlist extends Plugin
      */
     protected $config;
     /**
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $database;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**

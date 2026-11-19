@@ -24,7 +24,7 @@ class Error extends Base
      *
      * @var  \Exception|null
      */
-    public $error;
+    public $error = null;
 
     /**
      * Base URL for the template

@@ -38,9 +38,9 @@ class Block extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  Blocks|null
+     * @var  Blocks
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * Constructor

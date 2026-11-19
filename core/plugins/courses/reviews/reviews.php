@@ -24,7 +24,7 @@ class Reviews extends Plugin
     /** @var string|null */
     protected $controller;
     /**
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $database;
     /**
@@ -42,7 +42,7 @@ class Reviews extends Plugin
      */
     protected $url;
     /**
-     * @var  \Hubzero\Plugin\View|null
+     * @var  \Hubzero\Plugin\View
      */
     protected $view;
 

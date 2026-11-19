@@ -25,7 +25,7 @@ class Profile extends Plugin
      */
     protected $areas;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
     /** @var string|null */

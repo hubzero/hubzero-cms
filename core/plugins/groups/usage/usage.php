@@ -24,7 +24,7 @@ use Hubzero\Facades\User;
 class Usage extends Plugin
 {
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
 

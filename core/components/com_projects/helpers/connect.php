@@ -39,9 +39,9 @@ class Connect extends Obj
     /**
      * Project
      *
-     * @var \Components\Projects\Models\Project|null
+     * @var \Components\Projects\Models\Project
      */
-    public $model = null;
+    public $model;
 
     /**
      * Database

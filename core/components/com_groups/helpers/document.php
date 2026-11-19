@@ -26,9 +26,9 @@ class Document extends Obj
     /**
      * Group
      *
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
-    public $group        = null;
+    public $group;
 
     /**
      * Content

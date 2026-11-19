@@ -48,7 +48,7 @@ class Calendar extends Plugin
      * @var \Components\Events\Models\Event|null
      */
     private $calendarEvent = null;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  array<mixed>|null
@@ -67,7 +67,7 @@ class Calendar extends Plugin
      */
     protected $disability;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**

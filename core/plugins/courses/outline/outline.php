@@ -29,16 +29,16 @@ class Outline extends Plugin
     /**
      * View object
      *
-     * @var \Hubzero\Plugin\View|null
+     * @var \Hubzero\Plugin\View
      */
-    public $view = null;
+    public $view;
 
     /**
      * Course object
      *
-     * @var \Components\Courses\Models\Course|null
+     * @var \Components\Courses\Models\Course
      */
-    protected $course = null;
+    protected $course;
 
     /**
      * Offering object

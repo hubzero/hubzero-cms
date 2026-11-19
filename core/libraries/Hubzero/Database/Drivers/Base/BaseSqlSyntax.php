@@ -41,9 +41,9 @@ abstract class BaseSqlSyntax
     /**
      * The database connection object
      *
-     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver|null
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
-    protected $connection = null;
+    protected $connection;
 
     /**
      * The prepared statement binding parameters

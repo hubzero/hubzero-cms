@@ -28,7 +28,7 @@ class Activity extends Plugin
      */
     protected $base;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**

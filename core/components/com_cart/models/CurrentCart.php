@@ -26,9 +26,9 @@ class CurrentCart extends Cart
 {
     // Session cart
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
-    public $cart = null;
+    public $cart;
 
     // Syncing enabled?
     /**

@@ -13,7 +13,7 @@ abstract class Renderer
     /**
      * @var  \Hubzero\User\Group|null
      */
-    public $group   = null;
+    public $group = null;
     /**
      * @var  \Components\Groups\Models\Page|null
      */

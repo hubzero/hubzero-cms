@@ -23,7 +23,7 @@ class Product
 {
     // Product data container
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     public $data;
     // SKUs container

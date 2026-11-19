@@ -42,10 +42,10 @@ class Files extends Plugin
     public $area;
 
     /**
-     * @var  \Components\Projects\Helpers\Connect|null
+     * @var  \Components\Projects\Helpers\Connect
      */
     protected $connect;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  int|null
@@ -78,7 +78,7 @@ class Files extends Plugin
     /**
      * @var  \Components\Projects\Models\Repo|null
      */
-    protected $repo;
+    protected $repo = null;
 
     /**
      * The requested directory, confined to a path inside the repository

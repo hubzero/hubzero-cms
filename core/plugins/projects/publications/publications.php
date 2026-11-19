@@ -48,7 +48,7 @@ class Publications extends Plugin
      * @var  mixed
      */
     protected $config;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  array<mixed>|null
@@ -75,7 +75,7 @@ class Publications extends Plugin
      */
     protected $videoExt;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
 

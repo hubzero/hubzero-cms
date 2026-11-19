@@ -103,9 +103,9 @@ class Query
     /**
      * The query syntax
      *
-     * @var  \Hubzero\Database\Drivers\Base\BaseSqlSyntax|null
+     * @var  \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      **/
-    protected $syntax = null;
+    protected $syntax;
 
     /**
      * The injected persistent cache store

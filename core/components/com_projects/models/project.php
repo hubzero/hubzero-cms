@@ -62,7 +62,7 @@ class Project extends Model
     /**
      * @var  \Components\Projects\Models\Repo|null
      */
-    protected $repo;
+    protected $repo = null;
     /** @var \Components\Projects\Tables\Activity|null */
     protected $tblActivity;
     /** @var \Components\Projects\Tables\Blog|null */
@@ -95,7 +95,7 @@ class Project extends Model
     // Read from outside the class throughout the setup and project views,
     // as $this->model->params->get(...).
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     public $params;
 

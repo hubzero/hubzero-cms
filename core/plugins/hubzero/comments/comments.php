@@ -52,7 +52,7 @@ class Comments extends Plugin
      */
     protected $url;
     /**
-     * @var  \Hubzero\Plugin\View|null
+     * @var  \Hubzero\Plugin\View
      */
     protected $view;
 

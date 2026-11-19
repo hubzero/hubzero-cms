@@ -32,7 +32,7 @@ class Questions extends Plugin
      * @var  mixed
      */
     protected $count;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  array<mixed>|null

@@ -34,7 +34,7 @@ class Team extends Plugin
      * @var  mixed
      */
     protected $config;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  string|null
@@ -45,7 +45,7 @@ class Team extends Plugin
      */
     protected $uid;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
 

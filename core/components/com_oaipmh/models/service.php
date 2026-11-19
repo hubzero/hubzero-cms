@@ -66,9 +66,9 @@ class Service extends Obj
     /**
      * Database connection
      *
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    protected $database = null;
+    protected $database;
 
     /**
      * Constructor

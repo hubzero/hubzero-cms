@@ -28,7 +28,7 @@ class Git extends Models\Adapter
      * @var  array<mixed>|null
      */
     protected $files;
-    /** @var \Components\Projects\Helpers\Git|null */
+    /** @var \Components\Projects\Helpers\Git */
     protected $git;
     /**
      * @var  mixed

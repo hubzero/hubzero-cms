@@ -23,7 +23,7 @@ use Hubzero\Facades\App;
  */
 class Set extends Obj implements Iterator
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $db;
     /**
      * @var  \Components\Search\Models\Basic\Terms|null

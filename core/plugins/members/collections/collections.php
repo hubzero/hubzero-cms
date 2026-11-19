@@ -28,17 +28,17 @@ class Collections extends Plugin
      * @var  string|null
      */
     protected $action;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  mixed
      */
     protected $group;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
-    /** @var \Components\Collections\Models\Archive|null */
+    /** @var \Components\Collections\Models\Archive */
     protected $model;
 
     /**

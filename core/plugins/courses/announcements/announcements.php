@@ -31,9 +31,9 @@ class Announcements extends Plugin
     /**
      * Course object
      *
-     * @var  \Components\Courses\Models\Course|null
+     * @var  \Components\Courses\Models\Course
      */
-    protected $course = null;
+    protected $course;
 
     /**
      * Offering object

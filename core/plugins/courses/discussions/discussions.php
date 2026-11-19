@@ -51,9 +51,9 @@ class Discussions extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * @var \Components\Courses\Models\Course|null
+     * @var \Components\Courses\Models\Course
      */
-    protected $course = null;
+    protected $course;
 
     /**
      * @var \Components\Courses\Models\Offering|null
@@ -61,9 +61,9 @@ class Discussions extends Plugin
     protected $offering = null;
 
     /**
-     * @var \Components\Forum\Models\Manager|null
+     * @var \Components\Forum\Models\Manager
      */
-    protected $forum = null;
+    protected $forum;
 
     /**
      * @var string|null

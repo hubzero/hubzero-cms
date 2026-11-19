@@ -53,9 +53,9 @@ class Asset extends Base
     /**
      * Registry
      *
-     * @var \Hubzero\Config\Registry|null
+     * @var \Hubzero\Config\Registry
      */
-    protected $params = null;
+    protected $params;
 
     /**
      * Auxiliary keys for assets (links to other tables)

@@ -29,7 +29,7 @@ class Watch extends Plugin
     protected $area;
     /** @var string|null */
     protected $action;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  \Components\Projects\Models\Project|null

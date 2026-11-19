@@ -45,14 +45,14 @@ class Projects extends Plugin
      */
     protected $authorized;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**
      * @var  mixed
      */
     protected $members;
-    /** @var \Components\Projects\Models\Project|null */
+    /** @var \Components\Projects\Models\Project */
     protected $model;
 
     /**

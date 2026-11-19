@@ -23,7 +23,7 @@ class Collection
 {
     // Collection data container
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     public $data;
 

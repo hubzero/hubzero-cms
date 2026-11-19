@@ -49,9 +49,9 @@ class Relationship
     /**
      * The primary model
      *
-     * @var  \Hubzero\Database\Relational|null
+     * @var  \Hubzero\Database\Relational
      **/
-    protected $model = null;
+    protected $model;
 
     /**
      * The related model

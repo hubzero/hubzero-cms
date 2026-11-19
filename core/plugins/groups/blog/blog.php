@@ -33,17 +33,17 @@ class Blog extends Plugin
      * @var  string|null
      */
     protected $authorized;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**
      * @var  mixed
      */
     protected $members;
-    /** @var \Components\Blog\Models\Archive|null */
+    /** @var \Components\Blog\Models\Archive */
     protected $model;
 
     /**

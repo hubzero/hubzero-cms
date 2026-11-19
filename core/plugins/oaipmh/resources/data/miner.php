@@ -31,9 +31,9 @@ class Miner extends Obj implements Provider
     /**
      * Database connection
      *
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    protected $database = null;
+    protected $database;
 
     /**
      * Data source name

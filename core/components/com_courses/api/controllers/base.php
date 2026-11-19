@@ -31,7 +31,7 @@ class Base extends ApiController
      */
     protected $section_id = null;
     /**
-     * @var  \Components\Courses\Models\Course|null
+     * @var  \Components\Courses\Models\Course
      */
     protected $course;
 

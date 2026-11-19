@@ -29,11 +29,11 @@ class Plugin
     protected $subject = null;
 
     /**
-     * A Registry object holding the parameters for the plugin
+     * A Registry object holding the parameters for the plugin (the constructor makes one)
      *
-     * @var  Registry|null
+     * @var  Registry
      */
-    public $params = null;
+    public $params;
 
     /**
      * The name of the plugin
@@ -83,14 +83,9 @@ class Plugin
         // Set the subject to observe
         $this->subject = &$subject;
 
-        // Get the parameters.
-        if (isset($config['params'])) {
-            $this->params = $config['params'];
-        }
-
-        if (!($this->params instanceof Registry)) {
-            $this->params = new Registry($this->params);
-        }
+        // Get the parameters, as a Registry whatever form they come in
+        $params = $config['params'] ?? null;
+        $this->params = $params instanceof Registry ? $params : new Registry($params);
 
         // Get the plugin name.
         if (isset($config['name'])) {

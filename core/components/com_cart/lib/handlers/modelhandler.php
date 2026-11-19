@@ -12,9 +12,9 @@ class ModelHandler
 {
     // Database instance
     /**
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    public $db = null;
+    public $db;
 
     // Item info
     /**

@@ -32,7 +32,7 @@ use Hubzero\Facades\User;
 class Account extends Plugin
 {
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
     /**

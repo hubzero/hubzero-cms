@@ -25,7 +25,7 @@ class Members extends Plugin
      * @var  string|null
      */
     protected $message;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
 
     /**

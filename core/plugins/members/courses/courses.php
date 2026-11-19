@@ -21,10 +21,10 @@ use Hubzero\Facades\Route;
  */
 class Courses extends Plugin
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
 

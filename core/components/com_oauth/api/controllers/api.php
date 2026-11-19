@@ -30,7 +30,7 @@ class Api extends ApiController
      */
     protected $segments;
     /**
-     * @var  \Hubzero\Component\View|null
+     * @var  \Hubzero\Component\View
      */
     protected $view;
 

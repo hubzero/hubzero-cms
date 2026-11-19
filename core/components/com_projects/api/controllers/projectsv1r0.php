@@ -25,7 +25,7 @@ class Projectsv1r0 extends ApiController
     /**
      * The project the request addresses
      *
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
 

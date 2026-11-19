@@ -26,7 +26,7 @@ use Hubzero\Facades\User;
  */
 class Xusers extends Plugin
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
 
     /**

@@ -36,7 +36,7 @@ class Files extends Plugin
      */
     protected $authorized;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**

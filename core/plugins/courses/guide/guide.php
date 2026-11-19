@@ -29,9 +29,9 @@ class Guide extends Plugin
     /**
      * View object
      *
-     * @var \Hubzero\Plugin\View|null
+     * @var \Hubzero\Plugin\View
      */
-    public $view = null;
+    public $view;
 
     /**
      * Event call after course outline

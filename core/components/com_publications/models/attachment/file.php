@@ -40,9 +40,9 @@ class File extends Base
     /**
      * Git handler
      *
-     * @var  \Components\Projects\Helpers\Git|null
+     * @var  \Components\Projects\Helpers\Git
      */
-    protected $git = null;
+    protected $git;
 
     /**
      * Unique attachment properties

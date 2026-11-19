@@ -46,16 +46,16 @@ class Forum extends Plugin
      * @var  string|null
      */
     protected $base;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  mixed
      */
     protected $filters;
-    /** @var \Components\Forum\Models\Manager|null */
+    /** @var \Components\Forum\Models\Manager */
     protected $forum;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**
@@ -75,7 +75,7 @@ class Forum extends Plugin
      */
     protected $members;
     /**
-     * @var  \Hubzero\Plugin\View|null
+     * @var  \Hubzero\Plugin\View
      */
     protected $view;
 

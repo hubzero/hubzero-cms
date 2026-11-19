@@ -34,7 +34,7 @@ class Collect extends Module
      * @var  \Components\Collections\Models\Item|null
      */
     protected $item;
-    /** @var \Components\Collections\Models\Archive|null */
+    /** @var \Components\Collections\Models\Archive */
     protected $model;
     /**
      * @var  array<mixed>|null

@@ -18,7 +18,7 @@ use Hubzero\Facades\User;
 class Mysessions extends Module
 {
     /**
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $database;
     /**

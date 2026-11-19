@@ -33,7 +33,7 @@ class Sponsors extends Plugin
      * @var  string|null
      */
     protected $task;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
 
     /**

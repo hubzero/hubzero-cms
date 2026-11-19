@@ -40,9 +40,9 @@ abstract class Table extends \stdClass
     protected $tableKey = '';
 
     /**
-     * Database connector object.
+     * Database connector object (set by the constructor)
      *
-     * @var \Hubzero\Database\Driver|null
+     * @var \Hubzero\Database\Driver
      */
     protected $db;
 

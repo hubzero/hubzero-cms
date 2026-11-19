@@ -28,17 +28,17 @@ class Progress extends Plugin
      */
     protected $base;
     /**
-     * @var  \Components\Courses\Models\Course|null
+     * @var  \Components\Courses\Models\Course
      */
     protected $course;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $db;
     /**
      * @var  mixed
      */
     protected $member;
     /**
-     * @var  \Hubzero\Plugin\View|null
+     * @var  \Hubzero\Plugin\View
      */
     protected $view;
 

@@ -222,10 +222,6 @@ class Session extends Table
 					  ORDER BY s.start";
         }
 
-        if (empty($this->db)) {
-            return false;
-        }
-
         $this->db->setQuery($query);
         return $this->db->loadObjectList();
     }

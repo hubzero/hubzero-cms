@@ -33,9 +33,9 @@ class Attachment extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  Attachments|null
+     * @var  Attachments
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * Constructor

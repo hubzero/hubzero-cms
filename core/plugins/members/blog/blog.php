@@ -35,13 +35,13 @@ use Hubzero\Facades\User;
  */
 class Blog extends Plugin
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
-    /** @var \Components\Blog\Models\Archive|null */
+    /** @var \Components\Blog\Models\Archive */
     protected $model;
     /**
      * @var  string|null

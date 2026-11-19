@@ -33,7 +33,7 @@ class Filesv1r0 extends ApiController
      */
     protected $cid;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
     /**

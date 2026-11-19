@@ -37,9 +37,9 @@ class Database extends Store
     /**
      * Database connection
      *
-     * @var \Hubzero\Database\Driver|null
+     * @var \Hubzero\Database\Driver
      */
-    private $connection = null;
+    private $connection;
 
     /**
      * Constructor

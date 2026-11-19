@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class LoaderTest extends TestCase
 {
     /**
-     * @var  \Hubzero\Template\Loader|null
+     * @var  \Hubzero\Template\Loader
      */
     private $loader;
 

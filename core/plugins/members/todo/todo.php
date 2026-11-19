@@ -22,17 +22,17 @@ use Hubzero\Facades\User;
  */
 class Todo extends Plugin
 {
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  array<string, mixed>|null
      */
     protected $filters;
     /**
-     * @var  \Components\Members\Models\Member|null
+     * @var  \Components\Members\Models\Member
      */
     protected $member;
-    /** @var \Components\Projects\Models\Project|null */
+    /** @var \Components\Projects\Models\Project */
     protected $model;
     /**
      * @var  mixed

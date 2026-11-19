@@ -33,16 +33,16 @@ class Filefsv1r0 extends ApiController
     /**
      * Project being acted on
      *
-     * @var  Project|null
+     * @var  Project
      */
-    protected $model = null;
+    protected $model;
 
     /**
      * Repository of the project
      *
-     * @var  \Components\Projects\Models\Repo|null
+     * @var  \Components\Projects\Models\Repo
      */
-    protected $repo = null;
+    protected $repo;
 
     /**
      * Subdirectory within the repository, from the request
@@ -54,9 +54,9 @@ class Filefsv1r0 extends ApiController
     /**
      * Database and acting user, set alongside the repository
      *
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    protected $database = null;
+    protected $database;
 
     /**
      * @var  integer

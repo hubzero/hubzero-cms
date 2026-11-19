@@ -22,7 +22,7 @@ abstract class AbstractCache extends Basic
     /**
      * Cache manager
      *
-     * @var  \Hubzero\Cache\Manager|null
+     * @var  \Hubzero\Cache\Manager
      */
     protected $cache;
 

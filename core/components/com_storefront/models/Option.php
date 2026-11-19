@@ -20,7 +20,7 @@ class Option
 {
     // Data container
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     public $data;
     /**

@@ -30,10 +30,10 @@ class Collections extends Plugin
      * @var  string|null
      */
     protected $authorized;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  \Hubzero\User\Group|null
+     * @var  \Hubzero\User\Group
      */
     protected $group;
     /**
@@ -44,7 +44,7 @@ class Collections extends Plugin
      * @var  mixed
      */
     protected $members;
-    /** @var \Components\Collections\Models\Archive|null */
+    /** @var \Components\Collections\Models\Archive */
     protected $model;
     /**
      * @var  string|null

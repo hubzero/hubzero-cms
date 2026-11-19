@@ -26,7 +26,7 @@ class Sync extends \Hubzero\Base\Obj
      * @var  \Components\Projects\Helpers\Connect
      */
     protected $connect;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $db;
     /**
      * @var  string|false|null
@@ -45,7 +45,7 @@ class Sync extends \Hubzero\Base\Obj
      */
     protected $model;
     /**
-     * @var  \Hubzero\Config\Registry|null
+     * @var  \Hubzero\Config\Registry
      */
     protected $params;
 

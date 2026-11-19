@@ -35,7 +35,7 @@ class Todo extends Plugin
      * @var  array<mixed>|null
      */
     protected $area;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  int|null
@@ -54,7 +54,7 @@ class Todo extends Plugin
      */
     protected $uid;
     /**
-     * @var  \Components\Projects\Models\Project|null
+     * @var  \Components\Projects\Models\Project
      */
     protected $model;
     /** @var \Components\Projects\Models\Todo|null */

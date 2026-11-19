@@ -63,9 +63,9 @@ class Base extends Obj
     /**
      * Database connection
      *
-     * @var \Hubzero\Database\Driver|null
+     * @var \Hubzero\Database\Driver
      */
-    protected $db = null;
+    protected $db;
 
     /**
      * Menu instances container.

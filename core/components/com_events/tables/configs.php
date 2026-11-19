@@ -28,9 +28,9 @@ class Configs
     /**
      * Database connection
      *
-     * @var  \Hubzero\Database\Driver|null
+     * @var  \Hubzero\Database\Driver
      */
-    private $db = null;
+    private $db;
 
     /**
      * Properties container

@@ -26,7 +26,7 @@ class Projects extends Plugin
      * @var  \Hubzero\Config\Registry|null
      */
     protected $config;
-    /** @var \Hubzero\Database\Driver|null */
+    /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
      * @var  array<mixed>|null
@@ -40,7 +40,7 @@ class Projects extends Plugin
      * @var  \Components\Members\Models\Member|null
      */
     protected $user;
-    /** @var \Components\Projects\Models\Project|null */
+    /** @var \Components\Projects\Models\Project */
     protected $model;
 
     /**

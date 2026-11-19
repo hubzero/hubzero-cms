@@ -20,7 +20,7 @@ class OptionGroup
 {
     // Data container
     /**
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     public $data;
     /**
