@@ -34,20 +34,41 @@ if (!empty($this->filters['search']))
 					<?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
 				</a>
 			</li>
-			<?php foreach ($categories as $row) { ?>
-				<?php
-				if ($row->get('articles', 0) <= 0)
+			<?php foreach ($categories as $row) {
+				$children = $row->children($filters)->rows();
+				$hasChildArticles = false;
+
+				foreach ($children as $cat)
+				{
+					$count = $cat->articles()
+						->whereEquals('state', 1)
+						->whereIn('access', $filters['access'])
+						->total();
+
+					$cat->set('articles', $count);
+					$hasChildArticles = $hasChildArticles || $count > 0;
+				}
+
+				if ($row->get('articles', 0) <= 0 && !$hasChildArticles)
 				{
 					continue;
 				}
 				?>
 				<li>
 					<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" aria-current="page" '; } ?> href="<?php echo Route::url($row->link() . $carry); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?> 
+						<?php if ($row->get('articles', 0) > 0) { ?>
+							<span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+						<?php } ?>
 					</a>
-					<?php if ($this->catid == $row->get('id') && $row->children($filters)->total() > 0) { ?>
+					<?php if ($this->catid == $row->get('id') && $hasChildArticles) { ?>
 						<ul class="categories">
-						<?php foreach ($row->children() as $cat) { ?>
+						<?php foreach ($children as $cat) { 
+							if ($cat->get('articles', 0) <= 0) 
+							{
+								continue;
+							}	
+							?>
 							<li>
 								<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" aria-current="page" '; } ?> href="<?php echo Route::url($cat->link() . $carry); ?>">
 									<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
