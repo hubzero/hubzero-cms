@@ -60,8 +60,8 @@ if (!$no_html) {
 
                         if ($this->report->anon == 0) {
                             $user = User::getInstance($this->report->author);
-                            $name = Lang::txt('COM_SUPPORT_UNKNOWN');
-                            $name = $this->escape($user->get('name'));
+                            // An account since removed has no name to show
+                            $name = $this->escape($user->get('name')) ?: Lang::txt('COM_SUPPORT_UNKNOWN');
                         }
 
                             echo ($this->report->href) ? '<a href="' . $this->report->href . '">' : '';

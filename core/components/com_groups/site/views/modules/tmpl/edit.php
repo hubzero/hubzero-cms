@@ -101,7 +101,9 @@ foreach ($menus as $menu) {
                                 '',
                                 $this->module->get('content'),
                             );
-                            $content      = preg_replace('/<\?[\s\S]*?\?>/', '', $this->module->get('content'));
+                            // From the script-free content: starting again from the
+                            // stored content put the scripts back
+                            $content      = preg_replace('/<\?[\s\S]*?\?>/', '', (string) $content);
                         }
 
                             // open in source mode if contains php or scripts

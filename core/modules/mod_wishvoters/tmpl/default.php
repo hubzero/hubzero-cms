@@ -35,9 +35,9 @@ $this->css();
             $k = 1;
         foreach ($this->rows as $row) {
             if ($k <= intval($this->params->get('limit', 10))) {
-                $name = Lang::txt('MOD_WISHVOTERS_UNKNOWN');
                 $auser = User::getInstance($row->userid);
-                $name  = $auser->get('name');
+                // An account since removed has no name to show
+                $name  = $auser->get('name') ?: Lang::txt('MOD_WISHVOTERS_UNKNOWN');
                 $login = $auser->get('username');
                 ?>
                     <li>
