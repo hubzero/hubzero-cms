@@ -391,8 +391,9 @@ class Citations extends SiteController
 
         //make sure title isnt too long
         $maxTitleLength = 50;
-        $shortenedTitle = (strlen($this->view->get('citation')->title) > $maxTitleLength)
-            ? substr($this->view->get('citation')->title, 0, $maxTitleLength) . '&hellip;'
+        // Characters, not bytes, and a real ellipsis: the document title is escaped, so an entity would show as text
+        $shortenedTitle = (mb_strlen($this->view->get('citation')->title) > $maxTitleLength)
+            ? mb_substr($this->view->get('citation')->title, 0, $maxTitleLength) . '…'
             : $this->view->get('citation')->title;
 
         // Set the page title
@@ -631,8 +632,8 @@ class Citations extends SiteController
 
         //make sure title isnt too long
         $maxTitleLength = 30;
-        $shortenedTitle = (strlen($row->title ?? '') > $maxTitleLength)
-                        ? substr($row->title, 0, $maxTitleLength) . '&hellip;'
+        $shortenedTitle = (mb_strlen($row->title ?? '') > $maxTitleLength)
+                        ? mb_substr($row->title, 0, $maxTitleLength) . '…'
                         : $row->title;
 
         // Set the pathway
