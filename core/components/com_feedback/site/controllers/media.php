@@ -233,13 +233,17 @@ class Media extends SiteController
         // Build the directory path
         $path = $this->path . DS . $dir;
 
+        // Hubs installed from the old base data still name the picture's pre-core location, which is gone
+        $defaultPicture = '/core/components/com_feedback/site/assets/img/contributor.gif';
+        $configured = (string) $this->config->get('defaultpic', $defaultPicture);
+        if (is_file(PATH_ROOT . '/' . ltrim($configured, '/'))) {
+            $defaultPicture = $configured;
+        }
+
         // Output view
         $this->view
             ->set('webpath', $this->config->get('uploadpath', '/site/quotes'))
-            ->set(
-                'default_picture',
-                $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif'),
-            )
+            ->set('default_picture', $defaultPicture)
             ->set('path', $dir)
             ->set('file', $file)
             ->set('file_path', $path)

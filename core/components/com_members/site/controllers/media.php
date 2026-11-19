@@ -523,13 +523,17 @@ class Media extends SiteController
         $dir  = \Hubzero\Utility\Str::pad($id);
         $path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
+        // Hubs installed from the old base data still name the picture's pre-core location, which is gone
+        $defaultPicture = '/core/components/com_members/site/assets/img/profile.gif';
+        $configured = (string) $this->config->get('defaultpic', $defaultPicture);
+        if (is_file(PATH_ROOT . '/' . ltrim($configured, '/'))) {
+            $defaultPicture = $configured;
+        }
+
         // Output HTML
         $this->view
             ->set('webpath', '/' . $this->filespace())
-            ->set(
-                'default_picture',
-                $this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'),
-            )
+            ->set('default_picture', $defaultPicture)
             ->set('path', $dir)
             ->set('file', $file)
             ->set('id', $id)
