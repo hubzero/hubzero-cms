@@ -23,6 +23,7 @@ use Date;
 use App;
 
 use Components\Members\Helpers\ReturnUrl;
+use Components\Members\Helpers\ExistingAccount;
 use Notify;
 use Plugin;
 use Log;
@@ -30,6 +31,7 @@ use Log;
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'returnurl.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'existingaccount.php';
 
 /**
  * Controller class for member registration
@@ -1198,8 +1200,41 @@ class Register extends SiteController
 			->ordered()
 			->rows();
 
+		// A third-party login with no account yet may belong to someone who has
+		// one: point them at signing in and linking instead of a second account
+		$linkHint        = null;
+		$existingAccount = null;
+
+		if ($task == 'update' && User::get('auth_link_id'))
+		{
+			\Plugin::import('user', 'hubzero');
+
+			if (\plgUserHubzero::isThirdPartyPlaceholder(array('username' => (string) User::get('username'))))
+			{
+				$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
+				$hzad = $hzal ? \Hubzero\Auth\Domain::find_by_id($hzal->get('auth_domain_id')) : false;
+
+				if ($hzad)
+				{
+					$linkHint = array(
+						'provider' => ExistingAccount::providerName($hzad->get('authenticator')),
+						'url'      => ExistingAccount::signInUrl($hzad->get('authenticator'))
+					);
+
+					// Only the address the provider asserted is compared, never
+					// one typed into the form (see ExistingAccount::matches())
+					if (ExistingAccount::matches($hzal->get('email'), User::get('id'), $hzal->get('auth_domain_id')))
+					{
+						$existingAccount = array('email' => (string) $hzal->get('email'));
+					}
+				}
+			}
+		}
+
 		// Display the view
 		$this->view
+			->set('linkHint', $linkHint)
+			->set('existingAccount', $existingAccount)
 			->set('title', Lang::txt('COM_MEMBERS_REGISTER'))
 			->set('sitename', Config::get('sitename'))
 			->set('config', $this->config)

@@ -36,6 +36,40 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 	switch ($this->task)
 	{
 		case 'update':
+			if (!empty($this->linkHint))
+			{
+				// The email shown is only ever the one the identity provider
+				// asserted (see Helpers\ExistingAccount::matches())
+				$linkSitename = $this->escape($this->sitename);
+				$linkProvider = $this->escape($this->linkHint['provider']);
+
+				if (!empty($this->existingAccount))
+				{
+					$linkEmail   = $this->escape($this->existingAccount['email']);
+					$linkMessage = Lang::txt(
+						'COM_MEMBERS_REGISTER_EXISTING_ACCOUNT_FOUND',
+						$linkSitename,
+						$linkEmail,
+						$linkProvider
+					);
+				}
+				else
+				{
+					$linkMessage = Lang::txt('COM_MEMBERS_REGISTER_EXISTING_ACCOUNT_HINT', $linkSitename, $linkProvider);
+				}
+				?>
+				<div class="<?php echo !empty($this->existingAccount) ? 'info' : 'help'; ?>">
+					<p><?php echo $linkMessage; ?></p>
+					<p class="submit">
+						<a href="<?php echo $this->escape($this->linkHint['url']); ?>" class="btn">
+							<?php echo Lang::txt('COM_MEMBERS_REGISTER_EXISTING_ACCOUNT_SIGN_IN'); ?>
+						</a>
+					</p>
+					<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_EXISTING_ACCOUNT_FORGOT'); ?></p>
+				</div>
+				<?php
+			}
+
 			if (!empty($this->xregistration->_missing))
 			{
 				?>
