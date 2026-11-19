@@ -70,7 +70,13 @@ class Behavior
             $pushed = self::pushScriptTo(0, $path);
 
             if ($pushed && App::isAdmin()) {
-                Asset::script('assets/core.js', false, true);
+                // core.js defines the Hubzero object that administrator scripts call. Appended, it came
+                // after any component script a template had already added, which then failed with
+                // "Hubzero is not defined" (newsletter, SAML); it goes right after jQuery instead.
+                $core = Asset::script('assets/core.js', false, true, true);
+                foreach (array_values((array) $core) as $i => $url) {
+                    self::pushScriptTo(1 + $i, $url);
+                }
             }
         } else {
             $pushed = self::pushScriptTo(1, $path);
