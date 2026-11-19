@@ -90,13 +90,14 @@ class Parser extends Obj
      */
     public function initialise($config = [], $getnew = false)
     {
-        // Check if parser is already loaded
-        if (is_null($this->parser)) {
+        // Check if parser is already loaded (and is one: it gives a parser)
+        $plugin = $this->parser;
+        if (!is_object($plugin) || !method_exists($plugin, 'onGetWikiParser')) {
             return;
         }
 
         $return = '';
-        $results[] = $this->parser->onGetWikiParser($config, $getnew);
+        $results[] = $plugin->onGetWikiParser($config, $getnew);
 
         foreach ($results as $result) {
             if (is_object($result)) {
@@ -116,7 +117,12 @@ class Parser extends Obj
     public function toc($text, $config, $depth = 0)
     {
         $this->load([], $config, true);
-        $parser = $this->parser->onGetWikiParser($config, true);
+
+        $plugin = $this->parser;
+        if (!is_object($plugin) || !method_exists($plugin, 'onGetWikiParser')) {
+            return '';
+        }
+        $parser = $plugin->onGetWikiParser($config, true);
 
         return $parser->toc($text, true, $depth);
     }
@@ -214,15 +220,16 @@ class Parser extends Obj
 
         $this->load($params, $config, $getnew);
 
-        // Check if parser is already loaded
-        if (is_null($this->parser)) {
+        // Check if parser is already loaded (and is one: it parses text)
+        $plugin = $this->parser;
+        if (!is_object($plugin) || !method_exists($plugin, 'onWikiParseText')) {
             return nl2br($text);
         }
 
         // Initialize variables
         $return = null;
 
-        $results[] = $this->parser->onWikiParseText($text, $config, $fullparse, $getnew);
+        $results[] = $plugin->onWikiParseText($text, $config, $fullparse, $getnew);
 
         foreach ($results as $result) {
             if (trim($result)) {

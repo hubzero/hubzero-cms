@@ -165,7 +165,7 @@ class Record extends Obj
         if ($this->options['requiredfields'] && isset($this->record->type->id)) {
             $resourcesElements = new \Components\Resources\Models\Elements(
                 (array) $this->record->custom,
-                $this->record->type->customFields,
+                $this->record->type->customFields ?? null,
             );
             $schema = $resourcesElements->getSchema();
             foreach (($schema ? $schema->fields : []) as $field) {
@@ -354,7 +354,7 @@ class Record extends Obj
         if ($this->record->type->id) {
             $resourcesElements = new \Components\Resources\Models\Elements(
                 (array) $this->raw->custom_fields,
-                $this->record->type->customFields,
+                $this->record->type->customFields ?? null,
             );
             $customFieldsHtml = $resourcesElements->toDatabaseHtml();
 

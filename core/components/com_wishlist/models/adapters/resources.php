@@ -79,11 +79,8 @@ class Resources extends Base
         }
 
         foreach ($cons as $contributor) {
-            if (!isset($contributor->authorid) && isset($contributor->uid)) {
-                $contributor->authorid = $contributor->uid;
-            }
-
-            $owners[] = $contributor->authorid;
+            // Authors carry authorid; rows without it, their uid
+            $owners[] = $contributor->authorid ?? $contributor->uid ?? null;
         }
 
         return $owners;

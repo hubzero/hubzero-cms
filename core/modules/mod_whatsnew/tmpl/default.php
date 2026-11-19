@@ -32,7 +32,7 @@ if ($this->feed) {
 }
 
 if (!$this->tagged) {
-    $rows = $this->rows;
+    $rows = is_iterable($this->rows) ? $this->rows : [];
     if (count($rows) > 0) {
         $count = 0;
 
@@ -96,7 +96,9 @@ if (!$this->tagged) {
             $html .= '<a href="' . Route::url($row2->href) . '">'
                 . $this->escape(stripslashes($row2->title)) . '</a><br />';
             $html .= '<span>' . Lang::txt('MOD_WHATSNEW_IN') . ' ';
-            $html .= ($row2->section) ? Lang::txt($row2->area) : Lang::txt(strtoupper($row2->section));
+            // The area's name, or for a result without one, its section's (it read the
+            // section only when there was none, so showed nothing)
+            $html .= ($row2->area) ? Lang::txt($row2->area) : Lang::txt(strtoupper((string) $row2->section));
             if ($row2->publish_up) {
                 $html .= ', ' . Date::of($row2->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
             }

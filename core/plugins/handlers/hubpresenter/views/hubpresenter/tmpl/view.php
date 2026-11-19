@@ -131,7 +131,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                             time="<?= $this->escape($slide->time) ?>">
                             <?php if ($slide->type == 'Image') : ?>
                                 <img src="<?= with(new Moderator($content_folder . DS . $slide->media))->getUrl() ?>"
-                                    alt="<?= $this->escape($slide->title) ?>" />
+                                    alt="<?= $this->escape($slide->title ?? '') ?>" />
                             <?php else : ?>
                                 <video class="slidevideo">
                                     <?php foreach ($slide->media as $source) : ?>
@@ -153,7 +153,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     $sourceUrl = with(new Moderator($content_folder . DS . $slide->media[3]->source))
                                         ->getUrl();
                                     ?>
-                                <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>"
+                                <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title ?? '') ?>"
                                     class="imagereplacement" />
                                 <?php endif; ?>
                             <?php endif; ?>
@@ -444,7 +444,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
         </div><!-- /#left -->
         <?php $cls = (isset($presentation->videoPosition)
                         && $presentation->videoPosition == "left"
-                        && strtolower($presentation->type) == 'video') ? "move-left" : ""; ?>
+                        && strtolower($presentation->type ?? '') == 'video') ? "move-left" : ""; ?>
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>
@@ -535,7 +535,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 }
                                 ?>
                                 <img src="<?= with(new Moderator($thumb))->getUrl() ?>"
-                                    alt="<?= $this->escape($slide->title) ?>" />
+                                    alt="<?= $this->escape($slide->title ?? '') ?>" />
                                 <span>
                                     <?php
                                         $num++;

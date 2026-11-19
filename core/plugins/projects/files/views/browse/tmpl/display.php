@@ -201,7 +201,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
             </noscript>
                 <?php if ($sharing) { ?>
             <span class="rightfloat">
-                <span id="sync-status"><?php echo $lastsync; ?></span>
+                <span id="sync-status"><?php echo is_string($lastsync) ? $lastsync : ''; ?></span>
             </span>
             <span id="manage_sync">
                 <span id="sync-wrap">

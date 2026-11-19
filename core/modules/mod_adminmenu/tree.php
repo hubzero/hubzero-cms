@@ -56,7 +56,9 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function addChild($node, $setCurrent = false)
     {
-        $this->current->addChild($node);
+        // addChild() takes its argument by reference (it never replaces it)
+        $child = $node;
+        $this->current->addChild($child);
 
         if ($setCurrent) {
             $this->current = $node;

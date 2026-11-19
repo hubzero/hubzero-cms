@@ -122,8 +122,14 @@ class Remote
             'email' => $message,
         ];
 
+        // Without a server there is nothing to ask (as a failed request would say)
+        $server = $this->server;
+        if ($server === '') {
+            throw new Exception('cURL Error: no SpamAssassin server is set');
+        }
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->server);
+        curl_setopt($ch, CURLOPT_URL, $server);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, (string) json_encode($json));

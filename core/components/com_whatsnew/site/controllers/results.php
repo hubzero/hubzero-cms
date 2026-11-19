@@ -362,12 +362,11 @@ class Results extends SiteController
                 }*/
                 $link = Route::url($row->href);
 
-                if (!isset($row->text) && isset($row->itext)) {
-                    $row->text = $row->itext;
-                }
+                // The text, or for rows without it the intro text
+                $text = $row->text ?? $row->itext ?? '';
 
                 // Strip html from feed item description text
-                $description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
+                $description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($text));
                 $description = \Hubzero\Utility\Str::truncate($description, 300);
                 $author = '';
                 $date = (isset($row->publish_up) ? date('r', strtotime($row->publish_up)) : '');

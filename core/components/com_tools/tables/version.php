@@ -463,7 +463,7 @@ class Version extends Table
             $resource->version       = $revision ? $thistool->version : 1;
             $resource->tool          = $revision
                 ? $thistool->instance
-                : $resource->alias . '_r' . $revision;
+                : $resource->alias . '_r' . (is_scalar($revision) ? $revision : '');
             $resource->toolpublished = $revision ? $thistool->state : 1;
             $resource->license       = $revision ? $thistool->license : '';
             $resource->title         = $revision

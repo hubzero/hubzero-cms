@@ -100,13 +100,16 @@ class Storefront extends Plugin
             foreach ($days as $day) {
                 // need to notify for this setting
                 if ($day >= $sku->daysLeftUntilPublishDown) {
-                    $notificationsIndex[$sku->sId]['notifyDays'][$day] = true;
+                    // Each entry: the days to notify on, and the date it is for
+                    $id = (int) $sku->sId;
+                    if (!isset($notificationsIndex[$id])) {
+                        $notificationsIndex[$id] = ['notifyDays' => [], 'publish_down' => $sku->publish_down];
+                    }
+                    $notificationsIndex[$id]['notifyDays'][(int) $day] = true;
                     if (!$skuAffected) {
                         $affectedSkus .= ',' . $sku->sId;
                         $skuAffected = true;
                     }
-
-                    $notificationsIndex[$sku->sId]['publish_down'] = $sku->publish_down;
                 }
             }
         }
@@ -161,13 +164,16 @@ class Storefront extends Plugin
             foreach ($days as $day) {
                 // need to notify for this setting
                 if ($day >= $product->daysLeftUntilPublishDown) {
-                    $notificationsIndex[$product->pId]['notifyDays'][$day] = true;
+                    // Each entry: the days to notify on, and the date it is for
+                    $id = (int) $product->pId;
+                    if (!isset($notificationsIndex[$id])) {
+                        $notificationsIndex[$id] = ['notifyDays' => [], 'publish_down' => $product->publish_down];
+                    }
+                    $notificationsIndex[$id]['notifyDays'][(int) $day] = true;
                     if (!$productAffected) {
                         $affectedProducts .= ',' . $product->pId;
                         $productAffected = true;
                     }
-
-                    $notificationsIndex[$product->pId]['publish_down'] = $product->publish_down;
                 }
             }
         }

@@ -57,8 +57,12 @@ class Loadmodule extends Plugin
         ) {
             return true;
         } elseif (!isset($article->text) && isset($article->introtext)) {
-            // for terms of service
-            $article->text = $article->introtext;
+            // for terms of service: models set the field, plain rows take it as is
+            if ($article instanceof \Hubzero\Database\Relational) {
+                $article->set('text', $article->introtext);
+            } elseif ($article instanceof \stdClass) {
+                $article->text = $article->introtext;
+            }
         }
 
         // expression to search for (positions)

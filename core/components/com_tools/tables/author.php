@@ -151,9 +151,9 @@ class Author extends Table
             } elseif ($toolname && $revision) {
                 $query .= "WHERE a.toolname=" . $this->db->quote($toolname)
                     . " AND a.revision=" . $this->db->quote($revision) . " ORDER BY a.ordering";
-            } elseif (is_object($version)) {
+            } elseif (is_object($version) && isset($version->id)) {
                 $query .= "WHERE a.version_id=" . $this->db->quote($version->id) . " ORDER BY a.ordering";
-            } elseif (isset($version[0]) && is_object($version[0])) {
+            } elseif (is_array($version) && isset($version[0]->id)) {
                 $query .= "WHERE a.version_id=" . $this->db->quote($version[0]->id) . " ORDER BY a.ordering";
             } else {
                 return null;

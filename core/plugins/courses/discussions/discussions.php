@@ -1162,12 +1162,6 @@ class Discussions extends Plugin
 
             $this->params->set('access-view-' . $assetType, true);
 
-            if (isset($this->model) && is_object($this->model)) {
-                if (!$this->model->state) {
-                    $this->params->set('access-view-' . $assetType, false);
-                }
-            }
-
             $this->params->set('access-create-' . $assetType, false);
             $this->params->set('access-delete-' . $assetType, false);
             $this->params->set('access-edit-' . $assetType, false);

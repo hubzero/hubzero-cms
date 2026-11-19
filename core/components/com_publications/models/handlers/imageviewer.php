@@ -446,7 +446,7 @@ class ImageViewer extends Base
         }
 
         // Metadata file?
-        $layout = ($data->get('ext') == 'csv') ? 'file' : 'image';
+        $layout = (method_exists($data, 'get') && $data->get('ext') == 'csv') ? 'file' : 'image';
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([

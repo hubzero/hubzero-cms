@@ -266,7 +266,8 @@ class Hosts extends AdminController
         }
 
         // Store new content
-        if (!$row->store($insert, $fields['id'])) {
+        $key = isset($fields['id']) && is_string($fields['id']) ? $fields['id'] : null;
+        if (!$row->store($insert, $key)) {
             Notify::error($row->getError());
             $this->editTask($row);
 

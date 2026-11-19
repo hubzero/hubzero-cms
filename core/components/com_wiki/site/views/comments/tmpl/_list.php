@@ -43,7 +43,7 @@ if ($hasComments) :
     $depth = $this->depth + 1;
     ?>
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
-    <?php foreach ($this->comments as $comment) : ?>
+    <?php foreach (is_iterable($this->comments) ? $this->comments : [] as $comment) : ?>
         <?php
         $comment->set('page_id', $this->page->get('id'));
         $this

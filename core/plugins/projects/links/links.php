@@ -974,7 +974,7 @@ class Links extends Plugin
             // Parse the body we already fetched (and checked) rather than fetching
             // the final URL a second time with no check at all. HtmlDomParser
             // always hands back a parser, so an empty body is caught here instead
-            if (trim((string) $content) === '') {
+            if (!is_string($content) || trim($content) === '') {
                 $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
                 return (string) json_encode($output);
             }
@@ -984,8 +984,8 @@ class Links extends Plugin
             // Title Of Page -- find() gives an empty element when there is
             // none, and the remote markup is rendered into the preview, so
             // escape it
-            $titleNode = $html->find('title', 0);
-            $title = htmlspecialchars(trim((string) $titleNode->innertext), ENT_QUOTES, 'UTF-8');
+            $titleNode = $html->findOneOrFalse('title');
+            $title = htmlspecialchars(trim($titleNode ? (string) $titleNode->innertext : ''), ENT_QUOTES, 'UTF-8');
 
             $out .= $title
                 ? stripslashes('<h5>' . addslashes($title) . '</h5>')
@@ -1048,7 +1048,8 @@ class Links extends Plugin
                 if ($meta) {
                     $description = $meta->getAttribute('content');
                 } else {
-                    $description = $html->find('body', 0)->plaintext;
+                    $body = $html->findOneOrFalse('body');
+                    $description = $body ? $body->plaintext : '';
                 }
             }
 

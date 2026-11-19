@@ -82,7 +82,7 @@ class Comments extends Plugin
         $this->view = $this->view('default', 'view');
         $this->view->set('option', $this->option   = $option);
         $this->view->set('obj', $this->obj      = $obj);
-        $this->obj_id = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
+        $this->obj_id = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : ($obj->id ?? null));
         $this->view->set('obj_id', $this->obj_id);
         $this->view->set('obj_type', $this->obj_type = substr($option, 4));
         $this->view->set('url', $this->url      = ($url ? $url : Route::url(
@@ -184,7 +184,10 @@ class Comments extends Plugin
                 return;
             }
 
-            $d = $this->obj->get('created', $this->obj->get('publish_up', ''));
+            // Models answer get(); a plain row has the fields themselves
+            $d = method_exists($this->obj, 'get')
+                ? $this->obj->get('created', $this->obj->get('publish_up', ''))
+                : ($this->obj->created ?? $this->obj->publish_up ?? '');
 
             $year  = intval(substr($d, 0, 4));
             $month = intval(substr($d, 5, 2));
@@ -590,7 +593,7 @@ class Comments extends Plugin
         // Set the mime encoding for the document
         Document::setType('feed');
 
-        $title = $this->obj->get('title');
+        $title = method_exists($this->obj, 'get') ? $this->obj->get('title') : ($this->obj->title ?? '');
 
         // Start a new feed object
         $doc = Document::instance('feed');

@@ -42,9 +42,9 @@ $this->css('
 
 $this->js();
 
-$total = $this->draftInternal + $this->draftUser
+$total = (int) ($this->draftInternal + $this->draftUser
     + $this->pending + $this->published
-    + $this->unpublished + $this->removed;
+    + $this->unpublished + $this->removed);
 
 $this->draft = $this->draftInternal + $this->draftUser;
 ?>

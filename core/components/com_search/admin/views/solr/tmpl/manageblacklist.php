@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{blacklist: mixed} $this
+ * @var \Hubzero\Component\View&object{blacklist: \Hubzero\Database\Rows} $this
  */
 
 Toolbar::title(Lang::txt('Solr Search: Index Blacklist'));

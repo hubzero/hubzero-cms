@@ -217,14 +217,16 @@ class IcalParser
 
             if ($callback) {
                 // call user function for processing line
-                call_user_func($callback, $row, $key, $middle, $value, $section, $counters[$section]);
+                call_user_func($callback, $row, $key, $middle, $value, $section, $counters[$section] ?? 0);
             } else {
                 if ($section === 'VCALENDAR') {
                     $this->data[$key] = $value;
                 } else {
-                    $this->data[$section][$counters[$section]][$key] = $value;
+                    // Each BEGIN counts its section, so the counter is there
+                    $index = $counters[$section] ?? 0;
+                    $this->data[$section][$index][$key] = $value;
                     if ($key == 'DTSTART' || $key == 'DTEND') {
-                        $this->data[$section][$counters[$section]]['ALLDAY'] = $allDay;
+                        $this->data[$section][$index]['ALLDAY'] = $allDay;
                     }
                 }
             }

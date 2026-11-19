@@ -91,7 +91,7 @@ class Adminmenu extends Module
      *
      * @param   boolean|mixed  $authCheck  An optional switch to turn off the auth check
      *                               (to support custom layouts 'grey out' behaviour).
-     * @return  array<mixed>    A nest array of component objects and submenus
+     * @return  array<\stdClass>  A nest array of component objects and submenus
      */
     public static function getComponents($authCheck = true)
     {

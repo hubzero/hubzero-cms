@@ -60,9 +60,11 @@ endif; ?>
                         <div class="requisite-item clearfix">
                             <div class="remove-requisite" data-delete-id="<?php echo $v->id; ?>">x</div>
                             <?php $class = '\\Components\\Courses\\Models\\' . ucfirst($v->requisite_scope); ?>
-                            <?php $item  = new $class($v->requisite_id); ?>
+                            <?php $item  = is_a($class, \Components\Courses\Models\Base::class, true)
+                                ? new $class($v->requisite_id)
+                                : null; ?>
                             <div class="requisite-item-title">
-                                <?php echo $item->get('title'); ?>
+                                <?php echo $item ? $item->get('title') : ''; ?>
                             </div>
                         </div>
                     </li>

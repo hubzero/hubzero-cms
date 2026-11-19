@@ -177,7 +177,7 @@ class Search extends Plugin
     /**
      * processRows - Fires plugin events to facilitate indexing data
      *
-     * @param   mixed    $item
+     * @param   \stdClass  $item  A searchable row
      * @param   string   $action
      * @param   array<mixed>    $blacklist
      * @access  private

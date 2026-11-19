@@ -1206,12 +1206,18 @@ class Doi extends Obj
      */
     public function runCurl($url, $postvals = null)
     {
+        // Nothing can be registered without the service address and credentials
+        $userpwd = (string) $this->configs->ezidUserPW;
+        if ($url === '' || $userpwd === '') {
+            return false;
+        }
+
         $ch = curl_init($url);
 
         $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
-            CURLOPT_USERPWD         => $this->configs->ezidUserPW,
+            CURLOPT_USERPWD         => $userpwd,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => [
@@ -1370,14 +1376,20 @@ class Doi extends Obj
             $postVals = "_status:public";
         }
 
-        $url = $this->getServicePath($doi);
+        $url = (string) $this->getServicePath($doi);
 
-        $ch = curl_init((string) $url);
+        // Nothing can be updated without the service address and credentials
+        $userpwd = (string) $this->configs->ezidUserPW;
+        if ($url === '' || $userpwd === '') {
+            return false;
+        }
+
+        $ch = curl_init($url);
 
         $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
-            CURLOPT_USERPWD         => $this->configs->ezidUserPW,
+            CURLOPT_USERPWD         => $userpwd,
             CURLOPT_POSTFIELDS      => $postVals,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => [

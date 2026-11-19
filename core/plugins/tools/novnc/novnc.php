@@ -45,7 +45,7 @@ class Novnc extends Plugin
      * Render a tool session
      *
      * @param   object  $tool
-     * @param   object  $session
+     * @param   \stdClass  $session  The session's connection details, as the middleware gave them
      * @param   boolean $readOnly
      * @return  string|null
      */

@@ -297,7 +297,7 @@ class Latest extends Module
         // Prepare data for display using display options
         foreach ($items as $item) {
             $item->slug    = $item->id . ':' . $item->alias;
-            $item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : $item->catid;
+            $item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : (int) $item->catid;
 
             if ($access || in_array($item->access, User::getAuthorisedViewLevels())) {
                 // We know that user has the privilege to view the article

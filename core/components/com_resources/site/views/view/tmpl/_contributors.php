@@ -61,13 +61,12 @@ if ($this->contributors) {
         ? $contributor->organization
         : '')));
 
-        if (!isset($contributor->authorid) && isset($contributor->uid)) {
-            $contributor->authorid = $contributor->uid;
-        }
+        // Authors carry authorid; rows without it, their uid
+        $authorId = $contributor->authorid ?? $contributor->uid ?? null;
 
         $link = $name;
-        if ($contributor->authorid) {
-            $profile = User::getInstance($contributor->authorid);
+        if ($authorId) {
+            $profile = User::getInstance($authorId);
             if ($profile->get('id') && in_array($profile->get('access'), User::getAuthorisedViewLevels())) {
                 $link = '<a href="' . Route::url($profile->link()) . '" rel="contributor" title="'
                     . Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';

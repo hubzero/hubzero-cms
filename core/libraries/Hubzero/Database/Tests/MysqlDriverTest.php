@@ -247,7 +247,9 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $this->assertNotEmpty($info['version']);
         $this->assertMatchesRegularExpression('/^\d+\.\d+\.\d+$/', (string) $info['driver_version']);
         $driverVersion = (string) $info['driver_version'];
-        $this->assertNotEmpty($driverVersion);
+        if ($driverVersion === '') {
+            $this->fail('The driver gave no version');
+        }
         $this->assertStringStartsWith($driverVersion, (string) $info['version']);
     }
 

@@ -899,7 +899,7 @@ class Publications extends SiteController
             $curation->element,
             $elementId,
             $this->model,
-            $curation->block->params,
+            $curation->block->params ?? null,
             $aid,
         );
 

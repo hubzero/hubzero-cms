@@ -316,7 +316,7 @@ foreach ($this->results as $category) {
 
         $html .= '<ol class="search results">' . "\n";
         foreach ($category as $row) {
-            $row->href = $row->href ? $row->href : '';
+            $row->href = $row->href ? (string) $row->href : '';
             $row->href = str_replace('&amp;', '&', $row->href);
             $row->href = str_replace('&', '&amp;', $row->href);
 

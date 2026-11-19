@@ -425,14 +425,18 @@ class GradeBook extends Base
 
         if (count($grades) > 0) {
             foreach ($grades as $member_id => $values) {
-                $scores[$member_id]['course_exam_count']     = 0;
-                $scores[$member_id]['course_quiz_count']     = 0;
-                $scores[$member_id]['course_homework_count'] = 0;
-                $scores[$member_id]['course_exam_sum']       = 0;
-                $scores[$member_id]['course_quiz_sum']       = 0;
-                $scores[$member_id]['course_homework_sum']   = 0;
+                $scores[$member_id] = [
+                    'course_exam_count'     => 0,
+                    'course_quiz_count'     => 0,
+                    'course_homework_count' => 0,
+                    'course_exam_sum'       => 0,
+                    'course_quiz_sum'       => 0,
+                    'course_homework_sum'   => 0,
+                    'units'                 => [],
+                ];
 
                 // Loop through units and compute scores
+                $units = [];
                 foreach ($values as $unit_id => $val) {
                     // We're processing this unit/member, thus it doesn't need to
                     // be cleared - so remove it from the list of potentials
@@ -442,38 +446,40 @@ class GradeBook extends Base
                         unset($unit_ids[$unit_id][$key]);
                     }
 
-                    $scores[$member_id]['units'][$unit_id]['exam_count']     = 0;
-                    $scores[$member_id]['units'][$unit_id]['quiz_count']     = 0;
-                    $scores[$member_id]['units'][$unit_id]['homework_count'] = 0;
-                    $scores[$member_id]['units'][$unit_id]['exam_sum']       = 0;
-                    $scores[$member_id]['units'][$unit_id]['quiz_sum']       = 0;
-                    $scores[$member_id]['units'][$unit_id]['homework_sum']   = 0;
+                    $units[$unit_id] = [
+                        'exam_count'     => 0,
+                        'quiz_count'     => 0,
+                        'homework_count' => 0,
+                        'exam_sum'       => 0,
+                        'quiz_sum'       => 0,
+                        'homework_sum'   => 0,
+                    ];
+
+                    // Use reference for cleaner code
+                    $unitScores = &$units[$unit_id];
 
                     foreach ($val as $grade) {
                         switch ($grade['weighting']) {
                             case 'exam':
                                 $scores[$member_id]['course_exam_count']++;
                                 $scores[$member_id]['course_exam_sum'] += $grade['score'];
-                                $scores[$member_id]['units'][$unit_id]['exam_count']++;
-                                $scores[$member_id]['units'][$unit_id]['exam_sum'] += $grade['score'];
+                                $unitScores['exam_count']++;
+                                $unitScores['exam_sum'] += $grade['score'];
                                 break;
                             case 'quiz':
                                 $scores[$member_id]['course_quiz_count']++;
                                 $scores[$member_id]['course_quiz_sum'] += $grade['score'];
-                                $scores[$member_id]['units'][$unit_id]['quiz_count']++;
-                                $scores[$member_id]['units'][$unit_id]['quiz_sum'] += $grade['score'];
+                                $unitScores['quiz_count']++;
+                                $unitScores['quiz_sum'] += $grade['score'];
                                 break;
                             case 'homework':
                                 $scores[$member_id]['course_homework_count']++;
                                 $scores[$member_id]['course_homework_sum'] += $grade['score'];
-                                $scores[$member_id]['units'][$unit_id]['homework_count']++;
-                                $scores[$member_id]['units'][$unit_id]['homework_sum'] += $grade['score'];
+                                $unitScores['homework_count']++;
+                                $unitScores['homework_sum'] += $grade['score'];
                                 break;
                         }
                     }
-
-                    // Use reference for cleaner code
-                    $unitScores = &$scores[$member_id]['units'][$unit_id];
 
                     if ($unitScores['exam_count'] > 0) {
                         $unitScores['exam_score'] = $unitScores['exam_sum'] / $unitScores['exam_count'];
@@ -521,6 +527,9 @@ class GradeBook extends Base
                         $unitScores['unit_weighted'] = null;
                     }
                 }
+
+                unset($unitScores);
+                $scores[$member_id]['units'] = $units;
 
                 // Now calculate overall course scores
                 // Use reference for cleaner code

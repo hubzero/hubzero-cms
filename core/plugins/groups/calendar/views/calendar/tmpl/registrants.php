@@ -95,7 +95,7 @@ $month = date("m", strtotime($this->event->publish_up));
                 <?php
                 $registerUrl = Route::url(
                     'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
-                        . '&active=calendar&action=register&event_id=' . $this->event->id,
+                        . '&active=calendar&action=register&event_id=' . ($this->event->id ?? 0),
                 );
                 ?>
                 <a href="<?= $registerUrl ?>">

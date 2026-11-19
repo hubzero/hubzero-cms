@@ -642,7 +642,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @param      object|array<mixed> $res Parameter description (if any) ...
+     * @param      \Components\Search\Models\Basic\Result|array<mixed>  $res  A result, or the row(s) to make one of
      * @return     void
      */
     public function add($res)

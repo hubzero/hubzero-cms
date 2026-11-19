@@ -98,14 +98,14 @@ class Attachment extends Table
     /**
      * Save project parameter
      *
-     * @param   object|null  $record
+     * @param   self|null  $record  The attachment to set the param on
      * @param   string  $param
      * @param   string|int $value
      * @return  bool|null
      */
     public function saveParam($record = null, $param = '', $value = 0)
     {
-        if (!is_object($record)) {
+        if (!($record instanceof self)) {
             return false;
         }
 

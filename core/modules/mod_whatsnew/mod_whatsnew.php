@@ -39,7 +39,7 @@ class Whatsnew extends Module
      */
     public $feedlink;
     /**
-     * @var  mixed
+     * @var  string|null
      */
     public $period;
     /**
@@ -140,7 +140,7 @@ class Whatsnew extends Module
         $count        = intval($this->params->get('limit', 5));
         $this->feed   = $this->params->get('feed');
         $this->cssId  = $this->params->get('cssId');
-        $this->period = $this->params->get('period', 'resources:month');
+        $this->period = (string) $this->params->get('period', 'resources:month');
         $this->tagged = intval($this->params->get('tagged', 0));
 
         // Build the feed link if necessary

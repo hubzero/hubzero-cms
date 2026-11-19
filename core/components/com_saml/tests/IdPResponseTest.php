@@ -119,6 +119,10 @@ class IdPResponseTest extends Basic
      */
     private function xpath($response)
     {
+        if (!($response instanceof \LightSaml\Model\SamlElementInterface)) {
+            throw new \LogicException('Only a SAML element can be serialized.');
+        }
+
         $context = new \LightSaml\Context\Model\SerializationContext();
         $response->serialize($context->getDocument(), $context);
 

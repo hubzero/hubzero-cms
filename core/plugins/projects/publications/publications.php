@@ -2954,7 +2954,7 @@ class Publications extends Plugin
         $base_path = $pubconfig->get('webpath');
         $pubPath = \Components\Publications\Helpers\Html::buildPubPath(
             $data->pid,
-            $data->vid,
+            $data->vid ?? null,
             $base_path,
             $folder,
             $root = 0,

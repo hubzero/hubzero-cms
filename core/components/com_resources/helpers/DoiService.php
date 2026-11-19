@@ -666,12 +666,18 @@ class DoiService extends Obj
      */
     public function runCurl($url, $postvals = null)
     {
+        // Nothing can be registered without the service address and credentials
+        $userpwd = (string) $this->configs->userPW;
+        if ($url === '' || $userpwd === '') {
+            return false;
+        }
+
         $ch = curl_init($url);
 
         $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
-            CURLOPT_USERPWD         => $this->configs->userPW,
+            CURLOPT_USERPWD         => $userpwd,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => [
