@@ -916,9 +916,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                             break;
                         case 'journaltitle':
                             $jt = html_entity_decode((string) $this->$k);
-                            if (function_exists('mbstring')) {
-                                $jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
-                            }
+                            $jt = Str::toUtf8($jt);
                             $coins_data[] = $coins_keys[$k] . '=' . $jt;
                             break;
                         default:
@@ -947,9 +945,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     $auth = '';
                     if (isset($this->$k) && $this->$k) {
                         $auth = html_entity_decode($this->$k);
-                        if (function_exists('mbstring')) {
-                            $auth = (!preg_match('!\S!u', $auth)) ? mbstring($auth) : $auth;
-                        }
+                        $auth = Str::toUtf8($auth);
                     }
 
                     // prefer the use of the relational table
@@ -1061,9 +1057,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     }
 
                     $t = html_entity_decode((string) ($this->$k));
-                    if (function_exists('mbstring')) {
-                        $t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
-                    }
+                    $t = Str::toUtf8($t);
 
                     $tEsc   = htmlspecialchars($t, ENT_QUOTES, 'UTF-8');
                     $urlEsc = htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8');

@@ -11,6 +11,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
+use Hubzero\Utility\Str;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -255,10 +256,8 @@ $formAction = Route::url(
                     <?php
                         $title = html_entity_decode($row->title);
                         $author = html_entity_decode($row->author ?? '');
-                    if (function_exists('mbstring')) {
-                        $title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
-                        $author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
-                    }
+                    $title = Str::toUtf8($title);
+                    $author = Str::toUtf8($author);
                     $editUrl = Route::url(
                         $baseUrl . '&task=edit&id=' . $row->id,
                     );

@@ -100,4 +100,17 @@ class SanitizeTest extends Basic
     {
         $this->assertSame('ABC', \Hubzero\Utility\Sanitize::filter('&#65;&#x42;&#X43;', 'string'));
     }
+
+    /**
+     * Numeric references above ASCII decode to UTF-8 characters (they used to give single raw bytes); a reference
+     * to no character stays as it was
+     *
+     * @return  void
+     */
+    public function testStringFilterDecodesNumericEntitiesToUtf8()
+    {
+        $this->assertSame('0é€😀', \Hubzero\Utility\Sanitize::filter('&#48;&#233;&#x20AC;&#x1F600;', 'string'));
+        $this->assertSame('&#xD800;', \Hubzero\Utility\Sanitize::filter('&#xD800;', 'string'));
+        $this->assertSame('café', \Hubzero\Utility\Sanitize::filter('caf&eacute;', 'string'));
+    }
 }

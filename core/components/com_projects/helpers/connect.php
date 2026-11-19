@@ -682,9 +682,6 @@ class Connect extends Obj
                 $user = $oauth2->userinfo->get();
                 $email = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
                 $name = $user['name'];
-                if (function_exists('mbstring')) {
-                    $name = mbstring($name);
-                }
 
                 // Save params for project team member
                 $this->storeParam($service . '_email', (string) $email, $uid);

@@ -9,6 +9,7 @@
 namespace Components\Citations\Download;
 
 use Hubzero\Facades\Component;
+use Hubzero\Utility\Str;
 
 /**
  * Citations download class for Endnote format
@@ -222,9 +223,7 @@ class Endnote extends Downloadable
      */
     private function toUtf8($str)
     {
-        if (function_exists('mbstring')) {
-            $str = (!preg_match('!\S!u', $str)) ? mbstring($str) : $str;
-        }
+        $str = Str::toUtf8($str);
         return $str;
     }
 }

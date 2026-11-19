@@ -707,4 +707,25 @@ class Str
             return implode($newDelimiter, array_map('ucfirst', explode($delimiter, $str)));
         }
     }
+
+    /**
+     * Text from a source that may predate UTF-8 (old imports, legacy rows) as UTF-8: valid UTF-8 is returned as it
+     * is, anything else is read as Windows-1252, which is Latin-1 plus the curly quotes and dashes that text
+     * pasted from Word carries in 0x80-0x9F.
+     *
+     * Replaces utf8_encode() (Latin-1 only), which 2023 swapped for a function that did not exist.
+     *
+     * @param   string|null  $text
+     * @return  string
+     */
+    public static function toUtf8($text)
+    {
+        $text = (string) $text;
+
+        if (mb_check_encoding($text, 'UTF-8')) {
+            return $text;
+        }
+
+        return mb_convert_encoding($text, 'UTF-8', 'Windows-1252');
+    }
 }

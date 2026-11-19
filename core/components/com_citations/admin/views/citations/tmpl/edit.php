@@ -10,6 +10,7 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
+use Hubzero\Utility\Str;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -58,14 +59,12 @@ $booktitle = html_entity_decode($this->row->booktitle ?? '');
 $short_title = html_entity_decode($this->row->short_title ?? '');
 $journal = html_entity_decode($this->row->journal ?? '');
 
-if (function_exists('mbstring')) {
-    $author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
-    $ceditor = (!preg_match('!\S!u', $ceditor)) ? mbstring($ceditor) : $ceditor;
-    $title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
-    $booktitle = (!preg_match('!\S!u', $booktitle)) ? mbstring($booktitle) : $booktitle;
-    $short_title = (!preg_match('!\S!u', $short_title)) ? mbstring($short_title) : $short_title;
-    $journal = (!preg_match('!\S!u', $journal)) ? mbstring($journal) : $journal;
-}
+$author = Str::toUtf8($author);
+$ceditor = Str::toUtf8($ceditor);
+$title = Str::toUtf8($title);
+$booktitle = Str::toUtf8($booktitle);
+$short_title = Str::toUtf8($short_title);
+$journal = Str::toUtf8($journal);
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));

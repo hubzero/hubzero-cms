@@ -513,4 +513,18 @@ class StrTest extends Basic
             . '<img src="what-a-strong-mouse.png" alt="What a strong mouse!" />';
         $this->assertEquals($expected, Str::highlight($text4, ['strong', 'what'], $options));
     }
+
+    /**
+     * Valid UTF-8 comes back as it is; other bytes are read as Windows-1252
+     *
+     * @return  void
+     **/
+    public function testToUtf8()
+    {
+        $this->assertSame('', Str::toUtf8(null));
+        $this->assertSame('plain ASCII', Str::toUtf8('plain ASCII'));
+        $this->assertSame('déjà “vu” – €', Str::toUtf8('déjà “vu” – €'));
+        // Windows-1252: curly quotes, an en dash, e acute and the euro sign
+        $this->assertSame('“Hi” – café €', Str::toUtf8("\x93Hi\x94 \x96 caf\xe9 \x80"));
+    }
 }

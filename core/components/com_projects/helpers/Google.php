@@ -15,6 +15,7 @@ use Google_Service_Drive_ParentReference;
 use Google_Http_MediaFileUpload;
 use Hubzero\Base\Obj;
 use Hubzero\Facades\Filesystem;
+use Hubzero\Utility\Str;
 
 /**
  * Projects Google Drive helper class
@@ -647,9 +648,7 @@ class Google extends Obj
                     $author    = isset($doc['lastModifyingUserName'])
                                 ? $doc['lastModifyingUserName']
                                 : $doc['ownerNames'][0];
-                    if (function_exists('mbstring')) {
-                        $author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
-                    }
+                    $author = Str::toUtf8($author);
 
                     if (!preg_match("/.folder/", $doc['mimeType'])) {
                         $title = Filesystem::clean($doc['title']);

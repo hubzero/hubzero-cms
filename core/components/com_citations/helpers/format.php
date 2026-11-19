@@ -254,9 +254,7 @@ class Format
                             break;
                         case 'journaltitle':
                             $jt = html_entity_decode($citation->$k);
-                            if (function_exists('mbstring')) {
-                                $jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
-                            }
+                            $jt = Str::toUtf8($jt);
                             $coins_data[] = $this->coinsKeys[$k] . '=' . $jt;
                             break;
                         default:
@@ -284,9 +282,7 @@ class Format
                     $a = [];
 
                     $auth = html_entity_decode($citation->$k);
-                    if (function_exists('mbstring')) {
-                        $auth = (!preg_match('!\S!u', $auth)) ? mbstring($auth) : $auth;
-                    }
+                    $auth = Str::toUtf8($auth);
 
                     $author_string = $auth;
                     $authors = explode(';', $author_string);
@@ -357,9 +353,7 @@ class Format
                     }
 
                     $t = html_entity_decode($citation->$k);
-                    if (function_exists('mbstring')) {
-                        $t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
-                    }
+                    $t = Str::toUtf8($t);
 
                     $tEsc   = htmlspecialchars($t, ENT_QUOTES, 'UTF-8');
                     $urlEsc = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');

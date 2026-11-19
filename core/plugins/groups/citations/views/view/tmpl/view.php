@@ -11,6 +11,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Str;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -702,9 +703,7 @@ switch (strtolower($type->get('type_title'))) {
 
     //fix title
     $title = html_entity_decode($citation->title);
-if (function_exists('mbstring')) {
-    $title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
-}
+$title = Str::toUtf8($title);
 
     //coins data
     $coinsData = [

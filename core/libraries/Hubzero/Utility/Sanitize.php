@@ -650,43 +650,46 @@ class Sanitize
         static $ttr;
 
         if (!is_array($ttr)) {
-            // Entity decode
-            $trans_tbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT);
-
-            foreach ($trans_tbl as $k => $v) {
-                $ttr[$v] = function_exists('mbstring') ? mbstring($k) : $k;
-            }
+            // Entity => character; PHP's table is already UTF-8
+            $ttr = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT));
         }
 
         $source = strtr($source, $ttr);
 
-        // Convert decimal
+        // Convert decimal and hex: the character as UTF-8, or the reference as it was when it names none
         $source = preg_replace_callback(
             '/&#(\d+);/m',
             function ($matches) {
-                $str = chr((int) $matches[1]);
-                if (function_exists('mbstring')) {
-                    $str = mbstring($str);
-                }
-                return $str;
+                return self::utf8Char((int) $matches[1]) ?? $matches[0];
             },
             $source,
         );
 
-        // Convert hex
         $source = (string) preg_replace_callback(
             '/&#x([a-f0-9]+);/mi',
             function ($matches) {
-                $str = chr((int) hexdec($matches[1]));
-                if (function_exists('mbstring')) {
-                    $str = mbstring($str);
-                }
-                return $str;
+                return self::utf8Char((int) hexdec($matches[1])) ?? $matches[0];
             },
             (string) $source,
         );
 
         return $source;
+    }
+
+    /**
+     * The UTF-8 character for a Unicode code point, or null when the number names none (a surrogate half, or beyond
+     * U+10FFFF)
+     *
+     * @param   int  $codePoint
+     * @return  string|null
+     */
+    private static function utf8Char(int $codePoint): ?string
+    {
+        if ($codePoint > 0x10FFFF || ($codePoint >= 0xD800 && $codePoint <= 0xDFFF)) {
+            return null;
+        }
+
+        return mb_chr($codePoint, 'UTF-8');
     }
 
     /**
