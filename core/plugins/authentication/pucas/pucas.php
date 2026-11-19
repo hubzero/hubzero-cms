@@ -166,8 +166,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 		{
 			$username = phpCAS::getUser();
 
-			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
-			$hzal = \Hubzero\Auth\Link::$method('authentication', 'pucas', null, $username);
+			$hzal = $this->findLink($username, $options);
 
 			if ($hzal === false)
 			{
@@ -208,12 +207,9 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 				// Check if an account with the same username and email address
 				// already exists. If so, the user probably registered manually
 				// rather than using the CAS plugin.
-				$user = \Hubzero\User\User::all()
-					->whereEquals('username', $username)
-					->whereEquals('email', $username . '@purdue.edu')
-					->row();
+				$user = self::matchingAccount($username);
 
-				if ($user->get('id'))
+				if ($user)
 				{
 					$response->username = $user->get('username');
 					$response->email    = $user->get('email');
@@ -306,10 +302,9 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 			// Get unique username
 			$username = phpCAS::getUser();
 
-			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'pucas', '');
+			$result = $this->claimLink($username, User::get('id'), phpCAS::getAttribute('email'));
 
-			// Create the link
-			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
+			if ($result === 'taken')
 			{
 				// This purdue cas account is already linked to another hub account
 				App::redirect(
@@ -318,23 +313,11 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 					'error'
 				);
 			}
-			else
+			elseif ($result === false)
 			{
-				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
-				// if `$hzal` === false, then either:
-				//    the authenticator Domain couldn't be found,
-				//    no username was provided,
-				//    or the Link record failed to be created
-				if ($hzal)
-				{
-					$hzal->set('user_id', User::get('id'));
-					$hzal->set('email', phpCAS::getAttribute('email'));
-					$hzal->update();
-				}
-				else
-				{
-					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "pucas", null, %s) returned false', $username));
-				}
+				// Either the authenticator Domain couldn't be found, no username
+				// was provided, or the Link record failed to be created
+				Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "pucas", null, %s) returned false', $username));
 			}
 		}
 		else
@@ -346,6 +329,104 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 				'error'
 			);
 		}
+	}
+
+	/**
+	 * Find the link for a career account on login, creating it only when it
+	 * can lead to an account
+	 *
+	 * The administrator's com_login passes autoregister=false (the frontend
+	 * leaves it unset), so an unknown career account there gets no row: a row
+	 * without a user_id would make link() refuse that career account later.
+	 * The one exception is an existing hub account that onUserAuthenticate()
+	 * will claim the row for. With registration off, no row is ever created,
+	 * as before.
+	 *
+	 * @param   string  $username  Career account name asserted by CAS
+	 * @param   array   $options   Login options
+	 * @return  mixed   Hubzero\Auth\Link, or false
+	 */
+	protected function findLink($username, $options)
+	{
+		$hzal = \Hubzero\Auth\Link::find('authentication', 'pucas', null, $username);
+
+		if ($hzal === false && Component::params('com_members')->get('allowUserRegistration', false))
+		{
+			$autoregister = !isset($options['autoregister']) || $options['autoregister'];
+
+			if ($autoregister || self::matchingAccount($username))
+			{
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
+			}
+		}
+
+		return $hzal;
+	}
+
+	/**
+	 * The hub account a career account belongs to when no link says so: same
+	 * username, and the career account's purdue.edu address, confirmed
+	 *
+	 * Anyone can register a username and type in an address, so an account
+	 * whose address was never confirmed proves nothing about who owns it: the
+	 * career account's CAS login would land in an account someone else holds
+	 * the password to. Confirmed means activation > 0, as in
+	 * Components\Members\Models\Member::isEmailConfirmed().
+	 *
+	 * @param   string  $username  Career account name
+	 * @return  mixed   Hubzero\User\User, or null
+	 */
+	protected static function matchingAccount($username)
+	{
+		$user = \Hubzero\User\User::all()
+			->whereEquals('username', $username)
+			->whereEquals('email', $username . '@purdue.edu')
+			->where('activation', '>', 0)
+			->row();
+
+		return ($user && $user->get('id')) ? $user : null;
+	}
+
+	/**
+	 * Link a career account to a hub account
+	 *
+	 * A row with no user_id (left by an unfinished registration or an older
+	 * administrator login) belongs to nobody, and CAS has just proven the
+	 * visitor owns the career account, so it is claimed.
+	 *
+	 * @param   string   $username  Career account name asserted by CAS
+	 * @param   integer  $userId    Hub account to link to
+	 * @param   string   $email     Email address CAS released, if any
+	 * @return  mixed    'linked', 'taken' when another hub account has it, or false
+	 */
+	protected function claimLink($username, $userId, $email)
+	{
+		$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
+
+		if (!$hzal)
+		{
+			return false;
+		}
+
+		$owner = (int) $hzal->get('user_id');
+
+		if ($owner && $owner != (int) $userId)
+		{
+			return 'taken';
+		}
+
+		if (!$owner)
+		{
+			$hzal->set('user_id', $userId);
+			$hzal->set('email', $email);
+
+			if (!$hzal->update())
+			{
+				return false;
+			}
+		}
+
+		return 'linked';
 	}
 
 	/**
