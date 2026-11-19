@@ -2024,15 +2024,21 @@ class MysqlDriver extends BaseSqlDriver
     }
 
     /**
-     * Sets the connection to use UTF-8 character encoding
+     * Sets the connection's character set: utf8mb4, or the hub's 'dbcharset' when it names one
      *
-     * This is already happening in the initial database connection for PDO.
+     * The connection string already asks for the same; this used to force utf8mb4 here, which made
+     * 'dbcharset' do nothing.
      *
      * @return  bool
      */
     public function setUTF()
     {
-        return $this->setNamesCharset('utf8mb4');
+        $charset = $this->connectionOptions['charset'] ?? '';
+        if (!is_string($charset) || !preg_match('/^[a-z0-9_]+$/i', $charset)) {
+            $charset = 'utf8mb4';
+        }
+
+        return $this->setNamesCharset($charset);
     }
 
     // =========================================================================
