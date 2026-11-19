@@ -226,7 +226,7 @@ abstract class Table extends \stdClass
      *
      * @param   integer|null  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
-     * @return  string|\Exception  The error, or an empty string when there is none
+     * @return  ($toString is true ? string : string|\Exception)  The error, or an empty string when there is none
      * @phpstan-impure
      */
     public function getError($i = null, $toString = true)
@@ -243,8 +243,9 @@ abstract class Table extends \stdClass
             $error = $this->errors[$i];
         }
 
+        // Only the message: an Exception's own string adds its class, file and stack trace
         if ($error instanceof Exception && $toString) {
-            return (string) $error;
+            return $error->getMessage();
         }
 
         return $error;

@@ -59,11 +59,13 @@ class ErrorBagTraitTest extends Basic
         // Make sure:
         //    - the list of errors matches the number of errors set
         //    - getError() returns the last error set
-        //    - getError($index) returns the correct item
+        //    - getError($index) returns the correct item, an Exception as its message
         //    - getError($index, false) returns Exception object instead of string
         $this->assertCount(3, $errors);
         $this->assertEquals($this->obj->getError(), 'Nulla sed consectetur.');
         $this->assertTrue(is_string($this->obj->getError(1)));
+        // An Exception gives its message, without the class, file and trace
+        $this->assertSame('Aenean lacinia bibendum.', $this->obj->getError(1));
         $this->assertSame('', $this->obj->getError(5));
         $this->assertInstanceOf('Exception', $this->obj->getError(1, false));
 
