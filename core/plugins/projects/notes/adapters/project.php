@@ -47,7 +47,7 @@ class Project extends Base
         $this->scopeId = $scope_id;
 
         $project = Request::getVar('project', null);
-        if (is_object($project)) {
+        if ($project instanceof \Components\Projects\Models\Project) {
             $project = $project->get('alias');
         }
         if (!$project) {

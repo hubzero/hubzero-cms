@@ -93,7 +93,7 @@ class Tags extends Cloud
         if (!($tag instanceof Tag)) {
             if (is_array($tag)) {
                 foreach ($tag as $t) {
-                    $t = is_object($t) ? $t->tag : $t;
+                    $t = is_object($t) ? ($t->tag ?? null) : $t;
                     $this->cache['tags.list']->add(Tag::oneByTag($t));
                 }
                 return $this;

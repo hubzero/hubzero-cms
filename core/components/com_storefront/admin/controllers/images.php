@@ -169,7 +169,7 @@ class Images extends AdminController
             return;
         }
 
-        $imgId = $image->imgId;
+        $imgId = $image->imgId ?? 0;
 
         $this_size = filesize($file);
         list($width, $height, $type, $attr) = getimagesize($file) ?: [null, null, null, null];

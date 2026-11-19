@@ -1232,7 +1232,7 @@ class Filesv1r0 extends ApiController
     /**
      * Get file(s) metadata for Flysystem adapters
      *
-     * @param   array<mixed> $files
+     * @param   array<mixed>|\Hubzero\Filesystem\Collection  $files
      * @return  array<int, mixed>
      */
     protected function parseFlysystemListing($files)

@@ -59,7 +59,7 @@ class Tree extends \Hubzero\Base\Obj
         $this->current->addChild($node);
 
         if ($setCurrent) {
-            $this->current = &$node;
+            $this->current = $node;
         }
     }
 

@@ -145,7 +145,7 @@ class Subscription extends Relational
         }
 
         for ($i = 0; $i < $length; $i++) {
-            $key .= $charset[(random_int(0, (strlen($charset) - 1)))];
+            $key .= substr($charset, random_int(0, strlen($charset) - 1), 1);
         }
 
         return $key;

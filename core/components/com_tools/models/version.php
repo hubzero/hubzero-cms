@@ -627,7 +627,8 @@ class Version
         $result = true;
 
         $this->clear();
-        $this->instance = $instance;
+        // Only a name or number (checked above) or nothing gets here
+        $this->instance = is_scalar($instance) ? (string) $instance : null;
 
         $result = $this->sqlRead();
 

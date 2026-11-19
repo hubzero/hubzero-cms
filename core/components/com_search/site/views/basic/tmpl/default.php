@@ -62,8 +62,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <?php
                 $total  = $this->results->getPluginListCount();
                 $offset = $this->results->getOffset();
-                $limit  = $this->results->getLimit();
-                $limit  = ($limit == 0) ? ($limit + 1) : $limit;
+                $limit  = (int) $this->results->getLimit();
+                $limit  = ($limit == 0) ? 1 : $limit;
                 $current_page = $offset / $limit + 1;
                 $total_pages  = ceil($total / $limit);
                 ?>

@@ -2259,7 +2259,7 @@ class Resources extends SiteController
                 $user = User::getInstance($session->userid);
                 $user->set('guest', 0);
                 $user->set('id', $session->userid);
-                $user->set('usertype', $session->usertype);
+                $user->set('usertype', $session->usertype ?? null);
             } else {
                 $user = User::getInstance();
             }

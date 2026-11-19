@@ -171,7 +171,7 @@ class QueryFolder extends Relational
     /**
      * The shared folders, building the defaults when there are none yet
      *
-     * @return  array<mixed>  The iscore=1 folders every user is cloned from
+     * @return  array<mixed>|\Hubzero\Database\Rows  The iscore=1 folders every user is cloned from
      */
     public static function ensureCore()
     {

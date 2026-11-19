@@ -59,7 +59,7 @@ class Component extends AdminController
         }
 
         // Bind the form to the data.
-        if ($form && $component->params) {
+        if ($form && !empty($component->params)) {
             $form->bind($component->params->toArray());
         }
 

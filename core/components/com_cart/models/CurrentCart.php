@@ -1464,7 +1464,7 @@ class CurrentCart extends Cart
             $cartInfo = new \stdClass();
 
             // Check if this item has been already processed by the doItem (i.e. through cart update quantities call)
-            if (!empty($sku->crtiOldPrice) && $sku->crtiPrice != $sku->crtiOldPrice) {
+            if (!empty($sku->crtiOldPrice) && ($sku->crtiPrice ?? null) != $sku->crtiOldPrice) {
                 // Set card changed flag
                 $this->cart->hasChanges = true;
                 // Mark as updated to prevent double updating

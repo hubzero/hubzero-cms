@@ -35,7 +35,7 @@ class HtmlIcon
     {
         $return = base64_encode(urlencode(Request::current(true)));
         $url = 'index.php?option=com_content&task=article.add&return=' . $return
-            . '&a_id=0&catid=' . $category->id;
+            . '&a_id=0&catid=' . ($category->id ?? 0);
 
         $button =  '<a class="icon-add" href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
 

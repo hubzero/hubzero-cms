@@ -244,7 +244,7 @@ class Template extends Relational
                 $files = Filesystem::files($path, '\.css|\.php|\.less|\.js|\.scss$', true, true);
 
                 foreach ($files as $file) {
-                    $file = str_replace($path, '', $file);
+                    $file = str_replace($path, '', (string) $file);
 
                     if (in_array($file, $main)) {
                         $key = str_replace('.php', '', $file);

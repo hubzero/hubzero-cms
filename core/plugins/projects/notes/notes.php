@@ -375,6 +375,9 @@ class Notes extends Plugin
 
         if (!$view->get('content')) {
             $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->controllerName);
+            if (!is_a($controllerName, \Hubzero\Component\SiteController::class, true)) {
+                throw new \Exception(Lang::txt('PLG_PROJECTS_NOTES_ERROR_NOT_FOUND'), 404);
+            }
             // Instantiate controller
             $controller = new $controllerName([
                 'base_path' => $basePath,
@@ -388,7 +391,14 @@ class Notes extends Plugin
             $controller->execute();
 
             // Record activity
-            if ($save && !$preview && !$this->getError() && !$controller->getError()) {
+            // Only the pages controller saves a page to record
+            if (
+                $save
+                && !$preview
+                && !$this->getError()
+                && !$controller->getError()
+                && $controller instanceof \Components\Wiki\Site\Controllers\Pages
+            ) {
                 $what  = $exists
                     ? Lang::txt('COM_PROJECTS_NOTE_EDITED')
                     : Lang::txt('COM_PROJECTS_NOTE_ADDED');

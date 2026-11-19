@@ -132,7 +132,7 @@ class Ldap extends Plugin
     /**
      * Method is called after group data is deleted from the database
      *
-     * @param   object  $group  holds the new group data (\Hubzero\User\Group)
+     * @param   \Hubzero\User\Group  $group  The group, as it was before it was deleted
      * @return  void
      */
     public function onAfterDeleteGroup($group)

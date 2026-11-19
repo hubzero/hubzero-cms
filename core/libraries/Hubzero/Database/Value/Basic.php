@@ -34,7 +34,7 @@ class Basic
     /**
      * Builds the given string representation of the value object
      *
-     * @param   object  $syntax  The syntax object with which the query is being built
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlSyntax  $syntax  The syntax the query is being built with
      * @return  string
      **/
     public function build($syntax)

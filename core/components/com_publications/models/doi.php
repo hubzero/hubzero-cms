@@ -914,7 +914,7 @@ class Doi extends Obj
                         . 'schemeURI="https://id.loc.gov/authorities/" valueURI="'
                         . $url
                         . '">'
-                        . $this->xmlText($regTag->raw_tag)
+                        . $this->xmlText($regTag->raw_tag ?? '')
                         . '</subject>';
                 } else {
                     $xmlfile .= '	<subject>' . $this->xmlText($regTag->raw_tag) . '</subject>';

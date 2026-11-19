@@ -195,15 +195,15 @@ $this->css();
                     <?php if (isset($row->username)) : ?>
                         <?php
                         $editUrl = Route::url(
-                            'index.php?option=com_members&controller=members&task=edit&id=' . $row->userid,
+                            'index.php?option=com_members&controller=members&task=edit&id=' . ($row->userid ?? 0),
                         );
                         ?>
                         <a href="<?= $editUrl ?>">
-                            <?php echo $this->escape(stripslashes($row->fullname)); ?>
+                            <?php echo $this->escape(stripslashes($row->fullname ?? '')); ?>
                         </a>
                     <?php else : ?>
                         <span>
-                            <?php echo $this->escape(stripslashes($row->fullname)); ?>
+                            <?php echo $this->escape(stripslashes($row->fullname ?? '')); ?>
                         </span>
                     <?php endif; ?>
                 </td>

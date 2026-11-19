@@ -312,7 +312,7 @@ class Menus extends AdminController
             parse_str((string) parse_url($item->link, PHP_URL_QUERY), $parts);
 
             // Tease out the option.
-            if (isset($parts['option'])) {
+            if (isset($parts['option']) && is_string($parts['option'])) {
                 $option = $parts['option'];
 
                 // Lookup the component ID

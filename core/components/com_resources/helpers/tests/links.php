@@ -24,8 +24,8 @@ class Links implements Test
     private $client;
 
     /**
-     * Property indicating whether or not to use SSL.
-     * @var boolean
+     * Whether to verify SSL: false not to, or the path of the certificates to verify with
+     * @var string|false
      */
     private $verify;
 

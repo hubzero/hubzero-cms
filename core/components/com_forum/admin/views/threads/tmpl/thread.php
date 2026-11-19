@@ -123,7 +123,7 @@ $filterStateSelected = function ($value) use ($view) {
     </fieldset>
 
     <table class="adminlist">
-        <?php if (is_object($this->thread)) { ?>
+        <?php if (isset($this->thread->title)) { ?>
             <?php $threadTitle = $this->escape(stripslashes($this->thread->title)); ?>
             <caption><?php echo Lang::txt('COM_FORUM_THREAD') . ': ' . $threadTitle; ?></caption>
         <?php } ?>

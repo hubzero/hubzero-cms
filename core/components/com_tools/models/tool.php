@@ -394,7 +394,8 @@ class Tool
         $result = true;
 
         $this->clear();
-        $this->toolname = $toolname;
+        // Only a name or number (checked above) or nothing gets here
+        $this->toolname = is_scalar($toolname) ? (string) $toolname : null;
 
         $result = $this->sqlRead();
 
