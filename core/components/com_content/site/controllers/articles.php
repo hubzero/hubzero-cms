@@ -203,7 +203,8 @@ class Articles extends SiteController
         $menu = App::get('menu')->getActive();
         if ($menu) {
             $params->def('page_heading', $params->get('page_title', $menu->title));
-            $id = (int) $menu->query['id'];
+            // A menu item that is not an article or category has no id in its query
+            $id = (int) ($menu->query['id'] ?? 0);
         } else {
             $params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
             $id = 0;
@@ -214,7 +215,11 @@ class Articles extends SiteController
         // if the menu item does not concern this article
         if (
             $menu
-            && ($menu->query['option'] != 'com_content' || $menu->query['view'] != 'article' || $id != $item->id)
+            && (
+                $menu->query['option'] != 'com_content'
+                || ($menu->query['view'] ?? '') != 'article'
+                || $id != $item->id
+            )
         ) {
             // If this is not a single article menu item, set the page title to the article title
             if ($item->title) {
@@ -235,7 +240,7 @@ class Articles extends SiteController
                 $category
                 && (
                     $menu->query['option'] != 'com_content'
-                    || $menu->query['view'] == 'article'
+                    || ($menu->query['view'] ?? '') == 'article'
                     || $id != $category->id
                 )
                 && $category->id !== 'root'
@@ -1289,7 +1294,8 @@ class Articles extends SiteController
 
         if ($menu) {
             $params->def('page_heading', $params->get('page_title', $menu->title));
-            $id = (int) $menu->query['id'];
+            // A menu item that is not an article or category has no id in its query
+            $id = (int) ($menu->query['id'] ?? 0);
         } else {
             $params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
             $id = 0;
@@ -1298,7 +1304,11 @@ class Articles extends SiteController
 
         if (
             $menu
-            && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id)
+            && (
+                $menu->query['option'] != 'com_content'
+                || ($menu->query['view'] ?? '') == 'article'
+                || $id != $category->id
+            )
         ) {
             $path = [[
                 'title' => $category->title,
@@ -1307,7 +1317,11 @@ class Articles extends SiteController
             $parent = $category->getParent();
 
             while (
-                ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $parent->id)
+                (
+                    $menu->query['option'] != 'com_content'
+                    || ($menu->query['view'] ?? '') == 'article'
+                    || $id != $parent->id
+                )
                 && $parent->id !== 'root'
                 && $parent->id > 1
             ) {

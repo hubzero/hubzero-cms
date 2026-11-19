@@ -72,9 +72,9 @@ class Router extends Base
         // are we dealing with an article or category that is attached to a menu item?
         if (
             ($menuItem instanceof \stdClass)
-            && $menuItem->query['view'] == $query['view']
+            && ($menuItem->query['view'] ?? '') == $query['view']
             && isset($query['id'])
-            && $menuItem->query['id'] == intval($query['id'])
+            && ($menuItem->query['id'] ?? 0) == intval($query['id'])
         ) {
             unset($query['view']);
 
@@ -370,7 +370,7 @@ class Router extends Base
 
                 $vars['id'] = $cid;
 
-                if ($item->query['view'] == 'archive' && $count != 1) {
+                if (($item->query['view'] ?? '') == 'archive' && $count != 1) {
                     $vars['year']  = $count >= 2 ? $segments[$count - 2] : null;
                     $vars['month'] = $segments[$count - 1];
                     $vars['view']  = 'archive';
