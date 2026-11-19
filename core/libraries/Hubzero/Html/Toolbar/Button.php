@@ -67,7 +67,9 @@ abstract class Button extends Obj
         if (isset($definition[9])) {
             $cls = array_pop($definition);
         }
-        $id     = call_user_func_array([&$this, 'fetchId'], $definition);
+        // Each kind of button names its id (fetchId()), with the definition's arguments
+        $fetchId = [$this, 'fetchId'];
+        $id      = is_callable($fetchId) ? call_user_func_array($fetchId, $definition) : null;
         $action = call_user_func_array([&$this, 'fetchButton'], $definition);
 
         // Build id attribute

@@ -29,9 +29,9 @@ class Helper
      * - /path/2
      * </code>
      *
-     * @var  array<mixed>
+     * @var  array<string, array<int, string>>
      */
-    protected static $paths;
+    protected static $paths = [];
 
     /**
      * Static array of Form's entity objects for re-use.

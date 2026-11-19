@@ -95,7 +95,9 @@ class Xml
         $xml .= $indent . '<' . $tag . $sp . $attributes . '>';
 
         if (is_array($mixed) || is_object($mixed)) {
-            foreach ($mixed as $key => $value) {
+            // A plain object is walked by its public properties, as foreach does
+            $items = (is_array($mixed) || $mixed instanceof \Traversable) ? $mixed : get_object_vars($mixed);
+            foreach ($items as $key => $value) {
                 if (!isset($first)) {
                     $xml .= "\n";
                     $first = true;

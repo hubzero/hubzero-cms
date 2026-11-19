@@ -578,7 +578,8 @@ class Base
             if (class_exists($invokable)) {
                 $callback = new $invokable();
 
-                if ($callback instanceof Macro) {
+                // A macro is called as a function (each has __invoke())
+                if ($callback instanceof Macro && is_callable($callback)) {
                     $callback->setMigration($this)->setDatabase($this->db);
 
                     $this->macro($method, $callback);

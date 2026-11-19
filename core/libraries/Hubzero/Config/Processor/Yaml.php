@@ -182,11 +182,13 @@ class Yaml extends Base
             ]);
         }
 
-        if (!$parsed) {
-            $parsed = '';
+        // An empty or scalar document has no keys to give a registry; it used to
+        // come back as a string, which the registry stored under the key 0
+        if (!is_array($parsed)) {
+            return new \stdClass();
         }
 
-        return (is_string($parsed) ? $parsed : $this->toObject($parsed));
+        return $this->toObject($parsed);
     }
 
     /**

@@ -97,6 +97,8 @@ class Output
      **/
     public function addLine($message, $styles = null, $newLine = true)
     {
+        // A list is printed; anything else is its string form, as before
+        $message = is_array($message) ? print_r($message, true) : (string) $message;
         $this->formatLine($message, $styles);
 
         $this->response[] = [

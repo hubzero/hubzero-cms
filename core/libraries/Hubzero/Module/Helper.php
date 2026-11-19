@@ -71,7 +71,7 @@ class Helper
      */
     public static function renderModules($position, $style = -2)
     {
-        return \Module::position($position, ($style == -1 ? 'none' : $style));
+        return \Module::position($position, ($style == -1 ? 'none' : (string) $style));
     }
 
     /**

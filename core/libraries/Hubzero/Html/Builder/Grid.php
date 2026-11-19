@@ -162,9 +162,9 @@ class Grid
             $checked = self::checkedOutIcon($row);
         } else {
             if ($identifier == 'id') {
-                $checked = self::id($i, $row->$identifier);
+                $checked = self::id($i, $row->$identifier ?? null);
             } else {
-                $checked = self::id($i, $row->$identifier, $result, $identifier);
+                $checked = self::id($i, $row->$identifier ?? null, $result, $identifier);
             }
         }
 
