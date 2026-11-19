@@ -60,13 +60,17 @@ if ($assets->total() > 0) {
         $imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
 
         if (file_exists($imgPath)) {
-            list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [null, null];
-            $ratio = $originalWidth / $originalHeight;
+            list($originalWidth, $originalHeight) = getimagesize($imgPath) ?: [0, 0];
 
             $alt = $this->escape(stripslashes($first->get('description', '')));
-            $height = (!isset($this->actual) || !$this->actual)
-                ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
-                : $originalHeight;
+            // An image PHP can't read has no proportions to scale by: it keeps its own size
+            $height = null;
+            if ($originalWidth > 0 && $originalHeight > 0) {
+                $ratio = $originalWidth / $originalHeight;
+                $height = (!isset($this->actual) || !$this->actual)
+                    ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
+                    : $originalHeight;
+            }
 
             if ($isLocal) : ?>
                 <div class="holder">

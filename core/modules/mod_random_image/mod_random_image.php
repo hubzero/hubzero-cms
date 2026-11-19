@@ -66,19 +66,23 @@ class RandomImage extends Module
             $width = 100;
         }
 
-        if ($size[0] < $width) {
-            $width = $size[0];
-        }
+        // An image PHP can't read (getimagesize() failed) has no proportions to keep:
+        // it is shown at the configured size
+        if ($size[0] > 0 && $size[1] > 0) {
+            if ($size[0] < $width) {
+                $width = $size[0];
+            }
 
-        $coeff = $size[0] / $size[1];
-        if ($height == '') {
-            $height = (int) ($width / $coeff);
-        } else {
-            $newheight = min($height, (int) ($width / $coeff));
-            if ($newheight < $height) {
-                $height = $newheight;
+            $coeff = $size[0] / $size[1];
+            if ($height == '') {
+                $height = (int) ($width / $coeff);
             } else {
-                $width = $height * $coeff;
+                $newheight = min($height, (int) ($width / $coeff));
+                if ($newheight < $height) {
+                    $height = $newheight;
+                } else {
+                    $width = $height * $coeff;
+                }
             }
         }
 
