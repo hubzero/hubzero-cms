@@ -129,10 +129,7 @@ class Handlers extends Obj
     public function loadEditor($handler, $pub, $elementId = 0)
     {
         // Get handler configs
-        $configs = $handler->get('_configs');
-        if (!$configs) {
-            $configs = $handler->getConfig();
-        }
+        $configs = $handler->getConfig();
 
         // Start editor
         $editor = new \Components\Publications\Models\Editor($handler, $configs);
@@ -140,7 +137,7 @@ class Handlers extends Obj
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->_parent->db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -155,7 +152,7 @@ class Handlers extends Obj
 
         // Check if assigned and get association record
         $objAssoc = new \Components\Publications\Tables\HandlerAssoc($this->db);
-        $association = $objAssoc->getAssociation($pub->version_id, $elementId, $handler->get('_name'));
+        $association = $objAssoc->getAssociation($pub->version_id, $elementId, $handler->getName());
         $editor->set('assoc', $association);
 
         // Check status
@@ -179,10 +176,7 @@ class Handlers extends Obj
     public function isRelevant($handler, $attachments)
     {
         // Get handler configs
-        $configs = $handler->get('_configs');
-        if (!$configs) {
-            $configs = $handler->getConfig();
-        }
+        $configs = $handler->getConfig();
 
         // Attachments are needed
         if (!$attachments) {
@@ -293,10 +287,7 @@ class Handlers extends Obj
      */
     public function drawSelectedHandler($handler, $assigned = null)
     {
-        $configs = $handler->get('_configs');
-        if (!$configs) {
-            $configs = $handler->getConfig();
-        }
+        $configs = $handler->getConfig();
 
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_publications') . DS . 'site',

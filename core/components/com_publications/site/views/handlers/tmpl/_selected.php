@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{configs: mixed, handler: mixed} $this
  */
 ?>
-<div class="handlertype-<?php echo $this->handler->get('_name'); ?>">
+<div class="handlertype-<?php echo $this->handler->getName(); ?>">
     <h3><?php echo $this->escape($this->configs->label); ?></h3>
     <p><?php echo $this->configs->about; ?></p>
 </div>

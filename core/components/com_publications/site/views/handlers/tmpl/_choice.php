@@ -27,7 +27,7 @@ defined('_HZEXEC_') or die();
 $class = $this->item->assigned && $this->item->active ? ' assigned' : ' unassigned';
 ?>
 
-<div class="handlertype-<?php echo $this->handler->get('_name') . $class; ?>">
+<div class="handlertype-<?php echo $this->handler->getName() . $class; ?>">
     <h3><?php echo $this->escape($this->configs->label); ?></h3>
     <p class="manage-handler">
         <?php
@@ -36,7 +36,7 @@ $class = $this->item->assigned && $this->item->active ? ' assigned' : ' unassign
                 . '&active=publications&pid=' . $this->publication->id,
         );
         $manageUrl .= '?vid=' . $this->publication->version_id . '&amp;action=handler&amp;h='
-            . $this->handler->get('_name') . '&amp;p=' . $this->props;
+            . $this->handler->getName() . '&amp;p=' . $this->props;
         if ($this->item->assigned && $this->item->active) {
             $manageLabel = Lang::txt('COM_PUBLICATIONS_HANDLER_VIEW_MANAGE');
         } else {

@@ -303,7 +303,7 @@ class Curation extends Obj
 
         // Find all blocks of the same parent
         foreach ((array) $this->blocks as $blockId => $block) {
-            $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+            $parentBlock = $blocksModel->getBlockProperty($block->name, 'parentname');
 
             if ($parentBlock == 'description') {
                 foreach ($block->elements as $elId => $element) {
@@ -345,7 +345,7 @@ class Curation extends Obj
 
         // Find all blocks of the same parent
         foreach ((array) $this->blocks as $blockId => $block) {
-            $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+            $parentBlock = $blocksModel->getBlockProperty($block->name, 'parentname');
 
             if ($parentBlock == 'content') {
                 foreach ($block->elements as $elId => $element) {
@@ -417,7 +417,7 @@ class Curation extends Obj
 
         // Find all blocks of the same parent
         foreach ((array) $this->blocks as $blockId => $block) {
-            $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+            $parentBlock = $blocksModel->getBlockProperty($block->name, 'parentname');
 
             // Go through elements
             if ($parentBlock == $name) {
@@ -2449,7 +2449,7 @@ class Curation extends Obj
         $blocksModel = new Blocks($this->db);
 
         foreach ($pub->_curationModel->progressOrFail()->blocks as $blockId => $block) {
-            $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+            $parentBlock = $blocksModel->getBlockProperty($block->name, 'parentname');
 
             if (in_array($parentBlock, ['content', 'authors'])) {
                 $blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
