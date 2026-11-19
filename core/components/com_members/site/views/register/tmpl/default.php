@@ -60,7 +60,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 }
 ?>
 <header id="content-header">
-    <h2><?php echo Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->task)); ?></h2>
+    <h2><?php echo Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper((string) $this->task)); ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
@@ -906,7 +906,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
         <p class="submit">
             <input type="submit" class="btn btn-success" name="<?= $this->task ?>"
-                value="<?= Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)) ?>" />
+                value="<?= Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper((string) $this->task)) ?>" />
         </p>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

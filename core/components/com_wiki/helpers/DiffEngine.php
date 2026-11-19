@@ -36,41 +36,41 @@ class DiffEngine
      */
     public const MAX_XREF_LENGTH = 10000;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $xchanged = null;
+    public $xchanged = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $ychanged = null;
+    public $ychanged = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $yv = null;
+    public $yv = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $xv = null;
+    public $xv = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $yind = null;
+    public $yind = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $xind = null;
+    public $xind = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $in_seq = null;
+    public $in_seq = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    public $seq = null;
+    public $seq = [];
     /**
-     * @var  int|null
+     * @var  int
      */
-    public $lcs = null;
+    public $lcs = 0;
 
     /**
      * Short description for 'diff'
@@ -89,9 +89,9 @@ class DiffEngine
         $this->xchanged = $this->ychanged = [];
         $this->xv = $this->yv = [];
         $this->xind = $this->yind = [];
-        $this->seq = null;
-        $this->in_seq = null;
-        $this->lcs = null;
+        $this->seq = [];
+        $this->in_seq = [];
+        $this->lcs = 0;
 
         // Skip leading common lines.
         for ($skip = 0; $skip < $n_from && $skip < $n_to; $skip++) {

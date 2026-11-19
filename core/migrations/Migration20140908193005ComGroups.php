@@ -55,7 +55,7 @@ class Migration20140908193005ComGroups extends Base
                 ->select(['gidNumber', 'cn', 'description'])
                 ->from('#__xgroups')
                 ->where('type', 'IN', [1, 3])
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // default home page content
             $defaultHomePageContent = "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>";
@@ -70,7 +70,7 @@ class Migration20140908193005ComGroups extends Base
                     ->from('#__xgroups_pages')
                     ->where('gidNumber', '=', $group->gidNumber)
                     ->order('ordering', 'ASC')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 // locate the home page
                 $homePage = null;

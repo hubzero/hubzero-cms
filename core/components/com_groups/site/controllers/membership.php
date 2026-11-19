@@ -130,7 +130,7 @@ class Membership extends Base
 
         //set some vars for view
         $this->view->set('title', Lang::txt('Invite Members: ' . $this->view->get('group')->get('description')));
-        $this->view->set('msg', trim(Request::getString('msg', $this->config->get('invite_message', ''))));
+        $this->view->set('msg', trim((string) Request::getString('msg', $this->config->get('invite_message', ''))));
         $this->view->set('return', trim(Request::getString('return', '')));
 
         //display view

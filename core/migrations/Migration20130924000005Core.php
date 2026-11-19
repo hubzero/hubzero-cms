@@ -2851,7 +2851,7 @@ class Migration20130924000005Core extends Base
                 ->select('*')
                 ->from('#__components')
                 ->where('parent', '=', 0)
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // Build list of extensions to exclude (i.e. they're no longer in the core)
             $excludes = [
@@ -3002,7 +3002,7 @@ class Migration20130924000005Core extends Base
                 ->getQuery()
                 ->select('*')
                 ->from('#__plugins')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $r) {
                 $id = $this->db
@@ -3237,7 +3237,7 @@ class Migration20130924000005Core extends Base
                 ->whereNotNull('params')
                 ->where('params', '!=', '')
                 ->where(Expression::substring('params', 1, 1), '!=', '{')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {

@@ -408,7 +408,7 @@ abstract class Field
         }
 
         // Clean up any invalid characters.
-        $id = preg_replace('#\W#', '_', $id);
+        $id = (string) preg_replace('#\W#', '_', $id);
 
         return $id;
     }

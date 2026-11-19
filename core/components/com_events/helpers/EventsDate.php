@@ -172,7 +172,7 @@ class EventsDate
     /**
      * Generate a URL from the date data
      *
-     * @param      string $task Task to perform
+     * @param      string|null $task Task to perform
      * @return     string
      */
     public function toDateURL($task = '')

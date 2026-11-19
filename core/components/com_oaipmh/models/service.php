@@ -374,7 +374,7 @@ class Service extends Obj
             }
 
             $this->database->setQuery($query);
-            $sets = $this->database->loadRowList();
+            $sets = $this->database->loadRowList() ?? [];
             foreach ($sets as $set) {
                 array_push($records, $set);
             }

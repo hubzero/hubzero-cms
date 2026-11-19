@@ -298,7 +298,7 @@ class Migration20130924000009ComMenus extends Base
                     ->select('*')
                     ->from('#__menu')
                     ->where('level', '>=', $i)
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($results) > 0) {
                     foreach ($results as $r) {
@@ -326,7 +326,7 @@ class Migration20130924000009ComMenus extends Base
                 ->where('enabled', '=', 1)
                 ->whereNotNull('admin_menu_link')
                 ->where('admin_menu_link', '!=', '')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -367,7 +367,7 @@ class Migration20130924000009ComMenus extends Base
                 ->getQuery()
                 ->select(['id', 'params', 'link'])
                 ->from('#__menu')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -428,7 +428,7 @@ class Migration20130924000009ComMenus extends Base
                 ->select(['id', 'link', 'component_id'])
                 ->from('#__menu')
                 ->where('component_id', '!=', 0)
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {

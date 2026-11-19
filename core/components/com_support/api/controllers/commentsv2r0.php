@@ -239,7 +239,7 @@ class Commentsv2r0 extends ApiController
         $changelog = new stdClass();
 
         $comment->set('ticket', Request::getInt('ticket', ''));
-        $comment->set('comment', nl2br(Request::getString('comment')));
+        $comment->set('comment', nl2br((string) Request::getString('comment')));
         $comment->set('created_by', User::get('id'));
         $comment->set('access', (Request::getBool('private', false) == 'true' ? 1 : 0));
 

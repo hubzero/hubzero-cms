@@ -33,7 +33,7 @@ class Migration20170207025712PlgFilesystemGithub extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'github')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) < 1) {
                 $this->db
@@ -63,7 +63,7 @@ class Migration20170207025712PlgFilesystemGithub extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'github')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $result) {
                 $this->db

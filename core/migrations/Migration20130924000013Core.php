@@ -248,7 +248,7 @@ class Migration20130924000013Core extends Base
                     ->select('*')
                     ->from('#__extensions')
                     ->where('type', '=', 'template')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 foreach ($result as $r) {
                     $query = $this->db
@@ -280,7 +280,7 @@ class Migration20130924000013Core extends Base
                     ->getQuery()
                     ->select(['template', 'client_id'])
                     ->from('#__templates_menu')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 foreach ($result as $r) {
                     $this->db

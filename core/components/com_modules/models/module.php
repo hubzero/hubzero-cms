@@ -307,7 +307,7 @@ class Module extends Relational
         // Check if we are incrementing an existing pattern, or appending a new one.
         if (preg_match($rxSearch, $string, $matches)) {
             $n = empty($n) ? ($matches[1] + 1) : $n;
-            $string = preg_replace($rxReplace, sprintf($oldFormat, $n), $string);
+            $string = (string) preg_replace($rxReplace, sprintf($oldFormat, $n), $string);
         } else {
             $n = empty($n) ? 2 : $n;
             $string .= sprintf($newFormat, $n);

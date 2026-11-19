@@ -1451,7 +1451,7 @@ class Articles extends SiteController
 
         $id = Request::getInt('a_id');
         $catId = Request::getInt('catid');
-        $return_page = urldecode(base64_decode(Request::getString('return', null)));
+        $return_page = urldecode(base64_decode((string) Request::getString('return', null)));
 
         $userId = User::get('id');
         $asset  = 'com_content.article.' . $id;
@@ -1691,7 +1691,7 @@ class Articles extends SiteController
             $model->checkin();
         }
 
-        $return_page = urldecode(base64_decode(Request::getString('return', null)));
+        $return_page = urldecode(base64_decode((string) Request::getString('return', null)));
 
         if (empty($return_page) || !\Hubzero\Utility\Uri::isInternal($return_page)) {
             $return_page = Request::base();

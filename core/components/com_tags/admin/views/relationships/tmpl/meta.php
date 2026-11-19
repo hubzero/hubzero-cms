@@ -49,7 +49,7 @@ $dbh->setQuery(
 	'
     . 'ORDER BY raw_tag',
 );
-$fas = $dbh->loadAssocList();
+$fas = $dbh->loadAssocList() ?? [];
 $dbh->setQuery(
     'SELECT DISTINCT id, type FROM `#__resource_types`'
     . ' WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\')'

@@ -204,10 +204,10 @@ class MorphOne extends Relationship
      */
     protected function getRelations($keys, $constraint = null)
     {
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         if ($constraint) {
-            call_user_func($constraint, $this->related);
+            call_user_func($constraint, $this->relatedOrFail());
         }
 
         return $this->relatedOrFail()

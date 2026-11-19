@@ -48,9 +48,9 @@ class View extends AbstractView
     public $controller = null;
 
     /**
-     * Current task
+     * Current task, null until the controller has one
      *
-     * @var string
+     * @var string|null
      */
     public $task;
 

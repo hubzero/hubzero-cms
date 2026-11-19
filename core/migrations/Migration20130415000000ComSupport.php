@@ -43,7 +43,7 @@ class Migration20130415000000ComSupport extends Base
                 ->leftJoin('#__support_tickets AS t', 'c.ticket', 't.id')
                 ->where('t.open', '=', 0)
                 ->order('c.created', 'ASC')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // First we need to loop through all the entries and reove some potential duplicates
             $closedTickets = [];

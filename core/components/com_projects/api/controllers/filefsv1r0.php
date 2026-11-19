@@ -776,7 +776,7 @@ class Filefsv1r0 extends ApiController
                 $this->repo->getFileContent($params);
             } else {
                 // Viewing current file
-                $serveas      = urldecode(Request::getString('serveas', $file->get('name')));
+                $serveas      = urldecode((string) Request::getString('serveas', $file->get('name')));
                 $downloadPath = $file->get('fullPath');
             }
         }
@@ -1327,7 +1327,7 @@ class Filefsv1r0 extends ApiController
         $scheme = strtolower((string) parse_url($dataPath, PHP_URL_SCHEME));
 
         if ($scheme === '') {
-            return User::authorise('core.admin');
+            return (bool) User::authorise('core.admin');
         }
 
         return $scheme === 'http' || $scheme === 'https';

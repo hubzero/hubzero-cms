@@ -155,7 +155,7 @@ class Str
                     $clean['word'],
                     preg_quote($options['after'], '/'),
                 );
-                $str = preg_replace($kleenex, $clean['replacement'], $str);
+                $str = (string) preg_replace($kleenex, $clean['replacement'], $str);
                 break;
         }
         return $str;

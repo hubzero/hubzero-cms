@@ -127,7 +127,7 @@ class Inflector
 
         foreach (static::$plural_rules as $rule => $replacement) {
             if (preg_match($rule, $result)) {
-                $result = preg_replace($rule, $replacement, $result);
+                $result = (string) preg_replace($rule, $replacement, $result);
                 break;
             }
         }
@@ -151,7 +151,7 @@ class Inflector
 
         foreach (static::$singular_rules as $rule => $replacement) {
             if (preg_match($rule, $result)) {
-                $result = preg_replace($rule, $replacement, $result);
+                $result = (string) preg_replace($rule, $replacement, $result);
                 break;
             }
         }

@@ -33,7 +33,7 @@ class Migration20170228095518PlgFilesystemAwss3 extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'awss3')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) < 1) {
                 $this->db
@@ -63,7 +63,7 @@ class Migration20170228095518PlgFilesystemAwss3 extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'awss3')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // Find and delete all connections using this connection
             foreach ($results as $result) {

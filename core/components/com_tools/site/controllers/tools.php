@@ -255,7 +255,7 @@ class Tools extends SiteController
             return false;
         }
 
-        return User::authorise('core.admin', $this->option);
+        return (bool) User::authorise('core.admin', $this->option);
     }
 
     /**

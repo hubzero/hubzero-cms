@@ -31,7 +31,7 @@ class Migration20160624123301ComMembers extends Base
                 ->select('*')
                 ->from('#__extensions')
                 ->whereIn('element', ['com_users', 'com_members'])
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             $users   = null;
             $members = null;

@@ -57,7 +57,7 @@ class Migration20170731200400ComTools extends Base
                 ->from('#__tool', 't')
                 ->innerJoin('#__support_tickets AS st', 'st.id', 't.ticketid')
                 ->where('st.group_id', '=', 0)
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($tools as $tool) {
                 $gidNumber = $this->db

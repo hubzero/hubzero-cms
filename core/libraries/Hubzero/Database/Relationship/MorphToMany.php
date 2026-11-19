@@ -163,7 +163,7 @@ class MorphToMany extends OneToManyThrough
                 ->whereEquals($this->associativeTable . '.' . $this->associativeLocal, $this->model->getPkValue());
         }
 
-        return $this->applyDefaultConditions($this->related);
+        return $this->applyDefaultConditions($this->relatedOrFail());
     }
 
     /**
@@ -177,7 +177,7 @@ class MorphToMany extends OneToManyThrough
 
         if ($this->inverse) {
             // For inverse, we want the related model's type
-            $class = get_class($this->related);
+            $class = get_class($this->relatedOrFail());
         } else {
             // For normal, we want the parent model's type
             $class = get_class($this->model);
@@ -326,10 +326,10 @@ class MorphToMany extends OneToManyThrough
     {
         $this->mediate();
 
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         if ($constraint) {
-            call_user_func($constraint, $this->related);
+            call_user_func($constraint, $this->relatedOrFail());
         }
 
         return $this->relatedOrFail()

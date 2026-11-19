@@ -27,9 +27,9 @@ use voku\helper\HtmlDomParser;
 class Links extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
     /**
      * @var  mixed
      */
@@ -262,7 +262,7 @@ class Links extends Plugin
     {
         // Incoming
         $url     = Request::getString('citation-doi', '');
-        $url     = $url ? $url : urldecode(Request::getString('url'));
+        $url     = $url ? $url : urldecode((string) Request::getString('url'));
         $vid     = Request::getInt('vid', 0);
         $version = Request::getString('version', 'dev');
         $pid     = Request::getInt('pid', 0);

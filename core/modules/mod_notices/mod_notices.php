@@ -145,7 +145,7 @@ class Notices extends Module
 
         // Replace url links
         $urlPattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
-        $text = preg_replace($urlPattern, '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
+        $text = (string) preg_replace($urlPattern, '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
 
         // Return auto-linked text
         return $text;

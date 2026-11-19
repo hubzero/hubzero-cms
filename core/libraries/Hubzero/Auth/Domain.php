@@ -228,7 +228,7 @@ class Domain extends Relational
     /**
      * Find a record by ID
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  static|false  False when there is no such domain
      */
     public static function findById($id)

@@ -127,7 +127,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         $type = (string) preg_replace('/\s+UNSIGNED/i', '', $type);
 
         // Strip display widths from integer types
-        $type = preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $type);
+        $type = (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $type);
 
         return $type;
     }

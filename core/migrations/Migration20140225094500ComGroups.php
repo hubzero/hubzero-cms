@@ -29,7 +29,7 @@ class Migration20140225094500ComGroups extends Base
             ->select('*')
             ->from('#__xgroups')
             ->whereIsNull('created')
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
 
         // get created logs
         // get created logs

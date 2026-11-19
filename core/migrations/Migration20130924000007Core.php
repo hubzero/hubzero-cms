@@ -120,7 +120,7 @@ class Migration20130924000007Core extends Base
                 ->getQuery()
                 ->select(['id', 'usertype'])
                 ->from('#__users')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -165,7 +165,7 @@ class Migration20130924000007Core extends Base
                 ->getQuery()
                 ->select(['id', 'params'])
                 ->from('#__users')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {

@@ -484,7 +484,7 @@ class WikiParser
                 }
                 $text = preg_replace_callback("/$regex/", [&$this, 'link' . ucfirst($func)], (string) $text);
             } else {
-                $text = preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], (string) $text);
+                $text = (string) preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], (string) $text);
             }
         }
 
@@ -1018,7 +1018,7 @@ class WikiParser
         }
 
         $output = implode("\n", $output);
-        $output = preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPush'], $output);
+        $output = (string) preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPush'], $output);
 
         return $output;
     }
@@ -1073,7 +1073,7 @@ class WikiParser
         $this->set('wikitohtml', $html);
 
         foreach ($this->tokens as $tag => $vals) {
-            $text = preg_replace_callback(
+            $text = (string) preg_replace_callback(
                 '/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si',
                 [&$this, 'dataPull'],
                 (string) $text,
@@ -1896,7 +1896,7 @@ class WikiParser
 			/x", [&$this, 'getSpan'], $text);
         }
         $text = (string) preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
-        $text = preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
+        $text = (string) preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
         return $text;
     }
 
@@ -1960,7 +1960,7 @@ class WikiParser
                 "\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>
                 "\\1<h{$i}>\\2</h{$i}>\\3",              // <h3>Header</h3>
             ];
-            $text = preg_replace($patterns, $replace, (string) $text);
+            $text = (string) preg_replace($patterns, $replace, (string) $text);
         }
         return $text;
     }

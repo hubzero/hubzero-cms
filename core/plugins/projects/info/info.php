@@ -17,9 +17,9 @@ use Hubzero\Facades\Lang;
 class Info extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

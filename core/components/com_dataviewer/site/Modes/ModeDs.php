@@ -227,7 +227,7 @@ class ModeDs
             . "LEFT JOIN `#__users` u ON (u.id = ds.value AND ds.type='user') "
             . "WHERE ds.id = " . (int) $db_id['name'];
         $db->setQuery($sql);
-        $managers = $db->loadColumn();
+        $managers = $db->loadColumn() ?? [];
 
         if (!isset($dd['acl'])) {
             $dd['acl']['allowed_users'] = $managers;

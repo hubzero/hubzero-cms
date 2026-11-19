@@ -530,8 +530,8 @@ class Groupsv1r0 extends ApiController
         $tags            = Request::getString('tags', '');
         $publicDesc      = Request::getString('public_description', $group->get('public_desc'));
         $privateDesc     = Request::getString('private_description', $group->get('private_desc'));
-        $joinPolicy      = strtolower(Request::getString('join_policy', $group->get('join_policy')));
-        $discoverability = strtolower(Request::getString('discoverability', $group->get('discoverability')));
+        $joinPolicy      = strtolower((string) Request::getString('join_policy', $group->get('join_policy')));
+        $discoverability = strtolower((string) Request::getString('discoverability', $group->get('discoverability')));
 
         // var to hold errors
         $errors = [];

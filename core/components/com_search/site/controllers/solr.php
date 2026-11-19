@@ -44,7 +44,7 @@ class Solr extends SiteController
 
         $reserved = ['AND', 'OR', 'NOT'];
         foreach ($reserved as $word) {
-            $escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, (string) $escaped);
+            $escaped = (string) preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, (string) $escaped);
         }
 
         return $escaped;

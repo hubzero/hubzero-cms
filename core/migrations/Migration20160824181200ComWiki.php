@@ -35,7 +35,7 @@ class Migration20160824181200ComWiki extends Base
                 ->leftJoin('#__xgroups AS g', 'w.scope_id', 'g.gidNumber')
                 ->whereLike('w.path', '%/notes%')
                 ->where('w.scope', '=', 'group')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 if (substr($row->cn, 0, strlen('pr-')) != 'pr-') {

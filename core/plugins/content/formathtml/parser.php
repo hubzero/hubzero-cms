@@ -283,7 +283,7 @@ class Parser
     {
         $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', [&$this, 'dataPush'], $text ?: '');
 
-        $text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, 'dataPush'], $text ?: '');
+        $text = (string) preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, 'dataPush'], $text ?: '');
 
         return $text;
     }
@@ -342,7 +342,7 @@ class Parser
     private function unstrip($text, $html = true)
     {
         foreach ($this->tokens as $tag => $vals) {
-            $text = preg_replace_callback(
+            $text = (string) preg_replace_callback(
                 '/<(' . $tag . ') (.+?)><\/(\1) \2>/si',
                 [&$this, 'dataPull'],
                 (string) $text,

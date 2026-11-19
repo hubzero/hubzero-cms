@@ -170,7 +170,7 @@ class Resources extends SiteController
                 500,
             );
             $hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(
-                preg_replace('/\s+/', ' ', Request::getString('title', $status['title'], 'post')),
+                preg_replace('/\s+/', ' ', (string) Request::getString('title', $status['title'], 'post')),
                 500,
             );
 
@@ -537,7 +537,7 @@ class Resources extends SiteController
         $text = (string) preg_replace('/{.+?}/', '', $text);
         $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
         $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-        $text = preg_replace('/<!--.+?-->/', '', $text);
+        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
         return $text;
     }
 

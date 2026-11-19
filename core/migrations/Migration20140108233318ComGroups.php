@@ -167,7 +167,7 @@ class Migration20140108233318ComGroups extends Base
                 ->select(['gidNumber', 'overview_type', 'overview_content'])
                 ->from('#__xgroups')
                 ->whereIn('type', [1, 3])
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // loop through each group
             foreach ($groups as $group) {

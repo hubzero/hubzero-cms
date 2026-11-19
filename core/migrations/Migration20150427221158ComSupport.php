@@ -31,7 +31,7 @@ class Migration20150427221158ComSupport extends Base
                 ->select('id')
                 ->from('#__support_statuses')
                 ->where('open', '=', 1)
-                ->loadColumn();
+                ->loadColumn() ?? [];
 
             if (count($open)) {
                 $this->db

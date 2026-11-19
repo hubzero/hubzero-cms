@@ -1186,6 +1186,7 @@ class Setup extends Base
      * This includes script tags, HTML comments, xhubtags, and style tags
      *
      * @param   string|null  &$text  Text to clean
+     * @param-out  string  $text
      * @return  string
      */
     private function txtClean(&$text)
@@ -1200,7 +1201,7 @@ class Setup extends Base
         $text = (string) preg_replace('/{.+?}/', '', $text);
         $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
         $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-        $text = preg_replace('/<!--.+?-->/', '', $text);
+        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
 
         return $text;
     }

@@ -33,7 +33,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'googledrive')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) < 1) {
                 $this->db
@@ -63,7 +63,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'googledrive')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $result) {
                 $this->db

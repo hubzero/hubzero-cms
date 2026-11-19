@@ -69,7 +69,11 @@ class Html extends AbstractRenderer
     {
         if (is_string($arr)) {
             $arr = htmlentities($arr, ENT_COMPAT, 'UTF-8');
-            $arr = preg_replace('/\[(.+?)\] =&gt;/i', '<code class="ky">[$1]</code> <code class="op">=></code>', $arr);
+            $arr = (string) preg_replace(
+                '/\[(.+?)\] =&gt;/i',
+                '<code class="ky">[$1]</code> <code class="op">=></code>',
+                $arr,
+            );
             return $arr;
         }
 

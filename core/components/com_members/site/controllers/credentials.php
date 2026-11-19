@@ -490,8 +490,8 @@ class Credentials extends SiteController
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $password1 = trim(Request::getString('password1', null));
-        $password2 = trim(Request::getString('password2', null));
+        $password1 = trim((string) Request::getString('password1', null));
+        $password2 = trim((string) Request::getString('password2', null));
 
         if (!empty($password1)) {
             $msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $user->get('username'));

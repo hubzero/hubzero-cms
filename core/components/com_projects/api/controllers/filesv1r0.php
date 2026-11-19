@@ -1531,7 +1531,7 @@ class Filesv1r0 extends ApiController
         $scheme = strtolower((string) parse_url($dataPath, PHP_URL_SCHEME));
 
         if ($scheme === '') {
-            return User::authorise('core.admin');
+            return (bool) User::authorise('core.admin');
         }
 
         return $scheme === 'http' || $scheme === 'https';

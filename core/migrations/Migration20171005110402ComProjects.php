@@ -39,7 +39,7 @@ class Migration20171005110402ComProjects extends Base
                 ->select('*')
                 ->from('#__project_activity')
                 ->order('id', 'ASC')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($activities as $activity) {
                 $action = 'created';
@@ -399,7 +399,7 @@ class Migration20171005110402ComProjects extends Base
                     'project.todo.comment',
                     'project.database',
                 ])
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($activities as $activity) {
                 if ($activity->details) {

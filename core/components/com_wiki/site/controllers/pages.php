@@ -415,7 +415,7 @@ class Pages extends SiteController
             }
         }
 
-        $tags = trim(Request::getString('tags', $this->page->tags('string'), 'post'));
+        $tags = trim((string) Request::getString('tags', $this->page->tags('string'), 'post'));
         //$authors = trim(Request::getString('authors', $this->page->authors('string'), 'post'));
 
         // Set the page's <title> tag
@@ -1343,7 +1343,11 @@ class Pages extends SiteController
         $maxPasses = 5;
         for ($i = 0; $i < $maxPasses; $i++) {
             $prev = $html;
-            $html = preg_replace('/(<\/[uo]l>)\s*(<!--[^>]*-->\s*)?<\/li>\s*<\/[uo]l>/i', '$1', (string) $html);
+            $html = (string) preg_replace(
+                '/(<\/[uo]l>)\s*(<!--[^>]*-->\s*)?<\/li>\s*<\/[uo]l>/i',
+                '$1',
+                (string) $html,
+            );
             if ($html === $prev) {
                 break;
             }

@@ -41,9 +41,9 @@ class Publications extends Plugin
      */
     protected $activity;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
     /**
      * @var  mixed
      */

@@ -171,7 +171,7 @@ class Groups
                 . implode(', ', $colNames)
                 . ')',
         );
-        $data = self::getDbh()->loadAssocList();
+        $data = self::getDbh()->loadAssocList() ?? [];
         $profile = [];
         foreach ($data as $datum) {
             $profile[$datum['profile_key']] = $datum['profile_value'];

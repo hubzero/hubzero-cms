@@ -83,10 +83,10 @@ class OneShiftsToMany extends OneToMany
     protected function getRelations($keys, $constraint = null)
     {
         // Apply default conditions first
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, [$this->related]);
+            call_user_func_array($constraint, [$this->relatedOrFail()]);
         }
 
         return $this->relatedOrFail()

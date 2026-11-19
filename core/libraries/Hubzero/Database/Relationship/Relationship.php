@@ -250,7 +250,7 @@ class Relationship
      **/
     protected function getConstrained($constraint)
     {
-        call_user_func_array($constraint, [$this->related]);
+        call_user_func_array($constraint, [$this->relatedOrFail()]);
 
         // Note that rows is called on the base relational model, not on this relationship,
         // thus it is not calling the constrain method...which is how we want it to work.
@@ -380,11 +380,11 @@ class Relationship
     protected function getRelations($keys, $constraint = null)
     {
         // Apply default conditions first
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         // Then apply any eager loading constraint
         if (isset($constraint)) {
-            call_user_func_array($constraint, [$this->related]);
+            call_user_func_array($constraint, [$this->relatedOrFail()]);
         }
 
         return $this->relatedOrFail()->whereIn($this->relatedKey, array_unique($keys));

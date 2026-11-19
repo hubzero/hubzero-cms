@@ -2330,6 +2330,6 @@ class Events extends SiteController
         }
 
         // Otherwise defer to the specific action permission (core.create, core.edit, core.delete, ...)
-        return User::authorise($action, $this->option);
+        return (bool) User::authorise($action, $this->option);
     }
 }

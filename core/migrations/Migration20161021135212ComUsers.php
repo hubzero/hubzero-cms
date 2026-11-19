@@ -46,7 +46,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('up.passhash', '!=', '')
                 ->whereIsNotNull('up.passhash')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -79,7 +79,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('xp.userPassword', '!=', '')
                 ->whereIsNotNull('xp.userPassword')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -112,7 +112,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('up.passhash', '!=', '')
                 ->whereIsNotNull('up.passhash')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -145,7 +145,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('u.password', '!=', '')
                 ->whereIsNotNull('u.password')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -178,7 +178,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('xp.userPassword', '!=', '')
                 ->whereIsNotNull('xp.userPassword')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -211,7 +211,7 @@ class Migration20161021135212ComUsers extends Base
                 ->where('u.password', '!=', '')
                 ->whereIsNotNull('u.password')
                 ->endAndGroup()
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db

@@ -37,7 +37,7 @@ class Stylesheet extends File
 
             // Reset the name in case any parsing/modification
             // happened in the parent constructor.
-            $this->name = $name;
+            $this->name = (string) $name;
         }
     }
 }

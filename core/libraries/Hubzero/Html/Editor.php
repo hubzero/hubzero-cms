@@ -39,9 +39,9 @@ class Editor extends Obj
     /**
      * Editor Plugin name
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * Object asset

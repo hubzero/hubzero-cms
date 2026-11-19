@@ -21,9 +21,9 @@ abstract class Button extends Obj
     /**
      * Element name
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * Reference to the object that instantiated the element

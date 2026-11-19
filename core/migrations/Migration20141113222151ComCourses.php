@@ -62,7 +62,7 @@ class Migration20141113222151ComCourses extends Base
                     ->where('asset_id', '=', (int) $aa->asset_id)
                     ->order('id', 'DESC')
                     ->limit((int) ($aa->count - 1))
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 foreach ($toChange as $a) {
                     $oldAssetId = $a->asset_id;

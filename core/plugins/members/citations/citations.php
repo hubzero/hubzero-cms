@@ -613,7 +613,7 @@ class Citations extends Plugin
             }
         } elseif ($authorCount == 0) {
             // explode() always gives at least one name
-            $authorField = explode(',', Request::getString('author'));
+            $authorField = explode(',', (string) Request::getString('author'));
 
             foreach ($authorField as $key => $a) {
                 // Create a new row

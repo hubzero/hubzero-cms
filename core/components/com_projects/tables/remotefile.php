@@ -365,7 +365,7 @@ class RemoteFile extends Table
      * @param   string|int   $converted
      * @param   string   $remote_format
      * @param   string   $local_format
-     * @param   string   $remote_modified
+     * @param   string|null   $remote_modified
      * @param   string   $remote_author
      * @return  bool    True when the record was found and loaded
      */

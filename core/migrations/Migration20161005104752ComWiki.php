@@ -33,7 +33,7 @@ class Migration20161005104752ComWiki extends Base
                 ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
                 ->where('p.scope', '=', 'group')
                 ->whereLike('v.pagetext', '[?task=new Create a new article]')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($versions as $version) {
                 $version->pagetext = str_replace(
@@ -74,7 +74,7 @@ class Migration20161005104752ComWiki extends Base
                 ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
                 ->where('p.scope', '=', 'group')
                 ->whereLike('v.pagetext', '[?action=new Create a new article]')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($versions as $version) {
                 $version->pagetext = str_replace(

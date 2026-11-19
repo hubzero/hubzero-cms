@@ -41,7 +41,7 @@ class Migration20170322093811ComResources extends Base
                 ->from('#__resource_types')
                 ->where('alias', '=', '')
                 ->orWhereNull('alias')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $result) {
                 $alias = $this->normalize($result->type);

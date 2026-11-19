@@ -49,7 +49,7 @@ class Autolink extends AbstractHelper
         ];
 
         foreach ($char_regexes as $func => $regex) {
-            $text = preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], (string) $text);
+            $text = (string) preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], (string) $text);
         }
 
         return $text;

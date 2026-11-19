@@ -201,7 +201,7 @@ class Migration20160513140417ComMembers extends Base
                     ->getQuery()
                     ->select('*')
                     ->from('#__xprofiles_address')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 $ordering = 0;
                 $access   = 5;

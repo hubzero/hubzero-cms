@@ -40,7 +40,7 @@ class Migration20140423131112ComGroups extends Base
             ->from('#__xgroups')
             ->whereIn('cn', $subquery)
             ->order('gidNumber', 'asc')
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
 
         // var to hold original groups
         $original = [];

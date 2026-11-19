@@ -32,9 +32,9 @@ use Exception;
 class Todo extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**

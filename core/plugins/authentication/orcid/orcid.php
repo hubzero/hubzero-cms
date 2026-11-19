@@ -235,7 +235,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             $response->fullname      = $orcid->fullName();
             $response->authoritative = $this->params->get('authoritative', false);
             $response->username      = self::suggestUsername($username);
-            $response->email         = $orcid->email();
+            $response->email         = (string) $orcid->email();
             $response->orcid         = $orcid->id();
 
             // A link row can exist with no user_id — it is created at the start

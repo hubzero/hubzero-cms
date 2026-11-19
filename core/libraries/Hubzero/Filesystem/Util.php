@@ -122,7 +122,7 @@ class Util
         $regex = '#/*[^/\.]+/\.\.#Uu';
 
         while (preg_match($regex, (string) $path)) {
-            $path = preg_replace($regex, '', (string) $path);
+            $path = (string) preg_replace($regex, '', (string) $path);
         }
 
         return $path;

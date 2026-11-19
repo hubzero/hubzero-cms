@@ -57,7 +57,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
                 ->where('client_id', '=', 0)
                 ->order('ordering', 'ASC')
                 ->limit(6)
-                ->loadColumn();
+                ->loadColumn() ?? [];
 
             // create default
             $col = 0;

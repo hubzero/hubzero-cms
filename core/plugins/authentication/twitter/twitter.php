@@ -242,8 +242,8 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 $user = User::getInstance($hzal->user_id);
 
                 $response->username = $user->username;
-                $response->email    = $user->email;
-                $response->fullname = $user->name;
+                $response->email    = (string) $user->email;
+                $response->fullname = (string) $user->name;
             } else {
                 $response->username = '-' . $hzal->id;
                 $response->email    = $response->username . '@invalid';

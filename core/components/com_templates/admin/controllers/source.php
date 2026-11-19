@@ -62,7 +62,7 @@ class Source extends AdminController
         }
 
         if (!$file) {
-            $recordId = base64_decode(Request::getString('id'));
+            $recordId = base64_decode((string) Request::getString('id'));
             $context  = 'com_templates.edit.source';
 
             if (preg_match('#\.\.#', $recordId)) {

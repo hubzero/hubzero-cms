@@ -94,7 +94,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->select('*')
                 ->from('#__myhub')
                 ->group('uid')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             $newpreferences = [];
             foreach ($preferences as $preference) {

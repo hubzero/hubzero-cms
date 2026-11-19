@@ -65,7 +65,7 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'dropbox')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $result) {
                 $this->db

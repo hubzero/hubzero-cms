@@ -371,7 +371,7 @@ class Entriesv1r0 extends ApiController
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -567,7 +567,7 @@ class Entriesv1r0 extends ApiController
         // maps anything that is not a group to the caller's own member blog,
         // which is right for a move but would relocate a site entry its author
         // merely edited.
-        $reqScope   = strtolower(Request::getString('scope', $row->get('scope')));
+        $reqScope   = strtolower((string) Request::getString('scope', $row->get('scope')));
         $reqScopeId = Request::getInt('scope_id', $row->get('scope_id'));
 
         if ($reqScope === strtolower((string) $row->get('scope')) && $reqScopeId == (int) $row->get('scope_id')) {
@@ -645,7 +645,7 @@ class Entriesv1r0 extends ApiController
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -721,7 +721,7 @@ class Entriesv1r0 extends ApiController
                         '<a href="'
                             . $url
                             . '">'
-                            . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                            . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
                             . '</a>',
                     ),
                     'details'     => [

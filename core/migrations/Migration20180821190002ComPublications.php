@@ -30,7 +30,7 @@ class Migration20180821190002ComPublications extends Base
             ->select(['extension_id', 'params'])
             ->from('#__extensions')
             ->where('name', '=', 'com_publications')
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
         if (count($results) > 0) {
             foreach ($results as $r) {
                 $params = json_decode($r->params);

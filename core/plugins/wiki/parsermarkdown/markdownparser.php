@@ -284,7 +284,7 @@ class MarkdownParser
 
         if (!empty($this->tokens)) {
             foreach ($this->tokens as $tag => $vals) {
-                $text = preg_replace_callback(
+                $text = (string) preg_replace_callback(
                     '/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si',
                     [&$this, 'dataPull'],
                     (string) $text,

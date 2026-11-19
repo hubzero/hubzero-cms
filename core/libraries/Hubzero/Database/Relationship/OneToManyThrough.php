@@ -72,7 +72,7 @@ class OneToManyThrough extends OneToMany
             . $this->associativeLocal, $this->model->getPkValue());
 
         // Apply any default conditions
-        return $this->applyDefaultConditions($this->related);
+        return $this->applyDefaultConditions($this->relatedOrFail());
     }
 
     /**
@@ -166,10 +166,10 @@ class OneToManyThrough extends OneToMany
         $this->mediate();
 
         // Apply default conditions first
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, [$this->related]);
+            call_user_func_array($constraint, [$this->relatedOrFail()]);
         }
 
         return $this->relatedOrFail()->whereIn(

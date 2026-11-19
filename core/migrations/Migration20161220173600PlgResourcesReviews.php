@@ -31,7 +31,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
                 ->select('*')
                 ->from('#__vote_log')
                 ->where('category', '=', 'review')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($votes as $vote) {
                 $this->db
@@ -72,7 +72,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'review')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($votes as $vote) {
                 $this->db

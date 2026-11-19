@@ -26,9 +26,9 @@ class Attachment extends Obj
      * This has to be set in the final
      * renderer classes.
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * Reference to the object that instantiated the element

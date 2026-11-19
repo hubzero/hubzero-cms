@@ -2019,7 +2019,7 @@ class Files extends Plugin
                 $this->repoOrFail()->getFileContent($params);
             } else {
                 // Viewing current file
-                $serveas      = urldecode(Request::getString('serveas', $file->get('name')));
+                $serveas      = urldecode((string) Request::getString('serveas', $file->get('name')));
                 $downloadPath = $file->get('fullPath');
             }
         }

@@ -167,7 +167,7 @@ class Migration20130924000001ComContent extends Base
             ->whereIsNotNull('attribs')
             ->orWhere('attribs', '!=', '')
             ->endAndGroup()
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
 
         if (count($results) > 0) {
             foreach ($results as $r) {

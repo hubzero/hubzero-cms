@@ -120,7 +120,7 @@ class Migration20130924000011ComModules extends Base
                 ->from('#__modules')
                 ->where('published', '=', '1')
                 ->where('client_id', '=', '1')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($results as $r) {
                 // First, make sure it isn't already there
@@ -151,7 +151,7 @@ class Migration20130924000011ComModules extends Base
                 ->getQuery()
                 ->select(['id', 'params', 'module'])
                 ->from('#__modules')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {

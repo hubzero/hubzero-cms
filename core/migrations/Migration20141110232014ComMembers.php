@@ -36,7 +36,7 @@ class Migration20141110232014ComMembers extends Base
             ->where('surname', '=', '')
             ->orWhereIsNull('surname')
             ->endAndGroup()
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
 
         // fix each name
         foreach ($result as $profile) {

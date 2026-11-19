@@ -62,7 +62,7 @@ class Migration20130413000000ComCourses extends Base
                 ->select(['id', 'content'])
                 ->from('#__courses_assets')
                 ->where('type', '=', 'exam')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // Now insert those into the new forms asset_id field
             foreach ($rows as $row) {

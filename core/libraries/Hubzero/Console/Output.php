@@ -89,7 +89,7 @@ class Output
     /**
      * Add a new line to the output buffer (not actually a real php output buffer)
      *
-     * @param   string|array<mixed>|bool  $message  Text of line
+     * @param   string|array<mixed>|bool|null  $message  Text of line
      * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for
      *                            posibilities)
      * @param   bool    $newLine  Whether or not line should end with a new line

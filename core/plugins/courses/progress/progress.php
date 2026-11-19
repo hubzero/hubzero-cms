@@ -940,7 +940,7 @@ class Progress extends Plugin
         $gp->set('quiz_weight', $quiz_weight);
         $gp->set('homework_weight', $homework_weight);
         $gp->set('threshold', (Request::getInt('threshold') / 100));
-        $gp->set('description', trim(Request::getString('description')));
+        $gp->set('description', trim((string) Request::getString('description')));
 
         if (!$gp->store()) {
             // Redirect with message

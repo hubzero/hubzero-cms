@@ -1294,7 +1294,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product type info
      *
      * @param   int $ptId                 product type ID
-     * @return  array<mixed>|null  info
+     * @return  array<mixed>  info (empty when there is no such type)
      */
     public function getProductTypeInfo($ptId)
     {
@@ -1302,7 +1302,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
         $this->database->setQuery($sql);
         $res = $this->database->loadAssoc();
-        return $res;
+        return $res ?? [];
     }
 
     /**

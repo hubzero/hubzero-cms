@@ -355,7 +355,7 @@ class Migration20160510121901ComMembers extends Base
                     ->getQuery()
                     ->select('*')
                     ->from('#__xorganizations')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($organizations) > 0) {
                     $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
@@ -389,7 +389,7 @@ class Migration20160510121901ComMembers extends Base
                     ->getQuery()
                     ->select('*')
                     ->from('#__xorganization_types')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($types) > 0) {
                     $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
@@ -423,7 +423,7 @@ class Migration20160510121901ComMembers extends Base
                     ->getQuery()
                     ->select('*')
                     ->from('#__xprofiles_reasons')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($reasons) > 0) {
                     $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
@@ -482,7 +482,7 @@ class Migration20160510121901ComMembers extends Base
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 1)
                     ->order('ordering', 'asc')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($organizations) > 0) {
                     $columns = ['id', 'organization'];
@@ -521,7 +521,7 @@ class Migration20160510121901ComMembers extends Base
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 2)
                     ->order('ordering', 'asc')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($types) > 0) {
                     $columns = ['id', 'type', 'title'];
@@ -563,7 +563,7 @@ class Migration20160510121901ComMembers extends Base
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 11)
                     ->order('ordering', 'asc')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
 
                 if (count($reasons) > 0) {
                     $columns = ['id', 'reason'];

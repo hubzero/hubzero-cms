@@ -100,7 +100,7 @@ class Migration20160508203200ComWiki extends Base
                     ->select('w.id, w.scope, w.group_cn, g.gidNumber')
                     ->from('#__wiki_pages', 'w')
                     ->innerJoin('#__xgroups AS g', 'w.group_cn', 'g.cn')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
                 foreach ($rows as $row) {
                     $row->scope = substr($row->scope, strlen($row->group_cn . '/wiki'));
                     $row->scope = ltrim($row->scope, '/');
@@ -121,7 +121,7 @@ class Migration20160508203200ComWiki extends Base
                     ->select('w.id, w.scope, w.group_cn')
                     ->from('#__wiki_pages', 'w')
                     ->where('w.group_cn', 'LIKE', 'pr-%')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
                 foreach ($rows as $row) {
                     $row->scope = substr($row->scope, strlen($row->group_cn . '/wiki'));
                     $row->scope = ltrim($row->scope, '/');
@@ -318,7 +318,7 @@ class Migration20160508203200ComWiki extends Base
                         ['w.scope_id', '=', 'g.gidNumber'],
                         ['left' => 'w.scope', 'operator' => '=', 'value' => 'group'],
                     ], 'inner')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
                 foreach ($rows as $row) {
                     $this->db
                         ->getQuery()
@@ -338,7 +338,7 @@ class Migration20160508203200ComWiki extends Base
                         ['w.scope_id', '=', 'p.id'],
                         ['left' => 'w.scope', 'operator' => '=', 'value' => 'project'],
                     ], 'inner')
-                    ->loadObjectList();
+                    ->loadObjectList() ?? [];
                 foreach ($rows as $row) {
                     $scopePath = $row->alias . '/wiki' . ($row->path ? '/' . $row->path : '');
                     $this->db

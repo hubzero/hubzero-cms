@@ -35,7 +35,7 @@ class Migration20130926143200Core extends Base
                 ->select('*')
                 ->from('#__template_styles')
                 ->where('home', '=', 0)
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             $templates = [];
             foreach ($result as $r) {
@@ -115,7 +115,7 @@ class Migration20130926143200Core extends Base
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'template')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             foreach ($result as $r) {
                 $query = $this->db

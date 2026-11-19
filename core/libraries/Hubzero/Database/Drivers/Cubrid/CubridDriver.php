@@ -1052,7 +1052,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $normalized = (string) preg_replace('/\s+UNSIGNED/i', '', $normalized);
 
         // Strip display widths from integer types (CUBRID doesn't support them)
-        $normalized = preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $normalized);
+        $normalized = (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $normalized);
 
         return $normalized;
     }

@@ -32,7 +32,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                 ->select('*')
                 ->from('#__wishlist')
                 ->where('category', '=', 'group')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             // vars to hold counts
             $deletedLists  = 0;
@@ -51,7 +51,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                             ->select('*')
                             ->from('#__wishlist_item')
                             ->where('wishlist', '=', $list->id)
-                            ->loadObjectList();
+                            ->loadObjectList() ?? [];
 
                         foreach ($wishes as $wish) {
                             if ($schema->tableExists('#__wishlist_implementation')) {

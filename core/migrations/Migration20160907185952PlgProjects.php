@@ -44,7 +44,7 @@ class Migration20160907185952PlgProjects extends Base
                 ->where('folder', '=', 'projects')
                 ->where('type', '=', 'plugin')
                 ->order('ordering', 'ASC')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             $i = 1;
             foreach ($plugins as $plugin) {

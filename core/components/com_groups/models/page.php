@@ -179,7 +179,7 @@ class Page extends Model
         $alias = strtolower($alias);
 
         // allow only alpha numeric chars, dashes, and underscores
-        $alias = preg_replace("/[^-_a-z0-9]+/", '', $alias);
+        $alias = (string) preg_replace("/[^-_a-z0-9]+/", '', $alias);
 
         // make sure alias isnt a reserved term
         $group   = \Hubzero\User\Group::getInstance($this->get('gidNumber')) ?: new \Hubzero\User\Group();

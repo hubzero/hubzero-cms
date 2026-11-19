@@ -28,7 +28,7 @@ class Migration20140826120656ComEvents extends Base
             ->getQuery()
             ->select(['id', 'title'])
             ->from('#__events')
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
 
         // update each event
         foreach ($events as $event) {

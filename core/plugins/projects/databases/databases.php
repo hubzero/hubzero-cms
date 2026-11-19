@@ -25,9 +25,9 @@ use Exception;
 class Databases extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
     /**
      * @var  mixed
      */

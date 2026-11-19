@@ -706,7 +706,7 @@ class Version extends Table
     /**
      * Get tool name from instance
      *
-     * @param   string  $instance
+     * @param   string|null  $instance
      * @return  string
      */
     public function getToolname($instance)
@@ -723,7 +723,7 @@ class Version extends Table
     /**
      * Get a property from the current version
      *
-     * @param   string  $toolname
+     * @param   string|null  $toolname
      * @param   string  $property
      * @return  string|null
      */

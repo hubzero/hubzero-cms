@@ -1088,7 +1088,7 @@ class Create extends SiteController
 			INNER JOIN `#__resources` r ON r.type = rt.id AND r.id = ' . $id . '
 			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0',
         );
-        $fas = $this->database->loadAssocList('raw_tag');
+        $fas = $this->database->loadAssocList('raw_tag') ?? [];
         foreach ($_POST as $k => $vs) {
             if (!preg_match('/^tagfa/', $k)) {
                 continue;
@@ -1273,7 +1273,7 @@ class Create extends SiteController
 				on tag.id = assoc.tagid
 				where tbl = 'resources'
 				and objectid = $resourceId;")
-            ->loadColumn();
+            ->loadColumn() ?? [];
 
         foreach ($tagNames as $i => $tagName) {
             if (!in_array($tagName, $currentTagNames)) {
@@ -1833,7 +1833,7 @@ class Create extends SiteController
         //$text = preg_replace('/{.+?}/', '', $text);
         $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
         $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-        $text = preg_replace('/<!--.+?-->/', '', $text);
+        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
 
         return $text;
     }

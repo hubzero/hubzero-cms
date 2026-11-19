@@ -218,7 +218,7 @@ class MorphMany extends MorphOne
         // Apply type constraint first
         $this->relatedOrFail()->whereEquals($this->morphType, $this->getTypeIdentifier());
 
-        call_user_func($constraint, $this->related);
+        call_user_func($constraint, $this->relatedOrFail());
 
         return $this->relatedOrFail()->rows();
     }

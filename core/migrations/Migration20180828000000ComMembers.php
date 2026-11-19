@@ -36,7 +36,7 @@ class Migration20180828000000ComMembers extends Base
                 ->havingRaw('count(*) > 1')
                 ->order('user_id', 'ASC')
                 ->order('profile_key', 'ASC')
-                ->loadObjectList();
+                ->loadObjectList() ?? [];
 
             $delete = [];
 

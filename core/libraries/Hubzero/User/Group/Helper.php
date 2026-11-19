@@ -237,7 +237,7 @@ class Helper
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         $result = array_intersect($result, $group->get('members'));
 

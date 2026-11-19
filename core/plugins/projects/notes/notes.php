@@ -28,9 +28,9 @@ use Hubzero\Facades\User;
 class Notes extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $area;
+    protected $area = [];
     /**
      * @var  mixed
      */

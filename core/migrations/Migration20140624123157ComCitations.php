@@ -36,7 +36,7 @@ class Migration20140624123157ComCitations extends Base
             ->getQuery()
             ->select(['id', 'uid'])
             ->from('#__citations')
-            ->loadObjectList();
+            ->loadObjectList() ?? [];
         foreach ($citations as $citation) {
             if (!is_numeric($citation->uid)) {
                 $newId = 62;

@@ -107,7 +107,7 @@ class OneToOneThrough extends Relationship
         );
 
         // Apply any default conditions
-        return $this->applyDefaultConditions($this->related);
+        return $this->applyDefaultConditions($this->relatedOrFail());
     }
 
     /**
@@ -185,10 +185,10 @@ class OneToOneThrough extends Relationship
         $this->mediate();
 
         // Apply default conditions first
-        $this->applyDefaultConditions($this->related);
+        $this->applyDefaultConditions($this->relatedOrFail());
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, [$this->related]);
+            call_user_func_array($constraint, [$this->relatedOrFail()]);
         }
 
         return $this->relatedOrFail()->whereIn($this->throughTable . '.' . $this->throughLocalKey, array_unique($keys));
