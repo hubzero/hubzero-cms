@@ -133,42 +133,36 @@ if ($this->page->exists() && !$this->page->access('modify')) {
     method="post"
     id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
 <?php
-$dropInstructions = null;
-$iframeSrc = null;
-$listAction = null;
-$macrosFileUrl = null;
-$macrosImageUrl = null;
-$uploadAction = null;
+// The file manager's addresses, for both the full page and a project's
+// notes (sub): the sub layout shows the manager too and needs them as much
+$macrosImageUrl = Route::url(
+    'index.php?option=com_wiki&pagename=Help:WikiMacros#image',
+);
+$macrosFileUrl = Route::url(
+    'index.php?option=com_wiki&pagename=Help:WikiMacros#file',
+);
+$baseUrl = rtrim(Request::base(true), '/');
+$dropInstructions = Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE');
+$uploadAction = $baseUrl
+    . '/index.php?option=com_wiki&amp;no_html=1'
+    . '&amp;controller=media&amp;task=upload'
+    . '&amp;listdir=' . $lid;
+$listAction = $baseUrl
+    . '/index.php?option=com_wiki&amp;no_html=1'
+    . '&amp;controller=media&amp;task=list'
+    . '&amp;listdir=' . $lid;
+$iframeSrc = $baseUrl
+    . '/index.php?option=com_wiki'
+    . '&amp;tmpl=component&amp;controller=media'
+    . '&amp;scope=' . $this->page->get('scope')
+    . '&amp;pagename=' . $this->page->get('pagename')
+    . '&amp;listdir=' . $lid;
 ?>
 <?php if (!$this->sub) { ?>
     <div class="explaination">
     <?php if ($this->page->exists() && $this->page->access('edit')) { ?>
         <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
     <?php } ?>
-        <?php
-        $macrosImageUrl = Route::url(
-            'index.php?option=com_wiki&pagename=Help:WikiMacros#image',
-        );
-        $macrosFileUrl = Route::url(
-            'index.php?option=com_wiki&pagename=Help:WikiMacros#file',
-        );
-        $baseUrl = rtrim(Request::base(true), '/');
-        $dropInstructions = Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE');
-        $uploadAction = $baseUrl
-            . '/index.php?option=com_wiki&amp;no_html=1'
-            . '&amp;controller=media&amp;task=upload'
-            . '&amp;listdir=' . $lid;
-        $listAction = $baseUrl
-            . '/index.php?option=com_wiki&amp;no_html=1'
-            . '&amp;controller=media&amp;task=list'
-            . '&amp;listdir=' . $lid;
-        $iframeSrc = $baseUrl
-            . '/index.php?option=com_wiki'
-            . '&amp;tmpl=component&amp;controller=media'
-            . '&amp;scope=' . $this->page->get('scope')
-            . '&amp;pagename=' . $this->page->get('pagename')
-            . '&amp;listdir=' . $lid;
-        ?>
         <p><?php echo Lang::txt('COM_WIKI_IMAGE_MACRO_HINT', $macrosImageUrl); ?></p>
         <p><?php echo Lang::txt('COM_WIKI_FILE_MACRO_HINT', $macrosFileUrl); ?></p>
 

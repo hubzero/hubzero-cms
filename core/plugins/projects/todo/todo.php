@@ -448,7 +448,7 @@ class Todo extends Plugin
 
         // Prevent resubmit
         if ($task == 'save' && $content == '' && $newlist == '') {
-            App::redirect($this->model->link('todo'));
+            App::redirect(Route::url($this->model->link('todo'), false));
         }
 
         // Save if not empty
