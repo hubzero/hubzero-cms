@@ -2103,7 +2103,8 @@ class Publications extends Plugin
 
             $pub->version->set('rating', '0.0');
             $pub->version->set('published_up', $publishedUp);
-            $pub->version->set('published_down', '');
+            // No end date: NULL, written below; '' is refused by strict SQL
+            $pub->version->set('published_down', null);
         }
         $pub->version->set('modified', Date::toSql());
         $pub->version->set('modified_by', $this->uid);
@@ -2188,8 +2189,9 @@ class Publications extends Plugin
                 $pub->version->set('curation_version_id', $versionNumber);
             }
 
-            // Save data
-            if (!$pub->version->store()) {
+            // Save data, with its NULLs: the version was loaded whole, and a
+            // cleared end date has to reach the row
+            if (!$pub->version->store(true)) {
                 throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
             }
 
@@ -2212,6 +2214,12 @@ class Publications extends Plugin
         **/
         if (isset($doiErr)) {
             $link .= '&doierr=1';
+        }
+
+        // Say why nothing changed: a DOI the hub cannot issue left the draft as
+        // it was, and the page said only that it had not been submitted
+        if ($this->getError()) {
+            Notify::message($this->getError(), 'error', 'projects');
         }
 
         App::redirect(Route::url($link, false));

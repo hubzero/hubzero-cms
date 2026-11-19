@@ -31,10 +31,14 @@ $pubUrl = '';
 if ($this->get('new_pubs')) {
     $pubUrl = 'pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit';
 } else {
-    $pubUrl = Route::url($this->project->link('publications'))
+    // Routed whole: the query appended to a routed path was read as part of
+    // the path and led to the project's front page
+    $pubUrl = Route::url(
+        $this->project->link('publications')
         . '&pid='
         . $row->get('id')
-        . '&action=continue&version=dev';
+        . '&action=continue&version=dev',
+    );
 }
 
 ?>
