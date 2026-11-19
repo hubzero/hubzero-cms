@@ -89,7 +89,7 @@ class Privatetext extends GroupMacro
     public function postProcess($text)
     {
         if (User::isGuest() || !in_array(User::get('id'), $this->group->get('members'))) {
-            $text = preg_replace('/<private>(.*?)<\/private>/iusm', '', $text);
+            $text = (string) preg_replace('/<private>(.*?)<\/private>/iusm', '', $text);
         }
 
         $text = str_replace(['<private>', '</private>'], '', $text);

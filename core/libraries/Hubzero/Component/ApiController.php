@@ -432,7 +432,7 @@ class ApiController implements ControllerInterface
 
             if ($this->isDynamic && $endpoint['name'] != 'index') {
                 $endpoint['uri'] = str_replace('{component}', $output->component, $endpoint['uri']);
-                $endpoint['uri'] = str_replace('{controller}', $this->controller, $endpoint['uri']);
+                $endpoint['uri'] = str_replace('{controller}', (string) $this->controller, $endpoint['uri']);
                 $endpoint['uri'] = str_replace('{primary key}', '{' . $model->getPrimaryKey() . '}', $endpoint['uri']);
 
                 foreach ($properties as $prop => $type) {
@@ -1040,7 +1040,7 @@ class ApiController implements ControllerInterface
             // We need a fully qualified name
             if ($this->modelClass && !strstr($this->modelClass, '\\')) {
                 $this->modelClass = 'Components\\'
-                    . ucfirst($this->name)
+                    . ucfirst((string) $this->name)
                     . '\\Models\\'
                     . ucfirst(strtolower($this->modelClass));
             }

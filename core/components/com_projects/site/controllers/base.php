@@ -196,8 +196,8 @@ class Base extends SiteController
 
         // Set the title
         $this->title  = $this->task == 'edit'
-            ? Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task))
-            : Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller));
+            ? Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->task))
+            : Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->controller));
 
         // Project info
         if ($this->model->exists()) {
@@ -305,7 +305,7 @@ class Base extends SiteController
         switch ($this->controller) {
             case 'reports':
                 Pathway::append(
-                    Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller)),
+                    Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->controller)),
                     Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 );
                 break;

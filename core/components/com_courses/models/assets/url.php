@@ -38,17 +38,17 @@ class Url extends Content
         $url = Request::getString('content');
 
         // Allow for multiple entries at once
-        if (strstr($url, ',')) {
-            $urls = explode(',', $url);
+        if (strstr((string) $url, ',')) {
+            $urls = explode(',', (string) $url);
             $urls = array_map('trim', $urls);
-        } elseif (strstr($url, ' ')) {
-            $urls = explode(' ', $url);
+        } elseif (strstr((string) $url, ' ')) {
+            $urls = explode(' ', (string) $url);
             $urls = array_map('trim', $urls);
-        } elseif (strstr($url, "\n")) {
-            $urls = explode("\n", $url);
+        } elseif (strstr((string) $url, "\n")) {
+            $urls = explode("\n", (string) $url);
             $urls = array_map('trim', $urls);
-        } elseif (strstr($url, "\r\n")) {
-            $urls = explode("\r\n", $url);
+        } elseif (strstr((string) $url, "\r\n")) {
+            $urls = explode("\r\n", (string) $url);
             $urls = array_map('trim', $urls);
         } else {
             $urls = (array) $url;

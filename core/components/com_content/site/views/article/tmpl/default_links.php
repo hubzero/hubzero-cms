@@ -47,7 +47,10 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
 
                 // Reject dangerous URL schemes
                 if (
-                    preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $link))
+                    preg_match(
+                        '/^(?:javascript|vbscript|data):/i',
+                        (string) preg_replace('/[\x00-\x20]+/', '', (string) $link),
+                    )
                 ) {
                     $link = '';
                 }

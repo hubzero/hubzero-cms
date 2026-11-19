@@ -443,7 +443,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         $this->assertGreaterThan(0, $id);
 
         $driver->setQuery("SELECT name FROM d2_categories WHERE id = $id");
-        $this->assertEquals('Test', trim($driver->loadResult()));
+        $this->assertEquals('Test', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM d2_categories WHERE id = $id");
     }
@@ -460,7 +460,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         $driver->exec("UPDATE d2_categories SET name = 'After' WHERE slug = 'update-test'");
 
         $driver->setQuery("SELECT name FROM d2_categories WHERE slug = 'update-test'");
-        $this->assertEquals('After', trim($driver->loadResult()));
+        $this->assertEquals('After', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM d2_categories WHERE slug = 'update-test'");
     }
@@ -548,6 +548,7 @@ class Db2DriverTest extends AbstractDriverTestCase
             FROM d2_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);
@@ -586,6 +587,7 @@ class Db2DriverTest extends AbstractDriverTestCase
 
         $driver->setQuery("SELECT 'Hello' || ' ' || 'World' AS greeting FROM SYSIBM.SYSDUMMY1");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('Hello World', trim($row->greeting));
     }
 
@@ -599,6 +601,7 @@ class Db2DriverTest extends AbstractDriverTestCase
 
         $driver->setQuery("SELECT COALESCE(NULL, 'default') AS result FROM SYSIBM.SYSDUMMY1");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('default', trim($row->result));
     }
 
@@ -684,7 +687,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         ");
 
         $driver->setQuery("SELECT name FROM d2_categories WHERE id = {$id}");
-        $this->assertEquals('Merged', trim($driver->loadResult()));
+        $this->assertEquals('Merged', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM d2_categories WHERE id = {$id}");
     }
@@ -1008,7 +1011,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         $this->assertFalse($driver->tableExists('d2_rename_src'));
 
         $driver->setQuery("SELECT name FROM d2_rename_dest");
-        $this->assertEquals('test', trim($driver->loadResult()));
+        $this->assertEquals('test', trim((string) $driver->loadResult()));
     }
 
     // =========================================================================

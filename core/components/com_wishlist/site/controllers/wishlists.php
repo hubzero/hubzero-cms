@@ -1335,7 +1335,7 @@ class Wishlists extends SiteController
                     '<a href="'
                         . Route::url($row->link('permalink'))
                         . '">'
-                        . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1400,7 +1400,7 @@ class Wishlists extends SiteController
 
             // Set the pathway
             $this->_taskpath = $wish->link();
-            $this->_taskname = Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+            $this->_taskname = Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->task));
             $this->buildPathway($wishlist);
             $this->loginTask();
             return;
@@ -1945,7 +1945,7 @@ class Wishlists extends SiteController
                     '<a href="'
                         . Route::url($wish->link('permalink'))
                         . '">'
-                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $wish->get('subject'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -2049,7 +2049,7 @@ class Wishlists extends SiteController
                     '<a href="'
                         . Route::url($wish->link())
                         . '">'
-                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $wish->get('subject'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -2399,7 +2399,7 @@ class Wishlists extends SiteController
                         '<a href="'
                             . Route::url($objWish->link())
                             . '">'
-                            . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8')
+                            . htmlspecialchars((string) $objWish->get('subject'), ENT_QUOTES, 'UTF-8')
                             . '</a>',
                     ),
                     'details'     => [
@@ -2476,7 +2476,7 @@ class Wishlists extends SiteController
                     '<a href="'
                         . Route::url($wish->link())
                         . '">'
-                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $wish->get('subject'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [

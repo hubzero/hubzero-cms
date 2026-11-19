@@ -196,6 +196,9 @@ class Newsletter extends Plugin
                         . "= {$queuedEmail->newsletterid} AND deleted=0;";
                     $database->setQuery($sql);
                     $latestMailing = $database->loadObject();
+                    if (!$latestMailing) {
+                        continue;
+                    }
 
                     switch ($queuedEmail->autogen) {
                         case 1:

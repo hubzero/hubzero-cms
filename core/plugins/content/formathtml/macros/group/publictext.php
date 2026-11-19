@@ -89,7 +89,7 @@ class Publictext extends GroupMacro
     public function postProcess($text)
     {
         if (!User::isGuest() && in_array(User::get('id'), $this->group->get('members'))) {
-            $text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
+            $text = (string) preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
         }
 
         $text = str_replace(['<public>', '</public>'], '', $text);

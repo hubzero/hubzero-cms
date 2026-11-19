@@ -26,7 +26,7 @@ Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANT
 
 $resp = $this->resp;
 ?>
-<h2><?php echo $this->escape(stripslashes($this->event->title)); ?></h2>
+<h2><?php echo $this->escape(stripslashes((string) $this->event->title)); ?></h2>
 
 <table class="adminlist">
     <thead>

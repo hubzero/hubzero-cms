@@ -48,10 +48,12 @@ class Timezone extends Groupedlist
      */
     protected function getGroups()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $groups = [];
 
-        $keyField = $this->element['key_field'] ? (string) $this->element['key_field'] : 'id';
+        $keyField = $element['key_field'] ? (string) $element['key_field'] : 'id';
         $keyValue = $this->form->getValue($keyField);
 
         // If the timezone is not set use the server setting.

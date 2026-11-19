@@ -202,7 +202,7 @@ class MorphMany extends MorphOne
      */
     public function getConstrainedKeys($constraint)
     {
-        $this->related->select($this->morphId);
+        $this->relatedOrFail()->select($this->morphId);
 
         return $this->getConstrained($constraint)->fieldsByKey($this->morphId);
     }
@@ -216,11 +216,11 @@ class MorphMany extends MorphOne
     protected function getConstrained($constraint)
     {
         // Apply type constraint first
-        $this->related->whereEquals($this->morphType, $this->getTypeIdentifier());
+        $this->relatedOrFail()->whereEquals($this->morphType, $this->getTypeIdentifier());
 
         call_user_func($constraint, $this->related);
 
-        return $this->related->rows();
+        return $this->relatedOrFail()->rows();
     }
 
     /**

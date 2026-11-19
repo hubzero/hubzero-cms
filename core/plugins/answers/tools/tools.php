@@ -82,7 +82,7 @@ class Tools extends Plugin
             }
 
             if (preg_match('/tool:/', $tag)) {
-                $toolname = preg_replace('/tool:/', '', $tag);
+                $toolname = (string) preg_replace('/tool:/', '', $tag);
                 if (trim($toolname)) {
                     $rev = $objV->getCurrentVersionProperty($toolname, 'revision');
                     $authors = $TA->getToolAuthors('', 0, $toolname, $rev);

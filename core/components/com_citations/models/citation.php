@@ -909,7 +909,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                             $coins_data[] = $coins_keys[$k] . $this->$k;
                             break;
                         case 'url':
-                            $coins_data[] = $coins_keys[$k] . '=' . htmlentities($this->$k);
+                            $coins_data[] = $coins_keys[$k] . '=' . htmlentities((string) ($this->$k));
                             break;
                         case 'journaltitle':
                             $jt = html_entity_decode((string) $this->$k);
@@ -999,7 +999,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                                 }
 
                                 // add author coins
-                                $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
+                                $coins_data[] = 'rft.au='
+                                    . trim((string) preg_replace('/\{\{\d+\}\}/', '', trim($author)));
                             } elseif ($author instanceof Author) { // the ORM form; above was the legacy string
                                 $authorName = (string) $author->get('author');
                                 if ($author->get('uidNumber') > 0) {
@@ -1056,7 +1057,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                         $url = $url[0];
                     }
 
-                    $t = html_entity_decode($this->$k);
+                    $t = html_entity_decode((string) ($this->$k));
                     if (function_exists('mbstring')) {
                         $t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
                     }
@@ -1099,15 +1100,15 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         // Strip empty tags
         $pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
-        $cite = preg_replace($pattern, '', $cite);
+        $cite = (string) preg_replace($pattern, '', $cite);
 
         //reformat dates
         $pattern = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
-        $cite = preg_replace($pattern, "$2-$3-$1", $cite);
+        $cite = (string) preg_replace($pattern, "$2-$3-$1", $cite);
 
         // Reduce multiple spaces to one
         $pattern = "/\s/s";
-        $cite = preg_replace($pattern, ' ', $cite);
+        $cite = (string) preg_replace($pattern, ' ', $cite);
         // Strip empty punctuation inside
         $b = [
             "''" => '',
@@ -1163,7 +1164,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $replace    = ["%20", "%20", "%2F", "%3A", "%22", "%27", "%26"];
         $coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
-        $cite = preg_replace('/, :/', ':', $cite);
+        $cite = (string) preg_replace('/, :/', ':', $cite);
 
         // highlight citation data
         // do before appending coins as we dont want that data accidentally highlighted (causes style issues)
@@ -1395,7 +1396,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         if (isset($citation->title) && $citation->title != '') {
             if ($citation_type->type == 'journal') {
                 $query[] = 'atitle=' . str_replace(' ', '+', $citation->title);
-                $query[] = 'title=' . str_replace(' ', '+', $citation->journal);
+                $query[] = 'title=' . str_replace(' ', '+', (string) $citation->journal);
             } else {
                 $query[] = 'title=' . str_replace(' ', '+', $citation->title);
             }

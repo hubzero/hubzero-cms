@@ -62,6 +62,9 @@ class Tickets extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM `#__support_tickets` WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get the name of the author
                 $sql1 = "SELECT name FROM `#__users` WHERE username=" . $db->quote($row->login) . ";";
@@ -96,7 +99,7 @@ class Tickets extends Plugin
 
                 // Build the description, clean up text
                 $content = preg_replace('/<[^>]*>/', ' ', $row->report);
-                $content = preg_replace('/ {2,}/', ' ', (string) $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', (string) $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

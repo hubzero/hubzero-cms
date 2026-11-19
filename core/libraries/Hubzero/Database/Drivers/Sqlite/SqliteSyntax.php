@@ -393,12 +393,12 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         if (preg_match('/\s+AS\s+/i', $table)) {
             [$tbl, $alias] = preg_split('/\s+AS\s+/i', $table, 2) ?: [null, null];
-            return trim($alias);
+            return trim((string) $alias);
         }
 
         if (preg_match('/\s+/', $table)) {
             [$tbl, $alias] = preg_split('/\s+/', $table, 2) ?: [null, null];
-            return trim($alias);
+            return trim((string) $alias);
         }
 
         return trim($table) ?: null;
@@ -652,7 +652,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         // Extract base type (remove size specifiers like VARCHAR(255))
-        $baseType = strtolower(preg_replace('/\s*\([^)]+\)/', '', $type));
+        $baseType = strtolower((string) preg_replace('/\s*\([^)]+\)/', '', $type));
         $baseType = trim($baseType);
 
         // Check our mapping first

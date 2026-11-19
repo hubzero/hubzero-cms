@@ -229,7 +229,7 @@ class Accesslevels extends AdminController
 
                     $db->setQuery($query->toString());
 
-                    $values = $db->loadColumn();
+                    $values = $db->loadColumn() ?? [];
 
                     $levelsInUse = array_merge($levelsInUse, $values);
                 }

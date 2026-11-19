@@ -32,29 +32,31 @@ class Select extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
 
         // To avoid user's confusion, readonly="true" should imply disabled="true".
-        if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true') {
+        if ((string) $element['readonly'] == 'true' || (string) $element['disabled'] == 'true') {
             $attr .= ' disabled="disabled"';
         }
 
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get the field options.
         $options = (array) $this->getOptions();
 
         // Create a read-only list (no name) with a hidden input to store the value.
-        if ((string) $this->element['readonly'] == 'true') {
+        if ((string) $element['readonly'] == 'true') {
             $html[] = Dropdown::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
             $html[] = '<input type="hidden" name="'
                 . $this->name
@@ -63,7 +65,7 @@ class Select extends Field
                 . '" />';
         } else {
             // Create a regular list.
-            if ($this->element['option_other']) {
+            if ($element['option_other']) {
                 // Add "Other..." option to the dropdown
                 $options[] = Dropdown::option('other', App::get('language')->txt('Other...'), 'value', 'text');
 
@@ -126,14 +128,16 @@ class Select extends Field
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
-        if ($this->element['option_blank']) {
+        if ($element['option_blank']) {
             $options[] = Dropdown::option('', App::get('language')->txt('- Select -'), 'value', 'text');
         }
 
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             // Only add <option /> elements.
             if ($option->getName() != 'option') {
                 continue;

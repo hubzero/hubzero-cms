@@ -58,7 +58,7 @@ class Remote extends Plugin
      */
     public function onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)
     {
-        $className = strtolower(preg_replace('/([A-Z])/', '_$1', get_class($this)));
+        $className = strtolower((string) preg_replace('/([A-Z])/', '_$1', get_class($this)));
         if ($model->name === $className) {
             $params = \Plugin::params('search', 'remote');
             $url = $params->get('app_url');

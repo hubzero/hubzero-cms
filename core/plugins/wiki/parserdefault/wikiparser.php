@@ -305,7 +305,7 @@ class WikiParser
         $text = $this->math($text);
 
         // Strip HTML tags out
-        $text = preg_replace(
+        $text = (string) preg_replace(
             ['/<\./', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</'], //'/([0-9]+)>/'),
             ['&lt;.', '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;'], //    '$1 &gt;'),
             $text,
@@ -324,7 +324,7 @@ class WikiParser
 
         if ($this->get('fullparse')) {
             // Do horizontal rules <hr />
-            $text = preg_replace('/(^|\n)-----*/', '\\1<hr />', $text);
+            $text = (string) preg_replace('/(^|\n)-----*/', '\\1<hr />', $text);
 
             // Do headings <h1>, <h2>, etc.
             $text = $this->headings($text);
@@ -356,7 +356,7 @@ class WikiParser
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
         //$text = preg_replace_callback('/MACRO' . $this->token . '/i', array(&$this, 'restore_macros'), $text);
-        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+        $text = (string) preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
         $this->tokens['macro'] = [];
 
         // Clean up special characters, only run once, next-to-last before block levels
@@ -367,7 +367,7 @@ class WikiParser
             // french spaces, Guillemet-right
             '/(\\302\\253) /' => '\\1&nbsp;',
         ];
-        $text = preg_replace(array_keys($fixtags), array_values($fixtags), $text);
+        $text = (string) preg_replace(array_keys($fixtags), array_values($fixtags), $text);
 
         // Only once and last
         $text = $this->blocks($text);
@@ -376,19 +376,19 @@ class WikiParser
         $text = $this->unstrip($text);
         // Strip out blank space
         $text = str_replace("<p><br />\n</p>", '', $text);
-        $text = preg_replace('|<p>\s*?</p>|', '', $text);
+        $text = (string) preg_replace('|<p>\s*?</p>|', '', $text);
         $result = preg_replace('/<p>\p{Z}*<\/p>/u', '', $text);
 
         if ($result != null) { // Possible to get: Malformed UTF-8 characters, possibly incorrectly encoded
             $text = $result;
         }
 
-        $text = preg_replace(
+        $text = (string) preg_replace(
             '!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!',
             "$1",
             $text,
         );
-        $text = preg_replace(
+        $text = (string) preg_replace(
             '!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!',
             "$1",
             $text,
@@ -482,7 +482,7 @@ class WikiParser
                 if (!$this->get('camelcase')) {
                     continue;
                 }
-                $text = preg_replace_callback("/$regex/", [&$this, 'link' . ucfirst($func)], $text);
+                $text = preg_replace_callback("/$regex/", [&$this, 'link' . ucfirst($func)], (string) $text);
             } else {
                 $text = preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], (string) $text);
             }
@@ -645,7 +645,7 @@ class WikiParser
 
         $title = (isset($matches[4])) ? trim($matches[4]) : $href;
         $title = preg_replace('/\(.*?\)/', '', $title);
-        $title = preg_replace('/^.*?\:/', '', (string) $title);
+        $title = (string) preg_replace('/^.*?\:/', '', (string) $title);
         $cls   = 'wiki int-link';
 
         // Are we placing an anchor?
@@ -1073,7 +1073,11 @@ class WikiParser
         $this->set('wikitohtml', $html);
 
         foreach ($this->tokens as $tag => $vals) {
-            $text = preg_replace_callback('/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+            $text = preg_replace_callback(
+                '/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si',
+                [&$this, 'dataPull'],
+                (string) $text,
+            );
             $this->tokens[$tag] = [];
         }
 
@@ -1124,7 +1128,7 @@ class WikiParser
                     }
 
                 case 'htmlcomment':
-                    $txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+                    $txt = (string) preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     return '<!-- ' . $this->encodeHtml($txt) . ' -->';
 
                 case 'c':
@@ -1139,7 +1143,7 @@ class WikiParser
                 case 'sql':
                 case 'xml':
                 case 'sh':
-                    $txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+                    $txt = (string) preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     $txt = trim($txt, "\n\r\t");
 
                     if (class_exists('\\Highlight\\Highlighter')) {
@@ -1192,7 +1196,7 @@ class WikiParser
         ];
 
         foreach ($rules as $start => $end) {
-            $text = preg_replace_callback(
+            $text = (string) preg_replace_callback(
                 '/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms',
                 [&$this, 'getCode'],
                 $text,
@@ -1279,20 +1283,20 @@ class WikiParser
     private function cleanXss($string)
     {
         // Strip out any KL_PHP, script, style, HTML comments
-        $string = preg_replace('/{kl_php}(.*?) {\/kl_php}/s', '', $string);
-        $string = preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
-        $string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
+        $string = (string) preg_replace('/{kl_php}(.*?) {\/kl_php}/s', '', $string);
+        $string = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
+        $string = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
         $string = preg_replace('/<!--.+?-->/', '', $string);
 
         $string = str_replace(
             ['&amp;', '&lt;', '&gt;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;'],
-            $string,
+            (string) $string,
         );
 
         // Fix &entitiy\n;
-        $string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
-        $string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $string);
+        $string = (string) preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
+        $string = (string) preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $string);
         $string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 
         // Remove any attribute starting with "on" or xmlns
@@ -1305,7 +1309,7 @@ class WikiParser
             '$1=$2nojavascript...',
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r'
                 . '[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2novbscript...',
@@ -1314,17 +1318,17 @@ class WikiParser
 
         // <span style="width: expression(alert('Ping!'));"></span>
         // Only works in ie...
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU',
             "$1>",
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU',
             "$1>",
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p'
                 . '[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu',
             "$1>",
@@ -1337,7 +1341,7 @@ class WikiParser
         // Remove really unwanted tags
         do {
             $oldstring = $string;
-            $string = preg_replace(
+            $string = (string) preg_replace(
                 '#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer'
                     . '|bgsound|title|base)[^>]*>#i',
                 '',
@@ -1727,7 +1731,7 @@ class WikiParser
             '$1$2',
         ];
 
-        $text = preg_split("@(<[\w/!?].*>)@Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $text = preg_split("@(<[\w/!?].*>)@Us", (string) $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         $i = 0;
         $glyph_out = [];
         foreach ($text ?: [] as $line) {
@@ -1880,7 +1884,7 @@ class WikiParser
         $c = self::$patterns['clss'];
 
         foreach ($qtags as $f) {
-            $text = preg_replace_callback("/
+            $text = (string) preg_replace_callback("/
 				(^|(?<=[\s>$pnct\(])|[{[])
 				($f)(?!$f)
 				({$c})
@@ -1891,7 +1895,7 @@ class WikiParser
 				($|[\]}]|(?=[[:punct:]]{1,2}|\s|\)))
 			/x", [&$this, 'getSpan'], $text);
         }
-        $text = preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
+        $text = (string) preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
         $text = preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
         return $text;
     }
@@ -1956,7 +1960,7 @@ class WikiParser
                 "\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>
                 "\\1<h{$i}>\\2</h{$i}>\\3",              // <h3>Header</h3>
             ];
-            $text = preg_replace($patterns, $replace, $text);
+            $text = preg_replace($patterns, $replace, (string) $text);
         }
         return $text;
     }
@@ -2254,7 +2258,7 @@ class WikiParser
             //    ||||  content ||
             //    trim result: "  content "
             // This would lead to an incorrect cell count.
-            $row = preg_replace("/^\|\|(.*)(\|\|)?$/", "$1", ltrim($row));
+            $row = (string) preg_replace("/^\|\|(.*)(\|\|)?$/", "$1", ltrim($row));
             foreach (explode('||', $row) as $cell) {
                 // If it's an empty cell, we're colspanning
                 if ($cell == '') {
@@ -2957,7 +2961,7 @@ class WikiParser
             $canonized_headline = $this->strip($headline);
 
             // Strip out HTML (other than plain <sup> and <sub>: bug 8393)
-            $_tocLine = preg_replace(
+            $_tocLine = (string) preg_replace(
                 ['#<(?!/?(sup|sub)).*?' . '>#', '#<(/?(sup|sub)).*?' . '>#'],
                 ['',                          '<$1>'],
                 $canonized_headline,
@@ -2965,7 +2969,7 @@ class WikiParser
             $_tocLine = trim($_tocLine);
 
             // For the anchor, strip out HTML-y stuff period
-            $canonized_headline = preg_replace('/<.*?' . '>/', '', $canonized_headline);
+            $canonized_headline = (string) preg_replace('/<.*?' . '>/', '', $canonized_headline);
             $canonized_headline = trim($canonized_headline);
 
             // Save headline for section edit hint before it's escaped

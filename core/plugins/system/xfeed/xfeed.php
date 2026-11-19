@@ -30,7 +30,7 @@ class Xfeed extends Plugin
         }
 
         $uri = Request::getString('REQUEST_URI', null, 'server');
-        $bits = explode('?', $uri);
+        $bits = explode('?', (string) $uri);
         $bit = $bits[0];
 
         if (!strpos($bit, '.')) {

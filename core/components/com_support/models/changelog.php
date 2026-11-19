@@ -62,7 +62,7 @@ class Changelog extends Obj
                     'cc'            => [],
                 ];
 
-                $data = preg_replace("/\n\t\r/i", '', $data);
+                $data = (string) preg_replace("/\n\t\r/i", '', $data);
                 $data = str_replace(['<ul class="changes">', '</ul>'], '', $data);
                 $data = str_replace(['<ul class="changelog">', '</ul>'], '', $data);
                 $data = str_replace(['<ul class=email-in-log>', '</ul>'], '', $data);

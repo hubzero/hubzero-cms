@@ -109,24 +109,24 @@ class SqliteDriver extends BaseSqlDriver
         // Enable foreign key constraints (disabled by default in SQLite)
         $foreignKeys = isset($options['foreign_keys']) ? $options['foreign_keys'] : true;
         if ($foreignKeys) {
-            $this->connection->exec('PRAGMA foreign_keys = ON');
+            $this->connectionOrFail()->exec('PRAGMA foreign_keys = ON');
         }
 
         // Set journal mode (WAL is recommended for better concurrency)
         // Options: DELETE, TRUNCATE, PERSIST, MEMORY, WAL, OFF
         if (isset($options['journal_mode'])) {
-            $this->connection->exec('PRAGMA journal_mode = ' . strtoupper($options['journal_mode']));
+            $this->connectionOrFail()->exec('PRAGMA journal_mode = ' . strtoupper($options['journal_mode']));
         }
 
         // Set busy timeout in milliseconds (how long to wait for locks)
         // Default to 5 seconds if not specified
         $busyTimeout = isset($options['busy_timeout']) ? (int) $options['busy_timeout'] : 5000;
-        $this->connection->exec('PRAGMA busy_timeout = ' . $busyTimeout);
+        $this->connectionOrFail()->exec('PRAGMA busy_timeout = ' . $busyTimeout);
 
         // Set synchronous mode for durability vs performance tradeoff
         // Options: OFF, NORMAL, FULL, EXTRA
         if (isset($options['synchronous'])) {
-            $this->connection->exec('PRAGMA synchronous = ' . strtoupper($options['synchronous']));
+            $this->connectionOrFail()->exec('PRAGMA synchronous = ' . strtoupper($options['synchronous']));
         }
     }
 
@@ -1265,8 +1265,8 @@ class SqliteDriver extends BaseSqlDriver
         $type = strtoupper(trim($type));
 
         // Remove size specifiers and UNSIGNED for mapping
-        $baseType = preg_replace('/\(.*?\)/', '', $type);
-        $baseType = preg_replace('/\s+UNSIGNED$/i', '', $baseType);
+        $baseType = (string) preg_replace('/\(.*?\)/', '', $type);
+        $baseType = (string) preg_replace('/\s+UNSIGNED$/i', '', $baseType);
         $baseType = preg_replace('/\s+AUTO_INCREMENT$/i', '', $baseType);
 
         // Map to SQLite affinity

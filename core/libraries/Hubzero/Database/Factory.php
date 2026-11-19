@@ -476,8 +476,8 @@ abstract class Factory
         $table = $model->getTableName();
 
         // Remove common prefixes
-        $table = preg_replace('/^#__/', '', $table);
-        $table = preg_replace('/^jos_/', '', $table);
+        $table = (string) preg_replace('/^#__/', '', $table);
+        $table = (string) preg_replace('/^jos_/', '', $table);
 
         // Singularize (simple version - remove trailing 's')
         if (substr($table, -1) === 's') {
@@ -706,7 +706,7 @@ abstract class Factory
             $name = self::words(1) . self::sequence();
         }
 
-        $name = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $name));
+        $name = strtolower((string) preg_replace('/[^a-zA-Z0-9]/', '', $name));
         $domains = ['example.com', 'test.com', 'sample.org', 'demo.net'];
 
         return $name . '@' . self::randomElement($domains);

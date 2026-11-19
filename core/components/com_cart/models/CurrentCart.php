@@ -1798,7 +1798,7 @@ class CurrentCart extends Cart
 					AND `cnId` IN (" . $cnSql . ") AND `crtCnStatus` = 'active'";
             $this->db->setQuery($sql);
             $this->db->query();
-            $existingCnIds = $this->db->loadColumn();
+            $existingCnIds = $this->db->loadColumn() ?? [];
 
             // merge coupons
             $couponsIdsToMerge = array_diff($allCouponsIds, $existingCnIds);

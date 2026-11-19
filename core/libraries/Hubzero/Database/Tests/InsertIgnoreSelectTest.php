@@ -145,11 +145,13 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Verify only one record exists
         $driver->setQuery("SELECT COUNT(*) as cnt FROM iis_unique_emails WHERE email = 'duplicate@example.com'");
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->cnt);
 
         // Verify first record was kept (not updated)
         $driver->setQuery("SELECT name FROM iis_unique_emails WHERE email = 'duplicate@example.com'");
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals('First', $result->name);
     }
 
@@ -180,6 +182,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Both should result in same behavior - only 1 record
         $driver->setQuery("SELECT COUNT(*) as cnt FROM iis_unique_emails WHERE email = 'equiv@test.com'");
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->cnt);
     }
 
@@ -213,6 +216,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Should insert 2 active users (alice and bob)
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(2, (int) $result->cnt, 'Should insert 2 active users');
     }
 
@@ -241,6 +245,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // All 3 source users should be inserted
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(3, (int) $result->cnt);
     }
 
@@ -300,6 +305,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Should insert 2 active users
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(2, (int) $result->cnt);
     }
 
@@ -332,6 +338,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Should insert 2 active users
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(2, (int) $result->cnt);
     }
 
@@ -359,6 +366,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // All 3 source users should be inserted
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(3, (int) $result->cnt);
     }
 
@@ -453,6 +461,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Should insert 2 active users
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(2, (int) $result->cnt);
     }
 
@@ -486,6 +495,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // All 3 source users should be inserted
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(3, (int) $result->cnt);
     }
 
@@ -540,6 +550,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // All 3 source users should be inserted
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(3, (int) $result->cnt);
     }
 
@@ -559,6 +570,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         $driver->setQuery("SELECT COUNT(*) as cnt FROM iis_unique_emails WHERE email = 'regular@test.com'");
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->cnt);
     }
 
@@ -592,6 +604,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         $driver->setQuery("SELECT COUNT(*) as cnt FROM iis_unique_emails WHERE email = 'reset@test.com'");
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->cnt);
     }
 
@@ -629,6 +642,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Verify 2 records inserted (alice and bob)
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(2, (int) $result->cnt);
 
         // Second insert with overlapping data - should ignore duplicates
@@ -648,6 +662,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
 
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $finalCount = (int) $result->cnt;
 
         // INSERT IGNORE with duplicates should skip duplicate rows and insert non-duplicates
@@ -680,11 +695,13 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         // Should insert only Alice
         $driver->setQuery('SELECT COUNT(*) as cnt FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->cnt);
 
         // Verify it's Alice's record (id=1 from source)
         $driver->setQuery('SELECT user_id FROM iis_dest_users');
         $result = $driver->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(1, (int) $result->user_id);
     }
 }

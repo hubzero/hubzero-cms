@@ -68,7 +68,7 @@ class Editortoolbar extends Plugin
             . '" class="'
             . $cls
             . '">'
-            . htmlspecialchars($content, ENT_QUOTES, 'UTF-8')
+            . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8')
             . '</textarea>'
             . "\n";
     }

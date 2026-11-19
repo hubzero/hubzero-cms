@@ -34,8 +34,10 @@ class Modulelayout extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Get the client id.
-        $clientId = $this->element['client_id'];
+        $clientId = $element['client_id'];
 
         if (is_null($clientId) && $this->form instanceof Form) {
             $clientId = $this->form->getValue('client_id');
@@ -45,7 +47,7 @@ class Modulelayout extends Field
         $client = ClientManager::client($clientId);
 
         // Get the module.
-        $module = (string) $this->element['module'];
+        $module = (string) $element['module'];
 
         if (empty($module) && ($this->form instanceof Form)) {
             $module = $this->form->getValue('module');
@@ -54,7 +56,7 @@ class Modulelayout extends Field
         $module = preg_replace('#\W#', '', $module);
 
         // Get the template.
-        $template = (string) $this->element['template'];
+        $template = (string) $element['template'];
         $template = preg_replace('#\W#', '', $template);
 
         // Get the style.
@@ -197,7 +199,7 @@ class Modulelayout extends Field
                 }
             }
             // Compute attributes for the grouped list
-            $attr = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+            $attr = $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
             // Prepare HTML code
             $html = [];

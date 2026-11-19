@@ -31,11 +31,13 @@ class Radio extends Field
      */
     protected function getLabel()
     {
+        $element = $this->fieldElement();
+
         if ($this->hidden) {
             return '';
         }
 
-        $text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $text = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $text = $this->translateLabel ? App::get('language')->txt($text) : $text;
 
         $class = !empty($this->description) ? 'hasTip' : '';
@@ -74,14 +76,16 @@ class Radio extends Field
 
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
+        $class = $element['class'] ? ' class="radio ' . (string) $element['class'] . '"' : ' class="radio"';
 
         // Get the label text for the legend.
-        $legendText = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $legendText = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $legendText = $this->translateLabel ? App::get('language')->txt($legendText) : $legendText;
 
         // Start the radio field output.
@@ -96,7 +100,7 @@ class Radio extends Field
         // ever read it per option, so a form that disabled a radio got a radio
         // that still looked and behaved like a radio and quietly threw the
         // answer away.
-        $fieldDisabled = ((string) $this->element['disabled'] == 'true');
+        $fieldDisabled = ((string) $element['disabled'] == 'true');
 
         // The "other" option after the list carries on from the last option:
         // it is numbered after it and takes its onclick and disabled state.
@@ -155,7 +159,7 @@ class Radio extends Field
             $html[] = '</li>';
         }
 
-        if ($this->element['option_other']) {
+        if ($element['option_other']) {
             $checked = '';
             if (!$found && $this->value) {
                 $checked = ' checked="checked"';
@@ -211,10 +215,12 @@ class Radio extends Field
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             // Only add <option /> elements.
             if ($option->getName() != 'option') {
                 continue;

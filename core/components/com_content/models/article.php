@@ -397,7 +397,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             $alias = strip_tags(isset($data['title']) ? (string) $data['title'] : '');
         }
 
-        $alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower(Lang::transliterate($alias))), '-');
+        $alias = trim((string) preg_replace('/[^a-z0-9\-]+/', '-', strtolower(Lang::transliterate($alias))), '-');
 
         if ($alias === '') {
             $alias = Date::of('now')->format('Y-m-d-H-i-s');
@@ -766,7 +766,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $page = new stdClass();
         $path = $this->category->path;
 
-        if (strpos($path, 'uncategorized') === false && strpos($path, 'uncategorised') === false) {
+        if (strpos((string) $path, 'uncategorized') === false && strpos((string) $path, 'uncategorised') === false) {
             $url = $path . '/' . $this->alias;
         } else {
             $url = $this->alias;

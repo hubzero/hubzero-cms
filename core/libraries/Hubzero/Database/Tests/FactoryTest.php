@@ -771,6 +771,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $driver->setQuery("SELECT COUNT(*) as cnt FROM factory_users");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals(0, (int) $row->cnt, "[$dbName] make() should not insert into database");
     }
 
@@ -876,6 +877,7 @@ class FactoryTest extends AbstractDriverTestCase
         // Verify in database
         $driver->setQuery("SELECT COUNT(*) as cnt FROM factory_users");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals(1, (int) $row->cnt, "[$dbName] create() should insert one row");
     }
 
@@ -893,6 +895,7 @@ class FactoryTest extends AbstractDriverTestCase
         // Verify in database
         $driver->setQuery("SELECT COUNT(*) as cnt FROM factory_users");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals(3, (int) $row->cnt, "[$dbName] create() should insert 3 rows");
     }
 
@@ -910,6 +913,7 @@ class FactoryTest extends AbstractDriverTestCase
         // Verify in database
         $driver->setQuery("SELECT name FROM factory_users WHERE id = " . (int) $user->get('id'));
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('Custom Name', $row->name, "[$dbName] Override should be persisted");
     }
 
@@ -927,6 +931,7 @@ class FactoryTest extends AbstractDriverTestCase
         // Verify in database
         $driver->setQuery("SELECT status FROM factory_users WHERE id = " . (int) $user->get('id'));
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('inactive', $row->status, "[$dbName] State should be persisted");
     }
 

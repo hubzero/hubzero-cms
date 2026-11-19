@@ -71,7 +71,7 @@ class Registration extends AdminController
         );
         $component = $database->loadObject();
 
-        $params = new \Hubzero\Config\Registry($component->params);
+        $params = new \Hubzero\Config\Registry($component?->params);
 
         foreach ($settings as $name => $value) {
             $r = $value['create'] . $value['proxy'] . $value['update'] . $value['edit'];

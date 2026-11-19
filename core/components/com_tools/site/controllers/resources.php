@@ -533,10 +533,10 @@ class Resources extends SiteController
      */
     public function txtClean(&$text)
     {
-        $text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
-        $text = preg_replace('/{.+?}/', '', $text);
-        $text = preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
-        $text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+        $text = (string) preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', (string) $text);
+        $text = (string) preg_replace('/{.+?}/', '', $text);
+        $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
+        $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
         $text = preg_replace('/<!--.+?-->/', '', $text);
         return $text;
     }

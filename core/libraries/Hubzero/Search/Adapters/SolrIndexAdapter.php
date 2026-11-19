@@ -263,7 +263,7 @@ class SolrIndexAdapter implements IndexInterface
                 $response = $this->connection->update($update);
                 return null;
             } catch (\Solarium\Exception\HttpException $e) {
-                $body = json_decode($e->getBody());
+                $body = json_decode((string) $e->getBody());
                 $message = isset($body->error->msg) ? $body->error->msg : $e->getStatusMessage();
                 return $message;
             }

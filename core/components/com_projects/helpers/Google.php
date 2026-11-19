@@ -49,7 +49,7 @@ class Google extends Obj
      *
      * Written for Drive v3 and not yet run against a Drive account.
      *
-     * @param   \Google\Service\Drive|null  $apiService  Drive API service instance
+     * @param   \Google\Service\Drive  $apiService  Drive API service instance
      * @param   string  $fileId      Remote id
      * @param   string  $value       Who it is for: an e-mail address (user, group) or a domain (domain)
      * @param   string  $type        user, group, domain or anyone
@@ -80,7 +80,7 @@ class Google extends Obj
     /**
      * Clear permission for user
      *
-     * @param   \Google\Service\Drive|null   $apiService  Drive API service instance
+     * @param   \Google\Service\Drive   $apiService  Drive API service instance
      * @param   array<mixed>    $shared
      * @param   string|int   $itemId
      * @return  boolean

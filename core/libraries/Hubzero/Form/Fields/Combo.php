@@ -30,20 +30,22 @@ class Combo extends Select
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="combobox '
-            . (string) $this->element['class']
+        $attr .= $element['class'] ? ' class="combobox '
+            . (string) $element['class']
             . '"' : ' class="combobox"';
-        $attr .= ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
-        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= ((string) $element['readonly'] == 'true') ? ' readonly="readonly"' : '';
+        $attr .= ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get the field options.
         $options = $this->getOptions();

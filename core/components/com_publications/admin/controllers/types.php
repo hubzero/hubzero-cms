@@ -424,7 +424,7 @@ class Types extends AdminController
         // Incoming
         $id       = Request::getInt('id', 0);
         $curation = Request::getString('curation', '', 'post');
-        $curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
+        $curation = (string) preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
         $database = App::get('db');
 
         $row = new \Components\Publications\Tables\MasterType($database);

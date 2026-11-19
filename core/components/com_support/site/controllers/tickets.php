@@ -1087,7 +1087,7 @@ class Tickets extends SiteController
                 if ($attachment->size() < 2097152) {
                     if ($attachment->isImage()) {
                         $file = basename($attachment->path());
-                        $html = preg_replace(
+                        $html = (string) preg_replace(
                             '/<a class="img" data\-filename="'
                                 . str_replace('.', '\.', $file)
                                 . '" href="(.*?)"\>(.*?)<\/a>/i',

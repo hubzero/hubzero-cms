@@ -87,7 +87,7 @@ class Content extends GenericItem
 
         $text = strip_tags($article->introtext);
         $text = str_replace(["\n", "\r", "\t"], ' ', $text);
-        $text = preg_replace('/\s+/', ' ', $text);
+        $text = (string) preg_replace('/\s+/', ' ', $text);
 
         $url = Request::getString('REQUEST_URI', '', 'server');
         $url = ($url ?: Route::url('index.php?option=com_content&id=' . $article->alias));

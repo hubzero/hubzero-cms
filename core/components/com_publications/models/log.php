@@ -62,14 +62,14 @@ class Log extends Model
         $unique = 0;
         $all = 0;
 
-        if (!is_file($logFile)) {
+        if (!is_file((string) $logFile)) {
             return null;
         }
         if (!$pubLog) {
             $pubLog = new $this->tableClass($this->db);
         }
 
-        $file_handle = fopen($logFile, "r");
+        $file_handle = fopen((string) $logFile, "r");
         if ($file_handle === false) {
             return null;
         }

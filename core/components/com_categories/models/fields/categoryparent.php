@@ -33,13 +33,15 @@ class CategoryParent extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialise variables.
         $options = [];
-        $name = (string) $this->element['name'];
+        $name = (string) $element['name'];
 
         // Let's get the id for the current item, either category or content item.
         // For categories the old category is the category id 0 for new category.
-        if ($this->element['parent']) {
+        if ($element['parent']) {
             $oldCat = Request::getInt('id', 0);
             $oldParent = $this->form->getValue($name);
         } else {
@@ -66,7 +68,7 @@ class CategoryParent extends Select
                 ->resetDepth();
         }
 
-        if ($this->element['parent']) {
+        if ($element['parent']) {
             // Prevent parenting to children of this item.
             if ($id = $this->form->getValue('id')) {
                 $query->joinRaw('#__categories AS p', 'p.id = ' . (int) $id, 'left');

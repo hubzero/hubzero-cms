@@ -32,6 +32,8 @@ class User extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
         $groups = $this->getGroups();
@@ -41,11 +43,11 @@ class User extends Field
             . (isset($excluded) ? ('&amp;excluded=' . base64_encode((string) json_encode($excluded))) : '');
 
         // Initialize some field attributes.
-        $attr  = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr  = $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $onchange = (string) $this->element['onchange'];
+        $onchange = (string) $element['onchange'];
 
         // Load the modal behavior script.
         Behavior::modal('a.modal_' . $this->id);
@@ -75,7 +77,7 @@ class User extends Field
 
         // Create a dummy text field with the user name.
         //$html[] = '<div class="fltlft">';
-        if ($this->element['readonly'] != 'true') {
+        if ($element['readonly'] != 'true') {
             $html[] = '<div class="input-modal">';
             $html[] = '<span class="input-cell">';
         }
@@ -89,7 +91,7 @@ class User extends Field
             . ' />';
 
         // Create the user select button.
-        if ($this->element['readonly'] != 'true') {
+        if ($element['readonly'] != 'true') {
             $html[] = '</span><span class="input-cell">';
             $html[] = '		<a class="button modal_'
                 . $this->id

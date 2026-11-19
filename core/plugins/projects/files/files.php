@@ -487,7 +487,7 @@ class Files extends Plugin
         ]);
 
         // Does subdirectory exist?
-        if (!$this->repo->dirExists($this->subdir)) {
+        if (!$this->repoOrFail()->dirExists($this->subdir)) {
             $this->subdir = '';
         }
 
@@ -535,7 +535,7 @@ class Files extends Plugin
         ]);
 
         // Retrieve items
-        $view->set('items', $this->repo->filelist($view->get('params')));
+        $view->set('items', $this->repoOrFail()->filelist($view->get('params')));
 
         $view->set('publishing', false); // do not show publishing info
         $view->set('title', $this->area['title']);
@@ -724,7 +724,7 @@ class Files extends Plugin
 
                 $fileList = $dir->listContents();
             } else {
-                $fileList = $this->repo->filelist($fileParams);
+                $fileList = $this->repoOrFail()->filelist($fileParams);
             }
             if (!empty($fileList)) {
                 $view->set('items', $fileList);
@@ -738,7 +738,7 @@ class Files extends Plugin
                 'dirsOnly'         => true,
             ];
 
-            $view->set('folders', $this->repo->filelist($fileParams));
+            $view->set('folders', $this->repoOrFail()->filelist($fileParams));
         }
         $view->set('hiddenFields', $hiddenFields);
         $view->set('option', $this->model->isProvisioned() ? 'com_publications' : $this->componentOption);
@@ -817,7 +817,7 @@ class Files extends Plugin
 
                 $items = $dir->listContents();
             } else {
-                $items = $this->repo->filelist($params);
+                $items = $this->repoOrFail()->filelist($params);
             }
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -923,7 +923,7 @@ class Files extends Plugin
             $url = Request::getString('HTTP_REFERER', null, 'server');
         } else {
             $url  = $this->model->link('files');
-            $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+            $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
             $url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
             $url  = Route::url($url);
         }
@@ -937,7 +937,7 @@ class Files extends Plugin
         ];
 
         // Upload file
-        $results = $this->repo->insert($params);
+        $results = $this->repoOrFail()->insert($params);
 
         // Register changes for active projects
         if (!empty($results)) {
@@ -951,7 +951,7 @@ class Files extends Plugin
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
                             return json_encode([
-                                'error' => $this->repo->getError(),
+                                'error' => $this->repoOrFail()->getError(),
                             ]);
                         } else {
                             return json_encode([
@@ -966,13 +966,13 @@ class Files extends Plugin
         }
 
         // On error
-        if ($this->repo->getError()) {
+        if ($this->repoOrFail()->getError()) {
             if ($ajaxUpload || $json) {
                 return json_encode([
-                    'error' => $this->repo->getError(),
+                    'error' => $this->repoOrFail()->getError(),
                 ]);
             } else {
-                Notify::message($this->repo->getError(), 'error', 'projects');
+                Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
                 App::redirect($url);
             }
         }
@@ -1055,22 +1055,22 @@ class Files extends Plugin
         ];
 
         // Create
-        $success = $this->repo->makeDirectory($params);
+        $success = $this->repoOrFail()->makeDirectory($params);
 
-        if ($this->repo->getError()) {
-            Notify::message($this->repo->getError(), 'error', 'projects');
+        if ($this->repoOrFail()->getError()) {
+            Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
         } else {
             Notify::message($this->msg, 'success', 'projects');
 
             // Force sync
-            if ($this->repo->isLocal()) {
+            if ($this->repoOrFail()->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         }
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1107,21 +1107,21 @@ class Files extends Plugin
         ];
 
         // Create
-        $success = $this->repo->deleteDirectory($params);
+        $success = $this->repoOrFail()->deleteDirectory($params);
         if ($success) {
             Notify::message(Lang::txt('PLG_PROJECTS_FILES_DELETED_DIRECTORY'), 'success', 'projects');
 
             // Force sync
-            if ($this->repo->isLocal()) {
+            if ($this->repoOrFail()->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
-        } elseif ($this->repo->getError()) {
-            Notify::message($this->repo->getError(), 'error', 'projects');
+        } elseif ($this->repoOrFail()->getError()) {
+            Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
         }
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1183,7 +1183,7 @@ class Files extends Plugin
                     $item = $element[$type];
                     // Build metadata object
                     $viewItems = $view->get('items');
-                    $viewItems[] = $this->repo->getMetadata($item, $type, $params);
+                    $viewItems[] = $this->repoOrFail()->getMetadata($item, $type, $params);
                     $view->set('items', $viewItems);
                 }
             }
@@ -1216,7 +1216,7 @@ class Files extends Plugin
                 $params['type'] = $type;
 
                 // Build metadata object
-                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
+                $params['file'] = $this->repoOrFail()->getMetadata((string) $item, $type, $params);
 
                 // Is this a remote edited item?
                 if ($params['file']->get('converted')) {
@@ -1234,7 +1234,7 @@ class Files extends Plugin
                         $deleted++;
                     }
                 } else {
-                    if ($this->repo->deleteItem($params)) {
+                    if ($this->repoOrFail()->deleteItem($params)) {
                         // Store in session
                         $this->registerUpdate('deleted', $item);
                         $deleted++;
@@ -1244,13 +1244,13 @@ class Files extends Plugin
         }
 
         // Resync
-        if ($deleted && $this->repo->isLocal()) {
+        if ($deleted && $this->repoOrFail()->isLocal()) {
             $this->model->saveParam('google_sync_queue', 1);
         }
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1321,20 +1321,20 @@ class Files extends Plugin
         ];
 
         // Rename
-        $success = $this->repo->rename($params);
+        $success = $this->repoOrFail()->rename($params);
         if ($success) {
             Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
             // Force sync
-            if ($this->repo->isLocal()) {
+            if ($this->repoOrFail()->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
-        } elseif ($this->repo->getError()) {
-            Notify::message($this->repo->getError(), 'error', 'projects');
+        } elseif ($this->repoOrFail()->getError()) {
+            Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
         }
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1376,7 +1376,7 @@ class Files extends Plugin
                 'recursive'        => true,
             ];
 
-            $view->set('list', $this->repo->filelist($listParams));
+            $view->set('list', $this->repoOrFail()->filelist($listParams));
             $view->set('path', $this->path);
             $view->set('items', []);
             $view->set('database', $this->database);
@@ -1405,7 +1405,7 @@ class Files extends Plugin
                     $item = $element[$type];
                     // Build metadata object
                     $viewItems = $view->get('items');
-                    $viewItems[] = $this->repo->getMetadata($item, $type, $params);
+                    $viewItems[] = $this->repoOrFail()->getMetadata($item, $type, $params);
                     $view->set('items', $viewItems);
                 }
             }
@@ -1445,9 +1445,9 @@ class Files extends Plugin
                 }
 
                 // Build metadata object
-                $params['file'] = $this->repo->getMetadata($item, $type, $params);
+                $params['file'] = $this->repoOrFail()->getMetadata($item, $type, $params);
 
-                if ($this->repo->moveItem($params)) {
+                if ($this->repoOrFail()->moveItem($params)) {
                     $moved++;
                 }
             }
@@ -1462,7 +1462,7 @@ class Files extends Plugin
             );
 
             // Force sync
-            if ($this->repo->isLocal()) {
+            if ($this->repoOrFail()->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } else {
@@ -1471,7 +1471,7 @@ class Files extends Plugin
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1502,7 +1502,7 @@ class Files extends Plugin
         } else {
             // Get selected item
             foreach ($items[0] as $type => $item) {
-                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
+                $params['file'] = $this->repoOrFail()->getMetadata((string) $item, $type, $params);
                 break;
             }
         }
@@ -1584,7 +1584,7 @@ class Files extends Plugin
             $revision = $view->get('file');
             $revision->set('localPath', $v['base']);
             $revision->set('name', $v['file']);
-            $revision->set('fullPath', $this->repo->get('path') . DS . $v['base']);
+            $revision->set('fullPath', $this->repoOrFail()->get('path') . DS . $v['base']);
             if ($v['remote']) {
                 $revision->set('remodeId', $v['remote']);
                 $revision->set('modified', gmdate('Y-m-d H:i:s', strtotime($v['date'])));
@@ -1631,7 +1631,7 @@ class Files extends Plugin
         } else {
             // Get selected item
             foreach ($items[0] as $type => $item) {
-                $params['file'] = $this->repo->getMetadata((string) $item, $type, $params);
+                $params['file'] = $this->repoOrFail()->getMetadata((string) $item, $type, $params);
                 break;
             }
         }
@@ -1664,7 +1664,7 @@ class Files extends Plugin
         ]);
 
         // Run diff
-        $view->set('diff', $this->repo->diff($params));
+        $view->set('diff', $this->repoOrFail()->diff($params));
 
         $view->set('url', Route::url($this->model->link('files')));
         $view->set('config', $this->model->config());
@@ -1789,21 +1789,21 @@ class Files extends Plugin
 
         // Params for repo call
         $params = ['subdir'  => $this->subdir];
-        $params['file']    = $this->repo->getMetadata($item, 'file', $params);
+        $params['file']    = $this->repoOrFail()->getMetadata($item, 'file', $params);
         $params['version'] = $hash;
 
         // After successful action
-        if ($this->repo->restore($params)) {
+        if ($this->repoOrFail()->restore($params)) {
             // Store in session
             $this->registerUpdate('restored', $item, false);
 
             // Force sync
-            if ($this->repo->isLocal()) {
+            if ($this->repoOrFail()->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } else {
             // setError() gives back the plugin, not the message
-            $error = $this->repo->getError();
+            $error = $this->repoOrFail()->getError();
             if (!$error) {
                 $error = Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED');
                 $this->setError($error);
@@ -1813,7 +1813,7 @@ class Files extends Plugin
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1861,7 +1861,7 @@ class Files extends Plugin
                 }
 
                 // Build metadata object
-                $collector[] = $this->repo->getMetadata($item, $type, $params);
+                $collector[] = $this->repoOrFail()->getMetadata($item, $type, $params);
             }
         }
 
@@ -1885,7 +1885,7 @@ class Files extends Plugin
             // Get last revision
             if (!$view->get('file')->get('converted') && !$hash) {
                 $params['file'] = $view->get('file');
-                $hash = $this->repo->getLastRevision($params);
+                $hash = $this->repoOrFail()->getLastRevision($params);
                 $view->get('file')->set('hash', $hash);
             }
             $view->set('option', $this->componentOption);
@@ -1906,7 +1906,7 @@ class Files extends Plugin
             // Get last revision
             if (!$file->get('converted') && !$hash) {
                 $params['file'] = $file;
-                $hash = $this->repo->getLastRevision($params);
+                $hash = $this->repoOrFail()->getLastRevision($params);
             }
 
             $image = $file->getPreview($this->model, (string) $hash, 'fullPath', $render);
@@ -2016,7 +2016,7 @@ class Files extends Plugin
 
                 // Get file content
                 $params = ['fileName' => $file->get('localPath'), 'hash' => $hash, 'target' => $downloadPath];
-                $this->repo->getFileContent($params);
+                $this->repoOrFail()->getFileContent($params);
             } else {
                 // Viewing current file
                 $serveas      = urldecode(Request::getString('serveas', $file->get('name')));
@@ -2071,7 +2071,7 @@ class Files extends Plugin
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -2124,7 +2124,7 @@ class Files extends Plugin
             foreach ($items as $element) {
                 foreach ($element as $type => $item) {
                     // Get our metadata
-                    $file = $this->repo->getMetadata($item, 'file', $params);
+                    $file = $this->repoOrFail()->getMetadata($item, 'file', $params);
                     break;
                 }
             }
@@ -2244,7 +2244,7 @@ class Files extends Plugin
         }
 
         $url  = $this->model->link('files');
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Parse output
@@ -2298,10 +2298,10 @@ class Files extends Plugin
                 if (Filesystem::copy(PATH_APP . $outputDir . DS . $contentFile, $this->path . DS . $where)) {
                     // Checkin into repo
                     $params = ['subdir' => $this->subdir];
-                    $params['file'] = $this->repo->getMetadata($pdfName, 'file', $params);
-                    $this->repo->call('checkin', $params);
+                    $params['file'] = $this->repoOrFail()->getMetadata($pdfName, 'file', $params);
+                    $this->repoOrFail()->call('checkin', $params);
 
-                    if ($this->repo->isLocal()) {
+                    if ($this->repoOrFail()->isLocal()) {
                         $this->model->saveParam('google_sync_queue', 1);
                     }
 
@@ -2408,7 +2408,7 @@ class Files extends Plugin
             $item = $items[0][$type];
 
             // Build metadata object
-            $file = $this->repo->getMetadata($item, $type, $params);
+            $file = $this->repoOrFail()->getMetadata($item, $type, $params);
             if (!$file) {
                 $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
             }
@@ -2416,7 +2416,7 @@ class Files extends Plugin
 
         // Build return url
         $url  = $this->model->link('files');
-        $url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Check user is connected
@@ -2518,13 +2518,13 @@ class Files extends Plugin
                             $this->uid,
                             $resource,
                             $file->get('localPath'),
-                            $this->repo->get('path'),
+                            $this->repoOrFail()->get('path'),
                             $importExt,
                         )
                     ) {
                         // Checkin into repo
                         $params['file'] = $file;
-                        $this->repo->call('checkin', $params);
+                        $this->repoOrFail()->call('checkin', $params);
 
                         // Remove remote resource
                         $deleted = $this->connect->deleteRemoteItem(
@@ -2572,7 +2572,7 @@ class Files extends Plugin
             } else {
                 // Export local file
                 // Check that local file exists
-                if (!$this->repo->fileExists($file->get('localPath'))) {
+                if (!$this->repoOrFail()->fileExists($file->get('localPath'))) {
                     $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
                 } else {
                     // LaTeX?
@@ -2612,7 +2612,7 @@ class Files extends Plugin
                         if ($added) {
                             // Remove original local file
                             $params['file'] = $file;
-                            $this->repo->deleteItem($params);
+                            $this->repoOrFail()->deleteItem($params);
 
                             // Remove original remote file
                             $deleted = $this->connect->deleteRemoteItem(
@@ -2662,7 +2662,7 @@ class Files extends Plugin
         }
 
         // Force sync
-        if ($sync && $this->repo->isLocal()) {
+        if ($sync && $this->repoOrFail()->isLocal()) {
             $this->model->saveParam('google_sync_queue', 1);
         }
 
@@ -2806,7 +2806,7 @@ class Files extends Plugin
         ]);
 
         // Get deleted files
-        $view->set('files', $this->repo->getTrash());
+        $view->set('files', $this->repoOrFail()->getTrash());
 
         $view->set('option', $this->componentOption);
         $view->set('model', $this->model);
@@ -2814,7 +2814,7 @@ class Files extends Plugin
 
         // Build URL
         $url          = $this->model->link('files');
-        $url         .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+        $url         .= $this->repoOrFail()->isLocal() ? '' : '&repo=' . $this->repoOrFail()->get('name');
         $url         .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
         $view->set('url', $url);
         $view->set('subdir', $this->subdir);
@@ -2929,7 +2929,7 @@ class Files extends Plugin
         $this->rSync = new Sync($this->connect);
 
         // Remote service(s) active?
-        if (!empty($this->connect->active) && $this->repo->isLocal()) {
+        if (!empty($this->connect->active) && $this->repoOrFail()->isLocal()) {
             // Get remote files for each active service
             foreach ($this->connect->active as $servicename) {
                 // Set syncing service
@@ -3537,5 +3537,20 @@ class Files extends Plugin
                 break;
         }
         return $num;
+    }
+
+    /**
+     * The repo, which the calls using it need set
+     *
+     * @return  \Components\Projects\Models\Repo
+     * @throws  \LogicException  When it is not
+     */
+    protected function repoOrFail()
+    {
+        if ($this->repo === null) {
+            throw new \LogicException(static::class . '::$repo is not set');
+        }
+
+        return $this->repo;
     }
 }

@@ -147,7 +147,7 @@ class Media extends Base
         // here defaults its parameter to '', so that case is the common one.
         // Strip control characters, normalise separators, and drop any segment
         // that would climb out.
-        $rel = preg_replace('#\p{C}+#u', '', (string) $rel);
+        $rel = (string) preg_replace('#\p{C}+#u', '', (string) $rel);
         $out = [];
         foreach (explode('/', str_replace('\\', '/', $rel)) as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {

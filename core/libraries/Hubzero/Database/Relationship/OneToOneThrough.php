@@ -101,7 +101,7 @@ class OneToOneThrough extends Relationship
     {
         $this->mediate();
 
-        $this->related->whereEquals(
+        $this->relatedOrFail()->whereEquals(
             $this->throughTable . '.' . $this->throughLocalKey,
             $this->model->getPkValue(),
         );
@@ -134,7 +134,7 @@ class OneToOneThrough extends Relationship
         // This function is primarily used when needing to sort by a field in the joined table
         $this->model
             ->select($this->model->getQualifiedFieldName('*'))
-            ->select($this->related->getQualifiedFieldName('*'))
+            ->select($this->relatedOrFail()->getQualifiedFieldName('*'))
             ->join(
                 $this->throughTable,
                 $this->model->getQualifiedFieldName($this->localKey),
@@ -142,9 +142,9 @@ class OneToOneThrough extends Relationship
                 'LEFT OUTER',
             )
             ->join(
-                $this->related->getTableName(),
+                $this->relatedOrFail()->getTableName(),
                 $this->throughRelatedKey,
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 'LEFT OUTER',
             );
 
@@ -161,12 +161,12 @@ class OneToOneThrough extends Relationship
      **/
     public function mediate()
     {
-        $this->related
-            ->select($this->related->getQualifiedFieldName('*'))
+        $this->relatedOrFail()
+            ->select($this->relatedOrFail()->getQualifiedFieldName('*'))
             ->select($this->throughLocalKey)
             ->join(
                 $this->throughTable,
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 $this->throughRelatedKey,
             );
 
@@ -191,7 +191,7 @@ class OneToOneThrough extends Relationship
             call_user_func_array($constraint, [$this->related]);
         }
 
-        return $this->related->whereIn($this->throughTable . '.' . $this->throughLocalKey, array_unique($keys));
+        return $this->relatedOrFail()->whereIn($this->throughTable . '.' . $this->throughLocalKey, array_unique($keys));
     }
 
     /**

@@ -31,16 +31,18 @@ class Sql extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
         // Initialize some field attributes.
-        $key       = $this->element['key_field'] ? (string) $this->element['key_field'] : 'value';
-        $value     = $this->element['value_field']
-            ? (string) $this->element['value_field']
-            : (string) $this->element['name'];
-        $translate = $this->element['translate'] ? (string) $this->element['translate'] : false;
-        $query     = (string) $this->element['query'];
+        $key       = $element['key_field'] ? (string) $element['key_field'] : 'value';
+        $value     = $element['value_field']
+            ? (string) $element['value_field']
+            : (string) $element['name'];
+        $translate = $element['translate'] ? (string) $element['translate'] : false;
+        $query     = (string) $element['query'];
 
         // Get the database object.
         $db = App::get('db');

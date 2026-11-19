@@ -744,7 +744,7 @@ class Mimetypes
      */
     public function getMimeType($file = null, $fast = false)
     {
-        if (is_file($file)) {
+        if (is_file((string) $file)) {
             $extension = $this->extractExtension($file);
 
             // Attempts to retrieve file info from FINFO
@@ -757,7 +757,7 @@ class Mimetypes
                     return $this->mimeTypes[$extension];
                 } else {
                     if (function_exists('mime_content_type')) {
-                        $type = mime_content_type($file);
+                        $type = mime_content_type((string) $file);
                         return !empty($type) ? $type : 'application/octet-stream';
                     } else {
                         return 'application/octet-stream';
@@ -765,7 +765,7 @@ class Mimetypes
                 }
             } else {
                 $finfo = finfo_open(FILEINFO_MIME);
-                $MIMEType = $finfo ? finfo_file($finfo, $file) : false;
+                $MIMEType = $finfo ? finfo_file($finfo, (string) $file) : false;
                 if ($finfo) {
                     finfo_close($finfo);
                 }

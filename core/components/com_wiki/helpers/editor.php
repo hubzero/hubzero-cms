@@ -273,7 +273,7 @@ class Editor extends Obj
         }
 
         // Build the path to the needed editor plugin
-        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $this->name);
         $name = ltrim($name, '.');
 
         $path = PATH_APP . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
@@ -303,7 +303,7 @@ class Editor extends Obj
         $plugin->params = $params;
 
         // Build editor plugin classname
-        $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
+        $name = 'Plugins\\Wiki\\' . ucfirst((string) $this->name) . '\\' . ucfirst((string) $this->name);
 
         $this->editor = new $name($this, (array) $plugin);
 

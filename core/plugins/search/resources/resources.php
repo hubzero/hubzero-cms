@@ -284,7 +284,7 @@ class Resources extends Plugin
 
                 // Get the name of the author
                 $sql1 = "SELECT name, authorid  FROM #__author_assoc WHERE subid={$id} AND subtable='resources';";
-                $authorList = $db->setQuery($sql1)->query()->loadAssocList();
+                $authorList = $db->setQuery($sql1)->query()->loadAssocList() ?? [];
 
                 $owners = [];
                 $authors = [];
@@ -340,7 +340,7 @@ class Resources extends Plugin
 					JOIN `#__resource_assoc`
 					ON `#__resource_assoc`.child_id = `#__resources`.id
 					WHERE `#__resource_assoc`.parent_id = {$id} AND standalone = 0 AND published = 1;";
-                $children = $db->setQuery($sql3)->query()->loadAssocList();
+                $children = $db->setQuery($sql3)->query()->loadAssocList() ?? [];
 
                 $fileData = '';
                 $content = '';
@@ -356,8 +356,8 @@ class Resources extends Plugin
 
                 // Build the description, clean up text
                 $content .= $row->introtext . ' ' . $row->fulltxt . ' ' . $fileData;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

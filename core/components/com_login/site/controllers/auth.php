@@ -547,7 +547,7 @@ class Auth extends SiteController
         $return = Request::getString('return');
 
         if ($this->isBase64($return)) {
-            $return = base64_decode($return);
+            $return = base64_decode((string) $return);
         } else {
             $return = Route::url('index.php');
         }

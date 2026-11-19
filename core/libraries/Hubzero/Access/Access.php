@@ -81,9 +81,9 @@ class Access
         // Sanitise inputs.
         $userId = (int) $userId;
 
-        $action = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
+        $action = strtolower((string) preg_replace('#[\s\-]+#', '.', trim($action)));
         $asset  = $asset ? $asset : '';
-        $asset  = is_int($asset) ? $asset : strtolower(preg_replace('#[\s\-]+#', '.', trim($asset)));
+        $asset  = is_int($asset) ? $asset : strtolower((string) preg_replace('#[\s\-]+#', '.', trim($asset)));
 
         // Default to the root asset node.
         if (empty($asset)) {
@@ -115,8 +115,8 @@ class Access
     {
         // Sanitize inputs.
         $groupId = (int) $groupId;
-        $action = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
-        $asset  = strtolower(preg_replace('#[\s\-]+#', '.', trim($asset == null ? '' : $asset)));
+        $action = strtolower((string) preg_replace('#[\s\-]+#', '.', trim($action)));
+        $asset  = strtolower((string) preg_replace('#[\s\-]+#', '.', trim($asset == null ? '' : $asset)));
 
         // Get group path for group
         $groupPath = self::getGroupPath($groupId);

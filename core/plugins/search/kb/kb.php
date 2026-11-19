@@ -118,6 +118,9 @@ class Kb extends Plugin
 				WHERE entry_id = {$id}) AS comments
 				FROM #__kb_articles WHERE id = {$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get the name of the author
                 $sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
@@ -162,8 +165,8 @@ class Kb extends Plugin
 
                 // Build the description, clean up text
                 $content = $row->fulltxt . ' ' . $row->comments;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

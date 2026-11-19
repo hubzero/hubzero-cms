@@ -241,7 +241,7 @@ class Youtube extends Module
      * Get feed info
      *
      * @param   non-empty-string  $url
-     * @param   \Hubzero\Config\Registry|null  $params
+     * @param   \Hubzero\Config\Registry  $params
      * @return  mixed
      */
     private function feed($url, $params)

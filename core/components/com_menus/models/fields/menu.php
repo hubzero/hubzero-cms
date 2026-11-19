@@ -36,6 +36,8 @@ class Menu extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         $db = App::get('db');
 
         $query = $db
@@ -50,7 +52,7 @@ class Menu extends Select
         // kinds="display,routing" so an item can be filed in a routing menu
         // but not in the generated component menu. With no attribute every
         // menu is offered, which is what a hub without the type column gets.
-        $kinds = array_filter(array_map('trim', explode(',', (string) $this->element['kinds'])));
+        $kinds = array_filter(array_map('trim', explode(',', (string) $element['kinds'])));
 
         if ($kinds && $db->tableHasField('#__menu_types', 'type')) {
             $query->whereIn('type', $kinds);

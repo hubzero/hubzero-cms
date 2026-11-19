@@ -29,8 +29,10 @@ class Language extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $client = (string) $this->element['client'];
+        $client = (string) $element['client'];
         if ($client != 'site' && $client != 'administrator') {
             $client = 'site';
         }

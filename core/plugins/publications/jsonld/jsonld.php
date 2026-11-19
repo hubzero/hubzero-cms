@@ -51,7 +51,7 @@ class Jsonld extends Plugin
         $data['@context'] = 'http://schema.org';
         $data['@type'] = 'Dataset';
         $data['name'] = $publication->title;
-        $abstract = strip_tags($publication->abstract);
+        $abstract = strip_tags((string) $publication->abstract);
         $data['description'] = $abstract;
 
         $data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url($publication->link()), '/');

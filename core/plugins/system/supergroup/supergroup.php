@@ -38,7 +38,7 @@ class Supergroup extends Plugin
         $active = Request::getString('active', '');
         // $active becomes a component path segment in a require_once below; keep it a
         // bare component name so it cannot traverse to or include an arbitrary file.
-        $active = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
+        $active = (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
         // '-' and '.' stay: a super-group component directory may contain them,
         // which is why the function name built further down strips them again.
         // Every separator is already gone, so refusing '..' is what stops this
@@ -51,7 +51,7 @@ class Supergroup extends Plugin
         $group  = \Hubzero\User\Group::getInstance($cn);
 
         // make sure we have all the needed stuff
-        if (is_object($group) && $group->isSuperGroup() && isset($active)) {
+        if (is_object($group) && $group->isSuperGroup()) {
             // get com_groups params to get upload path
             //$uploadPath      = $this->filespace($group);
             $params = App::get('component')->params('com_groups');
@@ -148,7 +148,7 @@ class Supergroup extends Plugin
             // get request options
             $cn     = Request::getVar('cn', '');
             $active = Request::getVar('active', '');
-            $active = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
+            $active = (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
             // '-' and '.' stay: a super-group component directory may contain them,
             // which is why the function name built further down strips them again.
             // Every separator is already gone, so refusing '..' is what stops this
@@ -161,7 +161,7 @@ class Supergroup extends Plugin
             $group  = \Hubzero\User\Group::getInstance($cn);
 
             // make sure we have all the needed stuff
-            if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active)) {
+            if (is_object($group) && $group->isSuperGroup() && isset($cn)) {
                 $params = App::get('component')->params('com_groups');
 
                 // get com_groups params to get upload path

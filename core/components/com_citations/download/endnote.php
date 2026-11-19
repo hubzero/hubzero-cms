@@ -88,7 +88,7 @@ class Endnote extends Downloadable
 
             $author_array = explode(';', stripslashes($author));
             foreach ($author_array as $auth) {
-                $auth = preg_replace('/{{(.*?)}}/s', '', $auth);
+                $auth = (string) preg_replace('/{{(.*?)}}/s', '', $auth);
                 if (!strstr($auth, ',')) {
                     $bits = explode(' ', $auth);
                     $n = array_pop($bits) . ', ';

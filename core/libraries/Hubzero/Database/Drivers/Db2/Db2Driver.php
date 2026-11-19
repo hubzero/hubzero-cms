@@ -264,7 +264,7 @@ class Db2Driver extends BaseSqlDriver
                 $pdoType = $this->translateType($type[$idx]);
             }
 
-            $this->statement->bindValue($idx, $binding, $pdoType);
+            $this->statementOrFail()->bindValue($idx, $binding, $pdoType);
             $idx++;
         }
 
@@ -299,7 +299,7 @@ class Db2Driver extends BaseSqlDriver
         $sql = str_replace(["\r\n", "\r", "\n"], ' ', $sql);
 
         // Remove multiple consecutive spaces
-        $sql = preg_replace('/\s+/', ' ', $sql);
+        $sql = (string) preg_replace('/\s+/', ' ', $sql);
 
         return parent::prepare($sql);
     }
@@ -710,7 +710,7 @@ class Db2Driver extends BaseSqlDriver
             . " WHERE tabschema = CURRENT SCHEMA AND type = 'T'"
             . " ORDER BY tabname",
         );
-        $tables = $this->loadColumn();
+        $tables = $this->loadColumn() ?? [];
         // Normalize to lowercase for consistency with other drivers
         return array_map('strtolower', $tables);
     }
@@ -1284,7 +1284,7 @@ class Db2Driver extends BaseSqlDriver
         // PDO::commit() only works with explicit beginTransaction(); raw SQL works always.
         if ($this->transactionDepth === 0) {
             try {
-                $this->connection->exec('COMMIT');
+                $this->connectionOrFail()->exec('COMMIT');
             } catch (\Exception $e) {
                 // Nothing to commit — ignore
             }
@@ -2793,17 +2793,17 @@ class Db2Driver extends BaseSqlDriver
         }
 
         // Remove UNSIGNED keyword - DB2 doesn't support it
-        $type = preg_replace('/\s+UNSIGNED/i', '', $type);
+        $type = (string) preg_replace('/\s+UNSIGNED/i', '', $type);
 
         // Map MySQL integer types to DB2 types, removing length specifications
         // INT(11) → INTEGER, BIGINT(20) → BIGINT, etc.
-        $type = preg_replace('/^INT\(\d+\)/i', 'INTEGER', $type);
-        $type = preg_replace('/^BIGINT\(\d+\)/i', 'BIGINT', $type);
-        $type = preg_replace('/^SMALLINT\(\d+\)/i', 'SMALLINT', $type);
-        $type = preg_replace('/^TINYINT\(\d+\)/i', 'SMALLINT', $type);  // DB2 doesn't have TINYINT
+        $type = (string) preg_replace('/^INT\(\d+\)/i', 'INTEGER', $type);
+        $type = (string) preg_replace('/^BIGINT\(\d+\)/i', 'BIGINT', $type);
+        $type = (string) preg_replace('/^SMALLINT\(\d+\)/i', 'SMALLINT', $type);
+        $type = (string) preg_replace('/^TINYINT\(\d+\)/i', 'SMALLINT', $type);  // DB2 doesn't have TINYINT
 
         // For bare INT without length, convert to INTEGER
-        $type = preg_replace('/^INT$/i', 'INTEGER', $type);
+        $type = (string) preg_replace('/^INT$/i', 'INTEGER', $type);
 
         return trim($type);
     }

@@ -272,6 +272,9 @@ class Miner extends Obj implements Provider
 			WHERE r.id = " . $this->database->quote($id),
         );
         $record = $this->database->loadObject();
+        if (!$record) {
+            return null;
+        }
 
         $record->base = $this->name();
         $record->type = $record->base . ':' . $record->type;
@@ -286,7 +289,7 @@ class Miner extends Obj implements Provider
 				LIMIT 1",
             );
             $tool = $this->database->loadObject();
-            if ($tool->id) {
+            if ($tool && $tool->id) {
                 $record->title .= ' [version ' . $tool->version . ']';
                 $record->fulltxt = $tool->fulltxt;
                 $record->publish_up = $tool->released;

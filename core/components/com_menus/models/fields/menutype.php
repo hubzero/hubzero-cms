@@ -36,11 +36,13 @@ class Menutype extends Select
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialise variables.
         $html     = [];
         $recordId = (int) $this->form->getValue('id');
-        $size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
-        $class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
+        $size     = ($v = $element['size']) ? ' size="' . $v . '"' : '';
+        $class    = ($v = $element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
 
         // Get a reverse lookup of the base link URL to Title
         $model = new \Components\Menus\Models\Menutype();
@@ -96,7 +98,7 @@ class Menutype extends Select
         // The text box beside it has always been disabled; the button was what
         // actually changed the type, so a form that disables this field has to
         // take the button away too or it has disabled nothing.
-        if ((string) $this->element['disabled'] != 'true') {
+        if ((string) $element['disabled'] != 'true') {
             $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
         }
         $escapedValue = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');

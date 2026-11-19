@@ -133,7 +133,7 @@ class Migration20130924000002Core extends Base
                 ->select('*')
                 ->from('#__components')
                 ->where('parent', '=', 0);
-            $components = $query->loadObjectList();
+            $components = $query->loadObjectList() ?? [];
 
             if (count($components) > 0) {
                 // Build default ruleset
@@ -179,7 +179,7 @@ class Migration20130924000002Core extends Base
                 ->select('*')
                 ->from('#__categories')
                 ->where('extension', '!=', 'system');
-            $categories = $query->loadObjectList();
+            $categories = $query->loadObjectList() ?? [];
 
             if (count($categories) > 0) {
                 foreach ($categories as $cat) {
@@ -238,7 +238,7 @@ class Migration20130924000002Core extends Base
                 ->select('*')
                 ->from('#__categories')
                 ->where('level', '=', 2);
-            $results = $query->loadObjectList();
+            $results = $query->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -280,7 +280,7 @@ class Migration20130924000002Core extends Base
             $query
                 ->select('*')
                 ->from('#__content');
-            $articles = $query->loadObjectList();
+            $articles = $query->loadObjectList() ?? [];
 
             if (count($articles) > 0) {
                 foreach ($articles as $art) {

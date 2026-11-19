@@ -33,7 +33,7 @@ class MozifyHelper
                     'mosaicSize' => $mosaicSize,
                 ];
                 $him = new Mozify($config);
-                $html = str_replace($match[0], $him->mozify(), $html);
+                $html = str_replace($match[0], (string) $him->mozify(), $html);
             }
         }
 

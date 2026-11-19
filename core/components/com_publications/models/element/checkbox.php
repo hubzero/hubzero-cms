@@ -57,7 +57,7 @@ class Checkbox extends Base
         preg_match_all($pattern, $value, $matches);
         foreach ($matches[1] as $match) {
             $pattern = "/<\d>$match<\/\d>/i";
-            $value = preg_replace($pattern, '', $value);
+            $value = preg_replace($pattern, '', (string) $value);
             $values[] = $match;
         }
         $values[] = $value;
@@ -165,7 +165,7 @@ class Checkbox extends Base
         preg_match_all($pattern, $value, $matches);
         foreach ($matches[1] as $match) {
             $pattern = "/<\d>$match<\/\d>/i";
-            $value = preg_replace($pattern, '', $value);
+            $value = preg_replace($pattern, '', (string) $value);
             $values[] = '<li>' . $match . '</li>';
         }
 

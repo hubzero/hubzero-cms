@@ -30,6 +30,8 @@ class Color extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         if (empty($this->value)) {
             // A color field can't be empty, we default to black. This is the same as the HTML5 spec.
             $this->value = '#000000';
@@ -43,13 +45,13 @@ class Color extends Field
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
-            'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
-            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'size'         => ($element['size'] ? (int) $element['size'] : ''),
+            'maxlength'    => ($element['maxlength'] ? (int) $element['maxlength'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'autocomplete' => ((string) $element['autocomplete'] == 'off' ? 'off' : ''),
+            'readonly'     => ((string) $element['readonly'] == 'true' ? 'readonly' : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         if (!$attributes['disabled']) {

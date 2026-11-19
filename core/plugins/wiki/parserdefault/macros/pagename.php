@@ -41,7 +41,7 @@ class PageName extends WikiMacro
     {
         $et = $this->args;
 
-        switch (trim($et)) {
+        switch (trim((string) $et)) {
             case 'title':
                 $page = \Components\Wiki\Models\Page::oneByPath($this->pagename, $this->domain, $this->domain_id);
 

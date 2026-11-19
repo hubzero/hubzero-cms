@@ -22,35 +22,35 @@ class PhpTest extends TestCase
     /**
      * Format processor
      *
-     * @var  \Hubzero\Config\Processor\Php|null
+     * @var  \Hubzero\Config\Processor\Php
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     private $obj = null;
 
     /**
      * Expected data as an array
      *
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
     private $arr = null;
 
     /**
      * Expected data as a string (array format)
      *
-     * @var  string|null
+     * @var  string
      */
     private $str = null;
 
     /**
      * Expected data as a string (object format)
      *
-     * @var  string|null
+     * @var  string
      */
     private $strObject = null;
 

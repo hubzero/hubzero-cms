@@ -275,7 +275,7 @@ class Migration20130924000000ComCategories extends Base
         $query
             ->select('*')
             ->from('#__sections');
-        $results = $query->loadObjectList();
+        $results = $query->loadObjectList() ?? [];
 
         if (count($results) > 0) {
             foreach ($results as $r) {
@@ -459,7 +459,7 @@ class Migration20130924000000ComCategories extends Base
             ->orWhere('path', '=', '')
             ->endAndGroup()
             ->where('level', '=', 2);
-        $results = $query->loadObjectList();
+        $results = $query->loadObjectList() ?? [];
 
         if (count($results) > 0) {
             $aliases = $this->db

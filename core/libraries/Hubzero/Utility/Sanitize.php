@@ -58,7 +58,7 @@ class Sanitize
         // Line breaks and tabs become a space rather than nothing: text
         // stored with its lines wrapped is normal, and deleting the breaks
         // runs the word before each one into the word after it.
-        return trim(preg_replace(
+        return trim((string) preg_replace(
             '/\s{2,}/u',
             ' ',
             preg_replace('/[\n\r\t]+/', ' ', $str == null ? '' : $str),
@@ -149,7 +149,7 @@ class Sanitize
         }
 
         for ($i = 1, $count = count($params); $i < $count; $i++) {
-            $str = preg_replace('/<' . $params[$i] . '\b[^>]*>/i', '', $str);
+            $str = (string) preg_replace('/<' . $params[$i] . '\b[^>]*>/i', '', (string) $str);
             $str = preg_replace('/<[\\\]*\/' . $params[$i] . '[^>]*>/i', '', $str);
         }
         return $str;
@@ -168,7 +168,7 @@ class Sanitize
         }
 
         // strip out any KL_PHP, script, style, HTML comments
-        $string = preg_replace('/{kl_php}(.*?){\/kl_php}/is', '', $string);
+        $string = (string) preg_replace('/{kl_php}(.*?){\/kl_php}/is', '', $string);
         $regex
             = '/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|'
             . '<script[^>]*>.*?<\/script>|'
@@ -180,25 +180,25 @@ class Sanitize
         $string = str_replace(
             ['&amp;',     '&lt;',     '&gt;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;'],
-            $string,
+            (string) $string,
         );
         // Fix &entitiy\n;
 
-        $string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
+        $string = (string) preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
         $string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $string);
         //$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 
         // Remove any attribute starting with "on" or xmlns
-        $string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
+        $string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", (string) $string);
 
         // Remove javascript: and vbscript: protocol
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a'
                 . '[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2nojavascript...',
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r'
                 . '[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2novbscript...',
@@ -207,17 +207,17 @@ class Sanitize
 
         // <span style="width: expression(alert('Ping!'));"></span>
         // only works in ie...
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU',
             "$1>",
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU',
             "$1>",
             $string,
         );
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p'
                 . '[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu',
             "$1>",
@@ -667,7 +667,7 @@ class Sanitize
         );
 
         // Convert hex
-        $source = preg_replace_callback(
+        $source = (string) preg_replace_callback(
             '/&#x([a-f0-9]+);/mi',
             function ($matches) {
                 $str = chr((int) hexdec($matches[1]));

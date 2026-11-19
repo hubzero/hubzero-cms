@@ -105,6 +105,9 @@ class Courses extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM #__courses WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get the name of the author
                 $sql1 = "SELECT user_id, name, title, alias, student FROM #__courses_members
@@ -158,8 +161,8 @@ class Courses extends Plugin
 
                 // Build the description, clean up text
                 $content = $row->blurb . ' ' . $row->description;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

@@ -80,7 +80,7 @@ class Zones extends SiteController
     public function assetsTask()
     {
         $file = Request::getString('file');
-        $file = self::normalizePath('/' . trim($file, '/'), true);
+        $file = self::normalizePath('/' . trim((string) $file, '/'), true);
 
         if (empty($file)) {
             $this->notFoundTask();

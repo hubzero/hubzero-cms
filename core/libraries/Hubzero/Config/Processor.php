@@ -35,7 +35,7 @@ abstract class Processor
     public static function instance($type)
     {
         // Sanitize format type.
-        $type = strtolower(preg_replace('/[^A-Z0-9_]/i', '', $type));
+        $type = strtolower((string) preg_replace('/[^A-Z0-9_]/i', '', $type));
 
         // Only instantiate the object if it doesn't already exist.
         if (!isset(self::$instances[$type])) {

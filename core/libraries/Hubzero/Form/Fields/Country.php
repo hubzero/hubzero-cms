@@ -38,6 +38,8 @@ class Country extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
@@ -51,7 +53,7 @@ class Country extends Select
             }
         }
 
-        if ($this->element['option_blank']) {
+        if ($element['option_blank']) {
             $options[] = Dropdown::option('', App::get('language')->txt('- Select -'), 'value', 'text');
         }
 

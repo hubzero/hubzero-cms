@@ -47,7 +47,7 @@ class RandomImage extends Module
     /**
      * Get a random image from a list
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @param   array<mixed>   $images  List of images in a directory
      * @return  string
      */
@@ -92,7 +92,7 @@ class RandomImage extends Module
     /**
      * Get a list of images from a folder
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @param   string  $folder  Directory to look in
      * @return  array<mixed>
      */
@@ -135,7 +135,7 @@ class RandomImage extends Module
     /**
      * Get a folder
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @return  string
      */
     public static function getFolder(&$params)

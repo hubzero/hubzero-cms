@@ -36,10 +36,12 @@ class Componentlayout extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
 
         // Get the client id.
-        $clientId = $this->element['client_id'];
+        $clientId = $element['client_id'];
 
         if (is_null($clientId) && $this->form instanceof Form) {
             $clientId = $this->form->getValue('client_id');
@@ -49,7 +51,7 @@ class Componentlayout extends Field
         $client = ClientManager::client($clientId);
 
         // Get the extension.
-        $extn = (string) $this->element['extension'];
+        $extn = (string) $element['extension'];
 
         if (empty($extn) && ($this->form instanceof Form)) {
             $extn = $this->form->getValue('extension');
@@ -58,7 +60,7 @@ class Componentlayout extends Field
         $extn = preg_replace('#\W#', '', $extn);
 
         // Get the template.
-        $template = (string) $this->element['template'];
+        $template = (string) $element['template'];
         $template = preg_replace('#\W#', '', $template);
 
         // Get the style.
@@ -70,7 +72,7 @@ class Componentlayout extends Field
         $template_style_id = preg_replace('#\W#', '', $template_style_id ? $template_style_id : '');
 
         // Get the view.
-        $view = (string) $this->element['view'];
+        $view = (string) $element['view'];
         $view = preg_replace('#\W#', '', $view);
 
         // If a template, extension and view are present build the options.
@@ -128,7 +130,7 @@ class Componentlayout extends Field
             $groups = [];
 
             // Add a Use Global option if useglobal="true" in XML file
-            if ($this->element['useglobal'] == 'true') {
+            if ($element['useglobal'] == 'true') {
                 $groups[$lang->txt('JOPTION_FROM_STANDARD')]['items'][] = Dropdown::option(
                     '',
                     $lang->txt('JGLOBAL_USE_GLOBAL'),
@@ -244,7 +246,7 @@ class Componentlayout extends Field
             }
 
             // Compute attributes for the grouped list
-            $attr = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+            $attr = $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
             // Prepare HTML code
             $html = [];

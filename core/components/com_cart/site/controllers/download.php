@@ -94,7 +94,7 @@ class Download extends ComponentController
             $messages = [[Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error']];
             $this->messageTask($messages);
             return;
-        } elseif (!array_key_exists($sId, $transactionItems)) {
+        } elseif (!array_key_exists((string) $sId, $transactionItems)) {
             // The SKU requested is not in the transaction
             $messages = [[Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error']];
             $this->messageTask($messages);

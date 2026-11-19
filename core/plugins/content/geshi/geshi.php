@@ -81,7 +81,7 @@ class Geshi extends Plugin
         $html_entities_match   = ["|\<br \/\>|", "#<#", "#>#", "|&#39;|", '#&quot;#', '#&nbsp;#'];
         $html_entities_replace = ["\n", '&lt;', '&gt;', "'", '"', ' '];
 
-        $text = preg_replace($html_entities_match, $html_entities_replace, (string) $text);
+        $text = (string) preg_replace($html_entities_match, $html_entities_replace, (string) $text);
         $text = str_replace('&lt;', '<', $text);
         $text = str_replace('&gt;', '>', $text);
         $text = str_replace("\t", '  ', $text);

@@ -76,8 +76,8 @@ class Csv implements \Iterator
         // map headings
         $object = new \stdClass();
         foreach ($this->headers ?: [] as $k => $header) {
-            if (strpos($header, ':')) {
-                $parts = explode(':', $header);
+            if (strpos((string) $header, ':')) {
+                $parts = explode(':', (string) $header);
 
                 if (!isset($object->{$parts[0]})) {
                     $object->{$parts[0]} = new \stdClass();

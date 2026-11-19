@@ -264,7 +264,7 @@ class Watch extends Plugin
     /**
      * Notify subscribers of new activity
      *
-     * @param   \Components\Projects\Models\Project|null   $project     Project model
+     * @param   \Components\Projects\Models\Project   $project     Project model
      * @param   string   $area        Project area of activity
      * @param   array<mixed>    $activities  Project activities (array of IDs)
      * @param   integer  $actor       Uid of team member posting the activity (to exclude from subscribers)

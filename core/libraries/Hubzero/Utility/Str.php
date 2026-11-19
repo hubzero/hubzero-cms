@@ -80,7 +80,7 @@ class Str
 
         foreach ($tempData as $key => $hashVal) {
             $key = sprintf($format, preg_quote($key, '/'));
-            $str = preg_replace($key, (string) $hashVal, $str);
+            $str = (string) preg_replace($key, (string) $hashVal, $str);
         }
         $dataReplacements = array_combine($hashKeys, array_values($data));
         foreach ($dataReplacements as $tmpHash => $tmpValue) {
@@ -130,7 +130,7 @@ class Str
                     $clean['word'],
                     preg_quote($options['after'], '/'),
                 );
-                $str = preg_replace($kleenex, $clean['replacement'], $str);
+                $str = (string) preg_replace($kleenex, $clean['replacement'], $str);
                 if ($clean['andText']) {
                     $options['clean'] = ['method' => 'text'];
                     $str = self::cleanInsert($str, $options);
@@ -549,8 +549,8 @@ class Str
     public static function snake($value, $delimiter = '_')
     {
         if (!ctype_lower($value)) {
-            $value = preg_replace('/\s+/u', '', ucwords($value));
-            $value = strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
+            $value = (string) preg_replace('/\s+/u', '', ucwords($value));
+            $value = strtolower((string) preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
         return $value;
     }
@@ -651,7 +651,7 @@ class Str
         $text = str_replace('&&', '*--*', $text ? $text : '');
         $text = str_replace('&#', '*-*', $text);
         $text = str_replace('&amp;', '&', $text);
-        $text = preg_replace('|&(?![\w]+;)|', '&amp;', $text);
+        $text = (string) preg_replace('|&(?![\w]+;)|', '&amp;', $text);
         $text = str_replace('*-*', '&#', $text);
         $text = str_replace('*--*', '&&', $text);
 

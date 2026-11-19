@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{message: mixed, project: mixed, subject: mixed} $this
  */
 
-$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$base = trim((string) preg_replace('/\/administrator/', '', Request::base()), '/');
 $projectUrl = $base . '/projects/' . $this->project->get('alias');
 
 $message  = $this->subject . "\n";

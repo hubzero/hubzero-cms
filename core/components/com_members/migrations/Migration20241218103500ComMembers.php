@@ -47,7 +47,7 @@ class Migration20241218103500ComMembers extends Base
             . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
             . 'OR name REGEXP "\\\\p{C}"';
         $this->db->setQuery($query);
-        $results = $this->db->loadColumn();
+        $results = $this->db->loadColumn() ?? [];
 
         foreach ($results as $result) {
             $user = User::getInstance($result);
@@ -62,7 +62,7 @@ class Migration20241218103500ComMembers extends Base
             . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
             . 'OR name REGEXP "\\\\p{C}"';
         $this->db->setQuery($query);
-        $results = $this->db->loadColumn();
+        $results = $this->db->loadColumn() ?? [];
 
         foreach ($results as $result) {
             $profile = \Hubzero\User\Profile::getInstance($result);
@@ -144,7 +144,7 @@ class Migration20241218103500ComMembers extends Base
     {
         $query = "SELECT id,name FROM #__users where TRIM(surname)='' AND TRIM(givenName)='' AND TRIM(middleName)=''";
         $this->db->setQuery($query);
-        $results = $this->db->loadAssocList();
+        $results = $this->db->loadAssocList() ?? [];
 
         foreach ($results as $result) {
             $parser = new \TheIconic\NameParser\Parser();
@@ -168,7 +168,7 @@ class Migration20241218103500ComMembers extends Base
         $query = "SELECT uidNumber,name FROM #__xprofiles where TRIM(surname)='' "
             . "AND TRIM(givenName)='' AND TRIM(middleName)=''";
         $this->db->setQuery($query);
-        $results = $this->db->loadAssocList();
+        $results = $this->db->loadAssocList() ?? [];
 
         foreach ($results as $result) {
             $parser = new \TheIconic\NameParser\Parser();

@@ -578,7 +578,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $this->assertGreaterThan(0, $id);
 
         $driver->setQuery("SELECT name FROM ix_categories WHERE id = $id");
-        $this->assertEquals('Test', trim($driver->loadResult()));
+        $this->assertEquals('Test', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM ix_categories WHERE id = $id");
     }
@@ -595,7 +595,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $driver->exec("UPDATE ix_categories SET name = 'After' WHERE slug = 'update-test'");
 
         $driver->setQuery("SELECT name FROM ix_categories WHERE slug = 'update-test'");
-        $this->assertEquals('After', trim($driver->loadResult()));
+        $this->assertEquals('After', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM ix_categories WHERE slug = 'update-test'");
     }
@@ -684,6 +684,7 @@ class InformixDriverTest extends AbstractDriverTestCase
             FROM ix_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);
@@ -721,7 +722,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery("SELECT 'Hello' || ' ' || 'World' AS greeting FROM sysmaster:sysdual");
-        $this->assertEquals('Hello World', trim($driver->loadResult()));
+        $this->assertEquals('Hello World', trim((string) $driver->loadResult()));
     }
 
     #[Test]
@@ -733,7 +734,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery("SELECT NVL(NULL, 'default') AS result FROM sysmaster:sysdual");
-        $this->assertEquals('default', trim($driver->loadResult()));
+        $this->assertEquals('default', trim((string) $driver->loadResult()));
     }
 
     #[Test]
@@ -1060,7 +1061,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $this->assertFalse($driver->tableExists('ix_rename_src'));
 
         $driver->setQuery("SELECT name FROM ix_rename_dest");
-        $this->assertEquals('test', trim($driver->loadResult()));
+        $this->assertEquals('test', trim((string) $driver->loadResult()));
     }
 
     // =========================================================================

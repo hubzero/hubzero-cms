@@ -134,9 +134,9 @@ class Identicon
             ksort($this->arrayOfSquare[intdiv($i, 3)]);
         }
 
-        $this->color[0] = hexdec(array_pop($chars[1])) * 16;
-        $this->color[1] = hexdec(array_pop($chars[1])) * 16;
-        $this->color[2] = hexdec(array_pop($chars[1])) * 16;
+        $this->color[0] = hexdec((string) array_pop($chars[1])) * 16;
+        $this->color[1] = hexdec((string) array_pop($chars[1])) * 16;
+        $this->color[2] = hexdec((string) array_pop($chars[1])) * 16;
 
         return $this;
     }

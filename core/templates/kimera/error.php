@@ -27,7 +27,8 @@ $cls = [
     $this->direction,
 ];
 
-$code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
+$error = $this->errorOrFail();
+$code = (is_numeric($error->getCode()) && $error->getCode() > 100 ? $error->getCode() : 500);
 
 Lang::load('tpl_' . $this->template)
 || Lang::load('tpl_' . $this->template, __DIR__);
@@ -69,7 +70,7 @@ Lang::load('tpl_' . $this->template)
                 <p class="tagline"><?php echo Lang::txt('TPL_KIMERA_TAGLINE'); ?></p>
             </header>
 
-            <main id="content" class="<?php echo 'code' . $this->error->getCode(); ?>">
+            <main id="content" class="<?php echo 'code' . $this->errorOrFail()->getCode(); ?>">
                 <div class="inner">
                     <h2 class="error-code">
                         <?php echo $code; ?>
@@ -77,9 +78,9 @@ Lang::load('tpl_' . $this->template)
 
                     <p class="error"><?php
                     if ($this->debug) {
-                        $message = $this->error->getMessage();
+                        $message = $this->errorOrFail()->getMessage();
                     } else {
-                        switch ($this->error->getCode()) {
+                        switch ($this->errorOrFail()->getCode()) {
                             case 404:
                                 $message = Lang::txt('TPL_KIMERA_404_HEADER');
                                 break;

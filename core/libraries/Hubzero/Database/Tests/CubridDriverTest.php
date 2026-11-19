@@ -538,6 +538,7 @@ class CubridDriverTest extends AbstractDriverTestCase
             $driver->exec("CREATE TABLE _charset_check (c VARCHAR(10))");
             $driver->setQuery("SHOW CREATE TABLE _charset_check");
             $result = $driver->loadRow();
+            $this->assertNotNull($result);
             $driver->exec("DROP TABLE _charset_check");
 
             // Check if using UTF-8 collation
@@ -578,6 +579,7 @@ class CubridDriverTest extends AbstractDriverTestCase
             FROM cubrid_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);

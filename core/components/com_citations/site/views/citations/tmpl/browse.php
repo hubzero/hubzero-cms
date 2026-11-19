@@ -208,7 +208,11 @@ if ($label == 'none') {
                                                         . $this->escape(
                                                             preg_match(
                                                                 '/^(?:javascript|vbscript|data):/i',
-                                                                preg_replace('/[\x00-\x20]+/', '', (string) $cite->url),
+                                                                (string) preg_replace(
+                                                                    '/[\x00-\x20]+/',
+                                                                    '',
+                                                                    (string) $cite->url,
+                                                                ),
                                                             )
                                                                 ? ''
                                                                 : $cite->url,
@@ -235,7 +239,7 @@ if ($label == 'none') {
                                                             // control-character-stripped probe, and escape the name.
                                                             $slink = preg_match(
                                                                 '/^(?:javascript|vbscript|data):/i',
-                                                                preg_replace(
+                                                                (string) preg_replace(
                                                                     '/[\x00-\x20]+/',
                                                                     '',
                                                                     (string) $s->get('link'),

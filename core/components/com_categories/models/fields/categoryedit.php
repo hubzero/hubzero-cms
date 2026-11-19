@@ -35,27 +35,29 @@ class CategoryEdit extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialise variables.
         $options = [];
         // A list such as "0,1"; the attribute is a SimpleXMLElement, which
         // is_numeric() never took for a number, so it used to be ignored
-        $published = $this->element['published'] ? explode(',', (string) $this->element['published']) : [0, 1];
-        $name = (string) $this->element['name'];
+        $published = $element['published'] ? explode(',', (string) $element['published']) : [0, 1];
+        $name = (string) $element['name'];
 
         // Let's get the id for the current item, either category or content item.
         // Load the category options for a given extension.
 
         // For categories the old category is the category id or 0 for new category.
-        if ($this->element['parent'] || Request::getCmd('option') == 'com_categories') {
+        if ($element['parent'] || Request::getCmd('option') == 'com_categories') {
             $oldCat = Request::getInt('id', 0);
             $oldParent = $this->form->getValue($name, null, 0);
-            $extElement = $this->element['extension'];
+            $extElement = $element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('extension', 'com_content');
         } else {
             // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
             $oldCat = $this->form->getValue($name, null, 0);
-            $extElement = $this->element['extension'];
+            $extElement = $element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('option', 'com_content');
         }
 
@@ -71,7 +73,7 @@ class CategoryEdit extends Select
             ->joinRaw('#__categories AS b', 'a.lft > b.lft AND a.rgt < b.rgt', 'left');
 
         // Filter by the extension type
-        if ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories') {
+        if ($element['parent'] == true || Request::getCmd('option') == 'com_categories') {
             $query
                 ->whereEquals('a.extension', $extension, 1)
                 ->orWhereEquals('a.parent_id', '0', 1)
@@ -81,7 +83,7 @@ class CategoryEdit extends Select
         }
 
         // If parent isn't explicitly stated but we are in com_categories assume we want parents
-        if ($oldCat != 0 && ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories')) {
+        if ($oldCat != 0 && ($element['parent'] == true || Request::getCmd('option') == 'com_categories')) {
             // Prevent parenting to children of this item.
             // To rearrange parents and children move the children up, not the parents down.
             $query->joinRaw('#__categories AS p', 'p.id = ' . (int) $oldCat, 'left');
@@ -124,7 +126,7 @@ class CategoryEdit extends Select
         // Pad the option text with spaces using depth level as a multiplier.
         for ($i = 0, $n = count($options); $i < $n; $i++) {
             // Translate ROOT
-            if ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories') {
+            if ($element['parent'] == true || Request::getCmd('option') == 'com_categories') {
                 if ($options[$i]->level == 0) {
                     $options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
                 }
@@ -187,8 +189,8 @@ class CategoryEdit extends Select
             }
         }
         if (
-            ($this->element['parent'] == true || Request::getCmd('option') == 'com_categories')
-            && (isset($row) && !isset($options[0])) && isset($this->element['show_root'])
+            ($element['parent'] == true || Request::getCmd('option') == 'com_categories')
+            && (isset($row) && !isset($options[0])) && isset($element['show_root'])
         ) {
             if ($row->parent_id == '1') {
                 $parent = new stdClass();

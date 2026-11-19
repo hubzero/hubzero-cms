@@ -68,7 +68,9 @@ $attModel = new \Components\Publications\Models\Attachments($database);
                     echo \Components\Publications\Helpers\Html::showSubInfo($this->publication);
                 ?>
                 <h3>
-                    <?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->title), 150)) ?>
+                    <?= $this->escape(
+                        \Hubzero\Utility\Str::truncate(stripslashes((string) $this->publication->title), 150),
+                    ) ?>
                 </h3>
                 <?php
                 // Display authors

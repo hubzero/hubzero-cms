@@ -92,7 +92,7 @@ class ModeDsl
             $db->setQuery($sql);
             $pub_version = $db->loadAssoc();
 
-            $state = $pub_version['state'];
+            $state = $pub_version['state'] ?? null;
 
             $dd['version'] = $version;
             $dd['publication_state'] = $state;

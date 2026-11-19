@@ -60,7 +60,7 @@ class Redirect extends WikiMacro
         // Only allow http(s) or site-relative targets; reject javascript:/data: etc.
         // (tested on a copy with control characters removed: browsers ignore them
         // inside a scheme, so "java\tscript:" would otherwise slip through)
-        $chk = preg_replace('/[\x00-\x20]+/', '', (string) $url);
+        $chk = (string) preg_replace('/[\x00-\x20]+/', '', (string) $url);
         if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $chk) && !preg_match('#^https?://#i', $chk)) {
             $url = '';
         }
@@ -108,6 +108,6 @@ class Redirect extends WikiMacro
      */
     protected function getArgs()
     {
-        return explode(',', $this->args);
+        return explode(',', (string) $this->args);
     }
 }

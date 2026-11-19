@@ -114,7 +114,7 @@ class Externalhref extends Plugin
 
                     $att = strtolower(trim($attrib[1]));
                     $list[$att] = preg_replace("/=\s*[\"']?([^'\"]*)[\"']?/", "$1", $attrib[2]);
-                    $list[$att] = trim($list[$att]);
+                    $list[$att] = trim((string) $list[$att]);
                 }
 
                 // Skip if non http link or anchor
@@ -126,7 +126,7 @@ class Externalhref extends Plugin
                     continue;
                 }
 
-                $href = preg_replace("/https?:\/\//i", '', $list['href']);
+                $href = (string) preg_replace("/https?:\/\//i", '', $list['href']);
 
                 // Skip if internal link
                 if (stripos($href, $_SERVER['SERVER_NAME']) === 0) {

@@ -592,11 +592,11 @@ class Log extends Table
     public function getCustomStats($from = null, $to = null, $exclude = [], $filter = null)
     {
         // Parse dates
-        $parts = explode('-', $from);
+        $parts = explode('-', (string) $from);
         $fromY = substr($parts[0], -2, 2);
         $fromM = intval(end($parts));
 
-        $parts = explode('-', $to);
+        $parts = explode('-', (string) $to);
         $toY   = substr($parts[0], -2, 2);
         $toM   = intval(end($parts));
 

@@ -178,7 +178,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   int $cId         Collection ID
      * @param   bool $showInactive        Flag whether to show inactive collection info
-     * @return  \stdClass      Collection info
+     * @return  \stdClass|null  Collection info
      */
     public function getCollectionInfo($cId, $showInactive = false)
     {
@@ -1294,7 +1294,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product type info
      *
      * @param   int $ptId                 product type ID
-     * @return  array<mixed>               info
+     * @return  array<mixed>|null  info
      */
     public function getProductTypeInfo($ptId)
     {
@@ -1641,7 +1641,7 @@ class Warehouse extends \Hubzero\Base\Obj
     {
         $sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->database->quote($pId);
         $this->database->setQuery($sql);
-        $res = $this->database->loadColumn();
+        $res = $this->database->loadColumn() ?? [];
 
         return $res;
     }

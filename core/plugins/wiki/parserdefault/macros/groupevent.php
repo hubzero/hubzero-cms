@@ -52,7 +52,7 @@ class GroupEvent extends WikiMacro
     public function render()
     {
         //get the args passed in
-        $args = explode(',', $this->args);
+        $args = explode(',', (string) $this->args);
 
         //parse each arg into key value pair
         foreach ($args as $a) {

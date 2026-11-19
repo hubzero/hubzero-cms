@@ -486,7 +486,7 @@ class Create extends SiteController
 					) = 0
 					ORDER BY t.tag, CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag',
         );
-        $fas = $this->database->loadAssocList('raw_tag');
+        $fas = $this->database->loadAssocList('raw_tag') ?? [];
         foreach ($fas as &$fa) {
             $fa['children'] = $this->loadFocusAreas($type, $labels, $fa['id'], $fa['label']);
         }
@@ -905,7 +905,7 @@ class Create extends SiteController
                     '<a href="'
                         . Route::url('index.php?option=com_resources&id=' . $row->get('id'))
                         . '">'
-                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1130,7 +1130,7 @@ class Create extends SiteController
             );
             $any_match = false;
             $parent = [];
-            $possible_parents = $this->database->loadAssocList();
+            $possible_parents = $this->database->loadAssocList() ?? [];
             foreach ($possible_parents as $par) {
                 if (isset($map[$par['tag']])) {
                     $parent[] = $par;
@@ -1487,7 +1487,7 @@ class Create extends SiteController
                         '<a href="'
                             . Route::url($resource->link())
                             . '">'
-                            . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                            . htmlspecialchars((string) $resource->get('title'), ENT_QUOTES, 'UTF-8')
                             . '</a>',
                     ),
                     'details'     => [
@@ -1665,7 +1665,7 @@ class Create extends SiteController
                             '<a href="'
                                 . Route::url($resource->link())
                                 . '">'
-                                . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                                . htmlspecialchars((string) $resource->get('title'), ENT_QUOTES, 'UTF-8')
                                 . '</a>',
                         ),
                         'details'     => [
@@ -1831,8 +1831,8 @@ class Create extends SiteController
 
         //$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
         //$text = preg_replace('/{.+?}/', '', $text);
-        $text = preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
-        $text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+        $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
+        $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
         $text = preg_replace('/<!--.+?-->/', '', $text);
 
         return $text;

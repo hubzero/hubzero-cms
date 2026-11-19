@@ -518,6 +518,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             FROM pg_test_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);
@@ -653,6 +654,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
                 EXTRACT(DAY FROM CURRENT_TIMESTAMP) AS dy
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertGreaterThanOrEqual(2020, (int) $row->yr);
         $this->assertGreaterThanOrEqual(1, (int) $row->mo);

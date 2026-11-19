@@ -26,7 +26,7 @@ class ModeDb
         $db_dv_conf = [];
 
         $db_name = isset($db_id['name'])
-            ? str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']))
+            ? str_replace('..', '', (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']))
             : '';
 
         if (empty($db_name)) {
@@ -71,9 +71,9 @@ class ModeDb
     public static function getDd($db_id)
     {
         $dd = false;
-        $dv_id = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) Request::getString('dv'));
+        $dv_id = (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) Request::getString('dv'));
         $dv_id = str_replace('..', '', $dv_id);
-        $db_name = str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']));
+        $db_name = str_replace('..', '', (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']));
 
         $ddBase = DvConfig::$dv_conf['db_base_dir'];
         DvConfig::$dv_conf['dd_json'] = "$ddBase/$db_name/applications/dataviewer/datadefinitions";
@@ -148,7 +148,7 @@ class ModeDb
                     . " WHERE table_name = " . $link->quote($dd['table']);
                 $link->setQuery($sql);
                 $cols = $link->loadAssoc();
-                $vis_col_count = $cols['cols'];
+                $vis_col_count = $cols['cols'] ?? 0;
             }
 
             if (DvConfig::$dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {

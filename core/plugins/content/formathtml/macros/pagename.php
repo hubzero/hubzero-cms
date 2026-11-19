@@ -46,7 +46,7 @@ class PageName extends Macro
                     . $this->db->quote($this->domain) . " AND scope=" . $this->db->quote($this->scope);
                 // Perform query
                 $this->db->setQuery($sql);
-                return stripslashes($this->db->loadResult());
+                return stripslashes((string) $this->db->loadResult());
 
             case 'alias':
             default:

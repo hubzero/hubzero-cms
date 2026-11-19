@@ -90,7 +90,7 @@ class Migration20150904235936ComUsage extends Base
                 ->from('mysql.db')
                 ->where('User', '=', $options['user'])
                 ->where('Db', '=', $options['database']);
-            $results = $query->loadObjectList();
+            $results = $query->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 // User has grants but still can't connect - likely database doesn't exist

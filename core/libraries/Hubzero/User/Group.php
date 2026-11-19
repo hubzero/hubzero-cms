@@ -655,12 +655,12 @@ class Group extends Obj
     /**
      * Get a property's value
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  mixed
      */
-    public function __get($property = null)
+    public function __get($property)
     {
-        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
+        if (!property_exists(__CLASS__, (string) $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -670,7 +670,7 @@ class Group extends Obj
         }
 
         if (in_array($property, self::$listKeys)) {
-            if (!array_key_exists($property, get_object_vars($this))) {
+            if (!array_key_exists((string) $property, get_object_vars($this))) {
                 $db = App::get('db');
 
                 $groups = ['applicants' => [], 'invitees' => [], 'members' => [], 'managers' => []];
@@ -713,7 +713,7 @@ class Group extends Obj
             return $this->$property;
         }
 
-        if (array_key_exists($property, get_object_vars($this))) {
+        if (array_key_exists((string) $property, get_object_vars($this))) {
             return null;
         }
 
@@ -725,12 +725,12 @@ class Group extends Obj
     /**
      * Set a property's value
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @param   mixed   $value
      */
-    public function __set($property = null, $value = null)
+    public function __set($property, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
+        if (!property_exists(__CLASS__, (string) $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -761,12 +761,12 @@ class Group extends Obj
     /**
      * Check if a property is set
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  bool
      */
-    public function __isset($property = null)
+    public function __isset($property)
     {
-        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
+        if (!property_exists(__CLASS__, (string) $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -781,12 +781,12 @@ class Group extends Obj
     /**
      * Unset a property
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  void
      */
-    public function __unset($property = null)
+    public function __unset($property)
     {
-        if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
+        if (!property_exists(__CLASS__, (string) $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -938,7 +938,7 @@ class Group extends Obj
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         if (!is_callable($func)) {
             return false;
@@ -1324,7 +1324,7 @@ class Group extends Obj
 
         $db->setQuery($query);
 
-        $emails = $db->loadColumn();
+        $emails = $db->loadColumn() ?? [];
 
         return $emails;
     }

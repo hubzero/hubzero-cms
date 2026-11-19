@@ -749,6 +749,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         // Verify data was preserved
         $driver->setQuery("SELECT * FROM dbdiff_rename_test WHERE id = 1");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('test value', $row->new_name);
 
         // Cleanup

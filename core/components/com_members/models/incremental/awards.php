@@ -87,7 +87,7 @@ class Awards
             foreach ($columns as $key => $val) {
                 // Make sure the column exists
                 // This seems to have varied from hub to hub
-                if (!self::$dbh->tableHasField('#__profile_completion_awards', $val)) {
+                if (!self::getDbh()->tableHasField('#__profile_completion_awards', $val)) {
                     unset($columns[$key]);
                 }
             }
@@ -95,12 +95,12 @@ class Awards
             if (!empty($columns)) {
                 $sql = 'SELECT ' . implode(', ', $columns)
                     . ' FROM `#__profile_completion_awards` WHERE user_id = ' . $this->uid;
-                self::$dbh->setQuery($sql);
-                if (!($this->awards = self::$dbh->loadAssoc())) {
+                self::getDbh()->setQuery($sql);
+                if (!($this->awards = self::getDbh()->loadAssoc())) {
                     $sql = 'INSERT INTO `#__profile_completion_awards` (user_id) VALUES ('
                         . $this->uid . ')';
-                    self::$dbh->setQuery($sql);
-                    self::$dbh->execute();
+                    self::getDbh()->setQuery($sql);
+                    self::getDbh()->execute();
                 }
             } else {
                 $this->awards = 1;
@@ -118,8 +118,8 @@ class Awards
         $sql = 'UPDATE `#__profile_completion_awards` '
             . 'SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP '
             . 'WHERE user_id = ' . $this->uid;
-        self::$dbh->setQuery($sql);
-        self::$dbh->execute();
+        self::getDbh()->setQuery($sql);
+        self::getDbh()->execute();
     }
 
     /**
@@ -129,7 +129,8 @@ class Awards
      */
     public function award()
     {
-        if (!$this->uid) {
+        $uid = $this->uid;
+        if (!$uid) {
             return null;
         }
         $opts = new Options();
@@ -165,8 +166,8 @@ class Awards
                 continue;
             }
             if ($k === 'picture') {
-                self::$dbh->setQuery('SELECT picture FROM `#__xprofiles` WHERE uidNumber = ' . $this->uid);
-                if (self::$dbh->loadResult()) {
+                self::getDbh()->setQuery('SELECT picture FROM `#__xprofiles` WHERE uidNumber = ' . $uid);
+                if (self::getDbh()->loadResult()) {
                     $completeSql .= ', ' . $k . ' = 1';
                     $alreadyComplete += $awardPer;
                 } else {
@@ -184,21 +185,21 @@ class Awards
         }
 
         $sql = 'SELECT SUM(amount) AS amount FROM `#__users_transactions` '
-            . "WHERE type = 'deposit' AND category = 'registration' AND uid = " . $this->uid;
-        self::$dbh->setQuery($sql);
-        $prior = self::$dbh->loadResult();
-        self::$dbh->setQuery($completeSql . ' WHERE user_id = ' . $this->uid);
-        self::$dbh->execute();
+            . "WHERE type = 'deposit' AND category = 'registration' AND uid = " . $uid;
+        self::getDbh()->setQuery($sql);
+        $prior = self::getDbh()->loadResult();
+        self::getDbh()->setQuery($completeSql . ' WHERE user_id = ' . $uid);
+        self::getDbh()->execute();
 
         if ($alreadyComplete) {
             $sql = 'SELECT COALESCE('
-                . '(SELECT balance FROM `#__users_transactions` WHERE uid = ' . $this->uid
+                . '(SELECT balance FROM `#__users_transactions` WHERE uid = ' . $uid
                 . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = '
-                . $this->uid . ')), 0)';
-            self::$dbh->setQuery($sql);
-            $newAmount = (int) self::$dbh->loadResult() + $alreadyComplete;
+                . $uid . ')), 0)';
+            self::getDbh()->setQuery($sql);
+            $newAmount = (int) self::getDbh()->loadResult() + $alreadyComplete;
 
-            $BTL = new Teller($this->uid);
+            $BTL = new Teller($uid);
             $BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0);
         }
 

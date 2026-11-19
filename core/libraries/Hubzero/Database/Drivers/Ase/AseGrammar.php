@@ -443,7 +443,7 @@ class AseGrammar extends BaseSchemaGrammar
         // Resolve the SQL type to check for BIT
         $type = $definition['type'] ?? '';
         $resolved = strtoupper($this->driver->normalizeColumnType($type, $modifiers));
-        $isBit = (trim(preg_replace('/\([^)]*\)/', '', $resolved)) === 'BIT');
+        $isBit = (trim((string) preg_replace('/\([^)]*\)/', '', $resolved)) === 'BIT');
 
         // When no explicit nullable flag is set, ASE defaults to NOT NULL
         // while MySQL defaults to NULL. Inject explicit nullable=true to

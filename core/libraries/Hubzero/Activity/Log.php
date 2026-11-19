@@ -112,7 +112,7 @@ class Log extends Relational
         if (!isset($data['scope'])) {
             $data['scope'] = '';
         }
-        return strtolower(preg_replace("/[^a-zA-Z0-9\-_\.]/", '', trim($data['scope'])));
+        return strtolower((string) preg_replace("/[^a-zA-Z0-9\-_\.]/", '', trim($data['scope'])));
     }
 
     /**

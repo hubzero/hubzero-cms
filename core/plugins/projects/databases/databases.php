@@ -750,7 +750,7 @@ class Databases extends Plugin
                 }
 
                 for ($i = 0; $i < count($col_labels); $i++) {
-                    $label = trim($col_labels[$i]);
+                    $label = trim((string) $col_labels[$i]);
                     if ($label == '') {
                         $label = 'Column-' . $i;
                     }
@@ -792,7 +792,7 @@ class Databases extends Plugin
                 }
 
                 for ($i = 0; $i < count($col_labels); $i++) {
-                    $label = trim($col_labels[$i]);
+                    $label = trim((string) $col_labels[$i]);
                     if ($label == '') {
                         $label = 'Column-' . $i;
                     }
@@ -983,12 +983,12 @@ class Databases extends Plugin
             $dd = [];
 
             for ($i = 0; $i < count($col_labels); $i++) {
-                $label = trim($col_labels[$i]);
+                $label = trim((string) $col_labels[$i]);
                 if ($label == '') {
                     $label = 'Column-' . $i;
                 }
 
-                $col_name = strtolower(preg_replace('/\W/', '_', $label));
+                $col_name = strtolower((string) preg_replace('/\W/', '_', $label));
                 $col_name = substr($col_name, 0, (63 - strlen((string) $i))) . '_' . $i;
 
                 // dd may be short or not JSON at all

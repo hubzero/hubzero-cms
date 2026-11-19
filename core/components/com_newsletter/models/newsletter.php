@@ -91,7 +91,7 @@ class Newsletter extends Relational
     {
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['name']);
         $alias = str_replace(' ', '-', $alias);
-        $alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        $alias = (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 
         $alias = $this->uniqueAlias($alias, (isset($data['id']) ? $data['id'] : 0));
 

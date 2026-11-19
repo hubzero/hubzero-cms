@@ -863,16 +863,16 @@ class Debug extends Plugin
                     $guess = trim($guess);
 
                     if ($stripPref) {
-                        $guess = trim(preg_replace(chr(1) . '^' . $stripPref . chr(1) . 'i', '', $guess));
+                        $guess = trim((string) preg_replace(chr(1) . '^' . $stripPref . chr(1) . 'i', '', $guess));
                     }
 
                     if ($stripSuff) {
-                        $guess = trim(preg_replace(chr(1) . $stripSuff . '$' . chr(1) . 'i', '', $guess));
+                        $guess = trim((string) preg_replace(chr(1) . $stripSuff . '$' . chr(1) . 'i', '', $guess));
                     }
                 }
 
                 $key = trim(strtoupper($key));
-                $key = preg_replace('#\s+#', '_', $key);
+                $key = (string) preg_replace('#\s+#', '_', $key);
                 $key = preg_replace('#\W#', '', $key);
 
                 // Prepare the text
@@ -904,7 +904,7 @@ class Debug extends Plugin
         $newlineKeywords = '#\b(FROM|LEFT|INNER|OUTER|WHERE|SET|VALUES|ORDER|GROUP|HAVING|LIMIT|ON|AND|CASE)\b#i';
 
         $sql = htmlspecialchars($sql, ENT_QUOTES);
-        $sql = preg_replace($newlineKeywords, '<br />&#160;&#160;\\0', $sql);
+        $sql = (string) preg_replace($newlineKeywords, '<br />&#160;&#160;\\0', $sql);
 
         $regex = [
 
@@ -919,7 +919,7 @@ class Debug extends Plugin
 
         ];
 
-        $sql = preg_replace(array_keys($regex), array_values($regex), $sql);
+        $sql = (string) preg_replace(array_keys($regex), array_values($regex), $sql);
         $sql = str_replace('*', '<b class="dbgStar">*</b>', $sql);
 
         return $sql;

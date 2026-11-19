@@ -219,7 +219,7 @@ class Forum extends Plugin
 							LEFT JOIN #__tags_object
 							ON #__tags.id=#__tags_object.tagid
 							WHERE #__tags_object.objectid = {$row->id} AND #__tags_object.tbl = 'forum';";
-                        $taglist = $db->setQuery($sql2)->query()->loadColumn();
+                        $taglist = $db->setQuery($sql2)->query()->loadColumn() ?? [];
                         foreach ($taglist as $t) {
                             array_push($tags, $t);
                         }
@@ -266,9 +266,13 @@ class Forum extends Plugin
 
                     $course = $db->setQuery($sql)->query()->loadAssoc();
 
-                    $path = '/courses/' . $course['course'] . '/' . $course['offering']
-                        . '/discussions/' . $row->category . '/' . $row->category_id
-                        . '?thread=' . $id;
+                    if ($course) {
+                        $path = '/courses/' . $course['course'] . '/' . $course['offering']
+                            . '/discussions/' . $row->category . '/' . $row->category_id
+                            . '?thread=' . $id;
+                    } else {
+                        $path = '';
+                    }
                 } else {
                     $path = '';
                 }
@@ -293,8 +297,8 @@ class Forum extends Plugin
                 }
 
                 // Build the description, clean up text
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

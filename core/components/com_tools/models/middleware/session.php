@@ -180,11 +180,11 @@ class Session extends Base
     {
         $users = [];
 
-        if (strstr($with, ',')) {
-            $users = explode(',', $with);
+        if (strstr((string) $with, ',')) {
+            $users = explode(',', (string) $with);
             $users = array_map('trim', $users);
-        } elseif (strstr($with, ' ')) {
-            $users = explode(' ', $with);
+        } elseif (strstr((string) $with, ' ')) {
+            $users = explode(' ', (string) $with);
             $users = array_map('trim', $users);
         } else {
             $users[] = $with;
@@ -297,7 +297,7 @@ class Session extends Base
     {
         $app = $this->get('appname');
 
-        switch (strtolower($what)) {
+        switch (strtolower((string) $what)) {
             case 'tool':
             case 'name':
                 // The name before the revision suffix, all of it when there is none

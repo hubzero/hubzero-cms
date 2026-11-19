@@ -545,6 +545,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
             . " FROM " . $driver->quoteName('conv_users')
             . " WHERE " . $driver->quoteName('id') . " = 1";
         $result = $driver->setQuery($sql)->loadAssoc();
+        $this->assertNotNull($result);
         $this->assertEquals(6, $result['login_count']);
         $this->assertEquals($newTimestamp, $result['updated_at']);
     }
@@ -650,6 +651,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
             . " FROM " . $driver->quoteName('conv_products')
             . " WHERE " . $driver->quoteName('id') . " = 1";
         $result = $driver->setQuery($sql)->loadAssoc();
+        $this->assertNotNull($result);
         $this->assertEquals(95, $result['stock']);
         $this->assertEquals('Widget (Low Stock)', $result['name']);
     }

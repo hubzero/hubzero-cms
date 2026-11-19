@@ -283,7 +283,7 @@ Examples:
                 // Browsers drop whitespace and control characters from a URL
                 // before reading its scheme ("java\tscript:" is javascript:),
                 // so test the scheme on the same stripped form
-                $probe = preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
+                $probe = (string) preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
                 if (
                     preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
                     && !in_array(strtolower($m[1]), ['http', 'https', 'mailto', 'ftp'])

@@ -52,7 +52,7 @@ class Builder
             if (!class_exists($cls)) {
                 $cls = $this->find($method);
 
-                if (!class_exists($cls)) {
+                if (!class_exists((string) $cls)) {
                     throw new InvalidArgumentException(sprintf('%s %s not found.', $cls, $func), 500);
                 }
             }

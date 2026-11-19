@@ -144,7 +144,7 @@ class Pages extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->name)),
+                Lang::txt(strtoupper((string) $this->name)),
                 'index.php?option=' . $this->option . '&controller=' . $this->controller,
             );
         }
@@ -976,7 +976,7 @@ class Pages extends SiteController
 
         // Set the page's <title> tag
         Document::setTitle(
-            Lang::txt(strtoupper($this->name)) . ': '
+            Lang::txt(strtoupper((string) $this->name)) . ': '
             . $this->page->title . ': '
             . Lang::txt('RENAME'),
         );
@@ -984,7 +984,7 @@ class Pages extends SiteController
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
-                Lang::txt(strtoupper($this->name)),
+                Lang::txt(strtoupper((string) $this->name)),
                 'index.php?option=' . $this->option,
             );
         }
@@ -1111,7 +1111,7 @@ class Pages extends SiteController
                     '<a href="'
                         . Route::url($this->page->link())
                         . '">'
-                        . htmlspecialchars((string) ($this->page->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $this->page->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1241,8 +1241,8 @@ class Pages extends SiteController
 
         $html = $this->view->loadTemplate();
         // Strip elements that TCPDF doesn't handle
-        $html = preg_replace('#</?(?:thead|tbody)(?:\s[^>]*)?>#i', '', $html);
-        $html = preg_replace('#\s+scope="[^"]*"#i', '', $html);
+        $html = (string) preg_replace('#</?(?:thead|tbody)(?:\s[^>]*)?>#i', '', $html);
+        $html = (string) preg_replace('#\s+scope="[^"]*"#i', '', $html);
 
         // Sanitize HTML for TCPDF compatibility
         $html = self::sanitizeHtmlForPdf($html);
@@ -1250,7 +1250,7 @@ class Pages extends SiteController
         // Render math formulas as PNG images for PDF (MathJax can't run in TCPDF)
         $mathTmpDir = PATH_APP . '/site/wiki/tmp';
         $mathOutDir = PATH_APP . '/site/wiki/math';
-        $html = preg_replace_callback('#<span class="asciimath">\$\$(.*?)\$\$</span>#s', function ($m) use (
+        $html = (string) preg_replace_callback('#<span class="asciimath">\$\$(.*?)\$\$</span>#s', function ($m) use (
             $mathTmpDir,
             $mathOutDir,
         ) {
@@ -1335,15 +1335,15 @@ class Pages extends SiteController
             'summary',
         ];
         foreach ($semanticTags as $tag) {
-            $html = preg_replace('/<' . $tag . '\b([^>]*)>/i', '<div$1>', $html);
-            $html = preg_replace('/<\/' . $tag . '>/i', '</div>', $html);
+            $html = (string) preg_replace('/<' . $tag . '\b([^>]*)>/i', '<div$1>', $html);
+            $html = (string) preg_replace('/<\/' . $tag . '>/i', '</div>', $html);
         }
 
         // Remove orphaned </li></ul> or </li></ol> sequences from wiki parser
         $maxPasses = 5;
         for ($i = 0; $i < $maxPasses; $i++) {
             $prev = $html;
-            $html = preg_replace('/(<\/[uo]l>)\s*(<!--[^>]*-->\s*)?<\/li>\s*<\/[uo]l>/i', '$1', $html);
+            $html = preg_replace('/(<\/[uo]l>)\s*(<!--[^>]*-->\s*)?<\/li>\s*<\/[uo]l>/i', '$1', (string) $html);
             if ($html === $prev) {
                 break;
             }

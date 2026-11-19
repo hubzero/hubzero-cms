@@ -31,16 +31,18 @@ class File extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $attributes = [
             'type'         => 'file',
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
-            'accept'       => ($this->element['accept'] ? (string) $this->element['accept'] : ''),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'size'         => ($element['size'] ? (int) $element['size'] : ''),
+            'accept'       => ($element['accept'] ? (string) $element['accept'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         $attr = [];

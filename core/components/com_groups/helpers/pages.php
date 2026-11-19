@@ -709,7 +709,7 @@ class Pages
         // First, remove <pre> tags
         //   This is in case the content is HTML but contains a block of
         //   sample wiki markup.
-        $content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
+        $content = (string) preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
 
         // If wiki <pre> syntax is found
         if ((strstr($content, '{{{') && strstr($content, '}}}')) || strstr($content, '#!html')) {

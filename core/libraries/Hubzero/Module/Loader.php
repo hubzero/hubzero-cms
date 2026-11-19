@@ -585,7 +585,7 @@ class Loader
      */
     public function canonical($module)
     {
-        $module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module);
+        $module = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $module);
         if (substr($module, 0, strlen('mod_')) != 'mod_') {
             $module = 'mod_' . $module;
         }

@@ -46,8 +46,8 @@ class Template extends Scaffolding
         }
 
         // Normalize source and destination
-        $to       = trim($to, DS);
-        $from     = trim($from, DS);
+        $to       = trim((string) $to, DS);
+        $from     = trim((string) $from, DS);
         $pathTo   = PATH_CORE;
         $pathFrom = PATH_CORE;
 

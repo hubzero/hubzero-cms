@@ -240,7 +240,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             WHERE RDB\$SYSTEM_FLAG = 0 AND RDB\$VIEW_BLR IS NULL
             ORDER BY RDB\$RELATION_NAME
         ");
-        $tables = $driver->loadColumn();
+        $tables = $driver->loadColumn() ?? [];
 
         $this->assertContains('FT_CATEGORIES', $tables);
         $this->assertContains('FT_ITEMS', $tables);
@@ -449,7 +449,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         $driver->exec("UPDATE FT_CATEGORIES SET NAME = 'Updated Name' WHERE SLUG = 'update-test'");
 
         $driver->setQuery("SELECT NAME FROM FT_CATEGORIES WHERE SLUG = 'update-test'");
-        $this->assertEquals('Updated Name', trim($driver->loadResult()));
+        $this->assertEquals('Updated Name', trim((string) $driver->loadResult()));
 
         $driver->exec("DELETE FROM FT_CATEGORIES WHERE SLUG = 'update-test'");
     }
@@ -645,7 +645,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery("SELECT 'Hello' || ' ' || 'World' AS greeting FROM RDB\$DATABASE");
-        $this->assertEquals('Hello World', trim($driver->loadResult()));
+        $this->assertEquals('Hello World', trim((string) $driver->loadResult()));
     }
 
     #[Test]
@@ -686,7 +686,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery("SELECT SUBSTRING('Hello World' FROM 1 FOR 5) AS sub FROM RDB\$DATABASE");
-        $this->assertEquals('Hello', trim($driver->loadResult()));
+        $this->assertEquals('Hello', trim((string) $driver->loadResult()));
     }
 
     #[Test]
@@ -714,7 +714,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery("SELECT COALESCE(NULL, 'default') AS result FROM RDB\$DATABASE");
-        $this->assertEquals('default', trim($driver->loadResult()));
+        $this->assertEquals('default', trim((string) $driver->loadResult()));
     }
 
     #[Test]
@@ -1529,7 +1529,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
         $driver->exec("INSERT INTO MIG_DEFAULTS (ID) VALUES (1)");
         $driver->setQuery("SELECT STATUS FROM MIG_DEFAULTS WHERE ID = 1");
-        $this->assertEquals('active', trim($driver->loadResult()));
+        $this->assertEquals('active', trim((string) $driver->loadResult()));
     }
 
     #[Test]

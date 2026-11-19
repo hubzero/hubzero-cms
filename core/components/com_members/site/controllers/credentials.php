@@ -596,11 +596,11 @@ class Credentials extends SiteController
     private function setTitle()
     {
         Document::setTitle(
-            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->task)),
+            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst((string) $this->task)),
         );
 
         Pathway::append(
-            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->task)),
+            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst((string) $this->task)),
             'index.php?option=' . $this->option . '&task=' . $this->task,
         );
     }

@@ -805,8 +805,8 @@ class DiffSqlGenerator
     protected function extractBaseType(string $type): string
     {
         // Remove size specification and unsigned/signed
-        $type = preg_replace('/\([^)]+\)/', '', $type);
-        $type = preg_replace('/\s+(UNSIGNED|SIGNED)\b/i', '', $type);
+        $type = (string) preg_replace('/\([^)]+\)/', '', $type);
+        $type = (string) preg_replace('/\s+(UNSIGNED|SIGNED)\b/i', '', $type);
         return trim($type);
     }
 
@@ -944,7 +944,7 @@ class DiffSqlGenerator
         $type = $column->getFullType();
 
         // Remove UNSIGNED from type (handled separately as modifier)
-        $type = preg_replace('/\s+unsigned\b/i', '', $type);
+        $type = (string) preg_replace('/\s+unsigned\b/i', '', $type);
 
         return trim($type);
     }

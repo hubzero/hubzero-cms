@@ -32,7 +32,7 @@ class Formatter
         $t = preg_replace('/\r\n?/', "\n", $t);
 
         // Keep link targets: "label (https://url)" (or just the url if bare).
-        $t = preg_replace_callback('/<a\b[^>]*href=(["\'])(.*?)\1[^>]*>(.*?)<\/a>/is', function ($m) {
+        $t = (string) preg_replace_callback('/<a\b[^>]*href=(["\'])(.*?)\1[^>]*>(.*?)<\/a>/is', function ($m) {
             $url   = trim($m[2]);
             $label = trim(strip_tags($m[3]));
             if ($label === '' || $label === $url) {
@@ -41,13 +41,13 @@ class Formatter
             return $label . ' (' . $url . ')';
         }, $t);
 
-        $t = preg_replace('/<\s*br\s*\/?\s*>/i', "\n", $t);
-        $t = preg_replace('/<\s*li[^>]*>/i', "\n\xE2\x80\xA2 ", $t); // bullet each list item
-        $t = preg_replace('/<\/\s*(p|div|h[1-6]|li|tr|blockquote|ul|ol)\s*>/i', "\n\n", $t);
+        $t = (string) preg_replace('/<\s*br\s*\/?\s*>/i', "\n", $t);
+        $t = (string) preg_replace('/<\s*li[^>]*>/i', "\n\xE2\x80\xA2 ", $t); // bullet each list item
+        $t = (string) preg_replace('/<\/\s*(p|div|h[1-6]|li|tr|blockquote|ul|ol)\s*>/i', "\n\n", $t);
         $t = strip_tags($t);
         $t = html_entity_decode($t, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $t = preg_replace("/[ \t]+\n/", "\n", $t);
-        $t = preg_replace("/\n{3,}/", "\n\n", $t);
+        $t = (string) preg_replace("/[ \t]+\n/", "\n", $t);
+        $t = (string) preg_replace("/\n{3,}/", "\n\n", $t);
         return trim($t);
     }
 

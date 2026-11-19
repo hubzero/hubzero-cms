@@ -373,7 +373,7 @@ class Request extends BaseRequest
      */
     public function current($query = false)
     {
-        return ($query ? $this->getUri() : rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/'));
+        return ($query ? $this->getUri() : rtrim((string) preg_replace('/\?.*/', '', $this->getUri()), '/'));
     }
 
     /**

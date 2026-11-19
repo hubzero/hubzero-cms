@@ -636,7 +636,7 @@ class BibTex
      */
     public function unwrap($entry)
     {
-        $entry = preg_replace('/\s+/', ' ', $entry);
+        $entry = (string) preg_replace('/\s+/', ' ', $entry);
         return trim($entry);
     }
 

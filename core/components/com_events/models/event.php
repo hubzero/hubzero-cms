@@ -309,7 +309,7 @@ class Event extends Model
 
         // Apache aborts the request (AH02430) on a control character in a
         // header value, so keep only safe ASCII in the filename.
-        $filename = trim(preg_replace('/[^a-z0-9._-]+/', '_', strtolower($title)), '._');
+        $filename = trim((string) preg_replace('/[^a-z0-9._-]+/', '_', strtolower($title)), '._');
 
         //set the headers for output
         header('Content-type: text/calendar; charset=utf-8');

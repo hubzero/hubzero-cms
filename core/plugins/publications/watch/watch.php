@@ -211,7 +211,7 @@ class Watch extends Plugin
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $this->publication->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -236,7 +236,7 @@ class Watch extends Plugin
     /**
      * Notify subscribers of new activity
      *
-     * @param   \Components\Publications\Models\Publication|null  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication  $publication  Publication model
      * @param   string  $activity
      * @return  void
      */

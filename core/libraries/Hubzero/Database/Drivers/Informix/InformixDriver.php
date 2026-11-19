@@ -299,7 +299,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Enable ANSI mode for better SQL standard compliance
         try {
-            $this->connection->exec('SET LOCK MODE TO WAIT');
+            $this->connectionOrFail()->exec('SET LOCK MODE TO WAIT');
             $this->trace('exec SET LOCK MODE TO WAIT');
         } catch (\PDOException $e) {
             $this->trace('exec SET LOCK MODE TO WAIT failed: ' . $e->getMessage());
@@ -318,7 +318,7 @@ class InformixDriver extends BaseSqlDriver
     public function insertid()
     {
         // PDO_INFORMIX supports lastInsertId() for SERIAL columns
-        return (int) $this->connection->lastInsertId();
+        return (int) $this->connectionOrFail()->lastInsertId();
     }
 
     /**
@@ -395,8 +395,8 @@ class InformixDriver extends BaseSqlDriver
         if ($isDdl && $this->transactionDepth === 0) {
             $this->lastWasDdl = true;
             try {
-                if ($this->connection->inTransaction()) {
-                    $this->connection->commit();
+                if ($this->connectionOrFail()->inTransaction()) {
+                    $this->connectionOrFail()->commit();
                 }
             } catch (\PDOException $e) {
                 // Ignore
@@ -417,7 +417,7 @@ class InformixDriver extends BaseSqlDriver
      */
     public function exec($statement)
     {
-        $firstWord = strtoupper((string) (strtok(ltrim((string) $statement), " \t\n")));
+        $firstWord = strtoupper((string) strtok(ltrim((string) $statement), " \t\n"));
         $isDdl = in_array($firstWord, ['CREATE', 'ALTER', 'DROP', 'TRUNCATE', 'RENAME'], true);
 
         if (
@@ -560,7 +560,7 @@ class InformixDriver extends BaseSqlDriver
             // In this PDO_INFORMIX/ODBC stack, upgrading large strings to
             // PARAM_LOB stream introduced deterministic corruption:
             // payload length +1 with an embedded NUL near 8KB boundaries.
-            $this->statement->bindValue($idx, $binding, $pdoType);
+            $this->statementOrFail()->bindValue($idx, $binding, $pdoType);
             $idx++;
         }
 
@@ -703,7 +703,7 @@ class InformixDriver extends BaseSqlDriver
 
         if ($this->transactionDepth == 0) {
             if ($this->supportsTransactionSql()) {
-                $this->connection->exec('BEGIN WORK');
+                $this->connectionOrFail()->exec('BEGIN WORK');
                 $this->transactionEmulationActive = false;
             } else {
                 // Non-logging Informix databases cannot run transactions.
@@ -746,7 +746,7 @@ class InformixDriver extends BaseSqlDriver
                 return;
             }
 
-            $this->connection->exec('COMMIT WORK');
+            $this->connectionOrFail()->exec('COMMIT WORK');
         } elseif (!$this->transactionEmulationActive) {
             $this->setQuery('RELEASE SAVEPOINT SP_' . $this->transactionDepth)->execute();
         }
@@ -774,7 +774,7 @@ class InformixDriver extends BaseSqlDriver
                 return;
             }
 
-            $this->connection->exec('ROLLBACK WORK');
+            $this->connectionOrFail()->exec('ROLLBACK WORK');
         } elseif (!$this->transactionEmulationActive) {
             $this->setQuery('ROLLBACK TO SAVEPOINT SP_' . $this->transactionDepth)->execute();
         }
@@ -816,8 +816,8 @@ class InformixDriver extends BaseSqlDriver
         }
 
         try {
-            $this->connection->exec('BEGIN WORK');
-            $this->connection->exec('ROLLBACK WORK');
+            $this->connectionOrFail()->exec('BEGIN WORK');
+            $this->connectionOrFail()->exec('ROLLBACK WORK');
             $this->transactionSqlSupported = true;
             return true;
         } catch (\Throwable $e) {
@@ -887,7 +887,7 @@ class InformixDriver extends BaseSqlDriver
         }
 
         // Use PDO's quote method
-        return $this->connection->quote($text);
+        return $this->connectionOrFail()->quote($text);
     }
 
     /**
@@ -2345,7 +2345,7 @@ class InformixDriver extends BaseSqlDriver
             . " WHERE t.tabname = ? AND c.constrtype = 'P'";
 
         try {
-            $stmt = $this->connection->prepare($sql);
+            $stmt = $this->connectionOrFail()->prepare($sql);
             $stmt->execute([$tableName]);
             $pkName = $stmt->fetchColumn();
             $stmt->closeCursor();
@@ -3438,7 +3438,7 @@ class InformixDriver extends BaseSqlDriver
 
         // 2. Populate with sequential IDs using ROWID
         $this->setQuery("SELECT ROWID FROM $table ORDER BY ROWID");
-        $rowids = $this->loadColumn();
+        $rowids = $this->loadColumn() ?? [];
         $i = 1;
         foreach ($rowids as $rowid) {
             $this->setQuery("UPDATE $table SET $column = $i WHERE ROWID = $rowid")->execute();

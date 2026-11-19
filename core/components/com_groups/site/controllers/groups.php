@@ -866,7 +866,7 @@ class Groups extends Base
 
         // Get the "from" info
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper((string) $this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -985,7 +985,7 @@ class Groups extends Base
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1199,7 +1199,7 @@ class Groups extends Base
 
         // Build the "from" info for e-mails
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper((string) $this->name));
         $from['email'] = Config::get('mailfrom');
 
         // E-mail subject
@@ -1267,7 +1267,7 @@ class Groups extends Base
                     '<a href="'
                         . Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn'))
                         . '">'
-                        . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $deletedgroup->get('description'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1496,7 +1496,7 @@ class Groups extends Base
         }
 
         // Clean up file, strip double "uploads" & trim directory sep
-        $file = preg_replace('/^\/uploads\//', '', $file);
+        $file = (string) preg_replace('/^\/uploads\//', '', $file);
         $file = ltrim($file, DS);
 
         // Get extension

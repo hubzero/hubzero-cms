@@ -344,7 +344,7 @@ class Query extends Relational
 
             //$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
             $prfx = 'f';
-            if (strtolower($expr->fldval) == 'tag') {
+            if (strtolower((string) $expr->fldval) == 'tag') {
                 continue;
             }
 
@@ -386,7 +386,7 @@ class Query extends Relational
             }
 
             if (strstr($expr->opval, '$1')) {
-                if (strtolower($expr->fldval) == 'tag') {
+                if (strtolower((string) $expr->fldval) == 'tag') {
                     //$e[] = '(' . $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val,
                     //    $expr->opval) . ' OR ' . $prfx . '.' . $db->quoteName('raw_' . $expr->fldval) . ' '
                     //    . str_replace('$1', $expr->val, $expr->opval) . ')';
@@ -399,13 +399,13 @@ class Query extends Relational
                 }
             } else {
                 $uid = 'username';
-                if (strtolower($expr->fldval) == 'owner') {
+                if (strtolower((string) $expr->fldval) == 'owner') {
                     $uid = 'id';
                 }
 
                 if ($expr->val == '$me') {
                     $expr->val = $user->get($uid);
-                } elseif (strtolower($expr->fldval) == 'owner') {
+                } elseif (strtolower((string) $expr->fldval) == 'owner') {
                     $vuser = User::getInstance($expr->val);
 
                     if ($vuser->get('id')) {
@@ -413,7 +413,7 @@ class Query extends Relational
                     }
                 }
 
-                if (strtolower($expr->fldval) == 'status' && $expr->val == '-1') {
+                if (strtolower((string) $expr->fldval) == 'status' && $expr->val == '-1') {
                     $condition->expressions[$i]->val = '0';
 
                     $e[] = '('

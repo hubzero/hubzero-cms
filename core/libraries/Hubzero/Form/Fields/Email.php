@@ -29,18 +29,20 @@ class Email extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-        $maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
-        $class = $this->element['class'] ? ' ' . (string) $this->element['class'] : '';
-        $readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
-        $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $size = $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
+        $maxLength = $element['maxlength'] ? ' maxlength="' . (int) $element['maxlength'] . '"' : '';
+        $class = $element['class'] ? ' ' . (string) $element['class'] : '';
+        $readonly = ((string) $element['readonly'] == 'true') ? ' readonly="readonly"' : '';
+        $disabled = ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
         // " and \ are always forbidden in email unless escaped.
         $this->value = str_replace(['"','\\'], '', $this->value);
 
         // Initialize JavaScript field attributes.
-        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $onchange = $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         return '<input type="text" name="'
             . $this->name

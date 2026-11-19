@@ -165,13 +165,13 @@ class Info extends Obj
             ob_end_clean();
 
             preg_match_all('#<body[^>]*>(.*)</body>#siU', $phpinfo, $output);
-            $output = preg_replace('#<table[^>]*>#', '<table class="adminlist">', $output[1][0]);
-            $output = preg_replace('#(\w),(\w)#', '\1, \2', $output);
-            $output = preg_replace('#<hr />#', '', $output);
+            $output = (string) preg_replace('#<table[^>]*>#', '<table class="adminlist">', $output[1][0]);
+            $output = (string) preg_replace('#(\w),(\w)#', '\1, \2', $output);
+            $output = (string) preg_replace('#<hr />#', '', $output);
             $output = str_replace('<div class="center">', '', $output);
             $pattern = '#<tr class="h">(.*)<\/tr>#';
             $replacement = '<thead><tr class="h">$1</tr></thead><tbody>';
-            $output = preg_replace($pattern, $replacement, $output);
+            $output = (string) preg_replace($pattern, $replacement, $output);
             $output = str_replace('</table>', '</tbody></table>', $output);
             $output = str_replace('</div>', '', $output);
 

@@ -39,8 +39,8 @@ class Sortcourses extends Plugin
 
         // Compare the leading parts of the resources to guess whether they
         // refer to the same course
-        $title_a = preg_replace('/[^a-z]/', '', strtolower($a->getTitle()));
-        $title_b = preg_replace('/[^a-z]/', '', strtolower($a->getTitle()));
+        $title_a = (string) preg_replace('/[^a-z]/', '', strtolower($a->getTitle()));
+        $title_b = (string) preg_replace('/[^a-z]/', '', strtolower($a->getTitle()));
         $match_threshold = 10;
         $match = true;
         for ($idx = 0; $idx < min($match_threshold, min(strlen($title_a), strlen($title_b))); ++$idx) {

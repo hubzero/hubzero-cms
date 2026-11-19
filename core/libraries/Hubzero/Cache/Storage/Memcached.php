@@ -19,9 +19,9 @@ class Memcached extends None
     /**
      * Memcached engine
      *
-     * @var  \Memcached|null
+     * @var  \Memcached
      */
-    protected $engine = null;
+    protected $engine;
 
     /**
      * Create a new file cache store instance.
@@ -37,11 +37,9 @@ class Memcached extends None
             throw new RuntimeException('Cannot use memcached cache storage. Memcached extension is not loaded.');
         }
 
-        if (isset($this->options['engine'])) {
-            $this->engine = $this->options['engine'];
-        }
+        $engine = $this->options['engine'] ?? null;
 
-        if (!$this->engine) {
+        if (!$engine) {
             if (!isset($this->options['servers']) || empty($this->options['servers'])) {
                 $config = \Hubzero\Facades\App::get('config');
                 $this->options['servers'] = [
@@ -53,8 +51,10 @@ class Memcached extends None
                 ];
             }
 
-            $this->engine = $this->connect($this->options['servers']);
+            $engine = $this->connect($this->options['servers']);
         }
+
+        $this->engine = $engine;
     }
 
     /**

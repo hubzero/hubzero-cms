@@ -32,7 +32,7 @@ class Javascript extends File
         parent::__construct($extension, $name);
 
         // Try to detect if the asset is a declaration
-        if (!$extension || strstr($name, '(') || strstr($name, ';')) {
+        if (!$extension || strstr((string) $name, '(') || strstr((string) $name, ';')) {
             $this->declaration = true;
 
             // Reset the name in case any parsing/modification

@@ -591,7 +591,7 @@ class Uri
     {
         // Browsers strip ASCII tab/newline anywhere in a URL before parsing it, so
         // judge a copy with control characters removed ("/\t/evil.com" is "//evil.com")
-        $probe = preg_replace('/[\x00-\x20]+/', '', (string) $url);
+        $probe = (string) preg_replace('/[\x00-\x20]+/', '', (string) $url);
 
         // Protocol-relative and backslash forms are resolved by browsers as another host
         if (preg_match('#^(//|/\\\\|\\\\)#', $probe)) {
@@ -638,7 +638,7 @@ class Uri
      */
     protected function clean($path)
     {
-        $path = explode('/', preg_replace('#(/+)#', '/', $path));
+        $path = explode('/', (string) preg_replace('#(/+)#', '/', $path));
 
         for ($i = 0, $n = count($path); $i < $n; $i++) {
             if ($path[$i] == '.' or $path[$i] == '..') {

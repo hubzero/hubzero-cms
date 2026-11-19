@@ -264,7 +264,7 @@ class Newsletters extends SiteController
         header("Content-type: application/pdf");
         header(
             'Content-Disposition: attachment; filename="'
-                . str_replace([' ', '"', ';', '\\'], '_', $newsletter->name)
+                . str_replace([' ', '"', ';', '\\'], '_', (string) $newsletter->name)
                 . '.pdf"',
         );
         header("Pragma: no-cache");

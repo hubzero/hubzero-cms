@@ -164,7 +164,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         // Extract base type (before parentheses)
         $type = strtolower(trim($type));
-        $baseType = preg_replace('/\(.*\)/', '', $type);
+        $baseType = (string) preg_replace('/\(.*\)/', '', $type);
         $baseType = trim($baseType);
 
         // Check for exact match first

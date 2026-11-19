@@ -95,7 +95,7 @@ class Members extends Plugin
 
                 // Get any profile fields that are public
                 $sql3 = "SELECT profile_key, profile_value FROM #__user_profiles WHERE user_id={$id} AND access=1;";
-                $profileFields = $db->setQuery($sql3)->query()->loadAssocList();
+                $profileFields = $db->setQuery($sql3)->query()->loadAssocList() ?? [];
 
                 $profile = '';
                 foreach ($profileFields as $field) {
@@ -104,8 +104,8 @@ class Members extends Plugin
 
                 // Build the description, clean up text
                 $content = $row->email . ' ' . $profile;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

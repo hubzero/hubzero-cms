@@ -59,7 +59,7 @@ class SectionDate extends Table
         }
 
         $fields = [
-            'scope'    => trim($scope),
+            'scope'    => trim((string) $scope),
             'scope_id' => intval($oid),
         ];
         if ($section_id !== null) {

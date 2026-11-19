@@ -400,7 +400,7 @@ class Tag extends Relational
             array_values($transliterationTable),
             $tag == null ? '' : $tag,
         );
-        return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
+        return strtolower((string) preg_replace("/[^a-zA-Z0-9]/", '', $tag));
     }
 
     /**

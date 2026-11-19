@@ -32,7 +32,7 @@ class Stylesheet extends File
         parent::__construct($extension, $name);
 
         // Try to detect if the asset is a declaration
-        if (!$this->extension || strstr($name, '{') || strstr($name, '@')) {
+        if (!$this->extension || strstr((string) $name, '{') || strstr((string) $name, '@')) {
             $this->declaration = true;
 
             // Reset the name in case any parsing/modification

@@ -778,7 +778,7 @@ class Captcha extends Plugin
      */
     private function hexToRgb($hex)
     {
-        $hex = preg_replace("/#/", '', $hex);
+        $hex = (string) preg_replace("/#/", '', $hex);
         $color = [];
 
         if (strlen($hex) == 3) {

@@ -59,7 +59,7 @@ foreach ($this->rows as $row) {
 }
 
 $message .= Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_MORE', Config::get('sitename'));
-$message = preg_replace('/\n{3,}/', "\n\n", $message);
+$message = (string) preg_replace('/\n{3,}/', "\n\n", $message);
 
 // Output message
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n\n";

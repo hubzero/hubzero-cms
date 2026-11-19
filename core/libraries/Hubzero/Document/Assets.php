@@ -746,7 +746,7 @@ class Assets
                 $contents = str_replace(
                     ["url('/media/system/", "url('/core/assets/"],
                     "url('" . rtrim(Request::root(true), '/') . "/core/assets/",
-                    $contents,
+                    (string) $contents,
                 );
 
                 if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) {

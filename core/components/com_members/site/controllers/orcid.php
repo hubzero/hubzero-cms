@@ -92,7 +92,7 @@ class Orcid extends SiteController
 
         $xmlStr = htmlentities((string) $curlData);
 
-        $xmlStr = preg_replace('/[a-zA-Z-]+[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
+        $xmlStr = (string) preg_replace('/[a-zA-Z-]+[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
 
         $xmlStr = html_entity_decode($xmlStr);
 
@@ -234,7 +234,7 @@ class Orcid extends SiteController
         $curlData = curl_exec($initedCurl);
 
         $xmlStr = htmlentities((string) $curlData);
-        $xmlStr = preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
+        $xmlStr = (string) preg_replace('/[a-zA-Z]+:([a-zA-Z])/', '$1', $xmlStr);
         $xmlStr = html_entity_decode($xmlStr);
 
         if (!curl_errno($initedCurl)) {
@@ -281,7 +281,7 @@ class Orcid extends SiteController
     private function httpParseHeaders($header)
     {
         $retVal = [];
-        $fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
+        $fields = explode("\r\n", (string) preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
         foreach ($fields as $field) {
             if (preg_match('/([^:]+): (.+)/m', $field, $match)) {
                 $match[1] = preg_replace_callback(

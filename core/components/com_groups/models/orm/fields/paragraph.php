@@ -29,10 +29,12 @@ class Paragraph extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $baseClass = 'paragraph paragraph-' . $this->id;
-        if ($this->element['class']) {
-            $class = ' class="' . $baseClass . ' ' . (string) $this->element['class'] . '"';
+        if ($element['class']) {
+            $class = ' class="' . $baseClass . ' ' . (string) $element['class'] . '"';
         } else {
             $class = ' class="' . $baseClass . '"';
         }
@@ -43,7 +45,7 @@ class Paragraph extends Field
         // Start the radio field output.
         $html[] = '<p id="' . $this->id . '"' . $class . '>';
 
-        $html[] = isset($this->element['description']) ? $this->element['description'] : '';
+        $html[] = isset($element['description']) ? $element['description'] : '';
 
         // End the radio field output.
         $html[] = '</p>';

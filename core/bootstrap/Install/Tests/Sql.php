@@ -132,7 +132,7 @@ class Sql
 
                 foreach (explode(',', $k[1]) as $column) {
                     // An index may name a prefix length; the column is the name
-                    $columns[] = trim(preg_replace('/\(\d+\)$/', '', trim($column)), '` ');
+                    $columns[] = trim((string) preg_replace('/\(\d+\)$/', '', trim($column)), '` ');
                 }
 
                 $this->uniques[$table][] = $columns;

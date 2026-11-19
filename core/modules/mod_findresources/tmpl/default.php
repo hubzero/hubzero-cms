@@ -57,7 +57,7 @@ defined('_HZEXEC_') or die();
         $i = 0;
         foreach ($this->categories as $category) {
             $i++;
-            $normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($category->type));
+            $normalized = (string) preg_replace("/[^a-zA-Z0-9]/", '', strtolower($category->type));
 
             if (substr($normalized, -3) == 'ies') {
                 $cls = $normalized;

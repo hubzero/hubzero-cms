@@ -1934,7 +1934,7 @@ class Query
         // Check if driver supports native fulltext search (MySQL/MariaDB/Informix BTS)
         // getDriverType(): this asked for a getName() the driver does not have,
         // which its __call() answered with null, so MySQL never got MATCH
-        $driverName = strtolower($this->connection->getDriverType());
+        $driverName = strtolower($this->connectionOrFail()->getDriverType());
         $isInformix = $driverName === 'informix'
             || $this->connection instanceof \Hubzero\Database\Drivers\Informix\InformixDriver;
         $supportsFulltext = in_array($driverName, ['mysql', 'mariadb', 'percona']);
@@ -1973,7 +1973,7 @@ class Query
             $useBtsSingle = in_array($informixMode, ['hybrid', 'bts'], true);
 
             if ($useBtsSingle && count($columns) === 1) {
-                $quoted = $this->connection->quoteName($columns[0]);
+                $quoted = $this->connectionOrFail()->quoteName($columns[0]);
                 $raw = "bts_contains({$quoted}, ?)";
                 $bindings = [$value];
             } elseif ($informixMode === 'bts' && count($columns) > 1) {
@@ -1982,7 +1982,7 @@ class Query
                 $clauses = [];
                 $bindings = [];
 
-                $firstQuoted = $this->connection->quoteName($columns[0]);
+                $firstQuoted = $this->connectionOrFail()->quoteName($columns[0]);
                 $clauses[] = "bts_contains({$firstQuoted}, ?)";
                 $bindings[] = $value;
 
@@ -2938,7 +2938,7 @@ class Query
         $this->type = 'update';
 
         // Build the data array with increment expression
-        $quotedColumn = $this->connection->quoteName($column);
+        $quotedColumn = $this->connectionOrFail()->quoteName($column);
         $data = [
             $column => new Value\Raw("{$quotedColumn} + {$amount}"),
         ];
@@ -2950,7 +2950,7 @@ class Query
 
         $this->syntax->setSet($data);
         $this->execute();
-        return $this->connection->getAffectedRows();
+        return $this->connectionOrFail()->getAffectedRows();
     }
 
     /**
@@ -2987,7 +2987,7 @@ class Query
         $this->type = 'update';
 
         // Build the data array with decrement expression
-        $quotedColumn = $this->connection->quoteName($column);
+        $quotedColumn = $this->connectionOrFail()->quoteName($column);
         $data = [
             $column => new Value\Raw("{$quotedColumn} - {$amount}"),
         ];
@@ -2999,7 +2999,7 @@ class Query
 
         $this->syntax->setSet($data);
         $this->execute();
-        return $this->connection->getAffectedRows();
+        return $this->connectionOrFail()->getAffectedRows();
     }
 
     /**
@@ -4151,7 +4151,7 @@ class Query
         $statements = $this->syntax->getTruncateStatements($table);
 
         foreach ($statements as $sql) {
-            $this->connection->setQuery($sql)->query();
+            $this->connectionOrFail()->setQuery($sql)->query();
         }
 
         return true;
@@ -4250,7 +4250,7 @@ class Query
         // Clear elements
         $this->reset();
 
-        return $this->connection->getCachedQueryResult($memoryCacheKey);
+        return $this->connectionOrFail()->getCachedQueryResult($memoryCacheKey);
     }
 
     /**
@@ -4322,7 +4322,7 @@ class Query
         $result = $this->execute();
 
         // Return the inserted data
-        return !$result ?: $this->connection->insertid();
+        return !$result ?: $this->connectionOrFail()->insertid();
     }
 
     /**
@@ -4351,7 +4351,7 @@ class Query
 
         $result = $this->execute();
 
-        return !$result ?: $this->connection->insertid();
+        return !$result ?: $this->connectionOrFail()->insertid();
     }
 
     /**
@@ -4717,7 +4717,7 @@ class Query
             if (
                 $this->type === 'insert'
                 && $this->syntax->isIgnore()
-                && $this->connection->isDuplicateKeyException($e)
+                && $this->connectionOrFail()->isDuplicateKeyException($e)
             ) {
                 // Silently ignore the duplicate - clear state and return success
                 $this->reset();
@@ -4758,8 +4758,8 @@ class Query
         $selectBindings = $this->syntax->getInsertSelectBindings();
 
         // Execute the SELECT to get the rows
-        $this->connection->prepare($selectSql)->bind($selectBindings);
-        $rows = $this->connection->loadObjectList();
+        $this->connectionOrFail()->prepare($selectSql)->bind($selectBindings);
+        $rows = $this->connectionOrFail()->loadObjectList();
 
         if (empty($rows)) {
             $this->reset();
@@ -4769,11 +4769,11 @@ class Query
         // Build quoted column list
         $quotedCols = [];
         foreach ($columns as $col) {
-            $quotedCols[] = $this->connection->quoteName($col);
+            $quotedCols[] = $this->connectionOrFail()->quoteName($col);
         }
         $colList = implode(', ', $quotedCols);
         $placeholders = implode(', ', array_fill(0, count($columns), '?'));
-        $quotedTable = $this->connection->quoteName($table);
+        $quotedTable = $this->connectionOrFail()->quoteName($table);
 
         $insertSql = "INSERT INTO {$quotedTable} ({$colList}) VALUES ({$placeholders})";
 
@@ -4782,11 +4782,11 @@ class Query
             $values = array_values($rowArray);
 
             try {
-                $this->connection->prepare($insertSql)->bind($values);
-                $this->connection->query();
+                $this->connectionOrFail()->prepare($insertSql)->bind($values);
+                $this->connectionOrFail()->query();
             } catch (\Exception $e) {
                 // Check if this is a duplicate key error — if so, skip silently
-                if ($this->connection->isDuplicateKeyException($e)) {
+                if ($this->connectionOrFail()->isDuplicateKeyException($e)) {
                     continue;
                 }
 
@@ -4808,7 +4808,7 @@ class Query
      */
     public function loadAssoc()
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadAssoc();
@@ -4824,7 +4824,7 @@ class Query
      */
     public function loadAssocList($key = null, $column = null)
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadAssocList($key, $column);
@@ -4838,7 +4838,7 @@ class Query
      */
     public function loadColumn($offset = 0)
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadColumn($offset);
@@ -4852,7 +4852,7 @@ class Query
      */
     public function loadNextObject($class = 'stdClass')
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadNextObject($class);
@@ -4865,7 +4865,7 @@ class Query
      */
     public function loadNextRow()
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadNextRow();
@@ -4879,7 +4879,7 @@ class Query
      */
     public function loadObject($class = 'stdClass')
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadObject($class);
@@ -4894,7 +4894,7 @@ class Query
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadObjectList($key, $class);
@@ -4907,7 +4907,7 @@ class Query
      */
     public function loadResult()
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadResult();
@@ -5062,7 +5062,7 @@ class Query
      */
     public function loadRow()
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadRow();
@@ -5076,7 +5076,7 @@ class Query
      */
     public function loadRowList($key = null)
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->loadRowList($key);
@@ -5100,11 +5100,11 @@ class Query
             $structure = 'rows';
         }
 
-        $this->connection->prepare($query)->bind($this->syntax->getBindings());
+        $this->connectionOrFail()->prepare($query)->bind($this->syntax->getBindings());
 
         $result = (isset($structure))
                 ? $this->connection->{constant('self::' . strtoupper($structure))}()
-                : $this->connection->query();
+                : $this->connectionOrFail()->query();
 
         return $result;
     }
@@ -5116,7 +5116,7 @@ class Query
      **/
     public function toString()
     {
-        return $this->connection
+        return $this->connectionOrFail()
             ->prepare($this->buildQuery($this->type))
             ->bind($this->syntax->getBindings())
             ->toString();
@@ -5190,7 +5190,7 @@ class Query
     private function reset()
     {
         // Reset the syntax element
-        $syntaxClass  = $this->resolveSyntaxClass((string) $this->connection->getSyntax());
+        $syntaxClass  = $this->resolveSyntaxClass((string) $this->connectionOrFail()->getSyntax());
         $this->syntax = new $syntaxClass($this->connection);
 
         // Reset condition group tracking
@@ -5718,5 +5718,20 @@ class Query
             'bindings' => $this->getBindings(),
             'raw_sql' => $this->toRawSql($type),
         ];
+    }
+
+    /**
+     * The connection, which the calls using it need set
+     *
+     * @return  \Hubzero\Database\Driver
+     * @throws  \LogicException  When it is not
+     */
+    protected function connectionOrFail()
+    {
+        if ($this->connection === null) {
+            throw new \LogicException(static::class . '::$connection is not set');
+        }
+
+        return $this->connection;
     }
 }

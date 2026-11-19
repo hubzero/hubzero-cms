@@ -61,7 +61,7 @@ class Migration20180627111315ComPublications extends Base
                     . "WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
                 $this->db->setQuery($query);
                 $this->db->query();
-                $publications = $this->db->loadAssocList();
+                $publications = $this->db->loadAssocList() ?? [];
 
                 foreach ($publications as $publication) {
                     $pubId = $publication['publication_id'];
@@ -93,7 +93,7 @@ class Migration20180627111315ComPublications extends Base
                 . "WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
             $this->db->setQuery($query);
             $this->db->query();
-            $publications = $this->db->loadAssocList();
+            $publications = $this->db->loadAssocList() ?? [];
 
             foreach ($publications as $publication) {
                 $pubId = $publication['publication_id'];

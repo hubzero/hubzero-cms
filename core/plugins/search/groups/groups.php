@@ -107,6 +107,9 @@ class Groups extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM #__xgroups WHERE gidNumber={$id} AND type = 1 OR type = 3;";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get any tags
                 $sql2 = "SELECT tag 
@@ -140,7 +143,7 @@ class Groups extends Plugin
 
                 // Build the description, clean up text
                 $content = preg_replace('/<[^>]*>/', ' ', $row->public_desc);
-                $content = preg_replace('/ {2,}/', ' ', (string) $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', (string) $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

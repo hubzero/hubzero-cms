@@ -448,7 +448,7 @@ class Offerings extends AdminController
 			 ORDER BY CASE WHEN ordering = 0 THEN 1 ELSE 0 END ASC, ordering ASC,
 			          COALESCE(NULLIF(publish_up, '0000-00-00 00:00:00'), created) DESC, id DESC",
         );
-        $ids = $this->database->loadColumn();
+        $ids = $this->database->loadColumn() ?? [];
 
         // Swap the target with its neighbour
         $pos = array_search($id, $ids);

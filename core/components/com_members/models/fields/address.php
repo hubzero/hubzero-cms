@@ -40,12 +40,14 @@ class Address extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
 
         // Initialize some field attributes.
         $class = ' class="radio addresses-' . $this->id;
-        $class .= $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '"';
+        $class .= $element['class'] ? ' ' . (string) $element['class'] . '"' : '"';
 
         // Start the radio field output.
         $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';

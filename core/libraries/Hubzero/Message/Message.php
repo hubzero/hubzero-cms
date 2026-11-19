@@ -180,7 +180,7 @@ class Message extends Relational
             "\n ",
             htmlspecialchars(stripslashes($this->get('message') ?? ''), ENT_NOQUOTES, 'UTF-8'),
         );
-        $message = preg_replace_callback("/$UrlPtrn/", [$this,'autolink'], $message);
+        $message = (string) preg_replace_callback("/$UrlPtrn/", [$this,'autolink'], $message);
         $message = nl2br($message);
         $message = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $message);
 

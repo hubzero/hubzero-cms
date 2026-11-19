@@ -135,7 +135,7 @@ class ServiceProvider extends Relational
      */
     public static function normalizeCertificate($cert)
     {
-        $cert = preg_replace('/-----(BEGIN|END)[^-]+-----/', '', (string) $cert);
+        $cert = (string) preg_replace('/-----(BEGIN|END)[^-]+-----/', '', (string) $cert);
 
         return preg_replace('/\s+/', '', $cert);
     }
@@ -175,7 +175,7 @@ class ServiceProvider extends Relational
 
         // Checked quietly first: OpenSSL warns about a certificate it cannot
         // read, and an SP's bad upload is not the hub's error to log
-        if (!function_exists('openssl_x509_read') || @openssl_x509_read($this->certificatePem()) === false) {
+        if (!function_exists('openssl_x509_read') || @openssl_x509_read((string) $this->certificatePem()) === false) {
             return null;
         }
 

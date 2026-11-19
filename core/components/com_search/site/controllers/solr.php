@@ -40,11 +40,11 @@ class Solr extends SiteController
     public function solrEscape($term)
     {
         $pattern = '/([+\-!(){}[\]^"~*?:\\/]|&&|\|\|)/';
-        $escaped = preg_replace($pattern, '\\\\$1', $term);
+        $escaped = (string) preg_replace($pattern, '\\\\$1', $term);
 
         $reserved = ['AND', 'OR', 'NOT'];
         foreach ($reserved as $word) {
-            $escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, $escaped);
+            $escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, (string) $escaped);
         }
 
         return $escaped;
@@ -353,7 +353,7 @@ class Solr extends SiteController
                 // between two words, so it becomes one rather than nothing -
                 // "took four\nof us" was coming out as "took fourof us".
                 $snippet = str_replace(["<br/>", "<br />", "<br>"], ' ', $snippet);
-                $snippet = preg_replace('/\s+/u', ' ', $snippet);
+                $snippet = (string) preg_replace('/\s+/u', ' ', $snippet);
                 $snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 500, $ellipsis = '…');
                 $snippet = \Hubzero\Utility\Str::highlight($snippet, $terms, $highlightOptions);
                 $result['snippet'] = trim($snippet);

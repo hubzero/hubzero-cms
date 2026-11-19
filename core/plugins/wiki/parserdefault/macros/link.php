@@ -69,12 +69,12 @@ Examples:
         $href  = array_shift($args);
         $title = (count($args) > 0) ? implode(' ', $args) : $href;
 
-        $title = preg_replace('/\(.*?\)/', '', $title);
-        $title = preg_replace('/^.*?\:/', '', $title);
+        $title = (string) preg_replace('/\(.*?\)/', '', $title);
+        $title = (string) preg_replace('/^.*?\:/', '', $title);
 
         // Browsers ignore control characters inside a scheme, so test a stripped copy
         // and allow only known-safe schemes (relative links have no scheme)
-        $chk = preg_replace('/[\x00-\x20]+/', '', (string) $href);
+        $chk = (string) preg_replace('/[\x00-\x20]+/', '', (string) $href);
         // The list matches the protocols parser.php itself links (its 'url'
         // pattern and buildLink both accept gopher, news and file). Leaving
         // those three out here rendered href="" for links the wiki syntax

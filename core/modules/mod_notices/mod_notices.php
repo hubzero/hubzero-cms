@@ -141,7 +141,7 @@ class Notices extends Module
     {
         // Replace email links
         $emailPattern = '/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/';
-        $text = preg_replace($emailPattern, '<a href="mailto:$1">$1</a>', $text);
+        $text = (string) preg_replace($emailPattern, '<a href="mailto:$1">$1</a>', $text);
 
         // Replace url links
         $urlPattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';

@@ -32,10 +32,12 @@ class Group extends Field
      */
     protected function getInput()
     {
-        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $element = $this->fieldElement();
+
+        $onchange = $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
         $options = [];
 
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             $optVal = (string) $option->attributes()->value;
             $optLabel = Lang::txt(trim((string) $option));
             $options[] = Html::select('option', $optVal, $optLabel);

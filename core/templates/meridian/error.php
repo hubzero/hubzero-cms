@@ -25,7 +25,8 @@ $cls = [
     $this->direction,
 ];
 
-$code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
+$error = $this->errorOrFail();
+$code = (is_numeric($error->getCode()) && $error->getCode() > 100 ? $error->getCode() : 500);
 
 Lang::load('tpl_' . $this->template)
 || Lang::load('tpl_' . $this->template, __DIR__);
@@ -209,9 +210,9 @@ Lang::load('tpl_' . $this->template)
     
                             <p class="error"><?php
                             if ($this->debug) {
-                                $message = $this->error->getMessage();
+                                $message = $this->errorOrFail()->getMessage();
                             } else {
-                                switch ($this->error->getCode()) {
+                                switch ($this->errorOrFail()->getCode()) {
                                     case 404:
                                         $message = Lang::txt('TPL_404_HEADER');
                                         break;

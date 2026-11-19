@@ -27,6 +27,8 @@ class Url extends Text
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $attributes = [
             'type'         => 'text',
@@ -34,13 +36,13 @@ class Url extends Text
             'name'         => $this->name,
             'id'           => $this->id,
             'placeholder'  => 'http://',
-            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
-            'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
-            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'size'         => ($element['size'] ? (int) $element['size'] : ''),
+            'maxlength'    => ($element['maxlength'] ? (int) $element['maxlength'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'autocomplete' => ((string) $element['autocomplete'] == 'off' ? 'off' : ''),
+            'readonly'     => ((string) $element['readonly'] == 'true' ? 'readonly' : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         $attr = [];

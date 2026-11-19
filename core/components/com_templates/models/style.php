@@ -120,7 +120,7 @@ class Style extends Relational
             // Check if we are incrementing an existing pattern, or appending a new one.
             if (preg_match('#\((\d+)\)$#', $title, $matches)) {
                 $n = $matches[1] + 1;
-                $title = preg_replace('#\(\d+\)$#', sprintf('(%d)', $n), $title);
+                $title = (string) preg_replace('#\(\d+\)$#', sprintf('(%d)', $n), $title);
             } else {
                 $n = 2;
                 $title .= sprintf(' (%d)', $n);

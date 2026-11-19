@@ -473,7 +473,7 @@ class DatabaseManagerTest extends TestCase
             '\\Hubzero\\Database\\Drivers\\Ase\\AseDriver',
             $canonical,
         );
-        $this->assertTrue(class_exists($canonical));
+        $this->assertTrue(class_exists((string) $canonical));
         $this->assertEquals($canonical, $resolved);
     }
 
@@ -487,7 +487,7 @@ class DatabaseManagerTest extends TestCase
             '\\Hubzero\\Database\\Drivers\\Ase\\AseSyntax',
             $canonical,
         );
-        $this->assertTrue(class_exists($canonical));
+        $this->assertTrue(class_exists((string) $canonical));
         $this->assertEquals($canonical, $resolved);
     }
 
@@ -501,7 +501,7 @@ class DatabaseManagerTest extends TestCase
             '\\Hubzero\\Database\\Drivers\\Mariadb\\MariadbDriver',
             $canonical,
         );
-        $this->assertTrue(class_exists($canonical));
+        $this->assertTrue(class_exists((string) $canonical));
         $this->assertEquals($canonical, $resolved);
     }
 
@@ -515,7 +515,7 @@ class DatabaseManagerTest extends TestCase
             '\\Hubzero\\Database\\Drivers\\Mariadb\\MariadbSyntax',
             $canonical,
         );
-        $this->assertTrue(class_exists($canonical));
+        $this->assertTrue(class_exists((string) $canonical));
         $this->assertEquals($canonical, $resolved);
     }
 

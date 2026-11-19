@@ -244,9 +244,9 @@ class Parser
         // We'll put this back after other processes
         $text = $this->strip($text);
 
-        $text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
+        $text = (string) preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
 
-        $text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
+        $text = (string) preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
 
         // Process macros
         // Individual macros determine if they're allowed in fullparse mode or not
@@ -254,7 +254,7 @@ class Parser
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
         //$text = preg_replace_callback('/MACRO' . $this->_token . '/i', array(&$this, 'restore_macros'), $text);
-        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+        $text = (string) preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
         $this->tokens['macro'] = [];
 
         // Put back removed blocks <pre>, <code>, <a>, <math>
@@ -342,7 +342,11 @@ class Parser
     private function unstrip($text, $html = true)
     {
         foreach ($this->tokens as $tag => $vals) {
-            $text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+            $text = preg_replace_callback(
+                '/<(' . $tag . ') (.+?)><\/(\1) \2>/si',
+                [&$this, 'dataPull'],
+                (string) $text,
+            );
             $this->tokens[$tag] = [];
         }
 

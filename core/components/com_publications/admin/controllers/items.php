@@ -495,7 +495,7 @@ class Items extends AdminController
                 $doiService->set('authors', $authors);
 
                 // Update DOI
-                if (preg_match("/" . $doiService->configs->shoulder . "/", $model->version->doi)) {
+                if (preg_match("/" . $doiService->configs()->shoulder . "/", $model->version->doi)) {
                     $doiService->update($model->version->doi, true);
 
                     if ($doiService->getError()) {
@@ -582,7 +582,7 @@ class Items extends AdminController
                 $doiService->set('authors', $authors);
 
                 // Update DOI
-                if (preg_match("/" . $doiService->configs->shoulder . "/", $model->version->get('doi'))) {
+                if (preg_match("/" . $doiService->configs()->shoulder . "/", $model->version->get('doi'))) {
                     $doiService->update($model->version->get('doi'), true);
 
                     if ($doiService->getError()) {
@@ -760,7 +760,7 @@ class Items extends AdminController
         if (
             $doi
             && (!$this->model->version->doi || !preg_match(
-                "/" . $doiService->configs->shoulder . "/",
+                "/" . $doiService->configs()->shoulder . "/",
                 $this->model->version->doi,
             ))
         ) {
@@ -859,7 +859,7 @@ class Items extends AdminController
 
         // Update DOI with latest information
         if ($this->model->version->doi && !$action) {
-            if (preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)) {
+            if (preg_match("/" . $doiService->configs()->shoulder . "/", $this->model->version->doi)) {
                 $doiService->set('authors', $authors);
 
                 $fosTag = $this->model->getFOSTag();
@@ -913,7 +913,7 @@ class Items extends AdminController
                     if ($doiService->on()) {
                         if (
                             $this->model->version->doi
-                            && preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)
+                            && preg_match("/" . $doiService->configs()->shoulder . "/", $this->model->version->doi)
                         ) {
                             $doiService->set('authors', $authors);
                             $doiService->update($this->model->version->doi, true);
@@ -1192,12 +1192,12 @@ class Items extends AdminController
                     if ($doiService->on()) {
                         if (
                             $this->model->version->doi
-                            && preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)
+                            && preg_match("/" . $doiService->configs()->shoulder . "/", $this->model->version->doi)
                         ) {
                             $doiService->set('authors', $authors);
                             $doiService->update($this->model->version->doi, true);
 
-                            $resURL = $doiService->configs->livesite
+                            $resURL = $doiService->configs()->livesite
                                 . DS
                                 . 'index.php?option='
                                 . $this->option

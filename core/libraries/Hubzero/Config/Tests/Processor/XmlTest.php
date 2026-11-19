@@ -20,21 +20,21 @@ class XmlTest extends TestCase
     /**
      * Format processor
      *
-     * @var  \Hubzero\Config\Processor\Xml|null
+     * @var  \Hubzero\Config\Processor\Xml
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     private $obj = null;
 
     /**
      * Expected data as an array
      *
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
     private $arr = null;
 

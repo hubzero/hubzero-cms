@@ -318,7 +318,7 @@ class Category extends Nested
         $alias = trim($alias);
 
         // Remove any duplicate whitespace, and ensure all characters are alphanumeric
-        $alias = preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', $alias);
+        $alias = (string) preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', $alias);
 
         // Trim dashes at beginning and end of alias
         $alias = trim($alias, '-');

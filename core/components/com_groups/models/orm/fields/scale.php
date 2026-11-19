@@ -52,12 +52,14 @@ class Scale extends Radio
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
 
         // Initialize some field attributes.
-        if ($this->element['class']) {
-            $class = ' class="radio scale ' . (string) $this->element['class'] . '"';
+        if ($element['class']) {
+            $class = ' class="radio scale ' . (string) $element['class'] . '"';
         } else {
             $class = ' class="radio scale"';
         }

@@ -143,7 +143,7 @@ class Comment extends Relational
      */
     public function automaticItemType($data)
     {
-        return strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($data['item_type'])));
+        return strtolower((string) preg_replace("/[^a-zA-Z0-9\-]/", '', trim($data['item_type'])));
     }
 
     /**

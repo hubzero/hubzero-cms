@@ -287,7 +287,7 @@ foreach ($this->rows as $row) {
                         $sql = "SELECT `agId` FROM `#__storefront_product_access_groups`"
                             . " WHERE `exclude`=0 AND `pId`=" . $db->quote($row->pId);
                         $db->setQuery($sql);
-                        $accessgroups = $db->loadColumn();
+                        $accessgroups = $db->loadColumn() ?? [];
                         $ag = [];
                         foreach ($accessgroups as $access) {
                             if (array_key_exists($access, $this->ag)) {
@@ -300,7 +300,7 @@ foreach ($this->rows as $row) {
                         $sql = "SELECT `agId` FROM `#__storefront_product_access_groups`"
                             . " WHERE `exclude`=1 AND `pId`=" . $db->quote($row->pId);
                         $db->setQuery($sql);
-                        $accessgroups = $db->loadColumn();
+                        $accessgroups = $db->loadColumn() ?? [];
                         $ag = [];
                         foreach ($accessgroups as $access) {
                             if (array_key_exists($access, $this->ag)) {

@@ -30,22 +30,32 @@ class Groups
     private static $dbh = null;
 
     /**
+     * Get the database connection
+     *
+     * @return  \Hubzero\Database\Driver
+     */
+    private static function getDbh()
+    {
+        if (!self::$dbh) {
+            self::$dbh = App::get('db');
+        }
+        return self::$dbh;
+    }
+
+    /**
      * Constructor
      *
      * @return  void
      */
     public function __construct()
     {
-        if (!self::$dbh) {
-            self::$dbh = App::get('db');
-        }
         if (!self::$possibleCols) {
-            self::$dbh->setQuery('SELECT field, label FROM `#__incremental_registration_labels` ORDER BY label');
+            self::getDbh()->setQuery('SELECT field, label FROM `#__incremental_registration_labels` ORDER BY label');
             self::$possibleCols = array_map(
                 function ($v) {
                     return $v['label'];
                 },
-                self::$dbh->loadAssocList('field'),
+                self::getDbh()->loadAssocList('field') ?? [],
             );
         }
     }
@@ -58,14 +68,14 @@ class Groups
     public function getAllGroups()
     {
         $groups = [];
-        self::$dbh->setQuery(
+        self::getDbh()->setQuery(
             'SELECT group_id, hours, irl.field
 			FROM `#__incremental_registration_groups` irg
 			LEFT JOIN `#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id
 			INNER JOIN `#__incremental_registration_labels` irl ON irl.id = irglr.label_id
 			ORDER BY hours',
         );
-        foreach (self::$dbh->loadAssocList() as $row) {
+        foreach (self::getDbh()->loadAssocList() as $row) {
             if (!isset($groups[$row['group_id']])) {
                 $groups[$row['group_id']] = [
                     'hours' => $row['hours'],
@@ -96,7 +106,7 @@ class Groups
     public function getActiveColumns($uid)
     {
         $uid = (int) $uid;
-        self::$dbh->setQuery(
+        self::getDbh()->setQuery(
             'SELECT irl.* FROM `#__incremental_registration_groups` irg LEFT JOIN '
                 . '`#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id INNER JOIN '
                 . '`#__incremental_registration_labels` irl ON irl.id = irglr.label_id WHERE irg.hours <= (SELECT '
@@ -105,35 +115,35 @@ class Groups
                 . $uid
                 . ')',
         );
-        $cols = self::$dbh->loadAssocList();
+        $cols = self::getDbh()->loadAssocList();
         // no data we want, don't bother
         if (!$cols) {
             return [];
         }
 
-        self::$dbh->setQuery(
+        self::getDbh()->setQuery(
             'SELECT coalesce((SELECT opted_out FROM `#__profile_completion_awards` WHERE user_id = ' . $uid . '), 0)',
         );
-        $times = (int) self::$dbh->loadResult();
+        $times = (int) self::getDbh()->loadResult();
         if ($times > 0) {
             // If configured to stop prompting once the recurrence list is
             // exhausted (repeat_type = 1), and this attempt is past the end of
             // the list (no delay defined for idx = times - 1), stop showing the
             // popover entirely instead of repeating with the last delay.
-            self::$dbh->setQuery(
+            self::getDbh()->setQuery(
                 'SELECT coalesce((SELECT repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC '
                     . 'LIMIT 1), 0)',
             );
-            if ((int) self::$dbh->loadResult() === 1) {
-                self::$dbh->setQuery(
+            if ((int) self::getDbh()->loadResult() === 1) {
+                self::getDbh()->setQuery(
                     'SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = ' . ($times - 1),
                 );
-                if (self::$dbh->loadResult() === null) {
+                if (self::getDbh()->loadResult() === null) {
                     return [];
                 }
             }
 
-            self::$dbh->setQuery(
+            self::getDbh()->setQuery(
                 'SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM '
                     . '`#__incremental_registration_popover_recurrence` WHERE idx = '
                     . ($times - 1)
@@ -142,7 +152,7 @@ class Groups
                     . $uid,
             );
             // opt-out period is in effect
-            if (!self::$dbh->loadResult()) {
+            if (!self::getDbh()->loadResult()) {
                 return [];
             }
         }
@@ -151,23 +161,23 @@ class Groups
         $wantRace = false;
         $wantDisability = false;
         foreach ($cols as $col) {
-            $colNames[] = self::$dbh->quote($col['field']);
+            $colNames[] = self::getDbh()->quote($col['field']);
         }
 
-        self::$dbh->setQuery(
+        self::getDbh()->setQuery(
             'SELECT profile_key, profile_value FROM `#__user_profiles` WHERE user_id = '
                 . $uid
                 . ' AND profile_key IN ('
                 . implode(', ', $colNames)
                 . ')',
         );
-        $data = self::$dbh->loadAssocList();
+        $data = self::getDbh()->loadAssocList();
         $profile = [];
         foreach ($data as $datum) {
             $profile[$datum['profile_key']] = $datum['profile_value'];
         }
-        self::$dbh->setQuery('SELECT name, sendEmail AS mailPreferenceOption FROM `#__users` WHERE id = ' . $uid);
-        $data = self::$dbh->loadAssoc();
+        self::getDbh()->setQuery('SELECT name, sendEmail AS mailPreferenceOption FROM `#__users` WHERE id = ' . $uid);
+        $data = self::getDbh()->loadAssoc();
         foreach ($data as $key => $datum) {
             $profile[$key] = $datum;
         }

@@ -71,7 +71,7 @@ class Course extends SiteController
             );
         } else {
             Pathway::append(
-                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->task)),
                 'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }

@@ -916,7 +916,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $db->setQuery("SELECT fulltxt FROM #__resources WHERE id=" . (int) $this->get('id'));
         $raw = $db->loadResult();
         $content = stripslashes((string) ($raw ?: $this->get('fulltxt')));
-        $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+        $content = (string) preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
         $content = str_replace(['="/site/', '="site/'], '="/app/site/', $content);
 
         $content = Html::content('prepare', $content);

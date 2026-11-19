@@ -32,7 +32,7 @@ class DataDefinitionNew
         $name = Request::getString('name', false);
         $title = Request::getString('title', false);
 
-        $name = strtolower(preg_replace('/\W/', '_', $name));
+        $name = strtolower((string) preg_replace('/\W/', '_', $name));
 
         // $name is reduced to [a-z0-9_] above; validate the database id and table too
         if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $db_id) || strpos((string) $db_id, '..') !== false) {
@@ -54,7 +54,7 @@ class DataDefinitionNew
 
         $sql = "SHOW COLUMNS FROM " . $jdb->quoteName($table);
         $jdb->setQuery($sql);
-        $cols = $jdb->loadAssocList();
+        $cols = $jdb->loadAssocList() ?? [];
 
         $first_col = true;
         $pk = '';

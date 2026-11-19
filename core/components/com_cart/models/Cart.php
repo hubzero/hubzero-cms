@@ -1248,7 +1248,7 @@ abstract class Cart
 
         $db->setQuery($sql);
         $db->query();
-        $tIds = $db->loadColumn();
+        $tIds = $db->loadColumn() ?? [];
 
         foreach ($tIds as $tId) {
             self::releaseTransaction($tId);

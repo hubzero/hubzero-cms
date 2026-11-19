@@ -34,7 +34,7 @@ $linkUrl = html_entity_decode($linkUrl, ENT_QUOTES, 'UTF-8');
 
 // Control characters and spaces are stripped for the test only: "ja\nvascript:"
 // is a scheme to the browser.
-$probe = preg_replace('/[\x00-\x20]+/', '', $linkUrl);
+$probe = (string) preg_replace('/[\x00-\x20]+/', '', $linkUrl);
 
 if (
     preg_match('#^/[/\\\\]#', $probe)

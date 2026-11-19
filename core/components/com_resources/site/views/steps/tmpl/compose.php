@@ -44,7 +44,7 @@ if (count($matches) > 0) {
 }
 
 $this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
-$this->row->fulltxt = trim($this->row->fulltxt);
+$this->row->fulltxt = trim((string) $this->row->fulltxt);
 
 $elements = new \Components\Resources\Models\Elements($data, $type->get('customFields'));
 $fields = $elements->render();

@@ -1058,7 +1058,7 @@ class Pipeline extends SiteController
 
         if (!$gid || !$hzg) {
             $hzg = new \Hubzero\User\Group();
-            $hzg->cn =  $group_prefix . strtolower($tool['toolname']);
+            $hzg->cn =  $group_prefix . strtolower((string) $tool['toolname']);
             $hzg->create();
             $hzg->set('type', 2);
             $hzg->set('description', Lang::txt('COM_TOOLS_DELEVOPMENT_GROUP', $tool['title']));

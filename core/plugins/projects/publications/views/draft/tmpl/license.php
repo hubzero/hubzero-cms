@@ -35,7 +35,7 @@ $versionParams = array_filter(explode(PHP_EOL, $this->pub->version->params == nu
 $versionParams = array_reduce($versionParams, function ($carry, $item) {
     $keyValueSplit = explode('=', $item);
     $key = trim(array_shift($keyValueSplit));
-    $value = trim(array_shift($keyValueSplit));
+    $value = trim((string) array_shift($keyValueSplit));
     if ($key && $value) {
         $carry[$key] = $value;
         return $carry;
@@ -218,10 +218,10 @@ $text = $this->pub->get('license_text', $defaultText);
                                 $txt,
                             );
                         }
-                        $txt = preg_replace(
+                        $txt = (string) preg_replace(
                             "/" . $this->license->title . "/",
                             '<strong>' . $this->license->title . '</strong>',
-                            $txt,
+                            (string) $txt,
                         );
                         ?>
                         <?php

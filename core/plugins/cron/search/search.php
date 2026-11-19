@@ -154,7 +154,7 @@ class Search extends Plugin
         $sql = "SELECT doc_id FROM `#__search_blacklist`;";
         $db = App::get('db');
         $db->setQuery($sql);
-        $blacklist = $db->query()->loadColumn();
+        $blacklist = $db->query()->loadColumn() ?? [];
 
         foreach ($items as $item) {
             $format = Event::trigger('search.onIndex', [$item->type, $item->type_id, true]);

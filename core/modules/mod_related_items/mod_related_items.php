@@ -62,7 +62,7 @@ class RelatedItems extends Module
         $view   = Request::getCmd('view');
 
         $temp   = Request::getString('id');
-        $temp   = explode(':', $temp);
+        $temp   = explode(':', (string) $temp);
         $id     = $temp[0];
 
         $showDate = $params->get('showDate', 0);

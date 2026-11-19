@@ -90,8 +90,8 @@ class Geo extends Base
         $lng = $this->getValue('lng', $value);
         $lng = (trim($lng)) ? $lng : '0.0';
 
-        $value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
-        $value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
+        $value = (string) preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
+        $value = (string) preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
 
         // Required to avoid a cycle of encoding &
         // html_entity_decode was used in place of htmlspecialchars_decode because

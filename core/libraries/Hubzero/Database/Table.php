@@ -369,7 +369,7 @@ abstract class Table extends \stdClass
     public static function getInstance($type, $prefix = 'Table', $config = [])
     {
         // Sanitize and prepare the table class name.
-        $type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+        $type = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
         $tableClass = $prefix . ucfirst($type);
 
         // Only try to load the class if it doesn't already exist.

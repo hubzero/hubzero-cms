@@ -714,7 +714,7 @@ class Projects extends Base
         $title   = trim(Request::getString('title', '', 'post'));
         $confirm = Request::getInt('confirm', 0, 'post');
 
-        $name = preg_replace('/ /', '', $name);
+        $name = (string) preg_replace('/ /', '', $name);
         $name = strtolower($name);
 
         // Check incoming data

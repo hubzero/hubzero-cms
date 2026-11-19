@@ -67,7 +67,7 @@ class OneToManyThrough extends OneToMany
     {
         $this->mediate();
 
-        $this->related->whereEquals($this->associativeTable
+        $this->relatedOrFail()->whereEquals($this->associativeTable
             . '.'
             . $this->associativeLocal, $this->model->getPkValue());
 
@@ -115,7 +115,7 @@ class OneToManyThrough extends OneToMany
         // This function is primarily used when needing to sort by a field in the joined table
         $this->model
             ->select($this->model->getQualifiedFieldName('*'))
-            ->select($this->related->getQualifiedFieldName('*'))
+            ->select($this->relatedOrFail()->getQualifiedFieldName('*'))
             ->join(
                 $this->associativeTable,
                 $this->model->getQualifiedFieldName($this->localKey),
@@ -123,9 +123,9 @@ class OneToManyThrough extends OneToMany
                 'LEFT OUTER',
             )
             ->join(
-                $this->related->getTableName(),
+                $this->relatedOrFail()->getTableName(),
                 $this->associativeRelated,
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 'LEFT OUTER',
             );
 
@@ -142,12 +142,12 @@ class OneToManyThrough extends OneToMany
      **/
     public function mediate()
     {
-        $this->related
-            ->select($this->related->getQualifiedFieldName('*'))
+        $this->relatedOrFail()
+            ->select($this->relatedOrFail()->getQualifiedFieldName('*'))
             ->select($this->associativeLocal)
             ->join(
                 $this->associativeTable,
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 $this->associativeRelated,
             );
 
@@ -172,7 +172,10 @@ class OneToManyThrough extends OneToMany
             call_user_func_array($constraint, [$this->related]);
         }
 
-        return $this->related->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys));
+        return $this->relatedOrFail()->whereIn(
+            $this->associativeTable . '.' . $this->associativeLocal,
+            array_unique($keys),
+        );
     }
 
     /**

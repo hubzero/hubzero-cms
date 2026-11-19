@@ -272,7 +272,7 @@ class Import extends Base
      */
     private function normalize($txt)
     {
-        return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $txt));
+        return strtolower((string) preg_replace("/[^a-zA-Z0-9]/", '', $txt));
     }
 
     /**

@@ -153,12 +153,12 @@ class MorphToMany extends OneToManyThrough
 
         if ($this->inverse) {
             // Inverse: filter by related type
-            $this->related
+            $this->relatedOrFail()
                 ->whereEquals($this->associativeTable . '.' . $this->morphType, $this->getTypeIdentifier())
                 ->whereEquals($this->associativeTable . '.' . $this->associativeLocal, $this->model->getPkValue());
         } else {
             // Normal: filter by parent type
-            $this->related
+            $this->relatedOrFail()
                 ->whereEquals($this->associativeTable . '.' . $this->morphType, $this->getTypeIdentifier())
                 ->whereEquals($this->associativeTable . '.' . $this->associativeLocal, $this->model->getPkValue());
         }
@@ -190,7 +190,7 @@ class MorphToMany extends OneToManyThrough
         }
 
         if ($this->inverse) {
-            return strtolower($this->related->getModelName());
+            return strtolower($this->relatedOrFail()->getModelName());
         }
 
         return strtolower($this->model->getModelName());
@@ -206,7 +206,7 @@ class MorphToMany extends OneToManyThrough
         parent::mediate();
 
         // Add the type column to the select
-        $this->related->select($this->associativeTable . '.' . $this->morphType);
+        $this->relatedOrFail()->select($this->associativeTable . '.' . $this->morphType);
 
         return $this;
     }
@@ -332,7 +332,7 @@ class MorphToMany extends OneToManyThrough
             call_user_func($constraint, $this->related);
         }
 
-        return $this->related
+        return $this->relatedOrFail()
             ->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys))
             ->whereEquals($this->associativeTable . '.' . $this->morphType, $this->getTypeIdentifier());
     }
@@ -420,7 +420,7 @@ class MorphToMany extends OneToManyThrough
     {
         $this->model
             ->select($this->model->getQualifiedFieldName('*'))
-            ->select($this->related->getQualifiedFieldName('*'))
+            ->select($this->relatedOrFail()->getQualifiedFieldName('*'))
             ->join(
                 $this->associativeTable,
                 $this->model->getQualifiedFieldName($this->localKey),
@@ -428,9 +428,9 @@ class MorphToMany extends OneToManyThrough
                 'LEFT OUTER',
             )
             ->join(
-                $this->related->getTableName(),
+                $this->relatedOrFail()->getTableName(),
                 $this->associativeRelated,
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 'LEFT OUTER',
             )
             ->whereEquals(

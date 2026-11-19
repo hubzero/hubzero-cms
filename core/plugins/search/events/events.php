@@ -165,6 +165,9 @@ class Events extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM #__events WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Get the (start) date of the event
                 // Format the date for SOLR
@@ -221,7 +224,7 @@ class Events extends Plugin
 
                 // Build the description, clean up text
                 $content = preg_replace('/<[^>]*>/', ' ', $row->content);
-                $content = preg_replace('/ {2,}/', ' ', (string) $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', (string) $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Format the date for SOLR

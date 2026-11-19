@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 // Set some styles
 $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.6em; text-align: left;';
 
-$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$base = trim((string) preg_replace('/\/administrator/', '', Request::base()), '/');
 $link = $base . '/projects/' . $this->project->get('alias');
 
 // Get the actual message

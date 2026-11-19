@@ -43,7 +43,7 @@ class ClientManager
                     continue;
                 }
 
-                $client = preg_replace('#\.[^.]*$#', '', $file->getFilename());
+                $client = (string) preg_replace('#\.[^.]*$#', '', $file->getFilename());
                 if ($client == 'ClientInterface') {
                     continue;
                 }

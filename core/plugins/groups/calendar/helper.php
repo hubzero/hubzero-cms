@@ -30,7 +30,7 @@ class Helper
         );
 
         //replace url links
-        $text = preg_replace(
+        $text = (string) preg_replace(
             '#\b((?<!href=")(https?://www[.]|(?:https?|ftps?)://|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|'
                 . '([^[:punct:]\s]|/)))#',
             '<a class="ext-link" rel="external" href="$1">$1</a>',

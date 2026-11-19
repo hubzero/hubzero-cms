@@ -41,7 +41,7 @@ class ArticlesLatest extends Module
     /**
      * Display module contents
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @return  \Hubzero\Database\Rows
      */
     public static function getList(&$params)

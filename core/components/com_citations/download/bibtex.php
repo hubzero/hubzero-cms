@@ -67,7 +67,7 @@ class Bibtex extends Downloadable
             $author = $row->relatedAuthors()->order('ordering', 'asc')->limit(1)->row();
             $row->cite .= strtolower((string) $author->get('surname'));
             $row->cite .= $row->year;
-            $t = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($row->title));
+            $t = (string) preg_replace('/[^a-zA-Z0-9]/', '', strtolower((string) $row->title));
             $row->cite .= (strlen($t) > 10 ? substr($t, 0, 10) : $t);
         }
 

@@ -30,8 +30,10 @@ class Plugins extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialise variables
-        $folder = $this->element['folder'];
+        $folder = $element['folder'];
 
         if (!empty($folder)) {
             // Get list of plugins

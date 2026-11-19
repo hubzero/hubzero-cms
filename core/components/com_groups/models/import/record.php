@@ -331,7 +331,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 $valid = false;
 
                 // Try to create from name
-                $cn = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('description')));
+                $cn = (string) preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('description')));
                 if (Validate::group($cn)) {
                     if (!$this->cnExists($cn)) {
                         $valid = true;

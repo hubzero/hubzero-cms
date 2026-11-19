@@ -596,6 +596,7 @@ class OciDriverTest extends AbstractDriverTestCase
             FROM ora_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);

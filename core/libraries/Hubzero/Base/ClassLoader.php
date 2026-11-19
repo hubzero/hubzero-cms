@@ -166,7 +166,7 @@ class ClassLoader
                 }
                 $lname = strtolower($name);
                 // PascalCase → snake_case: "ArticlesArchive" → "articles_archive"
-                $snake = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $name));
+                $snake = strtolower((string) preg_replace('/([a-z])([A-Z])/', '$1_$2', $name));
                 $extensionDirs = [
                     "{$base}/mod_{$lname}",
                     "{$base}/mod_{$snake}",
@@ -188,7 +188,7 @@ class ClassLoader
                 // Plugins\System\Debug\Helper -> plugins/system/debug/Helper.php
                 $type = strtolower(array_shift($parts));
                 $name = array_shift($parts);
-                $lname = strtolower($name);
+                $lname = strtolower((string) $name);
 
                 // Reverse-map namespace segments to directory names where they differ
                 $type = self::$pluginDirMap[$type] ?? $type;

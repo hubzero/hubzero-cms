@@ -523,7 +523,7 @@ class Commentsv2r1 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $changelog = json_decode($comment->changelog);
+        $changelog = json_decode((string) $comment->changelog);
 
         $response = $comment->toObject();
         $response->changelog = $changelog;

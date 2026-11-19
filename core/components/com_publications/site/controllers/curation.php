@@ -175,7 +175,7 @@ class Curation extends SiteController
 
         if ($this->pub) {
             Pathway::append(
-                $this->pub->title,
+                $this->pubOrFail()->title,
                 'index.php?option='
                     . $this->option
                     . '&controller='
@@ -387,14 +387,14 @@ class Curation extends SiteController
 
             // Assign
             if (!$this->getError()) {
-                $this->pub->version->set('curator', $owner);
-                if (!$this->pub->version->store()) {
+                $this->pubOrFail()->version->set('curator', $owner);
+                if (!$this->pubOrFail()->version->store()) {
                     $this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_FAILED'));
                 }
                 // Notify curator
                 if ($owner && $owner != $previousOwner) {
-                    $item  =  '"' . html_entity_decode($this->pub->version->title) . '"';
-                    $item .= ' v.' . $this->pub->version->version_label . ' ';
+                    $item  =  '"' . html_entity_decode($this->pubOrFail()->version->title) . '"';
+                    $item .= ' v.' . $this->pubOrFail()->version->version_label . ' ';
                     $item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
                     $message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
@@ -402,14 +402,14 @@ class Curation extends SiteController
                         . ' '
                         . rtrim(Request::base(), DS)
                         . DS
-                        . trim(Route::url($this->pub->link('curate')), DS)
+                        . trim(Route::url($this->pubOrFail()->link('curate')), DS)
                         . "\n"
                         . "\n";
                     $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW')
                         . ' '
                         . rtrim(Request::base(), DS)
                         . DS
-                        . trim(Route::url($this->pub->link('version')), DS);
+                        . trim(Route::url($this->pubOrFail()->link('version')), DS);
 
                     Helpers\Html::notify(
                         $this->pub,
@@ -432,13 +432,13 @@ class Curation extends SiteController
                     }
 
                     // Create new record
-                    $obj->publication_version_id = $this->pub->version->id;
+                    $obj->publication_version_id = $this->pubOrFail()->version->id;
                     $obj->created    = Date::toSql();
                     $obj->created_by = User::get('id');
                     $obj->changelog  = $changelog;
                     $obj->curator    = 1;
-                    $obj->newstatus  = $this->pub->version->state;
-                    $obj->oldstatus  = $this->pub->version->state;
+                    $obj->newstatus  = $this->pubOrFail()->version->state;
+                    $obj->oldstatus  = $this->pubOrFail()->version->state;
                     $obj->store();
                 }
             }
@@ -513,25 +513,25 @@ class Curation extends SiteController
         // Archive (mkAIP) if no grace period and not previously archived
         if (
             !$this->getError() && !$this->config->get('graceperiod', 0)
-            && $this->pub->version->doi
-            && \Components\Publications\Helpers\Utilities::mkAip($this->pub->version)
-            && !$this->pub->archived()
+            && $this->pubOrFail()->version->doi
+            && \Components\Publications\Helpers\Utilities::mkAip($this->pubOrFail()->version)
+            && !$this->pubOrFail()->archived()
         ) {
-            $this->pub->version->set('archived', Date::toSql());
+            $this->pubOrFail()->version->set('archived', Date::toSql());
         }
 
         // Set curation
-        $this->pub->setCuration();
+        $this->pubOrFail()->setCuration();
 
-        $curation = json_encode($this->pub->_curationModel->manifest);
+        $curation = json_encode($this->pubOrFail()->_curationModel->manifest);
         //$curation = $this->_pub->masterType()->curation;
 
         // Get manifest version
-        $versionNumber = $this->pub->_curationModel->checkCurationVersion();
+        $versionNumber = $this->pubOrFail()->_curationModel->checkCurationVersion();
 
         // Store curation manifest
-        $this->pub->version->set('curation', $curation);
-        $this->pub->version->set('curation_version_id', $versionNumber);
+        $this->pubOrFail()->version->set('curation', $curation);
+        $this->pubOrFail()->version->set('curation_version_id', $versionNumber);
 
         // Save dataset bundle size
         $zipPath = PATH_APP
@@ -542,37 +542,37 @@ class Curation extends SiteController
             . DS
             . \Hubzero\Utility\Str::pad($vid)
             . DS
-            . str_replace(['.', '/'], '_', $this->pub->version->doi)
+            . str_replace(['.', '/'], '_', $this->pubOrFail()->version->doi)
             . ".zip";
 
         if (file_exists($zipPath)) {
-            $this->pub->version->set('datasize', filesize($zipPath));
+            $this->pubOrFail()->version->set('datasize', filesize($zipPath));
         }
 
-        if (!$this->pub->version->store()) {
+        if (!$this->pubOrFail()->version->store()) {
             throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
         }
 
         // The approved version is the main one now
-        $this->pub->version->removeMainFlagFromOthers();
+        $this->pubOrFail()->version->removeMainFlagFromOthers();
 
         // Async: pre-warm the download-bundle build so it is ready before a
         // user asks for it (gated; when async is off the synchronous bundle
         // produced during curation is used as before).
         if ((int) $this->config->get('bundle_async', 0)) {
-            \Components\Publications\Models\BundleQueue::enqueueVersion($this->pub->version->get('id'));
+            \Components\Publications\Models\BundleQueue::enqueueVersion($this->pubOrFail()->version->get('id'));
         }
 
         // Get DOI service
         $doiService = new \Components\Publications\Models\Doi($this->pub);
 
-        $updateDoiMetadata = ($this->pub->version->doi ? preg_match(
+        $updateDoiMetadata = ($this->pubOrFail()->version->doi ? preg_match(
             "/" . $doiService->configs()->shoulder . "/",
-            $this->pub->version->doi,
+            $this->pubOrFail()->version->doi,
         ) : false);
 
         if ($updateDoiMetadata) {
-            $doiService->update($this->pub->version->doi, true);
+            $doiService->update($this->pubOrFail()->version->doi, true);
 
             if ($doiService->getError()) {
                 throw new Exception(
@@ -582,7 +582,7 @@ class Curation extends SiteController
             }
 
             // Register URL and DOI name for DataCite DOI service
-            $doiService->register(false, true, $this->pub->version->doi);
+            $doiService->register(false, true, $this->pubOrFail()->version->doi);
 
             if ($doiService->getError()) {
                 throw new Exception(
@@ -593,13 +593,13 @@ class Curation extends SiteController
         }
 
         // Mark as curated
-        $this->pub->saveParam('curated', 1);
+        $this->pubOrFail()->saveParam('curated', 1);
 
         // On after status change
         $this->onAfterStatusChange();
 
         // Add publication to author's ORCID record
-        $authors = $this->pub->authors();
+        $authors = $this->pubOrFail()->authors();
         foreach ($authors as $author) {
             if (!empty($author->user_id)) {
                 $profile = \Components\Members\Models\Member::oneOrNew($author->user_id);
@@ -609,7 +609,7 @@ class Curation extends SiteController
                     $accessToken = $profile->get('access_token');
 
                     if (!empty($orcidID) && !empty($accessToken)) {
-                        $putCode = $this->pub->addPubToORCID($orcidID, $accessToken);
+                        $putCode = $this->pubOrFail()->addPubToORCID($orcidID, $accessToken);
 
                         if ($putCode) {
                             $authorTbl = new Tables\Author($this->database);
@@ -618,14 +618,14 @@ class Curation extends SiteController
                     }
                 }
             } else {
-                $collaborator = $this->pub->getCollaboratorByName($author->invited_name);
+                $collaborator = $this->pubOrFail()->getCollaboratorByName($author->invited_name);
 
                 if (!empty($collaborator)) {
                     $orcidID = $collaborator->orcid;
                     $accessToken = $collaborator->access_token;
 
                     if (!empty($orcidID) && !empty($accessToken)) {
-                        $putCode = $this->pub->addPubToORCID($orcidID, $accessToken);
+                        $putCode = $this->pubOrFail()->addPubToORCID($orcidID, $accessToken);
 
                         if (!empty($putCode)) {
                             $authorTbl = new Tables\Author($this->database);
@@ -867,7 +867,7 @@ class Curation extends SiteController
             return;
         }
         $pub    = $this->pub;
-        $status = $this->pub->version->state;
+        $status = $this->pubOrFail()->version->state;
 
         $activity = $status == 1
                     ? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
@@ -876,7 +876,7 @@ class Curation extends SiteController
         $pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 
         // Create SFTP accessible link for package
-        if ($status == 1 && !$this->pub->isEmbargoed()) {
+        if ($status == 1 && !$this->pubOrFail()->isEmbargoed()) {
             $pub->_curationModel->createLink();
         }
 
@@ -1037,5 +1037,20 @@ class Curation extends SiteController
             echo json_encode((array_values($matchedResults)));
             exit();
         }
+    }
+
+    /**
+     * The pub, which the calls using it need set
+     *
+     * @return  Models\Publication
+     * @throws  \LogicException  When it is not
+     */
+    protected function pubOrFail()
+    {
+        if ($this->pub === null) {
+            throw new \LogicException(static::class . '::$pub is not set');
+        }
+
+        return $this->pub;
     }
 }

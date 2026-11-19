@@ -296,6 +296,7 @@ class QueryTest extends AbstractDriverTestCase
 
         // Verify the update worked
         $updated = $driver->setQuery("SELECT * FROM users WHERE id = 1")->loadObject();
+        $this->assertNotNull($updated);
         $this->assertEquals('Updated User', $updated->name);
         $this->assertEquals('updateduser@gmail.com', $updated->email);
 
@@ -320,6 +321,7 @@ class QueryTest extends AbstractDriverTestCase
 
         // Verify the update worked
         $updated = $driver->setQuery("SELECT * FROM users WHERE id = 1")->loadObject();
+        $this->assertNotNull($updated);
         $this->assertEquals('Updated User', $updated->name);
         $this->assertEquals('updateduser@gmail.com', $updated->email);
     }
@@ -1504,6 +1506,7 @@ class QueryTest extends AbstractDriverTestCase
 
         // Verify original record unchanged (INSERT IGNORE should have prevented update)
         $result = $driver->setQuery("SELECT * FROM users WHERE id = 1")->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals('Sam Wilson', $result->name, 'INSERT IGNORE should not overwrite existing record');
     }
 
@@ -1654,6 +1657,7 @@ class QueryTest extends AbstractDriverTestCase
 
         // Verify user 2 was updated
         $result = $driver->setQuery("SELECT * FROM users WHERE id = 2")->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals('Frank', $result->name, 'Cleared UPDATE should have updated users');
     }
 

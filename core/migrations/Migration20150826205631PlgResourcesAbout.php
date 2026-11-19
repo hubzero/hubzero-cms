@@ -32,7 +32,7 @@ class Migration20150826205631PlgResourcesAbout extends Base
                 ->from('#__resource_types')
                 ->where('category', '=', 27)
                 ->where('alias', '=', 'tools');
-            $records = $query->loadObjectList();
+            $records = $query->loadObjectList() ?? [];
 
             foreach ($records as $record) {
                 $params = $record->params;

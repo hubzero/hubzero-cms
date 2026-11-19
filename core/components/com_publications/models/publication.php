@@ -1381,7 +1381,7 @@ class Publication extends Obj
 
         if ($this->get('description', null) == null) {
             $content = stripslashes($this->get('description'));
-            $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+            $content = (string) preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
 
             $this->set('description', trim($content));
         }

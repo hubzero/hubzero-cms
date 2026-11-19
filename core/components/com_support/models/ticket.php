@@ -367,7 +367,7 @@ class Ticket extends Relational
 
             // Look for any attachments (old style) and remove
             // Attachments will be loaded through their relationship
-            $text = preg_replace('/\{attachment#[0-9]*\}/sU', '', $text);
+            $text = (string) preg_replace('/\{attachment#[0-9]*\}/sU', '', $text);
 
             $text = trim($text);
 

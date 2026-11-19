@@ -191,7 +191,7 @@ class Screenshots extends SiteController
         $shot = Screenshot::oneByFilename($this->view->get('file'), $pid, $vid);
 
         // Set the page title
-        $title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
+        $title = Lang::txt(strtoupper((string) $this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
         Document::setTitle($title);
         $this->view->set('title', $title);
 
@@ -238,7 +238,7 @@ class Screenshots extends SiteController
 
         // Incoming
         $file = Request::getString('filename', '');
-        $title = preg_replace('/\s+/', ' ', Request::getString('title', ''));
+        $title = (string) preg_replace('/\s+/', ' ', Request::getString('title', ''));
 
         // Instantiate a new screenshot object
         $shot = Screenshot::oneByFilename($file, $pid, $vid);
@@ -453,7 +453,7 @@ class Screenshots extends SiteController
             }
         }
 
-        $row->set('title', preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title));
+        $row->set('title', preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", (string) $title));
         $row->set('versionid', $vid);
         $row->set('filename', $file['name']);
         $row->set('resourceid', $pid);

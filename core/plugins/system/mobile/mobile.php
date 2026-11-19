@@ -40,7 +40,7 @@ class Mobile extends Plugin
             Request::setVar('tmpl', 'index');
 
             // SCRIPT_URI is Apache's, and not every server sets it
-            $url = preg_replace('/([?&])tmpl=fullsite(&|$)/', '$1', Request::current(true));
+            $url = (string) preg_replace('/([?&])tmpl=fullsite(&|$)/', '$1', Request::current(true));
 
             App::redirect(rtrim($url, '?&'));
         }

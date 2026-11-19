@@ -30,17 +30,19 @@ class AccessLevel extends Select
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get the field options.
         $options = $this->getOptions();

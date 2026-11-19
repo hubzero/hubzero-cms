@@ -30,15 +30,17 @@ class Password extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $size      = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-        $maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
-        $class     = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $auto      = ((string) $this->element['autocomplete'] == 'off') ? ' autocomplete="off"' : '';
-        $readonly  = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
-        $disabled  = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $meter     = ((string) $this->element['strengthmeter'] == 'true');
-        $threshold = $this->element['threshold'] ? (int) $this->element['threshold'] : 66;
+        $size      = $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
+        $maxLength = $element['maxlength'] ? ' maxlength="' . (int) $element['maxlength'] . '"' : '';
+        $class     = $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $auto      = ((string) $element['autocomplete'] == 'off') ? ' autocomplete="off"' : '';
+        $readonly  = ((string) $element['readonly'] == 'true') ? ' readonly="readonly"' : '';
+        $disabled  = ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $meter     = ((string) $element['strengthmeter'] == 'true');
+        $threshold = $element['threshold'] ? (int) $element['threshold'] : 66;
 
         $script = '';
         if ($meter) {

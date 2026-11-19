@@ -245,7 +245,7 @@ class Tree extends \Hubzero\Base\Obj
                 }
 
                 // Build the CSS class for the icon
-                $class = preg_replace('#\.[^.]*$#', '', basename($identifier));
+                $class = (string) preg_replace('#\.[^.]*$#', '', basename($identifier));
                 $class = preg_replace('#\.\.[^A-Za-z0-9\.\_\- ]#', '', $class);
 
                 $this->css  .= "\n.icon-$class {\n"

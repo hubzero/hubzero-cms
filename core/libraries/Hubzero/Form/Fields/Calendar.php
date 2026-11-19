@@ -34,32 +34,34 @@ class Calendar extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $format = $this->element['format'] ? (string) $this->element['format'] : 'yy-mm-dd';
+        $format = $element['format'] ? (string) $element['format'] : 'yy-mm-dd';
 
         // Build the attributes array.
         $attributes = [];
-        if ($this->element['size']) {
-            $attributes['size'] = (int) $this->element['size'];
+        if ($element['size']) {
+            $attributes['size'] = (int) $element['size'];
         }
-        if ($this->element['maxlength']) {
-            $attributes['maxlength'] = (int) $this->element['maxlength'];
+        if ($element['maxlength']) {
+            $attributes['maxlength'] = (int) $element['maxlength'];
         }
-        if ($this->element['class']) {
-            $attributes['class'] = (string) $this->element['class'];
+        if ($element['class']) {
+            $attributes['class'] = (string) $element['class'];
         }
-        if ((string) $this->element['readonly'] == 'true') {
+        if ((string) $element['readonly'] == 'true') {
             $attributes['readonly'] = 'readonly';
         }
-        if ((string) $this->element['disabled'] == 'true') {
+        if ((string) $element['disabled'] == 'true') {
             $attributes['disabled'] = 'disabled';
         }
         $attributes['time'] = false;
-        if ((string) $this->element['time'] == 'true') {
+        if ((string) $element['time'] == 'true') {
             $attributes['time'] = true;
         }
-        if ($this->element['onchange']) {
-            $attributes['onchange'] = (string) $this->element['onchange'];
+        if ($element['onchange']) {
+            $attributes['onchange'] = (string) $element['onchange'];
         }
 
         // Handle the special case for "now".
@@ -68,7 +70,7 @@ class Calendar extends Field
         }
 
         // If a known filter is given use it.
-        switch (strtoupper((string) $this->element['filter'])) {
+        switch (strtoupper((string) $element['filter'])) {
             case 'SERVER_UTC':
                 // Convert a date to UTC based on the server timezone.
                 if (intval($this->value)) {

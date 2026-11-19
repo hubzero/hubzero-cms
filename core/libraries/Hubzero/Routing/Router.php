@@ -81,7 +81,7 @@ class Router
         $url = $uri->toString(['scheme', 'host', 'port', 'path', 'query', 'fragment']);
 
         // Replace spaces.
-        $url = preg_replace('/\s/u', '%20', $url);
+        $url = (string) preg_replace('/\s/u', '%20', $url);
 
         // Get the secure/unsecure URLs.
         //

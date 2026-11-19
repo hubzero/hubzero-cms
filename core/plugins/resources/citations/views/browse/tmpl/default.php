@@ -37,8 +37,8 @@ if ($this->citations) {
     foreach ($this->citations as $cite) {
         $formatted = trim($cite->formatted(['format' => $this->citationFormat]));
         // Strip outer <p> tags since the citation is already inside <li>
-        $formatted = preg_replace('#^\s*<p>\s*#i', '', $formatted);
-        $formatted = preg_replace('#\s*</p>\s*$#i', '', $formatted);
+        $formatted = (string) preg_replace('#^\s*<p>\s*#i', '', $formatted);
+        $formatted = (string) preg_replace('#\s*</p>\s*$#i', '', $formatted);
 
         // Skip citations with no rendered content (otherwise we emit an empty <li>)
         if (strip_tags($formatted) === '' || trim($formatted) === '') {

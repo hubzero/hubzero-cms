@@ -481,11 +481,11 @@ class Tool extends Model
         $this->config();
 
         // Set name length
-        $minLength = $this->componentConfig->get('min_name_length', 3);
-        $maxLength = $this->componentConfig->get('max_name_length', 30);
+        $minLength = $this->componentConfigOrFail()->get('min_name_length', 3);
+        $maxLength = $this->componentConfigOrFail()->get('max_name_length', 30);
 
         // Array of reserved names (task names and default dirs)
-        $reserved = explode(',', $this->componentConfig->get('reserved_names'));
+        $reserved = explode(',', $this->componentConfigOrFail()->get('reserved_names'));
         $tasks    = ['temp', 'toolname', 'register'];
 
         if ($name) {
@@ -670,5 +670,20 @@ class Tool extends Model
         }
 
         return $required;
+    }
+
+    /**
+     * The componentConfig, which the calls using it need set
+     *
+     * @return  \Hubzero\Config\Registry
+     * @throws  \LogicException  When it is not
+     */
+    protected function componentConfigOrFail()
+    {
+        if ($this->componentConfig === null) {
+            throw new \LogicException(static::class . '::$componentConfig is not set');
+        }
+
+        return $this->componentConfig;
     }
 }

@@ -319,7 +319,7 @@ class License extends Base
                 $versionParams = array_reduce($versionParams, function ($carry, $item) {
                     $keyValueSplit = explode('=', $item);
                     $key = trim(array_shift($keyValueSplit));
-                    $value = trim(array_shift($keyValueSplit));
+                    $value = trim((string) array_shift($keyValueSplit));
                     if ($key && $value) {
                         $carry[$key] = $value;
                         return $carry;

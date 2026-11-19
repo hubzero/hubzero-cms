@@ -72,8 +72,8 @@ class Link extends Base
         $configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
 
         // Get default title
-        $title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
-        $configs->title = str_replace('{pubversion}', $pub->version_label, $title);
+        $title = isset($element->title) ? str_replace('{pubtitle}', (string) $pub->title, $element->title) : null;
+        $configs->title = str_replace('{pubversion}', (string) $pub->version_label, $title);
 
         // Fancy launcher?
         $configs->fancyLauncher = isset($typeParams->fancyLauncher)
@@ -355,7 +355,7 @@ class Link extends Base
                 // Do we also set draft title and metadata from the link?
                 if (
                     $i == 0 && $title && $element->role == 1
-                    && stripos($pub->title, $defaultTitle) !== false
+                    && stripos((string) $pub->title, $defaultTitle) !== false
                 ) {
                     // Load publication version
                     $row = new \Components\Publications\Tables\Version($this->parent->db);

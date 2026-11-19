@@ -181,7 +181,7 @@ class Versions extends AdminController
                 ->whereEquals('local_revision', $row->revision)
                 ->row();
 
-            if (substr($row->instance, -4) == '_dev') {
+            if (substr((string) $row->instance, -4) == '_dev') {
                 $doi->addError(Lang::txt('COM_TOOLS_WARNING_DOI_DEV'));
             }
         }
@@ -274,7 +274,7 @@ class Versions extends AdminController
         if (
             $this->config->get('new_doi')
             && file_exists(Component::path('com_resources') . '/models/doi.php')
-            && substr($row->instance, -4) != '_dev'
+            && substr((string) $row->instance, -4) != '_dev'
         ) {
             // Save DOI data
             $dois = Request::getArray('doi', [], 'post');

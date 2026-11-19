@@ -560,7 +560,7 @@ abstract class Result
      */
     public function setPlugin($plg, $skip_cleanup = false)
     {
-        $this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', (string) $plg));
+        $this->plugin = $skip_cleanup ? $plg : strtolower((string) preg_replace('/^plgSearch/i', '', (string) $plg));
         foreach ($this->children as $child) {
             $child->setPlugin($this->plugin, true);
         }
@@ -608,7 +608,7 @@ abstract class Result
 
             // A line break in the source stands between two words, so it
             // becomes a space; dropping it ran them together
-            $wrapped = wordwrap(trim(preg_replace('/\s+/u', ' ', (string) $descr)), self::$intro_excerpt_len);
+            $wrapped = wordwrap(trim((string) preg_replace('/\s+/u', ' ', (string) $descr)), self::$intro_excerpt_len);
             $wrap_pos = strpos($wrapped, "\n");
             $len = $wrap_pos ? $wrap_pos : self::$intro_excerpt_len;
             $ellip = $wrap_pos ? '<small>&hellip;</small>' : '';

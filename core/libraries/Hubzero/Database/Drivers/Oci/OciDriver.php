@@ -364,7 +364,7 @@ class OciDriver extends BaseSqlDriver
                 // length in bindParam to avoid ORA-01461
                 $lobIdx = count($this->lobStreams);
                 $this->lobStreams[$lobIdx] = $binding;
-                $this->statement->bindParam(
+                $this->statementOrFail()->bindParam(
                     $idx,
                     $this->lobStreams[$lobIdx],
                     \PDO::PARAM_STR,
@@ -379,7 +379,7 @@ class OciDriver extends BaseSqlDriver
                 } elseif (is_int($binding)) {
                     $pdoType = \PDO::PARAM_INT;
                 }
-                $this->statement->bindValue($idx, $binding, $pdoType);
+                $this->statementOrFail()->bindValue($idx, $binding, $pdoType);
             }
             $idx++;
         }
@@ -2708,7 +2708,7 @@ class OciDriver extends BaseSqlDriver
     {
         // Try PDO::lastInsertId() first
         try {
-            $id = $this->connection->lastInsertId();
+            $id = $this->connectionOrFail()->lastInsertId();
             if ($id && $id > 0) {
                 return (int) $id;
             }
@@ -2861,7 +2861,7 @@ class OciDriver extends BaseSqlDriver
         $upper = strtoupper(trim($type));
 
         // Remove UNSIGNED
-        $upper = preg_replace('/\s+UNSIGNED$/i', '', $upper);
+        $upper = (string) preg_replace('/\s+UNSIGNED$/i', '', $upper);
 
         // TINYINT(1) or BOOLEAN -> NUMBER(1)
         if (

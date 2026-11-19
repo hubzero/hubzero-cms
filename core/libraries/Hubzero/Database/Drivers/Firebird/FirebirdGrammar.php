@@ -422,13 +422,13 @@ class FirebirdGrammar extends BaseSchemaGrammar
             // Extract NOT NULL or NULL constraint
             if (preg_match('/\s+(NOT\s+NULL|NULL)\s*$/i', $type, $matches)) {
                 $notNull = strtoupper(trim($matches[1]));
-                $type = trim(preg_replace('/\s+(NOT\s+NULL|NULL)\s*$/i', '', $type));
+                $type = trim((string) preg_replace('/\s+(NOT\s+NULL|NULL)\s*$/i', '', $type));
             }
 
             // Extract DEFAULT value
             if (preg_match('/\s+DEFAULT\s+(.+?)(?:\s+(NOT\s+NULL|NULL))?$/i', $type, $matches)) {
                 $defaultValue = trim($matches[1]);
-                $type = trim(preg_replace('/\s+DEFAULT\s+.+$/i', '', $type));
+                $type = trim((string) preg_replace('/\s+DEFAULT\s+.+$/i', '', $type));
             }
 
             // ALTER COLUMN TYPE

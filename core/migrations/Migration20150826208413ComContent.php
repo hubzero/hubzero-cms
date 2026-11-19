@@ -29,7 +29,7 @@ class Migration20150826208413ComContent extends Base
                 ->getQuery()
                 ->select(['id', 'attribs'])
                 ->from('#__content');
-            $results = $query->loadObjectList();
+            $results = $query->loadObjectList() ?? [];
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -37,12 +37,12 @@ class Migration20150826208413ComContent extends Base
                         $attribs = "{}";
                     } else {
                         $attribs = (string) $r->attribs;
-                        $attribs = preg_replace("/^{\"{\\\\\"{/", "{", $attribs);
-                        $attribs = preg_replace("/^{\"{/", "{", $attribs);
-                        $attribs = preg_replace("/}\\\\\":\\\\\\\"\\\\\"}\":\"\"}$/", "}", $attribs);
-                        $attribs = preg_replace("/}\":\"\"}$/", "}", $attribs);
-                        $attribs = preg_replace("/\\\\\\\\\\\\\"/", "\"", $attribs);
-                        $attribs = preg_replace("/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/", "\"", $attribs);
+                        $attribs = (string) preg_replace("/^{\"{\\\\\"{/", "{", $attribs);
+                        $attribs = (string) preg_replace("/^{\"{/", "{", $attribs);
+                        $attribs = (string) preg_replace("/}\\\\\":\\\\\\\"\\\\\"}\":\"\"}$/", "}", $attribs);
+                        $attribs = (string) preg_replace("/}\":\"\"}$/", "}", $attribs);
+                        $attribs = (string) preg_replace("/\\\\\\\\\\\\\"/", "\"", $attribs);
+                        $attribs = (string) preg_replace("/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/", "\"", $attribs);
                         $attribs = preg_replace("/\\\\\"/", "\"", $attribs);
                     }
 

@@ -87,7 +87,7 @@ class Billboard extends Relational
      **/
     public function automaticAlias()
     {
-        return strtolower(preg_replace("/[^[:alnum:]]/ui", "", (($this->alias) ? $this->alias : $this->name)));
+        return strtolower((string) preg_replace("/[^[:alnum:]]/ui", "", (($this->alias) ? $this->alias : $this->name)));
     }
 
     /**

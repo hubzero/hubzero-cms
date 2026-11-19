@@ -40,11 +40,13 @@ class Checkboxes extends Field
      */
     protected function getLabel()
     {
+        $element = $this->fieldElement();
+
         if ($this->hidden) {
             return '';
         }
 
-        $text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $text = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $text = $this->translateLabel ? App::get('language')->txt($text) : $text;
 
         $class = !empty($this->description) ? 'hasTip' : '';
@@ -83,14 +85,16 @@ class Checkboxes extends Field
 
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
+        $class = $element['class'] ? ' class="radio ' . (string) $element['class'] . '"' : ' class="radio"';
 
         // Get the label text for the legend.
-        $legendText = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $legendText = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $legendText = $this->translateLabel ? App::get('language')->txt($legendText) : $legendText;
 
         // Start the checkbox field output.
@@ -162,7 +166,7 @@ class Checkboxes extends Field
             $html[] = '</li>';
         }
 
-        if ($this->element['option_other']) {
+        if ($element['option_other']) {
             $values = implode('', $values);
             $values = trim($values);
 
@@ -221,10 +225,12 @@ class Checkboxes extends Field
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             // Only add <option /> elements.
             if ($option->getName() != 'option') {
                 continue;

@@ -32,7 +32,7 @@ class Migration20151001185523ComKb extends Base
                     ->getQuery()
                     ->select('*')
                     ->from('#__faq_categories');
-                $categories = $query->loadObjectList();
+                $categories = $query->loadObjectList() ?? [];
 
                 $sub = [];
                 $par = [];
@@ -95,7 +95,7 @@ class Migration20151001185523ComKb extends Base
                     ->getQuery()
                     ->select(['id', 'section', 'category'])
                     ->from('#__faq');
-                $articles = $query->loadObjectList();
+                $articles = $query->loadObjectList() ?? [];
 
                 foreach ($articles as $article) {
                     $key = ($article->category ? $article->category : $article->section);
@@ -200,7 +200,7 @@ class Migration20151001185523ComKb extends Base
                 ->select('*')
                 ->from('#__categories')
                 ->where('extension', '=', 'com_kb');
-            $categories = $query->loadObjectList();
+            $categories = $query->loadObjectList() ?? [];
 
             $sub = [];
             $par = [];
@@ -225,7 +225,7 @@ class Migration20151001185523ComKb extends Base
                 ->getQuery()
                 ->select(['id', 'category'])
                 ->from('#__faq');
-            $articles = $query->loadObjectList();
+            $articles = $query->loadObjectList() ?? [];
 
             foreach ($articles as $article) {
                 $article->section = (isset($par[$article->category]) ? $par[$article->category] : 0);

@@ -40,7 +40,7 @@ class GroupMacro extends WikiMacro
     protected function getArgs()
     {
         //get the args passed in
-        return explode(',', $this->args);
+        return explode(',', (string) $this->args);
     }
 
     /**

@@ -490,6 +490,10 @@ class Attachment extends Table
      */
     public function copyAttachment($att = null, $vid = null, $elementId = null, $uid = 0)
     {
+        if (!$att) {
+            return false;
+        }
+
         $pAttach = new self($this->db);
         $pAttach->publication_id         = $att->publication_id;
         $pAttach->title                  = $att->title;

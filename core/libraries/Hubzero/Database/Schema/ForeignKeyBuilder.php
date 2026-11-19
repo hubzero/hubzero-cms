@@ -332,7 +332,7 @@ class ForeignKeyBuilder
     protected function deriveTableFromColumn(string $column): string
     {
         // Remove _id suffix
-        $base = preg_replace('/_id$/i', '', $column);
+        $base = (string) preg_replace('/_id$/i', '', $column);
 
         // Simple pluralization
         return $this->pluralize($base);

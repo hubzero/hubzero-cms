@@ -19,7 +19,7 @@ class ProfilerTest extends Basic
     /**
      * Hubzero\Debug\Profiler
      *
-     * @var  \Hubzero\Debug\Profiler|null
+     * @var  \Hubzero\Debug\Profiler
      */
     private $instance;
 

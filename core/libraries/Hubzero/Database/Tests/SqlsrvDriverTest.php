@@ -575,6 +575,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             FROM ss_items
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(4, $row->cnt);
         $this->assertEquals(140, $row->total_stock);
@@ -753,6 +754,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
                 DATEPART(DAY, GETDATE()) AS dy
         ");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertGreaterThanOrEqual(2020, (int) $row->yr);
         $this->assertGreaterThanOrEqual(1, (int) $row->mo);

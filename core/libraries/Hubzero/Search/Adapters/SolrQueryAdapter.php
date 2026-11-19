@@ -198,7 +198,7 @@ class SolrQueryAdapter implements QueryInterface
         // Derive user permission filters
         $this->restrictAccess();
         $userPerms = $this->query->getFilterQuery('userPerms')->getQuery();
-        $url .= '&fq=' . urlencode($userPerms);
+        $url .= '&fq=' . urlencode((string) $userPerms);
 
         // Limit rows, not interested in results, just facets
         $url .= '&rows=0';

@@ -158,7 +158,7 @@ class Formathtml extends Plugin
         // Drop formatwiki's transient marker before the format test below, which
         // would otherwise read it as a foreign format and return -- losing the
         // asset-path rewriting and macro parsing that follow.
-        $content = preg_replace('/^<!-- \{FORMAT:RENDERED\} -->/i', '', $content);
+        $content = (string) preg_replace('/^<!-- \{FORMAT:RENDERED\} -->/i', '', $content);
 
         // Is there a format already applied?
         if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches)) {
@@ -170,7 +170,7 @@ class Formathtml extends Plugin
             }
         }
 
-        $content = preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
+        $content = (string) preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
 
         if (trim($content)) {
             // Fix asset paths
@@ -182,7 +182,7 @@ class Formathtml extends Plugin
             $content = str_replace("href='/site", "href='" . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
 
             if ($this->params->get('unlink', 0)) {
-                $content = preg_replace_callback(
+                $content = (string) preg_replace_callback(
                     '/<a.*(?=href="([^"]*)")[^>]*>([^<]*)<\/a>/uiUs',
                     [&$this, 'delink'],
                     $content,

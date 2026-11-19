@@ -300,7 +300,7 @@ class Scaffolding extends Base implements CommandInterface
                 if (is_array($v)) {
                     foreach ($v as $replacement) {
                         foreach ($replacement as $key => $value) {
-                            $contents = preg_replace("/%={$key}=%/", $value, $contents, 1);
+                            $contents = (string) preg_replace("/%={$key}=%/", $value, $contents, 1);
                         }
                     }
                 } else {

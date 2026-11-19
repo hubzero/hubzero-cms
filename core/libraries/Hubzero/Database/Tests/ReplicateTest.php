@@ -315,6 +315,7 @@ class ReplicateTest extends AbstractDriverTestCase
         // Count records
         $driver->setQuery('SELECT COUNT(*) as cnt FROM replicate_test_items');
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals(2, $row->cnt);
 
         // Verify both exist with correct titles
@@ -440,6 +441,7 @@ class ReplicateTest extends AbstractDriverTestCase
         // Should have 4 records total
         $driver->setQuery('SELECT COUNT(*) as cnt FROM replicate_test_items');
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals(4, $row->cnt);
     }
 

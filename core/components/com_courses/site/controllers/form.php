@@ -99,7 +99,7 @@ class Form extends SiteController
 
         if ($this->task != 'index') {
             Pathway::append(
-                Lang::txt(ucfirst($this->task)),
+                Lang::txt(ucfirst((string) $this->task)),
                 'index.php?option=' . $this->option . '&controller=form&task=' . $this->task,
             );
         }
@@ -584,7 +584,7 @@ class Form extends SiteController
             }
 
             $now   = strtotime(Date::of('now'));
-            $start = strtotime($resp->getStartTime());
+            $start = strtotime((string) $resp->getStartTime());
             $end   = strtotime($dep->getEndTime() ?: '');
             $dur   = (int) $limit * 60;
 

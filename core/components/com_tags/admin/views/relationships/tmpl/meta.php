@@ -55,7 +55,7 @@ $dbh->setQuery(
     . ' WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\')'
     . ' AND contributable ORDER BY type',
 );
-$types = $dbh->loadAssocList('id');
+$types = $dbh->loadAssocList('id') ?? [];
 ?>
 <script type="application/json" id="resource-types">
     {

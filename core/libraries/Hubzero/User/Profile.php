@@ -522,7 +522,7 @@ class Profile extends Obj
             }
         }
 
-        $this->paramsRegistry->merge($this->params);
+        $this->paramsRegistryOrFail()->merge($this->params);
 
         return true;
     }
@@ -854,7 +854,7 @@ class Profile extends Obj
 
             $db->setQuery($query);
 
-            $result = $db->loadColumn();
+            $result = $db->loadColumn() ?? [];
 
             if (count($result) > 1) {
                 // The driver has no error to give here: say what went wrong
@@ -1310,7 +1310,7 @@ class Profile extends Obj
      */
     public function getParam($key, $default = null)
     {
-        return $this->paramsRegistry->get($key, $default);
+        return $this->paramsRegistryOrFail()->get($key, $default);
     }
 
     /**
@@ -1322,7 +1322,7 @@ class Profile extends Obj
      */
     public function setParam($key, $value)
     {
-        return $this->paramsRegistry->set($key, $value);
+        return $this->paramsRegistryOrFail()->set($key, $value);
     }
 
     /**
@@ -1335,7 +1335,7 @@ class Profile extends Obj
      */
     public function defParam($key, $value)
     {
-        return $this->paramsRegistry->def($key, $value);
+        return $this->paramsRegistryOrFail()->def($key, $value);
     }
 
     /**
@@ -1579,5 +1579,20 @@ class Profile extends Obj
         }
 
         return $link;
+    }
+
+    /**
+     * The paramsRegistry, which the calls using it need set
+     *
+     * @return  \Hubzero\Config\Registry
+     * @throws  \LogicException  When it is not
+     */
+    protected function paramsRegistryOrFail()
+    {
+        if ($this->paramsRegistry === null) {
+            throw new \LogicException(static::class . '::$paramsRegistry is not set');
+        }
+
+        return $this->paramsRegistry;
     }
 }

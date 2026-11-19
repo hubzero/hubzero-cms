@@ -116,6 +116,6 @@ class Category extends Relational
      */
     public function automaticAlias($data)
     {
-        return strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($data['title'])));
+        return strtolower((string) preg_replace("/[^a-zA-Z0-9\-]/", '', trim($data['title'])));
     }
 }

@@ -142,7 +142,7 @@ class Utils
      */
     public static function makeArray($string = '')
     {
-        $string = preg_replace('/ /', ',', $string);
+        $string = (string) preg_replace('/ /', ',', $string);
         $arr    = explode(',', $string);
         $arr    = self::cleanArray($arr);
         $arr    = array_unique($arr);
@@ -697,8 +697,8 @@ class Utils
         // Request::root() rather than base(): it drops a trailing /api, so the
         // domain is the same whether this runs from the site or the API.
         $domain = rtrim(Request::root(), '/');
-        $domain = preg_replace('/^http:\/\//', '', $domain);
-        $domain = preg_replace('/^https:\/\//', '', $domain);
+        $domain = (string) preg_replace('/^http:\/\//', '', $domain);
+        $domain = (string) preg_replace('/^https:\/\//', '', $domain);
         $name = 'weber-auth-' . preg_replace('/\./', '-', $domain);
         $secure = true;
         $httponly = true;

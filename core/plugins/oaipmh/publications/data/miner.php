@@ -262,6 +262,10 @@ class Miner extends Obj implements Provider
                 . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : ""),
         );
         $record = $this->database->loadObject();
+        if (!$record) {
+            return null;
+        }
+
         $record->version_id = $record->id;
         $record->id = $id;
 
@@ -376,9 +380,11 @@ class Miner extends Obj implements Provider
 			ORDER BY pv.submitted DESC LIMIT 1",
         );
         $dates = $this->database->loadObject();
-        $record->date = $dates->created;
-        if ($dates->submitted && $dates->submitted != '0000-00-00 00:00:00') {
-            $record->date = $dates->submitted;
+        if ($dates) {
+            $record->date = $dates->created;
+            if ($dates->submitted && $dates->submitted != '0000-00-00 00:00:00') {
+                $record->date = $dates->submitted;
+            }
         }
         if ($dates->accepted && $dates->accepted != '0000-00-00 00:00:00') {
             $record->date = $dates->accepted;

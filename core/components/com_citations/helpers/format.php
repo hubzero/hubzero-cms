@@ -311,7 +311,7 @@ class Format
                         }
 
                         //add author coins
-                        $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
+                        $coins_data[] = 'rft.au=' . trim((string) preg_replace('/\{\{\d+\}\}/', '', trim($author)));
                     }
 
                     $replace_values[$v] = implode("; ", $a);
@@ -400,15 +400,15 @@ class Format
 
         // Strip empty tags
         $pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
-        $cite = preg_replace($pattern, '', $cite);
+        $cite = (string) preg_replace($pattern, '', $cite);
 
         //reformat dates
         $pattern = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
-        $cite = preg_replace($pattern, "$2-$3-$1", $cite);
+        $cite = (string) preg_replace($pattern, "$2-$3-$1", $cite);
 
         // Reduce multiple spaces to one
         $pattern = "/\s/s";
-        $cite = preg_replace($pattern, ' ', $cite);
+        $cite = (string) preg_replace($pattern, ' ', $cite);
 
         // Strip empty punctuation inside
         $b = [
@@ -464,7 +464,7 @@ class Format
         $replace    = ["%20", "%20", "%2F", "%3A", "%22", "%27", "%26"];
         $coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
-        $cite = preg_replace('/, :/', ':', $cite);
+        $cite = (string) preg_replace('/, :/', ':', $cite);
 
         // highlight citation data
         // do before appending coins as we dont want that data accidentally highlighted (causes style issues)
@@ -932,10 +932,10 @@ class Format
                     if (is_numeric($matches[0])) {
                         $aid = $matches[0];
                     } else {
-                        $zuser = User::getInstance(trim($matches[0]));
+                        $zuser = User::getInstance(trim((string) $matches[0]));
                         $aid = $zuser->get('id');
                     }
-                    $auth = preg_replace('/{{(.*?)}}/s', '', $auth);
+                    $auth = (string) preg_replace('/{{(.*?)}}/s', '', $auth);
                     if ($aid) {
                         $a[] = '<a href="'
                             . Route::url('index.php?option=com_members&id=' . $aid)

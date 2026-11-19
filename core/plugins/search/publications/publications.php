@@ -354,8 +354,8 @@ class Publications extends Plugin
 
                 // Build the description, clean up text
                 $content = $row->abstract . ' ' . $row->description . ' ' . $row->release_notes;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Grab the DOI if there exists one

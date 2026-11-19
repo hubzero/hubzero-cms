@@ -657,7 +657,7 @@ class Citations extends SiteController
         // Instantiate a new view
         $this->view->set('title', Lang::txt(strtoupper($this->option))
             . ': '
-            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)));
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->task)));
         $this->view->set('config', $this->config);
 
         // No ID, so we're creating a new entry

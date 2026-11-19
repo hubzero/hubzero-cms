@@ -533,7 +533,7 @@ class Idp extends SiteController
         // Matched bytewise, not with /u: a malformed UTF-8 issuer would make a
         // unicode pattern return null and swallow the entry entirely. UTF-8
         // continuation bytes are all >= 0x80, so multibyte text is untouched.
-        $message = preg_replace('/[\x00-\x1F\x7F]+/', ' ', (string) $message);
+        $message = (string) preg_replace('/[\x00-\x1F\x7F]+/', ' ', (string) $message);
 
         if (strlen($message) > 512) {
             $message = substr($message, 0, 512) . '…';

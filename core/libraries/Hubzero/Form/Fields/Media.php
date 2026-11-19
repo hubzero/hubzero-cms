@@ -40,18 +40,20 @@ class Media extends Field
      */
     protected function getInput()
     {
-        $assetField  = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
-        $authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
+        $element = $this->fieldElement();
+
+        $assetField  = $element['asset_field'] ? (string) $element['asset_field'] : 'asset_id';
+        $authorField = $element['created_by_field'] ? (string) $element['created_by_field'] : 'created_by';
         $asset = $this->form->getValue($assetField)
             ? $this->form->getValue($assetField)
-            : (string) $this->element['asset_id'];
+            : (string) $element['asset_id'];
         if ($asset == '') {
             $asset = App::get('request')->getCmd('option');
         }
 
         $lang = App::get('language');
 
-        $link = (string) $this->element['link'];
+        $link = (string) $element['link'];
         if (!self::$initialised) {
             // Load the modal behavior script.
             Behavior::modal();
@@ -108,11 +110,11 @@ class Media extends Field
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // The text field.
         $html[] = '<div class="input-modal">';
@@ -130,7 +132,7 @@ class Media extends Field
             . ' />';
         $html[] = '	</span>';
 
-        $directory = (string) $this->element['directory'];
+        $directory = (string) $element['directory'];
         if ($this->value && file_exists(PATH_APP . '/' . $this->value)) {
             $folder = explode('/', $this->value);
             array_shift($folder);
@@ -151,7 +153,7 @@ class Media extends Field
         // The button.
         $html[] = '	<span class="input-cell">';
         $html[] = '		<a class="button modal" title="' . $lang->txt('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
-            . ($this->element['readonly']
+            . ($element['readonly']
             ? ''
             : ($link
                 ? $link
@@ -172,7 +174,7 @@ class Media extends Field
         $html[] = '</div>';
 
         // The Preview.
-        $preview = (string) $this->element['preview'];
+        $preview = (string) $element['preview'];
         $showPreview = true;
         $showAsTooltip = false;
         switch ($preview) {

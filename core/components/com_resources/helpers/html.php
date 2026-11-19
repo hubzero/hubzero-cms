@@ -216,7 +216,7 @@ class Html
                     . '"'
                     . $selected
                     . '>'
-                    . stripslashes($anode->type)
+                    . stripslashes((string) $anode->type)
                     . '</option>'
                     . "\n";
             }
@@ -516,13 +516,13 @@ class Html
     public static function license($license)
     {
         $license = str_replace(' ', '-', strtolower($license));
-        $license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
+        $license = (string) preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
 
         $rl = \Components\Resources\Models\License::oneByName($license);
 
         $html = '';
         if ($rl->id) {
-            if (substr($rl->name, 0, 6) != 'custom') {
+            if (substr((string) $rl->name, 0, 6) != 'custom') {
                 $html = '<p class="' . $rl->name . ' license">Licensed';
                 if ($rl->url) {
                     $html .= ' under <a rel="license" href="'
@@ -541,7 +541,8 @@ class Html
                     . $rl->name
                     . ' license">Licensed under <a rel="license" class="popup" href="'
                     . Route::url(
-                        'index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1',
+                        'index.php?option=com_resources&task=license&resource=' . substr((string) $rl->name, 6)
+                            . '&no_html=1',
                     )
                     . '">'
                     . $rl->title

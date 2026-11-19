@@ -484,7 +484,7 @@ class AppDirectory
     private static function output($text, $ansi = true, $error = false)
     {
         if (!$ansi) {
-            $text = preg_replace("/\e\[\d+m/", "", $text);
+            $text = (string) preg_replace("/\e\[\d+m/", "", $text);
             $text = preg_replace("/\e\[\d+;\d+m/", "", $text);
         }
         echo $text;

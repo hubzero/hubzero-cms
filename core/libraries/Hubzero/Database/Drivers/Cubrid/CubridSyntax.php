@@ -951,11 +951,11 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             preg_quote($correlation['inner_table'], '/'),
             preg_quote($correlation['inner_column'], '/'),
         );
-        $whereClause = preg_replace($correlationPattern2, '', (string) $whereClause);
+        $whereClause = (string) preg_replace($correlationPattern2, '', (string) $whereClause);
 
         // Clean up AND/OR connectors left at start/end after removing correlation
         $whereClause = trim($whereClause);
-        $whereClause = preg_replace('/^\s*(AND|OR)\s*/i', '', $whereClause);
+        $whereClause = (string) preg_replace('/^\s*(AND|OR)\s*/i', '', $whereClause);
         $whereClause = preg_replace('/\s*(AND|OR)\s*$/i', '', $whereClause);
 
         // If there are remaining conditions, add them to derived table

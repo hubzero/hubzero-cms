@@ -435,7 +435,8 @@ abstract class Field
         }
 
         // Get the label text from the XML element, defaulting to the element name.
-        $title = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $element = $this->fieldElement();
+        $title = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $title = $this->translateLabel ? Lang::txt($title) : $title;
 
         return $title;
@@ -456,7 +457,8 @@ abstract class Field
         }
 
         // Get the label text from the XML element, defaulting to the element name.
-        $text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+        $element = $this->fieldElement();
+        $text = $element['label'] ? (string) $element['label'] : (string) $element['name'];
         $text = $this->translateLabel ? Lang::txt($text) : $text;
 
         // Build the class for the label.
@@ -550,6 +552,16 @@ abstract class Field
 
         self::$count = self::$count + 1;
         return self::$generated_fieldname . self::$count;
+    }
+
+    /**
+     * The <field /> element, or an empty one before setup() has been given it
+     *
+     * @return  SimpleXMLElement
+     */
+    protected function fieldElement()
+    {
+        return $this->element ?? new SimpleXMLElement('<field />');
     }
 
     /**

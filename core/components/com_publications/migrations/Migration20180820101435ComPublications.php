@@ -48,7 +48,7 @@ class Migration20180820101435ComPublications extends Base
 
             $this->db->setQuery($query);
             $this->db->query();
-            $publications = $this->db->loadAssocList();
+            $publications = $this->db->loadAssocList() ?? [];
 
             foreach ($publications as $publication) {
                 $pubId = $publication['publication_id'];
@@ -84,7 +84,7 @@ class Migration20180820101435ComPublications extends Base
 
                 $this->db->setQuery($query);
                 $this->db->query();
-                $publications = $this->db->loadAssocList();
+                $publications = $this->db->loadAssocList() ?? [];
 
                 foreach ($publications as $publication) {
                     $pubId = $publication['publication_id'];

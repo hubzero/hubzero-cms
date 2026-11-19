@@ -90,11 +90,11 @@ class Macrolist extends WikiMacro
             $description = trim($macro->description());
 
             // The parser only runs these inside a group wiki
-            if (strtolower(substr($label, 0, 5)) == 'group') {
+            if (strtolower(substr((string) $label, 0, 5)) == 'group') {
                 $description .= '<p><em>Group wikis only.</em></p>';
             }
 
-            $entries[strtolower($label)] = $this->entry($label, $description);
+            $entries[strtolower((string) $label)] = $this->entry($label, $description);
         }
 
         ksort($entries);

@@ -84,7 +84,7 @@ class Manager
      */
     protected function createType($type, $options = [])
     {
-        $type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+        $type = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 
         $class = __NAMESPACE__ . '\\Type\\' . ucfirst($type);
 

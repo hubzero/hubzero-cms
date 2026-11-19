@@ -170,9 +170,9 @@ class Doi extends Plugin
                 ->whereEquals($types->getQualifiedFieldName('id'), $citation['type'])
                 ->row();
 
-            $pos = strpos(trim($typeRecord->type_desc), self::DATACITE);
+            $pos = strpos(trim((string) $typeRecord->type_desc), self::DATACITE);
             if ($pos == 0) {
-                $typeRecord->type_desc = substr(trim($typeRecord->type_desc), $pos + strlen(self::DATACITE));
+                $typeRecord->type_desc = substr(trim((string) $typeRecord->type_desc), $pos + strlen(self::DATACITE));
             }
             $citationArr['resourceTypeGeneral'] = $typeRecord->type_desc;
         }

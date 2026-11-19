@@ -438,7 +438,8 @@ class Migration
             return true;
         }
 
-        if (!$this->db) {
+        $db = $this->db;
+        if (!$db) {
             return false;
         }
 
@@ -457,11 +458,11 @@ class Migration
 
         if (!$dryrun && !$logOnly) {
             try {
-                $this->db->setQuery('SELECT @@SESSION.sql_mode');
-                $sqlMode = $this->db->loadResult();
+                $db->setQuery('SELECT @@SESSION.sql_mode');
+                $sqlMode = $db->loadResult();
 
-                $this->db->setQuery("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
-                $this->db->query();
+                $db->setQuery("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
+                $db->query();
             } catch (\Exception $e) {
                 // A server that will not tell us, or will not be told, is left
                 // alone: the run may still succeed, and failing here would be
@@ -485,10 +486,10 @@ class Migration
             $this->fireHooks('onBeforeMigrate');
         }
 
-        $hasStatus = $this->db->tableHasField($this->get('tbl_name'), 'status');
+        $hasStatus = $db->tableHasField($this->get('tbl_name'), 'status');
 
         // All-or-nothing mode: start batch transaction
-        $runDb = $this->runDb ?? $this->db;
+        $runDb = $this->runDb ?? $db;
         $batchTransactionStarted = false;
         $completedMigrations = [];
 
@@ -531,28 +532,28 @@ class Migration
                 // Look to the database log to see the last run on this file
                 $query = "SELECT `direction`";
 
-                if ($this->db->tableHasField($this->get('tbl_name'), 'status')) {
+                if ($db->tableHasField($this->get('tbl_name'), 'status')) {
                     $query .= ", `status`";
                 }
 
-                $query .= " FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->quote($file);
+                $query .= " FROM `{$this->get('tbl_name')}` WHERE `file` = " . $db->quote($file);
 
-                if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+                if ($db->tableHasField($this->get('tbl_name'), 'scope')) {
                     if ($scope == 'core/migrations') {
                         $query .= " AND (`scope`='' OR `scope` IN ("
-                            . $this->db->quote($scope)
+                            . $db->quote($scope)
                             . ","
-                            . $this->db->quote('migrations')
+                            . $db->quote('migrations')
                             . "))";
                     } else {
-                        $query .= " AND `scope` = " . $this->db->quote($scope);
+                        $query .= " AND `scope` = " . $db->quote($scope);
                     }
                 }
 
                 $query .= " ORDER BY `date` DESC LIMIT 1";
 
-                $this->db->setQuery($query);
-                $row = $this->db->loadObject();
+                $db->setQuery($query);
+                $row = $db->loadObject();
 
                 // Decide whether or not we want to show the file at all
                 // If list all, then we just show everything
@@ -630,7 +631,7 @@ class Migration
             $this->affectedFiles[] = $info['filename'];
 
             // Instantiate our class
-            $class = new $classname($this->db, $this->callbacks, $this->runDb);
+            $class = new $classname($db, $this->callbacks, $this->runDb);
 
             // Check if we're making a dry run, or only logging changes
             if ($dryrun) {
@@ -1077,7 +1078,8 @@ class Migration
      **/
     public function unmarkMigration($file, $extension = null)
     {
-        if (!$this->db) {
+        $db = $this->db;
+        if (!$db) {
             $this->log("Database connection not available.", 'error');
             return false;
         }
@@ -1099,23 +1101,23 @@ class Migration
 
         try {
             // Find the most recent entry for this file/scope
-            $query = "SELECT `id` FROM " . $this->db->quoteName($this->get('tbl_name'))
-                . " WHERE `file` = " . $this->db->quote($file);
+            $query = "SELECT `id` FROM " . $db->quoteName($this->get('tbl_name'))
+                . " WHERE `file` = " . $db->quote($file);
 
-            if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+            if ($db->tableHasField($this->get('tbl_name'), 'scope')) {
                 if ($scope == 'core/migrations') {
                     $query .= " AND (`scope`='' OR `scope` IN ("
-                            . $this->db->quote($scope) . ","
-                            . $this->db->quote('migrations') . "))";
+                            . $db->quote($scope) . ","
+                            . $db->quote('migrations') . "))";
                 } else {
-                    $query .= " AND `scope` = " . $this->db->quote($scope);
+                    $query .= " AND `scope` = " . $db->quote($scope);
                 }
             }
 
             $query .= " ORDER BY `date` DESC LIMIT 1";
 
-            $this->db->setQuery($query);
-            $entry = $this->db->loadObject();
+            $db->setQuery($query);
+            $entry = $db->loadObject();
 
             if (!$entry) {
                 $this->log("No tracking record found for {$file}", 'warning');
@@ -1123,11 +1125,11 @@ class Migration
             }
 
             // Delete the entry
-            $deleteQuery = "DELETE FROM " . $this->db->quoteName($this->get('tbl_name'))
+            $deleteQuery = "DELETE FROM " . $db->quoteName($this->get('tbl_name'))
                 . " WHERE `id` = " . (int) $entry->id;
 
-            $this->db->setQuery($deleteQuery);
-            $this->db->query();
+            $db->setQuery($deleteQuery);
+            $db->query();
 
             $this->log("Removed tracking record for {$file}", 'success');
             return true;
@@ -1146,7 +1148,8 @@ class Migration
      **/
     public function getMigrationStatus($file, $extension = null)
     {
-        if (!$this->db) {
+        $db = $this->db;
+        if (!$db) {
             return false;
         }
 
@@ -1164,23 +1167,23 @@ class Migration
         $scope = $this->scopeFromPath(dirname($fullpath));
 
         try {
-            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
-                . " WHERE `file` = " . $this->db->quote($file);
+            $query = "SELECT * FROM " . $db->quoteName($this->get('tbl_name'))
+                . " WHERE `file` = " . $db->quote($file);
 
-            if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+            if ($db->tableHasField($this->get('tbl_name'), 'scope')) {
                 if ($scope == 'core/migrations') {
                     $query .= " AND (`scope`='' OR `scope` IN ("
-                            . $this->db->quote($scope) . ","
-                            . $this->db->quote('migrations') . "))";
+                            . $db->quote($scope) . ","
+                            . $db->quote('migrations') . "))";
                 } else {
-                    $query .= " AND `scope` = " . $this->db->quote($scope);
+                    $query .= " AND `scope` = " . $db->quote($scope);
                 }
             }
 
             $query .= " ORDER BY `date` DESC LIMIT 1";
 
-            $this->db->setQuery($query);
-            $entry = $this->db->loadObject();
+            $db->setQuery($query);
+            $entry = $db->loadObject();
 
             return $entry ?: false;
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
@@ -1198,7 +1201,8 @@ class Migration
      **/
     public function getStatus($extension = null)
     {
-        if (!$this->db) {
+        $db = $this->db;
+        if (!$db) {
             return false;
         }
 
@@ -1208,10 +1212,10 @@ class Migration
 
         // Get all executed migrations from database
         try {
-            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
+            $query = "SELECT * FROM " . $db->quoteName($this->get('tbl_name'))
                 . " ORDER BY `date` DESC";
-            $this->db->setQuery($query);
-            $history = $this->db->loadObjectList();
+            $db->setQuery($query);
+            $history = $db->loadObjectList();
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
             $this->log("Failed to retrieve migration history.", 'error');
             return false;
@@ -1330,7 +1334,8 @@ class Migration
      **/
     public function resolveAlias($alias, $extension = null)
     {
-        if (!$this->db) {
+        $db = $this->db;
+        if (!$db) {
             return false;
         }
 
@@ -1364,12 +1369,12 @@ class Migration
 
         // Get execution history
         try {
-            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
+            $query = "SELECT * FROM " . $db->quoteName($this->get('tbl_name'))
                 . " WHERE `direction` = 'up'"
                 . " AND (`status` IS NULL OR `status` IN ('success', 'warning'))"
                 . " ORDER BY `date` DESC";
-            $this->db->setQuery($query);
-            $history = $this->db->loadObjectList();
+            $db->setQuery($query);
+            $history = $db->loadObjectList();
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
             $this->log("Failed to retrieve migration history.", 'error');
             return false;

@@ -87,7 +87,7 @@ if ($this->config->get('launcher_layout', 0)) {
                 <p class="ataglance">
                     <?php
                         $abstractSnippet = \Hubzero\Utility\Str::truncate(
-                            stripslashes(strip_tags($this->publication->abstract)),
+                            stripslashes(strip_tags((string) $this->publication->abstract)),
                             250,
                         );
                         echo $this->publication->abstract ? $abstractSnippet : '';

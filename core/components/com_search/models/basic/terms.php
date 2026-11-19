@@ -75,7 +75,7 @@ class Terms extends Obj
     public function __construct($raw)
     {
         // The search page builds this with no terms (null) on a bare visit
-        $this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', (string) $raw));
+        $this->raw = preg_replace('/^\s+|\s+$/', '', (string) preg_replace('/\s+/', ' ', (string) $raw));
         if ($this->isSet()) {
             $this->parseSearchableChunks();
         }
@@ -109,11 +109,12 @@ class Terms extends Obj
      */
     public function getRawWithoutSection()
     {
-        if (!$this->section) {
+        $section = $this->section;
+        if (!$section) {
             return $this->raw;
         }
 
-        return preg_replace('/^' . implode(':', array_map('preg_quote', $this->section)) . ':/', '', $this->raw);
+        return preg_replace('/^' . implode(':', array_map('preg_quote', $section)) . ':/', '', $this->raw);
     }
 
     /**
@@ -223,12 +224,12 @@ class Terms extends Obj
         $raw = trim(strtolower($this->raw));
         if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match)) {
             $this->section = explode(':', $match[1]);
-            $raw = preg_replace('/^' . preg_quote($match[1], '/') . ':/', '', $raw);
+            $raw = (string) preg_replace('/^' . preg_quote($match[1], '/') . ':/', '', $raw);
         } elseif (array_key_exists('section', $_GET) && is_string($_GET['section'])) {
             $this->section = [preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section'])];
         }
 
-        $raw = preg_replace('#[^-:/+"[:alnum:] ]#', '', preg_replace('/\s+/', ' ', trim($raw)));
+        $raw = (string) preg_replace('#[^-:/+"[:alnum:] ]#', '', (string) preg_replace('/\s+/', ' ', trim($raw)));
         for ($idx = 0, $len = strlen($raw); $idx < $len; ++$idx) {
             $cur = $raw[$idx];
             if ($accumulating_phrase) {

@@ -72,7 +72,7 @@ class SimpleCipherTest extends Basic
     {
         $key = $this->cipher->generateKey();
 
-        $this->assertEquals(256, strlen($key->private));
+        $this->assertEquals(256, strlen((string) $key->private));
     }
 
     /**

@@ -239,7 +239,7 @@ class Types extends AdminController
         if ($dashes) {
             $allowed = "a-zA-Z0-9\-_";
         }
-        return strtolower(preg_replace("/[^$allowed]/", '', $txt));
+        return strtolower((string) preg_replace("/[^$allowed]/", '', $txt));
     }
 
     /**

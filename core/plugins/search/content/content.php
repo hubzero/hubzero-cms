@@ -119,6 +119,9 @@ class Content extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM #__content WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Build the path
                 $sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
@@ -148,8 +151,8 @@ class Content extends Plugin
 
                 // Build the description, clean up text
                 $content = $row->fulltext . ' ' . $row->introtext;
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

@@ -131,6 +131,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
         // Verify data was preserved
         $driver->setQuery("SELECT * FROM drv_rebuild_test WHERE id = 1");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('Test', $row->name);
         $this->assertEquals(25, $row->age);
     }
@@ -238,6 +239,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
         // Verify data preserved
         $driver->setQuery("SELECT * FROM drv_combined_test WHERE id = 1");
         $row = $driver->loadObject();
+        $this->assertNotNull($row);
         $this->assertEquals('keep', $row->keep_col);
     }
 

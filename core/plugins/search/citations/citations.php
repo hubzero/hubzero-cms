@@ -154,6 +154,9 @@ class Citations extends Plugin
                 // Get the record
                 $sql = "SELECT * FROM #__citations WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
+                if (!$row) {
+                    return null;
+                }
 
                 // Obtain list of related authors
                 $sql1 = "SELECT author FROM #__citations_authors WHERE cid={$id};";
@@ -231,8 +234,8 @@ class Citations extends Plugin
                     . $row->language . ' '
                     . $row->label . ' ';
 
-                $content = preg_replace('/<[^>]*>/', ' ', $content);
-                $content = preg_replace('/ {2,}/', ' ', $content);
+                $content = (string) preg_replace('/<[^>]*>/', ' ', $content);
+                $content = (string) preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
                 // Create a record object

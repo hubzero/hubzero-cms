@@ -400,7 +400,7 @@ class Customexts extends AdminController
                 $model = CustomExtensions::oneOrFail($id);
 
                 if ($value) {
-                    $pieces = explode("/", $model->path);
+                    $pieces = explode("/", (string) $model->path);
                     $repodir = array_pop($pieces);
                     $extdir = implode("/", $pieces);
 
@@ -408,7 +408,7 @@ class Customexts extends AdminController
                         $museCmd = 'renameRepo currPath='
                             . escapeshellarg($extdir . '/__' . $repodir)
                             . ' targetPath='
-                            . escapeshellarg($model->path);
+                            . escapeshellarg((string) $model->path);
 
                         $rename_response = Cli::call($museCmd, $task = 'repository');
                         $rename_response = json_decode($rename_response);
@@ -419,13 +419,13 @@ class Customexts extends AdminController
                         continue;
                     }
                 } else {
-                    if (is_dir($model->path)) {
-                        $pieces = explode("/", $model->path);
+                    if (is_dir((string) $model->path)) {
+                        $pieces = explode("/", (string) $model->path);
                         $repoPath = array_pop($pieces);
                         $extdir = implode("/", $pieces);
 
                         $museCmd = 'renameRepo currPath='
-                            . escapeshellarg($model->path)
+                            . escapeshellarg((string) $model->path)
                             . ' targetPath='
                             . escapeshellarg($extdir . '/__' . $repoPath);
 
@@ -513,12 +513,12 @@ class Customexts extends AdminController
                         . parse_url($extension->get('url'), PHP_URL_HOST)
                         . parse_url($extension->get('url'), PHP_URL_PATH);
                     $museCmd = 'cloneRepo repoPath='
-                        . escapeshellarg($extension->path)
+                        . escapeshellarg((string) $extension->path)
                         . ' sourceUrl='
                         . escapeshellarg($newURL);
                 } else {
                     $museCmd = 'cloneRepo repoPath='
-                        . escapeshellarg($extension->path)
+                        . escapeshellarg((string) $extension->path)
                         . ' sourceUrl='
                         . escapeshellarg($extension->get('url'));
                 }
@@ -540,7 +540,10 @@ class Customexts extends AdminController
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE')];
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
                 } elseif (
-                    preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)
+                    preg_grep(
+                        "/Cloning into '" . preg_quote((string) $extension->path, '/') . "'.../uis",
+                        $clone_response,
+                    )
                 ) {
                     // Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
                     // Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'...
@@ -574,7 +577,7 @@ class Customexts extends AdminController
                 }
 
                 $museCmd = 'updateGitURLconf repoPath='
-                    . escapeshellarg($extension->path)
+                    . escapeshellarg((string) $extension->path)
                     . ' newsourceUrl='
                     . escapeshellarg($newURL);
                 $updateGitURLconf_response = Cli::call($museCmd, $task = 'repository');
@@ -600,7 +603,7 @@ class Customexts extends AdminController
                 } else {
                     // Check if specified branch is being used.  If not checkout out specified branch
                     $museCmd = 'checkoutRepoBranch repoPath='
-                        . escapeshellarg($extension->path)
+                        . escapeshellarg((string) $extension->path)
                         . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . escapeshellarg(
                             $extension->get('git_branch'),
                         ) : '');
@@ -619,7 +622,7 @@ class Customexts extends AdminController
                         // Check for updates in remote branch. muse wants the source as
                         // "remote/branch" (it refuses a bare branch name as an invalid
                         // update mechanism source), and the form field holds a branch.
-                        $museCmd = 'update -r=' . escapeshellarg($extension->path);
+                        $museCmd = 'update -r=' . escapeshellarg((string) $extension->path);
                         if (!empty($extension->get('git_branch'))) {
                             $source = $extension->get('git_branch');
                             if (strpos($source, '/') === false) {
@@ -744,7 +747,7 @@ class Customexts extends AdminController
         foreach ($ids as $id) {
             $extension = CustomExtensions::oneOrNew($id);
 
-            $museCmd = 'update -r=' . escapeshellarg($extension->path) . ' -f --no-colors';
+            $museCmd = 'update -r=' . escapeshellarg((string) $extension->path) . ' -f --no-colors';
             $result = Cli::callWithStatus($museCmd, $task = 'repository');
 
             // In minimal/json mode muse prints nothing at all on success (the
@@ -784,7 +787,7 @@ class Customexts extends AdminController
                 // Every update tags a cmsrollbackpoint-<time> first; keep only the
                 // newest so the tags do not pile up in the extension's repository.
                 Cli::call(
-                    'clean -r=' . escapeshellarg($extension->path) . ' --purge-rollback-points',
+                    'clean -r=' . escapeshellarg((string) $extension->path) . ' --purge-rollback-points',
                     $task = 'repository',
                 );
 
@@ -830,13 +833,13 @@ class Customexts extends AdminController
             } else {
                 // If enextion is disabled, its repository was renamed with a
                 // leading "__" when it was unpublished
-                $pieces = explode("/", $extension->path);
+                $pieces = explode("/", (string) $extension->path);
                 $repodir = array_pop($pieces);
                 $extdir = implode("/", $pieces);
 
                 $removeDir = $extdir . '/__' . $repodir;
             }
-            $museCmd = 'removeRepo -path=' . escapeshellarg($removeDir);
+            $museCmd = 'removeRepo -path=' . escapeshellarg((string) $removeDir);
 
             // Run migrations
             $migrations_response = Cli::migration(
@@ -852,7 +855,7 @@ class Customexts extends AdminController
             // or "[false]"); an earlier check looked for the text of the update
             // command instead and so reported every removal as failed. Keep the
             // record when the directory is still there, so it can be retried.
-            if (!is_dir($removeDir) && !is_link($removeDir)) {
+            if (!is_dir((string) $removeDir) && !is_link((string) $removeDir)) {
                 // Nothing on disk for this registration (never cloned, or already
                 // removed by hand): there is nothing to fail at, drop the record.
                 $removed = true;

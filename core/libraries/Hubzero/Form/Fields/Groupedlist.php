@@ -31,11 +31,13 @@ class Groupedlist extends Field
      */
     protected function getGroups()
     {
+        $fieldElement = $this->fieldElement();
+
         // Initialize variables.
         $groups = [];
         $label = 0;
 
-        foreach ($this->element->children() as $element) {
+        foreach ($fieldElement->children() as $element) {
             switch ($element->getName()) {
                 // The element is an <option />
                 case 'option':
@@ -133,24 +135,26 @@ class Groupedlist extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get the field groups.
         $groups = (array) $this->getGroups();
 
         // Create a read-only list (no name) with a hidden input to store the value.
-        if ((string) $this->element['readonly'] == 'true') {
+        if ((string) $element['readonly'] == 'true') {
             $html[] = Dropdown::groupedlist(
                 $groups,
                 null,

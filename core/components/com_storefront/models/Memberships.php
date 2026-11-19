@@ -46,7 +46,7 @@ class Memberships
     {
         $sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
         $this->db->setQuery($sql);
-        $membershipTypes = $this->db->loadColumn();
+        $membershipTypes = $this->db->loadColumn() ?? [];
 
         return $membershipTypes;
     }
@@ -162,7 +162,7 @@ class Memberships
      *
      * @param   int    $uId  user ID
      * @param   int    $pId  membership product ID
-     * @return  array<mixed>  membership info
+     * @return  array<mixed>|null  membership info
      */
     public static function getMembershipInfoByUser($uId, $pId)
     {

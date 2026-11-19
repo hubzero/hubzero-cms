@@ -36,19 +36,21 @@ class Orcid extends Text
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $attributes = [
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
-            'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => 'orcid' . ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
-            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'size'         => ($element['size'] ? (int) $element['size'] : ''),
+            'maxlength'    => ($element['maxlength'] ? (int) $element['maxlength'] : ''),
+            'class'        => 'orcid' . ($element['class'] ? (string) $element['class'] : ''),
+            'autocomplete' => ((string) $element['autocomplete'] == 'off' ? 'off' : ''),
+            'readonly'     => ((string) $element['readonly'] == 'true' ? 'readonly' : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         $attr = [];

@@ -695,7 +695,7 @@ class Ldap
 
             $query = "SELECT username FROM `#__users` WHERE id IN ($addin) OR username IN ($addin);";
             $db->setQuery($query);
-            $add = $db->loadColumn();
+            $add = $db->loadColumn() ?? [];
 
             $adds = [];
 
@@ -717,7 +717,7 @@ class Ldap
 
             $query = "SELECT username FROM `#__users` WHERE id IN ($deletein) OR username IN ($deletein);";
             $db->setQuery($query);
-            $delete = $db->loadColumn();
+            $delete = $db->loadColumn() ?? [];
 
             $deletes = [];
 
@@ -746,7 +746,7 @@ class Ldap
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             self::syncGroup($row);
@@ -779,7 +779,7 @@ class Ldap
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             self::syncUser($row);
@@ -859,7 +859,7 @@ class Ldap
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             $dn = "cn=$row," . "ou=groups," . $hubLDAPBaseDN;
@@ -980,7 +980,7 @@ class Ldap
             . "'^[a-zA-Z]')";
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             $dn = "uid=$row," . "ou=users," . $hubLDAPBaseDN;

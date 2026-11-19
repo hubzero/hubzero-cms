@@ -399,7 +399,7 @@ class Relationships extends AdminController
 
         $this->database->setQuery('SELECT id, tag_id, mandatory_depth, multiple_depth FROM `#__focus_areas`');
 
-        $existing = $this->database->loadAssocList('id');
+        $existing = $this->database->loadAssocList('id') ?? [];
 
         // rebuilding from the form data is easier than finding and resolving differences
         $this->database->setQuery('TRUNCATE TABLE #__focus_area_resource_type_rel');

@@ -394,16 +394,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function snippet($needle, $radius = 160)
     {
-        $needle = trim(preg_replace('/\s+/u', ' ', (string) $needle));
+        $needle = trim((string) preg_replace('/\s+/u', ' ', (string) $needle));
 
         if ($needle === '') {
             return '';
         }
 
         // Field wrappers hold editor markup, not prose
-        $text = preg_replace('#<nb:(\w+)>.*?</nb:\1>#is', ' ', stripslashes((string) $this->get('fulltxt')));
+        $text = (string) preg_replace('#<nb:(\w+)>.*?</nb:\1>#is', ' ', stripslashes((string) $this->get('fulltxt')));
         $text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
-        $text = trim(preg_replace('/\s+/u', ' ', $text));
+        $text = trim((string) preg_replace('/\s+/u', ' ', $text));
 
         if ($text === '') {
             return '';

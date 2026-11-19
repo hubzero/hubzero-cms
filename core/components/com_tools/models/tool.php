@@ -626,12 +626,12 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string|null $property Parameter description (if any) ...
+     * @param     string $property Parameter description (if any) ...
      * @return   mixed  A value, or a list of them
      */
-    public function __get($property = null)
+    public function __get($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, (string) $property) || $property[0] == '_') {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -641,7 +641,7 @@ class Tool
         }
 
         if (in_array($property, $this->listKeys)) {
-            if (!array_key_exists($property, get_object_vars($this))) {
+            if (!array_key_exists((string) $property, get_object_vars($this))) {
                 $db = App::get('db');
 
                 if (in_array($property, ['version'])) {
@@ -666,7 +666,7 @@ class Tool
             return $this->$property;
         }
 
-        if (array_key_exists($property, get_object_vars($this))) {
+        if (array_key_exists((string) $property, get_object_vars($this))) {
             return null;
         }
 
@@ -680,12 +680,12 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string|null $property Parameter description (if any) ...
+     * @param     string $property Parameter description (if any) ...
      * @param     mixed $value Parameter description (if any) ...
      */
-    public function __set($property = null, $value = null)
+    public function __set($property, $value = null)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, (string) $property) || $property[0] == '_') {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -710,12 +710,12 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string|null $property Parameter description (if any) ...
+     * @param     string $property Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
-    public function __isset($property = null)
+    public function __isset($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, (string) $property) || $property[0] == '_') {
             if (empty($property)) {
                 $property = '(null)';
             }
@@ -732,12 +732,12 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string|null $property Parameter description (if any) ...
+     * @param     string $property Parameter description (if any) ...
      * @return   void
      */
-    public function __unset($property = null)
+    public function __unset($property)
     {
-        if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
+        if (!property_exists(__CLASS__, (string) $property) || $property[0] == '_') {
             if (empty($property)) {
                 $property = '(null)';
             }

@@ -1043,13 +1043,13 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         // Convert TEXT types to STRING (CUBRID's equivalent)
         // CUBRID doesn't have TEXT, MEDIUMTEXT, LONGTEXT - uses STRING for all
-        $normalized = preg_replace('/\b(TINY|MEDIUM|LONG)?TEXT\b/i', 'STRING', $normalized);
+        $normalized = (string) preg_replace('/\b(TINY|MEDIUM|LONG)?TEXT\b/i', 'STRING', $normalized);
 
         // Convert BOOLEAN to TINYINT (CUBRID doesn't support native BOOLEAN)
-        $normalized = preg_replace('/\bBOOLEAN\b/i', 'TINYINT', $normalized);
+        $normalized = (string) preg_replace('/\bBOOLEAN\b/i', 'TINYINT', $normalized);
 
         // Strip UNSIGNED keyword (CUBRID doesn't support it)
-        $normalized = preg_replace('/\s+UNSIGNED/i', '', $normalized);
+        $normalized = (string) preg_replace('/\s+UNSIGNED/i', '', $normalized);
 
         // Strip display widths from integer types (CUBRID doesn't support them)
         $normalized = preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $normalized);
@@ -1109,7 +1109,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // Detect and normalize AUTO_INCREMENT
         $hasAutoIncrement = !empty($modifiers['autoIncrement']) || stripos($type, 'AUTO_INCREMENT') !== false;
         if ($hasAutoIncrement) {
-            $type = preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
+            $type = (string) preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
             $type = trim($type);
         }
 
@@ -1322,7 +1322,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             // Step 2: Check if table has existing rows that need IDs
             $this->setQuery("SELECT COUNT(*) as cnt FROM {$quotedTable}");
             $result = $this->loadObject();
-            $rowCount = (int) $result->cnt;
+            $rowCount = (int) $result?->cnt;
 
             if ($rowCount > 0) {
                 // Table has data - populate the new column with sequential values
@@ -1368,7 +1368,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             if ($rowCount > 0) {
                 $this->setQuery("SELECT MAX({$quotedColumn}) as max_id FROM {$quotedTable}");
                 $result = $this->loadObject();
-                $nextId = ((int) $result->max_id) + 1;
+                $nextId = ((int) $result?->max_id) + 1;
                 $this->setQuery("ALTER TABLE {$quotedTable} AUTO_INCREMENT = {$nextId}");
                 $this->execute();
             }
@@ -1404,7 +1404,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
                 $this->connection->getPdo()->beginTransaction();
             } else {
-                $this->connection->beginTransaction();
+                $this->connectionOrFail()->beginTransaction();
             }
         } else {
             $this->setQuery('SAVEPOINT SP_' . $this->transactionDepth)->execute();
@@ -2401,7 +2401,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         foreach ($bindings as $binding) {
             // CUBRID: Don't use type hints - bindValue without type parameter
-            $this->statement->bindValue($idx, $binding);
+            $this->statementOrFail()->bindValue($idx, $binding);
             $idx++;
         }
 

@@ -24,7 +24,7 @@ $dateFormat = 'M d, Y';
 $baseManage = 'publications/submit';
 $baseView = 'publications';
 
-$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$base = trim((string) preg_replace('/\/administrator/', '', Request::base()), '/');
 
 $mconfig = Component::params('com_members');
 $pPath   = trim($mconfig->get('webpath'), DS);

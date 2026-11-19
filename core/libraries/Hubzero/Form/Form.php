@@ -1645,7 +1645,7 @@ class Form
 
         // Only instantiate the form if it does not already exist.
         if (!isset($forms[$name])) {
-            $data = trim($data);
+            $data = trim((string) $data);
 
             if (empty($data)) {
                 throw new MissingData(Lang::txt('JLIB_FORM_ERROR_NO_DATA'));

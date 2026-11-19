@@ -87,7 +87,7 @@ class Vendor
 
         while (($line = fgets($handle)) !== false) {
             // Strip ANSI escape sequences for pattern matching
-            $plainLine = preg_replace('/\e\[[0-9;]*m/', '', $line);
+            $plainLine = (string) preg_replace('/\e\[[0-9;]*m/', '', $line);
 
             // Filter out composer fund advertisement lines
             if (
@@ -198,7 +198,7 @@ class Vendor
     private static function output($text, $ansi = true, $error = false)
     {
         if (!$ansi) {
-            $text = preg_replace("/\e\[\d+m/", "", $text);
+            $text = (string) preg_replace("/\e\[\d+m/", "", $text);
             $text = preg_replace("/\e\[\d+;\d+m/", "", $text);
         }
         echo $text;

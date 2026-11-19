@@ -178,7 +178,7 @@ class Download
             $sql .= "WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
             $db->setQuery($sql);
             $db->execute();
-            $metas = $db->loadAssocList();
+            $metas = $db->loadAssocList() ?? [];
             foreach ($metas as $meta) {
                 $dId = $meta['scope_id'];
 

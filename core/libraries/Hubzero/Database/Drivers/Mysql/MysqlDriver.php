@@ -279,7 +279,7 @@ class MysqlDriver extends BaseSqlDriver
         // Detect and normalize AUTO_INCREMENT
         $hasAutoIncrement = !empty($modifiers['autoIncrement']) || stripos($type, 'AUTO_INCREMENT') !== false;
         if ($hasAutoIncrement) {
-            $type = preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
+            $type = (string) preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
             $type = trim($type);
         }
 
@@ -2012,7 +2012,7 @@ class MysqlDriver extends BaseSqlDriver
             return false;
         }
 
-        $this->connection->exec('USE ' . $this->quoteName($database));
+        $this->connectionOrFail()->exec('USE ' . $this->quoteName($database));
 
         $this->database = $database;
 

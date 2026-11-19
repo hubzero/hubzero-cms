@@ -177,7 +177,7 @@ class Categories extends AdminController
                     $element->name = $val['name'];
                 } else {
                     $element->name = strtolower(
-                        preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])),
+                        (string) preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])),
                     );
                 }
                 $element->label    = $val['title'];

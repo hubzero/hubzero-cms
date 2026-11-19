@@ -22,7 +22,7 @@ use Hubzero\Facades\Tests\Mock\BadFacade;
 class FacadeTest extends Basic
 {
     /**
-     * @var  \Hubzero\Container\Container|null
+     * @var  \Hubzero\Container\Container
      */
     public $app;
 

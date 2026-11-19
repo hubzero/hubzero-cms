@@ -40,7 +40,7 @@ class ArticlesCategories extends Module
     /**
      * Display module contents
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry
+     * @param   \Hubzero\Config\Registry  $params  Registry
      * @return  \Hubzero\Database\Rows|array<mixed>  The categories; an empty array when the parent is not found
      */
     public static function getList(&$params)

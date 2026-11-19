@@ -34,10 +34,12 @@ class ModulePosition extends Text
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Get the client id.
-        $clientId = $this->element['client_id'];
+        $clientId = $element['client_id'];
         if (!isset($clientId)) {
-            $clientName = $this->element['client'];
+            $clientName = $element['client'];
             if (isset($clientName)) {
                 $client = ClientManager::client($clientName, true);
                 $clientId = $client->id;

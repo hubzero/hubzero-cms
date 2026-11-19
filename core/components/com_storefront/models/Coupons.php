@@ -177,6 +177,9 @@ class Coupons
         }
 
         $row = $this->db->loadObject();
+        if (!$row) {
+            throw new \Exception(Lang::txt('COM_STOREFRONT_INVALID_COUPON_CODE'));
+        }
 
         // check if expired
         if ($row->cnValid != 'valid') {

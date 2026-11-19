@@ -16,7 +16,13 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{datetime: mixed, element: mixed, message: mixed, period: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     datetime: mixed,
+ *     db: \Hubzero\Database\Driver,
+ *     element: mixed,
+ *     message: mixed,
+ *     period: mixed,
+ * } $this
  */
 
 //Html::behavior('chart');
@@ -35,7 +41,7 @@ $this
      ->js('canvas2image.js')
      ->js('jquery.flot.saveAsImage.js');
 
-$db = Components\Usage\Helpers\Helper::getUDBO();
+$db = $this->db;
 
 $datetime = $this->datetime;
 $period   = $this->period;

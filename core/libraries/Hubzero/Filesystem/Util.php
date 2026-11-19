@@ -116,13 +116,13 @@ class Util
     public static function normalizeRelativePath($path)
     {
         // Path remove self referring paths ("/./").
-        $path = preg_replace('#/\.(?=/)|^\./|/\./?$#', '', $path);
+        $path = (string) preg_replace('#/\.(?=/)|^\./|/\./?$#', '', $path);
 
         // Regex for resolving relative paths
         $regex = '#/*[^/\.]+/\.\.#Uu';
 
-        while (preg_match($regex, $path)) {
-            $path = preg_replace($regex, '', $path);
+        while (preg_match($regex, (string) $path)) {
+            $path = preg_replace($regex, '', (string) $path);
         }
 
         return $path;

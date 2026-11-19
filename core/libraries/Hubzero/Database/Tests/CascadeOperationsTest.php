@@ -280,6 +280,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             . $driver->quoteName('cascade_comments')
             . " WHERE post_id = " . $driver->quote($postId);
         $result = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($result);
 
         $this->assertEquals(
             2,
@@ -329,6 +330,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             . $driver->quoteName('cascade_comments')
             . " WHERE post_id = " . $driver->quote($postId);
         $result = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($result);
 
         $this->assertEquals(
             0,
@@ -551,6 +553,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             . $driver->quoteName('cascade_comments')
             . " WHERE post_id = " . $driver->quote($postId);
         $result = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($result);
         $this->assertEquals(5, $result->cnt);
 
         // Delete post - should bulk cascade to comments
@@ -561,6 +564,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             . $driver->quoteName('cascade_comments')
             . " WHERE post_id = " . $driver->quote($postId);
         $result = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($result);
 
         $this->assertEquals(
             0,
@@ -605,6 +609,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             . $driver->quoteName('cascade_comments')
             . " WHERE post_id = " . $driver->quote($postId);
         $result = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($result);
 
         $this->assertEquals(0, $result->cnt);
     }
@@ -635,6 +640,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $sql = "SELECT COUNT(*) as cnt FROM " . $driver->quoteName('cascade_posts')
             . " WHERE title = " . $driver->quote('Should Roll Back');
         $row = $driver->setQuery($sql)->loadObject();
+        $this->assertNotNull($row);
 
         $this->assertEquals(
             0,

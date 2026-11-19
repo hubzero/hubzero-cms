@@ -79,7 +79,7 @@ class GradeBook extends Base
     {
         // If no user provided, assume section
         if (is_null($member_id)) {
-            $members = $this->course->offering()->section()->members();
+            $members = $this->courseOrFail()->offering()->section()->members();
 
             $member_id = [];
 
@@ -142,10 +142,10 @@ class GradeBook extends Base
     public function summaryStats($section = true)
     {
         // Get the grades themselves
-        $filters = ['scope' => 'asset', 'course_id' => $this->course->get('course_id')];
+        $filters = ['scope' => 'asset', 'course_id' => $this->courseOrFail()->get('course_id')];
 
         if ($section) {
-            $filters['section_id'] = $this->course->offering()->section()->get('id');
+            $filters['section_id'] = $this->courseOrFail()->offering()->section()->get('id');
         }
 
         $results = $this->fetchGrades($filters);
@@ -197,10 +197,10 @@ class GradeBook extends Base
             return $instances[$key];
         }
 
-        $offeringParams = new Registry($this->course->offering()->get('params'));
-        $sectionParams  = new Registry($this->course->offering()->section()->get('params'));
+        $offeringParams = new Registry($this->courseOrFail()->offering()->get('params'));
+        $sectionParams  = new Registry($this->courseOrFail()->offering()->section()->get('params'));
 
-        $progress_calculation = $this->course->config()->get('progress_calculation', 'all');
+        $progress_calculation = $this->courseOrFail()->config()->get('progress_calculation', 'all');
         $progress_calculation = ($offeringParams->get('progress_calculation', false))
             ? $offeringParams->get('progress_calculation')
             : $progress_calculation;
@@ -209,7 +209,7 @@ class GradeBook extends Base
             : $progress_calculation;
 
         $filters = [
-            'section_id' => $this->course->offering()->section()->get('id'),
+            'section_id' => $this->courseOrFail()->offering()->section()->get('id'),
             'member_id'  => $member_id,
         ];
 
@@ -279,7 +279,7 @@ class GradeBook extends Base
                     $asset = new Tables\Asset($dbo);
                     $filters = [
                         'w' => [
-                            'course_id'   => $this->course->get('id'),
+                            'course_id'   => $this->courseOrFail()->get('id'),
                             'unit_id'     => $unit_id,
                             'state'       => 1,
                             'asset_scope' => 'asset_group',
@@ -294,7 +294,7 @@ class GradeBook extends Base
                             break;
 
                         case 'manual':
-                            $filters['w']['section_id'] = $this->course->offering()->section()->get('id');
+                            $filters['w']['section_id'] = $this->courseOrFail()->offering()->section()->get('id');
                             $filters['w']['progress_calculation'] = true;
                             break;
 
@@ -326,7 +326,7 @@ class GradeBook extends Base
     public function views($member_id)
     {
         $filters = [
-            'section_id' => $this->course->offering()->section()->get('id'),
+            'section_id' => $this->courseOrFail()->offering()->section()->get('id'),
             'member_id'  => $member_id,
         ];
 
@@ -721,22 +721,22 @@ class GradeBook extends Base
         static $grades = [];
 
         // Get a grade policy object
-        $section = $this->course->offering()->section();
+        $section = $this->courseOrFail()->offering()->section();
         $sectionGradePolicyId = $section->get('grade_policy_id');
         $sectionId = $section->get('id');
         $gradePolicy = new GradePolicies($sectionGradePolicyId, $sectionId);
 
-        $assetKey = $this->course->get('id') . ':'
-            . $this->course->offering()->get('id') . ':' . $sectionId;
+        $assetKey = $this->courseOrFail()->get('id') . ':'
+            . $this->courseOrFail()->offering()->get('id') . ':' . $sectionId;
 
         if (!isset($assets[$assetKey])) {
             // Get the graded assets
             $asset  = new Tables\Asset(App::get('db'));
             $found  = $asset->find([
                 'w' => [
-                    'course_id'   => $this->course->get('id'),
-                    'section_id'  => $this->course->offering()->section()->get('id'),
-                    'offering_id' => $this->course->offering()->get('id'),
+                    'course_id'   => $this->courseOrFail()->get('id'),
+                    'section_id'  => $this->courseOrFail()->offering()->section()->get('id'),
+                    'offering_id' => $this->courseOrFail()->offering()->get('id'),
                     'graded'      => true,
                     'state'       => 1,
                     'asset_scope' => 'asset_group',
@@ -748,7 +748,7 @@ class GradeBook extends Base
             // Get gradebook auxiliary assets
             $auxiliary = $asset->findByScope(
                 'offering',
-                $this->course->offering()->get('id'),
+                $this->courseOrFail()->offering()->get('id'),
                 [
                     'asset_type'    => 'gradebook',
                     'asset_subtype' => 'auxiliary',
@@ -802,7 +802,7 @@ class GradeBook extends Base
             $member_id = (array) $member_id;
         } else {
             $member_id = [];
-            foreach ($this->course->offering()->section()->members() as $m) {
+            foreach ($this->courseOrFail()->offering()->section()->members() as $m) {
                 $member_id[] = $m->get('id');
             }
         }
@@ -842,14 +842,14 @@ class GradeBook extends Base
     {
         // Check whether or not they're eligible for a badge at this point
         // First, does this course even offers a badge
-        if ($this->course->offering()->section()->badge()->isAvailable()) {
+        if ($this->courseOrFail()->offering()->section()->badge()->isAvailable()) {
             $members = $this->isEligibleForRecognition($member_id);
 
             if ($members) {
                 foreach ($members as $m) {
                     // Mark student as having earned badge
                     $badge = MemberBadge::loadByMemberId($m);
-                    $sb    = Section\Badge::loadBySectionId($this->course->offering()->section()->get('id'));
+                    $sb    = Section\Badge::loadBySectionId($this->courseOrFail()->offering()->section()->get('id'));
                     if ($badge instanceof MemberBadge && !$badge->hasEarned()) {
                         $badge->set('member_id', $m);
                         $badge->set('section_badge_id', $sb->get('id'));
@@ -903,9 +903,9 @@ class GradeBook extends Base
      */
     private function sectionKey()
     {
-        return $this->course->get('id') . ':'
-            . $this->course->offering()->get('id') . ':'
-            . $this->course->offering()->section()->get('id');
+        return $this->courseOrFail()->get('id') . ':'
+            . $this->courseOrFail()->offering()->get('id') . ':'
+            . $this->courseOrFail()->offering()->section()->get('id');
     }
 
     /**
@@ -923,15 +923,15 @@ class GradeBook extends Base
             $asset_ids = [];
             $units_map = [];
 
-            if (count($this->course->offering()->assets()) > 0) {
-                foreach ($this->course->offering()->assets() as $a) {
+            if (count($this->courseOrFail()->offering()->assets()) > 0) {
+                foreach ($this->courseOrFail()->offering()->assets() as $a) {
                     $asset_ids[] = $a->get('id');
                 }
             }
 
             // Get asset ids
-            if ($this->course->offering()->units()) {
-                foreach ($this->course->offering()->units() as $unit) {
+            if ($this->courseOrFail()->offering()->units()) {
+                foreach ($this->courseOrFail()->offering()->units() as $unit) {
                     foreach ($unit->assetgroups() as $agt) {
                         foreach ($agt->children() as $ag) {
                             foreach ($ag->assets() as $a) {
@@ -957,5 +957,20 @@ class GradeBook extends Base
         }
 
         return $grades[$key];
+    }
+
+    /**
+     * The course, which the calls using it need set
+     *
+     * @return  \Components\Courses\Models\Course
+     * @throws  \LogicException  When it is not
+     */
+    protected function courseOrFail()
+    {
+        if ($this->course === null) {
+            throw new \LogicException(static::class . '::$course is not set');
+        }
+
+        return $this->course;
     }
 }

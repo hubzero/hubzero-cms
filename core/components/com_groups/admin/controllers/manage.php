@@ -537,7 +537,7 @@ class Manage extends AdminController
 
         // get all current users granted permissionss
         $this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
-        $grants = $this->database->loadColumn();
+        $grants = $this->database->loadColumn() ?? [];
 
         // look at all current users granted permissions
         $canCreateSuperGroupDB = false;

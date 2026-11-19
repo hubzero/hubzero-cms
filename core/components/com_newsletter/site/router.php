@@ -69,7 +69,7 @@ class Router extends Base
             $sql = "SELECT `alias` FROM `#__newsletters` WHERE `id`=" . $database->quote($query['id']);
             $database->setQuery($sql);
             $campaign = $database->loadResult();
-            $segments[] = strtolower(str_replace(" ", "", $campaign));
+            $segments[] = strtolower(str_replace(" ", "", (string) $campaign));
             unset($query['id']);
         }
 

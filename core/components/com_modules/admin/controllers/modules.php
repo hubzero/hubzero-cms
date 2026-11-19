@@ -636,12 +636,12 @@ class Modules extends AdminController
 
             foreach ($declared as $value => $label) {
                 if (!$label) {
-                    $label    = preg_replace(
+                    $label    = (string) preg_replace(
                         '/[^a-zA-Z0-9_\-]/',
                         '_',
                         'TPL_' . $template->element . '_POSITION_' . $value,
                     );
-                    $altlabel = preg_replace(
+                    $altlabel = (string) preg_replace(
                         '/[^a-zA-Z0-9_\-]/',
                         '_',
                         'COM_MODULES_POSITION_' . $value,
@@ -1262,7 +1262,7 @@ class Modules extends AdminController
                     ->whereEquals('moduleid', $pk);
 
                 $db->setQuery($query->toString());
-                $menus = $db->loadColumn();
+                $menus = $db->loadColumn() ?? [];
 
                 // Insert the new records into the table
                 foreach ($menus as $menu) {

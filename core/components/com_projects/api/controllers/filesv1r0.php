@@ -826,7 +826,7 @@ class Filesv1r0 extends ApiController
                 // Init the destination file (format <filename.ext>.part<#chunk>)
                 // The file is stored in a temporary directory identified by the
                 // project ID, the base64 encoded destination and the filename
-                $flowIdentifier = preg_replace(
+                $flowIdentifier = (string) preg_replace(
                     '/[^A-Za-z0-9_-]/',
                     '',
                     Request::getString('flowIdentifier', '', 'POST'),

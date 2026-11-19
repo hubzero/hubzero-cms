@@ -281,7 +281,7 @@ $quotaSelected = function ($value) use ($view) {
                     $quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 
                     $access = Hubzero\Access\Viewlevel::oneOrNew($row->access);
-                    $cls = preg_replace('/[^a-z0-9-\_]/', '', strtolower($access->title));
+                    $cls = preg_replace('/[^a-z0-9-\_]/', '', strtolower((string) $access->title));
                     /*$cls  = 'public';
                     $task = 'accessprivate';
                     if ($row->private > 0)

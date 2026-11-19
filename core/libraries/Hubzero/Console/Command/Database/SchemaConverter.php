@@ -136,13 +136,13 @@ class SchemaConverter
         $content = (string) file_get_contents($inputFile);
 
         // Remove MySQL session settings
-        $content = preg_replace("/^SET NAMES.*$/m", '', $content);
-        $content = preg_replace("/^SET @@SESSION.*$/m", '', $content);
+        $content = (string) preg_replace("/^SET NAMES.*$/m", '', $content);
+        $content = (string) preg_replace("/^SET @@SESSION.*$/m", '', $content);
 
         // Remove VIEW definitions from content (we'll handle them separately at the end)
-        $contentNoViews = preg_replace('/CREATE VIEW[^;]+;/s', '', $content);
-        $contentNoViews = preg_replace('/CREATE ALGORITHM[^;]+;/s', '', $contentNoViews);
-        $contentNoViews = preg_replace('/DROP VIEW[^;]+;/s', '', $contentNoViews);
+        $contentNoViews = (string) preg_replace('/CREATE VIEW[^;]+;/s', '', $content);
+        $contentNoViews = (string) preg_replace('/CREATE ALGORITHM[^;]+;/s', '', $contentNoViews);
+        $contentNoViews = (string) preg_replace('/DROP VIEW[^;]+;/s', '', $contentNoViews);
 
         // Process tables
         $output = [];
@@ -272,19 +272,19 @@ class SchemaConverter
     protected function convertMysqlTable(string $sql): string
     {
         // Remove MySQL comments (-- Table structure for...)
-        $sql = preg_replace('/--\s*\n--\s*Table structure for table.*?\n--\s*\n/s', '', $sql);
+        $sql = (string) preg_replace('/--\s*\n--\s*Table structure for table.*?\n--\s*\n/s', '', $sql);
 
         // Remove ENGINE, DEFAULT CHARSET, COLLATE
-        $sql = preg_replace('/\)\s*ENGINE=\S+[^;]*;/', ');', $sql);
+        $sql = (string) preg_replace('/\)\s*ENGINE=\S+[^;]*;/', ');', $sql);
 
         // Remove COLLATE on individual columns
-        $sql = preg_replace('/\s+COLLATE\s+\S+/', '', $sql);
+        $sql = (string) preg_replace('/\s+COLLATE\s+\S+/', '', $sql);
 
         // Remove CHARACTER SET on individual columns
-        $sql = preg_replace('/\s+CHARACTER SET\s+\S+/', '', $sql);
+        $sql = (string) preg_replace('/\s+CHARACTER SET\s+\S+/', '', $sql);
 
         // Remove COMMENT strings
-        $sql = preg_replace("/\s+COMMENT\s+'[^']*'/", '', $sql);
+        $sql = (string) preg_replace("/\s+COMMENT\s+'[^']*'/", '', $sql);
 
         // Handle AUTO_INCREMENT columns
         $hasAutoIncrement = preg_match('/`(\w+)`[^,]+AUTO_INCREMENT/i', $sql, $aiMatch);
@@ -294,64 +294,64 @@ class SchemaConverter
         $hasCompositePK = preg_match('/PRIMARY KEY\s*\([^)]*,[^)]*\)/', $sql);
 
         // Convert integer types with size to just INTEGER
-        $sql = preg_replace('/\b(tiny|small|medium|big)?int\(\d+\)/i', 'INTEGER', $sql);
+        $sql = (string) preg_replace('/\b(tiny|small|medium|big)?int\(\d+\)/i', 'INTEGER', $sql);
 
         // unsigned is not supported in SQLite
         $sql = preg_replace('/\s+unsigned/i', '', $sql);
 
         // Convert AUTO_INCREMENT to INTEGER PRIMARY KEY (only if not composite PK)
         if ($autoIncrementColumn && !$hasCompositePK) {
-            $sql = preg_replace(
+            $sql = (string) preg_replace(
                 '/`' . $autoIncrementColumn . '`\s+INTEGER\s+NOT NULL\s+AUTO_INCREMENT/',
                 '`' . $autoIncrementColumn . '` INTEGER PRIMARY KEY AUTOINCREMENT',
-                $sql,
+                (string) $sql,
             );
-            $sql = preg_replace(
+            $sql = (string) preg_replace(
                 '/`' . $autoIncrementColumn . '`\s+INTEGER\s+AUTO_INCREMENT/',
                 '`' . $autoIncrementColumn . '` INTEGER PRIMARY KEY AUTOINCREMENT',
                 $sql,
             );
 
             // Remove the separate PRIMARY KEY declaration for this column
-            $sql = preg_replace('/,\s*PRIMARY KEY\s+\(`' . $autoIncrementColumn . '`\)/', '', $sql);
+            $sql = (string) preg_replace('/,\s*PRIMARY KEY\s+\(`' . $autoIncrementColumn . '`\)/', '', $sql);
         } else {
             // Just remove AUTO_INCREMENT for composite PKs
-            $sql = preg_replace('/\s+AUTO_INCREMENT/i', '', $sql);
+            $sql = (string) preg_replace('/\s+AUTO_INCREMENT/i', '', (string) $sql);
         }
 
         // Fallback: catch any remaining AUTO_INCREMENT patterns
         if (preg_match('/`(\w+)`\s+INTEGER\s+(?:NOT NULL\s+)?AUTO_INCREMENT/i', $sql, $fallbackMatch)) {
-            $sql = preg_replace(
+            $sql = (string) preg_replace(
                 '/`' . $fallbackMatch[1] . '`\s+INTEGER\s+NOT NULL\s+AUTO_INCREMENT/i',
                 '`' . $fallbackMatch[1] . '` INTEGER PRIMARY KEY AUTOINCREMENT',
                 $sql,
             );
-            $sql = preg_replace(
+            $sql = (string) preg_replace(
                 '/`' . $fallbackMatch[1] . '`\s+INTEGER\s+AUTO_INCREMENT/i',
                 '`' . $fallbackMatch[1] . '` INTEGER PRIMARY KEY AUTOINCREMENT',
                 $sql,
             );
-            $sql = preg_replace('/,\s*PRIMARY KEY\s+\(`' . $fallbackMatch[1] . '`\)/', '', $sql);
+            $sql = (string) preg_replace('/,\s*PRIMARY KEY\s+\(`' . $fallbackMatch[1] . '`\)/', '', $sql);
         }
 
         // Convert MySQL datetime zero default
-        $sql = preg_replace("/DEFAULT '0000-00-00 00:00:00'/", "DEFAULT NULL", $sql);
-        $sql = preg_replace("/DEFAULT '0000-00-00'/", "DEFAULT NULL", $sql);
+        $sql = (string) preg_replace("/DEFAULT '0000-00-00 00:00:00'/", "DEFAULT NULL", $sql);
+        $sql = (string) preg_replace("/DEFAULT '0000-00-00'/", "DEFAULT NULL", $sql);
 
         // Convert current_timestamp()
-        $sql = preg_replace('/current_timestamp\(\)/i', 'CURRENT_TIMESTAMP', $sql);
+        $sql = (string) preg_replace('/current_timestamp\(\)/i', 'CURRENT_TIMESTAMP', $sql);
 
         // Remove ON UPDATE CURRENT_TIMESTAMP
-        $sql = preg_replace('/\s+ON UPDATE CURRENT_TIMESTAMP/i', '', $sql);
+        $sql = (string) preg_replace('/\s+ON UPDATE CURRENT_TIMESTAMP/i', '', $sql);
 
         // Remove FULLTEXT KEY definitions
-        $sql = preg_replace('/,\s*FULLTEXT KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
+        $sql = (string) preg_replace('/,\s*FULLTEXT KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
 
         // Remove USING BTREE/HASH from index definitions
-        $sql = preg_replace('/\s+USING\s+(BTREE|HASH)/i', '', $sql);
+        $sql = (string) preg_replace('/\s+USING\s+(BTREE|HASH)/i', '', $sql);
 
         // Remove MySQL prefix length from index columns
-        $sql = preg_replace('/`([^`]+)`\(\d+\)/', '`$1`', $sql);
+        $sql = (string) preg_replace('/`([^`]+)`\(\d+\)/', '`$1`', $sql);
 
         // Extract and convert indexes
         $indexes = [];
@@ -365,7 +365,7 @@ class SchemaConverter
             $tableName = $tableMatch[1] ?? 'unknown';
             $indexes[] = "CREATE UNIQUE INDEX IF NOT EXISTS `{$indexName}` ON `{$tableName}` ({$columns});";
         }
-        $sql = preg_replace('/,\s*UNIQUE KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
+        $sql = (string) preg_replace('/,\s*UNIQUE KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
 
         // Extract regular KEY (indexes)
         preg_match_all('/,\s*KEY\s+`([^`]+)`\s*\(([^)]+)\)/', $sql, $kMatches, PREG_SET_ORDER);
@@ -376,14 +376,14 @@ class SchemaConverter
             $tableName = $tableMatch[1] ?? 'unknown';
             $indexes[] = "CREATE INDEX IF NOT EXISTS `{$indexName}` ON `{$tableName}` ({$columns});";
         }
-        $sql = preg_replace('/,\s*KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
+        $sql = (string) preg_replace('/,\s*KEY\s+`[^`]+`\s*\([^)]+\)/', '', $sql);
 
         // Clean up any double commas or trailing commas
-        $sql = preg_replace('/,(\s*,)+/', ',', $sql);
-        $sql = preg_replace('/,\s*\)/', "\n)", $sql);
+        $sql = (string) preg_replace('/,(\s*,)+/', ',', $sql);
+        $sql = (string) preg_replace('/,\s*\)/', "\n)", $sql);
 
         // Clean up extra whitespace
-        $sql = preg_replace('/\n\s*\n/', "\n", $sql);
+        $sql = (string) preg_replace('/\n\s*\n/', "\n", $sql);
 
         // Add index statements
         if (!empty($indexes)) {

@@ -1006,11 +1006,11 @@ class Page extends Relational
         }
 
         foreach ($RE as $regexp) {
-            $page = preg_replace($regexp, '\\1 \\2', $page);
+            $page = (string) preg_replace($regexp, '\\1 \\2', $page);
         }
 
         $r = '/(.+?)\:(.+?)/';
-        $page = preg_replace($r, '\\1: \\2', $page);
+        $page = (string) preg_replace($r, '\\1: \\2', $page);
         $page = str_replace('_', ' ', $page);
 
         return $page;

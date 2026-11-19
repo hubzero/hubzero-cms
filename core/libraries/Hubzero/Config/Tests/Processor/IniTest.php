@@ -20,14 +20,14 @@ class IniTest extends TestCase
     /**
      * Format processor
      *
-     * @var  \Hubzero\Config\Processor\Ini|null
+     * @var  \Hubzero\Config\Processor\Ini
      */
     private $processor = null;
 
     /**
      * Expected data as an object
      *
-     * @var  \stdClass|null
+     * @var  \stdClass
      */
     private $obj = null;
 

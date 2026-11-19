@@ -88,7 +88,7 @@ class Myquestions extends Module
             }
             if ($i < $num) {
                 // display tag
-                $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
+                $normalized = (string) preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
                 $normalized = strtolower($normalized);
                 $tagUrl = Route::url('index.php?option=com_tags&tag=' . $normalized);
                 $out .= "\t" . '<a href="' . $tagUrl . '">'
@@ -162,7 +162,7 @@ class Myquestions extends Module
                 foreach ($tools as $tool) {
                     $tags .= 'tool' . $tool->toolname . ',';
                 }
-                $tags = rtrim($tags, ',');
+                $tags = rtrim((string) $tags, ',');
             }
         }
 

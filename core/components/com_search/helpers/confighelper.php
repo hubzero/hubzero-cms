@@ -137,8 +137,8 @@ class ConfigHelper
         // Clean out any carriage returns.
         // These can screw up some block parsing, such as tables
         $text = str_replace("\r", '', $text);
-        $text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
-        $text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
+        $text = (string) preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
+        $text = (string) preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
         $matches = [];
         preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', $text, $matches);
 
@@ -153,7 +153,7 @@ class ConfigHelper
             // Member_id; the methods are camelCase, and PHP finds a method
             // whatever its case, so only the underscore needs dropping
             $replacement = $this->{str_replace('_', '', $macroname)}($argument, $row);
-            $path = (preg_replace("(\\[\[" . $macroname . "\(" . $argument . "\)\\]\])", $replacement, $path));
+            $path = (preg_replace("(\\[\[" . $macroname . "\(" . $argument . "\)\\]\])", $replacement, (string) $path));
         }
         return $path;
     }

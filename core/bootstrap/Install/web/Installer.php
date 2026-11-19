@@ -142,7 +142,7 @@ class Installer
 
         // Check if secure storage is available before anything else
         // This prevents cryptic fatal errors if storage can't be created
-        $storageCheck = $this->security->checkStorageAvailability();
+        $storageCheck = $this->getSecurityGuard()->checkStorageAvailability();
         if (!$storageCheck['available']) {
             $this->renderStorageError($storageCheck);
             return;
@@ -151,7 +151,7 @@ class Installer
         // Handle SSE streaming requests (before AJAX check)
         if (isset($_GET['action']) && $_GET['action'] === 'stream_migrations') {
             // Use hardened validation for SSE streaming (sensitive operation)
-            $validation = $this->security->validateAjaxRequest('stream_migrations', false);
+            $validation = $this->getSecurityGuard()->validateAjaxRequest('stream_migrations', false);
             if (!$validation['valid']) {
                 header('Content-Type: text/event-stream');
                 header('Cache-Control: no-cache');
@@ -160,7 +160,7 @@ class Installer
                 return;
             }
             if ($this->isInstalled()) {
-                $this->security->logSecurityEvent(
+                $this->getSecurityGuard()->logSecurityEvent(
                     'AJAX_AFTER_INSTALL',
                     'Refused a migration stream on an installed site',
                 );
@@ -188,7 +188,7 @@ class Installer
                 exit();
             }
             if ($this->isInstalled()) {
-                $this->security->logSecurityEvent(
+                $this->getSecurityGuard()->logSecurityEvent(
                     'AJAX_AFTER_INSTALL',
                     'Refused an installer action on an installed site',
                 );
@@ -215,9 +215,9 @@ class Installer
 
         // For steps after verify, validate client hasn't changed
         if ($this->currentStep !== 'verify' && $this->currentStep !== 'complete') {
-            $validation = $this->security->validateClient();
+            $validation = $this->getSecurityGuard()->validateClient();
             if (!$validation['valid']) {
-                $this->security->logSecurityEvent('CLIENT_VALIDATION_FAIL', $validation['error']);
+                $this->getSecurityGuard()->logSecurityEvent('CLIENT_VALIDATION_FAIL', $validation['error']);
                 $this->addMessage($validation['error'], 'error');
                 $this->currentStep = 'verify';
                 $_SESSION['install_step'] = 'verify';
@@ -238,7 +238,7 @@ class Installer
             // without this a post to the database step would rewrite a live
             // site's connection settings.
             if ($this->isInstalled()) {
-                $this->security->logSecurityEvent(
+                $this->getSecurityGuard()->logSecurityEvent(
                     'POST_AFTER_INSTALL',
                     'Refused a form submission for step "' . $this->currentStep . '" on an installed site',
                 );
@@ -267,11 +267,11 @@ class Installer
     private function verifySecurityForRequest(): bool
     {
         // Skip verification check if not yet verified (verify step itself)
-        if ($this->security->isVerificationRequired()) {
+        if ($this->getSecurityGuard()->isVerificationRequired()) {
             return false;
         }
 
-        $validation = $this->security->validateClient();
+        $validation = $this->getSecurityGuard()->validateClient();
         return $validation['valid'];
     }
 
@@ -284,7 +284,7 @@ class Installer
      */
     private function validateAjaxSecurity(string $action, bool $requirePost = false): array
     {
-        return $this->security->validateAjaxRequest($action, $requirePost);
+        return $this->getSecurityGuard()->validateAjaxRequest($action, $requirePost);
     }
 
     /**
@@ -494,7 +494,7 @@ class Installer
     private function getActualStep(): string
     {
         // Step 1: Verify - check if security verification passed
-        if ($this->security->isVerificationRequired()) {
+        if ($this->getSecurityGuard()->isVerificationRequired()) {
             return 'verify';
         }
 
@@ -1292,7 +1292,7 @@ class Installer
         if ($event === 'output') {
             // The migrations colour some of what they print whatever muse is
             // told, and a browser shows the codes as text
-            $data = preg_replace('/\e\[[0-9;]*m/', '', $data);
+            $data = (string) preg_replace('/\e\[[0-9;]*m/', '', $data);
 
             // Skip empty lines
             if (trim($data) === '') {
@@ -1361,9 +1361,9 @@ class Installer
      */
     public function cleanup(): bool
     {
-        $this->security->logSecurityEvent('INSTALL_COMPLETE', 'Installation completed successfully');
+        $this->getSecurityGuard()->logSecurityEvent('INSTALL_COMPLETE', 'Installation completed successfully');
         @file_put_contents($this->getInstallLockPath(), date('c') . "\n");
-        return $this->security->cleanup();
+        return $this->getSecurityGuard()->cleanup();
     }
 
     /**

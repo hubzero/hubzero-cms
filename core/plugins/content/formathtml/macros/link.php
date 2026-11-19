@@ -69,8 +69,8 @@ Examples:
         $href  = array_shift($args);
         $title = (count($args) > 0) ? implode(' ', $args) : $href;
 
-        $title = preg_replace('/\(.*?\)/', '', $title);
-        $title = preg_replace('/^.*?\:/', '', $title);
+        $title = (string) preg_replace('/\(.*?\)/', '', $title);
+        $title = (string) preg_replace('/^.*?\:/', '', $title);
 
         return '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
     }

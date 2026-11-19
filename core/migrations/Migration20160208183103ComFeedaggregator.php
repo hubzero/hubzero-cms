@@ -33,7 +33,7 @@ class Migration20160208183103ComFeedaggregator extends Base
                 ->getQuery()
                 ->select('*')
                 ->from('#__feedaggregator_posts');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             // Convert the field
             $this->db
@@ -70,7 +70,7 @@ class Migration20160208183103ComFeedaggregator extends Base
                 ->getQuery()
                 ->select('*')
                 ->from('#__feedaggregator_posts');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             // Convert the field
             $this->db

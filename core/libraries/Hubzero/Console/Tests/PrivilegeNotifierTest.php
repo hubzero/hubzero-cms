@@ -25,7 +25,7 @@ class PrivilegeNotifierTest extends Basic
     /**
      * argv before the test put its flag on it
      *
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
     private $argv;
 

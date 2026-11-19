@@ -274,7 +274,7 @@ class Product
                 $sql = "SELECT `cId` FROM `#__storefront_product_collections`";
                 $sql .= " WHERE `pId` = " . $db->quote($this->getId());
                 $db->setQuery($sql);
-                $collections = $db->loadColumn();
+                $collections = $db->loadColumn() ?? [];
                 $this->setCollections($collections);
             } else {
                 return [];
@@ -324,7 +324,7 @@ class Product
                 $db->setQuery($sql);
                 $db->execute();
 
-                $skuIds = $db->loadColumn();
+                $skuIds = $db->loadColumn() ?? [];
                 $skus = [];
 
                 // Find out product type to instantiate the correct object
@@ -828,7 +828,7 @@ class Product
 
                 $db->setQuery($sql);
                 $db->execute();
-                $res = $db->loadColumn();
+                $res = $db->loadColumn() ?? [];
                 $this->setOptionGroups($res);
             } else {
                 return [];

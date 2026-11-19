@@ -179,7 +179,7 @@ class MarkdownParser
         // Replace $$ with math for parsing
         $pattern = '/\$\$(.+?)\$\$/';
         $replacement = '<math>${1}</math>';
-        $text = preg_replace($pattern, $replacement, $text);
+        $text = (string) preg_replace($pattern, $replacement, $text);
 
         // The Extra and GitHub flavours carry tables, and ours add
         // scope="col" to the header cells; plain Markdown has no tables
@@ -201,7 +201,7 @@ class MarkdownParser
             $page = \Components\Wiki\Models\Page::oneOrFail($this->get('pageid'));
             $link = $page->link();
 
-            $text = preg_replace_callback($pattern, function ($matches) use ($link) {
+            $text = (string) preg_replace_callback($pattern, function ($matches) use ($link) {
                 return 'src="' . Route::url($link . '/Image:' . $matches[1]) . '"';
             }, $text);
         }
@@ -284,7 +284,11 @@ class MarkdownParser
 
         if (!empty($this->tokens)) {
             foreach ($this->tokens as $tag => $vals) {
-                $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+                $text = preg_replace_callback(
+                    '/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si',
+                    [&$this, 'dataPull'],
+                    (string) $text,
+                );
                 $this->tokens[$tag] = [];
             }
         }

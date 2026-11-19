@@ -22,7 +22,8 @@ defined('_HZEXEC_') or die();
 Lang::load('tpl_' . $this->template)
 || Lang::load('tpl_' . $this->template, __DIR__);
 
-$code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
+$error = $this->errorOrFail();
+$code = (is_numeric($error->getCode()) && $error->getCode() > 100 ? $error->getCode() : 500);
 
 $browser = new \Hubzero\Browser\Detector();
 
@@ -76,7 +77,7 @@ $cls = [
             <main id="component-content">
                 <div id="errorbox">
                     <h2 class="error-code"><?php echo $code; ?></h2>
-                    <p class="error"><?php echo $this->error->getMessage(); ?></p>
+                    <p class="error"><?php echo $this->errorOrFail()->getMessage(); ?></p>
 
                     <noscript>
                         <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT'); ?>

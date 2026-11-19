@@ -117,7 +117,7 @@ class Collections extends Plugin
             "SELECT id FROM `#__collections` WHERE `object_type`='group' AND `object_id`="
                 . $database->quote($group->get('gidNumber')),
         );
-        $entries = $database->loadColumn();
+        $entries = $database->loadColumn() ?? [];
 
         // Start the log text
         $log = Lang::txt('PLG_GROUPS_COLLECTIONS_LOG') . ': ';
@@ -1320,7 +1320,7 @@ class Collections extends Plugin
                     . " AND `id`!="
                     . $db->quote($item->get('id')),
             );
-            $others = $db->loadColumn();
+            $others = $db->loadColumn() ?? [];
 
             if (count($others) > 0) {
                 $db->setQuery(
@@ -1755,7 +1755,7 @@ class Collections extends Plugin
                     '<a href="'
                         . $route
                         . '">'
-                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $collection->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -1991,7 +1991,7 @@ class Collections extends Plugin
                     '<a href="'
                         . $route
                         . '">'
-                        . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $item->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -2345,7 +2345,7 @@ class Collections extends Plugin
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $collection->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -2529,7 +2529,7 @@ class Collections extends Plugin
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $collection->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [
@@ -2643,7 +2643,7 @@ class Collections extends Plugin
                     '<a href="'
                         . Route::url($collection->link())
                         . '">'
-                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars((string) $collection->get('title'), ENT_QUOTES, 'UTF-8')
                         . '</a>',
                 ),
                 'details'     => [

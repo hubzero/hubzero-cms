@@ -380,7 +380,7 @@ class Html extends Obj
         foreach ($icons as $icon => $image) {
             $pat  =  '#(?<=\s|^)(' . preg_quote($icon) . ')(?=\s|$)#';
             $rep  = '<span class="icon-emo-' . $image . '"></span>';
-            $text = preg_replace($pat, $rep, $text);
+            $text = preg_replace($pat, $rep, (string) $text);
         }
 
         return $text;
@@ -466,7 +466,7 @@ class Html extends Obj
         // punctuation and parentheses.
 
         // Replace email links
-        $string = preg_replace(
+        $string = (string) preg_replace(
             '/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/',
             '<a href="mailto:$1">$1</a>',
             $string,
@@ -564,8 +564,8 @@ class Html extends Obj
     {
         $append = '';
 
-        $dirname  = dirname($path);
-        $filename = basename($path);
+        $dirname  = dirname((string) $path);
+        $filename = basename((string) $path);
         $name     = '';
         $file = explode('.', $filename);
 
@@ -576,7 +576,7 @@ class Html extends Obj
             $name = $path;
         }
 
-        $parts = explode('-', $name);
+        $parts = explode('-', (string) $name);
         if (count($parts) > 1) {
             $append = (string) intval(end($parts));
         }
@@ -597,7 +597,7 @@ class Html extends Obj
         $newpath = $path;
 
         if ($end) {
-            $file = explode('.', $path);
+            $file = explode('.', (string) $path);
             $n = count($file);
             $ext = '';
             if ($n > 1) {
@@ -607,7 +607,7 @@ class Html extends Obj
                 $name = $path;
             }
 
-            $parts = explode($delim, $name);
+            $parts = explode($delim, (string) $name);
             if (count($parts) > 1) {
                 $oldnum = intval(end($parts));
                 if ($oldnum == $end) {
@@ -825,7 +825,7 @@ class Html extends Obj
         preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
         if (count($matches) > 0) {
             $meta = $matches[0];
-            $note   = preg_replace('#<meta>(.*?)</meta>#s', '', $note);
+            $note   = (string) preg_replace('#<meta>(.*?)</meta>#s', '', $note);
 
             if ($shorten) {
                 $note   = \Hubzero\Utility\Str::truncate($note, $shorten);
@@ -997,9 +997,9 @@ class Html extends Obj
     public static function suggestAlias($title = '', $maxLength = 30)
     {
         if ($title) {
-            $name = preg_replace('/ /', '', $title);
+            $name = (string) preg_replace('/ /', '', $title);
             $name = strtolower($name);
-            $name = preg_replace('/[^a-z0-9]/', '', $name);
+            $name = (string) preg_replace('/[^a-z0-9]/', '', $name);
             $name = substr($name, 0, $maxLength);
             return $name;
         }
@@ -1173,7 +1173,7 @@ class Html extends Obj
      * Send hub message
      *
      * @param   string  $option
-     * @param   \Components\Projects\Models\Project|null  $project    Models\Project
+     * @param   \Components\Projects\Models\Project  $project    Models\Project
      * @param   array<mixed>   $addressees
      * @param   string  $subject
      * @param   string  $component

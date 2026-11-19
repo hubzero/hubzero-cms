@@ -23,7 +23,7 @@ class Controller
         $db_info = explode(':', $db_id['id']);
         // Sanitize the request-derived database identifier and mode (name feeds
         // SQL, file paths and a database name; mode selects a require'd mode_*.php).
-        $db_id['name'] = str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_info[0]));
+        $db_id['name'] = str_replace('..', '', (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_info[0]));
         $db_id['mode'] = isset($db_info[1]) ? preg_replace('/[^A-Za-z0-9]/', '', $db_info[1]) : 'db';
         $db_id['extra'] = isset($db_info[2]) ? preg_replace('/[^A-Za-z0-9_.-]/', '', $db_info[2]) : false;
 
@@ -86,7 +86,7 @@ class Controller
 
         // This name selects the filter class and comes straight from the request,
         // so reduce it to the charset every shipped filter is written in.
-        $filter = preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('format', 'json')));
+        $filter = (string) preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('format', 'json')));
         $filterClass = __NAMESPACE__ . '\\Filter\\' . ucfirst($filter);
 
         $modeClass::pathway($dd);
@@ -111,7 +111,7 @@ class Controller
         }
 
         // As in task_view above: request-controlled part of a class name.
-        $filter = preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('type', 'csv')));
+        $filter = (string) preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('type', 'csv')));
         $filterClass = __NAMESPACE__ . '\\Filter\\' . ucfirst($filter);
 
         if ($dd) {

@@ -990,7 +990,7 @@ class Project extends Model
         ];
 
         if ($name) {
-            $name = preg_replace('/ /', '', $name);
+            $name = (string) preg_replace('/ /', '', $name);
             $name = strtolower($name);
         }
 

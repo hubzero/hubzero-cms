@@ -1152,7 +1152,7 @@ class Resources extends SiteController
         if (!Request::getInt('no_html')) {
             // Set breadcrumbs
             Pathway::append(
-                stripslashes($model->type->type),
+                stripslashes((string) $model->type->type),
                 Route::url('index.php?option=' . $this->option . '&type=' . $model->type->alias),
             );
 
@@ -1854,7 +1854,7 @@ class Resources extends SiteController
                 // Strip html from feed item description text
                 $description = trim($row->introtext);
                 $description = $description ?: trim($row->fulltxt);
-                $description = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', stripslashes($description));
+                $description = (string) preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', stripslashes($description));
                 $description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
                 $description = strip_tags($description);
 
@@ -1869,7 +1869,7 @@ class Resources extends SiteController
 
                 $relevant_logical_types_by_id = [];
                 foreach ($queried_logical_types as $queried) {
-                    $as_mnemonic = preg_replace('/[_-]/', ' ', $queried);
+                    $as_mnemonic = (string) preg_replace('/[_-]/', ' ', $queried);
                     foreach ($all_logical_types as $logical_type) {
                         //if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
                         // && strcasecmp($matches[1][0], $as_mnemonic) == 0)
@@ -1903,7 +1903,7 @@ class Resources extends SiteController
                             if (stripslashes($grandchild->introtext) != '') {
                                 $gdescription = trim($grandchild->introtext);
                                 $gdescription = $gdescription ?: trim($grandchild->fulltxt);
-                                $gdescription = preg_replace(
+                                $gdescription = (string) preg_replace(
                                     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
                                     '',
                                     stripslashes($gdescription),
@@ -2537,7 +2537,7 @@ class Resources extends SiteController
 
             $rt = License::oneByName('custom' . $resource);
 
-            $row->set('license', stripslashes($rt->text));
+            $row->set('license', stripslashes((string) $rt->text));
         }
 
         // Output HTML
@@ -2586,7 +2586,7 @@ class Resources extends SiteController
                 $handle = 'doi:'
                     . ($rdoi->get('doi_shoulder') ? $rdoi->get('doi_shoulder') : $tconfig->get('doi_shoulder'))
                     . '/'
-                    . strtoupper($rdoi->doi);
+                    . strtoupper((string) $rdoi->doi);
             }
         }
 

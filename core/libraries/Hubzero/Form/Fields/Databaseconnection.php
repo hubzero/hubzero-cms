@@ -33,6 +33,8 @@ class Databaseconnection extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         // This gets the connectors available in the platform and supported by the server.
         $available = App::get('db')->getConnectors();
@@ -42,7 +44,7 @@ class Databaseconnection extends Select
         // This should be entered in the form definition as a comma separated list.
         // If no supported databases are listed, it is assumed all available databases
         // are supported.
-        $supported = $this->element['supported'];
+        $supported = $element['supported'];
         if (!empty($supported)) {
             $supported = explode(',', $supported);
             foreach ($supported as $support) {

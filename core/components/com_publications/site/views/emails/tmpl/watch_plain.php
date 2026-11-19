@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$base = trim((string) preg_replace('/\/administrator/', '', Request::base()), '/');
 
 echo $this->subject; ?>
 

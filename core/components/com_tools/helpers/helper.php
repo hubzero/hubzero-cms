@@ -26,7 +26,7 @@ class Helper
      */
     public static function makeArray($string = '')
     {
-        $string = preg_replace('# #', ',', $string);
+        $string = (string) preg_replace('# #', ',', $string);
         $arr = explode(',', $string);
 
         $arr = self::cleanArray($arr);

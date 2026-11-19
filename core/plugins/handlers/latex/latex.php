@@ -77,7 +77,7 @@ class Latex extends Plugin
         $temp      = File::fileFromPath($uniqid . '.tex', $adapter);
 
         // Clean up data from Windows characters - important!
-        $data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $file->read());
+        $data = (string) preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $file->read());
 
         // Store file locally
         $temp->write($data);

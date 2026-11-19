@@ -614,7 +614,7 @@ class AseDriver extends BaseSqlDriver
     public function mapColumnType(string $type): string
     {
         $upper = strtoupper($type);
-        $upper = preg_replace('/\s+UNSIGNED$/i', '', $upper);
+        $upper = (string) preg_replace('/\s+UNSIGNED$/i', '', $upper);
 
         if ($upper === 'DOUBLE' || preg_match('/^DOUBLE\s*\([^)]+\)$/i', $upper)) {
             return 'FLOAT';
@@ -1485,7 +1485,7 @@ class AseDriver extends BaseSqlDriver
         $tempName = '#ase_sub_' . substr(md5(uniqid('', true)), 0, 8);
 
         // Insert INTO #temp by placing INTO before FROM
-        $intoSql = preg_replace('/\bFROM\b/i', "INTO $tempName FROM", $sql, 1);
+        $intoSql = (string) preg_replace('/\bFROM\b/i', "INTO $tempName FROM", $sql, 1);
 
         // Execute the SELECT INTO with any bindings
         $this->setQuery($intoSql);
@@ -1718,15 +1718,21 @@ class AseDriver extends BaseSqlDriver
         // Remove ORDER BY from derived tables (subqueries used as FROM source).
         // ASE forbids ORDER BY in derived tables. We strip the ORDER BY from
         // inside parenthesized subqueries that end with ") AS alias".
-        if (preg_match('/ORDER\s+BY\b.*?\)\s*AS\s/is', $sql)) {
+        if (preg_match('/ORDER\s+BY\b.*?\)\s*AS\s/is', (string) $sql)) {
             $sql = $this->stripOrderByFromDerivedTables($sql);
             $changed = true;
         }
 
         // FK referential actions — ASE 16.x does not support them.
         // Throw for non-NO ACTION actions; silently strip NO ACTION (default behavior).
-        if (preg_match('/\bON\s+(DELETE|UPDATE)\s/i', $sql)) {
-            if (preg_match('/\bON\s+(DELETE|UPDATE)\s+(CASCADE|SET\s+NULL|SET\s+DEFAULT|RESTRICT)\b/i', $sql, $m)) {
+        if (preg_match('/\bON\s+(DELETE|UPDATE)\s/i', (string) $sql)) {
+            if (
+                preg_match(
+                    '/\bON\s+(DELETE|UPDATE)\s+(CASCADE|SET\s+NULL|SET\s+DEFAULT|RESTRICT)\b/i',
+                    (string) $sql,
+                    $m,
+                )
+            ) {
                 throw new \RuntimeException(
                     'ASE does not support FK referential actions '
                     . "(ON {$m[1]} {$m[2]}). "
@@ -1737,7 +1743,7 @@ class AseDriver extends BaseSqlDriver
             $transformed = preg_replace(
                 '/\s+ON\s+(DELETE|UPDATE)\s+NO\s+ACTION\b/i',
                 '',
-                $sql,
+                (string) $sql,
             );
             if ($transformed !== $sql) {
                 $sql = $transformed;
@@ -1922,7 +1928,7 @@ class AseDriver extends BaseSqlDriver
                 $numDestCols = count($destColumns);
 
                 // Extract select column expressions (before FROM)
-                $selectPart = preg_replace(
+                $selectPart = (string) preg_replace(
                     '/INSERT\s+INTO\s+' . $ident . '\s+SELECT\s+/i',
                     '',
                     $sql,
@@ -3125,7 +3131,7 @@ class AseDriver extends BaseSqlDriver
                 $parts[] = $modifiers['nullable'] ? 'NULL' : 'NOT NULL';
             }
         } elseif (!$hasNullInType) {
-            if (strtoupper(trim(preg_replace('/\([^)]*\)/', '', $type))) === 'BIT') {
+            if (strtoupper(trim((string) preg_replace('/\([^)]*\)/', '', $type))) === 'BIT') {
                 // ASE BIT cannot be NULL; default to NOT NULL with DEFAULT 0
                 if (!array_key_exists('default', $modifiers)) {
                     $parts[] = 'DEFAULT 0';

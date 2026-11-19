@@ -244,7 +244,7 @@ class Option
 				WHERE o.`oId` = ' . $this->db->quote($this->getId());
         $sql .= ' AND s.`sActive` = 1';
         $this->db->setQuery($sql);
-        $sIds = $this->db->loadColumn();
+        $sIds = $this->db->loadColumn() ?? [];
 
         // Delete the SKU-option relation
         $sql = 'DELETE FROM `#__storefront_sku_options` WHERE `oId` = ' . $this->db->quote($this->getId());

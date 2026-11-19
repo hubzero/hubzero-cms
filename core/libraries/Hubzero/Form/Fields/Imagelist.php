@@ -28,11 +28,13 @@ class Imagelist extends Filelist
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Define the image file type filter.
         $filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$|\.jpeg$|\.psd$|\.eps$';
 
         // Set the form field element attribute for file type filter.
-        $this->element->addAttribute('filter', $filter);
+        $element->addAttribute('filter', $filter);
 
         // Get the field options.
         return parent::getOptions();

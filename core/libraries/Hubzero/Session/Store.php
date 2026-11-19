@@ -45,7 +45,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      */
     public static function getInstance($name = 'none', $options = [])
     {
-        $name = strtolower(preg_replace('/[^A-Z_]/i', '', (string) $name));
+        $name = strtolower((string) preg_replace('/[^A-Z_]/i', '', (string) $name));
 
         if (empty(self::$instances[$name])) {
             $class = __NAMESPACE__ . '\\Storage\\' . ucfirst($name);

@@ -198,7 +198,7 @@ class Comment extends Relational
             // Replace {ticket#123}
             $ticketUrl = Route::url("index.php?option=com_support&task=ticket&id=$1");
             $ticketLink = '<a href="' . $ticketUrl . '">' . Lang::txt('ticket #%s', "$1") . '</a>';
-            $comment = preg_replace('/\{ticket#([\d]+)\}/i', $ticketLink, $comment);
+            $comment = (string) preg_replace('/\{ticket#([\d]+)\}/i', $ticketLink, $comment);
 
             // Handle legacy attachment strings
             $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', [&$this,'getAttachment'], $comment);

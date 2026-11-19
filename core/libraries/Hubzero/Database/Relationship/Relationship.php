@@ -194,7 +194,7 @@ class Relationship
      **/
     public function constrain()
     {
-        $query = $this->related->whereEquals($this->relatedKey, $this->model->{$this->localKey});
+        $query = $this->relatedOrFail()->whereEquals($this->relatedKey, $this->model->{$this->localKey});
 
         // Apply any default conditions
         return $this->applyDefaultConditions($query);
@@ -208,7 +208,7 @@ class Relationship
      **/
     public function getConstrainedKeys($constraint)
     {
-        $this->related->select($this->relatedKey);
+        $this->relatedOrFail()->select($this->relatedKey);
 
         return $this->getConstrained($constraint)->fieldsByKey($this->relatedKey);
     }
@@ -221,7 +221,7 @@ class Relationship
      **/
     public function getConstrainedRows($constraint)
     {
-        $this->related->select($this->related->getQualifiedFieldName('*'));
+        $this->relatedOrFail()->select($this->relatedOrFail()->getQualifiedFieldName('*'));
 
         return $this->getConstrained($constraint);
     }
@@ -255,7 +255,7 @@ class Relationship
         // Note that rows is called on the base relational model, not on this relationship,
         // thus it is not calling the constrain method...which is how we want it to work.
         // Constraining here would not make sense as that would limit our result to 1 entry.
-        return $this->related->rows();
+        return $this->relatedOrFail()->rows();
     }
 
     /**
@@ -281,9 +281,9 @@ class Relationship
         $this->model
             ->select($this->model->getQualifiedFieldName('*'))
             ->join(
-                $this->related->getTableName(),
+                $this->relatedOrFail()->getTableName(),
                 $this->model->getQualifiedFieldName($this->localKey),
-                $this->related->getQualifiedFieldName($this->relatedKey),
+                $this->relatedOrFail()->getQualifiedFieldName($this->relatedKey),
                 'LEFT OUTER',
             );
 
@@ -387,7 +387,7 @@ class Relationship
             call_user_func_array($constraint, [$this->related]);
         }
 
-        return $this->related->whereIn($this->relatedKey, array_unique($keys));
+        return $this->relatedOrFail()->whereIn($this->relatedKey, array_unique($keys));
     }
 
     /**
@@ -841,5 +841,20 @@ class Relationship
         $this->defaultConditions = [];
 
         return $this;
+    }
+
+    /**
+     * The related, which the calls using it need set
+     *
+     * @return  \Hubzero\Database\Relational
+     * @throws  \LogicException  When it is not
+     */
+    protected function relatedOrFail()
+    {
+        if ($this->related === null) {
+            throw new \LogicException(static::class . '::$related is not set');
+        }
+
+        return $this->related;
     }
 }

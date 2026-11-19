@@ -80,8 +80,8 @@ class Data extends Base
         //    . $pub->version_id . '&amp;task=serve';
 
         // Get default title
-        $title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
-        $configs->title = str_replace('{pubversion}', $pub->version_label, $title);
+        $title = isset($element->title) ? str_replace('{pubtitle}', (string) $pub->title, $element->title) : null;
+        $configs->title = str_replace('{pubversion}', (string) $pub->version_label, $title);
 
         // Fancy launcher?
         $configs->fancyLauncher = isset($typeParams->fancyLauncher)

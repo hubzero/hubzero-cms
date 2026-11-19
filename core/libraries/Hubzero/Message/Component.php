@@ -69,7 +69,7 @@ class Component extends Relational
         $this->addRule('component', function ($data) {
             $db = $this->getConnection();
             $db->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
-            $extensions = $db->loadColumn();
+            $extensions = $db->loadColumn() ?? [];
             if (!in_array($data['component'], $extensions)) {
                 return Lang::txt('Component does not exist.');
             }

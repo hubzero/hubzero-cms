@@ -131,10 +131,10 @@ class MysqliConnection implements ConnectionInterface
     public function prepare(string $statement)
     {
         $this->connect();
-        $stmt = $this->mysqli->prepare($statement);
+        $stmt = $this->mysqliOrFail()->prepare($statement);
 
         if (!$stmt) {
-            throw new QueryFailedException($this->mysqli->error, $this->mysqli->errno);
+            throw new QueryFailedException($this->mysqliOrFail()->error, $this->mysqliOrFail()->errno);
         }
 
         return new MysqliStatement($stmt, $statement);
@@ -209,7 +209,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function lastInsertId()
     {
-        return $this->mysqli->insert_id;
+        return $this->mysqliOrFail()->insert_id;
     }
 
     /**
@@ -234,7 +234,7 @@ class MysqliConnection implements ConnectionInterface
     public function escape(string $text, bool $extra = false): string
     {
         $this->connect();
-        $result = $this->mysqli->real_escape_string($text);
+        $result = $this->mysqliOrFail()->real_escape_string($text);
 
         if ($extra) {
             $result = addcslashes($result, '%_');
@@ -303,7 +303,7 @@ class MysqliConnection implements ConnectionInterface
     public function beginTransaction(): bool
     {
         $this->connect();
-        return $this->mysqli->begin_transaction();
+        return $this->mysqliOrFail()->begin_transaction();
     }
 
     /**
@@ -311,7 +311,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function commit(): bool
     {
-        return $this->mysqli->commit();
+        return $this->mysqliOrFail()->commit();
     }
 
     /**
@@ -319,7 +319,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function rollBack(): bool
     {
-        return $this->mysqli->rollback();
+        return $this->mysqliOrFail()->rollback();
     }
 
     /**
@@ -336,9 +336,9 @@ class MysqliConnection implements ConnectionInterface
     public function query(string $statement)
     {
         $this->connect();
-        $result = $this->mysqli->query($statement);
+        $result = $this->mysqliOrFail()->query($statement);
         if ($result === false) {
-            throw new QueryFailedException($this->mysqli->error, $this->mysqli->errno);
+            throw new QueryFailedException($this->mysqliOrFail()->error, $this->mysqliOrFail()->errno);
         }
         return $result;
     }
@@ -349,10 +349,25 @@ class MysqliConnection implements ConnectionInterface
     public function exec(string $statement): int
     {
         $this->connect();
-        $result = $this->mysqli->query($statement);
+        $result = $this->mysqliOrFail()->query($statement);
         if ($result === false) {
-            throw new QueryFailedException($this->mysqli->error, $this->mysqli->errno);
+            throw new QueryFailedException($this->mysqliOrFail()->error, $this->mysqliOrFail()->errno);
         }
-        return (int) $this->mysqli->affected_rows;
+        return (int) $this->mysqliOrFail()->affected_rows;
+    }
+
+    /**
+     * The mysqli, which the calls using it need set
+     *
+     * @return  \mysqli
+     * @throws  \LogicException  When it is not
+     */
+    protected function mysqliOrFail()
+    {
+        if ($this->mysqli === null) {
+            throw new \LogicException(static::class . '::$mysqli is not set');
+        }
+
+        return $this->mysqli;
     }
 }

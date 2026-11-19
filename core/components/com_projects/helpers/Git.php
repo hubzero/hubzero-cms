@@ -1240,7 +1240,7 @@ class Git extends Obj
             $o++;
         }
 
-        $text = preg_replace("/\\\ No newline at end of file/", "", $text);
+        $text = (string) preg_replace("/\\\ No newline at end of file/", "", $text);
 
         return trim($text);
     }

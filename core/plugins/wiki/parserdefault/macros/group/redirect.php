@@ -68,7 +68,7 @@ class Redirect extends GroupMacro
         // javascript: or data: URL here navigates the page to script the author
         // supplied. Test a control-character-stripped copy, because browsers
         // ignore those inside a scheme ("java\tscript:" would otherwise pass).
-        $chk = preg_replace('/[\x00-\x20]+/', '', (string) $url);
+        $chk = (string) preg_replace('/[\x00-\x20]+/', '', (string) $url);
 
         if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $chk) && !preg_match('#^https?://#i', $chk)) {
             $url = '';

@@ -63,7 +63,7 @@ class Media extends AdminController
      */
     protected function containRelativePath($rel)
     {
-        $rel = preg_replace('#\p{C}+#u', '', (string) $rel);
+        $rel = (string) preg_replace('#\p{C}+#u', '', (string) $rel);
         $out = [];
         foreach (explode('/', str_replace('\\', '/', $rel)) as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {

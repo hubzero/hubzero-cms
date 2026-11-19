@@ -313,7 +313,7 @@ class User extends \Hubzero\Database\Relational
 
         // try to deduce a viable home directory based on sitename or live_site
         $sitename = strtolower(Config::get('sitename'));
-        $sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+        $sitename = (string) preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
         $sitename = trim($sitename, '/ ');
         $sitename_e = explode('.', $sitename, 2);
         if (isset($sitename_e[1])) {
@@ -324,7 +324,7 @@ class User extends \Hubzero\Database\Relational
         }
         if (empty($sitename)) {
             $sitename = strtolower(\Request::base());
-            $sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+            $sitename = (string) preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
             $sitename = trim($sitename, '/ ');
             $sitename_e = explode('.', $sitename, 2);
             if (isset($sitename_e[1])) {

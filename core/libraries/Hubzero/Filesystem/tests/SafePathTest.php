@@ -146,7 +146,7 @@ class SafePathTest extends Basic
     {
         $link = sys_get_temp_dir() . DS . 'safepath_link_' . bin2hex(random_bytes(6));
 
-        symlink($this->base, $link);
+        symlink((string) $this->base, $link);
 
         $this->assertEquals($this->home, SafePath::directory($link, 'member'));
 
@@ -204,7 +204,7 @@ class SafePathTest extends Basic
      */
     public function testRejectsLinkedIntermediateComponent()
     {
-        symlink($this->victim, $this->home . DS . 'shortcut');
+        symlink((string) $this->victim, $this->home . DS . 'shortcut');
 
         $reason = null;
 

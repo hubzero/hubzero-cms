@@ -96,7 +96,7 @@ class Eventsv1r0 extends ApiController
         $row = $database->loadAssoc();
 
         //format the date
-        if ($nicedate) {
+        if ($nicedate && $row) {
             $start = strtotime($row['publish_up']);
             $row['publish_up'] = date('M j, Y g:ia T', $start);
 

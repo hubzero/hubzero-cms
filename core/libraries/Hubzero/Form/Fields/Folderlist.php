@@ -30,17 +30,19 @@ class Folderlist extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
         // Initialize some field attributes.
-        $filter = (string) $this->element['filter'];
-        $exclude = (string) $this->element['exclude'];
-        $hideNone = (string) $this->element['hide_none'];
-        $hideDefault = (string) $this->element['hide_default'];
+        $filter = (string) $element['filter'];
+        $exclude = (string) $element['exclude'];
+        $hideNone = (string) $element['hide_none'];
+        $hideDefault = (string) $element['hide_default'];
 
         // Get the path in which to search for file options.
-        $path = (string) $this->element['directory'];
+        $path = (string) $element['directory'];
         if (!is_dir($path)) {
             $path = PATH_ROOT . '/' . $path;
         }

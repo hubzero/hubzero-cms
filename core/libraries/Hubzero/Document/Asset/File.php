@@ -27,9 +27,9 @@ class File extends Obj
     /**
      * Asset name (without file extension)
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * Asset directory
@@ -110,21 +110,21 @@ class File extends Obj
                 break;
         }
 
-        $this->name = $name;
+        $this->name = (string) $name;
 
         if (
-            substr($this->name, 0, strlen('http')) == 'http'
-            || substr($this->name, 0, strlen('://')) == '://'
-            || substr($this->name, 0, strlen('//')) == '//'
+            substr((string) $this->name, 0, strlen('http')) == 'http'
+            || substr((string) $this->name, 0, strlen('://')) == '://'
+            || substr((string) $this->name, 0, strlen('//')) == '//'
         ) {
             $this->kind = 'external';
-            $this->paths['source'] = ltrim($this->name, ':');
-            $this->paths['target'] = ltrim($this->name, ':');
+            $this->paths['source'] = ltrim((string) $this->name, ':');
+            $this->paths['target'] = ltrim((string) $this->name, ':');
         }
 
-        if (strstr($this->name, '.')) {
-            if (strtolower(substr($name, strrpos($name, '.') + 1)) == $this->type) {
-                $this->name = preg_replace('/\.[^.]*$/', '', $this->name);
+        if (strstr((string) $this->name, '.')) {
+            if (strtolower(substr((string) $this->name, strrpos((string) $this->name, '.') + 1)) == $this->type) {
+                $this->name = (string) preg_replace('/\.[^.]*$/', '', (string) $this->name);
             }
         }
 
@@ -326,13 +326,13 @@ class File extends Obj
                             . 'assets'
                             . ($this->directory ? DS . $this->directory : '')
                             . DS
-                            . substr($this->name, 4)
+                            . substr((string) $this->name, 4)
                             . '.'
                             . $this->type;
                         $paths_app[] = $basea
                             . $path2
                             . ($this->directory ? $this->directory . DS : '')
-                            . substr($this->name, 4)
+                            . substr((string) $this->name, 4)
                             . '.'
                             . $this->type;
                     }
@@ -351,13 +351,13 @@ class File extends Obj
                             . 'assets'
                             . ($this->directory ? DS . $this->directory : '')
                             . DS
-                            . substr($this->name, 4)
+                            . substr((string) $this->name, 4)
                             . '.'
                             . $this->type;
                         $paths_core[] = $basec
                             . $path2
                             . ($this->directory ? $this->directory . DS : '')
-                            . substr($this->name, 4)
+                            . substr((string) $this->name, 4)
                             . '.'
                             . $this->type;
                     }

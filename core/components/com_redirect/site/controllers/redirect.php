@@ -29,11 +29,11 @@ class Redirect extends SiteController
 {
     /**
      * @param   string  $host
-     * @return  string|null
+     * @return  string
      */
     private function extractBaseDomain($host)
     {
-        $host = preg_replace('/^www\./', '', $host);
+        $host = (string) preg_replace('/^www\./', '', $host);
         if (strpos($host, "proxy") !== false) {
             return "Proxy Service";
         } elseif (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {
@@ -57,7 +57,7 @@ class Redirect extends SiteController
     private function isHubHost($host)
     {
         $hub  = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-        $hub  = strtolower(preg_replace('/:\d+$/', '', (string) $hub));
+        $hub  = strtolower((string) preg_replace('/:\d+$/', '', (string) $hub));
         $host = strtolower((string) $host);
         if ($hub === '' || $host === '') {
             return false;

@@ -1265,7 +1265,7 @@ class Curation extends Obj
         $status = new Status();
 
         if (!isset($this->pub->reviewedItems)) {
-            $this->pub->reviewedItems = $this->getReviewedItems();
+            $this->pubOrFail()->reviewedItems = $this->getReviewedItems();
         }
 
         $manifest = $this->blocks->$blockId;
@@ -1288,7 +1288,7 @@ class Curation extends Obj
                 if (!isset($status->elements)) {
                     $status->elements = new stdClass();
                 }
-                $status->elements->$elementId = $this->getReviewItemStatus($props, $this->pub->reviewedItems);
+                $status->elements->$elementId = $this->getReviewItemStatus($props, $this->pubOrFail()->reviewedItems);
 
                 // Store element label (for history tracking)
                 $status->elements->$elementId->label = $element->label;
@@ -1312,14 +1312,14 @@ class Curation extends Obj
             }
 
             // Determine block status based on element status
-            $passed = ($success == $i || $this->pub->state == 1) ? 1 : 0;
+            $passed = ($success == $i || $this->pubOrFail()->state == 1) ? 1 : 0;
             $status->status     = $failed > 0 ? 0 : $passed;
             $status->status     = ($incomplete  && !$failed) ? 2 : $status->status; // unreviewed
             $status->status     = ($skipped > 0 && ($skipped + $incomplete) == $i) ? 3 : $status->status; // skipped
             $status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : null;
         } else {
             $props = $block . '-' . $blockId;
-            return $this->getReviewItemStatus($props, $this->pub->reviewedItems);
+            return $this->getReviewItemStatus($props, $this->pubOrFail()->reviewedItems);
         }
 
         // Return status
@@ -2544,7 +2544,7 @@ class Curation extends Obj
                 $this->curationVersion->load($id);
             } else {
                 // Load latest by type
-                $this->curationVersion->loadLatest($this->pub->get('master_type'));
+                $this->curationVersion->loadLatest($this->pubOrFail()->get('master_type'));
             }
         }
 
@@ -2559,7 +2559,7 @@ class Curation extends Obj
     public function checkCurationVersion()
     {
         // Get current master type manifest
-        $manifest = $this->pub->masterType()->curation;
+        $manifest = $this->pubOrFail()->masterType()->curation;
 
         // Get saved current version
         $current = $this->getCurationVersion();
@@ -2569,7 +2569,7 @@ class Curation extends Obj
             $versionNumber = $current->version_number + 1;
 
             $this->curationVersion = new Tables\CurationVersion($this->db);
-            $this->curationVersion->type_id        = $this->pub->get('master_type');
+            $this->curationVersion->type_id        = $this->pubOrFail()->get('master_type');
             $this->curationVersion->curation       = $manifest;
             $this->curationVersion->created        = Date::toSql();
             $this->curationVersion->version_number = $versionNumber;
@@ -2594,5 +2594,20 @@ class Curation extends Obj
         }
         $link = $sftpPath . '/' . $this->getBundleName(true);
         return $link;
+    }
+
+    /**
+     * The pub, which the calls using it need set
+     *
+     * @return  \Components\Publications\Models\Publication
+     * @throws  \LogicException  When it is not
+     */
+    protected function pubOrFail()
+    {
+        if ($this->pub === null) {
+            throw new \LogicException(static::class . '::$pub is not set');
+        }
+
+        return $this->pub;
     }
 }

@@ -79,6 +79,6 @@ $message .= "\n\n";
 $message .= Lang::txt('COM_WISHLIST_GO_TO') . ' ' . $link
     . ' ' . Lang::txt('COM_WISHLIST_TO_VIEW_THIS_WISH') . '.';
 
-$message = preg_replace('/\n{3,}/', "\n\n", $message);
+$message = (string) preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message);

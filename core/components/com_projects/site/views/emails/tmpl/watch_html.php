@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{activities: mixed, project: mixed, subject: mixed} $this
  */
 
-$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$base = trim((string) preg_replace('/\/administrator/', '', Request::base()), '/');
 $sef  = Route::url($this->project->link());
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 

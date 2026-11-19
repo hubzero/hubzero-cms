@@ -31,17 +31,19 @@ class Tags extends Text
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $attributes = [
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'size'         => ($this->element['size'] ? (int) $this->element['size'] : ''),
-            'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
+            'size'         => ($element['size'] ? (int) $element['size'] : ''),
+            'maxlength'    => ($element['maxlength'] ? (int) $element['maxlength'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'readonly'     => ((string) $element['readonly'] == 'true' ? 'readonly' : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
         ];
 
         Behavior::framework(true);

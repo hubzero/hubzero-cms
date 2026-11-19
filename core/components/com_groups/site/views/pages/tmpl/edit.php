@@ -146,8 +146,8 @@ if ($this->page->get('id')) {
                             if (!$this->group->isSuperGroup()) {
                                 $allowPhp     = false;
                                 $allowScripts = false;
-                                $content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-                                $content      = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+                                $content      = (string) preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+                                $content      = (string) preg_replace('/<\?[\s\S]*?\?>/', '', $content);
                             }
                         }
 

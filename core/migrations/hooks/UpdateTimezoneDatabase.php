@@ -106,7 +106,7 @@ class UpdateTimezoneDatabase extends Base
         // Run command to generate SQL
         // Use executeWithEscalation in case zoneinfo directory requires elevated access
         $sql = $this->executeWithEscalation($converter . " {$zoneinfo} 2>/dev/null");
-        $sql = explode(";", $sql);
+        $sql = explode(";", (string) $sql);
 
         foreach ($sql as $s) {
             $s = trim($s);

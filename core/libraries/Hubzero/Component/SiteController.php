@@ -56,9 +56,9 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The name of the component derived from the controller class name
      *
-     * @var  string|null
+     * @var  string
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * Container for storing overloaded data

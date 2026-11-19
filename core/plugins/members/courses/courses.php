@@ -201,7 +201,7 @@ class Courses extends Plugin
 
         $results = null;
 
-        $who = strtolower(trim($who));
+        $who = strtolower(trim((string) $who));
 
         switch ($who) {
             case 'student':

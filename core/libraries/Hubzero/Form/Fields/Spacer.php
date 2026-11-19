@@ -43,19 +43,21 @@ class Spacer extends Field
      */
     protected function getLabel()
     {
+        $element = $this->fieldElement();
+
         $html = [];
-        $class = $this->element['class'] ? (string) $this->element['class'] : '';
+        $class = $element['class'] ? (string) $element['class'] : '';
 
         $html[] = '<span class="spacer">';
         $html[] = '<span class="before"></span>';
         $html[] = '<span class="' . $class . '">';
-        if ((string) $this->element['hr'] == 'true') {
+        if ((string) $element['hr'] == 'true') {
             $html[] = '<hr class="' . $class . '" />';
         } else {
             $label = '';
 
             // Get the label text from the XML element, defaulting to the element name.
-            $text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+            $text = $element['label'] ? (string) $element['label'] : (string) $element['name'];
             $text = $this->translateLabel ? App::get('language')->txt($text) : $text;
 
             // Build the class for the label.

@@ -247,7 +247,7 @@ class SearchComponent extends Relational
      */
     public function getQueryName()
     {
-        $title = str_replace(' ', '_', $this->title);
+        $title = str_replace(' ', '_', (string) $this->title);
         return $title;
     }
 

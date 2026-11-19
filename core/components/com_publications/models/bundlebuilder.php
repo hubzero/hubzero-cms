@@ -1273,7 +1273,7 @@ class BundleBuilder
 
         $flatPrimary = false;
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            $rel = preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
+            $rel = (string) preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
             if ($rel === '' || substr($rel, -1) === '/') {
                 continue;
             }
@@ -1318,7 +1318,7 @@ class BundleBuilder
 
         $cands = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            $rel = preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
+            $rel = (string) preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
             if (substr($rel, -4) === '.zip' && strpos($rel, '/') === false) {
                 $cands[] = $rel;
             }
@@ -1625,7 +1625,7 @@ class BundleBuilder
         $existing = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $entry = (string) $zip->getNameIndex($i);
-            $rel   = preg_replace('#^[^/]+/#', '', $entry);
+            $rel   = (string) preg_replace('#^[^/]+/#', '', $entry);
             if ($rel !== '' && substr($rel, -1) !== '/') {
                 $existing[$rel] = $entry;
             }
@@ -1642,7 +1642,7 @@ class BundleBuilder
             $drop = [];
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $entry = (string) $zip->getNameIndex($i);
-                $rel   = preg_replace('#^[^/]+/#', '', $entry);
+                $rel   = (string) preg_replace('#^[^/]+/#', '', $entry);
                 if (
                     $rel === '' || substr($rel, -1) === '/'
                     || $rel === 'README.txt' || $rel === 'LICENSE.txt' || $rel === 'hubREADME.txt'

@@ -176,7 +176,7 @@ class Metadata
         // publishes only emailAddress will reject (or mis-key) a username, so
         // the matching source is selected too rather than left at the default.
         foreach ($xpath->query('.//md:NameIDFormat', $descriptor) ?: [] as $format) {
-            $value = trim($format->nodeValue);
+            $value = trim((string) $format->nodeValue);
 
             if (!isset(self::$nameIdSources[$value])) {
                 continue;
@@ -246,7 +246,7 @@ class Metadata
             $cert = self::first($xpath, './/ds:X509Certificate', $key);
 
             if ($cert) {
-                $fields['signing_cert'] = preg_replace('/\s+/', '', $cert->nodeValue);
+                $fields['signing_cert'] = preg_replace('/\s+/', '', (string) $cert->nodeValue);
 
                 if ($use == 'signing') {
                     break;

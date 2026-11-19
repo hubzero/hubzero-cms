@@ -32,17 +32,19 @@ class Ordering extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Get some field values from the form.
         $pluginId = (int) $this->form->getValue('extension_id');
@@ -57,7 +59,7 @@ class Ordering extends Field
 				ORDER BY ordering';
 
         // Create a read-only list (no name) with a hidden input to store the value.
-        if ((string) $this->element['readonly'] == 'true') {
+        if ((string) $element['readonly'] == 'true') {
             $html[] = self::ordering('', $query, trim($attr), $this->value, $pluginId ? 0 : 1);
             $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '" />';
         } else {

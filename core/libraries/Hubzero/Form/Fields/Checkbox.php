@@ -31,13 +31,15 @@ class Checkbox extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $class    = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $checked  = ((string) $this->element['value'] == $this->value) ? ' checked="checked"' : '';
+        $class    = $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $disabled = ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $checked  = ((string) $element['value'] == $this->value) ? ' checked="checked"' : '';
 
         // Initialize JavaScript field attributes.
-        $onclick = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
+        $onclick = $element['onclick'] ? ' onclick="' . (string) $element['onclick'] . '"' : '';
 
         return '<input type="checkbox" name="'
             . $this->name
@@ -45,7 +47,7 @@ class Checkbox extends Field
             . $this->id
             . '"'
             . ' value="'
-            . htmlspecialchars((string) $this->element['value'], ENT_COMPAT, 'UTF-8')
+            . htmlspecialchars((string) $element['value'], ENT_COMPAT, 'UTF-8')
             . '"'
             . $class
             . $checked

@@ -38,18 +38,20 @@ class Editor extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
-        $rows = (int) $this->element['rows'];
-        $cols = (int) $this->element['cols'];
-        $height = ((string) $this->element['height']) ? (string) $this->element['height'] : '250';
-        $width = ((string) $this->element['width']) ? (string) $this->element['width'] : '100%';
-        $assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
-        $authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
+        $rows = (int) $element['rows'];
+        $cols = (int) $element['cols'];
+        $height = ((string) $element['height']) ? (string) $element['height'] : '250';
+        $width = ((string) $element['width']) ? (string) $element['width'] : '100%';
+        $assetField = $element['asset_field'] ? (string) $element['asset_field'] : 'asset_id';
+        $authorField = $element['created_by_field'] ? (string) $element['created_by_field'] : 'created_by';
         $asset = $this->form->getValue($assetField)
             ? $this->form->getValue($assetField)
-            : (string) $this->element['asset_id'];
+            : (string) $element['asset_id'];
         // Build the buttons array.
-        $buttons = (string) $this->element['buttons'];
+        $buttons = (string) $element['buttons'];
 
         if ($buttons == 'true' || $buttons == 'yes' || $buttons == '1') {
             $buttons = true;
@@ -59,7 +61,7 @@ class Editor extends Field
             $buttons = explode(',', $buttons);
         }
 
-        $hide = ((string) $this->element['hide']) ? explode(',', (string) $this->element['hide']) : [];
+        $hide = ((string) $element['hide']) ? explode(',', (string) $element['hide']) : [];
 
         // Get an editor object.
         $editor = $this->getEditor();
@@ -85,13 +87,15 @@ class Editor extends Field
      */
     protected function getEditor()
     {
+        $fieldElement = $this->fieldElement();
+
         // Only create the editor if it is not already created.
         if (empty($this->editor)) {
             // Initialize variables.
             $editor = null;
 
             // Get the editor type attribute. Can be in the form of: editor="desired|alternative".
-            $type = trim((string) $this->element['editor']);
+            $type = trim((string) $fieldElement['editor']);
 
             if ($type) {
                 // Get the list of editor types.

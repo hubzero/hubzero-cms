@@ -149,9 +149,9 @@ class Share extends Plugin
     public function share($with, $url, $mediaUrl, $publication, $version)
     {
         $link = '';
-        $description = \Hubzero\Utility\Str::truncate(stripslashes($publication->abstract), 250);
+        $description = \Hubzero\Utility\Str::truncate(stripslashes((string) $publication->abstract), 250);
         $description = urlencode($description);
-        $title = stripslashes($publication->title);
+        $title = stripslashes((string) $publication->title);
         $title = urlencode($title);
 
         switch ($with) {
@@ -165,7 +165,7 @@ class Share extends Plugin
                         Lang::txt(
                             'PLG_PUBLICATION_SHARE_VIEWING',
                             Config::get('sitename'),
-                            stripslashes($publication->title) . ' ' . $url,
+                            stripslashes((string) $publication->title) . ' ' . $url,
                         ),
                     );
                 break;

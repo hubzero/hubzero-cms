@@ -106,12 +106,12 @@ class PgsqlDriver extends BaseSqlDriver
 
         // Set search path if specified
         if (isset($options['schema'])) {
-            $this->connection->exec('SET search_path TO ' . $options['schema']);
+            $this->connectionOrFail()->exec('SET search_path TO ' . $options['schema']);
         }
 
         // Set timezone if specified
         if (isset($options['timezone'])) {
-            $this->connection->exec("SET timezone = '" . $options['timezone'] . "'");
+            $this->connectionOrFail()->exec("SET timezone = '" . $options['timezone'] . "'");
         }
     }
 
@@ -168,7 +168,7 @@ class PgsqlDriver extends BaseSqlDriver
                   WHERE tc.constraint_type = 'PRIMARY KEY'
                   AND tc.table_name = " . $this->quote($table);
         $this->setQuery($query);
-        $pks = $this->loadColumn();
+        $pks = $this->loadColumn() ?? [];
 
         if ($typeOnly) {
             foreach ($fields as $field) {
@@ -480,7 +480,7 @@ class PgsqlDriver extends BaseSqlDriver
                 AND pg_get_serial_sequence(" . $this->quote($table) . ", a.attname) IS NOT NULL";
 
         $this->setQuery($query);
-        $sequences = $this->loadColumn();
+        $sequences = $this->loadColumn() ?? [];
 
         foreach ($sequences as $seq) {
             $this->setQuery("ALTER SEQUENCE " . $this->quoteName($seq) . " RESTART WITH " . $value);
@@ -1241,7 +1241,7 @@ class PgsqlDriver extends BaseSqlDriver
 
         // Extract version number
         $driverVersion = null;
-        if (preg_match('/PostgreSQL\s+(\d+\.\d+(\.\d+)?)/i', $versionStr, $matches)) {
+        if (preg_match('/PostgreSQL\s+(\d+\.\d+(\.\d+)?)/i', (string) $versionStr, $matches)) {
             $driverVersion = $matches[1];
         } else {
             // Fallback if parsing fails
@@ -1356,7 +1356,7 @@ class PgsqlDriver extends BaseSqlDriver
         $type = $this->normalizeColumnType($type, $modifiers);
 
         // Clean up type string (remove auto_increment if present in type string)
-        $type = preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
+        $type = (string) preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
         $type = trim($type);
 
         // Map types to PostgreSQL (for backward compatibility with concrete MySQL types)
@@ -1427,7 +1427,7 @@ class PgsqlDriver extends BaseSqlDriver
      */
     protected function mapNativeType(string $type): string
     {
-        $baseType = strtoupper(preg_replace('/\(.*\)/', '', $type));
+        $baseType = strtoupper((string) preg_replace('/\(.*\)/', '', $type));
 
         $typeMap = [
             'TINYINT'    => 'SMALLINT',

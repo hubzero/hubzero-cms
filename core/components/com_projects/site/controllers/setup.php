@@ -636,7 +636,7 @@ class Setup extends Base
                 $name  = trim(Request::getString('name', '', 'post'));
                 $title = trim(Request::getString('title', '', 'post'));
 
-                $name  = preg_replace('/ /', '', $name);
+                $name  = (string) preg_replace('/ /', '', $name);
                 $name  = strtolower($name);
 
                 // Clean up title from any scripting
@@ -1191,15 +1191,15 @@ class Setup extends Base
     private function txtClean(&$text)
     {
         // Handle special characters copied from MS Word
-        $text = str_replace('“', '"', $text);
+        $text = str_replace('“', '"', (string) $text);
         $text = str_replace('”', '"', $text);
         $text = str_replace("’", "'", $text);
         $text = str_replace("‘", "'", $text);
 
-        $text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
-        $text = preg_replace('/{.+?}/', '', $text);
-        $text = preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
-        $text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+        $text = (string) preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
+        $text = (string) preg_replace('/{.+?}/', '', $text);
+        $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
+        $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
         $text = preg_replace('/<!--.+?-->/', '', $text);
 
         return $text;

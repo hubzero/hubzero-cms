@@ -112,7 +112,7 @@ class MorphOne extends Relationship
      */
     public function constrain()
     {
-        $query = $this->related
+        $query = $this->relatedOrFail()
             ->whereEquals($this->morphId, $this->model->{$this->localKey})
             ->whereEquals($this->morphType, $this->getTypeIdentifier());
 
@@ -210,7 +210,7 @@ class MorphOne extends Relationship
             call_user_func($constraint, $this->related);
         }
 
-        return $this->related
+        return $this->relatedOrFail()
             ->whereIn($this->morphId, array_unique($keys))
             ->whereEquals($this->morphType, $this->getTypeIdentifier());
     }
@@ -269,13 +269,13 @@ class MorphOne extends Relationship
         $this->model
             ->select($this->model->getQualifiedFieldName('*'))
             ->join(
-                $this->related->getTableName(),
+                $this->relatedOrFail()->getTableName(),
                 $this->model->getQualifiedFieldName($this->localKey),
-                $this->related->getQualifiedFieldName($this->morphId),
+                $this->relatedOrFail()->getQualifiedFieldName($this->morphId),
                 'LEFT OUTER',
             )
             ->whereEquals(
-                $this->related->getQualifiedFieldName($this->morphType),
+                $this->relatedOrFail()->getQualifiedFieldName($this->morphType),
                 $this->getTypeIdentifier(),
             );
 

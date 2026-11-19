@@ -34,16 +34,18 @@ class Templatestyle extends Groupedlist
      */
     protected function getGroups()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $groups = [];
         $lang = App::get('language');
 
         // Get the client and client_id.
-        $clientName = $this->element['client'] ? (string) $this->element['client'] : 'site';
+        $clientName = $element['client'] ? (string) $element['client'] : 'site';
         $client = ClientManager::client($clientName, true);
 
         // Get the template.
-        $template = (string) $this->element['template'];
+        $template = (string) $element['template'];
 
         // Get the database object and a new query object.
         $db = App::get('db');

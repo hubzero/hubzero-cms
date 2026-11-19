@@ -34,7 +34,7 @@ class Migration20190620000000ComPublications extends Base
         if ($this->db->tableExists($table) && $this->db->tableExists('#__publication_versions')) {
             $query = "SELECT DISTINCT objectid FROM `$table` WHERE `tbl`='publications'";
             $this->db->setQuery($query);
-            $publications = $this->db->loadColumn();
+            $publications = $this->db->loadColumn() ?? [];
 
             $pubtags = [];
             foreach ($publications as $publication) {

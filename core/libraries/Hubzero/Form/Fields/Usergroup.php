@@ -31,22 +31,24 @@ class Usergroup extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $element['class'] ? ' class="' . (string) $element['class'] . '"' : '';
+        $attr .= ((string) $element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $element['size'] ? ' size="' . (int) $element['size'] . '"' : '';
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $attr .= $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
 
         // Access::usergroup() lists the groups itself. <option /> children
         // are not listed; declaring any adds its "All groups" entry.
         $allowAll = false;
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             if ($option->getName() == 'option') {
                 $allowAll = true;
                 break;

@@ -57,18 +57,18 @@ class Twitter extends WikiMacro
     public function render()
     {
         //get the args passed in
-        $args = array_map('trim', explode(',', $this->args));
+        $args = array_map('trim', explode(',', (string) $this->args));
 
         //get screen name & num tweets
-        $screenName = preg_replace('/[^A-Za-z0-9_]/', '', ltrim($args[0], '@'));
-        $widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches))
+        $screenName = (string) preg_replace('/[^A-Za-z0-9_]/', '', ltrim($args[0], '@'));
+        $widgetId   = (preg_match('/widgetid="([^"]*)"/', (string) $this->args, $matches))
             ? preg_replace('/[^0-9]/', '', $matches[1])
             : '';
-        $chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
-        $width      = (preg_match('/width="([^"]*)"/', $this->args, $matches))
+        $chrome     = (preg_match('/chrome="([^"]*)"/', (string) $this->args, $matches)) ? $matches[1] : '';
+        $width      = (preg_match('/width="([^"]*)"/', (string) $this->args, $matches))
             ? preg_replace('/[^0-9%]/', '', $matches[1])
             : '100%';
-        $height     = (preg_match('/height="([^"]*)"/', $this->args, $matches))
+        $height     = (preg_match('/height="([^"]*)"/', (string) $this->args, $matches))
             ? preg_replace('/[^0-9%]/', '', $matches[1])
             : 500;
 

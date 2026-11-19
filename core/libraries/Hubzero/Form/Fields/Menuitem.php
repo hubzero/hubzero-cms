@@ -30,14 +30,16 @@ class Menuitem extends Groupedlist
      */
     protected function getGroups()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $groups = [];
 
         // Initialize some field attributes.
-        $menuType  = (string) $this->element['menu_type'];
-        $published = $this->element['published'] ? explode(',', (string) $this->element['published']) : [];
-        $disable   = $this->element['disable'] ? explode(',', (string) $this->element['disable']) : [];
-        $language  = $this->element['language'] ? explode(',', (string) $this->element['language']) : [];
+        $menuType  = (string) $element['menu_type'];
+        $published = $element['published'] ? explode(',', (string) $element['published']) : [];
+        $disable   = $element['disable'] ? explode(',', (string) $element['disable']) : [];
+        $language  = $element['language'] ? explode(',', (string) $element['language']) : [];
 
         // Get the menu items.
         $items = [];

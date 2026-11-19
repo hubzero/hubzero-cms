@@ -37,18 +37,20 @@ class Goals extends Radio
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $html = [];
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="goals ' . (string) $this->element['class'] . '"' : ' class="goals"';
+        $class = $element['class'] ? ' class="goals ' . (string) $element['class'] . '"' : ' class="goals"';
 
         // Start the radio field output.
         $html[] = '<fieldset id="' . $this->id . '"' . $class . ' data-name="' . $this->fieldname . '">';
 
         $skills = null;
 
-        if (isset($this->element['option_other']) && $this->element['option_other']) {
+        if (isset($element['option_other']) && $element['option_other']) {
             $skills = Field::all()
                 ->whereEquals('type', 'scale')
                 ->order('ordering', 'asc')

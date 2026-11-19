@@ -124,7 +124,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         $type = parent::getColumnType($column);
 
         // Strip UNSIGNED keyword (in case parent added it back somehow)
-        $type = preg_replace('/\s+UNSIGNED/i', '', $type);
+        $type = (string) preg_replace('/\s+UNSIGNED/i', '', $type);
 
         // Strip display widths from integer types
         $type = preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $type);
@@ -186,11 +186,11 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         }
 
         // Strip UNSIGNED, SIGNED, ZEROFILL keywords.
-        $cleanType = preg_replace('/\s+(UNSIGNED|SIGNED|ZEROFILL)/i', '', $rawType);
+        $cleanType = (string) preg_replace('/\s+(UNSIGNED|SIGNED|ZEROFILL)/i', '', $rawType);
 
         // Strip display widths from integer types.
-        $cleanType = preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $cleanType);
-        $cleanType = trim(preg_replace('/\s+/', ' ', $cleanType));
+        $cleanType = (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $cleanType);
+        $cleanType = trim((string) preg_replace('/\s+/', ' ', $cleanType));
 
         $intTypes = 'TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT';
         $numTypes = 'FLOAT|DOUBLE|DECIMAL';

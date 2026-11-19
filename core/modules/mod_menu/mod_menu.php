@@ -64,7 +64,7 @@ class Menu extends Module
     /**
      * Get a list of the menu items.
      *
-     * @param   \Hubzero\Config\Registry|null  $params  Registry The module options.
+     * @param   \Hubzero\Config\Registry  $params  Registry The module options.
      * @return  array<mixed>
      */
     public static function getList(&$params)

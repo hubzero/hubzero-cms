@@ -110,7 +110,7 @@ class Youtube extends WikiMacro
         }
 
         // append to the youtube url
-        $video_id = preg_replace('/[^A-Za-z0-9_-]/', '', isset($video_id) ? (string) $video_id : '');
+        $video_id = (string) preg_replace('/[^A-Za-z0-9_-]/', '', isset($video_id) ? (string) $video_id : '');
         $youtube_url .= $video_id;
 
         // add wmode to url so that lightboxes appear over embedded videos

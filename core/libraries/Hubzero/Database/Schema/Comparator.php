@@ -1006,10 +1006,10 @@ class Comparator
         $type = strtolower(trim($type));
 
         // Remove 'unsigned' suffix (tracked separately)
-        $type = preg_replace('/\s+unsigned\b/i', '', $type);
+        $type = (string) preg_replace('/\s+unsigned\b/i', '', $type);
 
         // Remove 'signed' suffix
-        $type = preg_replace('/\s+signed\b/i', '', $type);
+        $type = (string) preg_replace('/\s+signed\b/i', '', $type);
 
         // Extract base type and parameters
         if (preg_match('/^([a-z]+)(?:\(([^)]+)\))?(.*)$/', $type, $matches)) {

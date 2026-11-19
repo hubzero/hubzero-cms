@@ -31,7 +31,7 @@ class Version
 
         $db->setQuery($query);
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             call_user_func($func, $row);

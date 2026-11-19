@@ -856,7 +856,7 @@ class Ftp implements AdapterInterface
      */
     protected function normalizeObject($item, $base)
     {
-        $item = preg_replace('#\s+#', ' ', trim($item), 7);
+        $item = (string) preg_replace('#\s+#', ' ', trim($item), 7);
         list($permissions,
             /* $number */,
             /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);

@@ -669,7 +669,7 @@ abstract class BaseSqlSyntax
             [$table, $alias] = preg_split('/\s+/', $table, 2) ?: [null, null];
         }
 
-        $table = trim($table);
+        $table = trim((string) $table);
         $alias = $alias !== null ? trim($alias) : null;
 
         return [$table, $alias !== '' ? $alias : null];

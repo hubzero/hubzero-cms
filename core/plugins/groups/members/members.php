@@ -950,7 +950,7 @@ class Members extends Plugin
         }
 
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -1083,7 +1083,7 @@ class Members extends Plugin
 
         // Set the page title
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -1284,7 +1284,7 @@ class Members extends Plugin
 
         // Set the page title
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -1347,7 +1347,7 @@ class Members extends Plugin
         }
 
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -1399,7 +1399,7 @@ class Members extends Plugin
             }
 
             if ($title === '') {
-                $title = mb_strimwidth(preg_replace('/\s+/', ' ', $text), 0, 60, '...');
+                $title = mb_strimwidth((string) preg_replace('/\s+/', ' ', $text), 0, 60, '...');
             }
 
             $responses[] = [
@@ -1570,7 +1570,7 @@ class Members extends Plugin
 
         // Set the page title
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -2046,7 +2046,7 @@ class Members extends Plugin
 
         // Set the page title
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '
@@ -2290,7 +2290,7 @@ class Members extends Plugin
 
         // Build the "from" data for the e-mail
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper((string) $this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -2326,7 +2326,7 @@ class Members extends Plugin
 
         // Build the "from" info for e-mails
         $from = [
-            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
+            'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper((string) $this->name)),
             'email' => Config::get('mailfrom'),
         ];
 
@@ -2391,7 +2391,7 @@ class Members extends Plugin
 
         // Set the page title
         Document::setTitle(
-            Lang::txt(strtoupper($this->name))
+            Lang::txt(strtoupper((string) $this->name))
                 . ': '
                 . $this->group->get('description')
                 . ': '

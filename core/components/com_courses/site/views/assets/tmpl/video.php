@@ -67,7 +67,7 @@ $height = 'auto';
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter') {
     // Check if path exists
-    if (is_dir($media_dir)) {
+    if (is_dir((string) $media_dir)) {
         // Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
         $media = Filesystem::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
         $ext = [];
@@ -121,7 +121,7 @@ if ($type == 'hubpresenter') {
     $contents = file_get_contents($media_path);
 
     // Content folder
-    $content_folder = ltrim(substr(rtrim($media_dir, DS), strlen(PATH_ROOT)), DS);
+    $content_folder = ltrim(substr(rtrim((string) $media_dir, DS), strlen(PATH_ROOT)), DS);
 
     // Decode the json formatted manifest so we can use the information
     $presentation = json_decode((string) $contents);
@@ -285,7 +285,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                 // the prefix is the manifest's own directory made relative to
                 // PATH_ROOT. com_resources' twin of this template builds its
                 // $base the same way.
-                $base = substr($media_dir, strlen(PATH_ROOT)) . DS;
+                $base = substr((string) $media_dir, strlen(PATH_ROOT)) . DS;
             ?>
             <video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->id; ?>">
                 <?php foreach ($__media as $video) : ?>

@@ -30,16 +30,18 @@ class Textarea extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $attributes = [
             'type'         => 'text',
             'name'         => $this->name,
             'id'           => $this->id,
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
-            'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'cols'         => ($element['cols'] ? (int) $element['cols'] : ''),
+            'rows'         => ($element['rows'] ? (int) $element['rows'] : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         $attr = [];

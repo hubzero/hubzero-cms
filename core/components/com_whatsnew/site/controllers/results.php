@@ -80,7 +80,7 @@ class Results extends SiteController
                     // NOTE: this will override any category sent in the querystring
                     $area = $c;
                     // Strip it off the search string
-                    $searchstring = preg_replace($regexp, '', $searchstring);
+                    $searchstring = (string) preg_replace($regexp, '', $searchstring);
                     break;
                 }
                 // Does the category contain sub-categories?
@@ -93,7 +93,7 @@ class Results extends SiteController
                             // NOTE: this will override any category sent in the querystring
                             $area = $sc;
                             // Strip it off the search string
-                            $searchstring = preg_replace($regexp, '', $searchstring);
+                            $searchstring = (string) preg_replace($regexp, '', $searchstring);
                             break;
                         }
                     }
@@ -277,7 +277,7 @@ class Results extends SiteController
                     // NOTE: this will override any category sent in the querystring
                     $area = $c;
                     // Strip it off the search string
-                    $searchstring = preg_replace($regexp, '', $searchstring);
+                    $searchstring = (string) preg_replace($regexp, '', $searchstring);
                     break;
                 }
                 // Does the category contain sub-categories?
@@ -290,7 +290,7 @@ class Results extends SiteController
                             // NOTE: this will override any category sent in the querystring
                             $area = $sc;
                             // Strip it off the search string
-                            $searchstring = preg_replace($regexp, '', $searchstring);
+                            $searchstring = (string) preg_replace($regexp, '', $searchstring);
                             break;
                         }
                     }
@@ -366,7 +366,7 @@ class Results extends SiteController
                 $text = $row->text ?? $row->itext ?? '';
 
                 // Strip html from feed item description text
-                $description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($text));
+                $description = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($text));
                 $description = \Hubzero\Utility\Str::truncate($description, 300);
                 $author = '';
                 $date = (isset($row->publish_up) ? date('r', strtotime($row->publish_up)) : '');

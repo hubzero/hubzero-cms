@@ -255,7 +255,7 @@ class Parser extends Obj
         }
 
         // Build the path to the needed parser plugin
-        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $this->name);
         $name = ltrim($name, '.');
 
         $path = Plugin::path('wiki', $name) . DS . $name . '.php';
@@ -281,7 +281,7 @@ class Parser extends Obj
         $plugin->params->merge($config);
 
         // Build parser plugin classname
-        $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
+        $name = 'Plugins\\Wiki\\' . ucfirst((string) $this->name) . '\\' . ucfirst((string) $this->name);
 
         $this->parser = new $name($this, (array) $plugin);
 
@@ -313,7 +313,7 @@ class Parser extends Obj
     public function defaultPagesPath()
     {
         // Build the path to the needed parser plugin
-        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+        $name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $this->name);
         $name = ltrim($name, '.');
 
         $path = Plugin::path('wiki', $name) . DS . 'default';

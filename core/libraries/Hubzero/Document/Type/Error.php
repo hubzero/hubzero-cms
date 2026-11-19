@@ -104,7 +104,7 @@ class Error extends Base
 
         // Check template
         $directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
-        $template  = isset($params['template']) ? ltrim(preg_replace(
+        $template  = isset($params['template']) ? ltrim((string) preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
             (string) $params['template'],
@@ -167,7 +167,7 @@ class Error extends Base
     public function renderBacktrace()
     {
         $contents  = null;
-        $backtrace = $this->error->getTrace();
+        $backtrace = $this->errorOrFail()->getTrace();
 
         ob_start();
 
@@ -187,12 +187,12 @@ class Error extends Base
         $html[] = '		<tr>';
         $html[] = '			<th scope="row">0</th>';
         $html[] = '			<td><span class="msg">!! '
-            . htmlspecialchars((string) $this->error->getMessage(), ENT_QUOTES, 'UTF-8')
+            . htmlspecialchars((string) $this->errorOrFail()->getMessage(), ENT_QUOTES, 'UTF-8')
             . ' !!</span></td>';
         $html[] = '			<td><span class="fl">'
-            . $this->rooted($this->error->getFile())
+            . $this->rooted($this->errorOrFail()->getFile())
             . '</span>:<span class="ln">'
-            . $this->error->getLine()
+            . $this->errorOrFail()->getLine()
             . '</span></td>';
         $html[] = '		</tr>';
         for ($i = count($backtrace) - 1; $i >= 0; $i--) {
@@ -244,5 +244,20 @@ class Error extends Base
             $path = 'ROOT' . substr($path, strlen(PATH_ROOT));
         }
         return $path;
+    }
+
+    /**
+     * The error, which the calls using it need set
+     *
+     * @return  \Exception
+     * @throws  \LogicException  When it is not
+     */
+    public function errorOrFail()
+    {
+        if ($this->error === null) {
+            throw new \LogicException(static::class . '::$error is not set');
+        }
+
+        return $this->error;
     }
 }

@@ -32,9 +32,11 @@ class Type extends Field
      */
     protected function getInput()
     {
-        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $element = $this->fieldElement();
+
+        $onchange = $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
         $options = [];
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             $options[] = Html::select('option', $option->attributes('value'), Lang::txt(trim((string) $option)));
         }
 

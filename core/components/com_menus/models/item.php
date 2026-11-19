@@ -259,7 +259,7 @@ class Item extends Nested
 
         $alias = Lang::transliterate($alias);
 
-        $alias = preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', strtolower($alias));
+        $alias = (string) preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', strtolower($alias));
         $alias = trim($alias, '-');
 
         if (trim(str_replace('-', '', $alias)) == '') {
@@ -1385,7 +1385,7 @@ class Item extends Nested
 
         $db = App::get('db');
         $db->setQuery($query->toString());
-        $children = $db->loadColumn();
+        $children = $db->loadColumn() ?? [];
 
         // Cannot move the node to be a child of itself.
         if (in_array($referenceId, $children)) {

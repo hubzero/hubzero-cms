@@ -54,16 +54,17 @@ class Category extends Select
 
     protected function getOptions()
     {
+        $element = $this->fieldElement();
 
         // Initialise variables.
 
         $options   = [];
-        $extension = $this->element['extension']
-            ? (string) $this->element['extension']
-            : (string) $this->element['scope'];
-        $published = (string) $this->element['published'];
+        $extension = $element['extension']
+            ? (string) $element['extension']
+            : (string) $element['scope'];
+        $published = (string) $element['published'];
 
-        $name      = (string) $this->element['name'];
+        $name      = (string) $element['name'];
 
         // Load the category options for a given extension.
 
@@ -78,7 +79,7 @@ class Category extends Select
 
             // Verify permissions.  If the action attribute is set, then we scan the options.
 
-            if ((string) $this->element['action']) {
+            if ((string) $element['action']) {
                 // Get the current user object.
 
                 $user = App::get('user')->getInstance();
@@ -126,7 +127,7 @@ class Category extends Select
                 }
             }
 
-            if (isset($this->element['show_root'])) {
+            if (isset($element['show_root'])) {
                 array_unshift($options, Dropdown::option('0', App::get('language')->txt('JGLOBAL_ROOT')));
             }
         } else {

@@ -160,7 +160,7 @@ class Resources extends Plugin
 			)
 			LIMIT 0," . $limit,
         );
-        $data = $db->loadAssocList();
+        $data = $db->loadAssocList() ?? [];
 
         $unprocessed = count($data);
 

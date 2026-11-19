@@ -639,7 +639,7 @@ class Project extends Table
             }
 
             $this->db->setQuery($query);
-            $ids = $this->db->loadColumn();
+            $ids = $this->db->loadColumn() ?? [];
         }
 
         return $ids;

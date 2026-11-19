@@ -31,9 +31,11 @@ class Client extends Field
      */
     protected function getInput()
     {
-        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $element = $this->fieldElement();
+
+        $onchange = $element['onchange'] ? ' onchange="' . (string) $element['onchange'] . '"' : '';
         $options = [];
-        foreach ($this->element->children() as $option) {
+        foreach ($element->children() as $option) {
             $options[] = Html::select('option', (string) $option['value'], Lang::txt(trim((string) $option)));
         }
         $options[] = Html::select('option', '0', Lang::txt('JSITE'));

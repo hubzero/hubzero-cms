@@ -38,7 +38,7 @@ class Migration20190107140800ComResources extends Base
             $this->db->setQuery("SELECT `params` FROM `#__extensions` WHERE `element`='com_tools';");
             $row = $this->db->loadResult();
 
-            $params = json_decode($row);
+            $params = json_decode((string) $row);
 
             if (isset($params->doi_shoulder) && $params->doi_shoulder) {
                 $query = "UPDATE `#__doi_mapping` SET `doi_shoulder`="

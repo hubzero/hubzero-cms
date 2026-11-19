@@ -30,13 +30,15 @@ class Integer extends Select
      */
     protected function getOptions()
     {
+        $element = $this->fieldElement();
+
         // Initialize variables.
         $options = [];
 
         // Initialize some field attributes.
-        $first = (int) $this->element['first'];
-        $last  = (int) $this->element['last'];
-        $step  = (int) $this->element['step'];
+        $first = (int) $element['first'];
+        $last  = (int) $element['last'];
+        $step  = (int) $element['step'];
 
         // Sanity checks.
         if ($step == 0) {

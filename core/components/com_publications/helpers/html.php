@@ -748,7 +748,7 @@ class Html
                 $cls = $cls;
             } else {
                 $title = substr($normalized, 0, -1);
-                $cls = substr($cls, 0, -1);
+                $cls = substr((string) $cls, 0, -1);
             }
         }
 
@@ -986,13 +986,13 @@ class Html
     {
         $elipse = false;
 
-        $text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
+        $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
         $text = str_replace('{mosimage}', '', $text);
         $text = str_replace("\n", ' ', $text);
         $text = str_replace("\r", ' ', $text);
-        $text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i', '\2', $text);
-        $text = preg_replace('/<!--.+?-->/', '', $text);
-        $text = preg_replace('/{.+?}/', '', $text);
+        $text = (string) preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i', '\2', $text);
+        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
+        $text = (string) preg_replace('/{.+?}/', '', $text);
         $text = strip_tags($text);
         if (strlen($text) > $desclen) {
             $elipse = true;
@@ -1123,7 +1123,7 @@ class Html
     /**
      * Send email
      *
-     * @param   \Components\Publications\Models\Publication|null   $publication  Models\Publication
+     * @param   \Components\Publications\Models\Publication   $publication  Models\Publication
      * @param   array<mixed>    $addressees
      * @param   string|null   $subject
      * @param   string|null   $message

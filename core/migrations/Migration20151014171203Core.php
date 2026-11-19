@@ -35,7 +35,7 @@ class Migration20151014171203Core extends Base
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
                 ->where('folder', '=', 'authentication');
-            $plugins = $query->loadObjectList();
+            $plugins = $query->loadObjectList() ?? [];
 
             if (count($plugins) > 0) {
                 foreach ($plugins as $plugin) {

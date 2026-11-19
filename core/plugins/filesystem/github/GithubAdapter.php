@@ -130,7 +130,7 @@ class GithubAdapter implements FilesystemAdapter
         }
 
         // Drop a trailing ".git" and any surrounding slashes.
-        $repository = preg_replace('#\.git$#i', '', $repository);
+        $repository = (string) preg_replace('#\.git$#i', '', $repository);
 
         return trim($repository, '/');
     }

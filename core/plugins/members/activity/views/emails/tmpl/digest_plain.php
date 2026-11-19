@@ -71,7 +71,7 @@ foreach ($this->rows as $row) {
     $message .= $output . "\n\n";
 }
 
-$message = preg_replace('/\n{3,}/', "\n\n", $message);
+$message = (string) preg_replace('/\n{3,}/', "\n\n", $message);
 
 // Output message
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n\n" . $link . "\n";

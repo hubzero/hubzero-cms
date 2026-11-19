@@ -1824,7 +1824,7 @@ class Sessionsv1r0 extends ApiController
             . escapeshellarg($username) . " "
             . escapeshellarg($sessionid) . " "
             . escapeshellarg($public_ip) . " "
-            . escapeshellarg($private_ip)
+            . escapeshellarg((string) $private_ip)
             . " --ipsec-use-default-psk";
 
         $descriptorspec = [

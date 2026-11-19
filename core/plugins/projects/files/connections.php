@@ -425,7 +425,7 @@ class Connections
         Plugin::import('filesystem');
 
         $alias  = $this->connection->provider->alias;
-        $plugin = 'Plugins\\Filesystem\\' . ucfirst($alias) . '\\' . ucfirst($alias);
+        $plugin = 'Plugins\\Filesystem\\' . ucfirst((string) $alias) . '\\' . ucfirst((string) $alias);
 
         if ($alias && method_exists($plugin, 'authorize')) {
             // Make the connection id available to the provider's OAuth setup.
@@ -534,7 +534,7 @@ class Connections
 
         if ($canManage) {
             $authorize = Route::url(
-                $this->model->link('files') . '&action=authorize&connection=' . $this->connection->id,
+                $this->model->link('files') . '&action=authorize&connection=' . $this->connectionOrFail()->id,
             );
             $html .= '<p><a class="btn" href="' . $authorize . '">' . Lang::txt('Connect with GitHub') . '</a></p>';
         }
@@ -577,7 +577,7 @@ class Connections
     public function browse()
     {
         // Set up view
-        $connection_params = json_decode($this->connection->params ? $this->connection->params : "");
+        $connection_params = json_decode($this->connectionOrFail()->params ? $this->connectionOrFail()->params : "");
         if (!isset($connection_params->path)) {
             return $this->setupBaseDir();
         }
@@ -599,7 +599,7 @@ class Connections
         // Get directory that we're interested in. A failure here is typically an
         // expired/revoked provider credential; show a notice rather than 500.
         try {
-            $dir   = Entity::directoryFromPath($this->subdir, $this->connection->adapter());
+            $dir   = Entity::directoryFromPath($this->subdir, $this->connectionOrFail()->adapter());
             $items = $dir->listContents()->sort($sortby, $sortasc);
         } catch (\Throwable $e) {
             return $this->connectionUnavailable($e);
@@ -642,7 +642,7 @@ class Connections
         // A failure here is typically an expired/revoked provider credential;
         // show a notice rather than surfacing a raw 401/500.
         try {
-            $dir = Entity::directoryFromPath($subdir, $this->connection->adapter());
+            $dir = Entity::directoryFromPath($subdir, $this->connectionOrFail()->adapter());
             $contents = $dir->listContents()->sort('basename', 'ASC');
         } catch (\Throwable $e) {
             return $this->connectionUnavailable($e);
@@ -656,7 +656,7 @@ class Connections
         }
 
         $view->set('items', $dirs);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
         $view->set('option', $this->option);
         $view->set('parent', $dir->getParent(true));
         $view->set('subdir', $subdir);
@@ -682,24 +682,24 @@ class Connections
         }
 
         $prefix = urldecode(Request::getString('prefix', ''));
-        $connection_params = json_decode($this->connection->params);
+        $connection_params = json_decode($this->connectionOrFail()->params);
         // Attempt to prevent URL tampering
         // Don't set a prefix if one was set already, user must unset it from connections menu first
         if (isset($connection_params->path)) {
             return $this->browse();
         }
         $connection_params->path = $prefix;
-        $this->connection->set('params', json_encode($connection_params));
+        $this->connectionOrFail()->set('params', json_encode($connection_params));
 
-        if (!$this->connection->save()) {
+        if (!$this->connectionOrFail()->save()) {
             App::redirect(
                 Route::url($this->model->link('files'), false),
-                $this->connection->getError(),
+                $this->connectionOrFail()->getError(),
                 'error',
             );
         }
         $url  = $this->model->link('files') . '&action=browse';
-        $url .= '&connection=' . $this->connection->id;
+        $url .= '&connection=' . $this->connectionOrFail()->id;
         $url  = Route::url($url, false);
 
         // Redirect
@@ -768,7 +768,7 @@ class Connections
         $path = trim($this->subdir, '/') . '/' . $file;
         $view->set('option', $this->option);
         $view->set('model', $this->model);
-        $view->set('file', Entity::fromPath($path, $this->connection->adapter()));
+        $view->set('file', Entity::fromPath($path, $this->connectionOrFail()->adapter()));
 
         return $view->loadTemplate();
     }
@@ -796,7 +796,7 @@ class Connections
             'layout'  => 'upload',
         ]);
 
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
         $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('subdir', $this->subdir);
@@ -923,7 +923,7 @@ class Connections
 
         $url  = $this->model->link('files') . '&action=browse';
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-        $url .= '&connection=' . $this->connection->id;
+        $url .= '&connection=' . $this->connectionOrFail()->id;
         $url  = Route::url($url, false);
 
         // Redirect
@@ -1221,7 +1221,7 @@ class Connections
 
         $url  = $this->model->link('files') . '&action=browse';
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-        $url .= '&connection=' . $this->connection->id;
+        $url .= '&connection=' . $this->connectionOrFail()->id;
         $url  = Route::url($url, false);
 
         // Redirect
@@ -1253,7 +1253,7 @@ class Connections
         $view->set('model', $this->model);
         $view->set('ajax', Request::getInt('ajax', 0));
         $view->set('subdir', $this->subdir);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
 
         if (count($view->get('items')) == 0) {
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
@@ -1292,7 +1292,7 @@ class Connections
         }
 
         // Redirect to file list
-        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connection->id;
+        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connectionOrFail()->id;
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1319,7 +1319,7 @@ class Connections
             'layout'  => 'move',
         ]);
 
-        $root = Entity::directoryFromPath('', $this->connection->adapter());
+        $root = Entity::directoryFromPath('', $this->connectionOrFail()->adapter());
         $dirs = $root->getSubDirs();
 
         $view->set('list', $dirs);
@@ -1328,7 +1328,7 @@ class Connections
         $view->set('model', $this->model);
         $view->set('ajax', Request::getInt('ajax', 0));
         $view->set('subdir', $this->subdir);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
         $view->set('connection', $this->connection);
 
         if (count($view->get('items')) == 0) {
@@ -1388,7 +1388,7 @@ class Connections
         }
 
         // Redirect to file list
-        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connection->id;
+        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connectionOrFail()->id;
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1428,7 +1428,7 @@ class Connections
         $view->set('ajax', 1);
         $view->set('connection', $this->connection);
         $view->set('subdir', $this->subdir);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
 
         return $view->loadTemplate();
     }
@@ -1446,7 +1446,7 @@ class Connections
         }
 
         // Rename
-        $entity  = Entity::fromPath(Request::getString('oldname', ''), $this->connection->adapter());
+        $entity  = Entity::fromPath(Request::getString('oldname', ''), $this->connectionOrFail()->adapter());
         $oldName = $entity->getAbsolutePath();
 
         if ($entity->rename(Request::getString('newname', ''))) {
@@ -1459,7 +1459,7 @@ class Connections
         }
 
         // Redirect to file list
-        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connection->id;
+        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connectionOrFail()->id;
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1489,7 +1489,7 @@ class Connections
         $view->set('ajax', 1);
         $view->set('subdir', $this->subdir);
         $view->set('connection', $this->connection);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -1513,7 +1513,7 @@ class Connections
         // Create
         $entity = Entity::directoryFromPath(
             trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')),
-            $this->connection->adapter(),
+            $this->connectionOrFail()->adapter(),
         );
 
         if (!$entity->create()) {
@@ -1523,7 +1523,7 @@ class Connections
         }
 
         // Redirect to file list
-        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connection->id;
+        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connectionOrFail()->id;
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1568,7 +1568,7 @@ class Connections
         $view->set('model', $this->model);
         $view->set('ajax', 1);
         $view->set('subdir', $this->subdir);
-        $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+        $view->set('url', $this->model->link('files') . '&connection=' . $this->connectionOrFail()->id);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -1591,7 +1591,7 @@ class Connections
 
         // Get the file entity
         $file   = trim($this->subdir, '/') . '/' . trim(Request::getString('item', ''));
-        $entity = Entity::fromPath($file, $this->connection->adapter());
+        $entity = Entity::fromPath($file, $this->connectionOrFail()->adapter());
 
         // Grab annotations
         $keys     = Request::getArray('key', []);
@@ -1627,7 +1627,7 @@ class Connections
         }
 
         // Redirect to file list
-        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connection->id;
+        $url  = $this->model->link('files') . '&action=browse&connection=' . $this->connectionOrFail()->id;
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Redirect
@@ -1699,13 +1699,13 @@ class Connections
                 } else {
                     $path = trim($this->subdir, '/') . '/' . $entity;
                 }
-                $file = Entity::fromPath($path, $this->connection->adapter());
+                $file = Entity::fromPath($path, $this->connectionOrFail()->adapter());
                 if (!$file->exists()) {
                     //$this->setError(Lang::txt('Failed to find the file at ' . $path));
                     //return $collection;
                     continue;
                 }
-                $collection->add(Entity::fromPath($path, $this->connection->adapter()));
+                $collection->add(Entity::fromPath($path, $this->connectionOrFail()->adapter()));
             }
         }
 
@@ -1742,11 +1742,26 @@ class Connections
      */
     private function uploadTarget($path)
     {
-        $file = \Hubzero\Filesystem\File::fromPath($path, $this->connection->adapter());
+        $file = \Hubzero\Filesystem\File::fromPath($path, $this->connectionOrFail()->adapter());
         if ($file instanceof \Hubzero\Filesystem\File) {
             return $file;
         }
 
         return null;
+    }
+
+    /**
+     * The connection, which the calls using it need set
+     *
+     * @return  \Components\Projects\Models\Orm\Connection
+     * @throws  \LogicException  When it is not
+     */
+    protected function connectionOrFail()
+    {
+        if ($this->connection === null) {
+            throw new \LogicException(static::class . '::$connection is not set');
+        }
+
+        return $this->connection;
     }
 }

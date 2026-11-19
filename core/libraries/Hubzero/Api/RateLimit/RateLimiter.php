@@ -58,13 +58,17 @@ class RateLimiter
      *
      * @param   int    $applicationId  Application identifier
      * @param   int    $userId         User identifier
-     * @return  \stdClass|null  The rate limit record, with exceeded_short and exceeded_long set
+     * @return  \stdClass  The rate limit record, with exceeded_short and exceeded_long set
+     * @throws  \RuntimeException  When the storage has no record for the client and cannot make one
      */
     public function rateLimit($applicationId, $userId)
     {
         // load limit data, creating initial record if doesnt exist
         if (!$data = $this->storage->getRateLimitData($applicationId, $userId)) {
             $data = $this->createRateLimitData($applicationId, $userId);
+        }
+        if (!$data) {
+            throw new \RuntimeException('Unable to create a rate limit record');
         }
 
         // check if we can reset short expiration
@@ -84,6 +88,9 @@ class RateLimiter
 
         // refetch record after incrementing
         $data = $this->storage->getRateLimitData($applicationId, $userId);
+        if (!$data) {
+            throw new \RuntimeException('Unable to load the rate limit record');
+        }
 
         // check to see if were over short or long limits
         $data->exceeded_short = false;

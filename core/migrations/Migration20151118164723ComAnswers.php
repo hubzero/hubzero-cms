@@ -30,7 +30,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->getQuery()
                 ->select('*')
                 ->from('#__answers_questions_log');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -56,7 +56,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->getQuery()
                 ->select('*')
                 ->from('#__answers_log');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -113,7 +113,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'question');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db
@@ -148,7 +148,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'response');
-            $rows = $query->loadObjectList();
+            $rows = $query->loadObjectList() ?? [];
 
             foreach ($rows as $row) {
                 $this->db

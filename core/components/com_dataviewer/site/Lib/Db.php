@@ -102,7 +102,7 @@ class Db
             }
 
             $link->setQuery("SHOW COLUMNS FROM " . $link->quoteName($dd['table']));
-            $result = $link->loadAssocList();
+            $result = $link->loadAssocList() ?? [];
 
             foreach ($result as $rec) {
                 if (isset($col_info[$rec['Field']])) {

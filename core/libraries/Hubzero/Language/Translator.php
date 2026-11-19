@@ -1267,7 +1267,7 @@ class Translator extends Obj
     {
         $languages = [];
 
-        if (is_dir($dir)) {
+        if (is_dir((string) $dir)) {
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
 
             foreach ($iterator as $file) {

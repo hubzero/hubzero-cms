@@ -119,9 +119,9 @@ class Loadmodule extends Plugin
                     $matchesmodlist[2] = $stylemod;
                 }
 
-                $module = trim($matchesmodlist[0]);
-                $name   = htmlspecialchars_decode(trim($matchesmodlist[1]));
-                $style  = trim($matchesmodlist[2]);
+                $module = trim((string) $matchesmodlist[0]);
+                $name   = htmlspecialchars_decode(trim((string) $matchesmodlist[1]));
+                $style  = trim((string) $matchesmodlist[2]);
 
                 // $match[0] is full pattern match, $match[1] is the module,$match[2] is the title
                 $output = $this->byName($module, $name, $style);

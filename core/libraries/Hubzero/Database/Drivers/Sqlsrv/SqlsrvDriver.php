@@ -521,7 +521,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $upper = strtoupper($type);
 
         // Remove UNSIGNED (SQL Server doesn't support it)
-        $upper = preg_replace('/\s+UNSIGNED$/i', '', $upper);
+        $upper = (string) preg_replace('/\s+UNSIGNED$/i', '', $upper);
 
         // TINYINT -> TINYINT (SQL Server has it)
         // INT -> INT (same)
@@ -2447,7 +2447,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $hasAutoIncrement = !empty($modifiers['autoIncrement'])
             || stripos($type, 'AUTO_INCREMENT') !== false;
         if ($hasAutoIncrement) {
-            $type = preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
+            $type = (string) preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
             $type = trim($type);
         }
 

@@ -30,7 +30,7 @@ class Helper
         $db = App::get('db');
         $db->setQuery("SELECT uidNumber FROM `#__xprofiles`;");
 
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         foreach ($result as $row) {
             $func($row);

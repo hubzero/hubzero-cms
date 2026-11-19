@@ -463,7 +463,7 @@ class Modules extends AdminController
 
         // strip out scripts & php tags if not super group
         if (!$this->group->isSuperGroup()) {
-            $content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+            $content = (string) preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
             $content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
         }
 

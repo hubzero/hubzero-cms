@@ -176,7 +176,7 @@ class Generator
                 // get component
                 $pieces = explode(DS, $path);
                 array_pop($pieces);
-                $component = str_replace('com_', '', array_pop($pieces));
+                $component = str_replace('com_', '', (string) array_pop($pieces));
 
                 if ($loader && !$loader->isEnabled('com_' . $component)) {
                     continue;
@@ -284,7 +284,7 @@ class Generator
             }
 
             $controller = basename($file);
-            $controller = preg_replace('#\.[^.]*$#', '', $controller);
+            $controller = (string) preg_replace('#\.[^.]*$#', '', $controller);
             $parts = explode('v', $controller);
             $v = array_pop($parts);
             $controller = implode('v', $parts);

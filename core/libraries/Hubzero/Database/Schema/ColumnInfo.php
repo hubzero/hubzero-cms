@@ -464,9 +464,9 @@ class ColumnInfo
     protected function parseBaseType(string $fullType): string
     {
         // Remove length/precision specifier: varchar(255) -> varchar
-        $type = preg_replace('/\([^)]+\)/', '', $fullType);
+        $type = (string) preg_replace('/\([^)]+\)/', '', $fullType);
         // Remove unsigned/signed
-        $type = preg_replace('/\s+(unsigned|signed)/i', '', $type);
+        $type = (string) preg_replace('/\s+(unsigned|signed)/i', '', $type);
         return strtolower(trim($type));
     }
 

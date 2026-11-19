@@ -50,7 +50,7 @@ class ModeDs
         $dd = false;
         $db = App::get('db');
 
-        $dv_id = str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) Request::getVar('dv')));
+        $dv_id = str_replace('..', '', (string) preg_replace('/[^A-Za-z0-9_.-]/', '', (string) Request::getVar('dv')));
 
         if ($db_id['extra']) {
             $sql = "SELECT * FROM `#__datastore_tables` WHERE datastore_id = " . (int) $db_id['name']

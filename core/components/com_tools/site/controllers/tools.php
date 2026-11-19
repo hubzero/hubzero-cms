@@ -177,7 +177,7 @@ class Tools extends SiteController
             }
         }
 
-        if (is_readable($image)) {
+        if (is_readable((string) $image)) {
             ob_clean();
             header("Content-Type: image/png");
             readfile($image);
@@ -217,7 +217,7 @@ class Tools extends SiteController
             }
         }
 
-        if (is_readable($file)) {
+        if (is_readable((string) $file)) {
             ob_clean();
             header("Content-Type: text/css");
             readfile($file);

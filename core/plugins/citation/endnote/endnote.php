@@ -177,7 +177,7 @@ class Endnote extends Plugin
                     // make sure the var exists in our citation
                     if (array_key_exists($key, $citation)) {
                         // Trim the value
-                        $value = trim(trim($citation[$key], ':;,'));
+                        $value = trim(trim((string) $citation[$key], ':;,'));
 
                         // Append the data if we have already set that variable
                         if (isset($cite[$tag])) {

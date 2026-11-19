@@ -464,7 +464,7 @@ abstract class Driver implements LoggerAwareInterface
             }
 
             // If the class doesn't exist we have a problem
-            if (!class_exists($class)) {
+            if (!class_exists((string) $class)) {
                 throw new RuntimeException('Database driver not available.', 500);
             }
 
@@ -2254,10 +2254,10 @@ abstract class Driver implements LoggerAwareInterface
             'driver' => static::class,
             'database' => (string) ($this->database ?? ''),
             'prefix' => (string) $this->tablePrefix,
-            'host' => (string) ($this->getConnectionOption('host', '')),
-            'port' => (string) ($this->getConnectionOption('port', '')),
-            'dsn' => (string) ($this->getConnectionOption('dsn', '')),
-            'socket' => (string) ($this->getConnectionOption('socket', '')),
+            'host' => (string) $this->getConnectionOption('host', ''),
+            'port' => (string) $this->getConnectionOption('port', ''),
+            'dsn' => (string) $this->getConnectionOption('dsn', ''),
+            'socket' => (string) $this->getConnectionOption('socket', ''),
         ];
 
         return hash('sha256', serialize($fingerprintData));
@@ -2644,7 +2644,7 @@ abstract class Driver implements LoggerAwareInterface
         if (!class_exists($class)) {
             throw new \InvalidArgumentException('No class "' . $class . '" to fetch a row into.');
         }
-        return $this->statement->fetchObject($class) ?: null;
+        return $this->statementOrFail()->fetchObject($class) ?: null;
     }
 
     /**
@@ -2659,7 +2659,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->fetch(\PDO::FETCH_NUM) ?: null;
+        return $this->statementOrFail()->fetch(\PDO::FETCH_NUM) ?: null;
     }
 
     /**
@@ -2674,7 +2674,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->fetch(\PDO::FETCH_ASSOC) ?: null;
+        return $this->statementOrFail()->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
     /**
@@ -2709,7 +2709,7 @@ abstract class Driver implements LoggerAwareInterface
             $this->connection->freeResult($this->statement);
         } else {
             // Backward compatibility: raw PDO - statement is a PDOStatement
-            $this->statement->closeCursor();
+            $this->statementOrFail()->closeCursor();
         }
 
         $this->statement = null;
@@ -2853,7 +2853,7 @@ abstract class Driver implements LoggerAwareInterface
 
         foreach ($bindings as $binding) {
             // We use bindValue here because that allows us to pass in plain old strings
-            $this->statement->bindValue(
+            $this->statementOrFail()->bindValue(
                 $idx,
                 $binding,
                 isset($type[$idx]) ? $this->translateType($type[$idx]) : $this->inferType($binding),
@@ -2877,7 +2877,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO, which gives the id as a string
-        return (int) $this->connection->lastInsertId();
+        return (int) $this->connectionOrFail()->lastInsertId();
     }
 
     /**
@@ -3175,7 +3175,7 @@ abstract class Driver implements LoggerAwareInterface
         $start = microtime(true);
 
         try {
-            $this->statement->execute();
+            $this->statementOrFail()->execute();
         } catch (\PDOException $e) {
             throw new QueryFailedException($e->getMessage(), 500, $e);
         }
@@ -3443,7 +3443,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO
-        $result = substr($this->connection->quote((string) ($text ?? '')), 1, -1);
+        $result = substr($this->connectionOrFail()->quote((string) ($text ?? '')), 1, -1);
 
         if ($extra) {
             $result = addcslashes($result, '%_');
@@ -3464,7 +3464,7 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO - statement is a PDOStatement
-        return $this->statement->rowCount();
+        return $this->statementOrFail()->rowCount();
     }
 
     /**
@@ -4154,5 +4154,35 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         return $instances;
+    }
+
+    /**
+     * The connection, which the calls using it need set
+     *
+     * @return  ConnectionInterface|\Hubzero\Database\Connection\PdoConnection|\PDO
+     * @throws  \LogicException  When it is not
+     */
+    protected function connectionOrFail()
+    {
+        if ($this->connection === null) {
+            throw new \LogicException(static::class . '::$connection is not set');
+        }
+
+        return $this->connection;
+    }
+
+    /**
+     * The statement, which the calls using it need set
+     *
+     * @return  \PDOStatement
+     * @throws  \LogicException  When it is not
+     */
+    protected function statementOrFail()
+    {
+        if ($this->statement === null) {
+            throw new \LogicException(static::class . '::$statement is not set');
+        }
+
+        return $this->statement;
     }
 }

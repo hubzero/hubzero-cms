@@ -84,7 +84,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (bool) $this->adapter->exists($path);
+        return (bool) $this->adapterOrFail()->exists($path);
     }
 
     /**
@@ -99,7 +99,7 @@ class Filesystem
 
         $this->assertPresent($path);
 
-        return (string) $this->adapter->read($path);
+        return (string) $this->adapterOrFail()->read($path);
     }
 
     /**
@@ -115,7 +115,7 @@ class Filesystem
 
         //$this->assertAbsent($path);
 
-        return (bool) $this->adapter->write($path, $contents);
+        return (bool) $this->adapterOrFail()->write($path, $contents);
     }
 
     /**
@@ -162,7 +162,7 @@ class Filesystem
 
         $this->assertPresent($path);
 
-        return $this->adapter->delete($path);
+        return $this->adapterOrFail()->delete($path);
     }
 
     /**
@@ -177,7 +177,7 @@ class Filesystem
         $path   = Util::normalizePath($path);
         $target = Util::normalizePath($target);
 
-        return $this->adapter->upload($path, $target);
+        return $this->adapterOrFail()->upload($path, $target);
     }
 
     /**
@@ -207,7 +207,7 @@ class Filesystem
         $this->assertPresent($path);
         //$this->assertAbsent($target);
 
-        return (bool) $this->adapter->rename($path, $target);
+        return (bool) $this->adapterOrFail()->rename($path, $target);
     }
 
     /**
@@ -225,7 +225,7 @@ class Filesystem
         $this->assertPresent($path);
         //$this->assertAbsent($target);
 
-        return (bool) $this->adapter->copy($path, $target);
+        return (bool) $this->adapterOrFail()->copy($path, $target);
     }
 
     /**
@@ -241,7 +241,7 @@ class Filesystem
             return false;
         }
 
-        return $this->adapter->find((array) $paths, $file);
+        return $this->adapterOrFail()->find((array) $paths, $file);
     }
 
     /**
@@ -254,7 +254,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return $this->adapter->name($path);
+        return $this->adapterOrFail()->name($path);
     }
 
     /**
@@ -267,7 +267,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return $this->adapter->extension($path);
+        return $this->adapterOrFail()->extension($path);
     }
 
     /**
@@ -280,7 +280,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return $this->adapter->type($path);
+        return $this->adapterOrFail()->type($path);
     }
 
     /**
@@ -293,7 +293,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (int) $this->adapter->size($path);
+        return (int) $this->adapterOrFail()->size($path);
     }
 
     /**
@@ -307,7 +307,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return $this->adapter->mimetype($path);
+        return $this->adapterOrFail()->mimetype($path);
     }
 
     /**
@@ -320,7 +320,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (int) $this->adapter->lastModified($path);
+        return (int) $this->adapterOrFail()->lastModified($path);
     }
 
     /**
@@ -333,7 +333,7 @@ class Filesystem
     {
         $directory = Util::normalizePath($directory);
 
-        return (bool) $this->adapter->isDirectory($directory);
+        return (bool) $this->adapterOrFail()->isDirectory($directory);
     }
 
     /**
@@ -346,7 +346,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (bool) $this->adapter->isWritable($path);
+        return (bool) $this->adapterOrFail()->isWritable($path);
     }
 
     /**
@@ -359,7 +359,7 @@ class Filesystem
     {
         $file = Util::normalizePath($file);
 
-        return (bool) $this->adapter->isFile($file);
+        return (bool) $this->adapterOrFail()->isFile($file);
     }
 
     /**
@@ -372,7 +372,7 @@ class Filesystem
     {
         $file = Util::normalizePath($file);
 
-        return (bool) $this->adapter->isSafe($file);
+        return (bool) $this->adapterOrFail()->isSafe($file);
     }
 
     /**
@@ -401,7 +401,7 @@ class Filesystem
     ) {
         $path = Util::normalizePath($path);
 
-        return (array) $this->adapter->listContents($path, $filter, $recursive, $full, $exclude);
+        return (array) $this->adapterOrFail()->listContents($path, $filter, $recursive, $full, $exclude);
     }
 
     /**
@@ -417,7 +417,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (bool) $this->adapter->makeDirectory($path, $mode, $recursive, $force);
+        return (bool) $this->adapterOrFail()->makeDirectory($path, $mode, $recursive, $force);
     }
 
     /**
@@ -436,7 +436,7 @@ class Filesystem
         $this->assertPresent($path);
         //$this->assertAbsent($target);
 
-        return (bool) $this->adapter->copyDirectory($path, $target, $options);
+        return (bool) $this->adapterOrFail()->copyDirectory($path, $target, $options);
     }
 
     /**
@@ -454,7 +454,7 @@ class Filesystem
 
         $this->assertPresent($path);
 
-        return (bool) $this->adapter->deleteDirectory($path, $preserve);
+        return (bool) $this->adapterOrFail()->deleteDirectory($path, $preserve);
     }
 
     /**
@@ -469,7 +469,7 @@ class Filesystem
     {
         $path = Util::normalizePath($path);
 
-        return (bool) $this->adapter->setPermissions($path, $filemode, $foldermode);
+        return (bool) $this->adapterOrFail()->setPermissions($path, $filemode, $foldermode);
     }
 
     /**
@@ -581,5 +581,20 @@ class Filesystem
         }
 
         throw new \BadMethodCallException('Call to undefined method ' . __CLASS__ . '::' . $method);
+    }
+
+    /**
+     * The adapter, which the calls using it need set
+     *
+     * @return  Adapter\Local|Adapter\Ftp|Adapter\None
+     * @throws  \LogicException  When it is not
+     */
+    protected function adapterOrFail()
+    {
+        if ($this->adapter === null) {
+            throw new \LogicException(static::class . '::$adapter is not set');
+        }
+
+        return $this->adapter;
     }
 }

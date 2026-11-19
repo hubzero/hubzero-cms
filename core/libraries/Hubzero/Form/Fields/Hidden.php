@@ -29,16 +29,18 @@ class Hidden extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $attributes = [
             'type'         => 'hidden',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : ''),
-            'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : ''),
+            'class'        => ($element['class'] ? (string) $element['class'] : ''),
+            'autocomplete' => ((string) $element['autocomplete'] == 'off' ? 'off' : ''),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : ''),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : ''),
         ];
 
         $attr = [];

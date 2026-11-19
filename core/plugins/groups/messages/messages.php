@@ -424,7 +424,7 @@ class Messages extends Plugin
                             . " WHERE mr.roleid=" . $db->Quote((int) $role[1])
                             . " AND r.gidNumber=" . $db->Quote($this->group->get('gidNumber'));
                         $db->setQuery($sql);
-                        $member_roles = $db->loadAssocList();
+                        $member_roles = $db->loadAssocList() ?? [];
                         foreach ($member_roles as $member) {
                             $members[] = $member['uidNumber'];
                         }

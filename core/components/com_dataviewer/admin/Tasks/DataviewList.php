@@ -158,7 +158,7 @@ class DataviewList
                 . $jdb->quote($db_conf['database_ro']['database'])
                 . ' GROUP BY TABLE_NAME ORDER BY TABLE_NAME';
             $jdb->setQuery($sql);
-            $list = $jdb->loadAssocList();
+            $list = $jdb->loadAssocList() ?? [];
         }
 
         ?>

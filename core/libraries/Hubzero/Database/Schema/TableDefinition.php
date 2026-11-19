@@ -756,7 +756,7 @@ class TableDefinition
             // Extract class name and convert to snake_case_id
             $parts = explode('\\', $model);
             $className = end($parts);
-            $column = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className)) . '_id';
+            $column = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $className)) . '_id';
         }
         return $this->foreignId($column);
     }

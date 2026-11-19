@@ -366,10 +366,10 @@ class Password
     /**
      * Get a property's value
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  mixed
      */
-    public function __get($property = null)
+    public function __get($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -396,10 +396,10 @@ class Password
     /**
      * Set a property's value
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @param   mixed   $value
      */
-    public function __set($property = null, $value = null)
+    public function __set($property, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -420,10 +420,10 @@ class Password
     /**
      * Check if a property is set
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  bool
      */
-    public function __isset($property = null)
+    public function __isset($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -440,10 +440,10 @@ class Password
     /**
      * Unset a property
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  void
      */
-    public function __unset($property = null)
+    public function __unset($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -926,35 +926,35 @@ class Password
             case 'crypt':
             case 'crypt-des':
                 if ($seed) {
-                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 2);
+                    return substr((string) preg_replace('|^{crypt}|i', '', $seed), 0, 2);
                 } else {
                     return substr(bin2hex(random_bytes(16)), 0, 2);
                 }
 
             case 'crypt-md5':
                 if ($seed) {
-                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
+                    return substr((string) preg_replace('|^{crypt}|i', '', $seed), 0, 12);
                 } else {
                     return '$1$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
                 }
 
             case 'crypt-blowfish':
                 if ($seed) {
-                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 16);
+                    return substr((string) preg_replace('|^{crypt}|i', '', $seed), 0, 16);
                 } else {
                     return '$2$' . substr(bin2hex(random_bytes(16)), 0, 12) . '$';
                 }
 
             case 'crypt-sha512':
                 if ($seed) {
-                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
+                    return substr((string) preg_replace('|^{crypt}|i', '', $seed), 0, 12);
                 } else {
                     return '$6$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
                 }
 
             case 'ssha':
                 if ($seed) {
-                    return substr(preg_replace('|^{SSHA}|', '', $seed), -20);
+                    return substr((string) preg_replace('|^{SSHA}|', '', $seed), -20);
                 } else {
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
                     return (string) mhash_keygen_s2k(MHASH_SHA1, $plaintext, $salt, 4);
@@ -962,7 +962,7 @@ class Password
 
             case 'smd5':
                 if ($seed) {
-                    return substr(preg_replace('|^{SMD5}|', '', $seed), -16);
+                    return substr((string) preg_replace('|^{SMD5}|', '', $seed), -16);
                 } else {
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
                     return (string) mhash_keygen_s2k(MHASH_MD5, $plaintext, $salt, 4);
@@ -973,7 +973,7 @@ class Password
                 $APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
                 if ($seed) {
-                    return substr(preg_replace('/^\$apr1\$(.{8}).*/', '\\1', $seed), 0, 8);
+                    return substr((string) preg_replace('/^\$apr1\$(.{8}).*/', '\\1', $seed), 0, 8);
                 } else {
                     $salt = '';
                     for ($i = 0; $i < 8; $i++) {

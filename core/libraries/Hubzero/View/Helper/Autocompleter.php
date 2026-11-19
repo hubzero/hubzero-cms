@@ -48,7 +48,7 @@ class Autocompleter extends AbstractHelper
                 . Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
-        $id = ($id ?: str_replace(['[', ']'], '', $name));
+        $id = ($id ?: str_replace(['[', ']'], '', (string) $name));
 
         switch ($type) {
             case 'multi':

@@ -83,6 +83,6 @@ if (!$this->config->get('email_terse')) {
     $message .= Lang::txt('COM_SUPPORT_NOTIFY_TICKET_CREATED', $this->ticket->get('id'), $link) . "\n";
 }
 
-$message = preg_replace('/\n{3,}/', "\n\n", $message);
+$message = (string) preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n\n" . $link . "\n";

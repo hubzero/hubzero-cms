@@ -29,20 +29,22 @@ class Number extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         // Initialize some field attributes.
         $attributes = [
             'type'         => 'number',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
             'id'           => $this->id,
-            'min'          => (!is_null($this->element['min']) ? (int) $this->element['min'] : null),
-            'max'          => ($this->element['max'] ? (int) $this->element['max'] : null),
-            'step'         => ($this->element['step'] ? (int) $this->element['step'] : null),
-            'pattern'      => ($this->element['pattern'] ? $this->element['pattern'] : null),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : null),
-            'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : null),
-            'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : null),
-            'onchange'     => ($this->element['onchange'] ? (string) $this->element['onchange'] : null),
+            'min'          => (!is_null($element['min']) ? (int) $element['min'] : null),
+            'max'          => ($element['max'] ? (int) $element['max'] : null),
+            'step'         => ($element['step'] ? (int) $element['step'] : null),
+            'pattern'      => ($element['pattern'] ? $element['pattern'] : null),
+            'class'        => ($element['class'] ? (string) $element['class'] : null),
+            'readonly'     => ((string) $element['readonly'] == 'true' ? 'readonly' : null),
+            'disabled'     => ((string) $element['disabled'] == 'true' ? 'disabled' : null),
+            'onchange'     => ($element['onchange'] ? (string) $element['onchange'] : null),
         ];
 
         $attr = [];

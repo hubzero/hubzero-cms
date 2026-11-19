@@ -150,7 +150,7 @@ if ($label == 'none') {
                                             . $this->escape(
                                                 preg_match(
                                                     '/^(?:javascript|vbscript|data):/i',
-                                                    preg_replace('/[\x00-\x20]+/', '', (string) $cite->url),
+                                                    (string) preg_replace('/[\x00-\x20]+/', '', (string) $cite->url),
                                                 )
                                                     ? ''
                                                     : $cite->url,

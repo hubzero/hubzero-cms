@@ -184,7 +184,7 @@ class Subtitle extends Handler
 
         // add title to transcript
         $transcript = $manifest->presentation->title . PHP_EOL
-            . str_repeat('==', 20) . PHP_EOL . ltrim($transcript, PHP_EOL);
+            . str_repeat('==', 20) . PHP_EOL . ltrim((string) $transcript, PHP_EOL);
 
         // Create our asset table object
         $assetObj = new Tables\Asset($this->db);

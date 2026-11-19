@@ -181,7 +181,7 @@ class Detector implements DetectorInterface
         foreach ($blacklists as $i => $blacklist) {
             // SpamHaus requires the IP be reversed
             if ($i == 0) {
-                $parsed['host'] = implode('.', array_reverse(explode('.', $parsed['host']), false));
+                $parsed['host'] = implode('.', array_reverse(explode('.', (string) $parsed['host']), false));
             }
             $domain = $parsed['host'] . '.' . $blacklist . '.';
             $record = dns_get_record($domain) ?: [];

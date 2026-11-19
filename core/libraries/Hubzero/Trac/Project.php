@@ -356,10 +356,10 @@ class Project
     /**
      * Property accessor
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @return  string|null
      */
-    public function __get($property = null)
+    public function __get($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -394,10 +394,10 @@ class Project
     /**
      * Property setter
      *
-     * @param   string|null  $property
+     * @param   string  $property
      * @param   mixed   $value
      */
-    public function __set($property = null, $value = null)
+    public function __set($property, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -425,10 +425,10 @@ class Project
     /**
      * Check if a property is set
      *
-     * @param   string|null  $property  Property name
+     * @param   string  $property  Property name
      * @return  boolean
      */
-    public function __isset($property = null)
+    public function __isset($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -445,10 +445,10 @@ class Project
     /**
      * Unset a property
      *
-     * @param   string|null  $property  Property name
+     * @param   string  $property  Property name
      * @return  void
      */
-    public function __unset($property = null)
+    public function __unset($property)
     {
         if (!property_exists(__CLASS__, $property) || in_array($property, self::INTERNAL, true)) {
             if (empty($property)) {
@@ -743,7 +743,7 @@ class Project
         }
 
         $db->setQuery($query);
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         return $result;
     }
@@ -773,7 +773,7 @@ class Project
         }
 
         $db->setQuery($query);
-        $result = $db->loadColumn();
+        $result = $db->loadColumn() ?? [];
 
         return $result;
     }

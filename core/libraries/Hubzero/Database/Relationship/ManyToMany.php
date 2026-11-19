@@ -95,7 +95,7 @@ class ManyToMany extends OneToManyThrough
         // Add remaining fields to our select statement
         if (count($columns) > 0) {
             foreach ($columns as $column => $type) {
-                $this->related->select($this->associativeTable . '.' . $column, 'associative_' . $column);
+                $this->relatedOrFail()->select($this->associativeTable . '.' . $column, 'associative_' . $column);
             }
         }
 

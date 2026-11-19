@@ -629,7 +629,7 @@ class Profiles extends SiteController
         }
         // Add to the pathway
         Pathway::append(
-            Lang::txt(strtoupper($this->task)),
+            Lang::txt(strtoupper((string) $this->task)),
             'index.php?option=' . $this->option . '&task=' . $this->task,
         );
 
@@ -998,7 +998,7 @@ class Profiles extends SiteController
             'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt('COM_MEMBERS_' . strtoupper($this->task)),
+            Lang::txt('COM_MEMBERS_' . strtoupper((string) $this->task)),
             'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
@@ -1214,7 +1214,7 @@ class Profiles extends SiteController
             'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->task)),
+            Lang::txt(strtoupper((string) $this->task)),
             'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
@@ -1468,7 +1468,7 @@ class Profiles extends SiteController
             'index.php?option=' . $this->option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
-            Lang::txt(strtoupper($this->task)),
+            Lang::txt(strtoupper((string) $this->task)),
             'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
         );
 
@@ -1539,15 +1539,15 @@ class Profiles extends SiteController
             $name['first']  = preg_replace('/[<>]/', '', trim($name['first']));
             $name['middle'] = preg_replace('/[<>]/', ' ', trim($name['middle']));
             $name['last']   = preg_replace('/[<>]/', ' ', trim($name['last']));
-            $name['first']  = htmlentities($name['first'], ENT_QUOTES, "UTF-8");
-            $name['middle']  = htmlentities($name['middle'], ENT_QUOTES, "UTF-8");
-            $name['last']  = htmlentities($name['last'], ENT_QUOTES, "UTF-8");
+            $name['first']  = htmlentities((string) $name['first'], ENT_QUOTES, "UTF-8");
+            $name['middle']  = htmlentities((string) $name['middle'], ENT_QUOTES, "UTF-8");
+            $name['last']  = htmlentities((string) $name['last'], ENT_QUOTES, "UTF-8");
             $member->set('givenName', \Hubzero\Utility\Sanitize::cleanProperName($name['first']));
             $member->set('middleName', \Hubzero\Utility\Sanitize::cleanProperName($name['middle']));
             $member->set('surname', \Hubzero\Utility\Sanitize::cleanProperName($name['last']));
 
             $name = implode(' ', $name);
-            $name = preg_replace('/\s+/', ' ', $name);
+            $name = (string) preg_replace('/\s+/', ' ', $name);
 
             $member->set('name', \Hubzero\Utility\Sanitize::cleanProperName($name));
         }
@@ -1797,7 +1797,7 @@ class Profiles extends SiteController
     public function activityTask()
     {
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->task)));
+        Document::setTitle(Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper((string) $this->task)));
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -1807,7 +1807,7 @@ class Profiles extends SiteController
             );
         }
         Pathway::append(
-            Lang::txt(strtoupper($this->task)),
+            Lang::txt(strtoupper((string) $this->task)),
             'index.php?option=' . $this->option . '&task=' . $this->task,
         );
 

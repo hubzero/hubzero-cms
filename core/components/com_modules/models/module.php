@@ -414,7 +414,7 @@ class Module extends Relational
             ->whereEquals('moduleid', (int) $pk);
 
         $db->setQuery((string) $query->toString());
-        $rows = $db->loadColumn();
+        $rows = $db->loadColumn() ?? [];
 
         foreach ($rows as $menuid) {
             $tuples[] = '(' . (int) $this->get('id') . ',' . (int) $menuid . ')';

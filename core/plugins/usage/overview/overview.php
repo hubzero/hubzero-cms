@@ -74,6 +74,7 @@ class Overview extends Plugin
 
         $view = $this
             ->view('default', 'usage')
+            ->set('db', $db)
             ->set('element', $this->pluginName)
             ->set('period', $period)
             ->set('datetime', $datetime)
@@ -137,6 +138,9 @@ class Overview extends Plugin
         $datetime = Request::getString('datetime', date("Y") . '-' . date("m")) . '-00 00:00:00';
 
         $db = \Components\Usage\Helpers\Helper::getUDBO();
+        if (!$db) {
+            throw new \Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
+        }
 
         $sql = "SELECT value, valfmt
 				FROM `summary_user_vals`

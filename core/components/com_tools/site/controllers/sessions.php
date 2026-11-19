@@ -76,7 +76,7 @@ class Sessions extends SiteController
                 'index.php?option=' . $this->option . '&app=' . $appname,
             );
             Pathway::append(
-                Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper((string) $this->task)),
                 'index.php?option='
                     . $this->option
                     . '&task='

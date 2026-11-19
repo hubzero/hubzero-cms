@@ -68,7 +68,7 @@ class Sitemap extends Plugin
     {
         $dbh = App::get('db');
         $dbh->setQuery('SELECT id, title, link, description FROM `#__ysearch_site_map` ORDER BY title');
-        $map = $dbh->loadAssocList();
+        $map = $dbh->loadAssocList() ?? [];
         $edit = null;
         $hasSitemap = array_key_exists('sitemap', $context);
         $hasEditId = $hasSitemap && array_key_exists('edit_id', $context['sitemap']);

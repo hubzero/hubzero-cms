@@ -131,8 +131,8 @@ class File extends Base
         $configs->logPath = $pub->path('logs', true);
 
         // Get default title
-        $title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
-        $configs->title = str_replace('{pubversion}', $pub->version_label, $title);
+        $title = isset($element->title) ? str_replace('{pubtitle}', (string) $pub->title, $element->title) : null;
+        $configs->title = str_replace('{pubversion}', (string) $pub->version_label, $title);
 
         // Get bundle name
         $versionParams        = $pub->params;
@@ -733,7 +733,7 @@ class File extends Base
                     // Get ext
                     $parts  = explode('.', $fpath);
                     $ext    = count($parts) > 1 ? array_pop($parts) : null;
-                    $ext    = strtolower($ext);
+                    $ext    = strtolower((string) $ext);
                     $label .= $ext ? ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
                 }
                 $class = 'btn btn-primary active'; //icon-next

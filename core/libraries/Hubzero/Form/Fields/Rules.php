@@ -36,12 +36,14 @@ class Rules extends Field
      */
     protected function getInput()
     {
+        $element = $this->fieldElement();
+
         Behavior::tooltip();
 
         // Initialise some field attributes.
-        $section    = $this->element['section'] ? (string) $this->element['section'] : '';
-        $component  = $this->element['component'] ? (string) $this->element['component'] : '';
-        $assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
+        $section    = $element['section'] ? (string) $element['section'] : '';
+        $component  = $element['component'] ? (string) $element['component'] : '';
+        $assetField = $element['asset_field'] ? (string) $element['asset_field'] : 'asset_id';
 
         // Get the actions for the asset.
         $comfile = $component ? App::get('component')->path($component) . '/config/access.xml' : '';
@@ -54,7 +56,7 @@ class Rules extends Field
         }
 
         // Iterate over the children and add to the actions.
-        foreach ($this->element->children() as $el) {
+        foreach ($element->children() as $el) {
             if ($el->getName() == 'action') {
                 $actions[] = (object) [
                     'name' => (string) $el['name'],

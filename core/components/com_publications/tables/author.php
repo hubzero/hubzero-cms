@@ -617,6 +617,9 @@ class Author extends Table
 
         $this->db->setQuery($query);
         $result = $this->db->loadObject();
+        if (!$result) {
+            return null;
+        }
 
         if (!empty($result->user_id)) {
             $user = \Components\Members\Models\Member::oneOrNew($result->user_id);
@@ -668,6 +671,9 @@ class Author extends Table
 
         $this->db->setQuery($query);
         $result = $this->db->loadObject();
+        if (!$result) {
+            return null;
+        }
 
         if (!empty($result->user_id)) {
             $user = \Components\Members\Models\Member::oneOrNew($result->user_id);
