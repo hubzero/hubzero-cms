@@ -17,6 +17,7 @@ use Components\Groups\Models\Orm\Field;
 use Hubzero\Facades\Lang;
 use Hubzero\Html\Builder\Behavior;
 use Hubzero\Facades\App;
+use Hubzero\Filesystem\Util;
 
 /**
  * Supports a scaled selection field
@@ -321,7 +322,7 @@ class Goals extends Radio
 
         Behavior::framework(true);
 
-        $handlebarPath = str_replace(PATH_ROOT, '', PATH_CORE) . '/assets/js/handlebars.js';
+        $handlebarPath = Util::coreUrlPath(PATH_CORE) . '/assets/js/handlebars.js';
         App::get('document')->addScript($handlebarPath);
         $goalsPath = str_replace(PATH_ROOT, '', dirname(dirname(__DIR__)))
             . '/site/assets/js/goals.js?v='

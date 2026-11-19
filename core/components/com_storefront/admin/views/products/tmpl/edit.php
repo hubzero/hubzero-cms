@@ -13,6 +13,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
+use Hubzero\Filesystem\Util;
 
 defined('_HZEXEC_') or die();
 
@@ -460,7 +461,7 @@ $activeStatusSelected = function ($value) use ($view) {
                 } else {
                     $image = false;
                     $pic = 'noimage.png';
-                    $path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img'
+                    $path = Util::coreUrlPath(dirname(__DIR__, 4)) . '/site/assets/img'
                         . DS;
                 }
                 ?>

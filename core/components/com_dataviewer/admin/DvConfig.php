@@ -11,6 +11,7 @@ namespace Components\Dataviewer\Admin;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
+use Hubzero\Filesystem\Util;
 
 class DvConfig
 {
@@ -47,7 +48,7 @@ class DvConfig
         static::$com_name = Request::get('option');
         static::$com_name = str_replace('com_', '', static::$com_name);
 
-        $com_path = str_replace(PATH_ROOT, '', __DIR__);
+        $com_path = Util::coreUrlPath(__DIR__);
 
 
         /* Paths */

@@ -236,4 +236,25 @@ class Util
 
         return $mimeType;
     }
+
+    /**
+     * The URL path, from the site root, of a file or directory inside core: '/core/components/com_x/admin' for
+     * PATH_CORE/components/com_x/admin. Taking PATH_ROOT off the front of the path gave the full file system path
+     * when core is not inside the document root (linked into it, or set with PATH_CORE).
+     *
+     * @param   string  $path  A path inside core
+     * @return  string
+     */
+    public static function coreUrlPath($path)
+    {
+        $core = (string) realpath(PATH_CORE);
+        $real = realpath($path);
+        if ($real === false) {
+            $real = $path;
+        }
+
+        $inside = ($core !== '' && str_starts_with($real, $core)) ? substr($real, strlen($core)) : '';
+
+        return '/' . basename(PATH_CORE) . $inside;
+    }
 }

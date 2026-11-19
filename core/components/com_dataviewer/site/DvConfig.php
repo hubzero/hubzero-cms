@@ -9,6 +9,7 @@
 namespace Components\Dataviewer\Site;
 
 use Hubzero\Facades\Component;
+use Hubzero\Filesystem\Util;
 
 class DvConfig
 {
@@ -31,11 +32,11 @@ class DvConfig
     /** @return void */
     public static function init()
     {
-        static::$html_path = str_replace(PATH_ROOT, '', __DIR__) . '/html';
+        static::$html_path = Util::coreUrlPath(__DIR__) . '/html';
         static::$com_name = basename(dirname(__DIR__));
         static::$com_name = str_replace('com_', '', static::$com_name);
         static::$com_name = trim(static::$com_name, DS);
-        $com_path = str_replace(PATH_ROOT, '', __DIR__);
+        $com_path = Util::coreUrlPath(__DIR__);
 
         static::$dv_conf['settings']['com_name'] = static::$com_name;
 
