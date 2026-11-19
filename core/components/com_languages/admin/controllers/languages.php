@@ -18,6 +18,7 @@ use Hubzero\Facades\Cache;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Plugin;
 
 /**
  * Languages Controller for installed languages
@@ -92,10 +93,10 @@ class Languages extends AdminController
 
         // Select the language home pages
         $query->select($m . '.home');
-        $query->join(
+        // join() quotes its keys as column names, so a condition with more to it is raw
+        $query->joinRaw(
             $m,
-            $m . '.language',
-            $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'',
+            $m . '.language = ' . $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'',
             'left',
         );
         //->whereEquals($m . '.home', 1)
@@ -323,6 +324,8 @@ class Languages extends AdminController
             ->set('site_langs', Multilangstatus::getSitelangs())
             ->set('statuses', Multilangstatus::getStatus())
             ->set('homepages', Multilangstatus::getHomepages())
+            // The template's notices turn on whether the site filters content by language
+            ->set('language_filter', Plugin::isEnabled('system', 'languagefilter'))
             ->display();
     }
 }
