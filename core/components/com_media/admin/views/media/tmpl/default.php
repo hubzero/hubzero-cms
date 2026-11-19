@@ -113,8 +113,8 @@ $this->js();
                     <div class="media-header-buttons">
                         <?php
                         $linkUrl = Route::url(
-                            'index.php?option=' . $this->option . '&layout=thumbs&tmpl=' . $tmpl . '&'
-                                . Session::getFormToken() . '=1',
+                            'index.php?option=' . $this->option . '&controller=medialist&layout=thumbs'
+                                . '&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1',
                         );
                         $activeClass = !$this->layout || $this->layout == 'thumbs' ? 'active' : '';
                         ?>
@@ -124,8 +124,8 @@ $this->js();
                         </a>
                         <?php
                         $linkUrl = Route::url(
-                            'index.php?option=' . $this->option . '&layout=list&tmpl=' . $tmpl . '&'
-                                . Session::getFormToken() . '=1',
+                            'index.php?option=' . $this->option . '&controller=medialist&layout=list'
+                                . '&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1',
                         );
                         $activeClass = $this->layout == 'list' ? 'active' : '';
                         ?>

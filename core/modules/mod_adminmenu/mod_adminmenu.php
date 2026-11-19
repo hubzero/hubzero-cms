@@ -135,6 +135,11 @@ class Adminmenu extends Module
             $component->link = trim($component->link);
 
             if ($component->parent_id == 1) {
+                // A component without an administrator side (com_oauth) has nothing to link to
+                if (!empty($component->element) && !is_dir(Component::path($component->element) . '/admin')) {
+                    continue;
+                }
+
                 // Only add this top level if it is authorised and enabled.
                 $canManage = User::authorise('core.manage', $component->element);
                 if ($authCheck == false || $canManage) {
