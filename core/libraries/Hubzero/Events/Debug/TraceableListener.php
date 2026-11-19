@@ -94,11 +94,9 @@ class TraceableListener
 
         //$e = $this->stopwatch->start($this->name, 'event_listener');
 
-        if ($this->listener instanceof Closure) {
-            $response = call_user_func($this->listener, $event);
-        } else {
-            $response = call_user_func([$this->listener, $event->getName()], $event);
-        }
+        // Registered only for events it handles, so it can always be called
+        $handler  = $this->listener instanceof Closure ? $this->listener : [$this->listener, $event->getName()];
+        $response = is_callable($handler) ? call_user_func($handler, $event) : null;
 
         /*if ($e->isStarted())
         {

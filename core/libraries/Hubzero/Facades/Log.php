@@ -11,7 +11,7 @@ namespace Hubzero\Facades;
 /**
  * Log facade
  *
- * @method static object logger(string $name = null)
+ * @method static \Hubzero\Log\Writer logger(string $name = null)
  * @method static bool   has(string $name = null)
  * @method static array<mixed>  getLoggers()
  * @method static string getDefaultLog()

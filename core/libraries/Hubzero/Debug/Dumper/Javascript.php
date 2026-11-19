@@ -46,7 +46,10 @@ class Javascript extends AbstractRenderer
         $output[] = 'console.info  = console.info  || function(){};';
         $output[] = 'console.debug = console.debug || function(){};';
         foreach ($messages as $item) {
-            $output[] = 'console.' . $item['label'] . '("' . addslashes($this->deflate($item['message'])) . '");';
+            // A list stays a list after deflating; print it rather than fail on it
+            $text = $this->deflate($item['message']);
+            $text = is_string($text) ? $text : print_r($text, true);
+            $output[] = 'console.' . $item['label'] . '("' . addslashes($text) . '");';
         }
         $output[] = '</script>';
         return implode("\n", $output);

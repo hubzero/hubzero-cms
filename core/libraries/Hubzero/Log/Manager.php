@@ -13,6 +13,17 @@ use Monolog\Logger as Monolog;
 
 /**
  * Log manager
+ *
+ * Other calls go to the default log (__call()):
+ *
+ * @method mixed debug(string $message, array<mixed> $context = [])
+ * @method mixed info(string $message, array<mixed> $context = [])
+ * @method mixed notice(string $message, array<mixed> $context = [])
+ * @method mixed warning(string $message, array<mixed> $context = [])
+ * @method mixed error(string $message, array<mixed> $context = [])
+ * @method mixed critical(string $message, array<mixed> $context = [])
+ * @method mixed alert(string $message, array<mixed> $context = [])
+ * @method mixed emergency(string $message, array<mixed> $context = [])
  */
 class Manager
 {
@@ -72,7 +83,7 @@ class Manager
      * Get a logger instance.
      *
      * @param   string|null  $name
-     * @return  mixed
+     * @return  Writer
      */
     public function logger($name = null)
     {
@@ -103,7 +114,7 @@ class Manager
      * Create a new log instance.
      *
      * @param   string  $name
-     * @return  mixed
+     * @return  Writer
      * @throws  \InvalidArgumentException
      */
     protected function createLog($name)

@@ -387,11 +387,10 @@ class Dispatcher implements DispatcherInterface
         if (isset($this->listeners[$event->getName()])) {
             foreach ($this->listeners[$event->getName()] as $listener) {
                 // Call the event listener
-                if ($listener instanceof Closure) {
-                    $response = call_user_func($listener, $event);
-                } else {
-                    $response = call_user_func([$listener, $event->getName()], $event);
-                }
+                // A listener is only ever registered for events it has a method
+                // for (a wrapped one forwards it), so it can always be called
+                $handler = $listener instanceof Closure ? $listener : [$listener, $event->getName()];
+                $response = is_callable($handler) ? call_user_func($handler, $event) : null;
 
                 // Attach response
                 if (!is_null($response)) {

@@ -54,7 +54,10 @@ final class WrappedListener
     {
         $event = isset($arguments[0]) ? $arguments[0] : new Event($method);
 
-        $this->listener->event = $event;
+        // Plugins read the event being handled as ->event
+        if ($this->listener instanceof \Hubzero\Plugin\Plugin) {
+            $this->listener->event = $event;
+        }
         $args = $event->getArguments();
 
         // A bit ugly but we need to take into account cases where

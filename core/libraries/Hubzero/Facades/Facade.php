@@ -112,17 +112,18 @@ abstract class Facade
     }
 
     /**
-     * Load aliases
+     * Load aliases (the autoloader the facades register; an autoloader returns nothing)
      *
      * @param   string  $class  The class being loaded
-     * @return  bool|null
+     * @return  void
      */
     public static function loadAliases($class)
     {
         $aliases = static::$aliases;
 
         if (array_key_exists($class, $aliases)) {
-            return class_alias($aliases[$class], $class);
+            class_alias($aliases[$class], $class);
+            return;
         }
 
         // Allow calling facade in namespaced class
@@ -130,10 +131,8 @@ abstract class Facade
         $classPieces = explode('\\', $class);
         $classAlt    = array_pop($classPieces);
         if (array_key_exists($classAlt, $aliases)) {
-            return class_alias($aliases[$classAlt], $class);
+            class_alias($aliases[$classAlt], $class);
         }
-
-        return null;
     }
 
     /**

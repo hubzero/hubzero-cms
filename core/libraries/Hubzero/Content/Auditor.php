@@ -41,7 +41,7 @@ class Auditor
     /**
      * Log data?
      *
-     * @var  object|null
+     * @var  \Hubzero\Log\Writer|null
      */
     protected $log = null;
 
@@ -49,7 +49,7 @@ class Auditor
      * Constructor
      *
      * @param   string  $scope
-     * @param   object|null  $logger
+     * @param   \Hubzero\Log\Writer|null  $logger
      * @return  void
      */
     public function __construct($scope, $logger = null)
@@ -64,7 +64,7 @@ class Auditor
     /**
      * Set logging
      *
-     * @param   object  $logger
+     * @param   \Hubzero\Log\Writer  $logger
      * @return  void
      */
     public function setLogger($logger)
@@ -278,6 +278,6 @@ class Auditor
             return;
         }
 
-        $this->log->info(json_encode($report));
+        $this->log->info((string) json_encode($report));
     }
 }

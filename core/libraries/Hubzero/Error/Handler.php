@@ -131,7 +131,7 @@ class Handler
 
     /**
      * @param   int  $error_level
-     * @return  string|null
+     * @return  'error'|'warning'|'notice'
      */
     private function loglevel($error_level)
     {
@@ -154,10 +154,13 @@ class Handler
                 return("warning");
 
             case E_NOTICE:
+            case E_USER_NOTICE:
                 return("notice");
         }
 
-        return null;
+        // Any other level (it used to give null, which the logger rejects,
+        // from inside the error handler) is logged as a notice
+        return "notice";
     }
 
     /**
