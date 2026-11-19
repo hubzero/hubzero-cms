@@ -627,6 +627,9 @@ class Groups extends Base
                 App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
             }
             $this->cn = $group->get('cn');
+            // A group keeps the name it has: an edit never writes the posted
+            // cn, so it is checked as the stored one, not as a new name
+            $g_cn = $group->get('cn');
             // Snapshot the pre-save state for groups.onGroupAfterSave listeners.
             // Group::getInstance() is a singleton cache, so a second call would
             // return the *same* instance as $group and reflect the post-save
@@ -669,7 +672,9 @@ class Groups extends Base
         if ($g_cn == 'new' || $g_cn == 'browse') {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
         }
-        if (!$this->validCn($g_cn)) {
+        // Only a new name has to avoid dashes; groups made in the administrator
+        // can have them
+        if (!$this->validCn($g_cn, $this->task != 'new')) {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
         }
         if ($this->task == 'new' && Group::exists($g_cn, true)) {
