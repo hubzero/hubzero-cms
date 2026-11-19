@@ -321,7 +321,7 @@ class Media extends AdminController
             $err = null;
             if (!MediaHelper::canUpload($file, $err)) {
                 // The file can't be upload
-                Notify::warning(Lang::txt($err));
+                Notify::warning(Lang::txt((string) $err));
                 continue;
             }
 

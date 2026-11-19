@@ -80,7 +80,7 @@ class Newsletters extends SiteController
 
         //add campaign
         if (is_object($newsletter) && $newsletter->id) {
-            Pathway::append($newsletter->name, 'index.php?option=' . $this->option . '&id=' . $newsletter->id);
+            Pathway::append((string) $newsletter->name, 'index.php?option=' . $this->option . '&id=' . $newsletter->id);
         }
     }
 

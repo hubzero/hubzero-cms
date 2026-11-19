@@ -26,9 +26,9 @@ class Questions extends Plugin
      */
     protected $count;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $filters;
+    protected $filters = [];
     /**
      * @var  \Components\Publications\Models\Publication
      */

@@ -74,7 +74,7 @@ class ImageViewer extends Base
         ];
 
         $this->config = json_decode(
-            (string) json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)),
+            (string) json_encode($this->parentOrFail()->parseConfig($this->name, $configs, $savedConfig)),
             false,
         );
         return $this->config;
@@ -181,7 +181,7 @@ class ImageViewer extends Base
         }
 
         // Get current default
-        $currentDefault = new \Components\Publications\Tables\Attachment($this->parent->db);
+        $currentDefault = new \Components\Publications\Tables\Attachment($this->parentOrFail()->db);
         $currentDefault->getDefault($row->publication_version_id);
 
         // Unmark as default
@@ -477,6 +477,10 @@ class ImageViewer extends Base
      */
     public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)
     {
+        if (!$configs) {
+            throw new \LogicException('The attachment configuration is needed for its file path');
+        }
+
         // Do we transfer file with subdirectories?
         if ($configs->dirHierarchy == 1) {
             $fpath = $configs->pubPath . DS . trim($path, DS);

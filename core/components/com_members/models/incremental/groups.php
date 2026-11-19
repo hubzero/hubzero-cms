@@ -177,7 +177,7 @@ class Groups
             $profile[$datum['profile_key']] = $datum['profile_value'];
         }
         self::getDbh()->setQuery('SELECT name, sendEmail AS mailPreferenceOption FROM `#__users` WHERE id = ' . $uid);
-        $data = self::getDbh()->loadAssoc();
+        $data = self::getDbh()->loadAssoc() ?? [];
         foreach ($data as $key => $datum) {
             $profile[$key] = $datum;
         }

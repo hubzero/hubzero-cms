@@ -85,6 +85,9 @@ class Attachments extends Obj
         if ($type === false) {
             $status = new \Components\Publications\Models\Status();
             $status->setError(Lang::txt('Attachment type not found'));
+        } elseif (!$element) {
+            $status = new \Components\Publications\Models\Status();
+            $status->setError(Lang::txt('Attachment element not found'));
         } else {
             $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
@@ -153,7 +156,7 @@ class Attachments extends Obj
         // Load attachment type
         $type = $this->loadAttach($name);
 
-        if ($type === false) {
+        if ($type === false || !$element) {
             return false;
         }
 

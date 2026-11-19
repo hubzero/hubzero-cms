@@ -213,7 +213,7 @@ Html::behavior('framework');
     else :
             $menu = App::get('menu');
             $active = $menu->getActive();
-            $itemId = $active->id;
+            $itemId = $active?->id;
             $link1 = Route::url(
                 'index.php?option=com_users&view=login&Itemid=' . $itemId,
             );

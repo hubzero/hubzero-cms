@@ -166,7 +166,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
         <?php else : ?>
             <?php echo Lang::txt(
                 'COM_GROUPS_MEMBERSHIP_REAPER_OK',
-                Date::of($lastRun->timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' g:ia'),
+                Date::of($lastRun?->timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' g:ia'),
             ); ?>
         <?php endif; ?>
         <?php if ($pastDue > 0) : ?>

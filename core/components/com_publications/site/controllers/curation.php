@@ -175,7 +175,7 @@ class Curation extends SiteController
 
         if ($this->pub) {
             Pathway::append(
-                $this->pubOrFail()->title,
+                (string) $this->pubOrFail()->title,
                 'index.php?option='
                     . $this->option
                     . '&controller='
@@ -873,7 +873,7 @@ class Curation extends SiteController
                     ? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
                     : Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
 
-        $pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
+        $pubtitle = \Hubzero\Utility\Str::truncate((string) $pub->title, 100);
 
         // Create SFTP accessible link for package
         if ($status == 1 && !$this->pubOrFail()->isEmbargoed()) {
@@ -912,7 +912,7 @@ class Curation extends SiteController
             $message .= Lang::txt('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
         }
 
-        $pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
+        $pubtitle = \Hubzero\Utility\Str::truncate((string) $pub->title, 100);
         $subject  = ucfirst(Lang::txt('COM_PUBLICATIONS_CURATION_VERSION'))
                     . ' ' . $pub->version_label . ' ' . Lang::txt('COM_PUBLICATIONS_OF') . ' '
                     . strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))

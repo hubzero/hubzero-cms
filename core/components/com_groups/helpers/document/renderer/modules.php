@@ -26,7 +26,7 @@ class Modules extends Renderer
         // get the list of modules
         $groupModuleArchive = Archive::getInstance();
         $modules = $groupModuleArchive->modules('list', [
-            'gidNumber' => $this->group->get('gidNumber'),
+            'gidNumber' => $this->groupOrFail()->get('gidNumber'),
             'state'     => [1],
             'approved'  => ($this->allMods == 1) ? [0,1] : [1],
             'position'  => $this->params->position ?? null,

@@ -162,6 +162,9 @@ class Warehouse extends \Hubzero\Base\Obj
 
         // Get all product info
         $collectionInfo = $this->getCollectionInfo($cId, true);
+        if (!$collectionInfo) {
+            throw new \Exception(Lang::txt('Collection does not exist.'));
+        }
 
         $collection->setType($collectionInfo->cType);
         $collection->setId($collectionInfo->cId);

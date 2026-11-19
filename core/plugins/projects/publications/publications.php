@@ -1018,7 +1018,7 @@ class Publications extends Plugin
 
         // Record activity
         if ($this->activity) {
-            $pubTitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
+            $pubTitle = \Hubzero\Utility\Str::truncate((string) $pub->title, 100);
             $aid = $this->model->recordActivity(
                 $this->activity,
                 $pub->id,
@@ -2818,7 +2818,7 @@ class Publications extends Plugin
         }
 
         // Copy files from member directory
-        if (!Filesystem::copyDirectory($memberPath, $this->model->repo()->get('path'))) {
+        if (!Filesystem::copyDirectory((string) $memberPath, $this->model->repo()->get('path'))) {
             $this->setError(Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES'));
             return false;
         }
@@ -2844,7 +2844,7 @@ class Publications extends Plugin
         }
         if ($num == $checkedin) {
             // Clean up member files
-            Filesystem::deleteDirectory($memberPath);
+            Filesystem::deleteDirectory((string) $memberPath);
             return true;
         }
 

@@ -105,7 +105,7 @@ class Scale extends Radio
                 . $checked . $class . $onclick . $disabled . '/>';
             $labelText = Lang::alt(
                 $option->text,
-                preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname),
+                (string) preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname),
             );
             $html[] = '<label for="' . $inputId . '"' . $class . '>' . $labelText . '</label>';
             $html[] = '</div>';

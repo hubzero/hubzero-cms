@@ -153,7 +153,7 @@ class Importer
         $this->autoDetectAdapter($import);
 
         // call count on adapter
-        return $this->adapter->count($import);
+        return $this->adapterOrFail()->count($import);
     }
 
     /**
@@ -173,6 +173,21 @@ class Importer
         $import->markRun($dryRun);
 
         // call process on adapter
-        return $this->adapter->process($import, $callbacks, $dryRun);
+        return $this->adapterOrFail()->process($import, $callbacks, $dryRun);
+    }
+
+    /**
+     * The adapter, which the calls using it need set
+     *
+     * @return  \Components\Resources\Import\Interfaces\Adapter
+     * @throws  \LogicException  When it is not
+     */
+    protected function adapterOrFail()
+    {
+        if ($this->adapter === null) {
+            throw new \LogicException(static::class . '::$adapter is not set');
+        }
+
+        return $this->adapter;
     }
 }

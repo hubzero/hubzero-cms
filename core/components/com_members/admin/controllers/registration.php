@@ -70,8 +70,11 @@ class Registration extends AdminController
 			LIMIT 1",
         );
         $component = $database->loadObject();
+        if (!$component) {
+            throw new \Exception(Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 500);
+        }
 
-        $params = new \Hubzero\Config\Registry($component?->params);
+        $params = new \Hubzero\Config\Registry($component->params);
 
         foreach ($settings as $name => $value) {
             $r = $value['create'] . $value['proxy'] . $value['update'] . $value['edit'];

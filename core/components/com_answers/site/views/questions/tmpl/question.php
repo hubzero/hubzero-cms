@@ -92,7 +92,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
             <div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
                 <p class="entry-member-photo">
                     <img
-                        src="<?php echo $this->question->creator->picture($this->question->get('anonymous')); ?>"
+                        src="<?php echo $this->question->creator?->picture($this->question->get('anonymous')); ?>"
                         alt=""
                     />
                 </p><!-- / .question-member-photo -->
@@ -116,7 +116,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         if (!$this->question->get('anonymous')) {
                             $name = $this->escape(
                                 stripslashes(
-                                    $this->question->creator->get(
+                                    $this->question->creator?->get(
                                         'name',
                                         Lang::txt('JUNKNOWN'),
                                     ),
@@ -124,9 +124,9 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             );
                             $viewLevels = User::getAuthorisedViewLevels();
                             if (
-                                in_array($this->question->creator->get('access'), $viewLevels)
-                                && !$this->question->creator->get('block')
-                                && $this->question->creator->get('approved')
+                                in_array($this->question->creator?->get('access'), $viewLevels)
+                                && !$this->question->creator?->get('block')
+                                && $this->question->creator?->get('approved')
                             ) {
                                 $name = '<a href="'
                                     . Route::url($this->question->creator->link())

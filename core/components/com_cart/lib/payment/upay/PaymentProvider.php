@@ -27,9 +27,9 @@ class PaymentProvider
     /** @var \stdClass */
     private $siteDetails;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    private $transactionDetails;
+    private $transactionDetails = [];
     /**
      * @var  array<mixed>|null
      */

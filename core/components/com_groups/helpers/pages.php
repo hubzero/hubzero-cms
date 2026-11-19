@@ -33,6 +33,10 @@ class Pages
      */
     public static function addHomePage($group, $pages = null)
     {
+        if (!$pages) {
+            return $pages;
+        }
+
         // check to see if we have a home page override
         if ($pages->fetch('home', 1) !== null) {
             $home = $pages->fetch('home', 1);

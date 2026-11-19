@@ -70,7 +70,7 @@ class Categories extends SiteController
                 'index.php?option='
                     . $this->option
                     . '&section='
-                    . $section->get('alias')
+                    . $section?->get('alias')
                     . '&category='
                     . $category->get('alias'),
             );

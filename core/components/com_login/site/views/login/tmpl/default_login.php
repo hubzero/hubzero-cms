@@ -118,7 +118,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             <div class="<?php echo $primary; ?> upper"></div>
             <div class="auth">
                 <div class="person">
-                    <?php if (isset($user_img) && file_exists($user_img) && !$user->get('block')) : ?>
+                    <?php if (isset($user_img) && file_exists($user_img) && $user && !$user->get('block')) : ?>
                         <img src="<?= $user_img ?>" alt="<?= Lang::txt('COM_LOGIN_LOGIN_USER_PICTURE') ?>" />
                     <?php endif; ?>
                 </div>
@@ -140,7 +140,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
     <?php else : ?>
         <div class="auth">
             <div class="person">
-                <?php if (isset($user_img) && file_exists($user_img)) : ?>
+                <?php if (isset($user_img) && file_exists($user_img) && $user) : ?>
                     <?php $image = $user->picture(0, false, false); ?>
                     <?php $img_properties = getimagesize(PATH_CORE . DS . $image) ?: [0, 0]; ?>
                     <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>

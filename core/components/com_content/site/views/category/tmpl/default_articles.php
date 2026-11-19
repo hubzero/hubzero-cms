@@ -216,7 +216,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 echo $this->escape($article->title) . ' : ';
                                 $menu   = App::get('menu');
                                 $active = $menu->getActive();
-                                $itemId = $active->id;
+                                $itemId = $active?->id;
                                 $link = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
                                 $returnURL = Route::url(
                                     Components\Content\Site\Helpers\Route::getArticleRoute(

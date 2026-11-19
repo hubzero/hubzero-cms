@@ -988,9 +988,14 @@ class File extends Base
      * @param   object|null   $params
      * @param   string|int|null   $suffix
      * @return  string
+     * @throws  \LogicException  Without the configuration
      */
     public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)
     {
+        if (!$configs) {
+            throw new \LogicException('The attachment configuration is needed for its file path');
+        }
+
         if (!$suffix && $params) {
             // Get file attachment params
             $fParams = new \Hubzero\Config\Registry($params);

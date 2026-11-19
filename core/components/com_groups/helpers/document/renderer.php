@@ -43,4 +43,19 @@ abstract class Renderer
      * @return  mixed  Its markup; script and stylesheet includes add to the document instead
      */
     abstract public function render();
+
+    /**
+     * The group, which the calls using it need set
+     *
+     * @return  \Hubzero\User\Group
+     * @throws  \LogicException  When it is not
+     */
+    protected function groupOrFail()
+    {
+        if ($this->group === null) {
+            throw new \LogicException(static::class . '::$group is not set');
+        }
+
+        return $this->group;
+    }
 }

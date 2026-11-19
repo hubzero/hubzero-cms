@@ -197,6 +197,7 @@ class Tags extends Base
         $tagsHelper = new \Components\Publications\Helpers\Tags($this->parent->db);
 
         // Required?
+        $manifest = $manifest ?: $this->getManifest();
         $required = $manifest->params->required;
         $count = $tagsHelper->countTags($pub->version->id);
         $status->status = $required && $count == 0 ? 0 : 1;

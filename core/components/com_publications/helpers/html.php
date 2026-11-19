@@ -1053,7 +1053,7 @@ class Html
      */
     public static function createThumbName($image = null, $tn = '_thumb', $ext = 'png')
     {
-        return Filesystem::name($image) . $tn . '.' . $ext;
+        return Filesystem::name((string) $image) . $tn . '.' . $ext;
     }
 
     /**

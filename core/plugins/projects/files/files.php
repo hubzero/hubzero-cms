@@ -1060,7 +1060,7 @@ class Files extends Plugin
         if ($this->repoOrFail()->getError()) {
             Notify::message($this->repoOrFail()->getError(), 'error', 'projects');
         } else {
-            Notify::message($this->msg, 'success', 'projects');
+            Notify::message((string) $this->msg, 'success', 'projects');
 
             // Force sync
             if ($this->repoOrFail()->isLocal()) {

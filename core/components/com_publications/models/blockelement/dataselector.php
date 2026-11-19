@@ -65,6 +65,10 @@ class Dataselector extends Base
         // Get project path
         $this->path = $pub->_project->repo()->get('path');
 
+        if (!$master) {
+            throw new \LogicException('The master block is needed to render a data selector');
+        }
+
         $showElement = $master->props['showElement'];
         $total       = $master->props['total'];
 
@@ -86,7 +90,7 @@ class Dataselector extends Base
                     $elementid,
                     $manifest,
                     $pub,
-                    $status->elements->$elementid,
+                    $status?->elements->$elementid,
                     $activeElement,
                     $collapse,
                     $total,
@@ -101,7 +105,7 @@ class Dataselector extends Base
                     $elementid,
                     $manifest,
                     $pub,
-                    $status->elements->$elementid,
+                    $status?->elements->$elementid,
                     $master,
                     $viewname,
                 );

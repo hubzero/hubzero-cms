@@ -21,7 +21,7 @@ class CustomHandler
 
     // Item info
     /**
-     * @var  array<string, mixed>|null
+     * @var  array<string, mixed>
      */
     public $item;
 

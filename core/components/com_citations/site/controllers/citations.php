@@ -639,7 +639,7 @@ class Citations extends SiteController
         Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         if ($id) {
             Pathway::append(
-                $shortenedTitle,
+                (string) $shortenedTitle,
                 'index.php?option=' . $this->option . '&task=view&id=' . $row->id,
             );
         }

@@ -80,7 +80,7 @@ class Mailinglists extends SiteController
         //add campaign
         if (is_object($newsletter) && $newsletter->id) {
             $url = 'index.php?option=' . $this->option . '&id=' . $newsletter->id;
-            Pathway::append(Lang::txt($newsletter->name), $url);
+            Pathway::append(Lang::txt((string) $newsletter->name), $url);
         }
 
         //if we are unsubscribing

@@ -281,7 +281,7 @@ class General extends Base
         } else {
             Pathway::append(
                 $title,
-                $url,
+                (string) $url,
             );
         }
 

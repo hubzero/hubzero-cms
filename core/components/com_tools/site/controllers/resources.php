@@ -166,11 +166,11 @@ class Resources extends SiteController
 
             $hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
             $hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(
-                Request::getString('description', $status['description'], 'post'),
+                (string) Request::getString('description', $status['description'], 'post'),
                 500,
             );
             $hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(
-                preg_replace('/\s+/', ' ', (string) Request::getString('title', $status['title'], 'post')),
+                (string) preg_replace('/\s+/', ' ', (string) Request::getString('title', $status['title'], 'post')),
                 500,
             );
 

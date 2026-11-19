@@ -1214,7 +1214,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             // Get the underlying PDO connection to call cubrid_schema()
             $pdo = $this->connection instanceof \Hubzero\Database\Connection\PdoConnection
                 ? $this->connection->getPdo()
-                : $this->connection;
+                : $this->connectionOrFail();
 
             // Use CUBRID's native schema introspection method, which the
             // pdo_cubrid extension adds to PDO
@@ -2369,7 +2369,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
             $pdo = $this->connection->getPdo();
         } else {
-            $pdo = $this->connection;
+            $pdo = $this->connectionOrFail();
         }
 
         // PDO_CUBRID's quote() doesn't add surrounding quotes, so we don't strip them
@@ -2425,7 +2425,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // Check PDO's actual transaction state
         $pdo = $this->connection instanceof \Hubzero\Database\Connection\PdoConnection
             ? $this->connection->getPdo()
-            : $this->connection;
+            : $this->connectionOrFail();
         $wasInTransaction = $pdo->inTransaction();
 
         if (!$wasInTransaction) {

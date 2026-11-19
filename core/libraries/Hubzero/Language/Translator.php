@@ -71,9 +71,9 @@ class Translator extends Obj
     /**
      * Array holding the language metadata.
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      */
-    protected $metadata = null;
+    protected $metadata = [];
 
     /**
      * Array holding the language locale, false if it has none, or null until read.

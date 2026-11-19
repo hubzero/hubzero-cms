@@ -1403,14 +1403,14 @@ class Curation extends Obj
         // Make sure the step exists
         // If it doesn't, this is possibly a block that was
         // disabled on the master type and later enabled.
-        if (!isset($pub->_curationModel->progress->blocks->$step)) {
+        if (!isset($pub->_curationModel->progress?->blocks->$step)) {
             return $status;
         }
 
         if ($elId) {
-            $reviewStatus = $pub->_curationModel->progress->blocks->$step->review->elements->$elId;
+            $reviewStatus = $pub->_curationModel->progressOrFail()->blocks->$step->review->elements->$elId;
         } else {
-            $reviewStatus = $pub->_curationModel->progress->blocks->$step->review;
+            $reviewStatus = $pub->_curationModel->progressOrFail()->blocks->$step->review;
         }
 
         if (!$reviewStatus) {
@@ -2448,7 +2448,7 @@ class Curation extends Obj
         // Get blocks model
         $blocksModel = new Blocks($this->db);
 
-        foreach ($pub->_curationModel->progress->blocks as $blockId => $block) {
+        foreach ($pub->_curationModel->progressOrFail()->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if (in_array($parentBlock, ['content', 'authors'])) {
@@ -2609,5 +2609,20 @@ class Curation extends Obj
         }
 
         return $this->pub;
+    }
+
+    /**
+     * The curation progress, which the calls using it need set
+     *
+     * @return  \stdClass
+     * @throws  \LogicException  When it is not
+     */
+    public function progressOrFail()
+    {
+        if ($this->progress === null) {
+            throw new \LogicException(static::class . '::$progress is not set');
+        }
+
+        return $this->progress;
     }
 }

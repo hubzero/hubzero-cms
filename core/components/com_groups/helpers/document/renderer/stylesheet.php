@@ -37,7 +37,7 @@ class Stylesheet extends Renderer
         }
 
         // get download path for source (serve up file)
-        if ($path = $this->group->downloadLinkForPath($base, $source)) {
+        if ($path = $this->groupOrFail()->downloadLinkForPath($base, $source)) {
             // add stylsheet to document
             Document::addStyleSheet($path);
         }

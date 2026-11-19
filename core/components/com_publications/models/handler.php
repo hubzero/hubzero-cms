@@ -93,4 +93,19 @@ abstract class Handler extends Obj
      * @return  mixed
      */
     abstract public function drawEditor($editor);
+
+    /**
+     * The parent, which the calls using it need set
+     *
+     * @return  Handlers
+     * @throws  \LogicException  When it is not
+     */
+    protected function parentOrFail()
+    {
+        if ($this->parent === null) {
+            throw new \LogicException(static::class . '::$parent is not set');
+        }
+
+        return $this->parent;
+    }
 }

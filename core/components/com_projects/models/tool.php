@@ -192,7 +192,7 @@ class Tool extends Model
     public function instance($property)
     {
         if ($property) {
-            return $this->version->get($property);
+            return $this->versionOrFail()->get($property);
         }
         return $this->version;
     }
@@ -685,5 +685,20 @@ class Tool extends Model
         }
 
         return $this->componentConfig;
+    }
+
+    /**
+     * The version, which the calls using it need set
+     *
+     * @return  \Components\Projects\Models\Tool\Instance
+     * @throws  \LogicException  When it is not
+     */
+    protected function versionOrFail()
+    {
+        if ($this->version === null) {
+            throw new \LogicException(static::class . '::$version is not set');
+        }
+
+        return $this->version;
     }
 }

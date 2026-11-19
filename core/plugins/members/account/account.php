@@ -897,7 +897,7 @@ class Account extends Plugin
         ) {
             $this->logUnsafePath('write', $error);
 
-            App::abort(500, Lang::txt($error));
+            App::abort(500, Lang::txt((string) $error));
         }
 
         // Get the form input

@@ -332,7 +332,7 @@ class Unit extends Base
      */
     public function key()
     {
-        return $this->siblings->key();
+        return $this->siblingsOrFail()->key();
     }
 
     /**
@@ -347,7 +347,7 @@ class Unit extends Base
         switch ($dir) {
             case 'prev':
             case 'next':
-                return $this->siblings->fetch($dir);
+                return $this->siblingsOrFail()->fetch($dir);
 
             default:
                 break;
@@ -545,5 +545,20 @@ class Unit extends Base
         }
 
         return true;
+    }
+
+    /**
+     * The siblings, which the calls using it need set
+     *
+     * @return  \Components\Courses\Models\Iterator
+     * @throws  \LogicException  When it is not
+     */
+    protected function siblingsOrFail()
+    {
+        if ($this->siblings === null) {
+            throw new \LogicException(static::class . '::$siblings is not set');
+        }
+
+        return $this->siblings;
     }
 }

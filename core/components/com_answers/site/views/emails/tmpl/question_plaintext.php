@@ -37,7 +37,7 @@ $message .= 'A new question #'
     . $this->question->get('id') . ' has been posted by: ';
 $message .= ($this->question->get('anonymous'))
     ? Lang::txt('JANONYMOUS') . "\n"
-    : $this->question->creator->get('name') . "\n\n";
+    : $this->question->creator?->get('name') . "\n\n";
 $message .= 'To view the full question and take actions, go to: '
     . "\n";
 $message .= $this->link . "\n";

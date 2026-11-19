@@ -364,6 +364,7 @@ class Citations extends Base
         $pub->getCitations();
 
         // Required?
+        $manifest = $manifest ?: $this->getManifest();
         $required = $manifest->params->required;
         $status->status = $required && (!$pub->_citations || count($pub->_citations) == 0) ? 0 : 1;
         $status->status = !$required && (!$pub->_citations || count($pub->_citations) == 0) ? 2 : $status->status;

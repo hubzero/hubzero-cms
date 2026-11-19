@@ -46,11 +46,11 @@ class Xml extends Base
             $errors      = libxml_get_errors();
             $latestError = array_pop($errors);
             $error       = [
-                'message' => $latestError->message,
-                'type'    => $latestError->level,
-                'code'    => $latestError->code,
-                'file'    => $latestError->file,
-                'line'    => $latestError->line,
+                'message' => $latestError?->message,
+                'type'    => $latestError?->level,
+                'code'    => $latestError?->code,
+                'file'    => $latestError?->file,
+                'line'    => $latestError?->line,
             ];
             throw new ParseException($error);
         }

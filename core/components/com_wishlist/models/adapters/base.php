@@ -172,7 +172,7 @@ abstract class Base extends Obj
         } else {
             Pathway::append(
                 $title,
-                $url,
+                (string) $url,
             );
         }
 

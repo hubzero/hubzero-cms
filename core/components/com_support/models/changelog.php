@@ -29,9 +29,9 @@ class Changelog extends Obj
     /**
      * ItemList
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      */
-    private $log = null;
+    private $log = [];
 
     /**
      * Log format

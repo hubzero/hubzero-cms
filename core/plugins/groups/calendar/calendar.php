@@ -24,9 +24,9 @@ use Hubzero\Facades\User;
 class Calendar extends Plugin
 {
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $access;
+    protected $access = [];
     /**
      * @var  string
      */

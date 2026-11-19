@@ -33,7 +33,7 @@ $link = rtrim(Request::base(), '/') . '/'
 $questionCreatorName = $this->question->get('anonymous')
     ? Lang::txt('JANONYMOUS')
     : $this->escape(
-        stripslashes($this->question->creator->get('name')),
+        stripslashes($this->question->creator?->get('name')),
     );
 
 $responseCreatorName = $this->row->get('anonymous')

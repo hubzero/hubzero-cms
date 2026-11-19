@@ -161,7 +161,7 @@ class Course extends Base
      */
     public function isManager($user_id = 0)
     {
-        return $this->permissions->isManager();
+        return $this->permissionsOrFail()->isManager();
     }
 
     /**
@@ -173,7 +173,7 @@ class Course extends Base
      */
     public function isStudent($user_id = 0)
     {
-        return $this->permissions->isStudent();
+        return $this->permissionsOrFail()->isStudent();
     }
 
     /**
@@ -273,7 +273,7 @@ class Course extends Base
      */
     public function access($action = 'view', $item = 'course')
     {
-        return $this->permissions->access($action, $item);
+        return $this->permissionsOrFail()->access($action, $item);
     }
 
     /**
@@ -930,5 +930,20 @@ class Course extends Base
         }
 
         return $this->certificate;
+    }
+
+    /**
+     * The permissions, which the calls using it need set
+     *
+     * @return  \Components\Courses\Models\Permissions
+     * @throws  \LogicException  When it is not
+     */
+    protected function permissionsOrFail()
+    {
+        if ($this->permissions === null) {
+            throw new \LogicException(static::class . '::$permissions is not set');
+        }
+
+        return $this->permissions;
     }
 }

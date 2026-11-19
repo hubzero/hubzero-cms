@@ -576,7 +576,7 @@ class Projects extends AdminController
             );
         }
 
-        Notify::message($this->message, 'success');
+        Notify::message((string) $this->message, 'success');
 
         // Redirect to edit view?
         if ($redirect) {

@@ -35,9 +35,9 @@ class Questions extends Plugin
     /** @var \Hubzero\Database\Driver */
     protected $database;
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $filters;
+    protected $filters = [];
     /**
      * @var  \Components\Resources\Models\Entry|null
      */

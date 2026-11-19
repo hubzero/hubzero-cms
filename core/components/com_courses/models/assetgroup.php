@@ -315,7 +315,7 @@ class Assetgroup extends Base
      */
     public function key($idx = null)
     {
-        return $this->siblings->key($idx);
+        return $this->siblingsOrFail()->key($idx);
     }
 
     /**
@@ -555,5 +555,20 @@ class Assetgroup extends Base
         }
 
         return true;
+    }
+
+    /**
+     * The siblings, which the calls using it need set
+     *
+     * @return  Iterator
+     * @throws  \LogicException  When it is not
+     */
+    protected function siblingsOrFail()
+    {
+        if ($this->siblings === null) {
+            throw new \LogicException(static::class . '::$siblings is not set');
+        }
+
+        return $this->siblings;
     }
 }

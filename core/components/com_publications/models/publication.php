@@ -602,7 +602,7 @@ class Publication extends Obj
     /**
      * Get previous version publication
      *
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function prevPublication()
     {
@@ -617,7 +617,7 @@ class Publication extends Obj
     /**
      * Get next version publication
      *
-     * @return  \stdClass|false
+     * @return  \stdClass|false|null
      */
     public function nextPublication()
     {
@@ -696,20 +696,21 @@ class Publication extends Obj
                 return $this->_curationModel->progress;
 
             case 'blocks':
-                if ($blockId && isset($this->_curationModel->progress->blocks->$blockId)) {
+                if ($blockId && isset($this->_curationModel->progress?->blocks->$blockId)) {
+                    $block = $this->_curationModel->progressOrFail()->blocks->$blockId;
                     if ($blockProperty) {
                         switch ($blockProperty) {
                             case 'complete':
-                                return $this->_curationModel->progress->blocks->$blockId->status->status;
+                                return $block->status->status;
 
                             case 'elementStatus':
                                 if (
                                     $elementId
                                     && isset(
-                                        $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId,
+                                        $block->status->elements->$elementId,
                                     )
                                 ) {
-                                    return $this->_curationModel->progress->blocks->$blockId
+                                    return $block
                                         ->status->elements->$elementId->status;
                                 }
                                 break;
@@ -718,58 +719,58 @@ class Publication extends Obj
                                 if ($elementId) {
                                     if (
                                         isset(
-                                            $this->_curationModel->progress->blocks->$blockId
+                                            $block
                                                 ->manifest->elements->$elementId,
                                         )
                                     ) {
-                                        return $this->_curationModel->progress->blocks->$blockId
+                                        return $block
                                             ->manifest->elements->$elementId;
                                     } else {
                                         $first = $this->curation('blocks', $blockId, 'firstElement');
-                                        return $this->_curationModel->progress->blocks->$blockId
+                                        return $block
                                             ->manifest->elements->$first;
                                     }
                                 }
-                                return $this->_curationModel->progress->blocks->$blockId->manifest->elements;
+                                return $block->manifest->elements;
 
                             case 'props':
-                                return $this->_curationModel->progress->blocks->$blockId->name . '-' . $blockId;
+                                return $block->name . '-' . $blockId;
 
                             case 'required':
                                 return isset(
-                                    $this->_curationModel->progress->blocks->$blockId->manifest->params->required,
+                                    $block->manifest->params->required,
                                 )
-                                    ? $this->_curationModel->progress->blocks->$blockId->manifest->params->required
+                                    ? $block->manifest->params->required
                                     : 0;
 
                             case 'hasElements':
-                                return empty($this->_curationModel->progress->blocks->$blockId->manifest->elements)
+                                return empty($block->manifest->elements)
                                     ? false
                                     : true;
 
                             default:
-                                if (isset($this->_curationModel->progress->blocks->$blockId->$blockProperty)) {
-                                    return $this->_curationModel->progress->blocks->$blockId->$blockProperty;
+                                if (isset($block->$blockProperty)) {
+                                    return $block->$blockProperty;
                                 } else {
                                     return null;
                                 }
                         }
                     }
-                    return $this->_curationModel->progress->blocks->$blockId;
+                    return $block;
                 } elseif ($blockId) {
                     // Block does not exist or is inactive
                     return false;
                 }
-                return $this->_curationModel->progress->blocks;
+                return $this->_curationModel->progressOrFail()->blocks;
 
             case 'complete':
-                return $this->_curationModel->progress->complete;
+                return $this->_curationModel->progressOrFail()->complete;
 
             case 'lastBlock':
-                return $this->_curationModel->progress->lastBlock;
+                return $this->_curationModel->progressOrFail()->lastBlock;
 
             case 'firstBlock':
-                return $this->_curationModel->progress->firstBlock;
+                return $this->_curationModel->progressOrFail()->firstBlock;
 
             case 'params':
                 return $this->_curationModel->manifest->params;

@@ -45,9 +45,9 @@ class Service extends Obj
     /**
      * List of schemas
      *
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $schemas = null;
+    protected $schemas = [];
 
     /**
      * XML Response
@@ -529,7 +529,7 @@ class Service extends Obj
             ->end()
             ->element($verb);
 
-        $this->schema->records($records, ($verb == 'ListIdentifiers' ? false : true));
+        $this->schemaOrFail()->records($records, ($verb == 'ListIdentifiers' ? false : true));
 
         // Write resumption token if needed
         if ($total > ($start + $limit)) {
@@ -639,7 +639,7 @@ class Service extends Obj
             ->end()
             ->element('GetRecord');
 
-        $this->schema->record($result);
+        $this->schemaOrFail()->record($result);
 
         $this->response
             ->end();
@@ -665,5 +665,20 @@ class Service extends Obj
     public function __toString()
     {
         return $this->xml();
+    }
+
+    /**
+     * The schema, which the calls using it need set
+     *
+     * @return  Schema
+     * @throws  \LogicException  When it is not
+     */
+    protected function schemaOrFail()
+    {
+        if ($this->schema === null) {
+            throw new \LogicException(static::class . '::$schema is not set');
+        }
+
+        return $this->schema;
     }
 }

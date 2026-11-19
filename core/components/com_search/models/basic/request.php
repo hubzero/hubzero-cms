@@ -107,10 +107,10 @@ class Request
     {
         $this->terms = $terms;
         $this->term_ar = [
-            'mandatory' => $this->terms->getMandatoryChunks(),
-            'optional'  => $this->terms->getOptionalChunks(),
-            'forbidden' => $this->terms->getForbiddenChunks(),
-            'stemmed'   => $this->terms->getStemmedChunks(),
+            'mandatory' => $this->termsOrFail()->getMandatoryChunks(),
+            'optional'  => $this->termsOrFail()->getOptionalChunks(),
+            'forbidden' => $this->termsOrFail()->getForbiddenChunks(),
+            'stemmed'   => $this->termsOrFail()->getStemmedChunks(),
         ];
         $this->loadTags();
     }
@@ -174,5 +174,20 @@ class Request
                 $this->object_tags[$row['tbl']][] = $row['objectid'];
             }
         }
+    }
+
+    /**
+     * The terms, which the calls using it need set
+     *
+     * @return  \Components\Search\Models\Basic\Terms
+     * @throws  \LogicException  When it is not
+     */
+    protected function termsOrFail()
+    {
+        if ($this->terms === null) {
+            throw new \LogicException(static::class . '::$terms is not set');
+        }
+
+        return $this->terms;
     }
 }

@@ -37,9 +37,9 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Array to hold client data
      *
-     * @var array<mixed>|null
+     * @var array<mixed>
      */
-    private $clientData;
+    private $clientData = [];
 
     /**
      * Constructor

@@ -394,7 +394,7 @@ class Publications extends Plugin
         $doiService = new \Components\Publications\Models\Doi();
 
         // Is service enabled?
-        if (!$doiService->on() || !$doiService->configs->livesite) {
+        if (!$doiService->on() || !$doiService->configs()->livesite) {
             return true;
         }
 
@@ -413,7 +413,7 @@ class Publications extends Plugin
 
             // Build url
             $pointer = $model->publication->alias ? $model->publication->alias : $model->publication->id;
-            $url = $doiService->configs->livesite . '/publications/' . $pointer . '/main';
+            $url = $doiService->configs()->livesite . '/publications/' . $pointer . '/main';
 
             // Master DOI should link to /main
             $doiService->set('url', $url);

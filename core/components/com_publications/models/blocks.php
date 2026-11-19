@@ -253,6 +253,7 @@ class Blocks extends Obj
         } else {
             // Are we allowed to edit?
             $viewname = $viewname == 'edit'
+                        && $manifest
                         && $this->checkFreeze($manifest->params, $pub)
                         ? 'freeze'
                         : $viewname;

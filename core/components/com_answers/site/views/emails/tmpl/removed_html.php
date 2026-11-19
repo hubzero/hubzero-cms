@@ -121,7 +121,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                                 <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
                                     <?= $this->question->get('anonymous')
                                         ? Lang::txt('JANONYMOUS')
-                                        : $this->escape(stripslashes($this->question->creator->get('name'))) ?>
+                                        : $this->escape(stripslashes($this->question->creator?->get('name'))) ?>
                                 </td>
                             </tr>
                             <tr>

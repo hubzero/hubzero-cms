@@ -385,16 +385,16 @@ class Miner extends Obj implements Provider
             if ($dates->submitted && $dates->submitted != '0000-00-00 00:00:00') {
                 $record->date = $dates->submitted;
             }
-        }
-        if ($dates->accepted && $dates->accepted != '0000-00-00 00:00:00') {
-            $record->date = $dates->accepted;
-        }
-        if (
-            $dates->published_up
-            && $dates->published_up != '0000-00-00 00:00:00'
-            && $dates->published_up > $record->date
-        ) {
-            $record->date = $dates->published_up;
+            if ($dates->accepted && $dates->accepted != '0000-00-00 00:00:00') {
+                $record->date = $dates->accepted;
+            }
+            if (
+                $dates->published_up
+                && $dates->published_up != '0000-00-00 00:00:00'
+                && $dates->published_up > $record->date
+            ) {
+                $record->date = $dates->published_up;
+            }
         }
 
         $this->database->setQuery(

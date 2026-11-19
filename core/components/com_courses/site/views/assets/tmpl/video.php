@@ -69,7 +69,7 @@ if ($type == 'hubpresenter') {
     // Check if path exists
     if (is_dir((string) $media_dir)) {
         // Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-        $media = Filesystem::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
+        $media = Filesystem::files((string) $media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
         $ext = [];
         foreach ($media as $m) {
             $pieces = explode('.', $m);
