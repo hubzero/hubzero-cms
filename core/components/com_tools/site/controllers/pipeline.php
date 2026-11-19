@@ -280,8 +280,14 @@ class Pipeline extends SiteController
         $this->view->set('title', $title);
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+        if (!$hzt) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
         $hztv_dev = $hzt->getRevision('development');
         $hztv_current = $hzt->getRevision('current');
+        if (!$hztv_dev) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         $status = [
             'toolid'          => $hzt->id,
@@ -916,6 +922,9 @@ class Pipeline extends SiteController
         // save tool info
         if (!$id) {  // new tool
             $hzt = \Components\Tools\Models\Tool::createInstance($tool['toolname']);
+            if (!$hzt) {
+                App::abort(500, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_CREATED'));
+            }
             $hzt->toolname      = $tool['toolname'];
             $hzt->title         = $tool['title'];
             $hzt->published     = 0;
@@ -926,6 +935,9 @@ class Pipeline extends SiteController
             $hzt->registered_by = User::get('username');
         } else {
             $hzt = \Components\Tools\Models\Tool::getInstance($id);
+            if (!$hzt) {
+                App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+            }
 
             // The name is fixed once registered: the version row, its invoke
             // path and the Trac project are all derived from it
@@ -1277,6 +1289,9 @@ class Pipeline extends SiteController
         $error = '';
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+        if (!$hzt) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
         $hztv = $hzt->getRevision($editversion);
 
         if ($newstate && !intval($newstate)) {
@@ -1285,6 +1300,11 @@ class Pipeline extends SiteController
 
         $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
+
+        // What follows changes that revision
+        if (!$hztv) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         if (\Components\Tools\Models\Tool::validateVersion($newversion, $error, $hzt->id)) {
             $this->_error = $error;
@@ -1391,10 +1411,18 @@ class Pipeline extends SiteController
         $editversion = Request::getString('editversion', 'dev');
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+        if (!$hzt) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
         $hztv = $hzt->getRevision($editversion);
 
         $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
+
+        // What follows changes that revision
+        if (!$hztv) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         if ($newstate && !intval($newstate)) {
             $newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
@@ -1459,10 +1487,18 @@ class Pipeline extends SiteController
         $editversion = Request::getString('editversion', 'dev');
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+        if (!$hzt) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
         $hztv = $hzt->getRevision($editversion);
 
         $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
+
+        // What follows changes that revision
+        if (!$hztv) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         if ($newstate && !intval($newstate)) {
             $newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
@@ -1510,7 +1546,10 @@ class Pipeline extends SiteController
                 $dev_hztv = $hzt->getRevision('dev');
                 $current_hztv = $hzt->getRevision('current');
 
-                Log::debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
+                Log::debug(
+                    "update: to=$to from=$from   dev=" . ($dev_hztv ? $dev_hztv->id : '-')
+                    . " current=" . ($current_hztv ? $current_hztv->id : '-'),
+                );
                 if ($to && $from) {
                     $ss = new Screenshots();
                     $ss->transfer($from, $to, $rid);
@@ -1596,6 +1635,9 @@ class Pipeline extends SiteController
         }
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+        if (!$hzt) {
+            App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+        }
 
         if ($comment) {
             $this->newUpdateTicket($hzt->id, $hzt->ticketid, [], [], $comment, $access, 1);

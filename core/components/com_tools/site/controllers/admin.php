@@ -570,8 +570,14 @@ class Admin extends SiteController
             $invokedir = rtrim($this->config->get('invokescript_dir', DS . 'apps'), "\\/");
 
             $hzt = \Components\Tools\Models\Tool::getInstance($this->toolid);
+            if (!$hzt) {
+                App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+            }
             $hztv_cur = $hzt->getCurrentVersion();
             $hztv_dev = $hzt->getDevelopmentVersion();
+            if (!$hztv_dev) {
+                App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+            }
 
             Log::debug("publish(): checkpoint 6:$result, running database stuff");
 
@@ -637,6 +643,9 @@ class Admin extends SiteController
 
                 // update tool entry
                 $hzt = \Components\Tools\Models\Tool::getInstance($this->toolid);
+                if (!$hzt) {
+                    App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+                }
                 $hzt->add('version', $new_hztv->instance);
                 $hzt->update();
 

@@ -18,6 +18,22 @@ use Hubzero\Facades\App;
 
 /**
  * Hubzero class for tools
+ *
+ * Its private properties (its columns) are read and written from outside
+ * through __get() and __set(), which track the changes update() saves:
+ *
+ * @property  mixed  $id
+ * @property  string|null  $toolname
+ * @property  mixed  $title
+ * @property-read   array<mixed>  $version
+ * @property-write  array<mixed>|string  $version  A single value is kept as a list of one
+ * @property  mixed  $registered
+ * @property  mixed  $registered_by
+ * @property  mixed  $state_changed
+ * @property  mixed  $ticketid
+ * @property  mixed  $published
+ * @property  mixed  $state
+ * @property  mixed  $priority
  */
 class Tool
 {
@@ -199,7 +215,7 @@ class Tool
      * Get a tool instance
      *
      * @param   mixed  $instance
-     * @return  mixed
+     * @return  self|false  The tool, or false if it can't be read
      */
     public static function getInstance($instance)
     {
@@ -216,7 +232,7 @@ class Tool
      * Create a tool instance
      *
      * @param   string  $name
-     * @return  mixed
+     * @return  self|false  The new tool, or false if it can't be created
      */
     public static function createInstance($name)
     {
@@ -797,7 +813,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     mixed $key Parameter description (if any) ...
-     * @param     array<mixed> $value Parameter description (if any) ...
+     * @param     array<mixed>|string|null $value  A value, or values, to add to the list
      * @return   void
      */
     public function add($key = null, $value = [])
@@ -824,7 +840,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   mixed Return description (if any) ...
+     * @return   \Components\Tools\Models\Version|false  The version, or false if there is none
      */
     public function getCurrentVersion()
     {
@@ -836,7 +852,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   mixed Return description (if any) ...
+     * @return   \Components\Tools\Models\Version|false  The version, or false if there is none
      */
     public function getDevelopmentVersion()
     {

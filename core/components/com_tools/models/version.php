@@ -14,26 +14,47 @@ use Hubzero\Facades\App;
 /**
  * Tool version instance
  *
- * Its private properties are read and written from outside through __get() and
- * __set(); these are the ones other code uses:
+ * Its private properties (its columns) are read and written from outside
+ * through __get() and __set(), which track the changes update() saves:
  *
- * @property  mixed  $toolid
- * @property  mixed  $vnc_command
+ * @property  mixed  $id
+ * @property  mixed  $toolname
+ * @property  string|null  $instance
+ * @property  mixed  $title
+ * @property  mixed  $description
+ * @property  mixed  $fulltxt
+ * @property  mixed  $version
+ * @property  mixed  $revision
+ * @property  mixed  $toolaccess
+ * @property  mixed  $codeaccess
+ * @property  mixed  $wikiaccess
+ * @property  integer|null  $state
+ * @property  mixed  $released_by
+ * @property  mixed  $released
+ * @property  mixed  $unpublished
+ * @property  mixed  $exportControl
+ * @property  mixed  $license
+ * @property  mixed  $vnc_geometry
+ * @property  mixed  $vnc_depth
  * @property  mixed  $vnc_timeout
+ * @property  integer|null  $hardTimeout
+ * @property  mixed  $vnc_command
+ * @property  mixed  $mw
+ * @property  mixed  $priority
+ * @property  mixed  $toolid
+ * @property  mixed  $params
+ * @property-read   array<mixed>  $alias
+ * @property-write  array<mixed>|string  $alias  A single value is kept as a list of one
+ * @property-read   array<mixed>  $middleware
+ * @property-write  array<mixed>|string  $middleware  A single value is kept as a list of one
  * @property-read   array<mixed>  $hostreq
  * @property-write  array<mixed>|string  $hostreq  A single value is kept as a list of one
- * @property  mixed  $mw
- * @property  mixed  $params
- * @property  integer|null  $hardTimeout
- * @property  string|null  $instance
- * @property  mixed  $toolname
- * @property  integer|null  $state
- * @property  mixed  $revision
- * @property  mixed  $codeaccess
- * @property  mixed  $license
- * @property  mixed  $fulltxt
- * @property  mixed  $description
- * @property  mixed  $title
+ * @property-read   array<mixed>  $author
+ * @property-write  array<mixed>|string  $author  A single value is kept as a list of one
+ * @property-read   array<mixed>  $member
+ * @property-write  array<mixed>|string  $member  A single value is kept as a list of one
+ * @property-read   array<mixed>  $owner
+ * @property-write  array<mixed>|string  $owner  A single value is kept as a list of one
  */
 class Version
 {
