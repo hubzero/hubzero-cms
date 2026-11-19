@@ -69,6 +69,13 @@ class Formathtml extends Plugin
             $content = \Hubzero\Utility\Sanitize::html($content);
         }
 
+        // Nothing left once sanitised is nothing: a marker on its own would
+        // read as content to anything that checks for some
+        if (trim($content) === '') {
+            $article->set($key, '');
+            return;
+        }
+
         if ($this->params->get('applyFormat') || $hadHtmlMarker) {
             $content = '<!-- {FORMAT:HTML} -->' . $content;
         }
@@ -152,7 +159,10 @@ class Formathtml extends Plugin
                 if ($isRendered) {
                     $formatMarker = '';
                 }
-                $content = \Hubzero\Utility\Sanitize::html($content);
+                // Not pretty-printed: with the tidy extension present that
+                // re-indents and re-wraps the text on every view, and excerpts
+                // cut from it count the added whitespace as content
+                $content = \Hubzero\Utility\Sanitize::html($content, ['Output.TidyFormat' => false]);
                 $content = $formatMarker . $content;
             }
         }

@@ -131,6 +131,50 @@ class RenderedMarkerTest extends TestCase
     }
 
     /**
+     * Saved content gets the HTML marker in front of it
+     *
+     * @return  void
+     */
+    public function testSavedContentIsMarked()
+    {
+        $this->assertSame('<!-- {FORMAT:HTML} --><p>Text</p>', $this->save('<p>Text</p>'));
+    }
+
+    /**
+     * Content with nothing left once sanitised is saved empty, not as a
+     * marker that reads as content to anything checking for some
+     *
+     * @return  void
+     */
+    public function testNothingIsSavedEmpty()
+    {
+        $this->assertSame('', $this->save('<!-- {FORMAT:HTML} -->'));
+        $this->assertSame('', $this->save("<!-- {FORMAT:HTML} -->\n "));
+        $this->assertSame('', $this->save('<script>x</script>'));
+    }
+
+    /**
+     * What formathtml stores for a post's description
+     *
+     * @param   string  $content
+     * @return  string
+     */
+    private function save($content)
+    {
+        $plugin = new Formathtml(null, [
+            'name'   => 'formathtml',
+            'type'   => 'content',
+            'params' => ['applyFormat' => 1, 'sanitizeBefore' => 1],
+        ]);
+        $post = new \Hubzero\Base\Obj();
+        $post->set('description', $content);
+
+        $plugin->onContentBeforeSave('com_collections.post.description', $post, false);
+
+        return (string) $post->get('description');
+    }
+
+    /**
      * What formathtml makes of an entry's content
      *
      * @param   string  $content
