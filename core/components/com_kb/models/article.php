@@ -751,7 +751,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $article->owner = $this->created_by;
         $article->id = $this->searchId();
         $article->hubtype = self::searchNamespace();
-        $article->description = \Hubzero\Utility\Sanitize::stripAll($this->fulltxt);
+        $article->description = \Hubzero\Utility\Sanitize::stripAll((string) $this->fulltxt);
         return $article;
     }
 

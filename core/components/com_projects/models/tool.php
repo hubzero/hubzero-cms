@@ -263,7 +263,7 @@ class Tool extends Model
         if ($property) {
             if ($property == 'recorded') {
                 $this->set('recorded', $this->lastUpdate->recorded);
-                return $this->date('recorded', $as);
+                return $this->date('recorded', (string) $as);
             }
             if ($property == 'actor') {
                 if (!isset($this->actor)) {

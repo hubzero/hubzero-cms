@@ -31,9 +31,9 @@ class PaymentProvider
      */
     private $transactionDetails = [];
     /**
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    private $postBack;
+    private $postBack = [];
     /** @var \stdClass|null */
     private $error = null;
 

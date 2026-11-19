@@ -620,7 +620,7 @@ class Html extends Obj
             $newpath = $ext ? $name . '.' . $ext : $name;
         }
 
-        return $newpath;
+        return (string) $newpath;
     }
 
     /**
@@ -1110,7 +1110,7 @@ class Html extends Obj
         $config = Component::params('com_projects');
 
         // Build repo path
-        $path   = DS . trim($config->get('webpath'), DS) . DS . strtolower(trim($projectAlias));
+        $path   = DS . trim($config->get('webpath'), DS) . DS . strtolower(trim((string) $projectAlias));
         $path  .= $case ? DS . $case : '';
         if (!$config->get('offroot', 0)) {
             $path = PATH_APP . $path;
@@ -1167,7 +1167,7 @@ class Html extends Obj
             }
         }
 
-        return $bc;
+        return (string) $bc;
     }
 
     /**

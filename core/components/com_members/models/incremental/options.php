@@ -32,7 +32,7 @@ class Options
     public function getAwardPerField()
     {
         $cur = self::getCurrent();
-        return $cur['award_per'];
+        return $cur['award_per'] ?? 0;
     }
 
     /**
@@ -57,7 +57,7 @@ class Options
         }
 
         $cur = self::getCurrent();
-        if (!$cur['test_group']) {
+        if (empty($cur['test_group'])) {
             return true;
         }
 

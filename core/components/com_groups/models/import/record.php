@@ -441,7 +441,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      */
     private function cnExists($cn)
     {
-        return Group::oneByCn($cn)->get('gidNumber');
+        return Group::oneByCn((string) $cn)->get('gidNumber');
     }
 
     /**

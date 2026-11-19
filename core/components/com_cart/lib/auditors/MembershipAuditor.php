@@ -41,7 +41,7 @@ class MembershipAuditor extends BaseAuditor
         $user = User::getInstance();
         if (!$user->get('guest')) {
             // Check if there is a limitation on when the subscription can be extended
-            $subscriptionMaxLen = Product::getMetaValue($this->pId, 'subscriptionMaxLen');
+            $subscriptionMaxLen = Product::getMetaValue((int) $this->pId, 'subscriptionMaxLen');
             if ($subscriptionMaxLen) {
                 // Check if the current user has the existing subscription and how much is left on it
                 // i.e. figure out if he may extend his current subscription
@@ -56,7 +56,7 @@ class MembershipAuditor extends BaseAuditor
                 // so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
 
                 // Get the proper product type subscription object reference
-                $subscription = Memberships::getSubscriptionObject($this->type, $this->pId, (int) $this->uId);
+                $subscription = Memberships::getSubscriptionObject($this->type, (int) $this->pId, (int) $this->uId);
 
                 // Get the expiration for the current subscription (if any)
                 $currentExpiration = $subscription->getExpiration();

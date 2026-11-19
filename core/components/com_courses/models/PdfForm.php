@@ -503,7 +503,7 @@ class PdfForm
 
         $dbh = self::getDbh();
         $dbh->setQuery('SELECT title FROM `#__courses_forms` WHERE id = ' . $this->getId());
-        $this->title = $dbh->loadResult();
+        $this->title = (string) $dbh->loadResult();
 
         return $this->title;
     }

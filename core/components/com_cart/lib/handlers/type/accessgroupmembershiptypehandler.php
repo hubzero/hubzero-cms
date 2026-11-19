@@ -35,7 +35,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
 
         // Get current registration
         $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
-        $expiration = $membership['crtmExpires'];
+        $expiration = $membership['crtmExpires'] ?? null;
 
         /* Add the user to the corresponding user access group (pull access group ID from the meta) */
         try {

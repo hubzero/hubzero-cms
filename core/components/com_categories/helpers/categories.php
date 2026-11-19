@@ -77,9 +77,9 @@ class Categories
     /**
      * Array of options
      *
-     * @var  array<mixed>|null
+     * @var  array<mixed>
      */
-    protected $options = null;
+    protected $options = [];
 
     /**
      * Class constructor

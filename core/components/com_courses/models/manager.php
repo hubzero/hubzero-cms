@@ -72,7 +72,7 @@ class Manager extends Member
         }
 
         if (!isset($instances[$oid . '_' . $uid])) {
-            $instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
+            $instances[$oid . '_' . $uid] = new self($uid, $cid ?? 0, $oid ?? 0, $sid ?? 0);
         }
 
         return $instances[$oid . '_' . $uid];

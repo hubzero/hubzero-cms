@@ -175,7 +175,7 @@ class Git extends Obj
             }
         }
 
-        return $status;
+        return (string) $status;
     }
 
     /**
@@ -707,7 +707,7 @@ class Git extends Obj
      **/
     public function getUntrackedFiles($subdir = '')
     {
-        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
+        $cmd  = 'cd ' . escapeshellarg(DS . trim((string) $this->path, DS) . DS . trim($subdir, DS)) . ' && ';
         $cmd .= $this->gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
 
         $results = $this->exec($cmd);
@@ -728,7 +728,7 @@ class Git extends Obj
      **/
     public function getUntrackedDirectories($subdir = '')
     {
-        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
+        $cmd  = 'cd ' . escapeshellarg(DS . trim((string) $this->path, DS) . DS . trim($subdir, DS)) . ' && ';
         $cmd .= $this->gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
 
         $results = $this->exec($cmd);

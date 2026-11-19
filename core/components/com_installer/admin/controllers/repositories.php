@@ -121,7 +121,7 @@ class Repositories extends AdminController
         }
 
         try {
-            $config = ComposerHelper::getRepositoryConfigByAlias($alias);
+            $config = ComposerHelper::getRepositoryConfigByAlias((string) $alias);
         } catch (\Exception $e) {
             $config = null;
             $this->setError($e->getMessage());

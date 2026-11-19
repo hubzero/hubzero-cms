@@ -405,7 +405,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   boolean  $force
-     * @return  \Google\Client|false
+     * @return  \Google\Client|false|null
      */
     public function startClient($service = 'google', $uid = 0, $force = false)
     {
@@ -1846,7 +1846,7 @@ class Connect extends Obj
      * @param   array<mixed>    $remote      Remote resource array
      * @param   string   $path        Project repo path
      * @param   boolean  $getContent  Output file content? Or write to file
-     * @return  string|bool or boolean
+     * @return  string|bool|null  The content, or whether it was saved
      */
     public function downloadFile($service = 'google', $uid = 0, $remote = [], $path = '', $getContent = false)
     {
@@ -1880,7 +1880,7 @@ class Connect extends Obj
      * @param   string   $path        Project repo path
      * @param   string   $ext         Extension
      * @param   boolean  $getContent  Output file content? Or write to file
-     * @return  string|bool or boolean
+     * @return  string|bool|null  The content, or whether it was saved
      */
     public function importFile(
         $service = 'google',

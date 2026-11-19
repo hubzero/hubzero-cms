@@ -427,7 +427,7 @@ class Media extends Base
         if (is_file((string) $source)) {
             $server = new \Hubzero\Content\Server();
             $server->filename($source);
-            $server->serveInline($source);
+            $server->serveInline((string) $source);
             exit();
         } elseif ($redirect) {
             App::redirect(

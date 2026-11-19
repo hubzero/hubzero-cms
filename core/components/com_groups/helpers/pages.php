@@ -696,7 +696,7 @@ class Pages
         }
 
         //return content
-        return $content;
+        return (string) $content;
     }
 
     /**

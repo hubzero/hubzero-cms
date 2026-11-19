@@ -212,7 +212,7 @@ class Inspector extends Obj
             $this->items();
         }
 
-        return $this->total;
+        return (int) $this->total;
     }
 
     /**

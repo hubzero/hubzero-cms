@@ -699,7 +699,7 @@ class Mailinglists extends AdminController
         }
 
         // send confirmation email
-        Helper::sendMailinglistConfirmationEmail($email->email, $mailinglist, false);
+        Helper::sendMailinglistConfirmationEmail((string) $email->email, $mailinglist, false);
 
         Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $email->email));
 

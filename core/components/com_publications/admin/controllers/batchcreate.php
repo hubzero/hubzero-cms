@@ -519,7 +519,7 @@ class Batchcreate extends AdminController
 
         $this->reader->close();
 
-        return $output;
+        return (string) $output;
     }
 
     /**

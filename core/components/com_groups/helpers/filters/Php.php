@@ -51,6 +51,6 @@ class Php extends \HTMLPurifier_Filter
             },
             $html,
         );
-        return $html;
+        return (string) $html;
     }
 }

@@ -341,8 +341,13 @@ class Node extends Obj
      */
     public function removeChild($id)
     {
-        $key = array_search($this, $this->parent->children);
-        unset($this->parent->children[$key]);
+        $parent = $this->parent;
+        if ($parent === null) {
+            return;
+        }
+
+        $key = array_search($this, $parent->children);
+        unset($parent->children[$key]);
     }
 
     /**

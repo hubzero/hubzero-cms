@@ -179,7 +179,7 @@ class Asset extends Base
             }
         }
 
-        return $this->size;
+        return $this->size ?? 0;
     }
 
     /**
@@ -203,7 +203,7 @@ class Asset extends Base
             }
         }
 
-        return $this->dimensions;
+        return $this->dimensions ?? [0, 0];
     }
 
     /**

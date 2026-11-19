@@ -395,7 +395,7 @@ class Register extends SiteController
                 }
             }
 
-            $emailState = Field::state('registrationEmail', 'RRRR', $this->task);
+            $emailState = Field::state('registrationEmail', 'RRRR', (string) $this->task);
 
             if ($emailState == \Components\Members\Models\Profile\Field::STATE_HIDDEN) {
                 $username = User::get('username');

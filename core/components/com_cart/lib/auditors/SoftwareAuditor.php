@@ -87,10 +87,10 @@ class SoftwareAuditor extends BaseAuditor
         }
 
         // Get product download limit
-        $productDownloadLimit = Product::getMetaValue($this->pId, 'globalDownloadLimit');
+        $productDownloadLimit = Product::getMetaValue((int) $this->pId, 'globalDownloadLimit');
         // Get product downloads count
         if ($productDownloadLimit > 0) {
-            $productDownloadCount = Download::countProductDownloads($this->pId);
+            $productDownloadCount = Download::countProductDownloads((int) $this->pId);
             // Check if the limit is reached
             if ($productDownloadCount >= $productDownloadLimit) {
                 $this->setResponseStatus('error');

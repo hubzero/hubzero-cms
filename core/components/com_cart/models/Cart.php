@@ -582,7 +582,7 @@ abstract class Cart
     /**
      * Get user ID associated with the provided cart ID
      *
-     * @param   int  $crtId   cart ID
+     * @param   int|null  $crtId   cart ID
      * @return  int|false  user ID, false if no cart found
      */
     public static function getCartUser($crtId)

@@ -19,7 +19,7 @@ class SessionClassGroup extends Table
     /**
      * Constructor
      *
-     * @param   \Hubzero\Database\Driver|null  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)

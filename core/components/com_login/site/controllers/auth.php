@@ -604,7 +604,7 @@ class Auth extends SiteController
             ->rows();
 
         // Now check the auth_link table
-        $link_conflicts = \Hubzero\Auth\Link::findByEmail($hzal->email, [$hzad->id]);
+        $link_conflicts = \Hubzero\Auth\Link::findByEmail((string) $hzal->email, [$hzad->id]);
 
         $conflict = [];
 
@@ -871,7 +871,7 @@ class Auth extends SiteController
                 // logout)
                 if ($auth_domain_name == 'pucas') {
                     // Get plugin params
-                    $pparams = Plugin::params('authentication', $auth_domain_name);
+                    $pparams = Plugin::params('authentication', (string) $auth_domain_name);
                     $auto_logoff = $pparams->get('auto_logoff', false);
 
                     if ($auto_logoff) {

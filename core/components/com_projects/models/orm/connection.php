@@ -84,7 +84,7 @@ class Connection extends Relational
         $params = (array) json_decode($this->params ? $this->params : "");
         $params = array_merge($params, $options);
 
-        return Manager::adapter($this->provider->alias, $params);
+        return Manager::adapter((string) $this->provider->alias, $params);
     }
 
     /**
@@ -98,7 +98,7 @@ class Connection extends Relational
             return $this->get('name');
         }
 
-        return $this->provider->name;
+        return (string) $this->provider->name;
     }
 
     /**

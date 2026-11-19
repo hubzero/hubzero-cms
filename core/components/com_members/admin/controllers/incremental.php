@@ -86,7 +86,8 @@ class Incremental extends AdminController
                 'SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` '
                     . 'ORDER BY added DESC LIMIT 1',
             );
-            list($exPopover, $exAward, $exGroup, $exRepeat) = $row = $this->database->loadRow();
+            $row = $this->database->loadRow() ?? [null, null, null, null];
+            list($exPopover, $exAward, $exGroup, $exRepeat) = $row;
 
             if (
                 $popoverText != $exPopover

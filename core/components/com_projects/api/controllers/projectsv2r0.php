@@ -867,7 +867,7 @@ class Projectsv2r0 extends ApiController
         if (is_numeric($id)) {
             $row = Project::oneOrNew(intval($id));
         } else {
-            $row = Project::oneByAlias($id);
+            $row = Project::oneByAlias((string) $id);
         }
 
         if ($row->isNew()) {

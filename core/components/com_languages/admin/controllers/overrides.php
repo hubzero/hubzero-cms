@@ -370,9 +370,9 @@ class Overrides extends AdminController
         $query = Overrider::all();
 
         if (Request::getCmd('searchtype') == 'constant') {
-            $query->whereLike('constant', $searchstring);
+            $query->whereLike('constant', (string) $searchstring);
         } else {
-            $query->whereLike('string', $searchstring);
+            $query->whereLike('string', (string) $searchstring);
         }
 
         $total = with(clone($query))->total();

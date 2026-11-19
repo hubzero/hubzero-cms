@@ -316,7 +316,7 @@ class RemoteFile extends Table
         }
 
         // Load record to update
-        if (!$this->loadItem($projectid, $id, $service, $filename)) {
+        if (!$this->loadItem($projectid, $id, $service, (string) $filename)) {
             $this->projectid  = $projectid;
             $this->service    = $service;
             $this->created    = Date::toSql();

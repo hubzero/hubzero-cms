@@ -99,7 +99,7 @@ defined('_HZEXEC_') or die();
     $job->title = trim(stripslashes($job->title));
     $job->description = trim(stripslashes($job->description));
     $job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
-    $job->description = \Components\Jobs\Helpers\Html::txtUnpee($job->description);
+    $job->description = \Components\Jobs\Helpers\Html::txtUnpee((string) $job->description);
 ?>
 
 <section class="main section">

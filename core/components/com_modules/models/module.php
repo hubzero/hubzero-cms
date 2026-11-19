@@ -509,7 +509,7 @@ class Module extends Relational
      */
     public static function saveorder($pks = null, $order = null)
     {
-        if (empty($pks)) {
+        if (empty($pks) || empty($order)) {
             return false;
         }
 

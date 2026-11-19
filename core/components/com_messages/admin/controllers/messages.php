@@ -373,8 +373,8 @@ class Messages extends AdminController
 
             $mailer = new \Hubzero\Mail\Message();
             $return = $mailer
-                ->addFrom($fromUser->email, $fromUser->name)
-                ->addTo($toUser->email)
+                ->addFrom((string) $fromUser->email, (string) $fromUser->name)
+                ->addTo((string) $toUser->email)
                 ->setSubject($subject)
                 ->setBody($msg)
                 ->send();

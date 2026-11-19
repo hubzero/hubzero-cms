@@ -456,7 +456,7 @@ class Projects extends Base
         }
 
         // Determine layout to load
-        $layout = ($this->model->access('member') || AccessHelper::allowPublicAccess($subdir))
+        $layout = ($this->model->access('member') || AccessHelper::allowPublicAccess((string) $subdir))
             ? 'internal'
             : 'external';
         //$layout = $this->model->access('member') && $preview && $this->model->isPublic() ? 'external' : $layout;
@@ -533,7 +533,7 @@ class Projects extends Base
         if (
             !in_array($this->model->get('access'), User::getAuthorisedViewLevels())
             && $layout != 'invited'
-            && !AccessHelper::allowPublicAccess($subdir)
+            && !AccessHelper::allowPublicAccess((string) $subdir)
         ) {
             // Login required
             if (User::isGuest()) {
@@ -900,7 +900,7 @@ class Projects extends Base
         }
 
         // Log activity
-        $this->logActivity($this->model->get('id'), 'project', 'status', $this->task, 1);
+        $this->logActivity($this->model->get('id'), 'project', 'status', (string) $this->task, 1);
 
         if ($this->task != 'fixownership') {
             // Add activity

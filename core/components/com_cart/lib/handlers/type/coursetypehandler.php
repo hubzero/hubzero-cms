@@ -31,7 +31,7 @@ class CourseTypeHandler extends TypeHandler
 
         // Get current registration
         $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
-        $expiration = $membership['crtmExpires'];
+        $expiration = $membership['crtmExpires'] ?? null;
 
         // Get course ID
         $courseId = $this->item['meta']['courseId'];
