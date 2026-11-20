@@ -320,7 +320,7 @@ class Doi extends Obj
         // Map license
         $license = $pub->license();
         $licenseTitle = is_object($license) ? $license->title : null;
-        $this->set('license', htmlspecialchars($licenseTitle));
+        $this->set('license', htmlspecialchars((string) $licenseTitle));
 
         $licenseURI = is_object($license) ? $license->url : null;
         if ($licenseURI != null && !empty($licenseURI)) {

@@ -122,6 +122,8 @@ del {
 pre {
 	margin: 1.5em 0;
 	white-space: pre;
+	/* A long line scrolls in its block, not the page sideways on a phone */
+	overflow-x: auto;
 }
 pre, 
 code, 
