@@ -96,3 +96,12 @@
 	.com_kb .articles-group-title + .articles {
 		margin-top: 0;
 	}
+	.aside li {
+		flex-direction: column;
+		align-items: stretch;
+		margin-top: 4px;
+	}
+	.aside li ul.categories {
+		padding-left: 16px;
+	}
+	
