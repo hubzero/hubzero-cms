@@ -96,4 +96,48 @@ class TableInternalsTest extends TestCase
             $table->toXML(),
         );
     }
+
+    public function testAnInsertGivesRequiredTextWithNoDefaultAnEmptyValue(): void
+    {
+        $db = new class extends \Hubzero\Database\Drivers\Sqlite\SqliteDriver {
+            public function __construct() {}
+
+            public function getTableColumns($table, $typeOnly = true)
+            {
+                $column = static fn ($name, $type, $null, $default, $key = '') => (object) [
+                    'Field'   => $name,
+                    'Type'    => $type,
+                    'Null'    => $null,
+                    'Default' => $default,
+                    'Key'     => $key,
+                    'Extra'   => '',
+                ];
+
+                return [
+                    'id'          => $column('id', 'int(11)', 'NO', null, 'PRI'),
+                    'description' => $column('description', 'longtext', 'NO', null),
+                    'alias'       => $column('alias', 'varchar(250)', 'NO', null),
+                    'title'       => $column('title', 'varchar(255)', 'NO', ''),
+                    'notes'       => $column('notes', 'text', 'YES', null),
+                    'ordering'    => $column('ordering', 'int(11)', 'NO', null),
+                ];
+            }
+        };
+        $table = new class ($db) extends ThingTable {
+            public function fill(): void
+            {
+                $this->fillRequiredText();
+            }
+        };
+        $table->alias = 'given';
+
+        $table->fill();
+
+        $this->assertSame('', $table->description);
+        $this->assertSame('given', $table->alias);
+        $this->assertNull($table->title, 'a column with a default is left to it');
+        $this->assertNull($table->notes, 'a nullable column stays null');
+        $this->assertNull($table->ordering, 'only text columns are filled');
+        $this->assertNull($table->id);
+    }
 }

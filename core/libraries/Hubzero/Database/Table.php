@@ -712,6 +712,41 @@ abstract class Table extends \stdClass
     }
 
     /**
+     * Give an empty value to text columns an insert would otherwise leave out
+     *
+     * insertObject() skips null properties, and strict SQL refuses an insert
+     * that leaves out a NOT NULL column with no default ("Field 'description'
+     * doesn't have a default value"). As Relational does on insert, such a
+     * text column that was not set is stored as ''.
+     *
+     * @return  void
+     */
+    protected function fillRequiredText()
+    {
+        $fields = $this->getFields();
+        if (!is_array($fields)) {
+            return;
+        }
+
+        foreach ($fields as $name => $field) {
+            if (
+                !is_object($field)
+                || ($field->Null ?? 'YES') !== 'NO'
+                || ($field->Default ?? null) !== null
+                || ($field->Key ?? '') === 'PRI'
+                || stripos((string) ($field->Extra ?? ''), 'auto_increment') !== false
+                || !preg_match('/^(tiny|medium|long)?text\b|^(var)?char\b/i', (string) ($field->Type ?? ''))
+            ) {
+                continue;
+            }
+
+            if (!isset($this->$name)) {
+                $this->$name = '';
+            }
+        }
+    }
+
+    /**
      * Method to store a row in the database from the Table instance properties.
      * If a primary key value is set the row with that primary key value will be
      * updated with the instance property values.  If no primary key value is set
@@ -740,6 +775,7 @@ abstract class Table extends \stdClass
         if ($this->$k) {
             $stored = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
         } else {
+            $this->fillRequiredText();
             $stored = $this->db->insertObject($this->tableName, $this, $this->tableKey);
             Event::trigger($this->getTableName() . '_new', ['table' => $this]);
         }
