@@ -2194,7 +2194,15 @@ class Wishlists extends SiteController
                 ),
             );
 
-            if ($attachment = $this->uploadTask($wishid)) {
+            // uploadTask() answers with the attachment's markup, or with why the file
+            // was refused; that reason was appended to the comment and published.
+            // A refused file sends the poster back with the reason instead.
+            $errorsBefore = count($this->getErrors());
+            $attachment = $this->uploadTask($wishid);
+            if (count($this->getErrors()) > $errorsBefore) {
+                App::redirect(Route::url($objWish->link()), $this->getError(), 'error');
+            }
+            if ($attachment) {
                 $row->set('content', $row->get('content') . "\n" . $attachment);
             }
 
