@@ -556,10 +556,27 @@ class Media extends Base
 
         // file type is ok type
         $fileInfo = pathinfo($file['name']);
-        if ($allowedExtensions && !in_array(strtolower($fileInfo['extension'] ?? ''), $allowedExtensions)) {
+        $ext      = strtolower($fileInfo['extension'] ?? '');
+        if ($allowedExtensions && !in_array($ext, $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
             $returnObj->error   = true;
             $returnObj->message = Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', $these);
+            return $returnObj;
+        }
+
+        // Group uploads live under app/site/groups and are served inline from the
+        // hub's own origin, so a file that the browser runs as code or as a
+        // document is stored XSS/RCE. com_media's default extension list allows
+        // svg (an XML document that executes script when opened directly), so
+        // deny the active types here regardless of the configured allow-list.
+        $blockedExtensions = [
+            'php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps',
+            'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd',
+            'html', 'htm', 'xhtml', 'xml', 'svg', 'svgz', 'js', 'mhtml', 'xht',
+        ];
+        if (in_array($ext, $blockedExtensions)) {
+            $returnObj->error   = true;
+            $returnObj->message = Lang::txt('COM_GROUPS_MEDIA_FILE_TYPE_NOT_ALLOWED', $ext);
             return $returnObj;
         }
 
