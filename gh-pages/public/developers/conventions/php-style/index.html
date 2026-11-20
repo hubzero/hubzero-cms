@@ -220,7 +220,7 @@ Never CR or CRLF.</li>
 
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 </code></pre>
@@ -402,8 +402,7 @@ foreach ($rows as $row) {
 <p>A condition too long for one line puts each clause on a line of its own,
 indented one level, with the boolean operator at the start of the line. The
 closing parenthesis and the opening brace share the line after:</p>
-<pre><code class="language-php">        if (
-            !User::authorise('core.edit', $this-&gt;option)
+<pre><code class="language-php">            !User::authorise('core.edit', $this-&gt;option)
             &amp;&amp; !User::authorise('core.create', $this-&gt;option)
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));

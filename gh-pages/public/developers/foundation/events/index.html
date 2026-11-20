@@ -261,12 +261,12 @@ you expected actually happened.</p>
 <p>Plugins become reachable one step later. <code>PluginServiceProvider</code> registers
 the plugin loader as a service, then attaches it to the dispatcher in
 <code>boot()</code>, after every provider has registered:</p>
-<pre><code class="language-php">    public function boot()
-    {
+<pre><code class="language-php">    {
         if ($this-&gt;app-&gt;has('dispatcher')) {
             $this-&gt;app['dispatcher']-&gt;addListenerLoader($this-&gt;app['plugin']);
         }
     }
+}
 </code></pre>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Anything that triggers an event before the application has

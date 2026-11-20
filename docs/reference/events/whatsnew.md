@@ -11,7 +11,7 @@ Events in the `whatsnew` group. A plugin in `core/plugins/whatsnew/` receives an
 
 Fired from:
 
-- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:78`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L78)
+- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:77`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L77)
 - [`core/components/com_whatsnew/helpers/finder.php:33`](../../../core/components/com_whatsnew/helpers/finder.php#L33)
 
 No plugin in the source tree listens for this event.
@@ -20,11 +20,11 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:100`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L100) with `[ $p, 999, 0, $areas, ]`
+- [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:99`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L99) with `[ $p, 999, 0, $areas, ]`
 - [`core/components/com_whatsnew/site/controllers/results.php:117`](../../../core/components/com_whatsnew/site/controllers/results.php#L117) with `[ $p, 0, 0, $activeareas, ]`
 - [`core/components/com_whatsnew/site/controllers/results.php:130`](../../../core/components/com_whatsnew/site/controllers/results.php#L130) with `[ $p, $limit, $start, $activeareas, ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:311`](../../../core/components/com_whatsnew/site/controllers/results.php#L311) with `[ $p, $limit, $start, $activeareas, ]`
-- [`core/modules/mod_whatsnew/mod_whatsnew.php:177`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L177) with `[ $p, $count, 0, $activeareas, [], ]`
+- [`core/components/com_whatsnew/site/controllers/results.php:314`](../../../core/components/com_whatsnew/site/controllers/results.php#L314) with `[ $p, $limit, $start, $activeareas, ]`
+- [`core/modules/mod_whatsnew/mod_whatsnew.php:203`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L203) with `[ $p, $count, 0, $activeareas, [], ]`
 
 Listeners:
 
@@ -39,8 +39,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_whatsnew/site/controllers/results.php:441`](../../../core/components/com_whatsnew/site/controllers/results.php#L441)
-- [`core/modules/mod_whatsnew/mod_whatsnew.php:49`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L49)
+- [`core/components/com_whatsnew/site/controllers/results.php:443`](../../../core/components/com_whatsnew/site/controllers/results.php#L443)
+- [`core/modules/mod_whatsnew/mod_whatsnew.php:75`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L75)
 
 Listeners:
 

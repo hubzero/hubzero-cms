@@ -19,7 +19,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse configuration`](#muse-configuration) | 1 | Help class for rendering utility-wide help documentation |
 | [`muse database`](#muse-database) | 6 | Database class |
 | [`muse environment`](#muse-environment) | 0 | Environment class |
-| [`muse extension`](#muse-extension) | 5 | Extension class |
+| [`muse extension`](#muse-extension) | 6 | Extension class |
 | [`muse group`](#muse-group) | 3 | Group |
 | [`muse help`](#muse-help) | 0 | Help class for rendering utility-wide help documentation |
 | [`muse htmx`](#muse-htmx) | 2 | HTMX developer tooling command. |
@@ -226,6 +226,10 @@ Enables an existing extension
 ### `muse extension disable`
 
 Disables an existing extension
+
+### `muse extension log`
+
+No description available.
 
 ## `muse group`
 

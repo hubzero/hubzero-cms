@@ -17,13 +17,13 @@ Endpoints under `/api/system`, from the `com_system` API controllers. Authentica
 
 Grabs the session lifetime, in minutes
 
-API version 1.0, task `getSessionLifetime` in [`systemv1r0.php`](../../../core/components/com_system/api/controllers/systemv1r0.php#L168).
+API version 1.0, task `getSessionLifetime` in [`systemv1r0.php`](../../../core/components/com_system/api/controllers/systemv1r0.php#L167).
 
 ## GET /system/info
 
 Display system information
 
-API version 1.0, task `info` in [`systemv1r0.php`](../../../core/components/com_system/api/controllers/systemv1r0.php#L28).
+API version 1.0, task `info` in [`systemv1r0.php`](../../../core/components/com_system/api/controllers/systemv1r0.php#L27).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

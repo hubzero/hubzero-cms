@@ -22,8 +22,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/messages.php:247`](../../../core/components/com_members/admin/controllers/messages.php#L247) with `[]`
-- [`core/plugins/members/messages/messages.php:443`](../../../core/plugins/members/messages/messages.php#L443) with `[]`
+- [`core/components/com_members/admin/controllers/messages.php:245`](../../../core/components/com_members/admin/controllers/messages.php#L245) with `[]`
+- [`core/plugins/members/messages/messages.php:446`](../../../core/plugins/members/messages/messages.php#L446) with `[]`
 
 Listeners:
 
@@ -34,18 +34,18 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:226`](../../../core/components/com_answers/site/controllers/questions.php#L226) with `['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option]`
-- [`core/components/com_answers/site/controllers/questions.php:239`](../../../core/components/com_answers/site/controllers/questions.php#L239) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
-- [`core/components/com_answers/site/controllers/questions.php:902`](../../../core/components/com_answers/site/controllers/questions.php#L902) with `['new_question_admin', $subject, $message, $from, $recipients, $this->option]`
-- [`core/components/com_answers/site/controllers/questions.php:1055`](../../../core/components/com_answers/site/controllers/questions.php#L1055) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option]`
-- [`core/components/com_answers/site/controllers/questions.php:1251`](../../../core/components/com_answers/site/controllers/questions.php#L1251) with `[$messageType , $subject, $message, $from, [$authorid], $this->option]`
-- [`core/components/com_answers/site/controllers/questions.php:1263`](../../../core/components/com_answers/site/controllers/questions.php#L1263) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
-- [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:465`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L465) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]`
-- [`core/components/com_courses/site/controllers/course.php:638`](../../../core/components/com_courses/site/controllers/course.php#L638) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
-- [`core/components/com_groups/site/controllers/membership.php:872`](../../../core/components/com_groups/site/controllers/membership.php#L872) with `['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option]`
-- [`core/components/com_jobs/admin/controllers/jobs.php:321`](../../../core/components/com_jobs/admin/controllers/jobs.php#L321) with `$messageParams`
-- [`core/components/com_projects/admin/controllers/projects.php:572`](../../../core/components/com_projects/admin/controllers/projects.php#L572) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
-- [`core/components/com_projects/helpers/html.php:1234`](../../../core/components/com_projects/helpers/html.php#L1234) with `[ $component, $subject, $body, $from, $addressees, $option, ]`
+- [`core/components/com_answers/site/controllers/questions.php:224`](../../../core/components/com_answers/site/controllers/questions.php#L224) with `['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:237`](../../../core/components/com_answers/site/controllers/questions.php#L237) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:897`](../../../core/components/com_answers/site/controllers/questions.php#L897) with `['new_question_admin', $subject, $message, $from, $recipients, $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:1051`](../../../core/components/com_answers/site/controllers/questions.php#L1051) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option]`
+- [`core/components/com_answers/site/controllers/questions.php:1248`](../../../core/components/com_answers/site/controllers/questions.php#L1248) with `[$messageType , $subject, $message, $from, [$authorid], $this->option]`
+- [`core/components/com_answers/site/controllers/questions.php:1260`](../../../core/components/com_answers/site/controllers/questions.php#L1260) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
+- [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:473`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L473) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]`
+- [`core/components/com_courses/site/controllers/course.php:639`](../../../core/components/com_courses/site/controllers/course.php#L639) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
+- [`core/components/com_groups/site/controllers/membership.php:886`](../../../core/components/com_groups/site/controllers/membership.php#L886) with `[ 'groups_cancelled_me', $subject, $message, $from, $this->view->get('group')->get('managers'), $this->option, ]`
+- [`core/components/com_jobs/admin/controllers/jobs.php:328`](../../../core/components/com_jobs/admin/controllers/jobs.php#L328) with `$messageParams`
+- [`core/components/com_projects/admin/controllers/projects.php:573`](../../../core/components/com_projects/admin/controllers/projects.php#L573) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
+- [`core/components/com_projects/helpers/html.php:1227`](../../../core/components/com_projects/helpers/html.php#L1227) with `[ $component, $subject, $body, $from, $addressees, $option, ]`
 - and 26 more call sites
 
 Listeners:

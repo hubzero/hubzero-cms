@@ -265,8 +265,7 @@ component name, <strong>in the order they should appear</strong>. Anything it co
 must <code>unset()</code> from <code>$query</code>; whatever is left over is appended as a query
 string.</p>
 <p>Here is <code>com_kb</code>'s:</p>
-<pre><code class="language-php">    /**
-     * Build the route for the component.
+<pre><code class="language-php">     * Build the route for the component.
      *
      * @param   array&lt;string, mixed&gt;  &amp;$query  An array of URL arguments
      * @return  array&lt;int, mixed&gt;  The URL arguments to use to assemble the subsequent URL.
@@ -340,8 +339,7 @@ of the pretty URL. A router that forgets one <code>unset()</code> produces
 <p><code>parse(&amp;$segments)</code> is the inverse, and it runs on every page view of the
 component. It receives the path segments after the component name and returns
 the request variables they mean.</p>
-<pre><code class="language-php">    public function parse(&amp;$segments)
-    {
+<pre><code class="language-php">    {
         $vars  = [];
 
         $vars['task'] = 'categories';

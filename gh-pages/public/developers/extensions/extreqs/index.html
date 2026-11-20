@@ -311,10 +311,10 @@ class Blog extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller-&gt;execute();
     }
-}
 </code></pre>
 <p>A module's entry point is <code>mod_{name}.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s
 the file. A plugin's entry point is <code>{name}.php</code>, holding a class whose public
@@ -338,7 +338,7 @@ runs.</p>
 	&lt;author&gt;HUBzero&lt;/author&gt;
 	&lt;authorUrl&gt;hubzero.org&lt;/authorUrl&gt;
 	&lt;authorEmail&gt;support@hubzero.org&lt;/authorEmail&gt;
-	&lt;copyright&gt;Copyright (c) 2005-2020 The Regents of the University of California.&lt;/copyright&gt;
+	&lt;copyright&gt;Copyright © 2005-2026 Purdue University. All Rights Reserved.&lt;/copyright&gt;
 	&lt;license&gt;http://opensource.org/licenses/MIT MIT&lt;/license&gt;
 	&lt;version&gt;2.5.0&lt;/version&gt;
 	&lt;description&gt;PLG_DEBUG_XML_DESCRIPTION&lt;/description&gt;

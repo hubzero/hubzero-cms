@@ -218,7 +218,9 @@ $instrument-&gt;save();
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Hubzero\Database\Relational</code></a>.
 The class declares what makes it different from every other model and inherits
 the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
-<pre><code class="language-php">    /**
+<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
+{
+    /**
      * The table namespace
      *
      * @var  string
@@ -279,8 +281,6 @@ the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
     protected $parsed = [
         'fulltxt',
     ];
-
-    /**
 </code></pre>
 <table>
 <thead>
@@ -361,11 +361,13 @@ reservation's <code>created</code> and <code>created_by</code>.</p>
 <code>params</code> over the component's, giving <code>$article-&gt;params</code> as one registry.</p>
 <h2 id="relationships">Relationships</h2>
 <p>Relationships are methods that return a relation object:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">        return $dt;
+    }
+
     /**
      * Get parent category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parentCategory()
     {
@@ -375,11 +377,9 @@ reservation's <code>created</code> and <code>created_by</code>.</p>
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
-    {
-        return $this-&gt;oneToMany('Comment', 'entry_id');
 </code></pre>
 <p><code>belongsToOne()</code>, <code>oneToMany()</code>, <code>manyToMany()</code>, <code>oneShiftsToMany()</code>, and
 <code>oneToManyThrough()</code> are the ones in common use. For <code>com_bookings</code>, an

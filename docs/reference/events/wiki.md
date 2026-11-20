@@ -11,7 +11,7 @@ Events in the `wiki` group. A plugin in `core/plugins/wiki/` receives an event b
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:264`](../../../core/components/com_wiki/site/controllers/pages.php#L264) with `[&$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:263`](../../../core/components/com_wiki/site/controllers/pages.php#L263) with `[&$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:258`](../../../core/components/com_wiki/site/controllers/pages.php#L258) with `[$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:257`](../../../core/components/com_wiki/site/controllers/pages.php#L257) with `[$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:261`](../../../core/components/com_wiki/site/controllers/pages.php#L261) with `[&$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:260`](../../../core/components/com_wiki/site/controllers/pages.php#L260) with `[&$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -70,7 +70,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/pages.php:353`](../../../core/components/com_wiki/admin/controllers/pages.php#L353) with `[$id]`
+- [`core/components/com_wiki/admin/controllers/pages.php:354`](../../../core/components/com_wiki/admin/controllers/pages.php#L354) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -86,7 +86,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/versions.php:350`](../../../core/components/com_wiki/admin/controllers/versions.php#L350) with `[$id]`
+- [`core/components/com_wiki/admin/controllers/versions.php:349`](../../../core/components/com_wiki/admin/controllers/versions.php#L349) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -94,9 +94,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/pages.php:272`](../../../core/components/com_wiki/admin/controllers/pages.php#L272) with `[&$page, $isNew]`
-- [`core/components/com_wiki/site/controllers/history.php:492`](../../../core/components/com_wiki/site/controllers/history.php#L492) with `[&$this->page, false]`
-- [`core/components/com_wiki/site/controllers/pages.php:787`](../../../core/components/com_wiki/site/controllers/pages.php#L787) with `[&$this->page, $isNew]`
+- [`core/components/com_wiki/admin/controllers/pages.php:273`](../../../core/components/com_wiki/admin/controllers/pages.php#L273) with `[&$page, $isNew]`
+- [`core/components/com_wiki/site/controllers/history.php:491`](../../../core/components/com_wiki/site/controllers/history.php#L491) with `[&$this->page, false]`
+- [`core/components/com_wiki/site/controllers/pages.php:786`](../../../core/components/com_wiki/site/controllers/pages.php#L786) with `[&$this->page, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -112,7 +112,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/versions.php:247`](../../../core/components/com_wiki/admin/controllers/versions.php#L247) with `[&$version, $isNew]`
+- [`core/components/com_wiki/admin/controllers/versions.php:246`](../../../core/components/com_wiki/admin/controllers/versions.php#L246) with `[&$version, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -120,8 +120,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/pages.php:245`](../../../core/components/com_wiki/admin/controllers/pages.php#L245) with `[&$page, $isNew]`
-- [`core/components/com_wiki/site/controllers/pages.php:673`](../../../core/components/com_wiki/site/controllers/pages.php#L673) with `[&$this->page, $isNew]`
+- [`core/components/com_wiki/admin/controllers/pages.php:246`](../../../core/components/com_wiki/admin/controllers/pages.php#L246) with `[&$page, $isNew]`
+- [`core/components/com_wiki/site/controllers/pages.php:672`](../../../core/components/com_wiki/site/controllers/pages.php#L672) with `[&$this->page, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -129,7 +129,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/versions.php:211`](../../../core/components/com_wiki/admin/controllers/versions.php#L211) with `[&$version, $isNew]`
+- [`core/components/com_wiki/admin/controllers/versions.php:210`](../../../core/components/com_wiki/admin/controllers/versions.php#L210) with `[&$version, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -137,7 +137,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/content/formatwiki/formatwiki.php:137`](../../../core/plugins/content/formatwiki/formatwiki.php#L137) with `[$content, $params, $params['fullparse'], true]`
+- [`core/plugins/content/formatwiki/formatwiki.php:139`](../../../core/plugins/content/formatwiki/formatwiki.php#L139) with `[$content, $params, $params['fullparse'], true]`
 
 Listeners:
 

@@ -706,10 +706,9 @@ destination after signing out.</li>
 <p>A path that starts with <code>/</code> is treated as internal and the hub prefixes the
 site root. The same menu item also carries the login and logout
 descriptions and images.</p>
-<pre><code class="language-php">        // Get the default return value
-        $defaultReturn = Route::url('index.php?option=com_members&amp;task=myaccount');
+<pre><code class="language-php">        $defaultReturn = Route::url('index.php?option=com_members&amp;task=myaccount');
         $description   = '';
-        if ($menu &amp;&amp; isset($menu-&gt;params) &amp;&amp; is_object($menu-&gt;params)) {
+        if ($menu &amp;&amp; isset($menu-&gt;params) &amp;&amp; $menu-&gt;params instanceof Registry) {
             $defaultReturn = $menu-&gt;params-&gt;get('login_redirect_url', $defaultReturn);
             // Assume redirect URLs that start with a slash are internal
             // As such, we want to make sure the path has the appropriate root

@@ -234,7 +234,9 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
 <code>$table</code> rather than arguing with it.</p>
 </aside>
 <p>Here is a real model's declarations — a knowledge base article:</p>
-<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
+<pre><code class="language-php"> * @method string fulltxt(string $as = 'parsed')  The article's text, parsed; a field named in $parsed
+ */
+class Article extends Relational implements \Hubzero\Search\Searchable
 {
     /**
      * The table namespace
@@ -295,8 +297,6 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
      * @var  array&lt;int, string&gt;
      **/
     protected $parsed = [
-        'fulltxt',
-    ];
 </code></pre>
 <table>
 <thead>
@@ -450,11 +450,13 @@ so does not save it.</p>
 <p>A method named <code>transformFoo()</code> makes <code>$model-&gt;foo</code> return its result instead
 of the raw attribute. <code>com_blog</code> uses one to hand back the entry's parameters
 as a <code>Registry</code> rather than a JSON string:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">        return $this-&gt;get('publish_up');
+    }
+
     /**
      * Transform params
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -466,8 +468,6 @@ as a <code>Registry</code> rather than a JSON string:</p>
 
             $this-&gt;params = $p;
         }
-
-        return $this-&gt;params;
 </code></pre>
 <p>A method named <code>helperFoo()</code> makes <code>$model-&gt;foo(...)</code> call it. Listing a field
 in <code>$parsed</code> makes <code>$model-&gt;field</code> return the content run through
@@ -481,7 +481,9 @@ the messages are then on <code>getErrors()</code>.</p>
 <p>For anything the built-ins do not cover, register a closure from <code>setup()</code>
 with <code>addRule($key, $rule)</code>. The closure receives the whole attributes array
 and returns <code>false</code> when valid or a message when not:</p>
-<pre><code class="language-php">    public function setup()
+<pre><code class="language-php">     * @return  void
+     */
+    public function setup()
     {
         $this-&gt;addRule('publish_down', function ($data) {
             if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00') {
@@ -490,8 +492,6 @@ and returns <code>false</code> when valid or a message when not:</p>
             return $data['publish_down'] &gt;= $data['publish_up']
                 ? false
                 : Lang::txt('The entry cannot end before it begins');
-        });
-    }
 </code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>Rules::validate()</code> iterates the <em>data</em>, not the rules. A rule on
@@ -508,18 +508,18 @@ current attributes, and stores the return value. <code>$initiate</code> runs on 
 <code>automaticCreatedBy()</code> (the current user id, unless already set) and
 <code>automaticAssetId()</code> (resolves an <code>#__assets</code> entry). Everything else you
 write yourself; a slug generator is the usual case:</p>
-<pre><code class="language-php">    /**
+<pre><code class="language-php">    }
+
+    /**
      * Generates automatic owned by field value
      *
-     * @param   array   $data  the data being saved
+     * @param   array&lt;mixed&gt;   $data  the data being saved
      * @return  string
      */
     public function automaticAlias($data)
     {
         $alias = (isset($data['alias']) &amp;&amp; $data['alias'] ? $data['alias'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
-        return preg_replace(&quot;/[^a-zA-Z0-9\-]/&quot;, '', strtolower($alias));
-    }
 </code></pre>
 <h2 id="saving-and-deleting">Saving and deleting</h2>
 <pre><code class="language-php">$reservation = Reservation::oneOrNew($id);
@@ -598,15 +598,15 @@ names: <code>oneToMany</code> looks for <code>&lt;modelname&gt;_id</code> on the
 <code>manyToMany</code> guesses an associative table of <code>#__&lt;namespace&gt;_&lt;name&gt;_&lt;name&gt;</code>
 with the two names sorted alphabetically, so both sides agree.</p>
 <p>The knowledge base article declares three:</p>
-<pre><code class="language-php">    /**
+<pre><code class="language-php">    }
+
+    /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
-        return $this-&gt;belongsToOne('Hubzero\User\User', 'created_by');
-    }
 </code></pre>
 <pre><code class="language-php">public function comments()
 {

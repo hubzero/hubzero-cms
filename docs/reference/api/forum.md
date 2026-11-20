@@ -32,7 +32,7 @@ API version 2.0, task `create` in [`userscategoriesv2r0.php`](../../../core/comp
 
 Destroys user's categories
 
-API version 2.0, task `destroy` in [`userscategoriesv2r0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2r0.php#L111).
+API version 2.0, task `destroy` in [`userscategoriesv2r0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2r0.php#L109).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ API version 2.0, task `destroy` in [`userscategoriesv2r0.php`](../../../core/com
 
 Create a thread or post in a thread
 
-API version 1.0, task `create` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L526).
+API version 1.0, task `create` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L524).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `create` in [`threadsv1r0.php`](../../../core/components/c
 
 Display categories for a section
 
-API version 1.0, task `categories` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L118).
+API version 1.0, task `categories` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L117).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -83,7 +83,7 @@ API version 1.0, task `categories` in [`threadsv1r0.php`](../../../core/componen
 
 Display a list of threads
 
-API version 1.0, task `list` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L296).
+API version 1.0, task `list` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L295).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -102,7 +102,7 @@ API version 1.0, task `list` in [`threadsv1r0.php`](../../../core/components/com
 
 Display a list of sections
 
-API version 1.0, task `sections` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L32).
+API version 1.0, task `sections` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L31).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ API version 1.0, task `sections` in [`threadsv1r0.php`](../../../core/components
 
 Retrieve a thread
 
-API version 1.0, task `read` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L824).
+API version 1.0, task `read` in [`threadsv1r0.php`](../../../core/components/com_forum/api/controllers/threadsv1r0.php#L820).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

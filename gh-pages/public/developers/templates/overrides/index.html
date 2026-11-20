@@ -261,7 +261,12 @@ component that owns the view.</li>
 <p>A component view resolves its layout through
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/View.php"><code>Hubzero\View\View::setPath()</code></a>,
 which builds the search list:</p>
-<pre><code class="language-php">            ob_end_clean();
+<pre><code class="language-php">            include $this-&gt;templateFile;
+
+            // Done with the requested template; get the buffer and
+            // clear it.
+            $this-&gt;renderedOutput = (string) ob_get_contents();
+            ob_end_clean();
 
             return $this-&gt;renderedOutput;
         }
@@ -291,11 +296,6 @@ which builds the search list:</p>
         }
 
         // Actually add the user-specified directories
-        $this-&gt;addPath($type, $path);
-
-        // Always add the fallback directories as last resort
-        if ($type == 'template' &amp;&amp; $this-&gt;overrideRoot) {
-            // Set the alternative template search dir
 </code></pre>
 <p>Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:</p>
@@ -370,7 +370,9 @@ template.</p>
 <h2 id="rule-4-plugin-views-have-no-fallback">Rule 4: plugin views have no fallback</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/View.php"><code>Hubzero\Plugin\View</code></a> builds
 its own search list:</p>
-<pre><code class="language-php">    protected function setPath($type, $path)
+<pre><code class="language-php">     * @return  void
+     */
+    protected function setPath($type, $path)
     {
         $type = strtolower($type);
 
@@ -389,8 +391,6 @@ its own search list:</p>
             foreach (array_reverse($this-&gt;overrideRoot) as $root) {
                 $this-&gt;addPath($type, $root . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . $this-&gt;getName());
             }
-        }
-    }
 </code></pre>
 <p>The override directory is named <code>plg_{folder}_{element}</code>, and the view name is
 a directory inside it. So</p>
@@ -409,7 +409,9 @@ sitting one level up, beside <code>tmpl/</code>, is never found.</p>
 <code>Hubzero\Document\Assets</code> statics goes through
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File</code></a>,
 which checks the template before the extension:</p>
-<pre><code class="language-php">    public function overridePath()
+<pre><code class="language-php">     * @return  string
+     */
+    public function overridePath()
     {
         if (!isset($this-&gt;paths['override'])) {
             $suffix = DS
@@ -432,8 +434,6 @@ which checks the template before the extension:</p>
                 }
             }
         }
-        return $this-&gt;paths['override'];
-    }
 </code></pre>
 <p>The override path is the extension's name and the file's name, with no
 <code>assets</code>, no <code>css</code> and no <code>js</code> directory in between, whatever the source file's
@@ -490,14 +490,17 @@ source paths these fall back to.</p>
 <p>Modules do not use a view object. <code>Hubzero\Module\Module::display()</code> requires
 one file, chosen by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::getLayoutPath()</code></a>:</p>
-<pre><code class="language-php">    public function getLayoutPath($module, $layout = 'default')
+<pre><code class="language-php">     * @param   string  $layout  The name of the module layout. If alternative layout, in the form template:filename.
+     * @return  string  The path to the module layout
+     */
+    public function getLayoutPath($module, $layout = 'default')
     {
         $template = $this-&gt;app['template']-&gt;template;
         $path     = dirname($this-&gt;app['template']-&gt;path);
         $default  = $layout;
         $explicit = false;
 
-        if (strpos($layout, ':') !== false) {
+        if (str_contains($layout, ':')) {
             // Get the template and file name from the string
             $temp = explode(':', $layout);
 
@@ -530,9 +533,6 @@ one file, chosen by
         if (file_exists($bPath)) {
             return $bPath;
         }
-
-        return $dPath;
-    }
 </code></pre>
 <p>There are exactly three candidates, tried in order:</p>
 <ol>
@@ -592,13 +592,13 @@ template's file adds new styles and redefining an existing one is a fatal
 error — PHP will not let the same function be declared twice.</p>
 <p>The system file defines <code>none</code>, <code>table</code>, <code>xhtml</code>, <code>outline</code>, <code>sliders</code> and
 <code>tabs</code>. The default is <code>none</code>:</p>
-<pre><code class="language-php">/*
+<pre><code class="language-php">/**
  * none (output raw module content)
- */
-function modChrome_none($module, &amp;$params, &amp;$attribs)
-{
-    echo $module-&gt;content;
-}
+ *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array&lt;mixed&gt;  $attribs
+ * @return  void
 </code></pre>
 <p>A layout picks a style with the <code>style</code> attribute on the <code>jdoc</code> tag:</p>
 <pre><code class="language-php">&lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; style=&quot;xhtml&quot; /&gt;

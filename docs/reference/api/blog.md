@@ -57,7 +57,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L668).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L664).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L392).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L390).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L434).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_blog/api/controllers/entriesv1r0.php#L432).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

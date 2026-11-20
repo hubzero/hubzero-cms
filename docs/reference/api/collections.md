@@ -58,7 +58,7 @@ API version 1.0, task `list` in [`collectionsv1r0.php`](../../../core/components
 
 Display posts
 
-API version 1.0, task `list` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L57).
+API version 1.0, task `list` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L56).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -73,7 +73,7 @@ API version 1.0, task `list` in [`postsv1r0.php`](../../../core/components/com_c
 
 Create a post
 
-API version 1.0, task `create` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L188).
+API version 1.0, task `create` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L187).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -92,7 +92,7 @@ API version 1.0, task `create` in [`postsv1r0.php`](../../../core/components/com
 
 Delete a post
 
-API version 1.0, task `delete` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L633).
+API version 1.0, task `delete` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L632).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -102,7 +102,7 @@ API version 1.0, task `delete` in [`postsv1r0.php`](../../../core/components/com
 
 Retrieve a post
 
-API version 1.0, task `read` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L364).
+API version 1.0, task `read` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L363).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -112,7 +112,7 @@ API version 1.0, task `read` in [`postsv1r0.php`](../../../core/components/com_c
 
 Update a post
 
-API version 1.0, task `update` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L445).
+API version 1.0, task `update` in [`postsv1r0.php`](../../../core/components/com_collections/api/controllers/postsv1r0.php#L444).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -314,7 +314,10 @@ it, the same path lowercased in full, the path with its directories
 lowercased but the file name as spelled, and the path with only the client
 directory (<code>site</code>, <code>admin</code>, <code>api</code>) or the one after the extension
 lowercased:</p>
-<pre><code class="language-php">        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
+<pre><code class="language-php">                break;
+        }
+
+        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
         $fileVariants = [];
         foreach ($relativePaths as $relativePath) {
             $fileVariants[] = $relativePath;
@@ -335,9 +338,6 @@ lowercased:</p>
                     $lowered = $parts;
                     $lowered[$depth - 1] = strtolower($lowered[$depth - 1]);
                     $fileVariants[] = implode('/', $lowered);
-                }
-            }
-        }
 </code></pre>
 <p>So <code>Components\Booking\Models\Instrument</code> is looked for at:</p>
 <pre><code class="language-text">components/com_booking/Models/Instrument.php
@@ -359,7 +359,10 @@ directories and files as the namespace spells them, or all lowercase.</p>
 <h2 id="whichever-tree-holds-the-extension-owns-it">Whichever tree holds the extension owns it</h2>
 <p>For extension classes the loader first decides <em>which directory owns the
 extension</em>, then searches only there:</p>
-<pre><code class="language-php">        // Extensions are different: whichever directory holds the extension
+<pre><code class="language-php">            return false;
+        }
+
+        // Extensions are different: whichever directory holds the extension
         // owns it outright, so an app level copy fully replaces the core one.
         $owningBase = null;
 
@@ -373,9 +376,6 @@ extension</em>, then searches only there:</p>
         }
 
         // If no extension directory found, class doesn't exist
-        if ($owningBase === null) {
-            return false;
-        }
 </code></pre>
 <p><code>app/</code> is checked first, so if <code>app/components/com_booking/</code> exists, the core
 copy is never consulted again — for any class in that namespace.</p>
@@ -417,14 +417,14 @@ as well as required by the plugin loader.</p>
 <h2 id="the-legacy-underscore-fallback">The legacy underscore fallback</h2>
 <p>If no prefix matches, the loader falls back to treating the whole class name
 as a path, converting <strong>both</strong> backslashes and underscores to separators:</p>
-<pre><code class="language-php">    public static function normalizeClass(string $class): string
+<pre><code class="language-php">     * @param string $class
+     * @return string
+     */
+    public static function normalizeClass(string $class): string
     {
         if ($class[0] == '\\') {
             $class = substr($class, 1);
         }
-
-        return str_replace(['\\', '_'], DIRECTORY_SEPARATOR, $class) . '.php';
-    }
 </code></pre>
 <p>That is why the pre-2.0 underscored names still resolve where the files still
 exist: <code>Hubzero_User_Profile</code> becomes <code>Hubzero/User/Profile.php</code>. It is a

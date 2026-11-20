@@ -54,9 +54,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:211`](../../../core/components/com_courses/site/controllers/offering.php#L211) with `[ $this->course, $this->course->offering(), true, ]`
-- [`core/components/com_courses/site/controllers/offering.php:230`](../../../core/components/com_courses/site/controllers/offering.php#L230) with `[ $this->course, $this->course->offering(), ]`
-- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:23`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L23) with `[ $this->course, $this->offering, true, ]`
+- [`core/components/com_courses/site/controllers/offering.php:209`](../../../core/components/com_courses/site/controllers/offering.php#L209) with `[ $this->course, $this->course->offering(), true, ]`
+- [`core/components/com_courses/site/controllers/offering.php:228`](../../../core/components/com_courses/site/controllers/offering.php#L228) with `[ $this->course, $this->course->offering(), ]`
+- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:27`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L27) with `[ $this->course, $this->offering, true, ]`
 
 Listeners:
 
@@ -100,7 +100,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/default.php:108`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L108) with `[ $course, $offering, ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/default.php:109`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L109) with `[ $course, $offering, ]`
 
 Listeners:
 
@@ -110,7 +110,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:176`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L176) with `[$this->course, $this->offering]`
+- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:177`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L177) with `[$this->course, $this->offering]`
 
 Listeners:
 
@@ -132,7 +132,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:573`](../../../core/components/com_courses/site/controllers/course.php#L573) with `[$this->course]`
+- [`core/components/com_courses/site/controllers/course.php:574`](../../../core/components/com_courses/site/controllers/course.php#L574) with `[$this->course]`
 
 No plugin in the source tree listens for this event.
 
@@ -156,7 +156,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:378`](../../../core/components/com_courses/site/controllers/offering.php#L378) with `[ $this->course, $offering, $offering->section(), ]`
+- [`core/components/com_courses/site/controllers/offering.php:376`](../../../core/components/com_courses/site/controllers/offering.php#L376) with `[ $this->course, $offering, $offering->section(), ]`
 
 Listeners:
 
@@ -176,7 +176,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:150`](../../../core/components/com_courses/site/controllers/course.php#L150) with `[ $this->course, $this->view->active, ]`
+- [`core/components/com_courses/site/controllers/course.php:148`](../../../core/components/com_courses/site/controllers/course.php#L148) with `[ $this->course, $active, ]`
 
 Listeners:
 
@@ -189,7 +189,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/views/course/tmpl/display.php:778`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L778) with `[$this->course]`
+- [`core/components/com_courses/site/views/course/tmpl/display.php:779`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L779) with `[$this->course]`
 
 Listeners:
 
@@ -207,7 +207,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:363`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L363)
+- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:364`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L364)
 
 Listeners:
 

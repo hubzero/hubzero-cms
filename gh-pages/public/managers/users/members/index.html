@@ -632,7 +632,9 @@ everything hung off it. This section replaces the older
 <p>Deleting needs <code>core.delete</code> on <code>com_members</code>, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls <code>destroy()</code>
 on the member model:</p>
-<pre><code class="language-php">    public function destroy()
+<pre><code class="language-php">     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
     {
         $data = $this-&gt;toArray();
 
@@ -671,9 +673,6 @@ on the member model:</p>
         if ($result) {
             Event::trigger('user.onUserAfterDelete', [$data, true, $this-&gt;getError()]);
         }
-
-        return $result;
-    }
 </code></pre>
 <p>So the account's own profile field values, notes, hosts and tags go with it,
 and the <code>user.onUserAfterDelete</code> event carries the deletion outward. Seven

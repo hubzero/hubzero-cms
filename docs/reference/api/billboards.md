@@ -16,7 +16,7 @@ Endpoints under `/api/billboards`, from the `com_billboards` API controllers. Au
 
 Lists an index of existing billboard collections
 
-API version 1.0, task `list` in [`collectionsv1r0.php`](../../../core/components/com_billboards/api/controllers/collectionsv1r0.php#L22).
+API version 1.0, task `list` in [`collectionsv1r0.php`](../../../core/components/com_billboards/api/controllers/collectionsv1r0.php#L21).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -27,7 +27,7 @@ API version 1.0, task `list` in [`collectionsv1r0.php`](../../../core/components
 
 Lists all billboards for a given collection
 
-API version 1.0, task `read` in [`collectionsv1r0.php`](../../../core/components/com_billboards/api/controllers/collectionsv1r0.php#L55).
+API version 1.0, task `read` in [`collectionsv1r0.php`](../../../core/components/com_billboards/api/controllers/collectionsv1r0.php#L54).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

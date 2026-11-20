@@ -195,8 +195,7 @@ will not seek.</p>
 <pre><code class="language-php">use Hubzero\Content\Server;
 </code></pre>
 <h2 id="serving-a-file">Serving a file</h2>
-<pre><code class="language-php">        $server = new Server();
-        $server-&gt;filename($file_path);
+<pre><code class="language-php">        $server-&gt;filename($file_path);
         $server-&gt;disposition('inline');
         $server-&gt;acceptranges(false); // @TODO fix byte range support
 

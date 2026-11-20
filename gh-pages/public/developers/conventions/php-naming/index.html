@@ -296,9 +296,9 @@ includes when there is no class.</p>
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller-&gt;execute();
-    }
 </code></pre>
 <p>A component with neither falls through to
 <code>Hubzero\Component\Loader::executeDefault()</code>, which instantiates

@@ -17,7 +17,7 @@ Endpoints under `/api/newsletter`, from the `com_newsletter` API controllers. Au
 
 Return data for past newsletters
 
-API version 1.0, task `archive` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L87).
+API version 1.0, task `archive` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L84).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -28,13 +28,13 @@ API version 1.0, task `archive` in [`newslettersv1r0.php`](../../../core/compone
 
 Return data for the current newsletter
 
-API version 1.0, task `current` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L24).
+API version 1.0, task `current` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L21).
 
 ## GET /newsletters/list
 
 Return data for newsletters
 
-API version 1.0, task `list` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L48).
+API version 1.0, task `list` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L45).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

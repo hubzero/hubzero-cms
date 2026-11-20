@@ -11,7 +11,7 @@ Events in the `search` group. A plugin in `core/plugins/search/` receives an eve
 
 Fired from:
 
-- [`core/plugins/groups/search/search.php:43`](../../../core/plugins/groups/search/search.php#L43) with `[$table, $ormGroup]`
+- [`core/plugins/groups/search/search.php:42`](../../../core/plugins/groups/search/search.php#L42) with `[$table, $ormGroup]`
 - [`core/plugins/system/content/content.php:30`](../../../core/plugins/system/content/content.php#L30) with `[$table, $model]`
 
 Listeners:
@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:433`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L433)
+- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:461`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L461)
 
 No plugin in the source tree listens for this event.
 
@@ -54,7 +54,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_search/site/controllers/solr.php:325`](../../../core/components/com_search/site/controllers/solr.php#L325) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
+- [`core/components/com_search/site/controllers/solr.php:322`](../../../core/components/com_search/site/controllers/solr.php#L322) with `[$result['hubtype'], &$result, $terms, $highlightOptions]`
 
 No plugin in the source tree listens for this event.
 
@@ -62,7 +62,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/api/controllers/searchv1r0.php:283`](../../../core/components/com_search/api/controllers/searchv1r0.php#L283)
+- [`core/components/com_search/api/controllers/searchv1r0.php:282`](../../../core/components/com_search/api/controllers/searchv1r0.php#L282)
 
 Listeners:
 
@@ -88,7 +88,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/cron/search/search.php:160`](../../../core/plugins/cron/search/search.php#L160) with `[$item->type, $item->type_id, true]`
+- [`core/plugins/cron/search/search.php:159`](../../../core/plugins/cron/search/search.php#L159) with `[$item->type, $item->type_id, true]`
 
 Listeners:
 

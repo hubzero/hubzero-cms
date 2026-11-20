@@ -26,7 +26,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Base/Application.php:477`](../../../core/libraries/Hubzero/Base/Application.php#L477)
+- [`core/libraries/Hubzero/Base/Application.php:499`](../../../core/libraries/Hubzero/Base/Application.php#L499)
 
 Listeners:
 
@@ -58,7 +58,7 @@ Listeners:
 Fired from:
 
 - [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:69`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L69)
-- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:48`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L48)
+- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:47`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L47)
 - [`core/bootstrap/Site/Providers/RouterServiceProvider.php:69`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L69)
 
 Listeners:
@@ -96,7 +96,7 @@ Listeners:
 Fired from:
 
 - [`core/bootstrap/Administrator/Providers/RouterServiceProvider.php:63`](../../../core/bootstrap/Administrator/Providers/RouterServiceProvider.php#L63)
-- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:42`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L42)
+- [`core/bootstrap/Api/Providers/RouterServiceProvider.php:41`](../../../core/bootstrap/Api/Providers/RouterServiceProvider.php#L41)
 - [`core/bootstrap/Site/Providers/RouterServiceProvider.php:63`](../../../core/bootstrap/Site/Providers/RouterServiceProvider.php#L63)
 
 No plugin in the source tree listens for this event.
@@ -123,8 +123,8 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Relational.php:4932`](../../../core/libraries/Hubzero/Database/Relational.php#L4932) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:311`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L311) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:5062`](../../../core/libraries/Hubzero/Database/Relational.php#L5062) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:313`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L313) with `[$this->getTableName(), $this]`
 
 Listeners:
 
@@ -142,8 +142,8 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:566`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L566)
-- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:343`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L343) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:569`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L569)
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:345`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L345) with `[$this->getTableName(), $this]`
 
 No plugin in the source tree listens for this event.
 
@@ -151,13 +151,13 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/models/orm/applicant.php:123`](../../../core/components/com_groups/models/orm/applicant.php#L123) with `[$this->getTableName(), $this]`
-- [`core/components/com_groups/models/orm/invitee.php:123`](../../../core/components/com_groups/models/orm/invitee.php#L123) with `[$this->getTableName(), $this]`
-- [`core/components/com_groups/models/orm/manager.php:123`](../../../core/components/com_groups/models/orm/manager.php#L123) with `[$this->getTableName(), $this]`
-- [`core/components/com_groups/models/orm/member.php:124`](../../../core/components/com_groups/models/orm/member.php#L124) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/applicant.php:117`](../../../core/components/com_groups/models/orm/applicant.php#L117) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/invitee.php:117`](../../../core/components/com_groups/models/orm/invitee.php#L117) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/manager.php:117`](../../../core/components/com_groups/models/orm/manager.php#L117) with `[$this->getTableName(), $this]`
+- [`core/components/com_groups/models/orm/member.php:118`](../../../core/components/com_groups/models/orm/member.php#L118) with `[$this->getTableName(), $this]`
 - [`core/components/com_modules/models/menu.php:71`](../../../core/components/com_modules/models/menu.php#L71) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Relational.php:4457`](../../../core/libraries/Hubzero/Database/Relational.php#L4457) with `[$this->getTableName(), $this, $this->changes]`
-- [`core/libraries/Hubzero/Database/Table.php:736`](../../../core/libraries/Hubzero/Database/Table.php#L736) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:4509`](../../../core/libraries/Hubzero/Database/Relational.php#L4509) with `[$this->getTableName(), $this, $this->changes]`
+- [`core/libraries/Hubzero/Database/Table.php:747`](../../../core/libraries/Hubzero/Database/Table.php#L747) with `[$this->getTableName(), $this]`
 
 Listeners:
 
@@ -167,8 +167,8 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:531`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L531)
-- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:241`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L241) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php:534`](../../../core/libraries/Hubzero/Database/Tests/LifecycleHooksTest.php#L534)
+- [`core/libraries/Hubzero/Database/Traits/SoftDeletes.php:243`](../../../core/libraries/Hubzero/Database/Traits/SoftDeletes.php#L243) with `[$this->getTableName(), $this]`
 
 No plugin in the source tree listens for this event.
 
@@ -176,7 +176,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Traits/MassPrunable.php:134`](../../../core/libraries/Hubzero/Database/Traits/MassPrunable.php#L134) with `[$instance->getTableName(), $query]`
+- [`core/libraries/Hubzero/Database/Traits/MassPrunable.php:136`](../../../core/libraries/Hubzero/Database/Traits/MassPrunable.php#L136) with `[$instance->getTableName(), $query]`
 
 No plugin in the source tree listens for this event.
 

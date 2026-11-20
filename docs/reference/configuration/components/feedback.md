@@ -13,5 +13,5 @@ Parameters from [`core/components/com_feedback/config/config.xml`](../../../../c
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
-| `defaultpic` | Default picture | text | `/components/com_feedback/site/assets/img/contributor.gif` | Default placeholder image for user pictures |
+| `defaultpic` | Default picture | text | `/core/components/com_feedback/site/assets/img/contributor.gif` | Default placeholder image for user pictures |
 | `uploadpath` | Upload path | text | `/site/quotes` | File path for pictures |

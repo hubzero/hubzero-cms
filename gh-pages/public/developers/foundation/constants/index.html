@@ -228,7 +228,7 @@ the code:</p>
 </code></pre>
 <p>The same join appears in <code>com_resources</code>, which builds every media path this
 way rather than concatenating separators of its own:</p>
-<pre><code class="language-php">        $new_file = PATH_APP . DS . $resource_path . DS . 'presentation.json';
+<pre><code class="language-php">        $data['presentation']['media']  = $new_media;
 </code></pre>
 <h2 id="version">Version</h2>
 <p><code>HVERSION</code> is the platform version as a string, currently</p>

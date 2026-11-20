@@ -414,10 +414,10 @@ class Kb extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller
+        /** @var \Hubzero\Component\ControllerInterface $controller Every controller extends one that is */
         $controller = new $controllerName();
         $controller-&gt;execute();
     }
-}
 </code></pre>
 <p>Three things are worth copying from it. The <code>core.manage</code> check is what keeps
 non-managers out of the whole client — no controller sees the request without

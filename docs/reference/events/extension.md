@@ -21,8 +21,8 @@ Fired from:
 
 - [`core/components/com_modules/admin/controllers/modules.php:443`](../../../core/components/com_modules/admin/controllers/modules.php#L443) with `[$this->option . '.module', &$model, $model->isNew()]`
 - [`core/components/com_templates/admin/controllers/styles.php:334`](../../../core/components/com_templates/admin/controllers/styles.php#L334) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
-- [`core/components/com_templates/models/file.php:154`](../../../core/components/com_templates/models/file.php#L154) with `['com_templates.source', &$this, false]`
-- [`core/components/com_templates/models/source.php:152`](../../../core/components/com_templates/models/source.php#L152) with `['com_templates.source', &$this, false]`
+- [`core/components/com_templates/models/file.php:149`](../../../core/components/com_templates/models/file.php#L149) with `['com_templates.source', &$this, false]`
+- [`core/components/com_templates/models/source.php:148`](../../../core/components/com_templates/models/source.php#L148) with `['com_templates.source', &$this, false]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,8 +39,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_modules/admin/controllers/modules.php:413`](../../../core/components/com_modules/admin/controllers/modules.php#L413) with `$eventArgs`
-- [`core/components/com_templates/admin/controllers/styles.php:266`](../../../core/components/com_templates/admin/controllers/styles.php#L266) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
-- [`core/components/com_templates/models/file.php:132`](../../../core/components/com_templates/models/file.php#L132) with `['com_templates.source', &$data, false]`
-- [`core/components/com_templates/models/source.php:130`](../../../core/components/com_templates/models/source.php#L130) with `['com_templates.source', &$data, false]`
+- [`core/components/com_templates/admin/controllers/styles.php:265`](../../../core/components/com_templates/admin/controllers/styles.php#L265) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
+- [`core/components/com_templates/models/file.php:127`](../../../core/components/com_templates/models/file.php#L127) with `['com_templates.source', &$data, false]`
+- [`core/components/com_templates/models/source.php:126`](../../../core/components/com_templates/models/source.php#L126) with `['com_templates.source', &$data, false]`
 
 No plugin in the source tree listens for this event.

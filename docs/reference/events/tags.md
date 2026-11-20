@@ -11,10 +11,10 @@ Events in the `tags` group. A plugin in `core/plugins/tags/` receives an event b
 
 Fired from:
 
-- [`core/components/com_tags/admin/controllers/entries.php:231`](../../../core/components/com_tags/admin/controllers/entries.php#L231) with `[&$row, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1r0.php:265`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L265) with `[&$record, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1r0.php:400`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L400) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:805`](../../../core/components/com_tags/site/controllers/tags.php#L805) with `[&$row, $isNew]`
+- [`core/components/com_tags/admin/controllers/entries.php:229`](../../../core/components/com_tags/admin/controllers/entries.php#L229) with `[&$row, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1r0.php:263`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L263) with `[&$record, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1r0.php:398`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L398) with `[&$record, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:809`](../../../core/components/com_tags/site/controllers/tags.php#L809) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -22,7 +22,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:432`](../../../core/components/com_tags/site/controllers/tags.php#L432)
+- [`core/components/com_tags/site/controllers/tags.php:436`](../../../core/components/com_tags/site/controllers/tags.php#L436)
 
 No plugin in the source tree listens for this event.
 
@@ -30,10 +30,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/admin/controllers/entries.php:206`](../../../core/components/com_tags/admin/controllers/entries.php#L206) with `[&$row, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1r0.php:249`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L249) with `[&$record, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1r0.php:380`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L380) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:780`](../../../core/components/com_tags/site/controllers/tags.php#L780) with `[&$row, $isNew]`
+- [`core/components/com_tags/admin/controllers/entries.php:204`](../../../core/components/com_tags/admin/controllers/entries.php#L204) with `[&$row, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1r0.php:247`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L247) with `[&$record, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1r0.php:378`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L378) with `[&$record, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:784`](../../../core/components/com_tags/site/controllers/tags.php#L784) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -41,9 +41,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/admin/controllers/entries.php:276`](../../../core/components/com_tags/admin/controllers/entries.php#L276) with `[$id]`
-- [`core/components/com_tags/api/controllers/entriesv1r0.php:438`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L438) with `[$id]`
-- [`core/components/com_tags/site/controllers/tags.php:857`](../../../core/components/com_tags/site/controllers/tags.php#L857) with `[$id]`
+- [`core/components/com_tags/admin/controllers/entries.php:274`](../../../core/components/com_tags/admin/controllers/entries.php#L274) with `[$id]`
+- [`core/components/com_tags/api/controllers/entriesv1r0.php:436`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L436) with `[$id]`
+- [`core/components/com_tags/site/controllers/tags.php:858`](../../../core/components/com_tags/site/controllers/tags.php#L858) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -51,9 +51,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:171`](../../../core/components/com_tags/site/controllers/tags.php#L171) with `[ $tags, $this->view->filters['limit'], $this->view->filters['start'], $this->view->filters['sort'], $area, ]`
-- [`core/components/com_tags/site/controllers/tags.php:440`](../../../core/components/com_tags/site/controllers/tags.php#L440) with `[ $tags, $limit, $limitstart, $sort, '', ]`
-- [`core/components/com_tags/site/controllers/tags.php:500`](../../../core/components/com_tags/site/controllers/tags.php#L500) with `[ $tags, $limit, $limitstart, $sort, $area, ]`
+- [`core/components/com_tags/site/controllers/tags.php:170`](../../../core/components/com_tags/site/controllers/tags.php#L170) with `[ $tags, $this->view->get('filters')['limit'], $this->view->get('filters')['start'], $this->view->get('filters')['sort'], $area, ]`
+- [`core/components/com_tags/site/controllers/tags.php:444`](../../../core/components/com_tags/site/controllers/tags.php#L444) with `[ $tags, $limit, $limitstart, $sort, '', ]`
+- [`core/components/com_tags/site/controllers/tags.php:504`](../../../core/components/com_tags/site/controllers/tags.php#L504) with `[ $tags, $limit, $limitstart, $sort, $area, ]`
 
 Listeners:
 

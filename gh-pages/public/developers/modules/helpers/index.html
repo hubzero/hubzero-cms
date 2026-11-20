@@ -350,9 +350,14 @@ was made, stores it, and returns it.</p>
 and <code>display()</code>, which the loader calls, decides whether to reuse a stored
 copy. The 19 core modules that cache do this. <code>mod_findresources</code> is the
 pattern in full:</p>
-<pre><code class="language-php">class Findresources extends Module
-{
+<pre><code class="language-php">{
+    /**
+     * @var  \Hubzero\Database\Rows
+     */
     protected $categories;
+    /**
+     * @var  \Hubzero\Database\Rows
+     */
     protected $tags;
 
     /**
@@ -385,11 +390,6 @@ pattern in full:</p>
         if ($content = $this-&gt;getCacheContent()) {
             echo $content;
             return;
-        }
-
-        $this-&gt;run();
-    }
-}
 </code></pre>
 <p>Never call <code>getCacheContent()</code> from <code>run()</code>, and never call <code>display()</code>
 from <code>run()</code>: on a miss <code>getCacheContent()</code> calls <code>run()</code>, and either one

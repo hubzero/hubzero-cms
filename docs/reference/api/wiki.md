@@ -19,7 +19,7 @@ Endpoints under `/api/wiki`, from the `com_wiki` API controllers. Authenticate w
 
 Create a page
 
-API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L131).
+API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L129).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -38,7 +38,7 @@ API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com
 
 Display a list of pages
 
-API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L30).
+API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L28).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_w
 
 Delete a page
 
-API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L502).
+API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L500).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com
 
 Display info for a page
 
-API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L213).
+API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L211).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@ API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_w
 
 Update a page
 
-API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L278).
+API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L276).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

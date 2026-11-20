@@ -21,7 +21,7 @@ Endpoints under `/api/resources`, from the `com_resources` API controllers. Auth
 
 A simple search on title and id for use with autocomplete
 
-API version 1.1, task `autocomplete` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L365).
+API version 1.1, task `autocomplete` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L364).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -47,7 +47,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Get a list of resources
 
-API version 1.1, task `list` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L33).
+API version 1.1, task `list` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L32).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -71,7 +71,7 @@ API version 1.0, task `renderlatex` in [`entriesv1r0.php`](../../../core/compone
 
 Render LaTeX expression
 
-API version 1.1, task `renderlatex` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L449).
+API version 1.1, task `renderlatex` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L448).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ API version 1.0, task `whatsnew` in [`entriesv1r0.php`](../../../core/components
 
 Get a list of new content for a given time period
 
-API version 1.1, task `whatsnew` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L315).
+API version 1.1, task `whatsnew` in [`entriesv1r1.php`](../../../core/components/com_resources/api/controllers/entriesv1r1.php#L314).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

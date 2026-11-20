@@ -196,7 +196,7 @@ already knows how to require a layout:</p>
 
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -228,7 +228,10 @@ it. The layouts, which do emit output, keep the guard; see
 <h2 id="how-the-loader-runs-it">How the loader runs it</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>
 finds the entry file, loads the module's language file, and then:</p>
-<pre><code class="language-php">            // Try class-based module loading first
+<pre><code class="language-php">
+            $module-&gt;path = $path;
+
+            // Try class-based module loading first
             $className = $this-&gt;resolveClassName($module-&gt;module);
             $output = '';
 
@@ -239,7 +242,7 @@ finds the entry file, loads the module's language file, and then:</p>
                 $content = '';
                 ob_start();
                 include $path;
-                $output = ob_get_contents() . $content;
+                $output = (string) ob_get_contents() . $content;
                 ob_end_clean();
             }
 
@@ -251,11 +254,8 @@ finds the entry file, loads the module's language file, and then:</p>
 
                 ob_start();
                 $instance-&gt;display();
-                $module-&gt;content = ob_get_contents();
+                $module-&gt;content = (string) ob_get_contents();
                 ob_end_clean();
-            } else {
-                $module-&gt;content = $output;
-            }
 </code></pre>
 <p>In order:</p>
 <ol>

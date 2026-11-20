@@ -15,7 +15,7 @@ Endpoints under `/api/whatsnew`, from the `com_whatsnew` API controllers. Authen
 
 Displays a list of new content
 
-API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L23).
+API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L22).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

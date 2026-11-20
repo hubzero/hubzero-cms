@@ -474,16 +474,15 @@ required, add the attribute yourself.</p>
 <h3 id="tooltips">Tooltips</h3>
 <p><code>Html::behavior('tooltip')</code> binds jQuery UI tooltips to <code>.hasTip</code> and rewrites
 the <code>title</code> attribute on creation:</p>
-<pre><code class="language-php">					create: function(event, ui) {
+<pre><code class="language-php">            &quot;jQuery(document).ready(function($){
+				$('&quot; . $selector . &quot;').tooltip({
+					position: {
+						my: 'center bottom',
+						at: 'center top'
+					},
+					create: function(event, ui) {
 						var tip = $(this),
 							tipText = tip.attr('title');
-
-						if (tipText.indexOf('::') != -1) {
-							var parts = tipText.split('::');
-							tip.attr('title', parts[1]);
-						}
-					},
-					tooltipClass: 'tooltip'
 </code></pre>
 <p>After that runs, a <code>Label::Description</code> title holds only its description.
 <code>title</code> is what assistive technology falls back to for an element's
@@ -503,8 +502,7 @@ of the three icon systems for that reason. See
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Sanitize.php"><code>Hubzero\Utility\Sanitize</code></a>
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:</p>
-<pre><code class="language-php">    protected static function addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
-    {
+<pre><code class="language-php">    {
         $htmlPurifierWhitelist-&gt;addAttribute('img', 'usemap', 'CDATA');
 
         // Allow ARIA attributes on common elements for accessibility
@@ -532,27 +530,27 @@ markup.</p>
         if (!empty($lists)) {
             $buffer[] = $tab . '&lt;dl id=&quot;system-message&quot;&gt;';
             foreach ($lists as $type =&gt; $msgs) {
-                if (count($msgs)) {
-                    $buffer[] = $tab
-                        . $tab
-                        . '&lt;dt class=&quot;'
-                        . strtolower($type)
-                        . '&quot;&gt;'
-                        . App::get('language')-&gt;txt($type)
-                        . '&lt;/dt&gt;';
-                    $buffer[] = $tab . $tab . '&lt;dd class=&quot;' . strtolower($type) . ' message&quot;&gt;';
-                    $buffer[] = $tab . $tab . $tab . '&lt;ul&gt;';
-                    foreach ($msgs as $msg) {
-                        $buffer[] = $tab . $tab . $tab . $tab . '&lt;li&gt;' . $msg . '&lt;/li&gt;';
-                    }
-                    $buffer[] = $tab . $tab . $tab . '&lt;/ul&gt;';
-                    $buffer[] = $tab . $tab . '&lt;/dd&gt;';
+                $buffer[] = $tab
+                    . $tab
+                    . '&lt;dt class=&quot;'
+                    . strtolower($type)
+                    . '&quot;&gt;'
+                    . App::get('language')-&gt;txt($type)
+                    . '&lt;/dt&gt;';
+                $buffer[] = $tab . $tab . '&lt;dd class=&quot;' . strtolower($type) . ' message&quot;&gt;';
+                $buffer[] = $tab . $tab . $tab . '&lt;ul&gt;';
+                foreach ($msgs as $msg) {
+                    $buffer[] = $tab . $tab . $tab . $tab . '&lt;li&gt;' . $msg . '&lt;/li&gt;';
                 }
+                $buffer[] = $tab . $tab . $tab . '&lt;/ul&gt;';
+                $buffer[] = $tab . $tab . '&lt;/dd&gt;';
             }
             $buffer[] = $tab . '&lt;/dl&gt;';
         }
 
         $buffer[] = '&lt;/div&gt;';
+
+        return implode($lnEnd, $buffer);
 </code></pre>
 <p>A <code>&lt;div id=&quot;system-message-container&quot;&gt;</code> holding a <code>&lt;dl id=&quot;system-message&quot;&gt;</code>,
 one <code>&lt;dt&gt;</code> per message type with the type name translated, and the messages in a

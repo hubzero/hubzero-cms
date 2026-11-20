@@ -407,7 +407,7 @@ hub's administrator to create one, ship a
 job first so re-running the migration does not duplicate it:</p>
 <pre><code class="language-php">     * event =&gt; (title, recurrence)
      *
-     * @var  array
+     * @var  array&lt;mixed&gt;
      **/
     protected static $jobs = [
         'expireGroupMemberships' =&gt; [

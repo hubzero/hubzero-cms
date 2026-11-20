@@ -53,7 +53,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Retrieve tag's logs that preceeded the given log
 
-API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2r0.php#L27).
+API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2r0.php#L26).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -65,7 +65,7 @@ API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../cor
 
 Delete an entry
 
-API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L405).
+API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L403).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@ API version 1.0, task `delete` in [`entriesv1r0.php`](../../../core/components/c
 
 Retrieve an entry
 
-API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L271).
+API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L269).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -85,7 +85,7 @@ API version 1.0, task `read` in [`entriesv1r0.php`](../../../core/components/com
 
 Update an entry
 
-API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L302).
+API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L300).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -100,7 +100,7 @@ API version 1.0, task `update` in [`entriesv1r0.php`](../../../core/components/c
 
 Add a tag to an item
 
-API version 1.0, task `add` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L518).
+API version 1.0, task `add` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L516).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ API version 1.0, task `add` in [`entriesv1r0.php`](../../../core/components/com_
 
 Remove tag from an item
 
-API version 1.0, task `remove` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L447).
+API version 1.0, task `remove` in [`entriesv1r0.php`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L445).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -11,8 +11,8 @@ Events in the `mw` group. A plugin in `core/plugins/mw/` receives an event by de
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:725`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L725) with `[$app->toolname, $app->version]`
-- [`core/components/com_tools/site/controllers/sessions.php:725`](../../../core/components/com_tools/site/controllers/sessions.php#L725) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:735`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L735) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/site/controllers/sessions.php:726`](../../../core/components/com_tools/site/controllers/sessions.php#L726) with `[$app->toolname, $app->version]`
 
 No plugin in the source tree listens for this event.
 
@@ -20,8 +20,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1243`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1243) with `[$toolname, $tv->revision]`
-- [`core/components/com_tools/site/controllers/sessions.php:1428`](../../../core/components/com_tools/site/controllers/sessions.php#L1428) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1254`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1254) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/site/controllers/sessions.php:1430`](../../../core/components/com_tools/site/controllers/sessions.php#L1430) with `[$toolname, $tv->revision]`
 
 No plugin in the source tree listens for this event.
 
@@ -29,9 +29,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/admin/controllers/sessions.php:165`](../../../core/components/com_tools/admin/controllers/sessions.php#L165) with `[$row->appname]`
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1556`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1556) with `[$ms->get('appname')]`
-- [`core/components/com_tools/site/controllers/sessions.php:1597`](../../../core/components/com_tools/site/controllers/sessions.php#L1597) with `[$ms->appname]`
+- [`core/components/com_tools/admin/controllers/sessions.php:166`](../../../core/components/com_tools/admin/controllers/sessions.php#L166) with `[$row->appname]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1568`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1568) with `[$ms->get('appname')]`
+- [`core/components/com_tools/site/controllers/sessions.php:1598`](../../../core/components/com_tools/site/controllers/sessions.php#L1598) with `[$ms->appname]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,8 +39,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:699`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L699) with `[$app->toolname, $app->version]`
-- [`core/components/com_tools/site/controllers/sessions.php:680`](../../../core/components/com_tools/site/controllers/sessions.php#L680) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:708`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L708) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/site/controllers/sessions.php:681`](../../../core/components/com_tools/site/controllers/sessions.php#L681) with `[$app->toolname, $app->version]`
 
 No plugin in the source tree listens for this event.
 
@@ -48,8 +48,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1225`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1225) with `[$toolname, $tv->revision]`
-- [`core/components/com_tools/site/controllers/sessions.php:1249`](../../../core/components/com_tools/site/controllers/sessions.php#L1249) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1235`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1235) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/site/controllers/sessions.php:1251`](../../../core/components/com_tools/site/controllers/sessions.php#L1251) with `[$toolname, $tv->revision]`
 
 No plugin in the source tree listens for this event.
 
@@ -57,8 +57,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/admin/controllers/sessions.php:150`](../../../core/components/com_tools/admin/controllers/sessions.php#L150) with `[$row->appname]`
-- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1550`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1550) with `[$ms->get('appname')]`
+- [`core/components/com_tools/admin/controllers/sessions.php:151`](../../../core/components/com_tools/admin/controllers/sessions.php#L151) with `[$row->appname]`
+- [`core/components/com_tools/api/controllers/sessionsv1r0.php:1561`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1561) with `[$ms->get('appname')]`
 - [`core/components/com_tools/site/controllers/sessions.php:1584`](../../../core/components/com_tools/site/controllers/sessions.php#L1584) with `[$ms->appname]`
 
 No plugin in the source tree listens for this event.
@@ -67,6 +67,6 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/site/views/sessions/tmpl/session.php:610`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L610) with `[ $this->option, $this->toolname, $this->app->sess, ]`
+- [`core/components/com_tools/site/views/sessions/tmpl/session.php:602`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L602) with `[ $this->option, $this->toolname, $this->app->sess, ]`
 
 No plugin in the source tree listens for this event.

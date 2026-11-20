@@ -252,7 +252,6 @@ use Components\Kb\Models\Vote;
 use Hubzero\Component\SiteController;
 use Exception;
 use Hubzero\Facades\Document;
-use Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;
@@ -272,6 +271,7 @@ use Hubzero\Facades\Route;
 class Articles extends SiteController
 {
     /**
+     * Execute a task
 </code></pre>
 <p>The facade imports at the top are not decoration. Inside a namespace an
 unqualified <code>Route</code> resolves to
@@ -296,8 +296,7 @@ statement for a class that is never registered.</p>
 </aside>
 <p>A task takes no arguments and returns nothing; it produces output or a
 redirect:</p>
-<pre><code class="language-php">     *
-     * @return  void
+<pre><code class="language-php">     * @return  void
      */
     public function execute()
     {
@@ -328,6 +327,7 @@ redirect:</p>
     }
 
     /**
+     * The pseudo-category that stands for every article
 </code></pre>
 <h2 id="properties">Properties</h2>
 <p>Each controller has:</p>
@@ -492,10 +492,7 @@ highest. So <code>api/controllers/entriesv1r0.php</code> defines
 <code>Components\Kb\Api\Controllers\Entriesv1r0</code> and answers <code>/api/kb/list</code>.</p>
 <p>Tasks are documented in their docblock, and the base <code>indexTask()</code> reads those
 docblocks back with reflection to publish the endpoint list:</p>
-<pre><code class="language-php">     *
-     * Without a state, every caller gets what v1.0 always returned: published
-     * articles in published categories. A Super User who passes one gets
-     * articles in that state, from every category.
+<pre><code class="language-php">     * articles in that state, from every category.
      *
      * @apiMethod GET
      * @apiUri    /kb/list
@@ -508,6 +505,9 @@ docblocks back with reflection to publish the endpoint list:</p>
      * }
      * @apiParameter {
      *      &quot;name&quot;:          &quot;limitstart&quot;,
+     *      &quot;description&quot;:   &quot;Offset to start returning results from (snapped to a multiple of limit).&quot;,
+     *      &quot;type&quot;:          &quot;integer&quot;,
+     *      &quot;required&quot;:      false,
 </code></pre>
 <p>That means the docblock is the API documentation, not a comment about it. An
 endpoint with no docblock is an endpoint nobody discovers.</p>

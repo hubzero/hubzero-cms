@@ -9,7 +9,7 @@
 <extension type="component" version="2.5" method="upgrade">
 	<name>com_installer</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2020 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright © 2005-2026 Purdue University. All Rights Reserved.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<creationDate>July 2020</creationDate>
 	<authorEmail>support@hubzero.org</authorEmail>

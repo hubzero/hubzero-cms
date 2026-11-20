@@ -12,9 +12,9 @@ Events in the `geocode` group. A plugin in `core/plugins/geocode/` receives an e
 Fired from:
 
 - [`core/libraries/Hubzero/Geocode/Geocode.php:49`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L49) with `['geocode.countries', $adapter]`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:101`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L101) with `['geocode.country', $adapter]`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:142`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L142) with `['geocode.continent', $adapter]`
-- [`core/libraries/Hubzero/Geocode/Geocode.php:188`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L188) with `['geocode.locate', $adapter, $ip]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:100`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L100) with `['geocode.country', $adapter]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:143`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L143) with `['geocode.continent', $adapter]`
+- [`core/libraries/Hubzero/Geocode/Geocode.php:190`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L190) with `['geocode.locate', $adapter, $ip]`
 - [`core/libraries/Hubzero/Geocode/Geocode.php:225`](../../../core/libraries/Hubzero/Geocode/Geocode.php#L225) with `['geocode.address', $adapter]`
 
 Listeners:
