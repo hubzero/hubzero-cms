@@ -634,6 +634,8 @@ class Mailinglists extends AdminController
      */
     public function subscribeEmailTask()
     {
+        Request::checkToken(['get', 'post']);
+
         if (!User::authorise('core.edit', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

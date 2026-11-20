@@ -252,6 +252,8 @@ class Solr extends AdminController
      */
     public function removeBlacklistEntryTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $entryID = Request::getInt('entryID', 0);
 
         // Already gone, nothing to remove

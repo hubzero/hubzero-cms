@@ -88,6 +88,8 @@ class Boosts extends AdminController
     /** @return void */
     public function createTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $boostArray = Request::getArray('boost');
         $boost = $this->factory->one($boostArray);
 
@@ -119,6 +121,8 @@ class Boosts extends AdminController
     /** @return void */
     public function updateTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $id = Request::getInt('id');
         $boost = Boost::oneOrFail($id);
         $params = Request::getArray('boost');
@@ -137,6 +141,8 @@ class Boosts extends AdminController
     /** @return void */
     public function destroyTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $id = Request::getInt('id');
         $boost = Boost::oneOrFail($id);
 

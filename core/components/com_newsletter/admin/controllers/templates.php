@@ -200,6 +200,8 @@ class Templates extends AdminController
      */
     public function duplicateTask()
     {
+        Request::checkToken(['get', 'post']);
+
         if (!User::authorise('core.create', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

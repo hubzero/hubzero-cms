@@ -654,6 +654,8 @@ class Quotas extends AdminController
      */
     public function processImportTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Import quotas
         $qfile     = Request::getString('conf_text');
         $overwrite = Request::getInt('overwrite_existing', 0);
@@ -752,6 +754,8 @@ class Quotas extends AdminController
      */
     public function importMissingTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Query for all members in the CMS
         $results = Member::all()
             ->select('id')

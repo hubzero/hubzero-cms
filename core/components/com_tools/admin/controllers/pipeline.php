@@ -229,6 +229,8 @@ class Pipeline extends AdminController
      */
     public function batchdoiTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $yearFormat = 'Y';
 
         //  Limit one-time batch size

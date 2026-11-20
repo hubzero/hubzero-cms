@@ -742,6 +742,8 @@ class Points extends AdminController
      */
     public function royaltyTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $data = [];
         $auto = Request::getInt('auto', 0);
         $action = 'royalty';

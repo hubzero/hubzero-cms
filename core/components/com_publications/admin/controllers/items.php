@@ -381,6 +381,8 @@ class Items extends AdminController
      */
     public function deleteauthorTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $aid = Request::getInt('aid', 0);
 
@@ -1823,6 +1825,8 @@ class Items extends AdminController
      */
     public function archiveTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $pid     = Request::getInt('pid', 0);
         $vid     = Request::getInt('vid', 0);

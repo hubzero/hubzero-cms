@@ -453,6 +453,8 @@ class Products extends AdminController
      */
     public function accessTask($access = 0)
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $id = Request::getInt('id', 0);
 
@@ -511,6 +513,8 @@ class Products extends AdminController
      */
     public function stateTask($state = 0)
     {
+        Request::checkToken(['get', 'post']);
+
         $ids = Request::getArray('id', []);
 
         // Check for an ID

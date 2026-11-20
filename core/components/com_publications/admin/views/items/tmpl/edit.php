@@ -549,7 +549,8 @@ $featuredSelected = function ($value) use ($view) {
                                             'index.php?option=' . $this->option . '&controller=' . $this->controller
                                                 . '&task=archive&pid=' . $this->model->get('id') . '&vid='
                                                 . $this->model->get('version_id') . '&version='
-                                                . $this->model->versionAlias(),
+                                                . $this->model->versionAlias()
+                                                . '&' . Session::getFormToken() . '=1',
                                             false,
                                         );
                                         ?>
@@ -566,7 +567,8 @@ $featuredSelected = function ($value) use ($view) {
                                             'index.php?option=' . $this->option . '&controller=' . $this->controller
                                                 . '&task=archive&pid=' . $this->model->get('id') . '&vid='
                                                 . $this->model->get('version_id') . '&version='
-                                                . $this->model->versionAlias(),
+                                                . $this->model->versionAlias()
+                                                . '&' . Session::getFormToken() . '=1',
                                             false,
                                         );
                                         ?>

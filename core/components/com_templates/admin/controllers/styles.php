@@ -399,6 +399,8 @@ class Styles extends AdminController
      */
     public function setDefaultTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $id = Request::getArray('id', [0]);
         $id = $id[0] ?? null;
 

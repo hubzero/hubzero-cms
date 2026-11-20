@@ -518,6 +518,8 @@ class Items extends AdminController
      */
     public function removechildTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $ids = Request::getArray('id', [0]);
         $pid = Request::getInt('pid', 0);

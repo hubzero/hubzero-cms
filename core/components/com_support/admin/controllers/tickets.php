@@ -644,6 +644,8 @@ class Tickets extends AdminController
      */
     public function processTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $tmpl    = Request::getString('tmpl');
 

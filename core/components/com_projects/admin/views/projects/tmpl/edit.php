@@ -596,7 +596,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
     <?php
     $eraseUrl = Route::url(
         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id='
-            . $this->model->get('id'),
+            . $this->model->get('id') . '&' . Session::getFormToken() . '=1',
     );
     $linkText = Lang::txt('COM_PROJECTS_ERASE_PROJECT');
     ?>

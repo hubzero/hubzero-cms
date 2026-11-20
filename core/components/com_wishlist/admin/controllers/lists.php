@@ -332,6 +332,8 @@ class Lists extends AdminController
      */
     public function stateTask()
     {
+        Request::checkToken(['get', 'post']);
+
         if (!User::authorise('core.edit.state', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

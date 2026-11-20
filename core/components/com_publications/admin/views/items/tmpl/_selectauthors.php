@@ -49,7 +49,10 @@ if ($this->authNames != null) {
             . Route::url('index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id)
             . '" >' . Lang::txt('COM_PUBLICATIONS_EDIT') . '</a> ';
         $html .= ' <a class="editauthor" href="'
-            . Route::url('index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id)
+            . Route::url(
+                'index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id
+                . '&' . Session::getFormToken() . '=1',
+            )
             . '"  > ' . Lang::txt('COM_PUBLICATIONS_DELETE') . '</a> ';
         if ($credit) {
             $html .= '<br />' . Lang::txt('COM_PUBLICATIONS_CREDIT') . ': ' . $credit;

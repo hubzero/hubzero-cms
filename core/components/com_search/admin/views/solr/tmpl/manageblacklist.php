@@ -81,7 +81,8 @@ $this
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
                                 . '&task=removeBlacklistEntry'
-                                . '&entryID=' . $entry->get('id'),
+                                . '&entryID=' . $entry->get('id')
+                                . '&' . Session::getFormToken() . '=1',
                             );
                         ?>
                         <a href="<?php echo $removeUrl; ?>" class="button">

@@ -300,6 +300,8 @@ class Collections extends AdminController
      */
     public function stateTask($state = 0)
     {
+        Request::checkToken(['get', 'post']);
+
         $ids = Request::getArray('id', []);
 
         // Check for an ID

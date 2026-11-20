@@ -43,4 +43,5 @@ $typeOptions = $this->typeOptions;
     <input type="hidden" name="option" value="com_search" />
     <input type="hidden" name="controller" value="boosts" />
     <input type="hidden" name="task" value="<?php echo $task; ?>" />
+    <?php echo Html::input('token'); ?>
 </form>

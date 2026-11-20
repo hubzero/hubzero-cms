@@ -28,7 +28,8 @@ defined('_HZEXEC_') or die();
                     'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
                     . '&task=delete&asset=' . $this->asset->get('id')
-                    . '&no_html=' . $this->no_html,
+                    . '&no_html=' . $this->no_html
+                    . '&' . Session::getFormToken() . '=1',
                 );
                 $deleteTitle = Lang::txt('COM_SUPPORT_DELETE');
                 ?>

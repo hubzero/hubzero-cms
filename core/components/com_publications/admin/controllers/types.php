@@ -420,6 +420,8 @@ class Types extends AdminController
      */
     public function saveadvancedTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $id       = Request::getInt('id', 0);
         $curation = Request::getString('curation', '', 'post');
@@ -520,6 +522,8 @@ class Types extends AdminController
      */
     public function saveelementsTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $id = Request::getInt('id', 0);
         $blockId = Request::getInt('bid', 0);

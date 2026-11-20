@@ -62,6 +62,8 @@ class Configure extends AdminController
      */
     public function saveTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Get the configuration
         $config = Request::getArray('config', [], 'post');
         foreach ($config as $n => $v) {

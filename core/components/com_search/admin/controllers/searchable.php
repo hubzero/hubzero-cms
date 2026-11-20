@@ -78,6 +78,8 @@ class Searchable extends AdminController
      */
     public function activateIndexTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $ids = Request::getArray('id', []);
         $offset = Request::getInt('offset', 0);
         $numProcess = Request::getInt('numprocess');
@@ -272,6 +274,8 @@ class Searchable extends AdminController
      */
     public function deleteIndexTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $ids = Request::getArray('id', []);
         $components = SearchComponent::all()
             ->whereIn('id', $ids)
@@ -312,6 +316,8 @@ class Searchable extends AdminController
      */
     public function trashIndexTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $ids = Request::getArray('id', []);
         $components = SearchComponent::all()
             ->whereIn('id', $ids)
@@ -399,6 +405,8 @@ class Searchable extends AdminController
      */
     public function discoverTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $componentModel = new \Components\Search\Models\Solr\SearchComponent();
         $components = $componentModel->getNewComponents();
         if ($components->count() > 0) {

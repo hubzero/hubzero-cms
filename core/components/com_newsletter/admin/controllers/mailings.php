@@ -278,6 +278,8 @@ class Mailings extends AdminController
      */
     public function stopTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Get request vars
         $ids = Request::getArray('id', []);
         $id = isset($ids[0]) ? $ids[0] : null;

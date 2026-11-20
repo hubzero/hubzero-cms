@@ -78,6 +78,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
                                 <input
                                     type="submit"
                                     value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>"/>
+                                <?php echo Html::input('token'); ?>
                             </form>
                         </td>
                     </tr>

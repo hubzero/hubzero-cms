@@ -885,6 +885,8 @@ class Projects extends AdminController
      */
     public function eraseTask()
     {
+        Request::checkToken(['get', 'post']);
+
         if (!User::authorise('core.delete', $this->option) && !User::authorise('core.manage', $this->option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }

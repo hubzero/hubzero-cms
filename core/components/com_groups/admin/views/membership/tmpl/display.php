@@ -367,7 +367,8 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                                     . Route::url(
                                         'index.php?option=com_groups&controller=roles&task=unassign&gid='
                                             . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid='
-                                            . $role['id'] . '&return=' . $this->controller,
+                                            . $role['id'] . '&return=' . $this->controller
+                                            . '&' . Session::getFormToken() . '=1',
                                     ) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
                             endforeach;
                             echo implode(', ', $r);

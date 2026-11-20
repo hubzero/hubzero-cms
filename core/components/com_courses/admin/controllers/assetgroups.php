@@ -376,6 +376,8 @@ class Assetgroups extends AdminController
      */
     public function stateTask()
     {
+        Request::checkToken(['get', 'post']);
+
         $state = $this->task == 'publish' ? 1 : 0;
 
         // Incoming

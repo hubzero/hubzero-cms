@@ -242,6 +242,8 @@ class Roles extends AdminController
      */
     public function unassignTask()
     {
+        Request::checkToken(['get', 'post']);
+
         Request::setVar('hidemainmenu', 1);
 
         $ids = Request::getArray('id', []);
@@ -317,6 +319,8 @@ class Roles extends AdminController
      */
     public function delegateTask()
     {
+        Request::checkToken(['get', 'post']);
+
         Request::setVar('hidemainmenu', 1);
 
         $ids = Request::getArray('id', []);

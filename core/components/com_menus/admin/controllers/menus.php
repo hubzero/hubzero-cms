@@ -289,6 +289,8 @@ class Menus extends AdminController
      */
     public function resyncTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Initialise variables.
         $db = App::get('db');
         $parts = null;

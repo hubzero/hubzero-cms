@@ -299,6 +299,8 @@ class Media extends AdminController
      */
     public function deleteTask()
     {
+        Request::checkToken(['get', 'post']);
+
         if (Request::getInt('no_html', 0)) {
             $this->ajaxDeleteTask();
 
@@ -330,6 +332,8 @@ class Media extends AdminController
      */
     public function ajaxDeleteTask()
     {
+        Request::checkToken(['get', 'post']);
+
         // Incoming
         $id = Request::getInt('asset', 0);
 
