@@ -11,7 +11,6 @@ namespace Components\Courses\Api\Controllers;
 use Hubzero\Content\Server;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Config;
 
 /**
  * API controller for the time component
@@ -45,8 +44,15 @@ class Formv1r0 extends Base
      *      "default":     null
      * }
      * @apiParameter {
+     *      "name":        "expires",
+     *      "description": "Unix time the signed URL stops working",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
      *      "name":        "token",
-     *      "description": "Session authentication token",
+     *      "description": "Signature of the URL, from the page that showed the image",
      *      "type":        "string",
      *      "required":    true,
      *      "default":     null
@@ -77,14 +83,19 @@ class Formv1r0 extends Base
             . (($version) ? $version . DS : '')
             . ltrim($filename, DS);
 
-        // Add silly simple security check -- before the existence test, so an
-        // unauthorised caller cannot probe which files exist
-        $token      = Request::getString('token', '');
-        $session_id = App::get('session')->getId();
-        $secret     = Config::get('secret');
-        $hash       = hash('sha256', $session_id . ':' . $secret);
+        // The page that showed the image signed its URL (PdfForm::imageToken());
+        // check it before the existence test, so an unauthorised caller cannot
+        // probe which files exist
+        $token   = Request::getString('token', '');
+        $expires = Request::getInt('expires', 0);
+        $hash    = \Components\Courses\Models\PdfForm::imageToken(
+            $id,
+            (string) Request::getString('file', ''),
+            $version,
+            $expires,
+        );
 
-        if (!hash_equals($hash, $token)) {
+        if ($expires < time() || !hash_equals($hash, $token)) {
             App::abort(401, 'You don\'t have permission to do this');
         }
 

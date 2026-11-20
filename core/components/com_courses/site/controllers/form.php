@@ -70,6 +70,10 @@ class Form extends SiteController
         $this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}"
             . "&offering={$this->course->offering()->alias()}";
 
+        // The form list is indexTask(); there is no displayTask(), so a request
+        // with no task was a fatal error
+        $this->registerTask('__default', 'index');
+
         parent::execute();
     }
 
@@ -183,7 +187,7 @@ class Form extends SiteController
             } else { // Otherwise, redirect
                 App::redirect(
                     Route::url(
-                        'index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(),
+                        $this->base . '&task=form.layout&formId=' . $pdf->getId(),
                         false,
                     ),
                     Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
@@ -633,7 +637,7 @@ class Form extends SiteController
     {
         // Make sure they're logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=form'));
+            $return = base64_encode(Route::url($this->base . '&task=form.index'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),

@@ -37,10 +37,14 @@ $this
         </ul>
     <?php endif; ?>
 
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option); ?>
+    <?php
+    // The task goes in the path (…/form.upload): the router keeps the form
+    // controller only for a form.* task, and posting to the bare base reached
+    // the offering instead
+    $routeUrl = Route::url($this->base . '&task=form.upload');
+    ?>
     <form action="<?php echo $routeUrl; ?>" method="post" enctype="multipart/form-data">
         <input type="file" name="pdf" accept="application/pdf" required autofocus />
-        <input type="hidden" name="task" value="upload" />
         <button type="submit"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?></button>
     </form>
 
@@ -57,16 +61,14 @@ $this
         <?php foreach (\Components\Courses\Models\PdfForm::getActiveList() as $form) : ?>
             <tr>
                 <td>
-                    <span class="title"><?php echo $form['title']; ?></span>
-                    <?php $routeUrl = Route::url('index.php?option=com_courses&controller=form'); ?>
+                    <span class="title"><?php echo $this->escape($form['title']); ?></span>
+                    <?php $routeUrl = Route::url($this->base . '&task=form.deploy'); ?>
                     <form action="<?php echo $routeUrl; ?>" method="get">
-                        <input type="hidden" name="task" value="deploy" />
                         <input type="hidden" name="formId" value="<?php echo $form['id']; ?>" />
                         <button type="submit"><?php echo Lang::txt('COM_COURSES_DEPLOY'); ?></button>
                     </form>
-                    <?php $routeUrl = Route::url('index.php?option=com_courses&controller=form'); ?>
+                    <?php $routeUrl = Route::url($this->base . '&task=form.layout'); ?>
                     <form action="<?php echo $routeUrl; ?>" method="get">
-                        <input type="hidden" name="task" value="layout" />
                         <input type="hidden" name="formId" value="<?php echo $form['id']; ?>" />
                         <button type="submit"><?php echo Lang::txt('JACTION_EDIT'); ?></button>
                     </form>

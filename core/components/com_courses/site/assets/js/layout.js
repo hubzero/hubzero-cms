@@ -285,7 +285,8 @@ jQuery(function($) {
 						setTimeout(function() {
 							$('#saved-notification').slideUp('slow');
 							parent.$('body').trigger('savesuccessful', [serialized.title]);
-							window.location.href = '/courses/form';
+							// The form list of this offering (/courses/form is no page)
+							window.location.href = url + 'form.index';
 						}, 2000);
 					}
 				}

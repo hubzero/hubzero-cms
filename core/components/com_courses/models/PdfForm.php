@@ -265,12 +265,16 @@ class PdfForm
         natsort($images);
 
         $idx = 0;
+        // Signed for a few hours: the token used to be a hash of the session
+        // ID, but the API runs in its own session, so it never matched and the
+        // page images always answered 401
+        $expires = time() + 6 * 3600;
         foreach ($images as $img) {
-            $session_id = App::get('session')->getId();
-            $secret     = Config::get('secret');
-            $token      = hash('sha256', $session_id . ':' . $secret);
-            $path       = '/api/courses/form/image?id=' . $this->getId() . '&file=' . $img . '&token=' . $token;
-            $path      .= (isset($version_dir)) ? '&form_version=' . $version_dir : '';
+            $formVersion = isset($version_dir) ? (int) $version_dir : 0;
+            $token       = self::imageToken((int) $this->getId(), $img, $formVersion, $expires);
+            $path        = '/api/courses/form/image?id=' . $this->getId() . '&file=' . $img
+                . '&expires=' . $expires . '&token=' . $token;
+            $path       .= (isset($version_dir)) ? '&form_version=' . $version_dir : '';
             $fun($path, ++$idx);
         }
     }
@@ -302,6 +306,22 @@ class PdfForm
     public function setFname($name)
     {
         $this->fname = $name;
+    }
+
+    /**
+     * Sign a page image URL
+     *
+     * @param   integer  $id       Form ID
+     * @param   string   $file     Image file name (1.png ...)
+     * @param   integer  $version  Form version directory, or 0
+     * @param   integer  $expires  Unix time the URL stops working
+     * @return  string
+     */
+    public static function imageToken($id, $file, $version, $expires)
+    {
+        $data = (int) $id . '|' . $file . '|' . (int) $version . '|' . (int) $expires;
+
+        return hash_hmac('sha256', $data, (string) Config::get('secret'));
     }
 
     /**
