@@ -76,7 +76,7 @@ Hubzero.overrider.searchStrings = function(more)
 	{
 		Hubzero.overrider.states.searchstring = $('#fields_searchstring').val();
 		Hubzero.overrider.states.searchtype   = 'value';
-		if ($('#fields_searchtype0').attr('checked'))
+		if ($('#fields_searchtype0').is(':checked'))
 		{
 			Hubzero.overrider.states.searchtype = 'constant';
 		}
@@ -84,7 +84,7 @@ Hubzero.overrider.searchStrings = function(more)
 
 	if (!Hubzero.overrider.states.searchstring)
 	{
-		$('#jform_searchstring').addClass('invalid');
+		$('#fields_searchstring').addClass('invalid');
 
 		return;
 	}

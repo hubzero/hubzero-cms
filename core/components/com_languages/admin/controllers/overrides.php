@@ -202,14 +202,17 @@ class Overrides extends AdminController
             'language' => $fields['language'],
         ]);
 
-        if (!isset($fields['id'])) {
+        // The constant the form opened with; a new override has none
+        if (empty($fields['id'])) {
             $fields['id'] = $fields['key'];
         }
 
         $row = $model->one($fields['id']);
 
         // Store new content
-        if (!$model->save($fields, (isset($fields['both']) && $fields['both']))) {
+        // The model saves to the other client as well when 'both' is set; its
+        // second argument is its own recursion flag, not that choice
+        if (!$model->save($fields)) {
             Notify::error($model->getError());
             $this->editTask($row);
 

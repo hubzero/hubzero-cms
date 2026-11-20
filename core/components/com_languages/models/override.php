@@ -215,10 +215,18 @@ class Override extends Obj
             $strings[$key] = str_replace('"', '"_QQ_"', $string);
         }
 
-        // Write override.ini file with the strings
+        // Write override.ini file with the strings. A hub's first override is
+        // also the first file in its language folder, which may not exist yet
         $registry = new \Hubzero\Config\Registry($strings);
 
+        $folder = dirname($filename);
+        if (!Filesystem::isDirectory($folder) && !Filesystem::makeDirectory($folder, 0o755, true, true)) {
+            $this->setError(Lang::txt('COM_LANGUAGES_OVERRIDE_ERROR_WRITE', $filename));
+            return false;
+        }
+
         if (!Filesystem::write($filename, $registry->toString('INI'))) {
+            $this->setError(Lang::txt('COM_LANGUAGES_OVERRIDE_ERROR_WRITE', $filename));
             return false;
         }
 
@@ -259,6 +267,7 @@ class Override extends Obj
         $registry = new \Hubzero\Config\Registry($strings);
 
         if (!Filesystem::write($filename, $registry->toString('INI'))) {
+            $this->setError(Lang::txt('COM_LANGUAGES_OVERRIDE_ERROR_WRITE', $filename));
             return false;
         }
 

@@ -89,7 +89,7 @@ $editUrl = Route::url(
                 <?php if ($this->item->client == 'administrator') : ?>
                     <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_DESC') ?>">
                         <input type="checkbox" name="fields[both]" id="field-both" value="true" />
-                        <label for="field-override"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_LABEL') ?>:</label>
+                        <label for="field-both"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_LABEL') ?>:</label>
                     </div>
                 <?php endif; ?>
 
@@ -131,14 +131,15 @@ $editUrl = Route::url(
                     <fieldset id="fields_searchtype" class="radio inputbox">
                         <ul>
                             <li>
-                                <input type="radio" id="jform_searchtype0" name="fields[searchtype]" value="constant" />
+                                <input type="radio" id="fields_searchtype0" name="fields[searchtype]"
+                                    value="constant" />
                                 <?php
                                 $labelText = Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_CONSTANT');
                                 ?>
                                 <label for="fields_searchtype0"><?= $labelText ?></label>
                             </li>
                             <li>
-                                <input type="radio" id="jform_searchtype1" name="fields[searchtype]" value="value"
+                                <input type="radio" id="fields_searchtype1" name="fields[searchtype]" value="value"
                                     checked="checked" />
                                 <?php
                                 $labelText = Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_TEXT');
@@ -171,7 +172,7 @@ $editUrl = Route::url(
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="task" value="" />
-            <input type="hidden" name="id" value="<?php echo $this->item->key; ?>" />
+            <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->item->key); ?>" />
             <?php echo Html::input('token'); ?>
         </div>
     </div>

@@ -19,7 +19,7 @@ Hubzero.submitbutton = function(task) {
 }
 
 jQuery(document).ready(function($){
-	$('#jform_searchstring').on('focus', function() {
+	$('#fields_searchstring').on('focus', function() {
 		if (!Hubzero.overrider.states.refreshed) {
 			if ($(this).attr('data-cache_expired')) {
 				Hubzero.overrider.refreshCache();
