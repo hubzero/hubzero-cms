@@ -298,8 +298,6 @@ class FormReport extends Model
         }
 
         $ord = ord($letter);
-        $chr = chr($ord + 1);
-
-        return $chr;
+        return chr($ord + 1);
     }
 }

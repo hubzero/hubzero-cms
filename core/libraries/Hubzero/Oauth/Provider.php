@@ -233,7 +233,7 @@ class Provider
         if ($message == "oauth_problem=signature_method_rejected") {
             $reason = 'Bad Request';
             $status = 400;
-        } elseif (strpos($message, "oauth_problem=parameter_absent") !== false) {
+        } elseif (str_contains($message, "oauth_problem=parameter_absent")) {
             $reason = 'Bad Request';
             $status = 400;
         } elseif ($message == "oauth_problem=unknown_problem&code=503") {

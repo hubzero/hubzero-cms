@@ -80,7 +80,7 @@ class Utility
      * @param   string  $password
      * @return  boolean
      */
-    public static function validpassword($password)
+    public static function validpassword(#[\SensitiveParameter] $password)
     {
         if (preg_match("/^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$/", $password)) {
             return true;
@@ -141,7 +141,7 @@ class Utility
      */
     public static function validtext($text)
     {
-        if (!strchr($text, "	")) {
+        if (!strstr($text, "	")) {
             return 1;
         }
         return 0;
@@ -251,7 +251,7 @@ class Utility
         while ($i < $length) {
             $num = random_int(0, strlen($salt) - 1);
             $tmp = substr($salt, $num, 1);
-            $genpass = $genpass . $tmp;
+            $genpass .= $tmp;
             $i++;
         }
         return $genpass;

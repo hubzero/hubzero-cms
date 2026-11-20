@@ -46,7 +46,6 @@ if (isset($this->likes)) {
 <?php if ($this->comments && count($this->comments) > 0) : ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
     <?php
-    {
     $cls = 'odd';
     if (isset($this->cls)) {
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
@@ -76,7 +75,6 @@ if (isset($this->likes)) {
              ->set('filters', $this->filters)
              ->set('category', $this->category)
              ->display();
-    }
     }
     ?>
 </ol>

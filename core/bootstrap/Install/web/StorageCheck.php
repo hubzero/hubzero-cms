@@ -222,7 +222,7 @@ class StorageCheck
             return true;
         }
 
-        return strpos($realPath, $realDocRoot . '/') === 0;
+        return str_starts_with($realPath, $realDocRoot . '/') ;
     }
 
     /**
@@ -242,7 +242,7 @@ class StorageCheck
             return false;
         }
 
-        return @mkdir($dir, 0700, true);
+        return @mkdir($dir, 0o700, true);
     }
 
     /**

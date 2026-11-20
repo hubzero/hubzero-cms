@@ -265,7 +265,7 @@ class Media extends SiteController
         // directory is always a member's own filespace: anything else is a
         // probe of the docroot. Match doajaxuploadTask's response format.
         $base  = '/' . trim(str_replace(PATH_ROOT, '', PATH_APP . DS . $this->filespace()), '/') . '/';
-        $owner = (strpos($dir, $base) === 0) ? trim(substr($dir, strlen($base)), '/') : '';
+        $owner = (str_starts_with($dir, $base) ) ? trim(substr($dir, strlen($base)), '/') : '';
 
         if ($owner === '' || !ctype_digit($owner)) {
             return;

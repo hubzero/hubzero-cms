@@ -945,7 +945,7 @@ class Sessionsv1r0 extends ApiController
             }
 
             // Check for, and create if needed, the session data and queued drivers directories
-            $drivers = \Hubzero\Filesystem\SafePath::directory($home, 'data' . DS . '.queued_drivers', true, 0700);
+            $drivers = \Hubzero\Filesystem\SafePath::directory($home, 'data' . DS . '.queued_drivers', true, 0o700);
 
             if ($drivers === false) {
                 throw new Exception(Lang::txt('Failed to create data directory'), 500);
@@ -1058,7 +1058,7 @@ class Sessionsv1r0 extends ApiController
         // Read the file
         $status   = (string) file_get_contents($statusFile);
         $parsed   = explode("\n", trim($status));
-        $finished = (strpos(end($parsed), '[status] exit') !== false) ? true : false;
+        $finished = (str_contains(end($parsed), '[status] exit') ) ? true : false;
         $runFile  = '';
 
         if ($finished) {

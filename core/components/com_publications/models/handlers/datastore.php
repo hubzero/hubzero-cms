@@ -110,8 +110,7 @@ class DataStore extends Base
     public function getStatus($attachments)
     {
         // Start status
-        $status = new \Components\Publications\Models\Status();
-        return $status;
+        return new \Components\Publications\Models\Status();
     }
 
     /**

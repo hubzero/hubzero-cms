@@ -67,7 +67,7 @@ class Menus
         // Check if the link is in the form of index.php?...
         if (is_string($request)) {
             $args = [];
-            if (strpos($request, 'index.php') === 0) {
+            if (str_starts_with($request, 'index.php')) {
                 parse_str((string) parse_url(htmlspecialchars_decode($request), PHP_URL_QUERY), $args);
             } else {
                 parse_str($request, $args);
@@ -95,11 +95,9 @@ class Menus
      */
     public static function getMenuTypes()
     {
-        $rows = Menu::all()
+        return Menu::all()
             ->rows()
             ->fieldsByKey('menutype');
-
-        return $rows;
     }
 
     /**

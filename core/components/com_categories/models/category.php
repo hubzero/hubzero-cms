@@ -685,12 +685,10 @@ class Category extends Nested
      */
     public function parents()
     {
-        $parents = self::all()
+        return self::all()
             ->whereEquals('extension', $this->get('extension'))
             ->where('parent_id', '!=', $this->get('id'))
             ->order('lft', 'asc');
-
-        return $parents;
     }
 
     /**
@@ -701,7 +699,6 @@ class Category extends Nested
     public function nestedTitle()
     {
         $nestedPad = str_repeat('- ', $this->get('level', 1));
-        $title = $nestedPad . $this->get('title');
-        return $title;
+        return $nestedPad . $this->get('title');
     }
 }

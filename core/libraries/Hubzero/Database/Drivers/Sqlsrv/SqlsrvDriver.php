@@ -1277,7 +1277,7 @@ class SqlsrvDriver extends BaseSqlDriver
         }
 
         $colList = implode(', ', array_map(
-            fn($col) => $this->quoteName($col),
+            $this->quoteName(...),
             $colNames,
         ));
 
@@ -2138,7 +2138,7 @@ class SqlsrvDriver extends BaseSqlDriver
 
         // 3. Create the fulltext index.
         $colList = implode(', ', array_map(
-            fn($c) => $this->quoteName($c),
+            $this->quoteName(...),
             $columns,
         ));
         $this->setQuery(

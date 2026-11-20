@@ -31,12 +31,10 @@ class SessionServiceProvider extends ServiceProvider
     {
         $this->app['session'] = function ($app) {
             // Use 'none' handler for CLI - no persistence needed
-            $session = new Manager('none', [
+            return new Manager('none', [
                 'name'   => 'cli_session',
                 'expire' => 900,
             ]);
-
-            return $session;
         };
     }
 

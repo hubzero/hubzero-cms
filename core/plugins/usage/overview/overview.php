@@ -423,11 +423,9 @@ class Overview extends Plugin
         if ($fmt == 0) {
             return $valfmt[0];
         } elseif ($fmt == 1) {
-            $value = number_format($value) . $valfmt[$fmt];
-            return $value;
+            return number_format($value) . $valfmt[$fmt];
         } elseif ($fmt == 2) {
-            $value = number_format($value) . $valfmt[$fmt];
-            return $value;
+            return number_format($value) . $valfmt[$fmt];
         } elseif ($fmt == 5) {
             if ($value < '60') {
                 $val = number_format($value) . ' seconds';
@@ -444,8 +442,7 @@ class Overview extends Plugin
         } elseif ($fmt == 6) {
             return $value;
         } else {
-            $value = number_format($value) . ' ' . $valfmt[$fmt];
-            return $value;
+            return number_format($value) . ' ' . $valfmt[$fmt];
         }
     }
 }

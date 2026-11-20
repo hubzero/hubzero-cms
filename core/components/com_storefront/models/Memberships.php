@@ -46,9 +46,7 @@ class Memberships
     {
         $sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
         $this->db->setQuery($sql);
-        $membershipTypes = $this->db->loadColumn() ?? [];
-
-        return $membershipTypes;
+        return $this->db->loadColumn() ?? [];
     }
 
     /**
@@ -139,8 +137,7 @@ class Memberships
         $ttlParts = explode(' ', $ttl);
         $ttlParts[0] = $qty * (int) $ttlParts[0];
 
-        $ttl = implode(' ', $ttlParts);
-        return $ttl;
+        return implode(' ', $ttlParts);
     }
 
     /**
@@ -176,8 +173,6 @@ class Memberships
         $sql .= "WHERE m.`pId` = " . $db->quote($pId);
         $sql .= " AND c.`uidNumber` = " . $db->quote($uId);
         $db->setQuery($sql);
-        $membershipInfo = $db->loadAssoc();
-
-        return $membershipInfo;
+        return $db->loadAssoc();
     }
 }

@@ -84,8 +84,6 @@ class Utilities
 
         // Ensure the path starts with a slash
         $path = ltrim($path, DS);
-        $path = DS . $path;
-
-        return $path;
+        return DS . $path;
     }
 }

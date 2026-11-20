@@ -219,7 +219,7 @@ class Domainrestriction extends Plugin
 
             foreach ($items as $item) {
                 $item = trim($item);
-                if (strpos($item, '/') !== false) {
+                if (str_contains($item, '/')) {
                     $lists[$name . 'net'][] = $item;
                 } else {
                     $lists[$name][] = $item;

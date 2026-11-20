@@ -330,9 +330,7 @@ class CurrentCart extends Cart
         }
 
         // Combine set messages and changes messages
-        $messages = array_merge($messages, $changes);
-
-        return $messages;
+        return array_merge($messages, $changes);
     }
 
     /**
@@ -344,9 +342,9 @@ class CurrentCart extends Cart
     public function redirect($where)
     {
         if ($where == 'home') {
-            $redirect_url  = Route::url('index.php?option=' . 'com_cart');
+            $redirect_url  = Route::url('index.php?option=com_cart');
         } else {
-            $redirect_url  = rtrim(Route::url('index.php?option=' . 'com_cart'), '/') . '/checkout/' . $where;
+            $redirect_url  = rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout/' . $where;
         }
 
         App::redirect(
@@ -393,9 +391,7 @@ class CurrentCart extends Cart
         $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId "
             . "DESC";
         $this->db->setQuery($sql);
-        $steps = $this->db->loadColumn();
-
-        return $steps;
+        return $this->db->loadColumn();
     }
 
     /**
@@ -676,8 +672,7 @@ class CurrentCart extends Cart
 				AND `sId` = " . $this->db->quote($sId);
 
         $this->db->setQuery($sql);
-        $itemMeta = $this->db->loadResult();
-        return $itemMeta;
+        return $this->db->loadResult();
     }
 
     /**
@@ -812,7 +807,7 @@ class CurrentCart extends Cart
      * @param   bool  $tId
      * @return      bool
      */
-    public function verifyToken($token, $tId = false)
+    public function verifyToken(#[\SensitiveParameter] $token, $tId = false)
     {
         if (empty($tId)) {
             if (empty($this->tInfo)) {
@@ -995,9 +990,7 @@ class CurrentCart extends Cart
         // Get coupon types
 
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
-        $coupons = $storefrontCoupons->getCouponsInfo($cnIds);
-
-        return $coupons;
+        return $storefrontCoupons->getCouponsInfo($cnIds);
     }
 
     /**

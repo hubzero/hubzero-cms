@@ -214,8 +214,6 @@ class Resourcetype extends Select
             $options[] = Html::select('option', $type->id, $type->type, 'value', 'text');
         }
 
-        $options = array_merge(parent::getOptions(), $options);
-
-        return $options;
+        return array_merge(parent::getOptions(), $options);
     }
 }

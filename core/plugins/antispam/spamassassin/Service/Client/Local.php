@@ -300,7 +300,7 @@ class Local
         $this->write($socket, "PING SPAMC/{$this->protocolVersion}\r\n\r\n");
         list($headers, $message) = $this->read($socket);
 
-        if (strpos($headers, "PONG") === false) {
+        if (!str_contains($headers, "PONG")) {
             return false;
         }
 

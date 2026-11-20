@@ -186,9 +186,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         $this->database->setQuery($sql);
-        $collection = $this->database->loadObject();
-
-        return $collection;
+        return $this->database->loadObject();
     }
 
 
@@ -244,9 +242,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         $this->database->setQuery($sql);
-        $cId = $this->database->loadResult();
-
-        return $cId;
+        return $this->database->loadResult();
     }
 
     /**
@@ -361,9 +357,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         $this->database->setQuery($sql);
-        $pId = $this->database->loadResult();
-
-        return $pId;
+        return $this->database->loadResult();
     }
 
     /**
@@ -489,9 +483,7 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql = "SELECT cnId FROM `#__storefront_coupons` WHERE `cnCode` = " . $this->database->quote($code);
 
         $this->database->setQuery($sql);
-        $cnId = $this->database->loadResult();
-
-        return $cnId;
+        return $this->database->loadResult();
     }
 
     /**
@@ -916,9 +908,7 @@ class Warehouse extends \Hubzero\Base\Obj
             return $this->database->getNumRows();
         }
 
-        $res = $this->database->loadObjectList();
-
-        return $res;
+        return $this->database->loadObjectList();
     }
 
     /**
@@ -1283,8 +1273,7 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql = "SELECT * FROM `#__storefront_product_types`";
 
         $this->database->setQuery($sql);
-        $res = $this->database->loadObjectList();
-        return $res;
+        return $this->database->loadObjectList();
     }
 
     /**
@@ -1561,9 +1550,7 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql .= " ORDER BY c.`cName`";
 
         $this->database->setQuery($sql);
-        $res = $this->database->loadObjectList();
-
-        return $res;
+        return $this->database->loadObjectList();
     }
 
     /**
@@ -1623,9 +1610,7 @@ class Warehouse extends \Hubzero\Base\Obj
             return $this->database->getNumRows();
         }
 
-        $res = $this->database->loadObjectList();
-
-        return $res;
+        return $this->database->loadObjectList();
     }
 
     /**
@@ -1638,8 +1623,6 @@ class Warehouse extends \Hubzero\Base\Obj
     {
         $sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->database->quote($pId);
         $this->database->setQuery($sql);
-        $res = $this->database->loadColumn() ?? [];
-
-        return $res;
+        return $this->database->loadColumn() ?? [];
     }
 }

@@ -157,8 +157,7 @@ class Plugin
         $result = $database->loadResult();
 
         // params object
-        $params = new Registry($result);
-        return $params;
+        return new Registry($result);
     }
 
     /**
@@ -170,12 +169,11 @@ class Plugin
      */
     public function view($layout = 'default', $name = '')
     {
-        $view = new View([
+        return new View([
             'folder'  => $this->pluginType,
             'element' => $this->pluginName,
             'name'    => ($name ?: $this->pluginName),
             'layout'  => ($layout ?: 'default'),
         ]);
-        return $view;
     }
 }

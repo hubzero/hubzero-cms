@@ -504,9 +504,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             $result = [];
         }
 
-        $result = array_merge($result, $userids);
-
-        return $result;
+        return array_merge($result, $userids);
     }
 
     /**
@@ -756,9 +754,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             }
         }
 
-        $picture = $picture ?: $fallback;
-
-        return $picture;
+        return $picture ?: $fallback;
     }
 
     /**
@@ -881,9 +877,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
                 ->limit($filters['limit']);
         }
 
-        $result = $query->rows();
-
-        return $result;
+        return $query->rows();
     }
 
     /**
@@ -893,8 +887,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**
@@ -926,8 +919,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = $this->searchNamespace() . '-' . $this->get('id');
-        return $searchId;
+        return $this->searchNamespace() . '-' . $this->get('id');
     }
 
     /**

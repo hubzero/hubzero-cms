@@ -277,9 +277,7 @@ class Migration20151001185523ComKb extends Base
 
         $tbl->save();
 
-        $id = $tbl->get('id');
-
-        return $id;
+        return $tbl->get('id');
     }
 
     /**

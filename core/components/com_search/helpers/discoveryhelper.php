@@ -50,8 +50,7 @@ class DiscoveryHelper
             $startPos = strpos($component, 'com_');
             return ($startPos !== false) ? substr($component, $startPos + strlen($prefix)) : null;
         }, $allComponents);
-        $allComponents = array_filter($allComponents);
-        return $allComponents;
+        return array_filter($allComponents);
     }
 
     /**

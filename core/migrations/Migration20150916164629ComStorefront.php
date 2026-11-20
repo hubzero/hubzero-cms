@@ -63,15 +63,15 @@ class Migration20150916164629ComStorefront extends Base
         $params->set('collectionsImagesFolder', $collectionsImagesFolder);
 
         if (!is_dir(PATH_APP . DS . trim($downloadFolder, DS))) {
-            mkdir(PATH_APP . DS . trim($downloadFolder, DS), 0775, true);
+            mkdir(PATH_APP . DS . trim($downloadFolder, DS), 0o775, true);
         }
 
         if (!is_dir(PATH_APP . DS . trim($imagesFolder, DS))) {
-            mkdir(PATH_APP . DS . trim($imagesFolder, DS), 0775, true);
+            mkdir(PATH_APP . DS . trim($imagesFolder, DS), 0o775, true);
         }
 
         if (!is_dir(PATH_APP . DS . trim($collectionsImagesFolder, DS))) {
-            mkdir(PATH_APP . DS . trim($collectionsImagesFolder, DS), 0775, true);
+            mkdir(PATH_APP . DS . trim($collectionsImagesFolder, DS), 0o775, true);
         }
 
         $this->saveParams('com_storefront', $params);

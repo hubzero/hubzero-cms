@@ -68,12 +68,12 @@ if ($this->project->config()->get('grantinfo', 0)) {
 
 if ($this->project->config()->get('ginfo_group', 0)) {
     $comment .= '<p>' . Lang::txt('COM_PROJECTS_EMAIL_LINK_SPS') . '<br />';
-    $comment .= $browseLink . '?reviewer=sponsored' . '</p>';
+    $comment .= $browseLink . '?reviewer=sponsored</p>';
 }
 
 if ($this->project->config()->get('sdata_group', 0)) {
     $comment .= '<p>' . Lang::txt('COM_PROJECTS_EMAIL_LINK_HIPAA') . '<br />';
-    $comment .= $browseLink . '?reviewer=sensitive' . '</p>';
+    $comment .= $browseLink . '?reviewer=sensitive</p>';
 }
 
 // Project owner

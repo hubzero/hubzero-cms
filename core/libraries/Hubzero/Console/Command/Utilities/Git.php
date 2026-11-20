@@ -108,9 +108,7 @@ class Git
     public function getMechanismVersionName()
     {
         $name = $this->call('rev-parse', ['--abbrev-ref', 'HEAD']);
-        $name = trim((string) $name);
-
-        return $name;
+        return trim((string) $name);
     }
 
     /**
@@ -584,9 +582,7 @@ class Git
      **/
     public function stash()
     {
-        $response = $this->call('stash');
-
-        return $response;
+        return $this->call('stash');
     }
 
     /**
@@ -602,8 +598,6 @@ class Git
             . ((!empty($arguments)) ? ' '
             . implode(' ', $arguments) : '')
             . ' 2>&1';
-        $response = shell_exec($command);
-
-        return $response;
+        return shell_exec($command);
     }
 }

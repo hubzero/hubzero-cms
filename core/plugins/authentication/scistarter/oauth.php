@@ -132,7 +132,7 @@ class Oauth
      * @param   string  $clientSecret  the client secret
      * @return  $this
      **/
-    public function setClientSecret($clientSecret)
+    public function setClientSecret(#[\SensitiveParameter] $clientSecret)
     {
         $this->clientSecret = $clientSecret;
 
@@ -178,7 +178,7 @@ class Oauth
      * @param   string  $token  the access token to set
      * @return  $this
      **/
-    public function setAccessToken($token)
+    public function setAccessToken(#[\SensitiveParameter] $token)
     {
         $this->accessToken = $token;
 
@@ -311,7 +311,6 @@ class Oauth
             'Authorization' => 'Bearer ' . $this->getAccessToken(),
         ]);
 
-        $account = json_decode((string) $this->http->execute());
-        return $account;
+        return json_decode((string) $this->http->execute());
     }
 }

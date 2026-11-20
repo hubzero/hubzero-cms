@@ -71,12 +71,10 @@ class Detailed extends Relational
      */
     public static function oneByUserAndResource($user_id, $object_id, $object_type = 'resource')
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('user_id', $user_id)
             ->whereEquals('object_id', $object_id)
             ->whereEquals('object_type', $object_type)
             ->row();
-
-        return $row;
     }
 }

@@ -473,7 +473,7 @@ class Activity extends Table
             $d = 0;
 
             foreach ($result as $r) {
-                $c = $c + $r->activity;
+                $c += $r->activity;
                 $d++;
             }
 

@@ -136,8 +136,12 @@ class RefreshToken implements GrantTypeInterface
      * @param   string  $scope        Client application scope
      * @return  array<mixed>  Access token
      */
-    public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
-    {
+    public function createAccessToken(
+        #[\SensitiveParameter] AccessTokenInterface $accessToken,
+        $client_id,
+        $user_id,
+        $scope,
+    ) {
         // do we want to issue a new refresh token?
         $issueNewRefreshToken = $this->config['always_issue_new_refresh_token'];
 

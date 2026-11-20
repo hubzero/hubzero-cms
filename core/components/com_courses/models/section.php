@@ -313,7 +313,7 @@ class Section extends Base
         ) {
             $this->member = null;
 
-            if (isset($this->members) && isset($this->members[$user_id])) {
+            if (isset($this->members, $this->members[$user_id])) {
                 $this->member = $this->members[$user_id];
             }
         }

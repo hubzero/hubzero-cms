@@ -589,11 +589,7 @@ class User extends \Hubzero\Database\Relational
 
                 // if we have information for a user, populate the user variable
                 if (
-                    isset($jwt->email)
-                    && isset($jwt->id)
-                    && isset($jwt->username)
-                    && isset($jwt->name)
-                    && isset($jwt->exp)
+                    isset($jwt->email, $jwt->id, $jwt->username, $jwt->name, $jwt->exp)
                 ) {
                     if ($jwt->exp < time()) {
                         setcookie('jwt', '', time() - 86400, '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
@@ -792,7 +788,7 @@ class User extends \Hubzero\Database\Relational
             return '';
         }
 
-        $link = str_replace([
+        return str_replace([
             '{ID}',
             '{USERNAME}',
             '{EMAIL}',
@@ -803,8 +799,6 @@ class User extends \Hubzero\Database\Relational
             $this->get('email'),
             str_replace(' ', '+', $this->get('name')),
         ], self::$linkBase);
-
-        return $link;
     }
 
     /**
@@ -846,7 +840,7 @@ class User extends \Hubzero\Database\Relational
      * @return  static
      * @since   2.1.0
      */
-    public static function oneByActivationToken($token)
+    public static function oneByActivationToken(#[\SensitiveParameter] $token)
     {
         return self::all()
             ->whereEquals('activation', $token)

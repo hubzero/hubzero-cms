@@ -123,7 +123,7 @@ class Identicon implements Resolver
         $image = $processor->getImageData($email, $size, $this->color);
 
         if (!is_dir($dir)) {
-            @mkdir($dir, 0755, true);
+            @mkdir($dir, 0o755, true);
         }
         @file_put_contents($path, $image);
 

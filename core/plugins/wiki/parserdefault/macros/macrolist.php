@@ -129,7 +129,7 @@ class Macrolist extends WikiMacro
             $name = strtolower(str_replace(DS, '.', $name));
 
             // Skip anything in a macro's own assets directory
-            if (strpos($name, 'macro-assets') === 0 || in_array($name, $this->hidden)) {
+            if (str_starts_with($name, 'macro-assets')  || in_array($name, $this->hidden)) {
                 continue;
             }
 

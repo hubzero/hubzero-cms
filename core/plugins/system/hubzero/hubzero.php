@@ -128,7 +128,7 @@ class Hubzero extends Plugin
         }
 
         // All page loads set apache log data
-        if (strpos(php_sapi_name(), 'apache') !== false && function_exists('apache_note')) {
+        if (str_contains(php_sapi_name(), 'apache')  && function_exists('apache_note')) {
             apache_note('session', $session->getId());
 
             if (User::get('id') != 0) {
@@ -169,7 +169,7 @@ class Hubzero extends Plugin
             ->logger('auth')
             ->info($log_username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
-        if (strpos(php_sapi_name(), 'apache') !== false && function_exists('apache_note')) {
+        if (str_contains(php_sapi_name(), 'apache')  && function_exists('apache_note')) {
             apache_note('auth', 'invalid');
         }
     }

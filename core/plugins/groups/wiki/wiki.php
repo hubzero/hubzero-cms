@@ -376,11 +376,9 @@ class Wiki extends Plugin
     {
         // Import needed libraries
 
-        $pages = \Components\Wiki\Models\Page::all()
+        return \Components\Wiki\Models\Page::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $gid)
             ->rows();
-
-        return $pages;
     }
 }

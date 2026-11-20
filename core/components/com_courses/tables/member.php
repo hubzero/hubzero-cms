@@ -221,7 +221,7 @@ class Member extends Table
      * @param      string $token
      * @return     int|string|null
      */
-    public function tokenExists($token)
+    public function tokenExists(#[\SensitiveParameter] $token)
     {
         if (!$token) {
             $this->setError(Lang::txt('No token provided.'));

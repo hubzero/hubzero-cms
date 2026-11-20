@@ -1137,7 +1137,7 @@ class Form
                 break;
             default:
                 // Check for a callback filter.
-                if (strpos($filter, '::') !== false && is_callable(explode('::', $filter))) {
+                if (str_contains($filter, '::')  && is_callable(explode('::', $filter))) {
                     $return = call_user_func(explode('::', $filter), $value);
                 } elseif (function_exists($filter)) {
                     // Filter using a callback function if specified.

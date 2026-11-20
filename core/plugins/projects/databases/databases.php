@@ -408,14 +408,12 @@ class Databases extends Plugin
             $view->setError($this->getError());
         }
 
-        $arr = [
+        return [
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
             'referer' => '',
         ];
-
-        return $arr;
     }
 
     /**
@@ -480,14 +478,12 @@ class Databases extends Plugin
             $view->setError($this->getError());
         }
 
-        $arr = [
+        return [
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
             'referer' => '',
         ];
-
-        return $arr;
     }
 
     /**
@@ -658,7 +654,7 @@ class Databases extends Plugin
         $targetReal = realpath($path . DS . $file);
         if (
             $repoReal === false || $targetReal === false
-            || strpos($targetReal, $repoReal . DS) !== 0
+            || !str_starts_with($targetReal, $repoReal . DS)
         ) {
             echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
@@ -673,7 +669,7 @@ class Databases extends Plugin
             // The directory itself came from the request too; only list inside
             // the project repository
             $dirReal = realpath((string) $path);
-            if ($dirReal === false || strpos($dirReal . DS, $repoReal . DS) !== 0) {
+            if ($dirReal === false || !str_starts_with($dirReal . DS, $repoReal . DS)) {
                 echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
                 return;
             }
@@ -850,7 +846,7 @@ class Databases extends Plugin
 
         if (!$type) {
             if (is_numeric($data)) {
-                if (strpos($data, '.') === false) {
+                if (!str_contains($data, '.')) {
                     $type = 'int';
                 } else {
                     $type = 'float';
@@ -868,7 +864,7 @@ class Databases extends Plugin
             }
         } else {
             if ($type == 'int' || $type == 'float' && is_numeric($data)) {
-                if ($type == 'int' && strpos($data, '.') === false) {
+                if ($type == 'int' && !str_contains($data, '.')) {
                     $type = 'int';
                 } else {
                     $type = 'float';
@@ -956,7 +952,7 @@ class Databases extends Plugin
         $targetReal = realpath($path . DS . $file);
         if (
             $repoReal === false || $targetReal === false
-            || strpos($targetReal, $repoReal . DS) !== 0
+            || !str_starts_with($targetReal, $repoReal . DS)
         ) {
             echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
@@ -1195,8 +1191,8 @@ class Databases extends Plugin
             $dirReal    = realpath($path);
             if (
                 $repoReal === false || $targetReal === false || $dirReal === false
-                || strpos($targetReal, $repoReal . DS) !== 0
-                || strpos($dirReal . DS, $repoReal . DS) !== 0
+                || !str_starts_with($targetReal, $repoReal . DS)
+                || !str_starts_with($dirReal . DS, $repoReal . DS)
             ) {
                 return false;
             }
@@ -1524,8 +1520,6 @@ class Databases extends Plugin
 
         $opt['database'] = 'prj_db_' . $id;
 
-        $db = \Hubzero\Database\Driver::getInstance($opt);
-
-        return $db;
+        return \Hubzero\Database\Driver::getInstance($opt);
     }
 }

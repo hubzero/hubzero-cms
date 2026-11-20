@@ -131,9 +131,7 @@ class Rows implements Iterator, Countable
 
         shuffle($rows);
         $randomRows = array_slice($rows, 0, $n);
-        $rowsObject = new self($randomRows);
-
-        return $rowsObject;
+        return new self($randomRows);
     }
 
     /**
@@ -626,7 +624,7 @@ class Rows implements Iterator, Countable
         }
 
         // If we have subs and a constraint, the constraint applies to the subs
-        if (isset($subs) && isset($constraint)) {
+        if (isset($subs, $constraint)) {
             $subs = [$subs, $constraint];
             $constraint = null;
         }
@@ -668,7 +666,7 @@ class Rows implements Iterator, Countable
             }
 
             // If we have subs and a constraint, the constraint applies to the subs
-            if (isset($subs) && isset($constraint)) {
+            if (isset($subs, $constraint)) {
                 $subs = [$subs, $constraint];
                 $constraint = null;
             }
@@ -689,7 +687,7 @@ class Rows implements Iterator, Countable
         // Simple string
         if (is_string($relation)) {
             // Handle nested: 'posts.comments' -> 'posts'
-            if (strpos($relation, '.') !== false) {
+            if (str_contains($relation, '.')) {
                 return explode('.', $relation, 2)[0];
             }
             return $relation;
@@ -702,7 +700,7 @@ class Rows implements Iterator, Countable
                 $keys = array_keys($relation);
                 foreach ($keys as $key) {
                     if (is_string($key)) {
-                        return strpos($key, '.') !== false
+                        return str_contains($key, '.')
                             ? explode('.', $key, 2)[0]
                             : $key;
                     }
@@ -710,7 +708,7 @@ class Rows implements Iterator, Countable
                 // Fallback
                 $first = reset($relation);
                 if (is_string($first)) {
-                    return strpos($first, '.') !== false
+                    return str_contains($first, '.')
                         ? explode('.', $first, 2)[0]
                         : $first;
                 }
@@ -719,7 +717,7 @@ class Rows implements Iterator, Countable
             // Indexed array: ['posts', fn() => ...]
             if (isset($relation[0]) && is_string($relation[0])) {
                 $name = $relation[0];
-                return strpos($name, '.') !== false
+                return str_contains($name, '.')
                     ? explode('.', $name, 2)[0]
                     : $name;
             }

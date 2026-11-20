@@ -766,7 +766,7 @@ class Account extends Plugin
 
         // The home directory is created by the middleware, with the member as its
         // owner, so it is never created from here
-        $home = \Hubzero\Filesystem\SafePath::directory($this->webdavHome(), $username, false, 0700, $reason);
+        $home = \Hubzero\Filesystem\SafePath::directory($this->webdavHome(), $username, false, 0o700, $reason);
 
         if ($home === false) {
             switch ($reason) {
@@ -786,7 +786,7 @@ class Account extends Plugin
             return false;
         }
 
-        $ssh = \Hubzero\Filesystem\SafePath::directory($home, '.ssh', $create, 0700, $reason);
+        $ssh = \Hubzero\Filesystem\SafePath::directory($home, '.ssh', $create, 0o700, $reason);
 
         if ($ssh === false) {
             $error = ($reason == \Hubzero\Filesystem\SafePath::REASON_CREATE
@@ -831,7 +831,7 @@ class Account extends Plugin
      */
     protected function writeAuthorizedKeys($auth, $content)
     {
-        return \Hubzero\Filesystem\SafePath::write($auth, $content, 0600);
+        return \Hubzero\Filesystem\SafePath::write($auth, $content, 0o600);
     }
 
     /**
@@ -958,7 +958,7 @@ class Account extends Plugin
      * @param   int|string  $token
      * @return  bool    true if token save successful
      */
-    private function setToken($token)
+    private function setToken(#[\SensitiveParameter] $token)
     {
         // Create the database object and set the token
         $db     = App::get('db');
@@ -1008,7 +1008,7 @@ class Account extends Plugin
      * @param   int|string  $token
      * @return  bool    true if email send successfully
      */
-    private function sendEmail($token)
+    private function sendEmail(#[\SensitiveParameter] $token)
     {
         // Create the email with the new token
         $url      = rtrim(Request::base(), '/');

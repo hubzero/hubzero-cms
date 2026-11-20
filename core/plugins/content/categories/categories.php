@@ -110,11 +110,9 @@ class Categories extends Plugin
             ->from($table)
             ->whereEquals('catid', $catid);
         $db->setQuery($query->toString());
-        $count = $db->loadResult();
-
         // Check for DB error.
 
-        return $count;
+        return $db->loadResult();
     }
 
     /**
@@ -144,11 +142,9 @@ class Categories extends Plugin
                 ->from($table)
                 ->whereIn('catid', $childCategoryIds);
             $db->setQuery($query->toString());
-            $count = $db->loadResult();
-
             // Check for DB error.
 
-            return $count;
+            return $db->loadResult();
         }
 
         // If we didn't have any categories to check, return 0

@@ -392,15 +392,13 @@ class Courses extends Plugin
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
-        $query = "SELECT COUNT(*)
+        return "SELECT COUNT(*)
 				FROM `#__courses` AS c
 				JOIN `#__courses_members` AS m ON m.course_id=c.id
 				LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 				LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 				LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 				WHERE m.user_id=" . (int) $user_id . " AND m.student=0 AND r.alias='instructor' AND c.state=1";
-
-        return $query;
     }
 
     /**

@@ -72,7 +72,7 @@ class IdPBindingTest extends Basic
         $this->globals = [$_SERVER, $_GET, $_POST];
 
         $this->dir = sys_get_temp_dir() . '/com_saml_binding_' . bin2hex(random_bytes(4));
-        mkdir($this->dir, 0700, true);
+        mkdir($this->dir, 0o700, true);
 
         $this->keypair('idp');
         $this->keypair('sp');

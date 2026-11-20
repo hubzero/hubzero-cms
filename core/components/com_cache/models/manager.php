@@ -274,7 +274,7 @@ class Manager extends Obj
 
         // A group is one directory name directly under the cache root; the
         // storage recursively unlinks whatever path it is handed
-        if ($group !== '' && ($group !== basename($group) || strpos($group, '..') !== false)) {
+        if ($group !== '' && ($group !== basename($group) || str_contains($group, '..') )) {
             $this->setError('Invalid cache group');
             return false;
         }

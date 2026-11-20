@@ -92,9 +92,7 @@ class WordLevelDiff extends MappedDiff
                 $orig->addWords($edit->orig, 'del');
             }
         }
-        $lines = $orig->getLines();
-
-        return $lines;
+        return $orig->getLines();
     }
 
     /**
@@ -115,8 +113,6 @@ class WordLevelDiff extends MappedDiff
                 $closing->addWords($edit->closing, 'ins');
             }
         }
-        $lines = $closing->getLines();
-
-        return $lines;
+        return $closing->getLines();
     }
 }

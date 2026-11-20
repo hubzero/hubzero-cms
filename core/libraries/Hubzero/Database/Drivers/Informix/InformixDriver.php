@@ -449,8 +449,8 @@ class InformixDriver extends BaseSqlDriver
     {
         $message = strtolower($e->getMessage());
 
-        return strpos($message, '-11031') !== false
-            || strpos($message, 'invalid cursor state') !== false;
+        return str_contains($message, '-11031')
+            || str_contains($message, 'invalid cursor state') ;
     }
 
     /**
@@ -1753,7 +1753,7 @@ class InformixDriver extends BaseSqlDriver
         // Check for direct match
         foreach ($typeMap as $generic => $informix) {
             // None of these keeps a size; VARCHAR, CHAR and DECIMAL are handled below
-            if (strpos($upperType, $generic) === 0) {
+            if (str_starts_with($upperType, $generic)) {
                 return $informix;
             }
         }

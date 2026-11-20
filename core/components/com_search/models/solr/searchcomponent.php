@@ -212,8 +212,7 @@ class SearchComponent extends Relational
         $searchCount = $this->getSearchCount();
         $params = Component::params('com_search');
         $batchSize = $params->get('solr_batchsize');
-        $batches = ceil($searchCount / $batchSize);
-        return $batches;
+        return ceil($searchCount / $batchSize);
     }
 
     /**
@@ -224,8 +223,7 @@ class SearchComponent extends Relational
     public function getSearchableModel()
     {
         $componentName = $this->get('name');
-        $model = DiscoveryHelper::getSearchableModel($componentName);
-        return $model;
+        return DiscoveryHelper::getSearchableModel($componentName);
     }
 
     /**
@@ -245,8 +243,7 @@ class SearchComponent extends Relational
      */
     public function getQueryName()
     {
-        $title = str_replace(' ', '_', (string) $this->title);
-        return $title;
+        return str_replace(' ', '_', (string) $this->title);
     }
 
     /**

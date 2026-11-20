@@ -535,8 +535,7 @@ class Member extends User implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'member';
-        return $searchNamespace;
+        return 'member';
     }
 
     /**
@@ -545,8 +544,7 @@ class Member extends User implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**

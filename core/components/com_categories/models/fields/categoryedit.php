@@ -174,17 +174,13 @@ class CategoryEdit extends Select
                     (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && ($option->value != $oldCat && !isset($oldParent))
                 ) {
-                    {
-                        unset($options[$i]);
-                    }
+                    unset($options[$i]);
                 }
                 if (
                     (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && (isset($oldParent)) && $option->value != $oldParent
                 ) {
-                    {
-                        unset($options[$i]);
-                    }
+                    unset($options[$i]);
                 }
             }
         }
@@ -201,8 +197,6 @@ class CategoryEdit extends Select
         }
 
         // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-
-        return $options;
+        return array_merge(parent::getOptions(), $options);
     }
 }

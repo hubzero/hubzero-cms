@@ -68,8 +68,7 @@ class Notices extends Module
         $hours_left   = floor(($difference - $days_left * 60 * 60 * 24) / 60 / 60);
         $minutes_left = floor(($difference - $days_left * 60 * 60 * 24 - $hours_left * 60 * 60) / 60);
 
-        $left = [$days_left, $hours_left, $minutes_left];
-        return $left;
+        return [$days_left, $hours_left, $minutes_left];
     }
 
     /**
@@ -146,10 +145,8 @@ class Notices extends Module
 
         // Replace url links
         $urlPattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
-        $text = (string) preg_replace($urlPattern, '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
-
         // Return auto-linked text
-        return $text;
+        return (string) preg_replace($urlPattern, '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
     }
 
     /**

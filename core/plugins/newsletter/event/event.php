@@ -24,8 +24,7 @@ class Event extends Plugin
      */
     public function onGetEnabledDigests()
     {
-        $name = 'event';
-        return $name;
+        return 'event';
     }
 
     /**

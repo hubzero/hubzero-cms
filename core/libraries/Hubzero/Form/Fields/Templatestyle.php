@@ -91,8 +91,6 @@ class Templatestyle extends Groupedlist
         }
 
         // Merge any additional groups in the XML definition.
-        $groups = array_merge(parent::getGroups(), $groups);
-
-        return $groups;
+        return array_merge(parent::getGroups(), $groups);
     }
 }

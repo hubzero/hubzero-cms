@@ -193,7 +193,7 @@ class Permissions extends Obj
         ) {
             $manager = null;
 
-            if (isset($this->managers) && isset($this->managers[$user_id])) {
+            if (isset($this->managers, $this->managers[$user_id])) {
                 $manager = $this->managers[$user_id];
             }
 
@@ -314,7 +314,7 @@ class Permissions extends Obj
         ) {
             $this->student = null;
 
-            if (isset($this->students) && isset($this->students[$user_id])) {
+            if (isset($this->students, $this->students[$user_id])) {
                 $this->student = $this->students[$user_id];
             }
         }

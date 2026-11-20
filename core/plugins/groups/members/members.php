@@ -490,9 +490,7 @@ class Members extends Plugin
         $image[$n - 2] .= '_thumb';
         $end = array_pop($image);
         $image[] = $end;
-        $thumb = implode('.', $image);
-
-        return $thumb;
+        return implode('.', $image);
     }
 
     /**

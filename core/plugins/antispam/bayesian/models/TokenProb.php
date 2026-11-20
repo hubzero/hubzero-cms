@@ -92,7 +92,7 @@ class TokenProb extends Relational
      * @param   string  $token
      * @return  static
      */
-    public static function oneByToken($token)
+    public static function oneByToken(#[\SensitiveParameter] $token)
     {
         return self::all()
             ->whereEquals('token', $token)

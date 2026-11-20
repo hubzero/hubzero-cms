@@ -706,11 +706,11 @@ abstract class BaseSqlSyntax
     protected function extractColumnTableRef(string $expr): ?string
     {
         $expr = trim($expr);
-        if ($expr === '' || strpos($expr, '.') === false) {
+        if ($expr === '' || !str_contains($expr, '.')) {
             return null;
         }
 
-        return substr($expr, 0, strpos($expr, '.'));
+        return explode('.', $expr, 2)[0];
     }
 
     /**
@@ -949,7 +949,7 @@ abstract class BaseSqlSyntax
 
         $ref = null;
         $column = $expr;
-        if (strpos($expr, '.') !== false) {
+        if (str_contains($expr, '.')) {
             [$ref, $column] = explode('.', $expr, 2);
         }
 
@@ -1062,8 +1062,8 @@ abstract class BaseSqlSyntax
      */
     protected function buildRightOnlyFilter(string $leftKey, string $rightKey): string
     {
-        if (strpos($leftKey, '.') !== false) {
-            $leftTable = substr($leftKey, 0, strpos($leftKey, '.'));
+        if (str_contains($leftKey, '.')) {
+            $leftTable = explode('.', $leftKey, 2)[0];
 
             if ($leftTable !== '') {
                 // Quote table and column names for database compatibility
@@ -1648,7 +1648,7 @@ abstract class BaseSqlSyntax
                 if ($right === null) {
                     throw new InvalidArgumentException('EXISTS join conditions require a subquery expression.');
                 }
-                $left = $left ?? '';
+                $left ??= '';
             } else {
                 if ($left === null || $right === null) {
                     throw new InvalidArgumentException('Join conditions require left and right operands.');
@@ -3111,7 +3111,7 @@ abstract class BaseSqlSyntax
                 $joinConditions[] = $this->buildJoinConditions(
                     $join['conditions'],
                 );
-            } elseif (isset($join['left']) && isset($join['right'])) {
+            } elseif (isset($join['left'], $join['right'])) {
                 $joinConditions[] = $this->connection->quoteName($join['left'])
                     . ' = '
                     . $this->connection->quoteName($join['right']);
@@ -3153,7 +3153,7 @@ abstract class BaseSqlSyntax
      */
     protected function stripTableQualifier(string $field): string
     {
-        if (strpos($field, '.') !== false) {
+        if (str_contains($field, '.')) {
             return substr($field, strrpos($field, '.') + 1);
         }
         return $field;
@@ -3817,7 +3817,7 @@ abstract class BaseSqlSyntax
 
         // Treat string as column name (not quoted if it contains special chars like *)
         if (is_string($arg)) {
-            if ($arg === '*' || strpos($arg, '(') !== false || strpos($arg, ' ') !== false) {
+            if ($arg === '*' || str_contains($arg, '(')  || str_contains($arg, ' ')) {
                 return $arg;
             }
             return $this->connection->quoteName($arg);

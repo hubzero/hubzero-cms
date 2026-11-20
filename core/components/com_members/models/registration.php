@@ -747,7 +747,7 @@ class Registration
      * @param   string  $username
      * @return  int|float  0 to 100; repeated characters count fractions
      */
-    public function scorePassword($password, $username = '')
+    public function scorePassword(#[\SensitiveParameter] $password, $username = '')
     {
         $score = 0;
 
@@ -776,15 +776,13 @@ class Registration
 
             if ($seen[$char] != 1) {
                 for ($k = 1; $k < $seen[$char]; $k++) {
-                    $s = $s / 2;
+                    $s /= 2;
                 }
             }
             $score += ($s >= 1) ? $s : 0;
         }
 
-        $score = ($score > 100) ? 100 : $score;
-
-        return $score;
+        return ($score > 100) ? 100 : $score;
     }
 
     /**

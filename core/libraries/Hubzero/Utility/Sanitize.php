@@ -228,7 +228,7 @@ class Sanitize
         $string = preg_replace('#</*\w+:\w[^>]*>#i', '', $string);
 
         // Remove really unwanted tags
-        $string = self::stripTags(
+        return self::stripTags(
             (string) $string,
             'applet',
             'meta',
@@ -248,8 +248,6 @@ class Sanitize
             'title',
             'base',
         );
-
-        return $string;
     }
 
     /**
@@ -302,9 +300,7 @@ class Sanitize
             $x = $y + $x;
         }
 
-        $text = strtr($text, $x);
-
-        return $text;
+        return strtr($text, $x);
     }
 
     /**
@@ -665,15 +661,13 @@ class Sanitize
             $source,
         );
 
-        $source = (string) preg_replace_callback(
+        return (string) preg_replace_callback(
             '/&#x([a-f0-9]+);/mi',
             function ($matches) {
                 return self::utf8Char((int) hexdec($matches[1])) ?? $matches[0];
             },
             (string) $source,
         );
-
-        return $source;
     }
 
     /**

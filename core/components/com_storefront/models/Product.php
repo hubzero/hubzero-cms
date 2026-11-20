@@ -1223,8 +1223,7 @@ class Product
         $sql .= '`pmValue` FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($pId);
         $sql .= ' AND `pmKey` = ' . $db->quote($metaKey);
         $db->setQuery($sql);
-        $meta = $db->loadResult();
-        return $meta;
+        return $db->loadResult();
     }
 
     /**

@@ -107,7 +107,7 @@ class Iprange
             return [strtolower($from), strtolower($to)];
         }
 
-        if (strpos($from, '/') !== false) {
+        if (str_contains($from, '/')) {
             $network = Network::parse($from);
 
             if (!$network) {
@@ -138,7 +138,7 @@ class Iprange
         }
 
         // IPv4 to IPv6 would cover every address between, of both families
-        if ((strpos($from, self::MAPPED) === 0) !== (strpos($to, self::MAPPED) === 0)) {
+        if ((str_starts_with($from, self::MAPPED) ) !== (str_starts_with($to, self::MAPPED) )) {
             return false;
         }
 

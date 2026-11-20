@@ -98,8 +98,7 @@ class AclUser extends Relational
             . "FROM `#__resources` AS r, `#__resource_acl_user` AS a, `#__users` AS u "
             . "WHERE r.id=? AND a.resource_id=r.id AND a.user_id=u.id;";
         $database->prepare($sql)->bind([$resource_id]);
-        $aclusers = $database->loadObjectList();
-        return $aclusers;
+        return $database->loadObjectList();
     }
 
     /**

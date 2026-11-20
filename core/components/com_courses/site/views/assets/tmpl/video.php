@@ -241,12 +241,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         $redirect = Request::current();
 
         // do we have tmpl=component in url?
-        $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+        $delimeter = (!str_contains($redirect, '?') ) ? '?' : '&';
         if (Request::getString('tmpl', '') == 'component') {
             $redirect .= $delimeter . 'tmpl=component';
         }
 
-        $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+        $delimeter = (!str_contains($redirect, '?') ) ? '?' : '&';
 
         // Append current position to redirect
         $redirect .= $delimeter . 'time=' . gmdate("H:i:s", (int) $tracking->current_position);

@@ -245,7 +245,7 @@ $this
                     if (!stripslashes($row->sSku)) {
                         $product .= '<br />SKU: <span class="missing">n/a</span>';
                     } else {
-                        $product .= '<br />SKU: ' . '<a href="'
+                        $product .= '<br />SKU: <a href="'
                             . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId)
                             . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
                     }
@@ -263,7 +263,7 @@ $this
                     if (!stripslashes($row->sSku)) {
                         $product .= '<br />SKU: <span class="missing">n/a</span>';
                     } else {
-                        $product .= '<br />SKU: ' . '<a href="'
+                        $product .= '<br />SKU: <a href="'
                             . Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId='
                                     . $row->sId,

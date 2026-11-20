@@ -1006,9 +1006,7 @@ class Migration
         try {
             $query = "SELECT * FROM " . $this->dbOrFail()->quoteName($this->get('tbl_name'));
             $this->dbOrFail()->setQuery($query);
-            $results = $this->dbOrFail()->loadObjectList();
-
-            return $results;
+            return $this->dbOrFail()->loadObjectList();
         } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
             $this->log("Failed to retrieve history.", 'error');
             return false;

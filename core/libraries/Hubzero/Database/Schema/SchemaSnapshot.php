@@ -516,7 +516,7 @@ class SchemaSnapshot
     protected function ensureDirectoryExists(): void
     {
         if (!is_dir($this->snapshotDir)) {
-            if (!mkdir($this->snapshotDir, 0755, true)) {
+            if (!mkdir($this->snapshotDir, 0o755, true)) {
                 throw new \RuntimeException("Failed to create snapshot directory: {$this->snapshotDir}");
             }
         }

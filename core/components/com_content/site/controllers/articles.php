@@ -1272,10 +1272,10 @@ class Articles extends SiteController
 
         if (
             (!$menu)
-            || ((strpos(
+            || ((!str_contains(
                 $menu->link,
                 'view=category',
-            ) === false) || (strpos($menu->link, '&id=' . (string) $category->id) === false))
+            ) ) || (!str_contains($menu->link, '&id=' . (string) $category->id) ))
         ) {
             // Get the layout from the merged category params
             if ($layout = $category->params->get('category_layout')) {

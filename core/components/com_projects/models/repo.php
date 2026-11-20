@@ -1176,7 +1176,7 @@ class Repo extends Obj
 
             $topLevelDirectory = $matches[0] ?? (string) $firstArchiveEntry;
 
-            if (strpos($topLevelDirectory, '.') !== false) {
+            if (str_contains($topLevelDirectory, '.')) {
                 $extractPath = $extractPath . DS . 'archive-' . time() . DS;
                 Filesystem::makeDirectory($extractPath);
             }
@@ -1294,7 +1294,7 @@ class Repo extends Obj
 
             // Strips out 'var/www/tmp/xxxxxx' text from beginning of directory path.
             // Makes directory name cleaner in the project once the files are added.
-            if (strpos($safe_dir, 'var/www/tmp/') !== false) {
+            if (str_contains($safe_dir, 'var/www/tmp/')) {
                 $parts = explode('/', $safe_dir);
                 $safe_dir = str_replace($parts[0] . '/', '', $safe_dir);
                 $safe_dir = str_replace($parts[1] . '/', '', $safe_dir);
@@ -1314,7 +1314,7 @@ class Repo extends Obj
 
             // Provision directory
             if ($safe_dir && !$skipDir && !is_dir($target . DS . $safe_dir)) {
-                if (Filesystem::makeDirectory($target . DS . $safe_dir, 0755, true, true)) {
+                if (Filesystem::makeDirectory($target . DS . $safe_dir, 0o755, true, true)) {
                     // File object
                     $localDirPath = $dirPath ? $dirPath . DS . $safe_dir : $safe_dir;
                     $fileObject = new Models\File(trim($localDirPath), $this->get('path'));
@@ -1384,7 +1384,7 @@ class Repo extends Obj
         }
 
         // Reduce available space
-        $available = $available - $size;
+        $available -= $size;
 
         return true;
     }
@@ -1397,7 +1397,7 @@ class Repo extends Obj
     public function iniLocal()
     {
         if ($this->get('path') && !is_dir($this->get('path'))) {
-            if (!Filesystem::makeDirectory($this->get('path'), 0755, true, true)) {
+            if (!Filesystem::makeDirectory($this->get('path'), 0o755, true, true)) {
                 $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
@@ -1465,7 +1465,7 @@ class Repo extends Obj
             }
 
             if ($get == 'diskspace') {
-                $diskSpace = $diskSpace + $this->call(
+                $diskSpace += $this->call(
                     'getDiskUsage',
                     $params = [
                         'path'    => $path,
@@ -1494,12 +1494,12 @@ class Repo extends Obj
                             $out = $git->callGit('log | grep "^commit" | wc -l');
                             if (is_array($out)) {
                                 $c =  end($out);
-                                $commits = $commits + $c;
+                                $commits += $c;
                             }
                         }
                     } else {
                         $count = count($git->getFiles());
-                        $files = $files + $count;
+                        $files += $count;
                         if ($count > 1) {
                             $usage++;
                         }
@@ -1510,7 +1510,7 @@ class Repo extends Obj
                     $recursive = true;
                     $subdir = '';
                     $count = count($helper->getFiles($subdir, $recursive));
-                    $files = $files + $count; // Count the files in a project and add to total for a report
+                    $files += $count; // Count the files in a project and add to total for a report
                     if ($count > 1) {
                         $usage++; // A project is using files, increment for reports
                     }

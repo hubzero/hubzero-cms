@@ -863,9 +863,7 @@ class Format
     {
         $url = stripslashes($url);
         $url = str_replace('&amp;', '&', $url);
-        $url = str_replace('&', '&amp;', $url);
-
-        return $url;
+        return str_replace('&', '&amp;', $url);
     }
 
     /**

@@ -173,7 +173,6 @@ class Template extends Document
     {
         ob_start();
         require_once $template;
-        $contents = (string) ob_get_clean();
-        return $contents;
+        return (string) ob_get_clean();
     }
 }

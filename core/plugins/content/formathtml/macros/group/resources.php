@@ -97,7 +97,7 @@ class Resources extends GroupMacro
     {
         // Build query
         $filters = [];
-        $filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+        $filters['now'] = date('Y-m-d H:i:s');
         $filters['sortby'] = 'date';
         $filters['group'] = $this->group->get('cn');
         $filters['access'] = 'all';
@@ -134,13 +134,11 @@ class Resources extends GroupMacro
             $query->whereEquals('type', $filters['type']);
         }
 
-        $rows = $query
+        return $query
             ->limit($filters['limit'])
             ->start($filters['limitstart'])
             ->order('created', 'desc')
             ->rows();
-
-        return $rows;
     }
 
     /**

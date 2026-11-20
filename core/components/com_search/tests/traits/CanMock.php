@@ -151,9 +151,7 @@ trait CanMock
     {
         $instantiationData = Arr::getValue($args, $key, []);
 
-        $instantiationData = $this->mapInstantiationData($instantiationData);
-
-        return $instantiationData;
+        return $this->mapInstantiationData($instantiationData);
     }
 
     /**

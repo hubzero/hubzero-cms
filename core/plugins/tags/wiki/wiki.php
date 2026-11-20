@@ -117,7 +117,7 @@ class Wiki extends Plugin
                 $gids[] = $group->gidNumber;
             }
             if (count($gids) > 0) {
-                $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
+                $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . implode(',', $gids) . '))';
             }
         }
 

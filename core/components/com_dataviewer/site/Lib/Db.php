@@ -434,13 +434,13 @@ class Db
                     } else {
                         $where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
                     }
-                } elseif (strpos($val['val'], '!=') === 0) {
+                } elseif (str_starts_with($val['val'], '!=')) {
                     $val['val'] = trim(str_replace('!=', '', $val['val']));
                     $where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
-                } elseif (strpos($val['val'], '=') === 0) {
+                } elseif (str_starts_with($val['val'], '=')) {
                     $val['val'] = trim(str_replace('=', '', $val['val']));
                     $where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
-                } elseif (strpos($val['val'], '!') === 0) {
+                } elseif (str_starts_with($val['val'], '!')) {
                     $val['val'] = trim(str_replace('!', '', $val['val']));
                     $where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
                 } else {
@@ -543,13 +543,13 @@ class Db
                     } else {
                         $having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
                     }
-                } elseif (strpos($val['val'], '!=') === 0) {
+                } elseif (str_starts_with($val['val'], '!=')) {
                     $val['val'] = trim(str_replace('!=', '', $val['val']));
                     $having_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
-                } elseif (strpos($val['val'], '=') === 0) {
+                } elseif (str_starts_with($val['val'], '=')) {
                     $val['val'] = trim(str_replace('=', '', $val['val']));
                     $having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
-                } elseif (strpos($val['val'], '!') === 0) {
+                } elseif (str_starts_with($val['val'], '!')) {
                     $val['val'] = trim(str_replace('!', '', $val['val']));
                     $having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
                 } else {
@@ -612,7 +612,7 @@ class Db
             $having_str .= ')';
         }
 
-        if (isset($dd['where']) && isset($dd['single'])) {
+        if (isset($dd['where'], $dd['single'])) {
             $where_str = ' WHERE ';
             $where = [];
             foreach ($dd['where'] as $w) {
@@ -645,7 +645,7 @@ class Db
 
             $where = [];
             foreach ($dd['where'] as $w) {
-                if (isset($w['field']) && isset($w['value'])) {
+                if (isset($w['field'], $w['value'])) {
                     $where[] = $w['field'] . "='" . $w['value'] . "'";
                 } elseif (isset($w['raw'])) {
                     $where[] = $w['raw'];
@@ -675,7 +675,7 @@ class Db
 
             $having = [];
             foreach ($dd['having'] as $h) {
-                if (isset($h['field']) && isset($h['value'])) {
+                if (isset($h['field'], $h['value'])) {
                     $having[] = $h['field'] . "='" . $h['value'] . "'";
                 } elseif (isset($h['raw'])) {
                     $having[] = $h['raw'];
@@ -717,7 +717,7 @@ class Db
 
         $order_str = '';
 
-        if (count($order) > 0 && strpos($group_by, 'WITH ROLLUP') === false) {
+        if (count($order) > 0 && !str_contains($group_by, 'WITH ROLLUP')) {
             $order_str = " ORDER BY " . implode(', ', $order);
         }
 
@@ -786,7 +786,7 @@ class Db
             $where_str = ' WHERE ';
             $where = [];
             foreach ($dd['where'] as $w) {
-                if (isset($w['field']) && isset($w['value'])) {
+                if (isset($w['field'], $w['value'])) {
                     $field = implode('.', array_map(function ($p) {
                         return '`' . str_replace('`', '``', $p) . '`';
                     }, explode('.', (string) $w['field'])));
@@ -813,7 +813,7 @@ class Db
             $having_str = ' HAVING ';
             $having = [];
             foreach ($dd['having'] as $h) {
-                if (isset($h['field']) && isset($h['value'])) {
+                if (isset($h['field'], $h['value'])) {
                     $having[] = $h['field'] . "='" . $h['value'] . "'";
                 } elseif (isset($h['raw'])) {
                     $having[] = $h['raw'];

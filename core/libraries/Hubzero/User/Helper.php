@@ -33,7 +33,7 @@ class Helper
         while ($i < $length) {
             $num = rand() % 33;
             $tmp = substr($salt, $num, 1);
-            $genpass = $genpass . $tmp;
+            $genpass .= $tmp;
             $i++;
         }
 
@@ -46,7 +46,7 @@ class Helper
      * @param   string  $password
      * @return  string
      */
-    public static function encryptPassword($password)
+    public static function encryptPassword(#[\SensitiveParameter] $password)
     {
         return "{MD5}" . base64_encode(pack('H*', md5($password)));
     }

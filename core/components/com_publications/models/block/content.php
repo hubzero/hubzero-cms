@@ -324,8 +324,7 @@ class Content extends Base
         // Get attachment type model
         $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
-        $status = $attModel->getStatus($elementparams->type, $elementparams, $elementId, $attachments);
-        return $status;
+        return $attModel->getStatus($elementparams->type, $elementparams, $elementId, $attachments);
     }
 
     /**

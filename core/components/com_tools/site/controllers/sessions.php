@@ -208,9 +208,9 @@ class Sessions extends SiteController
                 $pub = strtolower(trim(isset($params['publishType']) ? $params['publishType'] : ''));
 
                 if ($dpt !== '') {
-                    $mode = (strpos($dpt, 'weber') !== false) ? 'redirect' : 'vnc';
+                    $mode = (str_contains($dpt, 'weber') ) ? 'redirect' : 'vnc';
                 } elseif ($pub !== '') {
-                    $mode = (strpos($pub, 'weber') !== false || strpos($pub, 'jupyter') !== false) ? 'redirect' : 'vnc';
+                    $mode = (str_contains($pub, 'weber')  || str_contains($pub, 'jupyter') ) ? 'redirect' : 'vnc';
                 }
             }
         }

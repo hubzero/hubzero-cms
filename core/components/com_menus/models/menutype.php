@@ -210,7 +210,7 @@ class Menutype extends Obj
         foreach ($views as $view) {
             $view = trim($view, '/');
             // Ignore private views.
-            if (strpos($view, '_') !== 0) {
+            if (!str_starts_with($view, '_')) {
                 // Determine if a metadata file exists for the view.
                 $file = $path . '/' . $view . '/metadata.xml';
 
@@ -307,7 +307,7 @@ class Menutype extends Obj
         foreach ($layouts as $layout) {
             $layout = trim($layout, '/');
             // Ignore private layouts.
-            if (strpos(basename($layout), '_') === false) {
+            if (!str_contains(basename($layout), '_')) {
                 $file = $layout;
                 // Get the layout name.
                 $layoutNames[] = Filesystem::name(basename($layout));
@@ -349,7 +349,7 @@ class Menutype extends Obj
         foreach ($layouts as $layout) {
             $layout = rtrim($layout, '/');
             // Ignore private layouts.
-            if (strpos(basename($layout), '_') === false) {
+            if (!str_contains(basename($layout), '_')) {
                 $file = $layout;
                 // Get the layout name.
                 $layout = Filesystem::name(basename($layout));

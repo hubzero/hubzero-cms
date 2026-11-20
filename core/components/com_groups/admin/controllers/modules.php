@@ -238,9 +238,9 @@ class Modules extends AdminController
 
         // if we have php or script tags we must get page approved by admin
         if (
-            strpos($this->module->get('content'), '<?') !== false
-            || strpos($this->module->get('content'), '<?php') !== false
-            || strpos($this->module->get('content'), '<script') !== false
+            str_contains($this->module->get('content'), '<?')
+            || str_contains($this->module->get('content'), '<?php')
+            || str_contains($this->module->get('content'), '<script')
         ) {
             $this->module->set('approved', 0);
             $this->module->set('approved_on', null);
@@ -491,8 +491,7 @@ class Modules extends AdminController
             $eval = function () use ($content) {
                 ob_start();
                 eval("?> $content <?php ");
-                $content = (string) ob_get_clean();
-                return $content;
+                return (string) ob_get_clean();
             };
             $content = $eval();
         }

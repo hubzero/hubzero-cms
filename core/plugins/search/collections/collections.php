@@ -29,7 +29,7 @@ class Collections extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $stemmed = join(' ', $terms['stemmed']);
+        $stemmed = implode(' ', $terms['stemmed']);
         $weight = '(match(p.description) AGAINST (\'' . $stemmed . '\') '
             . '+ match(i.title, i.description) AGAINST (\'' . $stemmed . '\'))';
 
@@ -59,7 +59,7 @@ class Collections extends Plugin
 			INNER JOIN `#__users` u ON u.id = p.created_by
 			WHERE
 				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         ));
     }
@@ -189,8 +189,7 @@ class Collections extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__collections`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

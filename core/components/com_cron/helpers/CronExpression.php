@@ -282,7 +282,7 @@ class CronExpression
                 // Get the field object used to validate this part
                 $field = $this->fieldFactory->getField($position);
                 // Check if this is singular or a list
-                if (strpos($part, ',') === false) {
+                if (!str_contains($part, ',')) {
                     $satisfied = $field->isSatisfiedBy($nextRun, $part);
                 } else {
                     foreach (array_map('trim', explode(',', $part)) as $listPart) {

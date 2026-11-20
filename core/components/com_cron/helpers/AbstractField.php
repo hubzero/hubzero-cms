@@ -37,7 +37,7 @@ abstract class AbstractField implements FieldInterface
      */
     public function isRange($value)
     {
-        return strpos($value, '-') !== false;
+        return str_contains($value, '-') ;
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class AbstractField implements FieldInterface
      */
     public function isIncrementsOfRanges($value)
     {
-        return strpos($value, '/') !== false;
+        return str_contains($value, '/') ;
     }
 
     /**

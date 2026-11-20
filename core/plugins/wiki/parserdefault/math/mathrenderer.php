@@ -125,7 +125,7 @@ class MathRenderer
      * @param      integer $mode chmod
      * @return     boolean False if errors, True on success
      */
-    private function makePath($path, $mode = 0777)
+    private function makePath($path, $mode = 0o777)
     {
         if (file_exists($path)) {
             return true;
@@ -429,7 +429,7 @@ class MathRenderer
      */
     private function getHashPath()
     {
-        $path = PATH_APP . DS . trim(
+        return PATH_APP . DS . trim(
             $this->config->get('mathpath', '/site/wiki/math'),
             DS,
         ) . DS . substr(
@@ -445,7 +445,6 @@ class MathRenderer
             2,
             1,
         );
-        return $path;
     }
 
     /**

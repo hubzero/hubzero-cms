@@ -37,7 +37,7 @@ class Mysql implements
      * @param   string  $access_token  Access token
      * @return  array<mixed>|false   Access token data
      */
-    public function getAccessToken($access_token)
+    public function getAccessToken(#[\SensitiveParameter] $access_token)
     {
         // create access token
         $token = \Components\Developer\Models\Accesstoken::oneByToken($access_token);
@@ -73,7 +73,7 @@ class Mysql implements
      * @param   string|null  $scope         Access token granted scope
      * @return  bool
      */
-    public function setAccessToken($access_token, $client_id, $user_id, $expires, $scope = null)
+    public function setAccessToken(#[\SensitiveParameter] $access_token, $client_id, $user_id, $expires, $scope = null)
     {
         // format date like HUBzero does
         $expires = with(new Date($expires))->toSql();
@@ -172,7 +172,7 @@ class Mysql implements
      * @param   string|null  $client_secret  Client secret
      * @return  bool    Result of test
      */
-    public function checkClientCredentials($client_id, $client_secret = null)
+    public function checkClientCredentials($client_id, #[\SensitiveParameter] $client_secret = null)
     {
         // load client
         if (!$client = $this->getClientDetails($client_id)) {
@@ -285,7 +285,7 @@ class Mysql implements
      * @param   string  $password  User's password
      * @return  bool    Result of username/password check
      */
-    public function checkUserCredentials($username, $password)
+    public function checkUserCredentials($username, #[\SensitiveParameter] $password)
     {
         // allow authentication via email, just like in the hub
         if (strpos($username, '@')) {
@@ -348,7 +348,7 @@ class Mysql implements
      * @param   string  $refresh_token  Refresh token
      * @return  array<mixed>|false   Refresh token details
      */
-    public function getRefreshToken($refresh_token)
+    public function getRefreshToken(#[\SensitiveParameter] $refresh_token)
     {
         // create refresh token
         $token = \Components\Developer\Models\Refreshtoken::oneByToken($refresh_token);
@@ -384,8 +384,13 @@ class Mysql implements
      * @param   string|null  $scope          Token scope
      * @return  bool
      */
-    public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)
-    {
+    public function setRefreshToken(
+        #[\SensitiveParameter] $refresh_token,
+        $client_id,
+        $user_id,
+        $expires,
+        $scope = null,
+    ) {
         // format date like HUBzero does
         $expires = with(new Date($expires))->toSql();
         $created = with(new Date('now'))->toSql();
@@ -409,7 +414,7 @@ class Mysql implements
      * @param   string  $refresh_token  Refresh Token
      * @return  mixed
      */
-    public function unsetRefreshToken($refresh_token)
+    public function unsetRefreshToken(#[\SensitiveParameter] $refresh_token)
     {
         // create refresh token
         $token = \Components\Developer\Models\Refreshtoken::oneByToken($refresh_token);
@@ -512,7 +517,7 @@ class Mysql implements
      * @param   string  $toolSessionToken  Tool session token
      * @return  bool    Result of test
      */
-    public function validateToolSessionData($toolSessionId, $toolSessionToken)
+    public function validateToolSessionData($toolSessionId, #[\SensitiveParameter] $toolSessionToken)
     {
         // instantiate middleware database
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();

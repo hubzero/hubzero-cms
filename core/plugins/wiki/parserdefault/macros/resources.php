@@ -199,7 +199,6 @@ class Resources extends WikiMacro
         $pic[$n - 2] .= '-tn';
         $end = array_pop($pic);
         $pic[] = 'gif';
-        $tn = implode('.', $pic);
-        return $tn;
+        return implode('.', $pic);
     }
 }

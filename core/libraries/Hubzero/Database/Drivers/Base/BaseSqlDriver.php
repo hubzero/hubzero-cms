@@ -494,11 +494,9 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function getTableKeysFromShowKeys(string $table, ?string $indexBy = null): array
     {
         $this->setQuery('SHOW KEYS FROM ' . $this->quoteName($table));
-        $keys = $indexBy !== null
+        return $indexBy !== null
             ? $this->loadObjectList($indexBy)
             : $this->loadObjectList();
-
-        return $keys;
     }
 
     /**

@@ -532,7 +532,7 @@ class Node extends Obj
             $count = (int) $this->numitems;
 
             foreach ($this->getChildren() as $child) {
-                $count = $count + $child->getNumItems(true);
+                $count += $child->getNumItems(true);
             }
 
             return $count;

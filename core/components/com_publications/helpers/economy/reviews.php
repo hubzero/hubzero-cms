@@ -87,13 +87,11 @@ class Reviews extends Obj
         $p_R = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
 
         $calc = 0;
-        if (isset($review->helpful) && isset($review->nothelpful)) {
+        if (isset($review->helpful, $review->nothelpful)) {
             $calc += ($review->helpful) * $p_R;
         }
 
-        $calc = ($calc) ? $calc : 0;
-
-        return $calc;
+        return ($calc) ? $calc : 0;
     }
 
     /**

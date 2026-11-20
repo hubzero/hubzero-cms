@@ -29,7 +29,7 @@ class Asset
     protected static function includeRelativeFiles($folder, $file, $relative, $detect_browser, $detect_debug)
     {
         // If http is present in filename
-        if (strpos($file, 'http') === 0) {
+        if (str_starts_with($file, 'http')) {
             $includes = [$file];
         } else {
             $root = rtrim(App::get('request')->root(true), '/');

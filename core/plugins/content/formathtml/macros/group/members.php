@@ -120,10 +120,8 @@ class Members extends GroupMacro
         shuffle($members);
 
         // Limit members based on the filter
-        $members = array_slice($members, 0, $filters['limit']);
-
         // Return members
-        return $members;
+        return array_slice($members, 0, $filters['limit']);
     }
 
     /**

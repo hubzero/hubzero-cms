@@ -149,7 +149,7 @@ class Transfer extends Plugin
                         ? $nativegroups[0]
                         : ''; // tool group
 
-                    if (isset($wishlist->resource) && isset($wishlist->resource->alias)) {
+                    if (isset($wishlist->resource->alias)) {
                         $tags = ($wishlist->resource->type ?? null) == 7 ? 'tool:' : 'resource:';
                         $tags .= $wishlist->resource->alias ? $wishlist->resource->alias : $wishlist->referenceid;
                     }

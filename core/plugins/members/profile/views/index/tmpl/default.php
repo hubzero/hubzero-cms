@@ -779,24 +779,24 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     // We need to caputre its list of dependent fields so we
                     // can tell the code to display those fields
                     foreach (array_keys($value) as $k => $v) {
-                        if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$v])) {
+                        if (isset($f[$field->get('name')], $f[$field->get('name')][$v])) {
                             $sh += $f[$field->get('name')][$v];
                         }
                     }
 
                     $val = [];
                     foreach ($value as $k => $v) {
-                        $val[$k] = (is_string($v) && strpos($v, '{') === false) ? $this->escape($v) : $renderIfJson($v);
+                        $val[$k] = (is_string($v) && !str_contains($v, '{') ) ? $this->escape($v) : $renderIfJson($v);
                     }
                     $val = implode('<br />', $val);
                 } else {
-                    if (isset($f[$field->get('name')]) && isset($f[$field->get('name')][$value])) {
+                    if (isset($f[$field->get('name')], $f[$field->get('name')][$value])) {
                         $sh += $f[$field->get('name')][$value];
                     }
 
                     if (
                         is_string($value)
-                        && strpos($value, '{') === false
+                        && !str_contains($value, '{')
                         && !in_array($field->get('type'), ['url', 'textarea', 'tags'])
                     ) {
                         $val = $this->escape($value);

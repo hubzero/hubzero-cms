@@ -423,7 +423,7 @@ $bars = [];
                             <?php
                             $z = [];
                             foreach ($r as $k => $d) {
-                                $z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+                                $z[] = "\t'$k': [" . implode(',', $d) . "]\n";
                             }
                             echo implode(',', $z);
                             ?>
@@ -557,7 +557,7 @@ $bars = [];
                             <?php
                             $z = [];
                             foreach ($r as $k => $d) {
-                                $z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+                                $z[] = "\t'$k': [" . implode(',', $d) . "]\n";
                             }
                             echo implode(',', $z);
                             ?>

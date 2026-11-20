@@ -1009,9 +1009,7 @@ class Page extends Relational
 
         $r = '/(.+?)\:(.+?)/';
         $page = (string) preg_replace($r, '\\1: \\2', $page);
-        $page = str_replace('_', ' ', $page);
-
-        return $page;
+        return str_replace('_', ' ', $page);
     }
 
     /**
@@ -1055,7 +1053,7 @@ class Page extends Relational
             'lower' => "a-z\xdf-\xf6\xf8-\xff",
         ];
 
-        $keys = join('|', array_keys($classes));
+        $keys = implode('|', array_keys($classes));
 
         return (string) preg_replace_callback(
             "/\[:($keys):]/",
@@ -1085,7 +1083,7 @@ class Page extends Relational
         if ($totalcount) {
             // Add the ratings up
             foreach ($ratings as $item) {
-                $totalvalue = $totalvalue + $item->get('rating', 0);
+                $totalvalue += $item->get('rating', 0);
             }
 
             // Find the average of all ratings

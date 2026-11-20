@@ -81,6 +81,6 @@ class DvConfig
 
 
         // Makesure the files are not accessible by other
-        static::$conf['sys_umask'] = umask(0007);
+        static::$conf['sys_umask'] = umask(0o007);
     }
 }

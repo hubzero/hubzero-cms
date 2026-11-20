@@ -24,8 +24,7 @@ class Resource extends Plugin
      */
     public function onGetEnabledDigests()
     {
-        $name = 'resource';
-        return $name;
+        return 'resource';
     }
 
     /**

@@ -45,10 +45,10 @@ class PathwayServiceProvider extends ServiceProvider
 
                                 case 'url':
                                     if (
-                                        (strpos(
+                                        (str_starts_with(
                                             $link->link,
                                             'index.php?',
-                                        ) === 0) && (strpos($link->link, 'Itemid=') === false)
+                                        ) ) && (!str_contains($link->link, 'Itemid=') )
                                     ) {
                                         // If this is an internal link, ensure the Itemid is set.
                                         $url = $link->link . '&Itemid=' . $link->id;

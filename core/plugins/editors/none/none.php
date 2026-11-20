@@ -35,7 +35,7 @@ class None extends Plugin
         */
         $showFullPaths = ($this->params->get('full_paths')) ? 'true' : 'false';
 
-        $txt =  "<script type=\"text/javascript\">
+        return "<script type=\"text/javascript\">
 					var showFullPaths = " . $showFullPaths . ";
 					function insertAtCursor(myField, myValue) {
 
@@ -62,8 +62,6 @@ class None extends Plugin
 						}
 					}
 				</script>";
-
-        return $txt;
     }
 
     /**
@@ -168,11 +166,9 @@ class None extends Plugin
         }
 
         $buttons = $this->displayButtons($id, $buttons, $asset, $author);
-        $editor  = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\""
+        return "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\""
             . " style=\"width: $width; height: $height;\">"
             . "$content</textarea>" . $buttons;
-
-        return $editor;
     }
 
     /**

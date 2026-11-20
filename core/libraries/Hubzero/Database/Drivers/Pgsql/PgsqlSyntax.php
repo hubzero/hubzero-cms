@@ -260,7 +260,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         // Check for types with length specifiers
         foreach (self::$typeMappings as $pgType => $normalized) {
-            if (strpos($type, $pgType) === 0) {
+            if (str_starts_with($type, $pgType)) {
                 return $normalized;
             }
         }
@@ -290,7 +290,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         // Handle nextval() for auto-increment columns
-        if (strpos($value, 'nextval(') === 0) {
+        if (str_starts_with($value, 'nextval(')) {
             return null;
         }
 

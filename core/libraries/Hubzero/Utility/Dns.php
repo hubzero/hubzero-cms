@@ -60,8 +60,7 @@ class Dns
         if (empty($arr)) {
             return '';
         }
-        $tld = end($arr);
-        return $tld;
+        return end($arr);
     }
 
     /**
@@ -84,8 +83,7 @@ class Dns
         $arr = self::getConfigArray();
         array_shift($arr);
 
-        $domain = implode('.', $arr);
-        return $domain;
+        return implode('.', $arr);
     }
 
     /**

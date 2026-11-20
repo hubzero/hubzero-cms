@@ -219,7 +219,7 @@ class Identicon
             $this->color[1] = $color[1];
             $this->color[2] = $color[2];
         } else {
-            if (false !== strpos($color, '#')) {
+            if (str_contains($color, '#')) {
                 $color = substr($color, 1);
             }
             $this->color[0] = hexdec(substr($color, 0, 2));

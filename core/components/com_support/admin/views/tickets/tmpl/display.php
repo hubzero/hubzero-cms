@@ -393,7 +393,7 @@ $this
                                         # <?php echo $row->get('id'); ?>
                                     </span>
                                     <?php
-                                    $titleText = Lang::txt('COM_SUPPORT_TICKET_DETAILS') . ' :: ' . '<strong>'
+                                    $titleText = Lang::txt('COM_SUPPORT_TICKET_DETAILS') . ' :: <strong>'
                                         . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> '
                                         . $row->status->get('title')
                                         . (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : '');

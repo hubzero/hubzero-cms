@@ -56,7 +56,7 @@ class Group extends Field
             $options[] = Html::select('option', $folder, $folder);
         }
 
-        $return = Html::select(
+        return Html::select(
             'genericlist',
             $options,
             $this->name,
@@ -66,7 +66,5 @@ class Group extends Field
             $this->value,
             $this->id,
         );
-
-        return $return;
     }
 }

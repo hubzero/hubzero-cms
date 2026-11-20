@@ -111,8 +111,7 @@ class Orders
             return $db->loadAssocList();
         }
 
-        $res = $db->loadObjectList();
-        return $res;
+        return $db->loadObjectList();
     }
 
     /**
@@ -196,7 +195,6 @@ class Orders
         $db->setQuery($sql);
         $db->query();
 
-        $res = $db->loadObjectList();
-        return $res;
+        return $db->loadObjectList();
     }
 }

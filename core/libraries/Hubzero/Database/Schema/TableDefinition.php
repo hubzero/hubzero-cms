@@ -905,7 +905,7 @@ class TableDefinition
     public function uniqueIndex($columns, ?string $name = null): self
     {
         $columns = (array) $columns;
-        $name = $name ?? $this->table . '_' . implode('_', $columns) . '_unique';
+        $name ??= $this->table . '_' . implode('_', $columns) . '_unique';
         $this->indexes[] = [
             'type' => 'unique',
             'columns' => $columns,
@@ -924,7 +924,7 @@ class TableDefinition
     public function index($columns, ?string $name = null): self
     {
         $columns = (array) $columns;
-        $name = $name ?? $this->table . '_' . implode('_', $columns) . '_index';
+        $name ??= $this->table . '_' . implode('_', $columns) . '_index';
         $this->indexes[] = [
             'type' => 'index',
             'columns' => $columns,
@@ -944,7 +944,7 @@ class TableDefinition
     public function fulltextIndex($columns, ?string $name = null, string $language = 'english'): self
     {
         $columns = (array) $columns;
-        $name = $name ?? $this->table . '_' . implode('_', $columns) . '_fulltext';
+        $name ??= $this->table . '_' . implode('_', $columns) . '_fulltext';
         $this->indexes[] = [
             'type' => 'fulltext',
             'columns' => $columns,
@@ -964,7 +964,7 @@ class TableDefinition
     public function spatialIndex($columns, ?string $name = null): self
     {
         $columns = (array) $columns;
-        $name = $name ?? $this->table . '_' . implode('_', $columns) . '_spatial';
+        $name ??= $this->table . '_' . implode('_', $columns) . '_spatial';
         $this->indexes[] = [
             'type' => 'spatial',
             'columns' => $columns,

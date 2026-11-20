@@ -29,17 +29,17 @@ class Migration20260220000000ComContent extends Base
             ->where('id', '=', 1)
             ->first();
 
-        if (!$row || strpos($row->introtext, '<fieldset>') === false) {
+        if (!$row || !str_contains($row->introtext, '<fieldset>')) {
             return;
         }
 
         // Must contain the starter set's search field
-        if (strpos($row->introtext, 'label for="rsearchword"') === false) {
+        if (!str_contains($row->introtext, 'label for="rsearchword"')) {
             return;
         }
 
         // Already has the legend
-        if (strpos($row->introtext, 'Search resources</legend>') !== false) {
+        if (str_contains($row->introtext, 'Search resources</legend>')) {
             return;
         }
 

@@ -251,7 +251,7 @@ class Relationships extends AdminController
             $later = [];
             foreach ($this->database->loadColumn() ?? [] as $tag) {
                 $tag = stripslashes($tag);
-                if (strpos($tag, $_GET['term']) === 0) {
+                if (str_starts_with($tag, $_GET['term'])) {
                     $suggestions[] = $tag;
                 } else {
                     $later[] = $tag;

@@ -20,7 +20,7 @@ class Kml
         $data = $res['data'];
 
         header('Content-Description: File Transfer');
-        header('Content-Type: ' . 'application/vnd.google-earth.kml+xml');
+        header('Content-Type: application/vnd.google-earth.kml+xml');
         header('Content-Disposition: attachment; filename=' . preg_replace('/\W/', '_', $dd['title']) . '.kml');
 
         print '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -99,7 +99,7 @@ class Kml
         $dc = (float) $d + ((float) $m / 60) + ((float) $s / (60 * 60));
 
         if ($dir == "S" || $dir == "W") {
-            $dc = $dc * -1;
+            $dc *= -1;
         }
         return $dc;
     }

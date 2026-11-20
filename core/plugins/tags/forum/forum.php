@@ -73,7 +73,7 @@ class Forum extends Plugin
         $gids = $this->getGroupIds((int) User::get('id', 0));
 
         if (!User::authorise('core.view', 'com_forum')) {
-            $addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
+            $addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . implode(',', $gids) : '') . ')';
         } else {
             $viewlevels = '0,' . implode(',', User::getAuthorisedViewLevels());
 
@@ -81,7 +81,7 @@ class Forum extends Plugin
                 $addtl_where[] = '(e.access IN ('
                     . $viewlevels
                     . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,'
-                    . join(',', $gids)
+                    . implode(',', $gids)
                     . ')))';
             } else {
                 $addtl_where[] = '(e.access IN (' . $viewlevels . '))';
@@ -109,7 +109,7 @@ class Forum extends Plugin
 					LEFT JOIN #__forum_sections s ON s.id = c.section_id
 					LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
 					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
-        $e_where  = " WHERE e.state=1 AND e.parent=0 AND " . join(' AND ', $addtl_where);
+        $e_where  = " WHERE e.state=1 AND e.parent=0 AND " . implode(' AND ', $addtl_where);
         $e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";
         switch ($sort) {

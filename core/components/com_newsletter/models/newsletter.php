@@ -93,9 +93,7 @@ class Newsletter extends Relational
         $alias = str_replace(' ', '-', $alias);
         $alias = (string) preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 
-        $alias = $this->uniqueAlias($alias, (isset($data['id']) ? $data['id'] : 0));
-
-        return $alias;
+        return $this->uniqueAlias($alias, (isset($data['id']) ? $data['id'] : 0));
     }
 
     /**
@@ -591,9 +589,7 @@ class Newsletter extends Relational
         }
 
         // put it all together
-        $plainText = $title . implode($storySeparator, $primary)
+        return $title . implode($storySeparator, $primary)
             . $sectionSeparator . implode($storySeparator, $secondary);
-
-        return $plainText;
     }
 }

@@ -89,7 +89,7 @@ class Polls extends AdminController
             }]);
 
         if ($filters['search']) {
-            if (strpos($filters['search'], '"') !== false) {
+            if (str_contains($filters['search'], '"')) {
                 $filters['search'] = str_replace(['=', '<'], '', $filters['search']);
             }
             $filters['search'] = strtolower($filters['search']);

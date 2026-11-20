@@ -616,7 +616,7 @@ class Media extends Base
         }
 
         // change file perm
-        chmod($finalFileName, 0774);
+        chmod($finalFileName, 0o774);
 
         //scan file for virus if we have enabled scans
         if ($this->config->get('scan_uploads', 1)) {
@@ -771,7 +771,7 @@ class Media extends Base
         }
 
         // change file perm
-        chmod($file, 0774);
+        chmod($file, 0o774);
 
         //scan file for virus if we have enabled scans
         if ($this->config->get('scan_uploads', 1)) {

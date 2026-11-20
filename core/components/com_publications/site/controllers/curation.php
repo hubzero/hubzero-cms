@@ -397,7 +397,7 @@ class Curation extends SiteController
                     $item .= ' v.' . $this->pubOrFail()->version->version_label . ' ';
                     $item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
-                    $message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
+                    $message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n\n";
                     $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE')
                         . ' '
                         . rtrim(Request::base(), DS)
@@ -908,7 +908,7 @@ class Curation extends SiteController
             : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
         if ($status != 1) {
-            $message .= "\n" . "\n";
+            $message .= "\n\n";
             $message .= Lang::txt('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
         }
 
@@ -969,8 +969,7 @@ class Curation extends SiteController
             $authorized = 'admin';
         }
         if ($curator && $curator == User::get('id')) {
-            $authorized = 'owner';
-            return $authorized;
+            return 'owner';
         }
 
         $curatorgroup = $this->config->get('curatorgroup', '');

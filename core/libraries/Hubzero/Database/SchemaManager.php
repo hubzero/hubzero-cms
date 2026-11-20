@@ -509,7 +509,7 @@ class SchemaManager
 
         foreach ($tableList as $tableName) {
             // Filter by prefix if specified
-            if ($prefix !== null && strpos($tableName, $prefix) !== 0) {
+            if ($prefix !== null && !str_starts_with($tableName, $prefix)) {
                 continue;
             }
 

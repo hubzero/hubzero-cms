@@ -493,9 +493,9 @@ class File extends Obj
             $relative = rtrim(str_replace('/administrator', '', Request::base(true)), '/')
                 . substr($output, strlen(PATH_ROOT));
         } else {
-            if (strpos($output, PATH_ROOT) === 0) {
+            if (str_starts_with($output, PATH_ROOT)) {
                 $relative = rtrim(Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
-            } elseif (strpos($output, PATH_CORE) === 0) {
+            } elseif (str_starts_with($output, PATH_CORE)) {
                 $relative = rtrim(Request::root(true), '/') . "/core/" . rtrim(substr($output, strlen(PATH_CORE)), '/');
             }
         }

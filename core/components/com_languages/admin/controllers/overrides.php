@@ -397,7 +397,7 @@ class Overrides extends AdminController
         // Build the sorted messages list
         if (count($messages)) {
             foreach ($messages as $message) {
-                if (isset($message['type']) && isset($message['message'])) {
+                if (isset($message['type'], $message['message'])) {
                     $lists[$message['type']][] = $message['message'];
                 }
             }

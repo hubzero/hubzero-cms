@@ -82,7 +82,7 @@ class Project extends Table
 
         $query  = " FROM $this->tableName AS p ";
 
-        if (isset($filters['timed']) && isset($filters['active'])) {
+        if (isset($filters['timed'], $filters['active'])) {
             $query .= " INNER JOIN #__activity_recipients AS pa
 						ON pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2
 						AND pa.created >= " . $this->db->quote($filters['timed']);

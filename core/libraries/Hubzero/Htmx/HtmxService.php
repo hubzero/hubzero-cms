@@ -478,7 +478,7 @@ class HtmxService
         $path = (string) ($parts['path'] ?? '/');
         if ($path === '') {
             $path = '/';
-        } elseif (strpos($path, '/') !== 0) {
+        } elseif (!str_starts_with($path, '/')) {
             $path = '/' . ltrim($path, '/');
         }
 
@@ -501,7 +501,7 @@ class HtmxService
     public function url(string $url, array $params = []): string
     {
         if (!empty($params)) {
-            $sep = strpos($url, '?') !== false ? '&' : '?';
+            $sep = str_contains($url, '?')  ? '&' : '?';
             $url .= $sep . http_build_query($params);
         }
 
@@ -517,7 +517,7 @@ class HtmxService
     public function actionUrl(string $component, string $task, array $params = []): string
     {
         $component = trim($component);
-        if ($component !== '' && strpos($component, 'com_') !== 0) {
+        if ($component !== '' && !str_starts_with($component, 'com_')) {
             $component = 'com_' . $component;
         }
 
@@ -815,7 +815,7 @@ class HtmxService
         $incoming = [];
         foreach ($this->allIncomingHeaders() as $name => $value) {
             $lower = strtolower((string) $name);
-            if (strpos($lower, 'hx-') === 0 || $lower === 'x-requested-with') {
+            if (str_starts_with($lower, 'hx-')  || $lower === 'x-requested-with') {
                 $incoming[$name] = $value;
             }
         }
@@ -1128,11 +1128,11 @@ class HtmxService
         // Prevent malformed header values and obvious HTML/script payloads.
         if (
             strlen($selector) > 512
-            || strpos($selector, "\r") !== false
-            || strpos($selector, "\n") !== false
-            || strpos($selector, "\0") !== false
-            || strpos($selector, '<') !== false
-            || strpos($selector, '>') !== false
+            || str_contains($selector, "\r")
+            || str_contains($selector, "\n")
+            || str_contains($selector, "\0")
+            || str_contains($selector, '<')
+            || str_contains($selector, '>')
         ) {
             return false;
         }

@@ -43,7 +43,7 @@ class Supergroup extends Plugin
         // which is why the function name built further down strips them again.
         // Every separator is already gone, so refusing '..' is what stops this
         // climbing out of the components directory.
-        if (strpos($active, '..') !== false) {
+        if (str_contains($active, '..')) {
             $active = '';
         }
 
@@ -108,7 +108,7 @@ class Supergroup extends Plugin
 
             // remove "sg_" prefix for super group query params
             foreach (Request::query() as $k => $v) {
-                if (strpos($k, 'sg_') !== false) {
+                if (str_contains($k, 'sg_')) {
                     Request::setVar(str_replace('sg_', '', $k), $v);
                 }
             }
@@ -153,7 +153,7 @@ class Supergroup extends Plugin
             // which is why the function name built further down strips them again.
             // Every separator is already gone, so refusing '..' is what stops this
             // climbing out of the components directory.
-            if (strpos($active, '..') !== false) {
+            if (str_contains($active, '..')) {
                 $active = '';
             }
 

@@ -164,7 +164,7 @@ class Encrypter
                     }
                     $duration += $microEnd - $microStart;
                 }
-                $duration = $duration / $samples;
+                $duration /= $samples;
 
                 // Based on the average time, determine the total rounds so that
                 // the total running time is bounded to a reasonable number.

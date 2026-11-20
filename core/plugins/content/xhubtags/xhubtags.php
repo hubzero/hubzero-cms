@@ -51,7 +51,7 @@ class Xhubtags extends Plugin
         $article->text = $text;
 
         // simple performance check to determine whether bot should process further
-        if (strpos($text, '{xhub') === false) {
+        if (!str_contains($text, '{xhub')) {
             return true;
         }
 

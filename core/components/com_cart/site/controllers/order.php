@@ -145,7 +145,7 @@ class Order extends ComponentController
 
         if (!$transaction) {
             App::redirect(
-                Route::url('index.php?option=' . 'com_cart'),
+                Route::url('index.php?option=com_cart'),
             );
         }
 
@@ -168,7 +168,7 @@ class Order extends ComponentController
 
         if ($this->completeOrder($transaction)) {
             // redirect to thank you page
-            $redirect_url = Route::url('index.php?option=' . 'com_cart')
+            $redirect_url = Route::url('index.php?option=com_cart')
                 . '/order/complete/?custom=' . $token . '-' . $transaction->info->tId;
 
             App::redirect(

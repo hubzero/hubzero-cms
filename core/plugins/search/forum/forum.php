@@ -41,7 +41,7 @@ class Forum extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = "match(f.title, f.comment) against ('" . join(' ', $terms['stemmed']) . "')";
+        $weight = "match(f.title, f.comment) against ('" . implode(' ', $terms['stemmed']) . "')";
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -53,12 +53,12 @@ class Forum extends Plugin
 
         $gids = $authz->getGroupIds();
         if (!User::authorise('core.view', 'com_groups')) {
-            $addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
+            $addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . implode(',', $gids) : '') . ')';
         } else {
             $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
             if ($gids) {
-                $gidList = join(',', $gids);
+                $gidList = implode(',', $gids);
                 $addtl_where[] = '(f.access IN (0,' . $viewlevels . ') '
                     . 'OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . $gidList . ')))';
             } else {
@@ -75,7 +75,7 @@ class Forum extends Plugin
             if (!$authz->isGuest()) {
                 $groupAuth[] = "g.plugins LIKE '%forum=registered%'";
                 if ($gids) {
-                    $groupAuth[] = "(g.plugins LIKE '%wiki=members%' AND g.gidNumber IN (" . join(',', $gids) . "))";
+                    $groupAuth[] = "(g.plugins LIKE '%wiki=members%' AND g.gidNumber IN (" . implode(',', $gids) . "))";
                 }
             }
         }
@@ -111,7 +111,7 @@ class Forum extends Plugin
                 f.scope != 'course' AND
                 $weight > 0";
 
-        $sql .= ' AND ' . join(' AND ', $addtl_where);
+        $sql .= ' AND ' . implode(' AND ', $addtl_where);
 
         $sql .= " AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			ORDER BY $weight DESC";
@@ -319,8 +319,7 @@ class Forum extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT DISTINCT thread FROM #__forum_posts WHERE parent = 0;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

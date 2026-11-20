@@ -69,8 +69,8 @@ class Router
     public function url($url, $xhtml = true, $ssl = null)
     {
         if (
-            (strpos($url == null ? '' : $url, '&') !== 0)
-            && (strpos($url == null ? '' : $url, 'index.php') !== 0)
+            (!str_starts_with($url == null ? '' : $url, '&') )
+            && (!str_starts_with($url == null ? '' : $url, 'index.php') )
         ) {
             return $url;
         }
@@ -289,7 +289,7 @@ class Router
         if (substr($url, 0, 1) == '&') {
             $vars = [];
 
-            if (strpos($url, '&amp;') !== false) {
+            if (str_contains($url, '&amp;')) {
                 $url = str_replace('&amp;', '&', $url);
             }
 

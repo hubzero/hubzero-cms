@@ -94,12 +94,10 @@ class PublicationUsageHelper
         $publicationId = $this->getPublicationId();
         $versionId = $this->getVersionId();
 
-        $sumQuery = "SELECT SUM($column)
+        return "SELECT SUM($column)
 			FROM `$this->logsTable`
 			WHERE `publication_id`=$publicationId AND `publication_version_id`=$versionId
 			ORDER BY `year` ASC, `month` ASC";
-
-        return $sumQuery;
     }
 
     /**

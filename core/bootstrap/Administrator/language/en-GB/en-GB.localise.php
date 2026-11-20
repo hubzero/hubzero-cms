@@ -38,13 +38,11 @@ abstract class EnGBLocalise
      */
     public static function getIgnoredSearchWords()
     {
-        $search_ignore = [
+        return [
             'and',
             'in',
             'on',
         ];
-
-        return $search_ignore;
     }
 
     /**

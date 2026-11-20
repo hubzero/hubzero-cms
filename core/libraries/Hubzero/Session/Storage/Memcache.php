@@ -220,7 +220,7 @@ class Memcache extends Store
 
         // loop through the session keys and get their data
         foreach (array_keys($names) as $name) {
-            if (strpos($name, $this->prefix) === 0) {
+            if (str_starts_with($name, $this->prefix)) {
                 $session = new Obj();
                 $session->set('session_id', $name);
                 $session->set('data', $this->engine->get($name));

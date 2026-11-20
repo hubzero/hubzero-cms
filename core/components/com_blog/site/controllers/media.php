@@ -325,7 +325,7 @@ class Media extends SiteController
         $archive = new Archive($scope, $scopeId);
 
         // Keep the target within the blog filespace
-        if (strpos($file, '..') !== false) {
+        if (str_contains($file, '..')) {
             $this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
             $this->displayTask();
 

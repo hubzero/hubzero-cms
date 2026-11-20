@@ -216,7 +216,7 @@ class DatabaseInfo
         $matching = [];
 
         foreach ($this->tables as $name => $table) {
-            if (strpos($name, $prefix) === 0) {
+            if (str_starts_with($name, $prefix)) {
                 $matching[] = $table;
             }
         }

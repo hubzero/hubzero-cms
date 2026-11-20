@@ -68,8 +68,8 @@ class SafePathTest extends Basic
         $this->home   = $this->base . DS . 'member';
         $this->victim = $this->base . DS . 'victim';
 
-        mkdir($this->home, 0755, true);
-        mkdir($this->victim . DS . 'data', 0700, true);
+        mkdir($this->home, 0o755, true);
+        mkdir($this->victim . DS . 'data', 0o700, true);
 
         file_put_contents($this->victim . DS . 'data' . DS . 'secret', self::VICTIM);
     }
@@ -133,7 +133,7 @@ class SafePathTest extends Basic
     {
         $reason = null;
 
-        $this->assertFalse(SafePath::directory($this->base . DS . 'nope', 'member', false, 0700, $reason));
+        $this->assertFalse(SafePath::directory($this->base . DS . 'nope', 'member', false, 0o700, $reason));
         $this->assertEquals(SafePath::REASON_BASE, $reason);
     }
 
@@ -162,9 +162,9 @@ class SafePathTest extends Basic
     {
         $expected = $this->home . DS . 'data' . DS . '.queued_drivers';
 
-        $this->assertEquals($expected, SafePath::directory($this->home, 'data/.queued_drivers', true, 0700));
+        $this->assertEquals($expected, SafePath::directory($this->home, 'data/.queued_drivers', true, 0o700));
         $this->assertTrue(is_dir($expected));
-        $this->assertEquals(0700, fileperms($expected) & 0777);
+        $this->assertEquals(0o700, fileperms($expected) & 0o777);
     }
 
     /**
@@ -177,7 +177,7 @@ class SafePathTest extends Basic
     {
         $reason = null;
 
-        $this->assertFalse(SafePath::directory($this->home, 'data', false, 0700, $reason));
+        $this->assertFalse(SafePath::directory($this->home, 'data', false, 0o700, $reason));
         $this->assertEquals(SafePath::REASON_MISSING, $reason);
     }
 
@@ -192,7 +192,7 @@ class SafePathTest extends Basic
 
         $reason = null;
 
-        $this->assertFalse(SafePath::directory($this->home, 'data', true, 0700, $reason));
+        $this->assertFalse(SafePath::directory($this->home, 'data', true, 0o700, $reason));
         $this->assertEquals(SafePath::REASON_UNSAFE, $reason);
         $this->assertVictimIntact();
     }
@@ -208,7 +208,7 @@ class SafePathTest extends Basic
 
         $reason = null;
 
-        $this->assertFalse(SafePath::directory($this->home, 'shortcut/data', false, 0700, $reason));
+        $this->assertFalse(SafePath::directory($this->home, 'shortcut/data', false, 0o700, $reason));
         $this->assertEquals(SafePath::REASON_UNSAFE, $reason);
     }
 
@@ -248,7 +248,7 @@ class SafePathTest extends Basic
             $reason = null;
 
             $this->assertFalse(
-                SafePath::directory($this->base, $relative, false, 0700, $reason),
+                SafePath::directory($this->base, $relative, false, 0o700, $reason),
                 $relative . ' was accepted',
             );
             $this->assertEquals(SafePath::REASON_UNSAFE, $reason);
@@ -269,7 +269,7 @@ class SafePathTest extends Basic
 
         $reason = null;
 
-        $this->assertFalse(SafePath::directory($this->base, 'victim\\data', false, 0700, $reason));
+        $this->assertFalse(SafePath::directory($this->base, 'victim\\data', false, 0o700, $reason));
         $this->assertEquals(SafePath::REASON_MISSING, $reason);
 
         // ... and it is usable as a name of its own
@@ -356,7 +356,7 @@ class SafePathTest extends Basic
 
         $this->assertTrue(SafePath::write((string) $path, "one\n"));
         $this->assertEquals("one\n", file_get_contents((string) $path));
-        $this->assertEquals(0600, fileperms((string) $path) & 0777);
+        $this->assertEquals(0o600, fileperms((string) $path) & 0o777);
 
         // Overwriting, including with nothing at all
         $this->assertTrue(SafePath::write((string) $path, ''));
@@ -376,7 +376,7 @@ class SafePathTest extends Basic
         $path = SafePath::file($dir, 'driver.xml');
 
         $this->assertTrue(SafePath::write((string) $path, "<run/>\n", null));
-        $this->assertEquals(0666 & ~umask(), fileperms((string) $path) & 0777);
+        $this->assertEquals(0o666 & ~umask(), fileperms((string) $path) & 0o777);
     }
 
     /**
@@ -445,12 +445,12 @@ class SafePathTest extends Basic
         $secret  = $this->victim . DS . 'data' . DS . 'secret';
         $link    = $this->home . DS . 'shortcut';
 
-        chmod($secret, 0600);
+        chmod($secret, 0o600);
         symlink($secret, $link);
 
         $this->assertTrue($adapter->delete($link));
         $this->assertFalse(is_link($link));
-        $this->assertEquals(0600, fileperms($secret) & 0777);
+        $this->assertEquals(0o600, fileperms($secret) & 0o777);
         $this->assertVictimIntact();
     }
 }

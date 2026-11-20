@@ -258,7 +258,7 @@ class Collection extends ItemList
                     if (!empty($parent)) {
                         $parent = $temp . DS . $uniqueId . DS . $parent;
                         if (!is_dir($parent)) {
-                            mkdir($parent, 0755, true);
+                            mkdir($parent, 0o755, true);
                         }
                     }
                     $tmpFilePath = $temp . DS . $uniqueId . DS . $entity->getPath();

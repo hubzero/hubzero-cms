@@ -130,10 +130,8 @@ class Page extends Model
     public function category()
     {
         // var to hold category
-        $category = new Page\Category($this->get('category'));
-
         // return category
-        return $category;
+        return new Page\Category($this->get('category'));
     }
 
     /**
@@ -234,8 +232,7 @@ class Page extends Model
     public function getNextOrder($gidNumber)
     {
         $where = "gidNumber=" . $this->db->quote($gidNumber) . " AND state != 2";
-        $order = $this->table->getNextOrder($where);
-        return $order;
+        return $this->table->getNextOrder($where);
     }
 
     /**
@@ -327,14 +324,12 @@ class Page extends Model
     {
         // load pages that are decendants of this page
         $archive  = new Page\Archive();
-        $children = $archive->pages('list', [
+        return $archive->pages('list', [
             'gidNumber' => $this->get('gidNumber'),
             'left'      => $this->get('lft'),
             'right'     => $this->get('rgt'),
             'orderby'   => 'lft ASC',
         ]);
-
-        return $children;
     }
 
     /**

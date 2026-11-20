@@ -67,7 +67,7 @@ class Timezone extends Groupedlist
         // Build the group lists.
         foreach ($zones as $zone) {
             // Time zones not in a group we will ignore.
-            if (strpos($zone, '/') === false) {
+            if (!str_contains($zone, '/')) {
                 continue;
             }
 
@@ -101,8 +101,6 @@ class Timezone extends Groupedlist
         }
 
         // Merge any additional groups in the XML definition.
-        $groups = array_merge(parent::getGroups(), $groups);
-
-        return $groups;
+        return array_merge(parent::getGroups(), $groups);
     }
 }

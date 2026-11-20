@@ -117,7 +117,7 @@ class Log extends Table
             return false;
         }
 
-        if (strpos($ip, ':') === false) {
+        if (!str_contains($ip, ':')) {
             // An excluded IPv4 address excludes its neighbours in the same
             // /24: entries are matched on the first three octets
             $bits   = explode('.', $ip);
@@ -193,7 +193,7 @@ class Log extends Table
             foreach ((array) $this->db->loadColumn() as $filter) {
                 $filter = trim((string) $filter);
 
-                if (strpos($filter, '/') === false) {
+                if (!str_contains($filter, '/')) {
                     if (preg_match('/^([0-9a-f]{1,4}:){1,7}$/i', $filter)) {
                         // Hextets with a trailing colon: their network
                         $filter .= ':/' . (16 * substr_count($filter, ':'));
@@ -340,11 +340,11 @@ class Log extends Table
         $this->modified = Date::toSql();
 
         if ($type == 'primary') {
-            $this->primary_accesses = $this->primary_accesses + 1;
+            $this->primary_accesses += 1;
         } elseif ($type == 'support') {
-            $this->support_accesses = $this->support_accesses + 1;
+            $this->support_accesses += 1;
         } else {
-            $this->page_views = $this->page_views + 1;
+            $this->page_views += 1;
         }
 
         if ($this->store()) {

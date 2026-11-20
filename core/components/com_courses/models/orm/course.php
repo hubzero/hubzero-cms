@@ -416,8 +416,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'course';
-        return $searchNamespace;
+        return 'course';
     }
 
     /**
@@ -426,8 +425,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
     /**
      * Get total number of records that will be indexed by Solr.
@@ -435,8 +433,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**

@@ -463,10 +463,10 @@ class Shibboleth extends Plugin
             if (!isset($attrs['email']) && strpos($attrs['eppn'], '@')) {
                 $attrs['email'] = $attrs['eppn'];
             }
-            if (!isset($attrs['displayName']) && isset($attrs['givenName']) && isset($attrs['sn'])) {
+            if (!isset($attrs['displayName']) && isset($attrs['givenName'], $attrs['sn'])) {
                 $attrs['displayName'] = $attrs['givenName'] . ' ' . $attrs['sn'];
             }
-            if (!isset($attrs['displayName']) && isset($attrs['givenName']) && isset($attrs['lastName'])) {
+            if (!isset($attrs['displayName']) && isset($attrs['givenName'], $attrs['lastName'])) {
                 if (isset($attrs['middleName'])) {
                     $attrs['displayName'] = $attrs['givenName'] . ' ' . $attrs['middleName'] . ' ' . $attrs['lastName'];
                 } else {
@@ -509,9 +509,8 @@ class Shibboleth extends Plugin
         // entityID. See below for more info
         if (array_key_exists('wayf', $_GET)) {
             if (
-                isset($_GET['return'])
-                && isset($_COOKIE['shib-entity-id'])
-                && strpos($_GET['return'], 'https://' . $_SERVER['HTTP_HOST'] . '/Shibboleth.sso/') === 0
+                isset($_GET['return'], $_COOKIE['shib-entity-id'])
+                && str_starts_with($_GET['return'], 'https://' . $_SERVER['HTTP_HOST'] . '/Shibboleth.sso/')
             ) {
                 self::log('wayf passthru', $_COOKIE['shib-entity-id']);
                 App::redirect($_GET['return'] . '&entityID=' . $_COOKIE['shib-entity-id']);

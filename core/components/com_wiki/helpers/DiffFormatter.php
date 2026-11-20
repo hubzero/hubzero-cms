@@ -137,9 +137,7 @@ class DiffFormatter
         }
         echo "\t" . '</tbody>' . "\n";
         echo '</table>' . "\n";
-        $end = $this->endDiff();
-
-        return $end;
+        return $this->endDiff();
     }
 
     /**

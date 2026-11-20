@@ -52,7 +52,7 @@ class Manager
         'format'      => '',
         'level'       => 'debug',
         'dateFormat'  => 'Y-m-d H:i:s',
-        'permissions' => 0640,
+        'permissions' => 0o640,
         'dispatcher'  => null,
     ];
 

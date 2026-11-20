@@ -122,9 +122,7 @@ abstract class Route
             $id = 0;
         }
 
-        $link = 'index.php?option=com_content&task=article.edit&a_id=' . $id;
-
-        return $link;
+        return 'index.php?option=com_content&task=article.edit&a_id=' . $id;
     }
 
     /**
@@ -171,7 +169,7 @@ abstract class Route
 
             $items = $menus->getItems('component_id', $component->id);
             foreach ($items as $item) {
-                if (isset($item->query) && isset($item->query['view']) && $item->language == $language) {
+                if (isset($item->query['view']) && $item->language == $language) {
                     $view = $item->query['view'];
                     if (!isset(self::$lookup[$language][$view])) {
                         self::$lookup[$language][$view] = [];

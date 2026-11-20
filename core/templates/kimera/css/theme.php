@@ -383,8 +383,6 @@ $replacements = [
     ' ',/*,
     '$1'*/
 ];
-$styles = preg_replace($patterns, $replacements, $styles);
-
 /*$hash = md5($color1 . $bground . $color2);
 $path = '/cache/site/' . $hash . '.css';
 
@@ -399,4 +397,4 @@ if (!file_exists(PATH_APP . $path))
     }
 }*/
 
-return $styles;
+return preg_replace($patterns, $replacements, $styles);

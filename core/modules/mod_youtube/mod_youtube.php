@@ -298,7 +298,7 @@ class Youtube extends Module
     private function formatTime($seconds)
     {
         $minutes = floor($seconds / 60);
-        $seconds = $seconds % 60;
+        $seconds %= 60;
 
         if ($seconds < 10) {
             $seconds = "0{$seconds}";

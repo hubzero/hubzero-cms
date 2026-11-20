@@ -86,7 +86,7 @@ class Format extends Relational
      **/
     public function getTemplateKeys()
     {
-        $template_keys =  [
+        return [
             "type" => "{TYPE}",
             "cite" => "{CITE KEY}",
             "ref_type" => "{REF TYPE}",
@@ -124,7 +124,5 @@ class Format extends Relational
             "search_string" => "{SECONDARY LINK}",
             "sec_cnt" => "{SECONDARY COUNT}",
         ];
-
-        return $template_keys;
     }
 }

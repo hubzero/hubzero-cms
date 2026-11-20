@@ -182,9 +182,7 @@ class Message extends Relational
         );
         $message = (string) preg_replace_callback("/$UrlPtrn/", [$this,'autolink'], $message);
         $message = nl2br($message);
-        $message = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $message);
-
-        return $message;
+        return str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $message);
     }
 
     /**
@@ -216,11 +214,10 @@ class Message extends Relational
 
             $href = 'mailto:' . $name;
         }
-        $l = sprintf(
+        return sprintf(
             ' <a class="ext-link" href="%s" rel="external">%s</a>',
             $href,
             $name,
         );
-        return $l;
     }
 }

@@ -355,7 +355,7 @@ class Uri
         if (is_array($query)) {
             $this->vars = $query;
         } else {
-            if (strpos($query, '&amp;') !== false) {
+            if (str_contains($query, '&amp;')) {
                 $query = str_replace('&amp;', '&', $query);
             }
 

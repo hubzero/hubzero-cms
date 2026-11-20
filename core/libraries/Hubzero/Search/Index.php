@@ -49,8 +49,7 @@ class Index
      */
     public function getLogs()
     {
-        $logs = $this->adapter->getLogs();
-        return $logs;
+        return $this->adapter->getLogs();
     }
 
     /**
@@ -71,8 +70,7 @@ class Index
      */
     public function lastInsert()
     {
-        $lastInsert = $this->adapter->lastInsert();
-        return $lastInsert;
+        return $this->adapter->lastInsert();
     }
 
     /**

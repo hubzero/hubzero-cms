@@ -24,7 +24,7 @@ $props    = $this->pub->curation('blocks', $this->step, 'props');
 $required = $this->pub->curation('blocks', $this->step, 'required');
 
 // Build url
-$selectUrl = Route::url($this->pub->link('editversionid') . '&active=team&action=select' . '&p=' . $props);
+$selectUrl = Route::url($this->pub->link('editversionid') . '&active=team&action=select&p=' . $props);
 
 $showSubmitter  = $this->manifest->params->submitter;
 $showGroupOwner = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';

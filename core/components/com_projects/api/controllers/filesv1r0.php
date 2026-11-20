@@ -849,7 +849,7 @@ class Filesv1r0 extends ApiController
 
                 // Create the temporary directory
                 if (!is_dir($temp_dir)) {
-                    mkdir($temp_dir, 0700, true);
+                    mkdir($temp_dir, 0o700, true);
                 }
 
                 // Move the temporary file

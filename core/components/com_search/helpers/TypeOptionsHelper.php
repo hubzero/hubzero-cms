@@ -58,8 +58,6 @@ class TypeOptionsHelper
             Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION'),
         ];
 
-        $allTypes = array_merge($resourceTypes, $supplementaryTypes);
-
-        return $allTypes;
+        return array_merge($resourceTypes, $supplementaryTypes);
     }
 }

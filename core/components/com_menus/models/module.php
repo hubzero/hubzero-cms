@@ -164,8 +164,6 @@ class Module extends Relational
             ->order('a.ordering', 'asc');
 
         $db->setQuery($query->toString());
-        $result = $db->loadObjectList();
-
-        return $result;
+        return $db->loadObjectList();
     }
 }

@@ -105,7 +105,7 @@ class Tinymce extends Plugin
         // loading of css file for 'styles' dropdown
         if ($content_css_custom) {
             // If URL, just pass it to $content_css
-            if (strpos($content_css_custom, 'http') !== false) {
+            if (str_contains($content_css_custom, 'http')) {
                 $content_css = 'content_css : "' . $content_css_custom . '",';
             } else {
                 $content_css = 'content_css : "' . Request::root() . 'app/templates/' . $template
@@ -688,13 +688,11 @@ class Tinymce extends Plugin
             $height .= 'px';
         }
 
-        $editor  = '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row
+        return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row
             . '" style="width: ' . $width . '; height:' . $height . ';" class="mce_editable">'
             . $content . "</textarea>\n"
         . $this->displayButtons($id, $buttons, $asset, $author)
         . $this->toggleButton($id);
-
-        return $editor;
     }
 
     /**

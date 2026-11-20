@@ -100,11 +100,9 @@ class Authorizationcode extends Relational
      */
     public static function oneByCode($code)
     {
-        $code = self::all()
+        return self::all()
             ->whereEquals('authorization_code', $code)
             ->row();
-
-        return $code;
     }
 
     /**

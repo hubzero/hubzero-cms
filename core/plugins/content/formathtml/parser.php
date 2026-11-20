@@ -283,9 +283,7 @@ class Parser
     {
         $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', [&$this, 'dataPush'], $text ?: '');
 
-        $text = (string) preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, 'dataPush'], $text ?: '');
-
-        return $text;
+        return (string) preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, 'dataPush'], $text ?: '');
     }
 
     /**
@@ -323,7 +321,7 @@ class Parser
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+        if (isset($this->tokens[$tag], $this->tokens[$tag][$key])) {
             return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {

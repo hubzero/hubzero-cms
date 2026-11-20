@@ -126,7 +126,7 @@ class Verb
         // compose the query
         $query = "{$verbName}_";
         for ($i = 1; $i < count($params); $i++) {
-            $query = $query . "{$params[$i]}";
+            $query .= "{$params[$i]}";
         }
 
         // Validation test - parameters

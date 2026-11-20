@@ -125,7 +125,7 @@ class Solr extends SiteController
         if ($tags && $tags->count() > 0) {
             foreach ($tags as $tag) {
                 // This string tells Solr to filter the parents out based on childTerm
-                $queryTerms .= ' +{!parent which=hubtype:*}' . 'id:tag-' . $tag->id;
+                $queryTerms .= ' +{!parent which=hubtype:*}id:tag-' . $tag->id;
             }
         }
         $tagParams = '';

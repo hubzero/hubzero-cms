@@ -47,7 +47,7 @@ class SecurityTokenTest extends TestCase
      * @param   string  $secret
      * @return  void
      */
-    private function secret($secret)
+    private function secret(#[\SensitiveParameter] $secret)
     {
         $app = Facade::getApplication();
         $this->assertNotNull($app);

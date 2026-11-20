@@ -123,9 +123,7 @@ class Economy extends Obj
             $calc += $aq->get('helpful') * $p_RQ;
         }
 
-        $calc = ($calc) ? $calc : '0';
-
-        return $calc;
+        return ($calc) ? $calc : '0';
     }
 
     /**

@@ -122,7 +122,7 @@ class Repository extends Registry
         }
 
         // Dot-notation: delegate directly to parent
-        if (strpos($path, $separator) !== false) {
+        if (str_contains($path, $separator)) {
             return parent::set($path, $value, $separator);
         }
 

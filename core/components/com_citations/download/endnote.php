@@ -41,7 +41,7 @@ class Endnote extends Downloadable
         //get fields to not include for all citations
         $config = Component::params('com_citations');
         $exclude = $config->get('citation_download_exclude', '');
-        if (strpos($exclude, ",") !== false) {
+        if (str_contains($exclude, ",")) {
             $exclude = str_replace(',', "\n", $exclude);
         }
         $exclude = array_values(array_filter(array_map('trim', explode("\n", $exclude))));
@@ -49,7 +49,7 @@ class Endnote extends Downloadable
         //get fields to not include for specific citation
         $cparams = new \Hubzero\Config\Registry($row->params);
         $citation_exclude = $cparams->get('exclude', '');
-        if (strpos($citation_exclude, ',') !== false) {
+        if (str_contains($citation_exclude, ',')) {
             $citation_exclude = str_replace(',', "\n", $citation_exclude);
         }
         $citation_exclude = array_values(array_filter(array_map('trim', explode("\n", $citation_exclude))));
@@ -223,7 +223,6 @@ class Endnote extends Downloadable
      */
     private function toUtf8($str)
     {
-        $str = Str::toUtf8($str);
-        return $str;
+        return Str::toUtf8($str);
     }
 }

@@ -184,9 +184,9 @@ class Stats extends AdminController
                     //$closedmonths[$k][$i] = 'null';
                     //$openedmonths[$k][$i] = 'null';
                 } else {
-                    $closedVal = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
+                    $closedVal = (isset($closed[$k], $closed[$k][$i])) ? $closed[$k][$i] : 0;
                     $closedmonths[$k][$i] = $closedVal;
-                    $openedVal = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
+                    $openedVal = (isset($open[$k], $open[$k][$i])) ? $open[$k][$i] : 0;
                     $openedmonths[$k][$i] = $openedVal;
                 }
 

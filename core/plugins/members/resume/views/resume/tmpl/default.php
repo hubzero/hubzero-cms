@@ -61,7 +61,7 @@ $this->css('jobs', 'com_jobs');
                 <span class="includeme">
                     <?php
                     $activateUrl = Route::url(
-                        $this->member->link() . '&active=resume&action=activate' . '&on='
+                        $this->member->link() . '&active=resume&action=activate&on='
                             . ($this->js->active ? 0 : 1),
                     );
                     ?>

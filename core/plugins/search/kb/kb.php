@@ -41,7 +41,7 @@ class Kb extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(f.title, f.`fulltxt`) against (\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -67,7 +67,7 @@ class Kb extends Plugin
 			WHERE
 				f.state = 1 AND c.published = 1 AND
 				$weight > 0"
-                . ' AND ' . join(' AND ', $addtl_where)
+                . ' AND ' . implode(' AND ', $addtl_where)
             . " ORDER BY $weight DESC",
         ));
     }
@@ -187,8 +187,7 @@ class Kb extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__kb_articles WHERE state != 2;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

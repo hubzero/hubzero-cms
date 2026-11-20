@@ -171,7 +171,7 @@ class ImportHooks extends AdminController
 
             // if we dont have a filespace, create it
             if (!is_dir($uploadPath)) {
-                Filesystem::makeDirectory($uploadPath, 0775);
+                Filesystem::makeDirectory($uploadPath, 0o775);
             }
         }
 

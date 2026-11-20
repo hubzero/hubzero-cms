@@ -68,9 +68,7 @@ class DropboxOauthClient
      **/
     public function getAccessToken($authorizationCode)
     {
-        $accessToken = $this->client->getAccessToken('authorization_code', ['code' => $authorizationCode]);
-
-        return $accessToken;
+        return $this->client->getAccessToken('authorization_code', ['code' => $authorizationCode]);
     }
 
     /**
@@ -92,9 +90,7 @@ class DropboxOauthClient
      **/
     public function getAuthorizationUrl()
     {
-        $authorizationUrl = $this->client->getAuthorizationUrl();
-
-        return $authorizationUrl;
+        return $this->client->getAuthorizationUrl();
     }
 
     /**

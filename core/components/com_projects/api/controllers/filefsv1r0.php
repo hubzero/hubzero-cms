@@ -1178,7 +1178,7 @@ class Filefsv1r0 extends ApiController
 
                 // resolve symlinks and take only files still inside the project
                 $fpath = realpath($path . DS . $item);
-                if (!$fpath || strpos($fpath, $root . DS) !== 0 || !is_file($fpath)) {
+                if (!$fpath || !str_starts_with($fpath, $root . DS)  || !is_file($fpath)) {
                     continue;
                 }
 

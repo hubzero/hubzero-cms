@@ -166,7 +166,7 @@ class MigrationFindTest extends TestCase
 
         foreach ($tree as $dir => $files) {
             $base = rtrim($this->root . '/' . $dir, '/');
-            mkdir($base . '/migrations', 0700, true);
+            mkdir($base . '/migrations', 0o700, true);
 
             foreach ($files as $file) {
                 touch($base . '/migrations/' . $file);

@@ -301,9 +301,7 @@ class Rss extends Renderer
     private function relToAbs($text)
     {
         $base = App::get('request')->base();
-        $text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
-
-        return $text;
+        return preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
     }
 
     /**

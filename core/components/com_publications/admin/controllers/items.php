@@ -296,7 +296,7 @@ class Items extends AdminController
 
         // Set redirect URL
         $url = Route::url('index.php?option=' . $this->option . '&controller='
-            . $this->controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
+            . $this->controller . '&task=edit&id[]=' . $id . '&version=' . $version, false);
 
         // Redirect back to publication
         App::redirect(
@@ -398,7 +398,7 @@ class Items extends AdminController
         // Instantiate Version
         $row = new Tables\Version($this->database);
         if ($row->load($pAuthor->publication_version_id)) {
-            $url .= '&task=edit' . '&id[]=' . $row->publication_id . '&version=' . $row->version_number;
+            $url .= '&task=edit&id[]=' . $row->publication_id . '&version=' . $row->version_number;
         }
 
         if (!$pAuthor->delete()) {
@@ -533,7 +533,7 @@ class Items extends AdminController
 
         // Set redirect URL
         $url = Route::url('index.php?option=' . $this->option . '&controller='
-            . $this->controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
+            . $this->controller . '&task=edit&id[]=' . $id . '&version=' . $version, false);
 
         // Load publication model
         $model  = new Models\Publication($id, $version);
@@ -1919,8 +1919,7 @@ class Items extends AdminController
      */
     private function buildRedirectURL()
     {
-        $url  = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false);
-        return $url;
+        return Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false);
     }
 
     /**

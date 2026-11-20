@@ -219,7 +219,7 @@ class Accesslevels extends AdminController
                 // We are looking for the access field.  If custom tables are using something other
                 // than the 'access' field they are on their own unfortunately.
                 // Also make sure the table prefix matches the live db prefix (eg, it is not a "bak_" table)
-                if ((strpos($table, $prefix) === 0) && (isset($fields['access']))) {
+                if ((str_starts_with($table, $prefix) ) && (isset($fields['access']))) {
                     // Lookup the distinct values of the field.
                     $query = $db
                         ->getQuery()

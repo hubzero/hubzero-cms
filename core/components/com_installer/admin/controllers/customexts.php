@@ -623,7 +623,7 @@ class Customexts extends AdminController
                         $museCmd = 'update -r=' . escapeshellarg((string) $extension->path);
                         if (!empty($extension->get('git_branch'))) {
                             $source = $extension->get('git_branch');
-                            if (strpos($source, '/') === false) {
+                            if (!str_contains($source, '/')) {
                                 $source = 'origin/' . $source;
                             }
                             $museCmd .= ' source=' . escapeshellarg($source);

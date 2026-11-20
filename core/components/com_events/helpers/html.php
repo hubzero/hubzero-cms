@@ -63,13 +63,12 @@ class Html
             $name = self::obfuscate($name);
             $href = 'mailto:' . $name;
         }
-        $l = sprintf(
+        return sprintf(
             ' <a class="ext-link" href="%s"%s>%s</a>',
             $href,
             ' rel="external noreferrer"',
             $name,
         );
-        return $l;
     }
 
     /**
@@ -173,8 +172,7 @@ class Html
             $name_of_day = '&nbsp;' . $day_name[$a];
             $daynamelist[] = \Html::select('option', $a, $name_of_day, 'value', 'text');
         }
-        $tosend = self::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
-        return $tosend;
+        return self::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
     }
 
     /**
@@ -195,8 +193,7 @@ class Html
             $name_of_month = self::getMonthName($mnh);
             $monthslist[] = \Html::select('option', $mnh, $name_of_month, 'value', 'text');
         }
-        $tosend = \Html::select('genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
-        return $tosend;
+        return \Html::select('genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
     }
 
     /**
@@ -219,8 +216,7 @@ class Html
             }
             $dayslist[] = \Html::select('option', $dys, $dys, 'value', 'text');
         }
-        $tosend = \Html::select('genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
-        return $tosend;
+        return \Html::select('genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
     }
 
     /**
@@ -243,8 +239,7 @@ class Html
         if ($year > $y + 5) {
             $yearslist[] = \Html::select('option', $year, $year, 'value', 'text');
         }
-        $tosend = \Html::select('genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
-        return $tosend;
+        return \Html::select('genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
     }
 
     /**
@@ -263,8 +258,7 @@ class Html
         //$viewlist[] = \Html::select('option', 'view_day', Lang::txt('EVENTS_CAL_LANG_VIEWBYDAY'), 'value', 'text');
         //$viewlist[] = \Html::select('option', 'view_cat', Lang::txt('EVENTS_CAL_LANG_VIEWBYCAT'), 'value', 'text');
         //$viewlist[] = \Html::select('option', 'view_search', Lang::txt('EVENTS_SEARCH_TITLE'), 'value', 'text');
-        $tosend = \Html::select('genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
-        return $tosend;
+        return \Html::select('genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
     }
 
     /**
@@ -323,9 +317,7 @@ class Html
 
         $database->setQuery($catsql);
         $categories = array_merge($categories, $database->loadObjectList());
-        $clist = \Html::select('genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
-
-        return $clist;
+        return \Html::select('genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
     }
 
     /**

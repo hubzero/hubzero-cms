@@ -86,8 +86,12 @@ class PdoConnection implements ConnectionInterface
      * @param   array<mixed>   $options   Additional PDO options
      * @throws  ConnectionFailedException  If PDO extension is not installed
      */
-    public function __construct(string $dsn, string $username = '', string $password = '', array $options = [])
-    {
+    public function __construct(
+        string $dsn,
+        string $username = '',
+        #[\SensitiveParameter] string $password = '',
+        array $options = [],
+    ) {
         if (!class_exists('PDO')) {
             throw new ConnectionFailedException('PDO extension is not installed or enabled.', 500);
         }

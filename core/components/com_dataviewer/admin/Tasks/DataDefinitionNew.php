@@ -35,7 +35,7 @@ class DataDefinitionNew
         $name = strtolower((string) preg_replace('/\W/', '_', $name));
 
         // $name is reduced to [a-z0-9_] above; validate the database id and table too
-        if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $db_id) || strpos((string) $db_id, '..') !== false) {
+        if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $db_id) || str_contains((string) $db_id, '..')) {
             \App::abort(400, 'Invalid identifier');
         }
         if (!preg_match('/^[A-Za-z0-9_.$-]+$/', (string) $table)) {

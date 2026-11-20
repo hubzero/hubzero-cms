@@ -92,8 +92,6 @@ class Publictext extends GroupMacro
             $text = (string) preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
         }
 
-        $text = str_replace(['<public>', '</public>'], '', $text);
-
-        return $text;
+        return str_replace(['<public>', '</public>'], '', $text);
     }
 }

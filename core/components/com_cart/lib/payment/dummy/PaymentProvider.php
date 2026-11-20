@@ -83,8 +83,7 @@ class PaymentProvider
         // Get transaction ID
         $customData = explode('-', $postMessage['custom']);
         //$token = $customData[0];
-        $tId = $customData[1];
-        return $tId;
+        return $customData[1];
     }
 
     /**

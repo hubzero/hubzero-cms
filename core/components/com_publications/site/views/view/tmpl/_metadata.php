@@ -30,7 +30,7 @@ defined('_HZEXEC_') or die();
 if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->publication->state == 1) {
     echo '<ul class="metaitems">';
     foreach ($this->sections as $section) {
-        if (isset($section['name']) && isset($section['count'])) {
+        if (isset($section['name'], $section['count'])) {
             echo '<li class="meta-' . $section['name'] . '">';
 
             if ($section['name'] != 'usage') {

@@ -64,7 +64,6 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
 <?php if ($this->comments && is_array($this->comments)) : ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
     <?php
-    {
         $cls = 'odd';
     if (isset($this->cls)) {
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
@@ -92,7 +91,6 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
              ->set('search', $this->search)
              ->set('course', $this->course)
              ->display();
-    }
     }
     ?>
 </ol>

@@ -62,9 +62,7 @@ class BoostFactory
         $documentProperties = $this->map->documentTypeToFieldData($documentType);
         $creationProperties = $this->generateCreationProperties();
 
-        $formedData = array_merge($boostData, $documentProperties, $creationProperties);
-
-        return $formedData;
+        return array_merge($boostData, $documentProperties, $creationProperties);
     }
 
     /**

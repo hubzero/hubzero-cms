@@ -106,12 +106,10 @@ class Math extends Plugin
         $enc = strrev(md5($input));
 
         // Get only a few chars out of the string
-        $enc = substr($enc, 26, 1)
+        return substr($enc, 26, 1)
             . substr($enc, 10, 1)
             . substr($enc, 23, 1)
             . substr($enc, 3, 1)
             . substr($enc, 19, 1);
-
-        return $enc;
     }
 }

@@ -125,9 +125,7 @@ class Redis extends Store
             'ip'         => (string) Request::ip(),
         ];
 
-        $saved = $this->database->hmset($this->key($id), $data);
-
-        return $saved;
+        return $this->database->hmset($this->key($id), $data);
     }
 
     /**

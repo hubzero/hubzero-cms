@@ -72,11 +72,9 @@ class Application extends Relational
      */
     public static function oneByClientId($client_id)
     {
-        $code = self::all()
+        return self::all()
             ->whereEquals('client_id', $client_id)
             ->row();
-
-        return $code;
     }
 
     /**

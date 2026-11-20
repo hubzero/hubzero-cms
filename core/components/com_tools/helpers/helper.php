@@ -30,9 +30,7 @@ class Helper
         $arr = explode(',', $string);
 
         $arr = self::cleanArray($arr);
-        $arr = array_unique($arr);
-
-        return $arr;
+        return array_unique($arr);
     }
 
     /**

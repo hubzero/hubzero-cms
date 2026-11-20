@@ -239,7 +239,7 @@ class BundleBuilder
         $bundleDir  = $base . DS . 'bundles';
         $outerPath  = $base . DS . $name . '.zip';
 
-        if (!is_dir($bundleDir) && !mkdir($bundleDir, 0775, true) && !is_dir($bundleDir)) {
+        if (!is_dir($bundleDir) && !mkdir($bundleDir, 0o775, true) && !is_dir($bundleDir)) {
             return $fail('Cannot create ' . $bundleDir);
         }
         @chgrp($bundleDir, 'access-content');
@@ -664,7 +664,7 @@ class BundleBuilder
                     $rel = $this->stripWrapper((string) $s['name'], $name); // strip "<DOI>/" if present
                     if (
                         $rel === '' || substr($rel, -1) === '/'
-                        || strpos($rel, 'gallery/') === 0
+                        || str_starts_with($rel, 'gallery/')
                         || substr($rel, -5) === '.hash'
                         || in_array($rel, ['hubREADME.txt', 'LICENSE.txt'], true)
                     ) {
@@ -1279,7 +1279,7 @@ class BundleBuilder
             }
             // A generated bundle (top-level .zip that isn't one of the data
             // files) is the definitive nested signal.
-            if (substr($rel, -4) === '.zip' && strpos($rel, '/') === false && !isset($attBase[basename($rel)])) {
+            if (substr($rel, -4) === '.zip' && !str_contains($rel, '/')  && !isset($attBase[basename($rel)])) {
                 $zip->close();
                 return 'nested';
             }
@@ -1319,7 +1319,7 @@ class BundleBuilder
         $cands = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $rel = (string) preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
-            if (substr($rel, -4) === '.zip' && strpos($rel, '/') === false) {
+            if (substr($rel, -4) === '.zip' && !str_contains($rel, '/')) {
                 $cands[] = $rel;
             }
         }
@@ -1477,7 +1477,7 @@ class BundleBuilder
         }
 
         @chgrp($tmp, 'access-content');
-        @chmod($tmp, 0664);
+        @chmod($tmp, 0o664);
 
         if (!rename($tmp, $innerPath)) {
             @unlink($tmp);
@@ -1568,7 +1568,7 @@ class BundleBuilder
         }
 
         @chgrp($tmp, 'access-content');
-        @chmod($tmp, 0664);
+        @chmod($tmp, 0o664);
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
@@ -1646,7 +1646,7 @@ class BundleBuilder
                 if (
                     $rel === '' || substr($rel, -1) === '/'
                     || $rel === 'README.txt' || $rel === 'LICENSE.txt' || $rel === 'hubREADME.txt'
-                    || strpos($rel, 'gallery/') === 0 || substr($rel, -5) === '.hash'
+                    || str_starts_with($rel, 'gallery/')  || substr($rel, -5) === '.hash'
                 ) {
                     continue;
                 }
@@ -1695,7 +1695,7 @@ class BundleBuilder
         }
 
         @chgrp($tmp, 'access-content');
-        @chmod($tmp, 0664);
+        @chmod($tmp, 0o664);
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
@@ -1782,7 +1782,7 @@ class BundleBuilder
         $hasGallery = false;
         $gpfx       = $name . '/gallery/';
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            if (strpos((string) $zip->getNameIndex($i), $gpfx) === 0) {
+            if (str_starts_with((string) $zip->getNameIndex($i), $gpfx)) {
                 $hasGallery = true;
                 break;
             }
@@ -1854,7 +1854,7 @@ class BundleBuilder
         $text   = $this->generateReadme($versionId, $version);
         if ($text !== '' && @file_put_contents($base . DS . 'hubREADME.txt', $text) !== false) {
             @chgrp($base . DS . 'hubREADME.txt', 'access-content');
-            @chmod($base . DS . 'hubREADME.txt', 0664);
+            @chmod($base . DS . 'hubREADME.txt', 0o664);
             $readme = 'hubREADME.txt';
         } else {
             foreach (['hubREADME.txt', 'README.txt'] as $rn) {
@@ -1883,7 +1883,7 @@ class BundleBuilder
             $licText = isset($version['license_text']) ? trim((string) $version['license_text']) : '';
             if ($licText !== '' && @file_put_contents($base . DS . 'LICENSE.txt', $licText) !== false) {
                 @chgrp($base . DS . 'LICENSE.txt', 'access-content');
-                @chmod($base . DS . 'LICENSE.txt', 0664);
+                @chmod($base . DS . 'LICENSE.txt', 0o664);
                 $meta[$base . DS . 'LICENSE.txt'] = ['license', $name . '/LICENSE.txt'];
             }
         }
@@ -1988,7 +1988,7 @@ class BundleBuilder
             $db->setQuery("SELECT `title`, `text` FROM `#__publication_licenses` WHERE `id` = " . $lt . " LIMIT 1");
             $L = $db->loadAssoc();
             if ($L && isset($L['title']) && $L['title'] !== '') {
-                $readme .= "\n " . "\n ";
+                $readme .= "\n \n ";
                 $readme .= 'License: ' . "\n ";
                 $readme .= $L['title'] . "\n ";
 
@@ -2346,7 +2346,7 @@ class BundleBuilder
 
         // Generate each datastore CSV into the data dir (where the packager
         // writes it) and place it at the bundle root, mirroring data.php.
-        if (!is_dir($dataDir) && @mkdir($dataDir, 0775, true)) {
+        if (!is_dir($dataDir) && @mkdir($dataDir, 0o775, true)) {
             @chgrp($dataDir, 'access-content');
         }
         foreach ($dataAtts as $da) {
@@ -2365,7 +2365,7 @@ class BundleBuilder
                 );
             }
             @chgrp($csvAbs, 'access-content');
-            @chmod($csvAbs, 0664);
+            @chmod($csvAbs, 0o664);
             $entries[] = [$csvAbs, $name . '/' . $csvName];
         }
 
@@ -2461,7 +2461,7 @@ class BundleBuilder
         }
 
         @chgrp($tmp, 'access-content');
-        @chmod($tmp, 0664);
+        @chmod($tmp, 0o664);
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
@@ -2522,7 +2522,7 @@ class BundleBuilder
         // never following a link — so it cannot reach a source file.
         $stage = $outerPath . '.stage.' . getmypid();
         $this->removeStage($stage);
-        if (!@mkdir($stage, 0775, true)) {
+        if (!@mkdir($stage, 0o775, true)) {
             return ['ok' => false, 'error' => 'Could not create staging dir ' . $stage];
         }
 
@@ -2540,7 +2540,7 @@ class BundleBuilder
 
             $link = $stage . DS . $entry;
             $dir  = dirname($link);
-            if ((!is_dir($dir) && !@mkdir($dir, 0775, true)) || !@symlink($abs, $link)) {
+            if ((!is_dir($dir) && !@mkdir($dir, 0o775, true)) || !@symlink($abs, $link)) {
                 $this->removeStage($stage);
                 return ['ok' => false, 'error' => 'Could not stage ' . $entry];
             }
@@ -2592,7 +2592,7 @@ class BundleBuilder
         }
 
         @chgrp($tmp, 'access-content');
-        @chmod($tmp, 0664);
+        @chmod($tmp, 0o664);
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);

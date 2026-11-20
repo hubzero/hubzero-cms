@@ -225,10 +225,10 @@ class Stats extends Table
             $this->category = $category;
             $this->viewed_today = 1;
         } else {
-            $this->viewed_today = $this->viewed_today + 1;
+            $this->viewed_today += 1;
         }
 
-        $this->total_viewed = $this->total_viewed + 1;
+        $this->total_viewed += 1;
 
         // avoid duplicates
         if ($this->lastviewed != $now) {

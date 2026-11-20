@@ -403,7 +403,7 @@ class MediaHelper
                     if (
                         substr($entry, 0, 1) != '.'
                         && is_file($dir . DIRECTORY_SEPARATOR . $entry)
-                        && strpos($entry, '.html') === false && strpos($entry, '.php') === false
+                        && !str_contains($entry, '.html')  && !str_contains($entry, '.php')
                     ) {
                         $total_file++;
                     }
@@ -433,8 +433,7 @@ class MediaHelper
     {
         // A top-level folder's parent is the root
         $slash  = strrpos($folder, '/');
-        $parent = $slash === false ? '' : substr($folder, 0, $slash);
-        return $parent;
+        return $slash === false ? '' : substr($folder, 0, $slash);
     }
 
     /**

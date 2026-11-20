@@ -370,7 +370,7 @@ class ImgHandler extends Obj
      */
     private function findSharp($orig, $final)
     {
-        $final = $final * (750.0 / $orig);
+        $final *= (750.0 / $orig);
         $a = 52;
         $b = -0.27810650887573124;
         $c = .00047337278106508946;

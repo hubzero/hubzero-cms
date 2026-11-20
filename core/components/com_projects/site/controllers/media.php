@@ -112,7 +112,7 @@ class Media extends Base
         $path .= DS . $this->model->get('alias') . DS . 'images';
 
         if (!is_dir($path)) {
-            if (!Filesystem::makeDirectory($path, 0755, true, true)) {
+            if (!Filesystem::makeDirectory($path, 0o755, true, true)) {
                 echo json_encode(['error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return null;
             }
@@ -161,8 +161,8 @@ class Media extends Base
                     $hi->autoRotate();
                 } catch (\Exception $e) {
                     if (
-                        strpos($e->getMessage(), 'Illegal IFD size') !== false
-                        || strpos($e->getMessage(), 'Illegal IFD offset') !== false
+                        str_contains($e->getMessage(), 'Illegal IFD size')
+                        || str_contains($e->getMessage(), 'Illegal IFD offset')
                     ) {
                         // PURR #1186, QUBES #618
                         // Ignore. Let's just move on.

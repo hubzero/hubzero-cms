@@ -433,7 +433,7 @@ class View extends Obj
      */
     public function setLayout($layout)
     {
-        if (strpos($layout, ':') === false) {
+        if (!str_contains($layout, ':')) {
             $this->layoutName = $layout;
         } else {
             // Convert parameter to array based on :
@@ -672,7 +672,7 @@ class View extends Obj
         foreach ($paths as $path) {
             $fullname = $path . $file;
             // Is the path based on a stream?
-            if (strpos($path, '://') === false) {
+            if (!str_contains($path, '://')) {
                 // Not a stream, so do a realpath() to avoid directory
                 // traversal attempts on the local file system.
                 $path     = realpath($path);

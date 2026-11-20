@@ -633,7 +633,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
             ? '&alias=' . $this->publication->get('alias')
             : '&id=' . $this->get('publication_id');
 
-        if (strpos($type, 'edit') !== false) {
+        if (str_contains($type, 'edit')) {
             if ($this->publication->project->isProvisioned()) {
                 $base = 'index.php?option=com_publications&task=submit';
             } else {
@@ -661,19 +661,19 @@ class Version extends Relational implements \Hubzero\Search\Searchable
                 break;
 
             case 'serve':
-                $link = $base . '&task=serve' . '&v=' . $this->get('version_number');
+                $link = $base . '&task=serve&v=' . $this->get('version_number');
                 break;
 
             case 'data':
-                $link = $base . '&task=serve' . '&vid=' . $this->get('id');
+                $link = $base . '&task=serve&vid=' . $this->get('id');
                 break;
 
             case 'citation':
-                $link = $base . '&task=citation' . '&v=' . $this->get('version_number');
+                $link = $base . '&task=citation&v=' . $this->get('version_number');
                 break;
 
             case 'curate':
-                $link = $base . '&controller=curation' . '&version=' . $this->get('version_number');
+                $link = $base . '&controller=curation&version=' . $this->get('version_number');
                 break;
 
             case 'version':

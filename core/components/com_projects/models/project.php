@@ -1482,7 +1482,7 @@ class Project extends Model
         if ($member && $this->isActive() && $this->isMemberConfirmed() && !$this->isProvisioned()) {
             $timecheck = Date::of(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
             if ($member->num_visits == 0 or $member->lastvisit < $timecheck) {
-                $member->num_visits = $member->num_visits + 1; // record visit in a day
+                $member->num_visits += 1; // record visit in a day
                 $member->prev_visit = $member->lastvisit;
             }
             $member->lastvisit = Date::toSql();

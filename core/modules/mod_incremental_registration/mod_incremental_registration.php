@@ -84,7 +84,7 @@ class IncrementalRegistration extends Module
             return;
         }
 
-        if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out') {
+        if (isset($_POST['incremental-registration'], $_POST['submit']) && $_POST['submit'] === 'opt-out') {
             $awards = new Awards($uid);
             $awards->optOut();
             return;

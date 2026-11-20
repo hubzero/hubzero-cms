@@ -108,7 +108,7 @@ class CartMessenger
             $message = 'Log info: ';
             $message .= $this->message;
             if (!empty($this->postback)) {
-                $message .= "\n" . "Postback info: " . serialize($this->postback) . "\n";
+                $message .= "\nPostback info: " . serialize($this->postback) . "\n";
             }
 
             $message .= "\n";
@@ -122,11 +122,9 @@ class CartMessenger
             if ($loggingLevel == 0) {
                 $hzl->error($this->caller . ': ' . $message);
             } elseif ($loggingLevel == 1) {
-                $log = $hzl->warning($this->caller . ': ' . $message);
-                return $log;
+                return $hzl->warning($this->caller . ': ' . $message);
             } elseif ($loggingLevel == 2) {
-                $log = $hzl->info($this->caller . ': ' . $message);
-                return $log;
+                return $hzl->info($this->caller . ': ' . $message);
             }
 
             // If error, needs to send email to admin
@@ -163,24 +161,24 @@ class CartMessenger
         $summary = 'Order number: ' . $transactionInfo->tId . "\n\n";
         $summary .= "====================\n\n";
 
-        $summary .= 'Subtotal: ' . '$' . number_format($transactionInfo->tiSubtotal, 2) . "\n";
+        $summary .= 'Subtotal: $' . number_format($transactionInfo->tiSubtotal, 2) . "\n";
         if (!$transactionInfo->tiShipping) {
             $transactionInfo->tiShipping = 0;
         }
         if ($transactionInfo->tiShipping > 0) {
-            $summary .= 'Shipping and handling: ' . '$' . number_format($transactionInfo->tiShipping, 2) . "\n";
+            $summary .= 'Shipping and handling: $' . number_format($transactionInfo->tiShipping, 2) . "\n";
         }
         if (!$transactionInfo->tiTax) {
             $transactionInfo->tiTax = 0;
         }
         if ($transactionInfo->tiDiscounts > 0 || $transactionInfo->tiShippingDiscount > 0) {
             $discountTotal = $transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount;
-            $summary .= 'Discounts: ' . '$' . number_format($discountTotal, 2) . "\n";
+            $summary .= 'Discounts: $' . number_format($discountTotal, 2) . "\n";
         }
         if ($transactionInfo->tiTax > 0) {
-            $summary .= 'Tax: ' . '$' . number_format($transactionInfo->tiTax, 2) . "\n";
+            $summary .= 'Tax: $' . number_format($transactionInfo->tiTax, 2) . "\n";
         }
-        $summary .= 'Total: ' . '$' . number_format($transactionInfo->tiTotal, 2) . "\n";
+        $summary .= 'Total: $' . number_format($transactionInfo->tiTotal, 2) . "\n";
 
         if (!empty($transactionInfo->tiShippingToFirst)) {
             $summary .= "\n\nShipping address:";
@@ -296,7 +294,7 @@ class CartMessenger
                 $summary .= ')';
             }
 
-            $summary .= ' @ ' . '$' . number_format($itemInfo->sPrice, 2);
+            $summary .= ' @ $' . number_format($itemInfo->sPrice, 2);
 
             if ($action) {
                 $summary .= "\n\t";

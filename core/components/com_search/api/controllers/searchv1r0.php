@@ -159,8 +159,7 @@ class Searchv1r0 extends ApiController
 
                 if ($field == 'description' || $field == 'fulltext' || $field == 'abstract') {
                     if (
-                        isset($result['description'])
-                        && isset($result['fulltext'])
+                        isset($result['description'], $result['fulltext'])
                         && $result['description'] != $result['fulltext']
                     ) {
                         $snippet .= $r;
@@ -297,10 +296,7 @@ class Searchv1r0 extends ApiController
         $facets = [];
         $total = 0;
         foreach ($types as $type) {
-            $name = $type;
-            if (strpos($type, "-") !== false) {
-                $name = substr($type, 0, strpos($type, "-"));
-            }
+            $name = explode('-', $type, 2)[0];
 
             $count = $query->getFacetCount($type);
             $total += $count;

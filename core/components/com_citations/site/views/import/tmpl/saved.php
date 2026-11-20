@@ -154,7 +154,7 @@ if ($label == 'none') {
                                                 )
                                                     ? ''
                                                     : $cite->url,
-                                            ) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
+                                            ) . '" rel="external">doi:' . $this->escape($cite->doi) . '</a>',
                                         $formatted,
                                     );
                                 }

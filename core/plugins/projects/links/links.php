@@ -186,12 +186,10 @@ class Links extends Plugin
                     break;
             }
 
-            $arr = [
+            return [
                 'html'     => $html,
                 'metadata' => '',
             ];
-
-            return $arr;
         }
 
         // Nothing to return
@@ -901,11 +899,7 @@ class Links extends Plugin
             // redirect hop is checked the same way before it is followed, and the
             // connection is pinned to the checked address so the name cannot be
             // re-pointed between the check and the connect.
-            $safeTarget = function ($u) {
-                // http(s) to a host with only public addresses, IPv4 and IPv6,
-                // fetched from those addresses; see \Hubzero\Utility\PublicUrl
-                return \Hubzero\Utility\PublicUrl::check($u);
-            };
+            $safeTarget = \Hubzero\Utility\PublicUrl::check(...);
 
             $target = $safeTarget($url);
             if (!$target) {
@@ -1133,7 +1127,7 @@ class Links extends Plugin
         }
 
         // Error - redirected instead of printing metadata
-        if (strpos((string) $contenttype, 'text/html;') !== false) {
+        if (str_contains((string) $contenttype, 'text/html;')) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
             return null;
         }
@@ -1187,7 +1181,7 @@ class Links extends Plugin
                 $authString = '';
                 if (is_array($authors) && !empty($authors)) {
                     foreach ($authors as $author) {
-                        if (isset($author['family']) && isset($author['given'])) {
+                        if (isset($author['family'], $author['given'])) {
                             $authString .=  $author['family'] . ', ' . $author['given'] . ', ';
                         } elseif (isset($author['literal'])) {
                             $authString .=  $author['literal'] . ', ';
@@ -1200,7 +1194,7 @@ class Links extends Plugin
 
             // Parse date
             if ($key == 'issued') {
-                if (isset($metadata['issued']) && isset($metadata['issued']['date-parts'])) {
+                if (isset($metadata['issued']['date-parts'])) {
                     $data->set('year', $metadata['issued']['date-parts'][0][0]);
                 }
             }
@@ -1224,9 +1218,7 @@ class Links extends Plugin
     {
         $imgSrc = str_replace('../', '', $imgSrc);
         $imgSrc = str_replace('./', '', $imgSrc);
-        $imgSrc = str_replace(' ', "%20", $imgSrc);
-
-        return $imgSrc;
+        return str_replace(' ', "%20", $imgSrc);
     }
 
     /**
@@ -1263,9 +1255,9 @@ class Links extends Plugin
      */
     public function getLink($imgSrc, $referer)
     {
-        if (strpos($imgSrc, '//') === 0) {
+        if (str_starts_with($imgSrc, '//')) {
             $imgSrc = 'https:' . $imgSrc;
-        } elseif (strpos($imgSrc, '/') === 0) {
+        } elseif (str_starts_with($imgSrc, '/')) {
             $imgSrc = 'https://' . $this->getPage($referer) . $imgSrc;
         } else {
             $imgSrc = 'https://' . $this->getPage($referer) . '/' . $imgSrc;
@@ -1287,14 +1279,14 @@ class Links extends Plugin
         if (
             substr_count($url, 'http://') > 1
             || substr_count($url, 'https://') > 1
-            || (strpos($url, 'http://') !== false && strpos($url, 'https://') !== false)
+            || (str_contains($url, 'http://')  && str_contains($url, 'https://') )
         ) {
             return $url;
         }
 
-        if (strpos($url, 'http://') !== false) {
+        if (str_contains($url, 'http://')) {
             $url = substr($url, 7);
-        } elseif (strpos($url, 'https://') !== false) {
+        } elseif (str_contains($url, 'https://')) {
             $url = substr($url, 8);
         }
 

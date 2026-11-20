@@ -38,10 +38,9 @@ class WinCache extends None
      */
     public static function isAvailable()
     {
-        $test = extension_loaded('wincache')
+        return extension_loaded('wincache')
             && function_exists('wincache_ucache_get')
             && !strcmp((string) ini_get('wincache.ucenabled'), '1');
-        return $test;
     }
 
     /**
@@ -132,7 +131,7 @@ class WinCache extends None
         $allinfo = wincache_ucache_info() ?: [];
 
         foreach ($allinfo['cache_entries'] as $key) {
-            if (strpos($key['key_name'], $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
+            if (str_starts_with($key['key_name'], $hash . '-cache-' . $group . '-')) { // xor $mode != 'group')
                 wincache_ucache_delete($key['key_name']);
             }
         }

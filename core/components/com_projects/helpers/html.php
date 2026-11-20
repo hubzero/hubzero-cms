@@ -94,9 +94,7 @@ class Html extends Obj
         // Get current time
         $current_time = $utc ? Date::toUnix() : strtotime(date('c'));
 
-        $text = self::timeDifference($current_time - $timestamp);
-
-        return $text;
+        return self::timeDifference($current_time - $timestamp);
     }
 
     /**
@@ -209,13 +207,13 @@ class Html extends Obj
             }
         } elseif ($from == 'GB') {
             if ($to == 'b') {
-                $file_size = $file_size * 1073741824;
+                $file_size *= 1073741824;
             }
             if ($to == 'KB') {
-                $file_size = $file_size * 1048576;
+                $file_size *= 1048576;
             }
             if ($to == 'MB') {
-                $file_size = $file_size * 1024;
+                $file_size *= 1024;
             }
         }
 
@@ -321,7 +319,7 @@ class Html extends Obj
      */
     public static function getEmoIcons()
     {
-        $icons = [
+        return [
             ':)'    =>  'happy',
             ':-)'   =>  'grin',
             ':D'    =>  'laugh',
@@ -349,8 +347,6 @@ class Html extends Obj
             '-_-'   =>  'squint',
             '3:)'   =>  'devil',
         ];
-
-        return $icons;
     }
 
     /**
@@ -482,9 +478,7 @@ class Html extends Obj
             }
         }
         unset($part);
-        $string = implode('', ($parts ?: []));
-
-        return $string;
+        return implode('', ($parts ?: []));
     }
 
     /**
@@ -652,16 +646,14 @@ class Html extends Obj
             $file[] = $end;
             $filename = implode('.', $file);
         } else {
-            $filename = $filename . $append;
+            $filename .= $append;
         }
 
         if ($ext) {
             $filename = $filename . '.' . $ext;
         }
 
-        $newname = $dirname && $dirname != '.' ? $dirname . DS . $filename : $filename;
-
-        return $newname;
+        return $dirname && $dirname != '.' ? $dirname . DS . $filename : $filename;
     }
 
     /**
@@ -702,7 +694,7 @@ class Html extends Obj
         $text = trim($text);
 
         if (strlen($text) > $chars) {
-            $text = $text . ' ';
+            $text .= ' ';
             $text = substr($text, 0, $chars);
         }
 
@@ -724,7 +716,7 @@ class Html extends Obj
             $names = explode(' ', $name);
             $name = $names[0];
             if (isset($names[1]) && $names[1] != '') {
-                $name  = $name . ' ';
+                $name  .= ' ';
                 $name .= substr($names[1], 0, 1);
                 $name .= '.';
             }
@@ -753,8 +745,8 @@ class Html extends Obj
         if (strlen($name) > $chars) {
             $cutFront = $chars - 10;
             $name = substr($name, 0, $cutFront);
-            $name = $name . '&#8230;';
-            $name = $name . substr($original, -10, 10);
+            $name .= '&#8230;';
+            $name .= substr($original, -10, 10);
         }
         if ($name == '') {
             $name = '&#8230;';
@@ -839,9 +831,7 @@ class Html extends Obj
                 $note  .= '<span class="block mini faded">' . $meta . '</span>';
             }
         }
-        $note = $note ? '<p class="admin-note">' . $note . '</p>' : '';
-
-        return $note;
+        return $note ? '<p class="admin-note">' . $note . '</p>' : '';
     }
 
     /**
@@ -1003,8 +993,7 @@ class Html extends Obj
             $name = (string) preg_replace('/ /', '', $title);
             $name = strtolower($name);
             $name = (string) preg_replace('/[^a-z0-9]/', '', $name);
-            $name = substr($name, 0, $maxLength);
-            return $name;
+            return substr($name, 0, $maxLength);
         }
         return false;
     }
@@ -1156,7 +1145,7 @@ class Html extends Obj
                 // the segment comes from the request (subdir=) or a stored name
                 $name = htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8');
                 if ($linkit) {
-                    if (strpos($url, '?') !== false) {
+                    if (str_contains($url, '?')) {
                         $currentUrl = Route::url($url . '&subdir=' . urlencode($href));
                         $bc .= ' &raquo; <span><a href="' . $currentUrl . '" class="folder">' . $name . '</a></span> ';
                     } else {

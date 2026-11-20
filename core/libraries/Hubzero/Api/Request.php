@@ -135,7 +135,7 @@ class Request
             if (empty($this->accepts)) {
                 $format = strrchr($_SERVER['REQUEST_URI'], '.');
 
-                if (strchr((string) $format, '/') === false) {
+                if (strstr((string) $format, '/') === false) {
                     $this->accepts = $this->parseAccept(substr((string) $format, 1));
                 }
             }

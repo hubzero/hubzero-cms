@@ -82,9 +82,9 @@ class Myquestions extends Module
         $counter = 0;
 
         for ($i = 0; $i < count($tags); $i++) {
-            $counter = $counter + strlen(stripslashes($tags[$i]));
+            $counter += strlen(stripslashes($tags[$i]));
             if ($counter > $max) {
-                $num = $num - 1;
+                $num -= 1;
             }
             if ($i < $num) {
                 // display tag

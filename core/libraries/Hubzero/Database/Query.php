@@ -5103,11 +5103,9 @@ class Query
 
         $this->connectionOrFail()->prepare($query)->bind($this->syntax->getBindings());
 
-        $result = (isset($structure))
+        return (isset($structure))
                 ? $this->connection->{constant('self::' . strtoupper($structure))}()
                 : $this->connectionOrFail()->query();
-
-        return $result;
     }
 
     /**
@@ -5155,8 +5153,7 @@ class Query
             }
         }
 
-        $result = implode("\n", $pieces);
-        return $result;
+        return implode("\n", $pieces);
     }
 
     /**

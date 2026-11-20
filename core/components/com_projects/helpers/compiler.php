@@ -54,7 +54,7 @@ class Compiler extends Obj
      */
     public static function getFormatsArray()
     {
-        $formats =  [
+        return [
             'application' =>  [
                 'application/pdf',
             ],
@@ -72,8 +72,6 @@ class Compiler extends Obj
                 'text/html',
             ],
         ];
-
-        return $formats;
     }
 
     /**

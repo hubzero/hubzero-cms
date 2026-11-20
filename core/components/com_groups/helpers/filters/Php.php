@@ -30,8 +30,7 @@ class Php extends \HTMLPurifier_Filter
     {
         $html = str_replace('<?php', '[php]', $html);
         $html = str_replace('<?', '[php]', $html);
-        $html = str_replace('?>', '[/php]', $html);
-        return $html;
+        return str_replace('?>', '[/php]', $html);
     }
 
     /**

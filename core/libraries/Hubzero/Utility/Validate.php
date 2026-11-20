@@ -140,7 +140,7 @@ class Validate
         if (!is_numeric($check)) {
             return false;
         }
-        if (isset($lower) && isset($upper)) {
+        if (isset($lower, $upper)) {
             return ($check > $lower && $check < $upper);
         }
         return is_finite((float) $check);
@@ -544,7 +544,7 @@ class Validate
      * @param   string   $password  Password to validate
      * @return  boolean  True if valid, false if invalid
      */
-    public static function password($password)
+    public static function password(#[\SensitiveParameter] $password)
     {
         if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password)) {
             return true;

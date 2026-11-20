@@ -100,7 +100,7 @@ class Migration20150330124145Core extends Base
         $configuration = (string) file_get_contents($configFile);
 
         // Skip if not using array format with dbtype
-        if (strpos($configuration, "'dbtype'") === false && strpos($configuration, '"dbtype"') === false) {
+        if (!str_contains($configuration, "'dbtype'")  && !str_contains($configuration, '"dbtype"')) {
             return;
         }
 

@@ -892,7 +892,7 @@ class FirebirdDriver extends BaseSqlDriver
             // This handles the case where IF EXISTS was stripped in setQuery()
             if (
                 stripos($sql, 'DROP') !== false && stripos($sql, 'TABLE') !== false
-                && strpos($e->getMessage(), '-607') !== false
+                && str_contains($e->getMessage(), '-607')
                 && stripos($e->getMessage(), 'does not exist') !== false
             ) {
                 // Commit and treat as success
@@ -2373,7 +2373,7 @@ class FirebirdDriver extends BaseSqlDriver
             return $quotedArray;
         }
 
-        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array) $name;
+        $parts = (str_contains($name, '.') ) ? explode('.', $name) : (array) $name;
         $bits  = [];
 
         foreach ($parts as $part) {

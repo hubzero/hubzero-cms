@@ -48,7 +48,7 @@ class Debug extends Plugin
                 Event::getRoot(),
             );
             $path = is_dir('/var/log/hubzero-cms') ? '/var/log/hubzero-cms' : Config::get('log_path');
-            $logger->useFiles($path . DS . 'sql.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
+            $logger->useFiles($path . DS . 'sql.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0o640);
 
             Event::listen(function ($event) use ($logger) {
                 $query = $event->getArgument('query');
@@ -641,11 +641,11 @@ class Debug extends Plugin
             // Increment the count:
             if (stripos($sql, 'select') === 0) {
                 $selectQueryTypeTicker[$fromString]
-                = $selectQueryTypeTicker[$fromString] + 1;
+                += 1;
                 unset($otherQueryTypeTicker[$fromString]);
             } else {
                 $otherQueryTypeTicker[$fromString]
-                = $otherQueryTypeTicker[$fromString] + 1;
+                += 1;
                 unset($selectQueryTypeTicker[$fromString]);
             }
 
@@ -921,9 +921,7 @@ class Debug extends Plugin
         ];
 
         $sql = (string) preg_replace(array_keys($regex), array_values($regex), $sql);
-        $sql = str_replace('*', '<b class="dbgStar">*</b>', $sql);
-
-        return $sql;
+        return str_replace('*', '<b class="dbgStar">*</b>', $sql);
     }
 
     /**

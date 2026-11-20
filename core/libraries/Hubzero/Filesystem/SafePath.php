@@ -67,7 +67,7 @@ class SafePath
      * @param   string|null   &$reason   One of the REASON_* constants on failure
      * @return  string|false      Canonical path, or false
      */
-    public static function directory($base, $relative = '', $create = false, $mode = 0700, &$reason = null)
+    public static function directory($base, $relative = '', $create = false, $mode = 0o700, &$reason = null)
     {
         $reason = self::REASON_BASE;
 
@@ -181,7 +181,7 @@ class SafePath
      * @param   integer|null  $mode     Mode for the resulting file, null to leave it to the umask
      * @return  boolean
      */
-    public static function write($path, $content, $mode = 0600)
+    public static function write($path, $content, $mode = 0o600)
     {
         $content = (string) $content;
 

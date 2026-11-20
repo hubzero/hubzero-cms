@@ -133,8 +133,7 @@ class SolrIndexAdapter implements IndexInterface
         $results = $this->connection->select($query);
         foreach ($results as $document) {
             foreach ($document as $field => $value) {
-                $result = $value;
-                return $result;
+                return $value;
             }
         }
 
@@ -266,8 +265,7 @@ class SolrIndexAdapter implements IndexInterface
                 return null;
             } catch (\Solarium\Exception\HttpException $e) {
                 $body = json_decode((string) $e->getBody());
-                $message = isset($body->error->msg) ? $body->error->msg : $e->getStatusMessage();
-                return $message;
+                return isset($body->error->msg) ? $body->error->msg : $e->getStatusMessage();
             }
         } else {
             return false;
@@ -324,8 +322,7 @@ class SolrIndexAdapter implements IndexInterface
         } catch (\Solarium\Exception\HttpException $e) {
             $jbody = $e->getBody();
             $body = json_decode($jbody == null ? '' : $jbody);
-            $message = isset($body->error->msg) ? $body->error->msg : $e->getStatusMessage();
-            return $message;
+            return isset($body->error->msg) ? $body->error->msg : $e->getStatusMessage();
         }
     }
 }

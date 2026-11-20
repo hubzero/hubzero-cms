@@ -47,9 +47,9 @@ class Textfieldfilter extends Filter
             return false;
         }
         if (
-            (strpos($textValue, ' AND ') === false)
-            && (strpos($textValue, ' OR ') === false)
-            && (strpos($textValue, '"') === false)
+            (!str_contains($textValue, ' AND ') )
+            && (!str_contains($textValue, ' OR ') )
+            && (!str_contains($textValue, '"') )
         ) {
             $textValue = str_replace(' ', ' AND ', $textValue);
         }

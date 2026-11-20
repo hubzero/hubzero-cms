@@ -149,7 +149,7 @@ class Helper
         $parts = array_map('ucfirst', $parts);
         $parts = implode('\\', $parts);
 
-        $class = __NAMESPACE__ . '\\' . ucfirst($entity) . 's' . '\\' . $parts;
+        $class = __NAMESPACE__ . '\\' . ucfirst($entity) . 's\\' . $parts;
 
         if (class_exists($class)) {
             return $class;
@@ -206,7 +206,7 @@ class Helper
             $fullname = $path . DIRECTORY_SEPARATOR . $file;
 
             // Is the path based on a stream?
-            if (strpos($path, '://') === false) {
+            if (!str_contains($path, '://')) {
                 // Not a stream, so do a realpath() to avoid directory
                 // traversal attempts on the local file system.
                 $path     = realpath($path);

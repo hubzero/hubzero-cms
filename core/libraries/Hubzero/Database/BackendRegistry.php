@@ -292,8 +292,7 @@ final class BackendRegistry
             return null;
         }
 
-        $class = self::classIfExists(self::grammarClassMap()[$key] ?? null);
-        return $class;
+        return self::classIfExists(self::grammarClassMap()[$key] ?? null);
     }
 
     /**

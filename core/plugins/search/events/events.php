@@ -31,7 +31,7 @@ class Events extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(e.title, e.content) against(\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(e.title, e.content) against(\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -63,7 +63,7 @@ class Events extends Plugin
 			WHERE
 				state = 1 AND
 				approved AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         );
 
@@ -250,8 +250,7 @@ class Events extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__events`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

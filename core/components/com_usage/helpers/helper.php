@@ -95,7 +95,7 @@ class Helper
             $dtyear  = date("Y");
             if (!$dtmonth) {
                 $dtmonth = 12;
-                $dtyear = $dtyear - 1;
+                $dtyear -= 1;
             }
             $enddate = $dtyear . '-' . $dtmonth;
         }

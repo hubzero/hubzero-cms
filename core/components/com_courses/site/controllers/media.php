@@ -499,7 +499,7 @@ class Media extends SiteController
         }
 
         // Keep the target within the course directory
-        if (strpos($folder, '..') !== false) {
+        if (str_contains($folder, '..')) {
             Notify::error(Lang::txt('COURSES_NO_DIRECTORY'));
             $this->displayTask();
 
@@ -573,7 +573,7 @@ class Media extends SiteController
         }
 
         // Keep the target within the course directory
-        if (strpos($file, '..') !== false) {
+        if (str_contains($file, '..')) {
             Notify::error(Lang::txt('FILE_NOT_FOUND'));
             $this->displayTask();
 

@@ -123,7 +123,7 @@ class Db2Driver extends BaseSqlDriver
 
         // Establish connection string
         if (!isset($options['dsn'])) {
-            if (isset($options['host']) && isset($options['database'])) {
+            if (isset($options['host'], $options['database'])) {
                 $host = $options['host'];
                 $port = isset($options['port']) ? $options['port'] : '50000';
                 $database = $options['database'];
@@ -379,7 +379,7 @@ class Db2Driver extends BaseSqlDriver
     public function quoteName($name, $as = null)
     {
         // Uppercase each dot-separated part before delegating to base quoteName()
-        if (strpos($name, '.') !== false) {
+        if (str_contains($name, '.')) {
             $name = implode('.', array_map('strtoupper', explode('.', $name)));
         } else {
             $name = strtoupper($name);
@@ -1333,8 +1333,8 @@ class Db2Driver extends BaseSqlDriver
         } catch (\Exception $e) {
             if (
                 $ifExists
-                && (strpos($e->getMessage(), 'SQL0204N') !== false
-                    || strpos($e->getMessage(), '42704') !== false)
+                && (str_contains($e->getMessage(), 'SQL0204N')
+                    || str_contains($e->getMessage(), '42704') )
             ) {
                 return $this;
             }

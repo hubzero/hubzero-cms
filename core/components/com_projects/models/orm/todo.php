@@ -283,15 +283,13 @@ class Todo extends Relational
      */
     public static function listsByProject($projectid)
     {
-        $lists = self::all()
+        return self::all()
             ->select('DISTINCT(todolist)')
             ->select('color')
             ->where('todolist', '!=', '')
             ->whereEquals('projectid', $projectid)
             ->whereRaw('todolist IS NOT NULL')
             ->rows();
-
-        return $lists;
     }
 
     /**

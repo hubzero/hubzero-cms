@@ -267,7 +267,7 @@ class Storagev1r0 extends ApiController
         if (file_exists($target) || is_link($target)) {
             throw new Exception(Lang::txt('That name is already in use.'), 409);
         }
-        if (!@mkdir($target, 0700)) {
+        if (!@mkdir($target, 0o700)) {
             throw new Exception(Lang::txt('Unable to create the folder.'), 500);
         }
 
@@ -390,7 +390,7 @@ class Storagev1r0 extends ApiController
                 $failed[] = $names[$i];
                 continue;
             }
-            @chmod($target, 0600);
+            @chmod($target, 0o600);
             $saved[] = $safe;
         }
 
@@ -426,7 +426,7 @@ class Storagev1r0 extends ApiController
         if ($name === '' || $name === '.' || $name === '..') {
             return false;
         }
-        if (strpos($name, '/') !== false || strpos($name, '\\') !== false || strpos($name, "\0") !== false) {
+        if (str_contains($name, '/')  || str_contains($name, '\\')  || str_contains($name, "\0")) {
             return false;
         }
         return $name;
@@ -470,7 +470,7 @@ class Storagev1r0 extends ApiController
         }
 
         $reason = null;
-        $path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0700, $reason);
+        $path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0o700, $reason);
 
         if ($path === false) {
             // A not-yet-existing directory is not an error; whatever existed along

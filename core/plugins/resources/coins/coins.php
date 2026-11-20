@@ -49,13 +49,11 @@ class Coins extends Plugin
             return null;
         }
 
-        $arr = [
+        return [
             'area'     => '',
             'html'     => '',
             'metadata' => $this->coins($model),
         ];
-
-        return $arr;
     }
 
     /**

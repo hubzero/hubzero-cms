@@ -325,7 +325,7 @@ class MarkdownParser
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+        if (isset($this->tokens[$tag], $this->tokens[$tag][$key])) {
             return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {

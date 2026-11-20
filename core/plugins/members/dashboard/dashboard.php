@@ -654,9 +654,7 @@ class Dashboard extends Plugin
 		          AND m.access IN (0, " . implode(',', User::getAuthorisedViewLevels()) . ")
 		          ORDER BY m.ordering";
         $this->database->setQuery($query);
-        $modules = $this->database->loadObjectList('id');
-
-        return $modules;
+        return $this->database->loadObjectList('id');
     }
 
     /**

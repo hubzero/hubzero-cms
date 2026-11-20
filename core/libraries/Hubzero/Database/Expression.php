@@ -75,35 +75,35 @@ final class Expression
      *
      * @var string
      */
-    protected string $type;
+    private string $type;
 
     /**
      * The function name (for TYPE_FUNCTION)
      *
      * @var string|null
      */
-    protected ?string $function = null;
+    private ?string $function = null;
 
     /**
      * The expression arguments
      *
      * @var array<mixed>
      */
-    protected array $arguments = [];
+    private array $arguments = [];
 
     /**
      * The column alias
      *
      * @var string|null
      */
-    protected ?string $alias = null;
+    private ?string $alias = null;
 
     /**
      * Parameter bindings for this expression
      *
      * @var array<mixed>
      */
-    protected array $bindings = [];
+    private array $bindings = [];
 
     /**
      * Create a new expression instance
@@ -112,7 +112,7 @@ final class Expression
      * @param string|null $function   The function name (for function expressions)
      * @param array<mixed>       $arguments  The expression arguments
      */
-    protected function __construct(string $type, ?string $function = null, array $arguments = [])
+    private function __construct(string $type, ?string $function = null, array $arguments = [])
     {
         $this->type = $type;
         $this->function = $function;

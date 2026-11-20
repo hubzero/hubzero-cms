@@ -102,11 +102,9 @@ class Doi extends Relational
      */
     public static function oneByDoi($doi)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('doi', $doi)
             ->row();
-
-        return $row;
     }
 
     /**

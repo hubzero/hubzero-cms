@@ -204,7 +204,7 @@ class Application extends AdminController
      * @param   array<string, mixed>  $hubsecret  The submitted hubsecret form fields
      * @return  bool
      */
-    private function saveHubSecret(array $hubsecret)
+    private function saveHubSecret(#[\SensitiveParameter] array $hubsecret)
     {
         // If user has opted to reset the Hub secret:
         if ($hubsecret['reset_secret'] == 'reset') {

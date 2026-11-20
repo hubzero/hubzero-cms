@@ -300,7 +300,7 @@ class Rule extends Relational
      * @param   string  $password
      * @return  array<mixed>
      */
-    public static function analyze($password)
+    public static function analyze(#[\SensitiveParameter] $password)
     {
         $stats = [];
 
@@ -350,7 +350,7 @@ class Rule extends Relational
      * @param   bool    $isNew
      * @return  array<int, mixed>
      */
-    public static function verify($password, $rules, $user, $name = null, $isNew = true)
+    public static function verify(#[\SensitiveParameter] $password, $rules, $user, $name = null, $isNew = true)
     {
         if (empty($rules)) {
             return [];
@@ -578,7 +578,7 @@ class Rule extends Relational
         foreach ($words as $w) {
             // the name (or a part of it) inside the password, or the
             // password inside the name
-            if (strpos($word, $w) !== false || strpos($w, $word) !== false) {
+            if (str_contains($word, $w)  || str_contains($w, $word)) {
                 return true;
             }
         }

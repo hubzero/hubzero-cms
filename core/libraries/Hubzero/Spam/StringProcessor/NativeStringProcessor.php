@@ -71,8 +71,6 @@ class NativeStringProcessor implements StringProcessorInterface
         }
 
         $string = trim(strtolower((string) $string));
-        $string = str_replace(["\t", "\r\n", "\r", "\n"], '', $string);
-
-        return $string;
+        return str_replace(["\t", "\r\n", "\r", "\n"], '', $string);
     }
 }

@@ -55,7 +55,7 @@ class TestableInertiaService extends InertiaService
         if (
             is_string($body)
             && isset($this->headers['Content-Type'])
-            && strpos(strtolower($this->headers['Content-Type']), 'application/json') !== false
+            && str_contains(strtolower($this->headers['Content-Type']), 'application/json')
         ) {
             $decoded = json_decode($body, true);
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {

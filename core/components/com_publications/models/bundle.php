@@ -112,9 +112,7 @@ class Bundle
      */
     protected function getWrapperPath()
     {
-        $path = $this->publication()->bundlePath();
-
-        return $path;
+        return $this->publication()->bundlePath();
     }
 
     /**
@@ -170,9 +168,7 @@ class Bundle
         $pathSegments = explode('/', $wrapperPath);
         array_pop($pathSegments);
 
-        $bundlePath = implode('/', $pathSegments) . '/bundles/bundle.zip';
-
-        return $bundlePath;
+        return implode('/', $pathSegments) . '/bundles/bundle.zip';
     }
 
     /**

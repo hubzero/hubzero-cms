@@ -205,14 +205,14 @@ class Settings implements StepInterface
     {
         $configDir = PATH_APP . '/config';
         if (!is_dir($configDir)) {
-            mkdir($configDir, 0755, true);
+            mkdir($configDir, 0o755, true);
         }
 
         // The log_path and tmp_path written below; the scheduled tasks'
         // tick, among others, will not run without tmp
         foreach (['logs', 'tmp'] as $dir) {
             if (!is_dir(PATH_APP . '/' . $dir)) {
-                mkdir(PATH_APP . '/' . $dir, 0775, true);
+                mkdir(PATH_APP . '/' . $dir, 0o775, true);
             }
         }
 

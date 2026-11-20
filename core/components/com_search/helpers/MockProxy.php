@@ -32,8 +32,6 @@ class MockProxy
     {
         $class = $this->class;
 
-        $result = $class::$name(...$args);
-
-        return $result;
+        return $class::$name(...$args);
     }
 }

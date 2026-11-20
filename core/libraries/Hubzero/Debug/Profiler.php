@@ -197,13 +197,11 @@ class Profiler
      */
     public function summary()
     {
-        $summary = [
+        return [
             'start'  => $this->started(),
             'end'    => $this->ended(),
             'total'  => $this->duration(),
             'memory' => $this->memory(),
         ];
-
-        return $summary;
     }
 }

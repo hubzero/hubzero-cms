@@ -28,7 +28,7 @@ class Wishlists extends Plugin
     public static function onSearch($request, &$results)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(wli.subject, wli.about) against(\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(wli.subject, wli.about) against(\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -60,7 +60,7 @@ class Wishlists extends Plugin
 				ON wl.id = wli.wishlist AND wl.public = 1
 			WHERE
 				NOT wli.private AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " AND wli.status != 2 ORDER BY $weight DESC",
         );
         foreach ($rows->toAssociative() as $row) {
@@ -177,8 +177,7 @@ class Wishlists extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__wishlist`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

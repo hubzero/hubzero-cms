@@ -115,15 +115,15 @@ class Detector implements DetectorInterface
         ];
 
         foreach ($plainKeywords as $k) {
-            if (strpos($context, $k) !== false) {
+            if (str_contains($context, $k)) {
                 $spam += 10;
                 $reason |= 16;
             }
-            if (strpos($email, $k) !== false) {
+            if (str_contains($email, $k)) {
                 $spam += 10;
                 $reason |= 32;
             }
-            if (strpos($username, $k) !== false) {
+            if (str_contains($username, $k)) {
                 $spam += 10;
                 $reason |= 64;
             }

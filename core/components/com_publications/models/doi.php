@@ -1086,9 +1086,9 @@ class Doi extends Obj
         $postVals = "";
 
         if (empty($resURL)) {
-            $postvals = "doi=" . $doi . "\n" . "url=" . $this->get('url');
+            $postvals = "doi=" . $doi . "\nurl=" . $this->get('url');
         } else {
-            $postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
+            $postvals = "doi=" . $doi . "\nurl=" . $resURL;
         }
 
         $regResult = $this->regURL($url, $postvals);
@@ -1193,7 +1193,7 @@ class Doi extends Obj
         $input .= "datacite.publisher: " . $this->get('publisher') . "\n";
         $input .= "datacite.publicationyear: " . $this->get('pubYear') . "\n";
         $input .= "datacite.resourcetype: " . $this->get('resourceType') . "\n";
-        $input .= "_profile: datacite" . "\n";
+        $input .= "_profile: datacite\n";
 
         $status = strtolower($status);
 

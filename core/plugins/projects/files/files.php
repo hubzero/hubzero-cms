@@ -2254,7 +2254,7 @@ class Files extends Plugin
             $cType = Filesystem::mimetype(PATH_APP . $outputDir . DS . $contentFile);
 
             // Is image?
-            if (strpos($cType, 'image/') !== false) {
+            if (str_contains($cType, 'image/')) {
                 // Fix up object width & height
                 list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile)
                     ?: [null, null, null, null];
@@ -2944,7 +2944,7 @@ class Files extends Plugin
                 if ($auto && $autoSync && !$queue) {
                     if ($autoSync < 1) {
                         $hr = 60 * $autoSync;
-                        $timecheck = Date::of(time() - (1 * $hr * 60));
+                        $timecheck = Date::of(time() - ($hr * 60));
                     } else {
                         $timecheck = Date::of(time() - ($autoSync * 60 * 60));
                     }
@@ -3030,7 +3030,7 @@ class Files extends Plugin
             $status = ['status' => 'complete', 'msg' => $msg];
 
             // Refresh view if sync happened recently
-            $timecheck = date('c', time() - (1 * 1 * 60));
+            $timecheck = date('c', time() - 60);
             if ($synced >= $timecheck) {
                 $status['output'] = $this->browse(2);
             }
@@ -3040,7 +3040,7 @@ class Files extends Plugin
             if ($autoSync > 0) {
                 if ($autoSync < 1) {
                     $hr = 60 * $autoSync;
-                    $timecheck = date('c', time() - (1 * $hr * 60));
+                    $timecheck = date('c', time() - ($hr * 60));
                 } else {
                     $timecheck = date('c', time() - ($autoSync * 60 * 60));
                 }
@@ -3104,11 +3104,11 @@ class Files extends Plugin
                         // take only files that are still inside the project.
                         $fpath = realpath($path . DS . $item);
 
-                        if (!$fpath || strpos($fpath, $root . DS) !== 0 || !is_file($fpath)) {
+                        if (!$fpath || !str_starts_with($fpath, $root . DS)  || !is_file($fpath)) {
                             continue;
                         }
 
-                        $combinedSize = $combinedSize + filesize($fpath);
+                        $combinedSize += filesize($fpath);
 
                         // Check against maximum allowable size
                         if ($combinedSize > $maxDownload) {
@@ -3175,7 +3175,7 @@ class Files extends Plugin
         $path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
         if (!is_dir(PATH_APP . $path)) {
-            if (!Filesystem::makeDirectory(PATH_APP . $path, 0755, true, true)) {
+            if (!Filesystem::makeDirectory(PATH_APP . $path, 0o755, true, true)) {
                 $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
                 return null;
             }

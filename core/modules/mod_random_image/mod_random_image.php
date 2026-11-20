@@ -149,16 +149,14 @@ class RandomImage extends Module
         $LiveSite = Request::base();
 
         // if folder includes livesite info, remove
-        if (strpos($folder, $LiveSite) === 0) {
+        if (str_starts_with($folder, $LiveSite)) {
             $folder = str_replace($LiveSite, '', $folder);
         }
         // if folder includes absolute path, remove
-        if (strpos($folder, PATH_APP) === 0) {
+        if (str_starts_with($folder, PATH_APP)) {
             $folder = str_replace(PATH_APP, '', $folder);
         }
         $folder = str_replace('\\', DIRECTORY_SEPARATOR, $folder);
-        $folder = str_replace('/', DIRECTORY_SEPARATOR, $folder);
-
-        return $folder;
+        return str_replace('/', DIRECTORY_SEPARATOR, $folder);
     }
 }

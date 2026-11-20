@@ -276,8 +276,7 @@ class Download
             return $db->loadAssocList();
         }
 
-        $res = $db->loadObjectList();
-        return $res;
+        return $db->loadObjectList();
     }
 
     /**

@@ -227,7 +227,7 @@ class Memcached extends Store
 
         // loop through the session keys and get their data
         foreach ((array) $keys as $name) {
-            if (is_string($name) && strpos($name, $this->prefix) === 0) {
+            if (is_string($name) && str_starts_with($name, $this->prefix)) {
                 $session = new \stdClass();
                 $session->session_id = $name;
                 $session->data       = $this->engine->get($name);

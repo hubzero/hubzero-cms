@@ -553,7 +553,7 @@ class Publication extends Table
 
         // Add the ratings up
         foreach ($ratings as $item) {
-            $totalvalue = $totalvalue + $item->rating;
+            $totalvalue += $item->rating;
         }
 
         // Find the average of all ratings
@@ -682,7 +682,7 @@ class Publication extends Table
             $d = 0;
 
             foreach ($result as $r) {
-                $c = $c + $r->pubs;
+                $c += $r->pubs;
                 $d++;
             }
 

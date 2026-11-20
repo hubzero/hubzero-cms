@@ -53,7 +53,7 @@ class AppDirectory
 
         // Create main app directory if it doesn't exist
         if (!is_dir($appPath)) {
-            if (!@mkdir($appPath, 0775, true)) {
+            if (!@mkdir($appPath, 0o775, true)) {
                 self::output("  \e[31m[FAIL]\e[39m Could not create {$appPath}\n", $ansi, true);
                 return false;
             }
@@ -69,7 +69,7 @@ class AppDirectory
         foreach (self::SUBDIRECTORIES as $subdir) {
             $path = $appPath . '/' . $subdir;
             // Config directory should have no other permissions (0770)
-            $perms = ($subdir === 'config') ? 0770 : 0775;
+            $perms = ($subdir === 'config') ? 0o770 : 0o775;
 
             if (!is_dir($path)) {
                 if (!@mkdir($path, $perms, true)) {
@@ -152,7 +152,7 @@ class AppDirectory
         }
 
         // Secure the file
-        @chmod($configPath, 0640);
+        @chmod($configPath, 0o640);
 
         self::output("  \e[32m[OK]\e[39m Created database.php\n", $ansi);
         return true;
@@ -439,11 +439,11 @@ class AppDirectory
         $currentPerms = @fileperms($path);
         if ($currentPerms !== false) {
             // Add group rwx (0070) to current permissions
-            $newPerms = $currentPerms | 0070;
+            $newPerms = $currentPerms | 0o070;
             if ($newPerms !== $currentPerms) {
                 // Extract just the permission bits (last 9 bits)
-                $oldMode = $currentPerms & 0777;
-                $newMode = $newPerms & 0777;
+                $oldMode = $currentPerms & 0o777;
+                $newMode = $newPerms & 0o777;
                 self::output("       Permissions: 0" . decoct($oldMode) . " -> 0" . decoct($newMode) . "\n", $ansi);
                 @chmod($path, $newPerms);
             }
@@ -462,11 +462,11 @@ class AppDirectory
         $currentPerms = @fileperms($path);
         if ($currentPerms !== false) {
             // Add group rwx (0070) and remove other permissions (mask off 0007)
-            $newPerms = ($currentPerms | 0070) & ~0007;
+            $newPerms = ($currentPerms | 0o070) & ~0o007;
             if ($newPerms !== $currentPerms) {
                 // Extract just the permission bits (last 9 bits)
-                $oldMode = $currentPerms & 0777;
-                $newMode = $newPerms & 0777;
+                $oldMode = $currentPerms & 0o777;
+                $newMode = $newPerms & 0o777;
                 self::output("       Permissions: 0" . decoct($oldMode) . " -> 0" . decoct($newMode) . "\n", $ansi);
                 @chmod($path, $newPerms);
             }

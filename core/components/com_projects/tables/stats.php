@@ -234,7 +234,7 @@ class Stats extends Table
         $d = 0;
 
         foreach ($result as $res) {
-            $c = $c + $res->activity;
+            $c += $res->activity;
             $d++;
         }
 

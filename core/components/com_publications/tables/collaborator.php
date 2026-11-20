@@ -54,7 +54,7 @@ class Collaborator extends Table
      *
      * @return  \Hubzero\Database\Driver|false or false
      */
-    public function saveORCIDRecord($name, $orcid, $accessToken)
+    public function saveORCIDRecord($name, $orcid, #[\SensitiveParameter] $accessToken)
     {
         if (empty($name) || empty($orcid) || empty($accessToken)) {
             return false;

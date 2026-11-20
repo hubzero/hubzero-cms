@@ -103,7 +103,7 @@ class SchemaConverter
         // Ensure output directory exists
         $outputDir = dirname($outputFile);
         if (!is_dir($outputDir)) {
-            if (!mkdir($outputDir, 0755, true)) {
+            if (!mkdir($outputDir, 0o755, true)) {
                 $this->output->error("Error: Could not create output directory: $outputDir");
             }
         }
@@ -175,7 +175,7 @@ class SchemaConverter
             $tableName = $matches[1];
 
             // Skip if not a valid table definition
-            if (strpos($tableDef, '(') === false) {
+            if (!str_contains($tableDef, '(')) {
                 continue;
             }
 
@@ -227,7 +227,7 @@ class SchemaConverter
             foreach ($remaining as $viewName => $viewDef) {
                 $hasDep = false;
                 foreach (array_keys($remaining) as $otherView) {
-                    if ($otherView !== $viewName && strpos($viewDef, "`$otherView`") !== false) {
+                    if ($otherView !== $viewName && str_contains($viewDef, "`$otherView`")) {
                         $hasDep = true;
                         break;
                     }

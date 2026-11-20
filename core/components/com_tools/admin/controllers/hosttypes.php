@@ -192,7 +192,7 @@ class Hosttypes extends AdminController
             $value = 1;
             for ($i = 0; $i < count($rows); $i++) {
                 if ($value == $rows[$i]->value) {
-                    $value = $value * 2;
+                    $value *= 2;
                 }
                 // Double check that the hosttype doesn't already exist
                 if ($row->name == $rows[$i]->name) {

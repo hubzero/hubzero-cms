@@ -351,9 +351,7 @@ class Translator extends Obj
         }
 
         $string = Latin::toAscii($string);
-        $string = strtolower($string);
-
-        return $string;
+        return strtolower($string);
     }
 
     /**
@@ -831,9 +829,7 @@ class Translator extends Obj
 
         // Ini files are processed in the "RAW" mode of parse_ini_string, leaving escaped quotes untouched - lets
         // postprocessthem
-        $strings = str_replace('\"', '"', ($strings ?: []));
-
-        return $strings;
+        return str_replace('\"', '"', ($strings ?: []));
     }
 
     /**
@@ -1107,9 +1103,7 @@ class Translator extends Obj
     public static function getKnownLanguages($basePath = PATH_APP, $client = null)
     {
         $dir = self::getLanguagePath($basePath, null, $client);
-        $knownLanguages = self::parseLanguageFiles($dir);
-
-        return $knownLanguages;
+        return self::parseLanguageFiles($dir);
     }
 
     /**

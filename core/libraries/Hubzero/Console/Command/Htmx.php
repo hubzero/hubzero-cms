@@ -139,9 +139,9 @@ class Htmx extends Base implements CommandInterface
 
         if (
             $this->looksLikeFragmentFile($file) && (
-                strpos($lower, '<!doctype html') !== false
-                || strpos($lower, '<html') !== false
-                || strpos($lower, '<body') !== false
+                str_contains($lower, '<!doctype html')
+                || str_contains($lower, '<html')
+                || str_contains($lower, '<body')
             )
         ) {
             $warnings[] = [
@@ -252,7 +252,7 @@ class Htmx extends Base implements CommandInterface
             return true;
         }
 
-        return strpos(strtolower($file), '/tmpl/') !== false && strpos($name, 'default') === false;
+        return str_contains(strtolower($file), '/tmpl/')  && !str_contains($name, 'default') ;
     }
 
     /**

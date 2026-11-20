@@ -89,7 +89,7 @@ $this
                             . $this->escape(stripslashes($subject)) . "</a>";
 
                         // Check for identity masking flag
-                    if (strpos($row->type, '_anonymous') === false) {
+                    if (!str_contains($row->type, '_anonymous')) {
                         // Display who the message is to
                         $to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">'
                             . $this->escape($row->name) . '</a>';

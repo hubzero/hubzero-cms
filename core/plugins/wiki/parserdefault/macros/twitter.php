@@ -74,7 +74,7 @@ class Twitter extends WikiMacro
             : 500;
 
         //make sure we have a user name
-        if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== false) {
+        if ($screenName == '' && $widgetId == '' || str_contains($screenName, '#')) {
             return '(Please enter a valid Twitter Username/ID or Widget ID)';
         }
 

@@ -47,12 +47,10 @@ class Wiki extends Plugin
     {
         $username = ($username == 'm.username') ? $username : "'" . $username . "'";
 
-        $query = "SELECT COUNT(*) FROM `#__wiki_pages` AS w
+        return "SELECT COUNT(*) FROM `#__wiki_pages` AS w
 					WHERE ((" . $user_id . " > 0 AND (w.created_by = " . $user_id . " OR " . $user_id
             . " IN (SELECT wpa.user_id FROM `#__wiki_authors` AS wpa
 						WHERE wpa.page_id=w.id))) OR (" . $user_id . " <= 0 AND w.created_by = " . $user_id . "))";
-
-        return $query;
     }
 
     /**

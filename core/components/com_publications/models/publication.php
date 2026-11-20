@@ -1523,9 +1523,7 @@ class Publication extends Obj
             }
         }
 
-        $value = isset($data[$aliasmap]) ? $data[$aliasmap] : null;
-
-        return $value;
+        return isset($data[$aliasmap]) ? $data[$aliasmap] : null;
     }
 
     /**
@@ -1978,7 +1976,7 @@ class Publication extends Obj
             $this->_base  = 'index.php?option=com_publications';
             $this->_base .= $this->get('alias') ? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
         }
-        if (!isset($this->_editBase) && strpos($type, 'edit') !== false) {
+        if (!isset($this->_editBase) && str_contains($type, 'edit')) {
             $this->_editBase  = $this->project()->isProvisioned()
                 ? 'index.php?option=com_publications&task=submit'
                 : 'index.php?option=com_projects&alias=' . $this->project()->get('alias') . '&active=publications';
@@ -2005,19 +2003,19 @@ class Publication extends Obj
                 break;
 
             case 'serve':
-                $link = $this->_base . '&task=serve' . '&v=' . $this->get('version_number');
+                $link = $this->_base . '&task=serve&v=' . $this->get('version_number');
                 break;
 
             case 'data':
-                $link = $this->_base . '&task=serve' . '&vid=' . $this->get('version_id');
+                $link = $this->_base . '&task=serve&vid=' . $this->get('version_id');
                 break;
 
             case 'citation':
-                $link = $this->_base . '&task=citation' . '&v=' . $this->get('version_number');
+                $link = $this->_base . '&task=citation&v=' . $this->get('version_number');
                 break;
 
             case 'curate':
-                $link = $this->_base . '&controller=curation' . '&version=' . $this->get('version_number');
+                $link = $this->_base . '&controller=curation&version=' . $this->get('version_number');
                 break;
 
             case 'version':
@@ -2128,7 +2126,7 @@ class Publication extends Obj
 
         // Create log directory
         if (!is_dir(PATH_APP . $logPath)) {
-            Filesystem::makeDirectory(PATH_APP . $logPath, 0755, true, true);
+            Filesystem::makeDirectory(PATH_APP . $logPath, 0o755, true, true);
         }
 
         $this->_tblLog->logAccess($this->get('id'), $this->get('version_id'), $type, $logPath);
@@ -2375,9 +2373,7 @@ class Publication extends Obj
 
         // Query the series that the publication belongs to
         $this->_tblAttachment = new Tables\Attachment($this->db);
-        $series = $this->_tblAttachment->getSeries($this->version->id);
-
-        return $series;
+        return $this->_tblAttachment->getSeries($this->version->id);
     }
 
     /**
@@ -2549,7 +2545,7 @@ class Publication extends Obj
      *
      * @return  string|false or string
      */
-    public function addPubToORCID($orcidID, $accessToken)
+    public function addPubToORCID($orcidID, #[\SensitiveParameter] $accessToken)
     {
         $memberConfig = Component::params('com_members');
         $srv = $memberConfig->get('orcid_service', 'members');
@@ -2597,7 +2593,7 @@ class Publication extends Obj
     *
     * @return  boolean
     */
-    public function updateWorkInORCID($orcidID, $accessToken, $putCode)
+    public function updateWorkInORCID($orcidID, #[\SensitiveParameter] $accessToken, $putCode)
     {
         $memberConfig = Component::params('com_members');
         $srv = $memberConfig->get('orcid_service', 'members');
@@ -2636,7 +2632,7 @@ class Publication extends Obj
     *
     * @return  boolean
     */
-    public function deleteWorkInORCID($orcidID, $accessToken, $putCode)
+    public function deleteWorkInORCID($orcidID, #[\SensitiveParameter] $accessToken, $putCode)
     {
         $memberConfig = Component::params('com_members');
         $srv = $memberConfig->get('orcid_service', 'members');

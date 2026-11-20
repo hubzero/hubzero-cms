@@ -238,9 +238,7 @@ class Manager extends Obj
      */
     public static function getFormToken($forceNew = false)
     {
-        $hash = \App::hash(\User::get('id', 0) . \App::get('session')->getToken($forceNew));
-
-        return $hash;
+        return \App::hash(\User::get('id', 0) . \App::get('session')->getToken($forceNew));
     }
 
     /**
@@ -361,9 +359,7 @@ class Manager extends Obj
             }
         }
 
-        $names = array_map('strtolower', $names);
-
-        return $names;
+        return array_map('strtolower', $names);
     }
 
     /**
@@ -395,9 +391,7 @@ class Manager extends Obj
 
         if ($this->state !== 'active' && $this->state !== 'expired') {
             // @TODO :: generated error here
-            $error = null;
-
-            return $error;
+            return null;
         }
 
         if (isset($_SESSION[$namespace][$name])) {

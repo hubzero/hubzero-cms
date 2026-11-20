@@ -709,19 +709,19 @@ class Date extends DateTime
 
         if ($translate) {
             // Manually modify the month and day strings in the formatted time.
-            if (strpos($return, self::DAY_ABBR) !== false) {
+            if (str_contains($return, self::DAY_ABBR)) {
                 $return = str_replace(self::DAY_ABBR, $this->dayToString((int) parent::format('w'), true), $return);
             }
 
-            if (strpos($return, self::DAY_NAME) !== false) {
+            if (str_contains($return, self::DAY_NAME)) {
                 $return = str_replace(self::DAY_NAME, $this->dayToString((int) parent::format('w')), $return);
             }
 
-            if (strpos($return, self::MONTH_ABBR) !== false) {
+            if (str_contains($return, self::MONTH_ABBR)) {
                 $return = str_replace(self::MONTH_ABBR, $this->monthToString((int) parent::format('n'), true), $return);
             }
 
-            if (strpos($return, self::MONTH_NAME) !== false) {
+            if (str_contains($return, self::MONTH_NAME)) {
                 $return = str_replace(self::MONTH_NAME, $this->monthToString((int) parent::format('n')), $return);
             }
         }

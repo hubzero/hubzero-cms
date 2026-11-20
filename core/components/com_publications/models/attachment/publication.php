@@ -238,9 +238,7 @@ class Publication extends Base
             $html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
             $html .= '</ul>';
         }*/
-        $html = '';
-
-        return $html;
+        return '';
     }
 
     /**

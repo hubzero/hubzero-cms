@@ -90,7 +90,7 @@ class Entries extends AdminController
 
                     $data[$k . '-' . $i . '-' . $d] = $amount;
 
-                    $total = $total + $amount;
+                    $total += $amount;
 
                     if ($k == $tyear && $i == $tmonth && $d == $tday) {
                         // Today!

@@ -1203,9 +1203,7 @@ class Setup extends Base
         $text = (string) preg_replace('/{.+?}/', '', $text);
         $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
         $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
-
-        return $text;
+        return (string) preg_replace('/<!--.+?-->/', '', $text);
     }
 
     /**

@@ -220,7 +220,7 @@ if ($this->filters['parent_id'] > 0) {
 
                 $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
                     . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
-                $checked .= '<span class="checkedout"></span>' . '</span>';
+                $checked .= '<span class="checkedout"></span></span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
                          ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': '

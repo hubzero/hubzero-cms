@@ -432,10 +432,10 @@ class Tickets extends SiteController
                 if ($k == $year && $i > $endmonth) {
                     break;
                 } else {
-                    $closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i]))
+                    $closedmonths[$k][$i] = (isset($closed[$k], $closed[$k][$i]))
                         ? $closed[$k][$i]
                         : 0;
-                    $openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
+                    $openedmonths[$k][$i] = (isset($open[$k], $open[$k][$i])) ? $open[$k][$i] : 0;
                 }
 
                 foreach ($users as $j => $user) {
@@ -2484,9 +2484,7 @@ class Tickets extends SiteController
 
         ksort($users);
 
-        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-        return $users;
+        return Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 
     /**
@@ -2581,8 +2579,6 @@ class Tickets extends SiteController
             array_unshift($users, Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
         }
 
-        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-        return $users;
+        return Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 }

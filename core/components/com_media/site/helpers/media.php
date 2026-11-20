@@ -137,8 +137,8 @@ class Media
                     if (
                         substr($entry, 0, 1) != '.'
                         && is_file($dir . DIRECTORY_SEPARATOR . $entry)
-                        && strpos($entry, '.html') === false
-                        && strpos($entry, '.php') === false
+                        && !str_contains($entry, '.html')
+                        && !str_contains($entry, '.php')
                     ) {
                         $total_file++;
                     }

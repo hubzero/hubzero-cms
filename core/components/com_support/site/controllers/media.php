@@ -143,11 +143,11 @@ class Media extends SiteController
         }
 
         // get the file
-        if (isset($_GET['qqfile']) && isset($_SERVER["CONTENT_LENGTH"])) { // make sure we actually have a file
+        if (isset($_GET['qqfile'], $_SERVER["CONTENT_LENGTH"])) { // make sure we actually have a file
             $stream = true;
             $file = $_GET['qqfile'];
             $size = (int) $_SERVER["CONTENT_LENGTH"];
-        } elseif (isset($_FILES['qqfile']) && isset($_FILES['qqfile']['size'])) {
+        } elseif (isset($_FILES['qqfile']['size'])) {
             $stream = false;
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];

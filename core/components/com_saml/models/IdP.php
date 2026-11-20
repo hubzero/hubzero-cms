@@ -386,7 +386,7 @@ class IdP
         return in_array($source, self::$attributeSources)
             || in_array($source, self::$groupSources)
             || $source == 'organization'
-            || (strpos($source, 'profile:') === 0 && strlen($source) > strlen('profile:'));
+            || (str_starts_with($source, 'profile:')  && strlen($source) > strlen('profile:'));
     }
 
     /**
@@ -417,7 +417,7 @@ class IdP
             $source = 'profile:organization';
         }
 
-        if (strpos($source, 'profile:') === 0) {
+        if (str_starts_with($source, 'profile:')) {
             $key = substr($source, strlen('profile:'));
 
             $profile = \Components\Members\Models\Profile::oneByKeyAndUser($key, $user->get('id'));
@@ -581,7 +581,9 @@ class IdP
             $assertion->setSignature($this->getSignatureWriter());
         }
 
-        $response = new \LightSaml\Model\Protocol\Response()
+        // Returned unserialized: the binding serializes (and therefore signs)
+        // it on send, so doing it here too would just sign everything twice.
+        return new \LightSaml\Model\Protocol\Response()
             ->setStatus(
                 new \LightSaml\Model\Protocol\Status(
                     new \LightSaml\Model\Protocol\StatusCode(\LightSaml\SamlConstants::STATUS_SUCCESS),
@@ -594,10 +596,6 @@ class IdP
             ->setInResponseTo($inResponseTo)
             ->setSignature($this->getSignatureWriter())
             ->addAssertion($assertion);
-
-        // Returned unserialized: the binding serializes (and therefore signs)
-        // it on send, so doing it here too would just sign everything twice.
-        return $response;
     }
 
     /**
@@ -612,7 +610,8 @@ class IdP
      */
     public function createSAMLLogoutResponse($sp, $inResponseTo, $status)
     {
-        $response = new \LightSaml\Model\Protocol\LogoutResponse()
+        // Serialized by the binding on send — see createSAMLResponse()
+        return new \LightSaml\Model\Protocol\LogoutResponse()
             ->setID(\LightSaml\Helper::generateID())
             ->setIssueInstant(new \DateTime())
             ->setDestination($sp->get('slo_url'))
@@ -620,9 +619,6 @@ class IdP
             ->setIssuer(new \LightSaml\Model\Assertion\Issuer($this->getEntityID()))
             ->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode($status)))
             ->setSignature($this->getSignatureWriter());
-
-        // Serialized by the binding on send — see createSAMLResponse()
-        return $response;
     }
 
     /**

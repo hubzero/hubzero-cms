@@ -379,7 +379,7 @@ class Storage extends SiteController
         }
 
         $reason = null;
-        $path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0700, $reason);
+        $path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0o700, $reason);
 
         if ($path === false) {
             if ($reason != \Hubzero\Filesystem\SafePath::REASON_MISSING) {

@@ -699,7 +699,7 @@ class BibTex
             $von      = '';
             $last     = '';
             $jr       = '';
-            if (strpos($author, ',') === false) {
+            if (!str_contains($author, ',')) {
                 $tmparray = [];
                 //$tmparray = explode(' ', $author);
                 $tmparray = preg_split('# |~#', $author) ?: [];
@@ -934,8 +934,7 @@ class BibTex
         $replacement = '$1$2';
         $value       = preg_replace($pattern, $replacement, $value);
         //Reattach delimiters
-        $value       = $begin . $value . $end;
-        return $value;
+        return $begin . $value . $end;
     }
 
     /**
@@ -1064,7 +1063,7 @@ class BibTex
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->formatAuthor($authorentry);
                     }
-                    $author = join(' and ', $tmparray);
+                    $author = implode(' and ', $tmparray);
                 } else {
                     $author = $entry['author'];
                 }
@@ -1150,7 +1149,7 @@ class BibTex
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->formatAuthor($authorentry);
                     }
-                    $authors = join(', ', $tmparray);
+                    $authors = implode(', ', $tmparray);
                 } else {
                     $authors = $entry['author'];
                 }
@@ -1219,7 +1218,7 @@ class BibTex
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->formatAuthor($authorentry);
                     }
-                    $authors = join(', ', $tmparray);
+                    $authors = implode(', ', $tmparray);
                 } else {
                     $authors = $entry['author'];
                 }

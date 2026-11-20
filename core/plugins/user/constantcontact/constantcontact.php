@@ -54,8 +54,11 @@ class Constantcontact extends Plugin
      * @param  int    $tokenExpires
      * @return void
      */
-    public function persistTokens(string $accessToken, string $refreshToken, int $tokenExpires): void
-    {
+    public function persistTokens(
+        #[\SensitiveParameter] string $accessToken,
+        #[\SensitiveParameter] string $refreshToken,
+        int $tokenExpires,
+    ): void {
         $this->params->set('ccAccessToken', $accessToken);
         $this->params->set('ccRefreshToken', $refreshToken);
         $this->params->set('ccTokenExpires', $tokenExpires);

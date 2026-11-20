@@ -174,7 +174,7 @@ class Gravatar
      */
     public function sizeParameter()
     {
-        if (!$this->get('size') || !is_integer($this->get('size'))) {
+        if (!$this->get('size') || !is_int($this->get('size'))) {
             return null;
         }
 

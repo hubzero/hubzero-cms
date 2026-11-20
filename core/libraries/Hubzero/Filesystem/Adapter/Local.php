@@ -124,7 +124,7 @@ class Local implements AdapterInterface
             if (!file_exists($path)) {
                 continue;
             }
-            @chmod($path, 0777);
+            @chmod($path, 0o777);
 
             if (!@unlink($path)) {
                 $success = false;
@@ -153,7 +153,7 @@ class Local implements AdapterInterface
             }
         }
 
-        if (is_writeable($dir) && move_uploaded_file($path, $target)) {
+        if (is_writable($dir) && move_uploaded_file($path, $target)) {
             if ($this->setPermissions($target)) {
                 $success = true;
             }
@@ -197,7 +197,7 @@ class Local implements AdapterInterface
             $fullname = $path . DS . $file;
 
             // Is the path based on a stream?
-            if (strpos($path, '://') === false) {
+            if (!str_contains($path, '://')) {
                 // Not a stream, so do a realpath() to avoid directory
                 // traversal attempts on the local file system.
                 $path     = realpath($path);
@@ -466,9 +466,7 @@ class Local implements AdapterInterface
     protected function getRecursiveDirectoryIterator($path)
     {
         $directory = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
-        $iterator  = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::SELF_FIRST);
-
-        return $iterator;
+        return new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::SELF_FIRST);
     }
 
     /**
@@ -483,7 +481,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function makeDirectory($path, $mode = 0755, $recursive = true, $force = false)
+    public function makeDirectory($path, $mode = 0o755, $recursive = true, $force = false)
     {
         if ($force) {
             if (!is_dir($path)) {
@@ -509,7 +507,7 @@ class Local implements AdapterInterface
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
         if (!$this->isDirectory($destination)) {
-            $this->makeDirectory($destination, 0777, true);
+            $this->makeDirectory($destination, 0o777, true);
         }
 
         $items = new FilesystemIterator($directory, $options);

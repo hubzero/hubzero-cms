@@ -25,7 +25,7 @@ $complete = $this->pub->curation('blocks', $this->step, 'complete');
 $props    = $this->pub->curation('blocks', $this->step, 'props');
 $required = $this->pub->curation('blocks', $this->step, 'required');
 
-$selectUrl = Route::url($this->pub->link('editversionid') . '&active=links&action=select' . '&p=' . $props);
+$selectUrl = Route::url($this->pub->link('editversionid') . '&active=links&action=select&p=' . $props);
 
 $elName = "citationsPick";
 

@@ -280,13 +280,13 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 // - Comma-separated lists (multiple columns in one string)
                 // - Dotted expressions (table.column handled by quoteName)
                 $col = $select['column'];
-                if ($col === '*' || strpos($col, '(') !== false || is_numeric($col) || strpos($col, ',') !== false) {
+                if ($col === '*' || str_contains($col, '(')  || is_numeric($col) || str_contains($col, ',')) {
                     // For comma-separated columns, split and quote each individually
-                    if (strpos($col, ',') !== false) {
+                    if (str_contains($col, ',')) {
                         $columns = array_map('trim', explode(',', $col));
                         $quoted = [];
                         foreach ($columns as $column) {
-                            if ($column === '*' || strpos($column, '(') !== false || is_numeric($column)) {
+                            if ($column === '*' || str_contains($column, '(')  || is_numeric($column)) {
                                 $quoted[] = $column;
                             } else {
                                 $quoted[] = $this->connection->quoteName($column);

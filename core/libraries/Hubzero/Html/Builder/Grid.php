@@ -295,7 +295,7 @@ class Grid
         // Load the behavior.
         self::behavior();
 
-        $href = '<a href="#" data-rows="'
+        return '<a href="#" data-rows="'
             . (count($rows) - 1)
             . '" data-task="'
             . $task
@@ -306,8 +306,6 @@ class Grid
             . '"><span>'
             . Lang::txt('JLIB_HTML_SAVE_ORDER')
             . '</span></a>';
-
-        return $href;
     }
 
     /**

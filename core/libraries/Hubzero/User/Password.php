@@ -602,7 +602,7 @@ class Password
      * @param   string  $password
      * @return  string
      */
-    public static function getPasshash($password)
+    public static function getPasshash(#[\SensitiveParameter] $password)
     {
         // Get the password encryption/hashing mechanism
         $config = Component::params('com_members');
@@ -657,7 +657,7 @@ class Password
      * @param   string  $password
      * @return  bool
      */
-    public static function changePassword($user, $password)
+    public static function changePassword($user, #[\SensitiveParameter] $password)
     {
         $passhash = self::getPasshash($password);
 
@@ -755,7 +755,7 @@ class Password
      * @param   string  $password
      * @return  bool
      */
-    public static function comparePasswords($passhash, $password)
+    public static function comparePasswords($passhash, #[\SensitiveParameter] $password)
     {
         if (empty($passhash) || empty($password)) {
             return false;
@@ -1039,7 +1039,7 @@ class Password
      * @param   bool    $alltables
      * @return  bool
      */
-    public static function passwordMatches($user, $password, $alltables = false)
+    public static function passwordMatches($user, #[\SensitiveParameter] $password, $alltables = false)
     {
         $passhash = null;
 

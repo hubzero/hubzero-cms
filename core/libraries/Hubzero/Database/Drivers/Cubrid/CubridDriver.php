@@ -238,7 +238,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // Find primary key (looks for key starting with 'pk_' that has Non_unique=0)
         $primaryKeyName = null;
         foreach ($groupedKeys as $keyName => $keyParts) {
-            if ($keyParts[0]->Non_unique == 0 && strpos($keyName, 'pk_') === 0) {
+            if ($keyParts[0]->Non_unique == 0 && str_starts_with($keyName, 'pk_')) {
                 $primaryKeyName = $keyName;
                 break;
             }
@@ -1051,9 +1051,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $normalized = (string) preg_replace('/\s+UNSIGNED/i', '', $normalized);
 
         // Strip display widths from integer types (CUBRID doesn't support them)
-        $normalized = (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $normalized);
-
-        return $normalized;
+        return (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $normalized);
     }
 
     /**
@@ -1269,7 +1267,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // Filter for keys whose name starts with "pk_"
         $rows = [];
         foreach ($allKeys as $key) {
-            if (isset($key->Key_name) && strpos($key->Key_name, 'pk_') === 0) {
+            if (isset($key->Key_name) && str_starts_with($key->Key_name, 'pk_')) {
                 $rows[] = $key;
             }
         }
@@ -1636,9 +1634,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function getShowColumnsRows($table): array
     {
         $this->setQuery($this->buildShowColumnsQuery($table));
-        $columns = $this->loadObjectList();
-
-        return $columns;
+        return $this->loadObjectList();
     }
 
     /**
@@ -2006,7 +2002,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function stripSchemaPrefix($name): string
     {
         $name = (string) $name;
-        if (strpos($name, '.') === false) {
+        if (!str_contains($name, '.')) {
             return $name;
         }
 

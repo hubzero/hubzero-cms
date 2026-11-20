@@ -397,11 +397,11 @@ class Assetv1r0 extends Base
             $title = Request::getString('title', false);
             // If we don't have a subtype incoming, but the type is form, try to guess subtype from title
             if ($asset->get('type') == 'form' && $title && $title != $orgTitle) {
-                if (strpos(strtolower($title), 'exam') !== false) {
+                if (str_contains(strtolower($title), 'exam')) {
                     $asset->set('subtype', 'exam');
-                } elseif (strpos(strtolower($title), 'quiz') !== false) {
+                } elseif (str_contains(strtolower($title), 'quiz')) {
                     $asset->set('subtype', 'quiz');
-                } elseif (strpos(strtolower($title), 'homework') !== false) {
+                } elseif (str_contains(strtolower($title), 'homework')) {
                     $asset->set('subtype', 'homework');
                 }
             }
@@ -434,13 +434,13 @@ class Assetv1r0 extends Base
                     $param_dir = dirname($param_path);
 
                     if (!is_dir($param_dir)) {
-                        mkdir($param_dir, 0775, true);
-                        chmod($param_dir, 02775);
+                        mkdir($param_dir, 0o775, true);
+                        chmod($param_dir, 0o2775);
                     }
 
                     if (!is_file($param_path)) {
                         copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
-                        chmod($param_path, 0664);
+                        chmod($param_path, 0o664);
                     }
 
                     // Set the type and build the invoke url with file param

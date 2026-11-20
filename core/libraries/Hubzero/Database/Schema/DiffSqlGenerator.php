@@ -754,7 +754,7 @@ class DiffSqlGenerator
         $fromBase = $this->extractBaseType($fromType);
         $toBase = $this->extractBaseType($toType);
 
-        if (isset($intHierarchy[$fromBase]) && isset($intHierarchy[$toBase])) {
+        if (isset($intHierarchy[$fromBase], $intHierarchy[$toBase])) {
             if ($intHierarchy[$toBase] < $intHierarchy[$fromBase]) {
                 return true;
             }
@@ -762,7 +762,7 @@ class DiffSqlGenerator
 
         // Check text type hierarchy: LONGTEXT > MEDIUMTEXT > TEXT > TINYTEXT
         $textHierarchy = ['TINYTEXT' => 1, 'TEXT' => 2, 'MEDIUMTEXT' => 3, 'LONGTEXT' => 4];
-        if (isset($textHierarchy[$fromBase]) && isset($textHierarchy[$toBase])) {
+        if (isset($textHierarchy[$fromBase], $textHierarchy[$toBase])) {
             if ($textHierarchy[$toBase] < $textHierarchy[$fromBase]) {
                 return true;
             }
@@ -770,7 +770,7 @@ class DiffSqlGenerator
 
         // Check blob type hierarchy: LONGBLOB > MEDIUMBLOB > BLOB > TINYBLOB
         $blobHierarchy = ['TINYBLOB' => 1, 'BLOB' => 2, 'MEDIUMBLOB' => 3, 'LONGBLOB' => 4];
-        if (isset($blobHierarchy[$fromBase]) && isset($blobHierarchy[$toBase])) {
+        if (isset($blobHierarchy[$fromBase], $blobHierarchy[$toBase])) {
             if ($blobHierarchy[$toBase] < $blobHierarchy[$fromBase]) {
                 return true;
             }
@@ -1306,7 +1306,7 @@ class DiffSqlGenerator
         // Check if any known driver name appears in the class name
         $classLower = strtolower($class);
         foreach ($knownDrivers as $driver) {
-            if (strpos($classLower, $driver) !== false) {
+            if (str_contains($classLower, $driver)) {
                 return $driver;
             }
         }

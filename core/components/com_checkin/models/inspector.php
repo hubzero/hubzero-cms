@@ -172,7 +172,7 @@ class Inspector extends Obj
 
             $fields = $db->getTableColumns($tn, false);
 
-            if (!(isset($fields['checked_out']) && isset($fields['checked_out_time']))) {
+            if (!(isset($fields['checked_out'], $fields['checked_out_time']))) {
                 continue;
             }
 
@@ -195,7 +195,7 @@ class Inspector extends Obj
                 ->where('checked_out', '>', 0);
 
             if ($query->execute()) {
-                $results = $results + $db->getAffectedRows();
+                $results += $db->getAffectedRows();
             }
         }
         return $results;
@@ -243,7 +243,7 @@ class Inspector extends Obj
 
                 $fields = $db->getTableColumns($tn);
 
-                if (!(isset($fields['checked_out']) && isset($fields['checked_out_time']))) {
+                if (!(isset($fields['checked_out'], $fields['checked_out_time']))) {
                     unset($tables[$i]);
                     continue;
                 }

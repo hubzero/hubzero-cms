@@ -202,7 +202,7 @@ $docsVersionUrl = Route::url(
 
                 // Build full endpoint URL with version
                 // Check if the URI already starts with /api/
-                if (strpos($endpoint['uri'], '/api/') === 0) {
+                if (str_starts_with($endpoint['uri'], '/api/')) {
                     $fullEndpoint = $url . $endpoint['uri'];
                 } else {
                     // Include the version in the URL
@@ -350,10 +350,10 @@ $docsVersionUrl = Route::url(
                                         <?php
                                         // Check if this is a path parameter
                                         if (isset($param['name'])) {
-                                            $isPathParam = strpos(
+                                            $isPathParam = str_contains(
                                                 $endpoint['uri'],
                                                 '{' . $param['name'] . '}',
-                                            ) !== false;
+                                            ) ;
                                             $paramId = 'param-' . $key . '-' . $param['name'];
                                             $paramType = isset($param['type'])
                                                 ? $param['type']

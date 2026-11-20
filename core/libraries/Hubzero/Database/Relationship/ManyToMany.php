@@ -29,7 +29,7 @@ class ManyToMany extends OneToManyThrough
             $associatives = new \stdClass();
 
             foreach ($row->getAttributes() as $k => $v) {
-                if (strpos($k, 'associative_') === 0) {
+                if (str_starts_with($k, 'associative_')) {
                     $key = substr($k, 12);
                     $associatives->$key = $v;
                     $row->removeAttribute($k);

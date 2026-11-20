@@ -212,7 +212,7 @@ class Select
                     $label = $group[$options['group.label']];
                     $noGroup = false;
                 }
-                if (isset($options['group.id']) && isset($group[$options['group.id']])) {
+                if (isset($options['group.id'], $group[$options['group.id']])) {
                     $id = $group[$options['group.id']];
                     $noGroup = false;
                 }
@@ -223,7 +223,7 @@ class Select
                     $label = $group->{$options['group.label']};
                     $noGroup = false;
                 }
-                if (isset($options['group.id']) && isset($group->{$options['group.id']})) {
+                if (isset($options['group.id'], $group->{$options['group.id']})) {
                     $id = $group->{$options['group.id']};
                     $noGroup = false;
                 }

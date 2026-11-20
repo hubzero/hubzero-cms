@@ -169,7 +169,7 @@ $this->css();
                                 </a>
                             </td>
                             <td class="th_privacy">
-                                <?php echo !$row->isPublic() ? '<span class="privacy-icon">' . '&nbsp;</span>' : ''; ?>
+                                <?php echo !$row->isPublic() ? '<span class="privacy-icon">&nbsp;</span>' : ''; ?>
                             </td>
                             <td class="th_title">
                                 <a href="<?php echo $rowUrl; ?>"

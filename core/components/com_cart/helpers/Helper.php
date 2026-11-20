@@ -19,7 +19,7 @@ class Helper
      */
     public static function getUsStates()
     {
-        $states = [
+        return [
             'AL' => "Alabama",
             'AK' => "Alaska",
             'AZ' => "Arizona",
@@ -72,8 +72,6 @@ class Helper
             'WI' => "Wisconsin",
             'WY' => "Wyoming",
         ];
-
-        return $states;
     }
 
     /**

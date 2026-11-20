@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 
 $encodeCSVField = function ($string) {
-    if (strpos($string, ',') !== false || strpos($string, '"') !== false || strpos($string, "\n") !== false) {
+    if (str_contains($string, ',')  || str_contains($string, '"')  || str_contains($string, "\n")) {
         $string = '"' . str_replace('"', '""', $string) . '"';
     }
     return $string;

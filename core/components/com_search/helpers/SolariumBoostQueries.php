@@ -48,11 +48,9 @@ class SolariumBoostQueries
     {
         $this->setQueriesIfNeeded();
 
-        $queriesAsArrays = array_map(function ($query) {
+        return array_map(function ($query) {
             return $query->toArray();
         }, $this->queries ?? []);
-
-        return $queriesAsArrays;
     }
 
     /** @return void */

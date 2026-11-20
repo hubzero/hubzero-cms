@@ -85,12 +85,10 @@ class Invitee extends Relational
      */
     public static function oneByGroupAndUser($gidNumber, $uidNumber)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('uidNumber', $uidNumber)
             ->whereEquals('gidNumber', $gidNumber)
             ->row();
-
-        return $row;
     }
 
     /**

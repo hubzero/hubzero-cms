@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 </h5>
 <?php if ($this->model->groupOwner() && $cn = $this->model->groupOwner('cn')) {
     $ownedby = ucfirst(Lang::txt('COM_PROJECTS_GROUP')) . ' <a href="'
-        . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . ' '
+        . Route::url('index.php?option=com_groups&cn=' . $cn) . '"> '
         . $this->escape($this->model->groupOwner('description')) . ' (' . $cn . ')</a>';
 } else {
     $ownedby = '<a href="' . Route::url('index.php?option=com_members&id=' . $this->model->owner('id')) . '">'

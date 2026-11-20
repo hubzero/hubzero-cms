@@ -660,12 +660,10 @@ class Notes extends Plugin
         }
         $html = $view->loadTemplate();
 
-        $arr = [
+        return [
             'html'     => $html,
             'metadata' => '',
         ];
-
-        return $arr;
     }
 
     /**

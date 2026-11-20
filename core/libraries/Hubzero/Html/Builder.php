@@ -60,7 +60,7 @@ class Builder
             $callable = null;
             $candidates = [$func];
 
-            if (is_string($func) && strpos($func, '.') !== false) {
+            if (is_string($func) && str_contains($func, '.')) {
                 $candidates[] = str_replace('.', '', $func);
                 $candidates[] = str_replace('.', '_', $func);
             }

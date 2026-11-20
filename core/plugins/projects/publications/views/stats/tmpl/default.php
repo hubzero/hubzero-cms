@@ -192,7 +192,7 @@ $base = rtrim(Request::base(true), '/');
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL')
                             . '</span>*</span><span class="pubstats-note">*'
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' . Date::of($toDate)->toLocal('M d, Y')
-                            . ' ' . '</span>' ?>
+                            . ' </span>' ?>
                     </td>
 
                 </tr>

@@ -460,7 +460,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
         // Add indexes - as separate CREATE INDEX statements
         foreach ($builder->getAddIndexes() as $name => $info) {
             $columnList = implode(', ', array_map(
-                fn($col) => $this->wrap($col),
+                $this->wrap(...),
                 $info['columns'],
             ));
             $unique = $info['unique'] ? 'UNIQUE ' : '';
@@ -474,7 +474,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
         $hasFts = $this->driver->isFullTextInstalled();
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
             $columnList = implode(', ', array_map(
-                fn($c) => $this->wrap($c),
+                $this->wrap(...),
                 $columns,
             ));
 
@@ -539,7 +539,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
                 }
             }
             $columnList = implode(', ', array_map(
-                fn($col) => $this->wrap($col),
+                $this->wrap(...),
                 $pkCols,
             ));
             $statements[] = "ALTER TABLE $qt ADD PRIMARY KEY ($columnList)";

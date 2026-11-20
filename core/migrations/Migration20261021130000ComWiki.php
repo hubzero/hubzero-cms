@@ -52,7 +52,7 @@ class Migration20261021130000ComWiki extends Base
             switch ($pagename) {
                 case 'Help:WikiMacros':
                     // The hand-written list is replaced by the generated one
-                    if (strpos($text, "`[[BR]]`::") !== false) {
+                    if (str_contains($text, "`[[BR]]`::")) {
                         $text = preg_replace(
                             '/== Available Macros ==\s*\r?\n `\[\[BR\]\]`::.*$/s',
                             "== Available Macros ==\n\n[[Macrolist]]",
@@ -67,7 +67,7 @@ class Migration20261021130000ComWiki extends Base
                     break;
 
                 case 'Help:Processors':
-                    if (strpos($text, '||=Processor=||') === false) {
+                    if (!str_contains($text, '||=Processor=||')) {
                         $text = preg_replace(
                             '/(=== Available Processors ===\s*\r?\n\r?\n)(\|\| `#!default`)/',
                             "$1||=Processor=||=Description=||\n$2",

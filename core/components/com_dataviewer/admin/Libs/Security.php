@@ -33,7 +33,7 @@ class Security
     {
         $value = (string) $value;
 
-        if ($value === '' || !preg_match('/^[A-Za-z0-9_.-]+$/', $value) || strpos($value, '..') !== false) {
+        if ($value === '' || !preg_match('/^[A-Za-z0-9_.-]+$/', $value) || str_contains($value, '..')) {
             \App::abort(400, 'Invalid ' . $label);
         }
 

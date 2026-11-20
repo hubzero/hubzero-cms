@@ -174,8 +174,12 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
      * @param   string  $scope        Client application scope
      * @return  array<mixed>  Access token
      */
-    public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
-    {
+    public function createAccessToken(
+        #[\SensitiveParameter] AccessTokenInterface $accessToken,
+        $client_id,
+        $user_id,
+        $scope,
+    ) {
         // create access token
         // DONT CREATE REFRESH TOKEN
         return $accessToken->createAccessToken($client_id, $user_id, $scope, false);

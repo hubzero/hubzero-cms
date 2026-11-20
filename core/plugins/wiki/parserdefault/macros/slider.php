@@ -78,7 +78,7 @@ class Slider extends WikiMacro
         //check each passed in slide
         foreach ($slides as $slide) {
             //check to see if image is external
-            if (strpos($slide, 'http') === false) {
+            if (!str_contains($slide, 'http')) {
                 $slide = trim($slide);
 
                 //check if internal file actually exists
@@ -87,7 +87,7 @@ class Slider extends WikiMacro
                 }
             } else {
                 $headers = get_headers($slide) ?: [];
-                if (strpos($headers[0], "OK") !== false) {
+                if (str_contains($headers[0], "OK")) {
                     $final_slides[] = $slide;
                 }
             }

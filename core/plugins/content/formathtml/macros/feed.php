@@ -221,7 +221,7 @@ class Feed extends Macro
         // User info or a backslash can make parse_url() and curl read different
         // hosts, and the hub's own feeds below are fetched as given
         if (
-            isset($parts['user']) || isset($parts['pass']) || strpos($url, '\\') !== false
+            isset($parts['user']) || isset($parts['pass']) || str_contains($url, '\\')
             || preg_match('#^[^:]*://[^/?\#]*@#', $url)
         ) {
             return false;

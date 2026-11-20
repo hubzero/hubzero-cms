@@ -33,7 +33,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
     {
         // Create temporary directory for snapshots before parent sets up drivers
         self::$testDir = sys_get_temp_dir() . '/hubzero_snapshot_test_' . uniqid();
-        mkdir(self::$testDir, 0755, true);
+        mkdir(self::$testDir, 0o755, true);
 
         parent::setUpBeforeClass();
     }

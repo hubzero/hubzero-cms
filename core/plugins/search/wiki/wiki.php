@@ -31,7 +31,7 @@ class Wiki extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $stemmed = join(' ', $terms['stemmed']);
+        $stemmed = implode(' ', $terms['stemmed']);
         $weight = '(match(wp.title) against (\'' . $stemmed . '\') '
             . '+ match(wv.pagetext) against (\'' . $stemmed . '\'))';
 
@@ -46,7 +46,7 @@ class Wiki extends Plugin
         $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
         if ($gids = $authz->getGroupIds()) {
-            $gidList = join(',', $gids);
+            $gidList = implode(',', $gids);
             $authorization = '(wp.access IN (0,' . $viewlevels . ') '
                 . 'OR (wp.access = 1 AND xg.gidNumber IN (' . $gidList . ')))';
         } else {
@@ -62,7 +62,7 @@ class Wiki extends Plugin
             if (!$authz->isGuest()) {
                 $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
                 if ($gids = $authz->getGroupIds()) {
-                    $gidList = join(',', $gids);
+                    $gidList = implode(',', $gids);
                     $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' '
                         . 'AND xg.gidNumber IN (' . $gidList . '))';
                 }
@@ -94,7 +94,7 @@ class Wiki extends Plugin
 				$weight > 0 AND
 				wp.state < 2 AND
 				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) "
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
                 . " AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			 ORDER BY $weight DESC",
         );
@@ -252,8 +252,7 @@ class Wiki extends Plugin
 					INNER JOIN `#__wiki_versions`
 					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
 					WHERE `#__wiki_pages`.state = 1;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

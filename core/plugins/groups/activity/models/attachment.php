@@ -205,7 +205,7 @@ class Attachment extends Obj
         }
 
         // Change file perm
-        chmod($destination, 0774);
+        chmod($destination, 0o774);
 
         // Scan file for viruses and other nasty bits
         if (!Filesystem::isSafe($destination)) {

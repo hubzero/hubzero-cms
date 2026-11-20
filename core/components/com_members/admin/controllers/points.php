@@ -781,7 +781,7 @@ class Points extends AdminController
             if ($rows) {
                 foreach ($rows as $r) {
                     $AE->distributePoints($r->id, $r->q_owner, $r->a_owner, $action);
-                    $accumulated = $accumulated + $AE->calculateMarketvalue($r->id, $action);
+                    $accumulated += $AE->calculateMarketvalue($r->id, $action);
                 }
 
                 // make a record of royalty payment
@@ -821,7 +821,7 @@ class Points extends AdminController
             if ($reviews && $voting) {
                 foreach ($reviews as $r) {
                     $RE->distributePoints($r, $action);
-                    $accumulated = $accumulated + $RE->calculateMarketvalue($r, $action);
+                    $accumulated += $RE->calculateMarketvalue($r, $action);
                 }
 
                 $this->message .= $rmsg;
@@ -860,7 +860,7 @@ class Points extends AdminController
             if ($cons) {
                 foreach ($cons as $con) {
                     $ResE->distributePoints($con, $action);
-                    $accumulated = $accumulated + $con->ranking;
+                    $accumulated += $con->ranking;
                 }
 
                 $this->message .= $resmsg;

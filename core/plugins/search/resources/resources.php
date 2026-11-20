@@ -48,7 +48,7 @@ class Resources extends Plugin
         $viewlevels = implode(',', (User::isGuest() ? [0, 3] : [0, 1, 3]));
 
         if ($groups) {
-            $group_list = '(\'' . join('\', \'', $groups) . '\')';
+            $group_list = '(\'' . implode('\', \'', $groups) . '\')';
             $access = '(access IN (0,' . $viewlevels . ') OR '
                 . '((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
         } else {
@@ -62,7 +62,7 @@ class Resources extends Plugin
         foreach ($terms['optional'] as $idx => $term) {
             if ($term_parser->isQuoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
-                    if (strpos($term, $stem) === 0 || strpos($stem, $term) === 0) {
+                    if (str_starts_with($term, $stem)  || str_starts_with($stem, $term)) {
                         unset($terms['stemmed'][$sidx]);
                     }
                 }
@@ -80,7 +80,7 @@ class Resources extends Plugin
         }
 
         $weight = $terms['stemmed']
-            ? 'match(r.title, r.introtext, r.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')'
+            ? 'match(r.title, r.introtext, r.`fulltxt`) against (\'' . implode(' ', $terms['stemmed']) . '\')'
             : '0';
         foreach ($quoted_terms as $term) {
             $weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' "
@@ -132,7 +132,7 @@ class Resources extends Plugin
 			WHERE
 				$whereClause
 				AND ($weight > 0)"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : ''),
         );
         $assoc = $sql->toAssociative();
 
@@ -377,8 +377,7 @@ class Resources extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__resources` WHERE standalone=1;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

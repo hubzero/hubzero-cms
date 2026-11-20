@@ -102,8 +102,7 @@ class Archive extends \Hubzero\Base\Obj
      */
     public function product($pId)
     {
-        $product = new Product($pId);
-        return $product;
+        return new Product($pId);
     }
 
     /**
@@ -114,8 +113,7 @@ class Archive extends \Hubzero\Base\Obj
     public function getProductTypes()
     {
         $warehouse = new Warehouse();
-        $types = $warehouse->getProductTypes();
-        return $types;
+        return $warehouse->getProductTypes();
     }
 
     /* SKUs */
@@ -276,9 +274,7 @@ class Archive extends \Hubzero\Base\Obj
     public function option($oId)
     {
 
-        $option = new Option($oId);
-
-        return $option;
+        return new Option($oId);
     }
 
     /**
@@ -388,9 +384,7 @@ class Archive extends \Hubzero\Base\Obj
     public function optionGroup($ogId)
     {
 
-        $optionGroup = new OptionGroup($ogId);
-
-        return $optionGroup;
+        return new OptionGroup($ogId);
     }
 
     /**
@@ -512,7 +506,6 @@ class Archive extends \Hubzero\Base\Obj
     public function category($cId)
     {
         $warehouse = new Warehouse();
-        $cInfo = $warehouse->getCollectionInfo($cId, true);
-        return $cInfo;
+        return $warehouse->getCollectionInfo($cId, true);
     }
 }

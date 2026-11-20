@@ -1004,9 +1004,7 @@ class Tickets extends AdminController
             }
         }
 
-        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-        return $users;
+        return Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 
     /**
@@ -1080,9 +1078,7 @@ class Tickets extends AdminController
             ksort($users);
         }
 
-        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-        return $users;
+        return Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 
     /**

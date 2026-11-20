@@ -51,7 +51,7 @@ class AccessHelper extends Obj
         }
 
         // Still changing after five rounds is not a path anyone meant
-        if (!$stable || strpos($path, "\0") !== false) {
+        if (!$stable || str_contains($path, "\0")) {
             return false;
         }
 

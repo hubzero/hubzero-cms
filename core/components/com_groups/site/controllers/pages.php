@@ -387,9 +387,9 @@ class Pages extends Base
         // check the $newContent var since its already been purified
         // and has has php/script tags removed if not super group
         if (
-            strpos($newContent, '<?') !== false
-            || strpos($newContent, '<?php') !== false
-            || strpos($newContent, '<script') !== false
+            str_contains($newContent, '<?')
+            || str_contains($newContent, '<?php')
+            || str_contains($newContent, '<script')
         ) {
             $this->version->set('approved', 0);
             $this->version->set('approved_on', null);

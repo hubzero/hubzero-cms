@@ -102,9 +102,9 @@ class ConstantContactClient
      */
     public function __construct(
         string $clientId,
-        string $clientSecret,
-        string $accessToken,
-        string $refreshToken,
+        #[\SensitiveParameter] string $clientSecret,
+        #[\SensitiveParameter] string $accessToken,
+        #[\SensitiveParameter] string $refreshToken,
         int $tokenExpires = 0,
         ?callable $tokenPersistCallback = null,
         ?Client $httpClient = null,

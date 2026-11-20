@@ -52,9 +52,9 @@ class Ldap extends AdminController
 
         //Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
-        if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0])) {
+        if (isset($result['errors'], $result['fatal']) && !empty($result['fatal'][0])) {
             Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
-        } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
+        } elseif (isset($result['errors'], $result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
             Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']));
@@ -83,9 +83,9 @@ class Ldap extends AdminController
 
         //Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
-        if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0])) {
+        if (isset($result['errors'], $result['fatal']) && !empty($result['fatal'][0])) {
             Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
-        } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
+        } elseif (isset($result['errors'], $result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
             Notify::info(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']));
@@ -112,9 +112,9 @@ class Ldap extends AdminController
 
         //Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
-        if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0])) {
+        if (isset($result['errors'], $result['fatal']) && !empty($result['fatal'][0])) {
             Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
-        } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
+        } elseif (isset($result['errors'], $result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
             Notify::info(Lang::txt(
@@ -147,9 +147,9 @@ class Ldap extends AdminController
 
         //Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
-        if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0])) {
+        if (isset($result['errors'], $result['fatal']) && !empty($result['fatal'][0])) {
             Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
-        } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
+        } elseif (isset($result['errors'], $result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
             Notify::info(Lang::txt(

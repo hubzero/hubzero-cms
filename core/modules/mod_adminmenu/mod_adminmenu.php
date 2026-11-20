@@ -184,8 +184,6 @@ class Adminmenu extends Module
             }
         }
 
-        $result = Arr::sortObjects($result, 'text', 1, true, $lang->getLocale());
-
-        return $result;
+        return Arr::sortObjects($result, 'text', 1, true, $lang->getLocale());
     }
 }

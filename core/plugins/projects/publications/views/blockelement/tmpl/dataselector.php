@@ -108,7 +108,7 @@ $handlerOptions = (count($this->attachments ? $this->attachments : [])) > 0 && $
 : null;
 
 $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step='
-. $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+. $this->master->blockId . '&move=continue&el=' . $this->elementId . '#' . $elName);
 
 ?>
 

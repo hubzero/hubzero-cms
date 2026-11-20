@@ -316,7 +316,7 @@ class Comparator
 
         // 1. Process explicit table rename hints first
         foreach ($this->tableRenameHints as $oldName => $newName) {
-            if (isset($fromTables[$oldName]) && isset($toTables[$newName])) {
+            if (isset($fromTables[$oldName], $toTables[$newName])) {
                 $diff->addRenamedTable($oldName, $newName);
                 $matchedFromTables[$oldName] = true;
                 $matchedToTables[$newName] = true;
@@ -458,7 +458,7 @@ class Comparator
         $matchingColumns = 0;
 
         foreach ($allColumns as $colName) {
-            if (isset($columnsA[$colName]) && isset($columnsB[$colName])) {
+            if (isset($columnsA[$colName], $columnsB[$colName])) {
                 // Column exists in both - check if types are similar
                 if (
                     $this->typesAreEquivalent(
@@ -503,7 +503,7 @@ class Comparator
 
         // 1. Process explicit column rename hints first
         foreach ($columnHints as $oldName => $newName) {
-            if (isset($fromColumns[$oldName]) && isset($toColumns[$newName])) {
+            if (isset($fromColumns[$oldName], $toColumns[$newName])) {
                 $diff->addRenamedColumn($oldName, $newName);
                 $matchedFromColumns[$oldName] = true;
                 $matchedToColumns[$newName] = true;

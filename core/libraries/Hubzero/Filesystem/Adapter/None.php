@@ -239,7 +239,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function makeDirectory($path, $mode = 0755, $recursive = true, $force = false)
+    public function makeDirectory($path, $mode = 0o755, $recursive = true, $force = false)
     {
         return false;
     }

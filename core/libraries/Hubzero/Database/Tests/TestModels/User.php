@@ -100,7 +100,7 @@ class User extends Relational
     public function helperGetFirstName()
     {
         $name = $this->get('name', '');
-        return (strpos($name, ' ') !== false) ? explode(' ', $name)[0] : $name;
+        return (str_contains($name, ' ') ) ? explode(' ', $name)[0] : $name;
     }
 
     /**

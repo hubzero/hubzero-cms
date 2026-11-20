@@ -2191,7 +2191,7 @@ class PgsqlDriver extends BaseSqlDriver
         // Use double quotes for PostgreSQL identifiers
         $q = '"';
 
-        $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array) $name;
+        $parts = (str_contains($name, '.') ) ? explode('.', $name) : (array) $name;
         $bits  = [];
 
         foreach ($parts as $part) {

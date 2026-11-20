@@ -90,8 +90,6 @@ class Standard extends Button
         Behavior::framework();
 
         $message = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
-        $message = addslashes($message);
-
-        return $message;
+        return addslashes($message);
     }
 }

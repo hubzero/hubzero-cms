@@ -129,9 +129,7 @@ class Publications extends Plugin
             $counts = [];
 
             // Execute count query
-            $results = $rr->getCount($filters);
-
-            return $results;
+            return $rr->getCount($filters);
         }
     }
 

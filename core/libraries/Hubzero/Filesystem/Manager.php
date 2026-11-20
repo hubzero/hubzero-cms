@@ -55,7 +55,7 @@ class Manager
         }
 
         foreach (self::$adapters as $key => $adapter) {
-            if (strpos($key, $name) === 0) {
+            if (str_starts_with($key, $name)) {
                 return self::$adapters[$key];
             }
         }

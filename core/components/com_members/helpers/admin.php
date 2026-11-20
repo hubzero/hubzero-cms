@@ -147,7 +147,7 @@ class Admin
      */
     public static function getRangeOptions()
     {
-        $options = [
+        return [
             Html::select('option', 'today', Lang::txt('COM_MEMBERS_OPTION_RANGE_TODAY')),
             Html::select('option', 'past_week', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_WEEK')),
             Html::select('option', 'past_1month', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_1MONTH')),
@@ -156,7 +156,6 @@ class Admin
             Html::select('option', 'past_year', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_YEAR')),
             Html::select('option', 'post_year', Lang::txt('COM_MEMBERS_OPTION_RANGE_POST_YEAR')),
         ];
-        return $options;
     }
 
     /**

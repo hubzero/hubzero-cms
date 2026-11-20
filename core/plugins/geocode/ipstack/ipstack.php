@@ -38,11 +38,9 @@ class Ipstack extends Plugin
             return null;
         }
 
-        $geocoder = new \Geocoder\Provider\Ipstack\Ipstack(
+        return new \Geocoder\Provider\Ipstack\Ipstack(
             $adapter,
             $this->params->get('apiKey'),
         );
-
-        return $geocoder;
     }
 }

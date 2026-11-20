@@ -344,8 +344,8 @@ class Doi extends Plugin
             $xpath = new \DOMXPath($dom);
             $xpath->registerNamespace('ns', "http://datacite.org/schema/kernel-4");
 
-            $query = "//ns:relatedIdentifier[text()=" . "'" . $relatedIdentifierVal
-                . "'" . " and @relatedIdentifierType=" . "'" . $relatedIdentifierType . "'" . "]";
+            $query = "//ns:relatedIdentifier[text()='" . $relatedIdentifierVal
+                . "' and @relatedIdentifierType='" . $relatedIdentifierType . "']";
             $nodeList = $xpath->query($query);
             $node = $nodeList ? $nodeList->item(0) : null;
             if ($node instanceof \DOMElement) {
@@ -354,9 +354,7 @@ class Doi extends Plugin
             }
             $xmlStr = $dom->saveXML();
 
-            $result = $this->regMetadata((string) $xmlStr);
-
-            return $result;
+            return $this->regMetadata((string) $xmlStr);
         }
         return false;
     }
@@ -423,9 +421,7 @@ class Doi extends Plugin
             }
         }
 
-        $result = $this->regMetadata($xmlStr);
-
-        return $result;
+        return $this->regMetadata($xmlStr);
     }
 
     /**
@@ -491,7 +487,7 @@ class Doi extends Plugin
      */
     protected function regMetadata($xml)
     {
-        $url = rtrim($this->getPubConfig()->dataciteServiceURL, '/') . '/' . 'metadata';
+        $url = rtrim($this->getPubConfig()->dataciteServiceURL, '/') . '/metadata';
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_USERPWD, $this->getPubConfig()->dataciteUserPW);

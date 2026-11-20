@@ -122,7 +122,7 @@ class Mailings extends SiteController
         // If we find one, send an unauthorized header and die.
         foreach ($fields as $field) {
             foreach ($headers as $header) {
-                if (strpos($_POST[$field], $header) !== false) {
+                if (str_contains($_POST[$field], $header)) {
                     App::abort(403, '');
                 }
             }

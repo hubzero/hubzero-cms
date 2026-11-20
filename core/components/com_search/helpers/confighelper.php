@@ -64,8 +64,7 @@ class ConfigHelper
             $filename = $baseDir . DS . $name . '.php';
             if (Filesystem::exists($filename)) {
                 $config = include_once $filename;
-                $classpath = $config['filepath'];
-                return $classpath;
+                return $config['filepath'];
             }
             return false;
         }
@@ -105,8 +104,7 @@ class ConfigHelper
             $filename = $baseDir . DS . $name . '.php';
             if (Filesystem::exists($filename)) {
                 $config = include_once $filename;
-                $classpath = $config['classpath'];
-                return $classpath;
+                return $config['classpath'];
             }
             return false;
         }
@@ -170,8 +168,7 @@ class ConfigHelper
         $config = $this->loadConfig($type);
         foreach ($config['paths'] as $scope => $path) {
             if ($scope == $row->scope) {
-                $parsed = $this->parse($path, $row);
-                return $parsed;
+                return $this->parse($path, $row);
             }
         }
         return '';
@@ -215,8 +212,7 @@ class ConfigHelper
      */
     private function field($argument, $row)
     {
-        $argument = $row->$argument;
-        return $argument;
+        return $row->$argument;
     }
 
     /**
@@ -243,7 +239,6 @@ class ConfigHelper
      */
     private function memberId($id, $row)
     {
-        $id = $row->scope_id;
-        return $id;
+        return $row->scope_id;
     }
 }

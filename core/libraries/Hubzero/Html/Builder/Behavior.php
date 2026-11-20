@@ -1015,7 +1015,7 @@ class Behavior
                 }
             } elseif (!is_array($v) && !is_object($v)) {
                 $object .= ' ' . $k . ': ';
-                $object .= (is_numeric($v) || strpos($v, '\\') === 0)
+                $object .= (is_numeric($v) || str_starts_with($v, '\\') )
                     ? (is_numeric($v) ? $v : substr($v, 1))
                     : "'" . $v . "'";
                 $object .= ',';
@@ -1145,19 +1145,19 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-		Calendar._TT["PREV_YEAR"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU', true) . '";' . ' '
+		Calendar._TT["PREV_YEAR"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU', true) . '"; '
             . 'Calendar._TT["PREV_MONTH"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU', true)
                 . '";'
                 . ' Calendar._TT["GO_TODAY"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_GO_TODAY', true) . '";' . ' Calendar._TT["NEXT_MONTH"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_GO_TODAY', true) . '"; Calendar._TT["NEXT_MONTH"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU', true)
                 . '";'
                 . ' Calendar._TT["NEXT_YEAR"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_YEAR_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["SEL_DATE"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_SELECT_DATE', true) . '";' . ' Calendar._TT["DRAG_TO_MOVE"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE', true) . '";' . ' Calendar._TT["PART_TODAY"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_TODAY', true) . '";' . ' Calendar._TT["DAY_FIRST"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_YEAR_HOLD_FOR_MENU', true) . '"; Calendar._TT["SEL_DATE"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_SELECT_DATE', true) . '"; Calendar._TT["DRAG_TO_MOVE"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE', true) . '"; Calendar._TT["PART_TODAY"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_TODAY', true) . '"; Calendar._TT["DAY_FIRST"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST', true)
                 . '";'
                 . ' Calendar._TT["WEEKEND"] = "0,6";'
@@ -1170,7 +1170,7 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
                 . ' Calendar._TT["TIME_PART"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE', true)
                 . '";'
-                . ' Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";' . ' Calendar._TT["TT_DATE_FORMAT"] = "'
+                . ' Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d"; Calendar._TT["TT_DATE_FORMAT"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT', true)
                 . '";'
                 . ' Calendar._TT["WK"] = "'

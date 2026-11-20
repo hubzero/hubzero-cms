@@ -96,7 +96,7 @@ class Formatter
             . '<a href="' . self::UNSUBSCRIBE_TOKEN . '">unsubscribe here</a>.';
 
         $style = 'font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#222222;';
-        $html  = '<!DOCTYPE html><html><head>'
+        return '<!DOCTYPE html><html><head>'
             . '<meta charset="utf-8">'
             . '<meta name="viewport" content="width=device-width,initial-scale=1">'
             . '</head><body style="margin:0;padding:0;background:#f4f4f4;">'
@@ -105,7 +105,5 @@ class Formatter
             . '<hr style="border:none;border-top:1px solid #dddddd;margin:24px 0;">'
             . '<div style="font-size:12px;color:#777777;line-height:1.5;">' . $footerHtml . '</div>'
             . '</div></body></html>';
-
-        return $html;
     }
 }

@@ -89,7 +89,7 @@ if (!empty($this->notifications)) {
                 if ($price['high'] == $price['low']) {
                     $priceRange .=  '$' . number_format($price['high'], 2);
                 } else {
-                    $priceRange .= '$' . number_format($price['low'], 2) . ' &ndash; ' . '$'
+                    $priceRange .= '$' . number_format($price['low'], 2) . ' &ndash; $'
                         . number_format($price['high'], 2);
                 }
 

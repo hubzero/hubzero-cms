@@ -63,7 +63,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
             $col = 0;
             $row = 1;
             foreach ($modules as $k => $module) {
-                $col = $col + 1;
+                $col += 1;
                 if ($col > 3) {
                     $col = 1;
                     $row = 3;

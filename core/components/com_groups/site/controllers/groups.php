@@ -1620,7 +1620,7 @@ class Groups extends Base
         // If super group offer alt path outside uploads
         if ($group->isSuperGroup()) {
             // do not serve gitignore or PHP files
-            if ($file != '.gitignore' && strpos($file, '.php') === false) {
+            if ($file != '.gitignore' && !str_contains($file, '.php')) {
                 // do not allow serving anything from config or .git directory
                 $replace_base = ['/uploads', '/config', '/.git'];
 
@@ -1644,7 +1644,7 @@ class Groups extends Base
         // Get full path, expanding ../
         if ($realPath = realpath(PATH_APP . DS . $file_path)) {
             // Make sure requested file is within acceptable dir
-            if (strpos($realPath, $pathCheck) === false) {
+            if (!str_contains($realPath, $pathCheck)) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
         }

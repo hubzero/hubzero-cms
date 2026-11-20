@@ -70,7 +70,7 @@ class Csv
         if (!isset($val)) {
             return '';
         }
-        if (strpos($val, "\n") !== false || strpos($val, ',') !== false) {
+        if (str_contains($val, "\n")  || str_contains($val, ',')) {
             return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
         }
 

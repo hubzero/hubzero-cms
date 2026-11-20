@@ -406,7 +406,7 @@ class Ldap
         }
 
         // Now do the modify
-        $result = ldap_modify($conn, $dn, $entry);
+        $result = ldap_mod_replace($conn, $dn, $entry);
 
         if ($result !== true) {
             self::$errors['warning'][] = ldap_error($conn);
@@ -590,7 +590,7 @@ class Ldap
         }
 
         // Now do the modify
-        $result = ldap_modify($conn, $dn, $entry);
+        $result = ldap_mod_replace($conn, $dn, $entry);
 
         if ($result !== true) {
             self::$errors['warning'][] = ldap_error($conn);
@@ -830,9 +830,9 @@ class Ldap
                     $attr = self::attributes($conn, $entry);
 
                     if (array_key_exists('gid', $attr)) {
-                        $gids[] = "gid=" . $attr['gid'][0] . "," . "ou=groups," . $hubLDAPBaseDN;
+                        $gids[] = "gid=" . $attr['gid'][0] . ",ou=groups," . $hubLDAPBaseDN;
                     } elseif (array_key_exists('cn', $attr)) {
-                        $gids[] = "cn=" . $attr['cn'][0] . "," . "ou=groups," . $hubLDAPBaseDN;
+                        $gids[] = "cn=" . $attr['cn'][0] . ",ou=groups," . $hubLDAPBaseDN;
                     }
 
                     $entry = ldap_next_entry($conn, $entry);

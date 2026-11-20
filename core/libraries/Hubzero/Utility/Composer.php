@@ -482,8 +482,7 @@ class Composer
      */
     public static function getRepositories()
     {
-        $remoteRepos = self::getRemoteRepositories();
-        return $remoteRepos;
+        return self::getRemoteRepositories();
     }
 
     /**
@@ -533,8 +532,7 @@ class Composer
     public static function getRepositoryConfigs()
     {
         $config = self::getConfig();
-        $repos = $config->getRepositories();
-        return $repos;
+        return $config->getRepositories();
     }
 
     /**

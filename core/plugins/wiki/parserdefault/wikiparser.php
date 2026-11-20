@@ -1018,9 +1018,7 @@ class WikiParser
         }
 
         $output = implode("\n", $output);
-        $output = (string) preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPush'], $output);
-
-        return $output;
+        return (string) preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPush'], $output);
     }
 
     /**
@@ -1052,7 +1050,7 @@ class WikiParser
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+        if (isset($this->tokens[$tag], $this->tokens[$tag][$key])) {
             return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
@@ -1265,7 +1263,7 @@ class WikiParser
             '>' => '&#62;',
         ];
         if ($quotes) {
-            $a = $a + [
+            $a += [
                 "'" => '&#39;',
                 '"' => '&#34;',
             ];
@@ -1742,7 +1740,7 @@ class WikiParser
             }
             $glyph_out[] = $line;
         }
-        return join('', $glyph_out);
+        return implode('', $glyph_out);
     }
 
     /**
@@ -1824,8 +1822,8 @@ class WikiParser
                 $class = $ids[1];
             }
 
-            return join('', [
-                ($style) ? ' style="' . join("", $style) . '"' : '',
+            return implode('', [
+                ($style) ? ' style="' . implode("", $style) . '"' : '',
                 ($class) ? ' class="' . $class . '"' : '',
                 ($lang) ? ' lang="' . $lang . '"' : '',
                 ($id and $include_id) ? ' id="' . $id . '"' : '',
@@ -1906,8 +1904,7 @@ class WikiParser
 			/x", [&$this, 'getSpan'], $text);
         }
         $text = (string) preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
-        $text = (string) preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
-        return $text;
+        return (string) preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
     }
 
     /**
@@ -1991,8 +1988,7 @@ class WikiParser
         foreach ($lines as $line) {
             $outtext .= $this->getQuotes($line) . "\n";
         }
-        $outtext = substr($outtext, 0, -1);
-        return $outtext;
+        return substr($outtext, 0, -1);
     }
 
     /**
@@ -2354,7 +2350,7 @@ class WikiParser
                     if ($isFirstRow && $hasTheadRow) {
                         // First row header cells are column headers
                         $catts = ' scope="col"' . $catts;
-                    } elseif ($allTh && strpos($catts, 'colspan') !== false) {
+                    } elseif ($allTh && str_contains($catts, 'colspan')) {
                         // Section divider row spanning all columns - use td to avoid
                         // invalid scope="colgroup" without actual <colgroup> elements
                         $ctyp = 'd';
@@ -2377,7 +2373,7 @@ class WikiParser
             $htmlRows[] = "\t\t<tr"
                 . $rowData['ratts']
                 . ">\n"
-                . join("\n", $htmlCells)
+                . implode("\n", $htmlCells)
                 . ($htmlCells ? "\n" : '')
                 . "\t\t</tr>";
         }
@@ -2386,9 +2382,9 @@ class WikiParser
         $output = "\t<table$tatts>\n";
         if ($hasTheadRow && count($htmlRows) > 1) {
             $output .= "\t<thead>\n" . $htmlRows[0] . "\n\t</thead>\n";
-            $output .= "\t<tbody>\n" . join("\n", array_slice($htmlRows, 1)) . "\n\t</tbody>\n";
+            $output .= "\t<tbody>\n" . implode("\n", array_slice($htmlRows, 1)) . "\n\t</tbody>\n";
         } else {
-            $output .= join("\n", $htmlRows) . "\n";
+            $output .= implode("\n", $htmlRows) . "\n";
         }
         $output .= "\t</table>\n\n";
 
@@ -2870,7 +2866,7 @@ class WikiParser
         // links - this is for later, but we need the number of headlines right now
         $matches = [];
         $numMatches = preg_match_all(
-            '/<H(?P<level>[1-6])(?P<attrib>.*?' . '>)(?P<header>.*?)<\/H[1-6] *>/i',
+            '/<H(?P<level>[1-6])(?P<attrib>.*?>)(?P<header>.*?)<\/H[1-6] *>/i',
             $text ?: '',
             $matches,
         );
@@ -2977,14 +2973,14 @@ class WikiParser
 
             // Strip out HTML (other than plain <sup> and <sub>: bug 8393)
             $_tocLine = (string) preg_replace(
-                ['#<(?!/?(sup|sub)).*?' . '>#', '#<(/?(sup|sub)).*?' . '>#'],
+                ['#<(?!/?(sup|sub)).*?>#', '#<(/?(sup|sub)).*?>#'],
                 ['',                          '<$1>'],
                 $canonized_headline,
             );
             $_tocLine = trim($_tocLine);
 
             // For the anchor, strip out HTML-y stuff period
-            $canonized_headline = (string) preg_replace('/<.*?' . '>/', '', $canonized_headline);
+            $canonized_headline = (string) preg_replace('/<.*?>/', '', $canonized_headline);
             $canonized_headline = trim($canonized_headline);
 
             // Save headline for section edit hint before it's escaped
@@ -3029,7 +3025,7 @@ class WikiParser
         $toc .= ($toc) ? $this->tocUnindent($toclevel - 1) . '</ul>' : '';
 
         // split up and insert constructed headlines
-        $blocks = preg_split('/<H[1-6].*?' . '>.*?<\/H[1-6]>/i', $text ?: '');
+        $blocks = preg_split('/<H[1-6].*?>.*?<\/H[1-6]>/i', $text ?: '');
         $i = 0;
 
         foreach ($blocks ?: [] as $block) {

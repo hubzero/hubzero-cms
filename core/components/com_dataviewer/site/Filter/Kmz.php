@@ -20,7 +20,7 @@ class Kmz
         $data = $res['data'];
 
         header('Content-Description: File Transfer');
-        header('Content-Type: ' . 'application/vnd.google-earth.kmz');
+        header('Content-Type: application/vnd.google-earth.kmz');
         header('Content-Disposition: attachment; filename=' . preg_replace('/\W/', '_', $dd['title']) . '.kmz');
 
         $kml = '';
@@ -103,7 +103,7 @@ class Kmz
         $dc = (float) $d + ((float) $m / 60) + ((float) $s / (60 * 60));
 
         if ($dir == "S" || $dir == "W") {
-            $dc = $dc * -1;
+            $dc *= -1;
         }
         return $dc;
     }

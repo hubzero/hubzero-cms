@@ -65,7 +65,7 @@ class Publications extends Plugin
         foreach ($terms['optional'] as $idx => $term) {
             if ($term_parser->isQuoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
-                    if (strpos($term, $stem) === 0 || strpos($stem, $term) === 0) {
+                    if (str_starts_with($term, $stem)  || str_starts_with($stem, $term)) {
                         unset($terms['stemmed'][$sidx]);
                     }
                 }
@@ -85,7 +85,7 @@ class Publications extends Plugin
         $optionalTerms = implode(' ', $terms['optional']);
         $weight_authors = 'a.name LIKE \'%' . $optionalTerms . '%\'';
         $weight = $terms['stemmed']
-            ? 'match(v.title, v.description, v.abstract) against (\'' . join(' ', $terms['stemmed']) . '\')'
+            ? 'match(v.title, v.description, v.abstract) against (\'' . implode(' ', $terms['stemmed']) . '\')'
             : '0';
         foreach ($quoted_terms as $term) {
             $weight .= " + (CASE WHEN v.title LIKE '%$term%' OR v.description LIKE '%$term%' "
@@ -133,7 +133,7 @@ class Publications extends Plugin
 			WHERE
 				$whereClause
 				AND ($weight > 0)"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . "UNION
 			SELECT
 				p.id,
@@ -386,8 +386,7 @@ class Publications extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__publications`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

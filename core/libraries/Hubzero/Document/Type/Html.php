@@ -398,7 +398,7 @@ class Html extends Base
      */
     public static function addActionForm($content)
     {
-        if (\User::isGuest() && strpos($content, 'hz-post-action') === false) {
+        if (\User::isGuest() && !str_contains($content, 'hz-post-action')) {
             return $content;
         }
 

@@ -47,12 +47,10 @@ class ErrorServiceProvider extends ServiceProvider
 
             $logger->pushHandler($loghandler);
 
-            $handler = new Handler(
+            return new Handler(
                 new Plain($app['config']->get('debug')),
                 $logger,
             );
-
-            return $handler;
         };
     }
 

@@ -137,10 +137,10 @@ if (!empty($errors))
                             echo '</td>';
 
                             echo '<td class="rightJustify price">';
-                            echo '<p>' . '$' . number_format($info->sPrice * $item['cartInfo']->qty, 2);
+                            echo '<p>$' . number_format($info->sPrice * $item['cartInfo']->qty, 2);
 
                             if ($item['cartInfo']->qty > 1) {
-                                echo '<br><span>' . '$' . number_format($info->sPrice, 2) . ' each</span>';
+                                echo '<br><span>$' . number_format($info->sPrice, 2) . ' each</span>';
                             }
 
                             echo '</p>';

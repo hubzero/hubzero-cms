@@ -101,10 +101,9 @@ class Resources extends Plugin
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
-        $query = "SELECT COUNT(R.id) FROM `#__resources` AS R, `#__author_assoc` AS AA WHERE AA.authorid="
+        return "SELECT COUNT(R.id) FROM `#__resources` AS R, `#__author_assoc` AS AA WHERE AA.authorid="
             . $user_id
             . " AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
-        return $query;
     }
 
     /**
@@ -251,14 +250,12 @@ class Resources extends Plugin
                 );
             }
 
-            $rows = $query
+            // Return the results
+            return $query
                 ->limit($filters['limit'])
                 ->start($filters['limitstart'])
                 ->order($filters['sortby'], 'desc')
                 ->rows();
-
-            // Return the results
-            return $rows;
         } else {
             // Get a count
             $counts = [];

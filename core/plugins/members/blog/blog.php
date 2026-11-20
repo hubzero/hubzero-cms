@@ -245,8 +245,7 @@ class Blog extends Plugin
             $blog = '/members/' . $this->member->get('id') . '/' . $this->pluginName;
 
             if ($path == $blog) {
-                $path = [];
-                return $path;
+                return [];
             }
 
             $path = ltrim($path, '/');

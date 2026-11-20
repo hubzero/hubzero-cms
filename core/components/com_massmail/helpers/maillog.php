@@ -114,11 +114,11 @@ class MailLog
 
         $count = 0;
         while (($line = fgets($fh)) !== false) {
-            if (strpos($line, 'status=sent') === false) {
+            if (!str_contains($line, 'status=sent')) {
                 continue;
             }
             // Skip local alias forwards / virtual expansion -- not real egress.
-            if (strpos($line, 'relay=local') !== false || strpos($line, 'relay=virtual') !== false) {
+            if (str_contains($line, 'relay=local')  || str_contains($line, 'relay=virtual')) {
                 continue;
             }
             if (isset($prefixes[substr($line, 0, 12)])) {
@@ -156,10 +156,10 @@ class MailLog
                 @fgets($fh);
             }
             while (($line = fgets($fh)) !== false) {
-                if (strpos($line, 'status=sent') === false) {
+                if (!str_contains($line, 'status=sent')) {
                     continue;
                 }
-                if (strpos($line, 'relay=local') !== false || strpos($line, 'relay=virtual') !== false) {
+                if (str_contains($line, 'relay=local')  || str_contains($line, 'relay=virtual')) {
                     continue;
                 }
                 $pfx = substr($line, 0, 12);

@@ -56,7 +56,7 @@ class Editorwykiwyg extends Plugin
         $content = (string) preg_replace('/^((?:<|&lt;)!-- \{FORMAT:(?:.*)\} --(?:>|&gt;))/i', '', $content ?: '');
 
         $cls = ($cls) ? 'wiki-toolbar-content ' . $cls : 'wiki-toolbar-content';
-        $editor = '<textarea id="'
+        return '<textarea id="'
             . $id
             . '" name="'
             . $name
@@ -70,7 +70,5 @@ class Editorwykiwyg extends Plugin
             . htmlspecialchars($content, ENT_QUOTES, 'UTF-8')
             . '</textarea>'
             . "\n";
-
-        return $editor;
     }
 }

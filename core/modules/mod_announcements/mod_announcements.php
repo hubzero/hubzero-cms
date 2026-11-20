@@ -76,9 +76,7 @@ class Announcements extends Module
             $query->limit($limit);
         }
 
-        $rows = $query->fetch();
-
-        return $rows;
+        return $query->fetch();
     }
 
     /**

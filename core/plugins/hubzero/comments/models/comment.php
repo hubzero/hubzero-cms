@@ -61,7 +61,7 @@ class Comment extends ItemComment
 
         // check for page slug  (remove for now)
         $slug = '';
-        if (strpos($link, '#') !== false) {
+        if (str_contains($link, '#')) {
             list($link, $slug) = explode('#', $link);
             $slug = "#{$slug}";
         }

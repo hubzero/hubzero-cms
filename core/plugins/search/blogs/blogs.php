@@ -38,7 +38,7 @@ class Blogs extends Plugin
         $now = Date::toSql();
 
         $terms = $request->getTermAr();
-        $weight = '(match(be.title, be.content) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $weight = '(match(be.title, be.content) against (\'' . implode(' ', $terms['stemmed']) . '\'))';
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(be.title LIKE '%$mand%' OR be.content LIKE '%$mand%')";
@@ -76,7 +76,7 @@ class Blogs extends Plugin
 			WHERE
 				be.state=1 AND
 				$weight > 0"
-                . ' AND ' . join(' AND ', $addtl_where),
+                . ' AND ' . implode(' AND ', $addtl_where),
         );
 
         $rows = $rows->toAssociative();
@@ -241,8 +241,7 @@ class Blogs extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__blog_entries WHERE state != 2";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

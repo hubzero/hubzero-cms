@@ -132,7 +132,7 @@ $this->css('
                         $modified = '123456789';
                     if (substr($subtitle->source, 0, 4) != 'http') {
                         // Strip PATH_ROOT if the manifest stored an absolute path
-                        if (strpos($source, PATH_ROOT) === 0) {
+                        if (str_starts_with($source, PATH_ROOT)) {
                             $source = substr($source, strlen(PATH_ROOT));
                         } else {
                             $source = $base . $source;

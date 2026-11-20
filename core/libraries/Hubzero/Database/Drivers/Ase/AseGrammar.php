@@ -332,7 +332,7 @@ class AseGrammar extends BaseSchemaGrammar
         // Add indexes
         foreach ($builder->getAddIndexes() as $name => $info) {
             $columnList = implode(', ', array_map(
-                fn($col) => $this->wrap($col),
+                $this->wrap(...),
                 $info['columns'],
             ));
             $unique = $info['unique'] ? 'UNIQUE ' : '';
@@ -343,7 +343,7 @@ class AseGrammar extends BaseSchemaGrammar
         // Fulltext indexes - fall back to regular indexes
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
             $columnList = implode(', ', array_map(
-                fn($c) => $this->wrap($c),
+                $this->wrap(...),
                 $columns,
             ));
             $statements[] = "CREATE INDEX "
@@ -377,7 +377,7 @@ class AseGrammar extends BaseSchemaGrammar
             }
 
             $columnList = implode(', ', array_map(
-                fn($col) => $this->wrap($col),
+                $this->wrap(...),
                 $pkCols,
             ));
             $statements[] = "ALTER TABLE $qt ADD PRIMARY KEY ($columnList)";

@@ -447,9 +447,7 @@ class OciGrammar extends BaseSchemaGrammar
         foreach ($builder->getAddIndexes() as $name => $index) {
             $type = !empty($index['unique']) ? 'UNIQUE ' : '';
             $cols = array_map(
-                function ($c) {
-                    return $this->wrap($c);
-                },
+                $this->wrap(...),
                 $index['columns'],
             );
             $statements[] = "CREATE {$type}INDEX "

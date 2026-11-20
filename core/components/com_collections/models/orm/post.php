@@ -236,8 +236,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'collection';
-        return $searchNamespace;
+        return 'collection';
     }
 
     /**
@@ -247,8 +246,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**
@@ -320,8 +318,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**

@@ -301,11 +301,9 @@ class Request extends BaseRequest
     {
         $result = (array) $this->getVar($key, $default, $hash, 'array');
 
-        $result = array_filter($result, function ($v) {
+        return array_filter($result, function ($v) {
             return !is_array($v);
         });
-
-        return $result;
     }
 
     /**

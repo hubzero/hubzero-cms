@@ -379,7 +379,7 @@ class Review extends Relational
 
         // Add the ratings up
         foreach ($ratings as $rating) {
-            $totalvalue = $totalvalue + $rating;
+            $totalvalue += $rating;
         }
 
         // Find the average of all ratings

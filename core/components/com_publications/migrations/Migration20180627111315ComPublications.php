@@ -127,12 +127,12 @@ class Migration20180627111315ComPublications extends Base
             // this migration, so it keeps doing what it did.
             $fileName = '.zip';
         } else {
-            $bundleName = 'Publication' . '_' . $pubId;
+            $bundleName = 'Publication_' . $pubId;
             $fileName = $bundleName . '_' . $versionNum . '.zip';
         }
 
         $tarname = $bundleName . '.zip';
-        $tarPath = '..' . '/'
+        $tarPath = '../'
             . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/'
             . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/'
             . $tarname;
@@ -168,7 +168,7 @@ class Migration20180627111315ComPublications extends Base
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
         } else {
-            $bundleName = 'Publication' . '_' . $pubId;
+            $bundleName = 'Publication_' . $pubId;
             $bundleName .= '_' . $versionNum;
         }
 

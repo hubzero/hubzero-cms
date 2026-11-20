@@ -214,7 +214,7 @@ class Preflight
 
         foreach ($requirements as $requirement) {
             if (
-                strpos($requirement['name'] ?? '', 'ext-') === 0
+                str_starts_with($requirement['name'] ?? '', 'ext-')
                 && ($requirement['status'] ?? '') !== 'success'
             ) {
                 $source = $requirement['failed_requirement']['source'] ?? '';

@@ -111,7 +111,7 @@ class ClassLoader
     {
         // Try registered prefixes first
         foreach (self::$prefixes as $prefix => $config) {
-            if (strpos($class, $prefix) === 0) {
+            if (str_starts_with($class, $prefix)) {
                 $result = self::loadByPrefix($class, $prefix, $config);
                 if ($result) {
                     return true;

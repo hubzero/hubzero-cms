@@ -49,7 +49,7 @@ class Simple implements Cipher
 
         // Repeat the key as many times as necessary to ensure that the key is at least as long as the input.
         for ($i = 0; $i < $charCount; $i = strlen($tmp)) {
-            $tmp = $tmp . $tmp;
+            $tmp .= $tmp;
         }
 
         // Get the XOR values between the ASCII values of the input and key characters for all input offsets.
@@ -90,7 +90,7 @@ class Simple implements Cipher
 
         // Repeat the key as many times as necessary to ensure that the key is at least as long as the input.
         for ($i = 0; $i < $charCount; $i = strlen($tmp)) {
-            $tmp = $tmp . $tmp;
+            $tmp .= $tmp;
         }
 
         // Get the XOR values between the ASCII values of the input and key characters for all input offsets.
@@ -183,7 +183,7 @@ class Simple implements Cipher
                 $k += 0;
                 break;
             default:
-                (int) $k = $k + (16 * (int) $c);
+                (int) $k += (16 * (int) $c);
                 break;
         }
 
@@ -257,7 +257,7 @@ class Simple implements Cipher
 
         // Get the second character of the hexadecimal string.
         $k = $i - $j * 16;
-        $s = $s . strtoupper(dechex($k));
+        $s .= strtoupper(dechex($k));
 
         return $s;
     }

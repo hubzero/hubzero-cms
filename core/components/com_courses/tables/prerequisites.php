@@ -37,9 +37,7 @@ class Prerequisites extends Table
         $query = "SELECT * FROM `{$this->tableName}` WHERE `section_id` = '{$section_id}'";
 
         $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
-
-        return $results;
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -56,8 +54,6 @@ class Prerequisites extends Table
             . " AND `section_id` = '{$section_id}' ORDER BY `requisite_id` ASC";
 
         $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
-
-        return $results;
+        return $this->db->loadObjectList();
     }
 }

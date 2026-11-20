@@ -423,7 +423,7 @@ class Languagefilter extends Plugin
      */
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
-        if ($this->params->get('automatic_change', '1') == '1' && key_exists('params', $user) && $success) {
+        if ($this->params->get('automatic_change', '1') == '1' && array_key_exists('params', $user) && $success) {
             $registry = new \Hubzero\Config\Registry($user['params']);
 
             $lang_code = $registry->get('language');

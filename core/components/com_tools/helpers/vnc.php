@@ -831,7 +831,7 @@ class Vnc
 
         for ($j = 0; $j < 56; $j++) {
             $l = $pc1[$j];
-            $m = $l & 07;
+            $m = $l & 0o7;
 
             if ($key[$l >> 3] & $bytebit[$m]) {   // safe rshift, small int
                 $pc1m[$j] = 1;
@@ -892,7 +892,7 @@ class Vnc
 
         $keys = [];
 
-        for ($i = 0; $i < 32; $i = $i + 2) {
+        for ($i = 0; $i < 32; $i += 2) {
             $raw0 = $kn[$i];
             $raw1 = $kn[$i + 1];
 
@@ -941,7 +941,7 @@ class Vnc
         $right ^= $work;
         $leftt = (($leftt << 1) | (($leftt >> 31) & 1)) & 0xffffffff; // safe rshift, top 31 bits masked out
 
-        for ($i = 0; $i < 32; $i = $i + 4) {
+        for ($i = 0; $i < 32; $i += 4) {
             $work  = ($right << 28) | (($right >> 4) & 0x0fffffff); // possibly UNSAFE rshift
 
             $work ^= $keys[$i];

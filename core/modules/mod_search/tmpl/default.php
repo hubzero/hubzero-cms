@@ -76,7 +76,7 @@ $formSuffix = (Search::$instances > 1) ? $this->module->id : '';
                 break;
 
             case 'right':
-                $output = $output . $button;
+                $output .= $button;
                 break;
 
             case 'left':

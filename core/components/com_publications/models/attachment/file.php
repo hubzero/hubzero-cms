@@ -814,7 +814,7 @@ class File extends Base
 
         // Create new path
         if (!is_dir((string) $newPath)) {
-            Filesystem::makeDirectory((string) $newPath, 0755, true, true);
+            Filesystem::makeDirectory((string) $newPath, 0o755, true, true);
         }
 
         // Track the first successfully transferred imageviewer attachment
@@ -844,7 +844,7 @@ class File extends Base
 
             // Make sure we have subdirectories
             if (!is_dir(dirname($copyTo))) {
-                Filesystem::makeDirectory(dirname($copyTo), 0755, true, true);
+                Filesystem::makeDirectory(dirname($copyTo), 0o755, true, true);
             }
 
             // Copy file
@@ -858,7 +858,7 @@ class File extends Base
                 // Create hash file
                 $hfile =  $copyTo . '.hash';
                 file_put_contents($hfile, $md5hash);
-                @chmod($hfile, 0644);
+                @chmod($hfile, 0o644);
 
                 $pAttach->store();
 
@@ -1070,7 +1070,7 @@ class File extends Base
 
         // Create pub version path
         if (!is_dir($path)) {
-            if (!Filesystem::makeDirectory($path, 0755, true, true)) {
+            if (!Filesystem::makeDirectory($path, 0o755, true, true)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
@@ -1618,7 +1618,7 @@ class File extends Base
 
         // check for name conflict
         if (file_exists($copyTo)) {
-            $suffix = $suffix + 1;
+            $suffix += 1;
             return $this->checkForDuplicate($copyFrom, $objPA, $configs, $suffix);
         } else {
             return $suffix;
@@ -1638,7 +1638,7 @@ class File extends Base
     {
         // Create pub version path
         if (!is_dir($configs->pubPath)) {
-            if (!Filesystem::makeDirectory($configs->pubPath, 0755, true, true)) {
+            if (!Filesystem::makeDirectory($configs->pubPath, 0o755, true, true)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
@@ -1652,7 +1652,7 @@ class File extends Base
         if (is_file($copyFrom)) {
             // If parent dir does not exist, we must create it
             if ($configs->dirHierarchy && !file_exists(dirname($copyTo))) {
-                Filesystem::makeDirectory(dirname($copyTo), 0755, true, true);
+                Filesystem::makeDirectory(dirname($copyTo), 0o755, true, true);
             }
             if (!is_file($copyTo) || $update) {
                 Filesystem::copy($copyFrom, $copyTo);
@@ -1667,7 +1667,7 @@ class File extends Base
             // Create hash file
             $hfile = $copyTo . '.hash';
             file_put_contents($hfile, $md5hash);
-            chmod($hfile, 0644);
+            chmod($hfile, 0o644);
 
             $objPA->store();
 

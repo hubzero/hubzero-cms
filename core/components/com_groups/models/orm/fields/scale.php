@@ -154,8 +154,6 @@ class Scale extends Radio
         $html[] = '<strong class="' . $barClass . '"><span>' . $barText . '</span></strong>';
         $html[] = '</div>';
 
-        $value = implode("\n", $html);
-
-        return $value;
+        return implode("\n", $html);
     }
 }

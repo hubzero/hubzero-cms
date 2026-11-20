@@ -311,8 +311,6 @@ class Rules extends Field
             ->group('a.parent_id')
             ->order('a.lft', 'ASC');
         $db->setQuery($query->toString());
-        $options = $db->loadObjectList();
-
-        return $options;
+        return $db->loadObjectList();
     }
 }

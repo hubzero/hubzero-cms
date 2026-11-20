@@ -124,8 +124,7 @@ class Members extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__users`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 
@@ -143,7 +142,7 @@ class Members extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $stemmed = join(' ', $terms['stemmed']);
+        $stemmed = implode(' ', $terms['stemmed']);
         $weight = "(u.name LIKE '" . $stemmed . "' OR p.profile_value LIKE '" . $stemmed . "')";
 
         $addtl_where = [];
@@ -171,7 +170,7 @@ class Members extends Plugin
 			WHERE
 				u.block=0 AND u.approved>0 AND
 				u.access IN (" . $accessLevels . ") AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC";
         $results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
     }
@@ -216,7 +215,7 @@ class Members extends Plugin
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
 				u.block=0 AND u.approved>0 AND
-				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where),
+				u.access IN (" . $accessLevels . ") AND " . implode(' AND ', $addtl_where),
         );
         $assoc = $sql->toAssociative();
         if (!count($assoc)) {

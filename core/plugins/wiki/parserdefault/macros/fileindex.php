@@ -80,7 +80,7 @@ class FileIndex extends WikiMacro
             // Build and return the link
             $html = '<ul>';
             foreach ($rows as $row) {
-                $page->set('pagename', $page->get('pagename') . '/' . 'File:' . $row->get('filename'));
+                $page->set('pagename', $page->get('pagename') . '/File:' . $row->get('filename'));
 
                 $link  = $page->link();
                 $fpath = $row->filespace() . DS . $this->pageid . DS . $row->get('filename');

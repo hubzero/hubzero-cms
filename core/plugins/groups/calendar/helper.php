@@ -30,15 +30,13 @@ class Helper
         );
 
         //replace url links
-        $text = (string) preg_replace(
+        //return auto-linked text
+        return (string) preg_replace(
             '#\b((?<!href=")(https?://www[.]|(?:https?|ftps?)://|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|'
                 . '([^[:punct:]\s]|/)))#',
             '<a class="ext-link" rel="external" href="$1">$1</a>',
             (string) $text,
         );
-
-        //return auto-linked text
-        return $text;
     }
 
     /**

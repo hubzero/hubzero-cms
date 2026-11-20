@@ -147,9 +147,7 @@ class Migration extends Scaffolding
         $create = (string) $create[$tableName];
         $create = str_replace("CREATE TABLE `{$prefix}", 'CREATE TABLE `#__', $create);
         $create = str_replace("\n", "\n\t\t\t\t", $create);
-        $create = (string) preg_replace('/(AUTO_INCREMENT=)([0-9]*)/', '${1}0', $create);
-
-        return $create;
+        return (string) preg_replace('/(AUTO_INCREMENT=)([0-9]*)/', '${1}0', $create);
     }
 
     /**

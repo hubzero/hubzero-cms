@@ -62,8 +62,6 @@ class Menu extends Select
         $menus = $db->loadObjectList();
 
         // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $menus);
-
-        return $options;
+        return array_merge(parent::getOptions(), $menus);
     }
 }

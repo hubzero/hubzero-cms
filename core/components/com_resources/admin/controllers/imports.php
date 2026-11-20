@@ -515,7 +515,7 @@ class Imports extends AdminController
 
         // if we dont have a filespace, create it
         if (!is_dir($uploadPath)) {
-            Filesystem::makeDirectory($uploadPath, 0775);
+            Filesystem::makeDirectory($uploadPath, 0o775);
         }
 
         // all set

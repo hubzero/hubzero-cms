@@ -105,7 +105,7 @@ class Create extends SiteController
         }
         if ($this->task) {
             Pathway::append(
-                Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->task)),
+                Lang::txt('COM_CONTRIBUTE_' . strtoupper($this->task)),
                 'index.php?option=' . $this->option . '&task=' . $this->task,
             );
         }
@@ -135,7 +135,7 @@ class Create extends SiteController
             $this->_title .= Lang::txt('COM_CONTRIBUTE_NEW');
         }
         if ($this->task) {
-            $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->task));
+            $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE_' . strtoupper($this->task));
         }
         if ($this->step && isset($this->steps[$this->step])) {
             $this->_title .= ': '
@@ -1241,7 +1241,7 @@ class Create extends SiteController
     {
         $tagNamesString = "'" . implode("','", $tagNames) . "'";
 
-        $removedTagAssociations = Objct::all()
+        return Objct::all()
             ->select('#__tags_object.*')
             ->join('#__tags', 'tagid', '#__tags.id')
             ->whereEquals('tbl', 'resources')
@@ -1249,8 +1249,6 @@ class Create extends SiteController
             ->where('#__tags_object.label', '!=', 'badge')
             ->whereRaw("#__tags.tag NOT IN ($tagNamesString)")
             ->rows();
-
-        return $removedTagAssociations;
     }
 
     /**
@@ -1832,8 +1830,6 @@ class Create extends SiteController
         //$text = preg_replace('/{.+?}/', '', $text);
         $text = (string) preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
         $text = (string) preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
-        $text = (string) preg_replace('/<!--.+?-->/', '', $text);
-
-        return $text;
+        return (string) preg_replace('/<!--.+?-->/', '', $text);
     }
 }

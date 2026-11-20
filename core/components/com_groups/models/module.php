@@ -214,8 +214,7 @@ class Module extends Model
      */
     public function getNextOrder($position)
     {
-        $order = $this->table->getNextOrder("position='" . $position . "'");
-        return $order;
+        return $this->table->getNextOrder("position='" . $position . "'");
     }
 
     /**

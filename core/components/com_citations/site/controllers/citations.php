@@ -190,7 +190,7 @@ class Citations extends SiteController
         // Reset the filter if the user came from a different section
         // === : a referer that *starts* with the browse path matches at
         // position 0, which == false reads as no match at all
-        if (strpos($referer, "/citations/browse") === false) {
+        if (!str_contains($referer, "/citations/browse")) {
             $filters['idlist'] = "";
             $session->set('idlist', $filters['idlist']);
         }
@@ -584,7 +584,7 @@ class Citations extends SiteController
         foreach ($types as $type) {
             if (isset($type['fields'])) {
                 $f = $type['fields'];
-                if (strpos($f, ',') !== false) {
+                if (str_contains($f, ',')) {
                     $f = str_replace(',', "\n", $f);
                 }
 
@@ -1042,7 +1042,7 @@ class Citations extends SiteController
      */
     private function readfileChunked($filename, $retbytes = true)
     {
-        $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
+        $chunksize = 1024 * 1024; // How many bytes per chunk
         $buffer = '';
         $cnt = 0;
         $handle = fopen($filename, 'rb');

@@ -894,7 +894,7 @@ class Migration extends Base implements CommandInterface
             // Filter to only tables with our prefix (if prefix is set)
             $tablesToDrop = [];
             foreach ($tables as $table) {
-                if (empty($prefix) || strpos($table, $prefix) === 0) {
+                if (empty($prefix) || str_starts_with($table, $prefix)) {
                     $tablesToDrop[] = $table;
                 }
             }

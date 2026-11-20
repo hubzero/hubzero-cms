@@ -348,7 +348,7 @@ class Tags extends SiteController
         }
 
         // Push matches that start with the search to the front
-        if (sizeof($beginWith)) {
+        if (count($beginWith)) {
             // Sort the array
             $name = array_column($beginWith, 'name');
             array_multisort($name, SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $beginWith);
@@ -359,7 +359,7 @@ class Tags extends SiteController
         }
 
         // Push matches that begin with a word to the front
-        if (sizeof($beginsWithWord)) {
+        if (count($beginsWithWord)) {
             // Sort the array
             $name = array_column($beginsWithWord, 'name');
             array_multisort($name, SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $beginsWithWord);
@@ -370,7 +370,7 @@ class Tags extends SiteController
         }
 
         // Push exact matches to the front
-        if (sizeof($exactMatches)) {
+        if (count($exactMatches)) {
             foreach ($exactMatches as $exactMatch) {
                 array_unshift($json, $exactMatch);
             }

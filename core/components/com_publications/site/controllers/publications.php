@@ -1147,7 +1147,7 @@ class Publications extends SiteController
         $path = $this->model->path('base', true);
 
         if (!is_dir($path)) {
-            if (!Filesystem::makeDirectory(PATH_APP . $path, 0755, true, true)) {
+            if (!Filesystem::makeDirectory(PATH_APP . $path, 0o755, true, true)) {
                 $this->setError('Error. Unable to create path.');
             }
         }
@@ -1322,7 +1322,7 @@ class Publications extends SiteController
      */
     protected function readfileChunked($filename, $retbytes = true)
     {
-        $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
+        $chunksize = 1024 * 1024; // How many bytes per chunk
         $buffer = '';
         $cnt = 0;
         $handle = fopen($filename, 'rb');
@@ -1882,7 +1882,7 @@ class Publications extends SiteController
         }
 
         if (!is_dir($prjfilespace)) {
-            if (!Filesystem::makeDirectory($prjfilespace, 0755, true, true)) {
+            if (!Filesystem::makeDirectory($prjfilespace, 0o755, true, true)) {
                 App::abort(500, Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH'));
             }
         }
@@ -2011,7 +2011,7 @@ class Publications extends SiteController
                 $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName((string) $filenew, '_tn', 'png');
 
                 if (!is_dir($toProj)) {
-                    Filesystem::makeDirectory($toProj, 0755, true, true);
+                    Filesystem::makeDirectory($toProj, 0o755, true, true);
 
                     if ($pid && $project->params->get('versionTracking')) {
                         // Commit to GIT
@@ -2083,7 +2083,7 @@ class Publications extends SiteController
                     }
 
                     if (!is_dir($to)) {
-                        Filesystem::makeDirectory($to, 0755, true, true);
+                        Filesystem::makeDirectory($to, 0o755, true, true);
                     }
 
                     $to .= $dest[$type];

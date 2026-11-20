@@ -324,7 +324,7 @@ class ApiController implements ControllerInterface
         $output->component = substr($this->option, 4);
         $bits = explode('v', get_class($this));
         $versionPart = end($bits);
-        $output->version = (strpos($versionPart, 'r') !== false)
+        $output->version = (str_contains($versionPart, 'r') )
             ? str_replace('r', '.', $versionPart)
             : str_replace('_', '.', $versionPart);
         $output->tasks     = [];

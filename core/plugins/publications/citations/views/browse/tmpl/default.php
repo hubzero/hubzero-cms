@@ -45,7 +45,7 @@ if ($this->citations) {
         if ($cite->doi && $cite->url) {
             $formatted = str_replace(
                 'doi:' . $cite->doi,
-                '<a href="' . $this->escape($cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi)
+                '<a href="' . $this->escape($cite->url) . '" rel="external">doi:' . $this->escape($cite->doi)
                     . '</a>',
                 $formatted,
             );

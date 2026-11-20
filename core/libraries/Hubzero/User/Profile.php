@@ -827,7 +827,7 @@ class Profile extends Obj
                 }
 
                 $this->setError(
-                    'uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table',
+                    'uidNumber (' . $this->get('uidNumber') . ') already exists in xprofiles table',
                 );
 
                 return false;

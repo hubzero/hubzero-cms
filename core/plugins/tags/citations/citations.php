@@ -115,9 +115,7 @@ class Citations extends Plugin
             return $types;
         }
 
-        $types = \Components\Citations\Models\Type::all()->rows();
-
-        return $types;
+        return \Components\Citations\Models\Type::all()->rows();
     }
 
     /**

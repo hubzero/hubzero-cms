@@ -152,7 +152,7 @@ class Rules
         }
 
         // Handle pipe-separated string rules
-        $ruleList = strpos($rules, '|') !== false
+        $ruleList = str_contains($rules, '|')
             ? explode('|', $rules)
             : [$rules];
 
@@ -190,10 +190,10 @@ class Rules
 
         // Check for parameters (rule:param1,param2)
         // Special handling for regex which contains colons
-        if (strpos($ruleString, 'regex:') === 0) {
+        if (str_starts_with($ruleString, 'regex:')) {
             $ruleName = 'regex';
             $params = ['pattern' => substr($ruleString, 6)];
-        } elseif (strpos($ruleString, ':') !== false) {
+        } elseif (str_contains($ruleString, ':')) {
             list($ruleName, $paramString) = explode(':', $ruleString, 2);
             $params = self::parseParams($paramString);
         } else {

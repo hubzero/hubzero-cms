@@ -57,13 +57,12 @@ class Collections extends Plugin
      */
     public function onMembersAreas($user, $member)
     {
-        $areas = [
+        return [
             'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName)),
             'icon'        => 'f005',
             'icon-class' => 'icon-archive',
             'menu'        => $this->params->get('display_tab', 1),
         ];
-        return $areas;
     }
 
     /**

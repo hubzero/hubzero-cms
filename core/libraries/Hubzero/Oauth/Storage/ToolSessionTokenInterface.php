@@ -29,7 +29,7 @@ interface ToolSessionTokenInterface
      * @param   string  $toolSessionToken  Tool session token
      * @return  bool    Result of test
      */
-    public function validateToolSessionData($toolSessionId, $toolSessionToken);
+    public function validateToolSessionData($toolSessionId, #[\SensitiveParameter] $toolSessionToken);
 
     /**
      * Loads client needed for internal requests

@@ -36,8 +36,7 @@ class HtmlIcon
 
         $button =  '<a class="icon-add" href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
 
-        $output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_CREATE_ARTICLE') . '">' . $button . '</span>';
-        return $output;
+        return '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_CREATE_ARTICLE') . '">' . $button . '</span>';
     }
 
     /**
@@ -145,10 +144,8 @@ class HtmlIcon
 
         $button = '<a class="' . $cls . '" href="' . Route::url($url) . '">' . $text . '</a>';
 
-        $output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_EDIT_ITEM') . ' :: ' . $overlib . '">'
+        return '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_EDIT_ITEM') . ' :: ' . $overlib . '">'
             . $button . '</span>';
-
-        return $output;
     }
 
     /**

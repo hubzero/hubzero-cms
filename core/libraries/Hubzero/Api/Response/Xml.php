@@ -234,7 +234,7 @@ class Xml
                         die('invalid numeric value');
                     }
 
-                    $value = $value + 0; // converts to type int or float as required
+                    $value += 0; // converts to type int or float as required
                 } elseif ($v['attributes']['type'] == 'null') {
                     $value = null;
                 } elseif ($v['attributes']['type'] == 'array') {

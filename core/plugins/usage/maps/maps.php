@@ -119,7 +119,7 @@ class Maps extends Plugin
         }
 
         if ($info) {
-            $info = $info . '_br_';
+            $info .= '_br_';
             return $info;
         } else {
             return '_br_';

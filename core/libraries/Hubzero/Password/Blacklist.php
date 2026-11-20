@@ -426,9 +426,7 @@ class Blacklist extends Relational
 
         $word2 = str_replace(array_map('strval', array_keys($subs)), array_values($subs), $word);
         $word2 = strtolower($word2);
-        $word2 = str_replace(array_keys($wordsubs), array_values($wordsubs), $word2);
-
-        return $word2;
+        return str_replace(array_keys($wordsubs), array_values($wordsubs), $word2);
     }
 
     /**

@@ -229,7 +229,7 @@ class Tool extends Table
 			f.repotype, f.svntool_id, v.svntool_version_id";
 
         $sql .= " FROM " . $this->buildQuery($filters, $admin);
-        if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] != 0) {
+        if (isset($filters['start'], $filters['limit']) && $filters['limit'] != 0) {
             $sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 

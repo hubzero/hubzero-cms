@@ -97,8 +97,7 @@ class AclGroup extends Relational
             . "FROM `#__resources` AS r, `#__resource_acl_group` AS a, `#__xgroups` AS g "
             . "WHERE r.id=? AND a.resource_id=r.id AND g.gidNumber=a.group_id;";
         $database->prepare($sql)->bind([$resource_id]);
-        $aclgroups = $database->loadObjectList();
-        return $aclgroups;
+        return $database->loadObjectList();
     }
 
     /**

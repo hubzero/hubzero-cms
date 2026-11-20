@@ -606,7 +606,7 @@ abstract class Result
             $pattern = '#(?:^|[.?!"])\s*?(.*?' . $this->highlight_regex . '.*?(?:[.?!"]|$))#ims';
             $excerpt = [];
             if (preg_match_all($pattern, $descr, $excerpt)) {
-                $descr = join('<small>&hellip;</small> ', array_unique($excerpt[1]));
+                $descr = implode('<small>&hellip;</small> ', array_unique($excerpt[1]));
             }
 
             // A line break in the source stands between two words, so it

@@ -282,7 +282,7 @@ class Json
                                     if (!file_exists($full_path)) {
                                         $missing = 'dv-file-missing';
                                         $title = 'Missing File: ' . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
-                                        $link_label = $link_label . '&nbsp;[missing]';
+                                        $link_label .= '&nbsp;[missing]';
                                     }
                                 }
 
@@ -318,7 +318,7 @@ class Json
                                 if (!file_exists($full_path)) {
                                     $missing = 'dv-file-missing';
                                     $title = 'Missing File: ' . $dd['cols'][$key]['ds-repo-path'] . DS . $val;
-                                    $link_label = $link_label . '&nbsp;[missing]';
+                                    $link_label .= '&nbsp;[missing]';
                                 }
                             }
 
@@ -513,7 +513,7 @@ class Json
 
                             $path = $rec[$colConf['dl']];
                             $link = '';
-                            if (strpos($path, PATH_ROOT) === 0) {
+                            if (str_starts_with($path, PATH_ROOT)) {
                                 $link = substr($path, strlen(PATH_ROOT) + 1);
                             } else {
                                 $hash = \Components\Dataviewer\Site\Lib\Dl::getDlHash($path);
@@ -760,7 +760,7 @@ class Json
             }
         }
 
-        if (strpos($path, 'http') === 0) {
+        if (str_starts_with($path, 'http')) {
             $link = $path;
             $url = parse_url($link);
             if (!$label) {
@@ -770,7 +770,7 @@ class Json
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }
             }
-        } elseif (strpos($path, PATH_ROOT) === 0) {
+        } elseif (str_starts_with($path, PATH_ROOT)) {
             $link = substr($path, strlen(PATH_ROOT));
             if (!$label) {
                 $pi = pathinfo($path);
@@ -779,7 +779,7 @@ class Json
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }
             }
-        } elseif (strpos($path, '/site/') === 0 || strpos($path, '/app/site/') === 0) {
+        } elseif (str_starts_with($path, '/site/')  || str_starts_with($path, '/app/site/')) {
             $link = $path;
             if (!$label) {
                 $pi = pathinfo($path);

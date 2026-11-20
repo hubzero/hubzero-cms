@@ -51,7 +51,7 @@ class Moderator
      * @param   string|null  $secret      The site secret used when creating the token
      * @return  void
      **/
-    public function __construct($identifier = null, $session_id = null, $secret = null)
+    public function __construct($identifier = null, $session_id = null, #[\SensitiveParameter] $secret = null)
     {
         if (is_file($identifier == null ? '' : $identifier)) {
             $this->path = (string) $identifier;

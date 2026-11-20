@@ -253,17 +253,17 @@ class Citations extends Plugin
 
         // Set default values for required filters for this view.
         $viewFilters = $view->get('filters');
-        $viewFilters['search'] = $viewFilters['search'] ?? "";
-        $viewFilters['type'] = $viewFilters['type'] ?? "";
-        $viewFilters['tag'] = $viewFilters['tag'] ?? "";
-        $viewFilters['author'] = $viewFilters['author'] ?? "";
-        $viewFilters['publishedin'] = $viewFilters['publishedin'] ?? "";
-        $viewFilters['year_start'] = $viewFilters['year_start'] ?? "";
-        $viewFilters['year_end'] = $viewFilters['year_end'] ?? "";
-        $viewFilters['startuploaddate'] = $viewFilters['startuploaddate'] ?? "";
-        $viewFilters['enduploaddate'] = $viewFilters['enduploaddate'] ?? "";
-        $viewFilters['sort'] = $viewFilters['sort'] ?? "";
-        $viewFilters['filter'] = $viewFilters['filter'] ?? "";
+        $viewFilters['search'] ??= "";
+        $viewFilters['type'] ??= "";
+        $viewFilters['tag'] ??= "";
+        $viewFilters['author'] ??= "";
+        $viewFilters['publishedin'] ??= "";
+        $viewFilters['year_start'] ??= "";
+        $viewFilters['year_end'] ??= "";
+        $viewFilters['startuploaddate'] ??= "";
+        $viewFilters['enduploaddate'] ??= "";
+        $viewFilters['sort'] ??= "";
+        $viewFilters['filter'] ??= "";
         $view->set('filters', $viewFilters);
 
         // Sort Filter
@@ -368,7 +368,7 @@ class Citations extends Plugin
         foreach ($view->get('types') as $type) {
             if (isset($type->fields)) {
                 $f = $type->fields;
-                if (strpos($f, ',') !== false) {
+                if (str_contains($f, ',')) {
                     $f = str_replace(',', "\n", $f);
                 }
 
@@ -468,7 +468,7 @@ class Citations extends Plugin
                         $authorString .= ',';
                     }
 
-                    $x = $x + 1;
+                    $x += 1;
                 }
 
                 $view->set('authorString', $authorString);

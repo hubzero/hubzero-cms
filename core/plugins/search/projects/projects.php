@@ -30,7 +30,7 @@ class Projects extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(p.alias, p.title, p.about) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(p.alias, p.title, p.about) AGAINST (\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $from = '';
 
@@ -61,7 +61,7 @@ class Projects extends Plugin
 			FROM `#__projects` AS p $from
 			WHERE
 				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         ));
     }
@@ -154,8 +154,7 @@ class Projects extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__projects` WHERE type=1;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

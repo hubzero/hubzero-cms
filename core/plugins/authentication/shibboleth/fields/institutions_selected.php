@@ -32,7 +32,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') ?: [] as $idp) {
     // Is this an institution that was selected?
     $dname = (string) $idp->Organization->OrganizationDisplayName;
     // print $dname;
-    if (strpos($dname, '"') !== false) {
+    if (str_contains($dname, '"')) {
         // print "error, name ".$dname." contains a quote\n";
         continue;
     }

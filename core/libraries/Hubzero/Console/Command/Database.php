@@ -57,7 +57,7 @@ class Database extends Base implements CommandInterface
         if (!$this->arguments->getOpt('all-tables')) {
             $this->output->addLine('Dumping database with all prefixed tables included');
             foreach ($tables as $table) {
-                if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes)) {
+                if (!str_starts_with($table, $prefix)  && !in_array(str_replace('#__', $prefix, $table), $includes)) {
                     $excludes[] = '--ignore-table=' . escapeshellarg(Config::get('db') . '.' . $table);
                 } elseif (in_array(str_replace('#__', $prefix, $table), $includes)) {
                     $this->output->addLine('Also including `' . $table . '`');
@@ -76,7 +76,7 @@ class Database extends Base implements CommandInterface
         }
 
         // Made first, so that the dump is never readable by anyone else
-        if (!touch($filename) || !chmod($filename, 0600)) {
+        if (!touch($filename) || !chmod($filename, 0o600)) {
             $this->output->error('Cannot write ' . $filename);
         }
 
@@ -260,7 +260,7 @@ class Database extends Base implements CommandInterface
             case 'sqlite':
             case 'sqlite3':
                 $dbPath = Config::get('database', Config::get('db'));
-                if (strpos($dbPath, '/') !== 0) {
+                if (!str_starts_with($dbPath, '/')) {
                     // Relative path - prepend app root
                     $dbPath = PATH_ROOT . '/' . $dbPath;
                 }
@@ -311,11 +311,11 @@ class Database extends Base implements CommandInterface
 
             // Determine if this is a SELECT query (returns results)
             $trimmedSql = ltrim(strtoupper($sql));
-            $isSelect = strpos($trimmedSql, 'SELECT') === 0
-                || strpos($trimmedSql, 'SHOW') === 0
-                || strpos($trimmedSql, 'DESCRIBE') === 0
-                || strpos($trimmedSql, 'DESC') === 0
-                || strpos($trimmedSql, 'EXPLAIN') === 0;
+            $isSelect = str_starts_with($trimmedSql, 'SELECT')
+                || str_starts_with($trimmedSql, 'SHOW')
+                || str_starts_with($trimmedSql, 'DESCRIBE')
+                || str_starts_with($trimmedSql, 'DESC')
+                || str_starts_with($trimmedSql, 'EXPLAIN') ;
 
             if ($isSelect) {
                 $results = $db->loadAssocList();
@@ -507,7 +507,7 @@ class Database extends Base implements CommandInterface
     private function credentials()
     {
         $file = tempnam(sys_get_temp_dir(), 'muse-db-');
-        chmod($file, 0600);
+        chmod($file, 0o600);
 
         $options = [
             'user'     => Config::get('user'),

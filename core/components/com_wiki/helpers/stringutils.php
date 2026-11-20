@@ -74,7 +74,7 @@ class StringUtils
         $foundStart = false;
         $encStart = preg_quote($startDelim, '!');
         $encEnd = preg_quote($endDelim, '!');
-        $strcmp = strpos($flags, 'i') === false ? 'strcmp' : 'strcasecmp';
+        $strcmp = !str_contains($flags, 'i')  ? 'strcmp' : 'strcasecmp';
         $endLength = strlen($endDelim);
         $m = [];
 
@@ -191,7 +191,6 @@ class StringUtils
     public static function escapeRegexReplacement($string)
     {
         $string = str_replace('\\', '\\\\', $string);
-        $string = str_replace('$', '\\$', $string);
-        return $string;
+        return str_replace('$', '\\$', $string);
     }
 }

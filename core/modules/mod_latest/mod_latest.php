@@ -370,9 +370,7 @@ class Latest extends Module
         $introtext = str_replace('</p>', ' ', $introtext);
         $introtext = strip_tags($introtext, '<a><em><strong>');
 
-        $introtext = trim($introtext);
-
-        return $introtext;
+        return trim($introtext);
     }
 
     /**

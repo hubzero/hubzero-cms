@@ -38,8 +38,8 @@ if ($this->primary && !empty($this->attachments)) {
 
 // Build url
 $route = $this->model->isProvisioned()
-    ? 'index.php?option=com_publications' . '&task=submit'
-    : 'index.php?option=com_projects' . '&alias=' . $this->model->get('alias');
+    ? 'index.php?option=com_publications&task=submit'
+    : 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 $p_url = Route::url($route . '&active=databases');
 
 ?>

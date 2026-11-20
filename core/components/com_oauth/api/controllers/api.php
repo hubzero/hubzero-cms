@@ -262,9 +262,9 @@ class Api extends ApiController
             || isset($_POST['x_auth_mode'])
             || isset($_POST['x_auth_username'])
             || isset($_POST['x_auth_password'])
-            || (strpos($header, 'x_auth_mode') !== false)
-            || (strpos($header, 'x_auth_username') !== false)
-            || (strpos($header, 'x_auth_password') !== false)
+            || (str_contains($header, 'x_auth_mode') )
+            || (str_contains($header, 'x_auth_username') )
+            || (str_contains($header, 'x_auth_password') )
         ) {
             $xauth_request = true;
         }

@@ -903,8 +903,7 @@ class Connect extends Obj
                     $success = Google::untrashItem($apiService, $remoteid);
                 } elseif (
                     $check
-                    && isset($check['md5Checksum'])
-                    && isset($local['md5Checksum'])
+                    && isset($check['md5Checksum'], $local['md5Checksum'])
                     && $check['md5Checksum'] == $local['md5Checksum']
                 ) {
                     $success = $remoteid;
@@ -1941,7 +1940,7 @@ class Connect extends Obj
         if (file_put_contents($path . DS . $fpath, $fc) === false) {
             return false;
         }
-        chmod($path . DS . $fpath, 0775);
+        chmod($path . DS . $fpath, 0o775);
 
         if (file_exists($path . DS . $fpath)) {
             return true;
@@ -2129,7 +2128,7 @@ class Connect extends Obj
      * @param   string  $refreshToken  Stored refresh token
      * @return  \stdClass|false  The refreshed access token, or false
      */
-    public function refreshToken($service, $refreshToken = '')
+    public function refreshToken($service, #[\SensitiveParameter] $refreshToken = '')
     {
         if (!$service || !in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));

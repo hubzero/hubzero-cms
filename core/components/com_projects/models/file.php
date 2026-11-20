@@ -238,7 +238,7 @@ class File extends Obj
         } else {
             // Generate thumbnail locally
             if (!file_exists($target)) {
-                Filesystem::makeDirectory($target, 0755, true, true);
+                Filesystem::makeDirectory($target, 0o755, true, true);
             }
 
             // Make sure it's an image file
@@ -386,7 +386,7 @@ class File extends Obj
     public function isImage()
     {
         $mime = $this->getMimeType();
-        return strpos($mime, 'image/') !== false ? true : false;
+        return str_contains($mime, 'image/')  ? true : false;
     }
 
     /**

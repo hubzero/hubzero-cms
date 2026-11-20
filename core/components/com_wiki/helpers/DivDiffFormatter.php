@@ -52,8 +52,7 @@ class DivDiffFormatter extends DiffFormatter
      */
     public function blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
-        $r = '<!--LINE ' . $xbeg . "-->\n" . '<!--LINE ' . $ybeg . "-->\n";
-        return $r;
+        return '<!--LINE ' . $xbeg . "-->\n" . '<!--LINE ' . $ybeg . "-->\n";
     }
 
     /**

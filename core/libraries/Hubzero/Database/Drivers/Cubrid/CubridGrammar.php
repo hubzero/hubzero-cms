@@ -127,9 +127,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         $type = (string) preg_replace('/\s+UNSIGNED/i', '', $type);
 
         // Strip display widths from integer types
-        $type = (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $type);
-
-        return $type;
+        return (string) preg_replace('/(TINYINT|SMALLINT|MEDIUMINT|INT|BIGINT)\(\d+\)/i', '$1', $type);
     }
 
     /**
@@ -290,18 +288,14 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
         $this->appendCompiledInlineIndexes(
             $parts,
             $blueprint->getUniqueIndexes(),
-            function ($name, $columns) {
-                return $this->compileInlineUniqueIndex($name, $columns);
-            },
+            $this->compileInlineUniqueIndex(...),
         );
 
         // Regular indexes (inline)
         $this->appendCompiledInlineIndexes(
             $parts,
             $blueprint->getIndexes(),
-            function ($name, $columns) {
-                return $this->compileInlineIndex($name, $columns);
-            },
+            $this->compileInlineIndex(...),
         );
 
         // Foreign keys

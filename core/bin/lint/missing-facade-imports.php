@@ -112,7 +112,7 @@ $phpFiles = function ($root, array $paths) {
             new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
-            if ($file->getExtension() === 'php' && strpos($file->getPathname(), '/vendor/') === false) {
+            if ($file->getExtension() === 'php' && !str_contains($file->getPathname(), '/vendor/')) {
                 $files[] = $file->getPathname();
             }
         }
@@ -277,7 +277,7 @@ $inspect = function ($path, array $facades) {
 $addImports = function ($path, array $missing) {
     $source = (string) file_get_contents($path);
     $lines  = preg_split('/\R/', $source) ?: [];
-    $eol    = strpos($source, "\r\n") !== false ? "\r\n" : "\n";
+    $eol    = str_contains($source, "\r\n")  ? "\r\n" : "\n";
 
     $lastUse   = null;
     $namespace = null;

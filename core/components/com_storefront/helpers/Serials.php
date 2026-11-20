@@ -146,9 +146,7 @@ class Serials
         if ($filters['return'] == 'count') {
             return $db->getNumRows();
         }
-        $users = $db->loadObjectList();
-
-        return $users;
+        return $db->loadObjectList();
     }
 
     /**

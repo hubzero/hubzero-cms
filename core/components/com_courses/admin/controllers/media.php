@@ -347,7 +347,7 @@ class Media extends AdminController
 
         // Incoming directory to delete
         $folder = trim(Request::getString('delFolder', ''), DS);
-        if (strpos($folder, '..') !== false) {
+        if (str_contains($folder, '..')) {
             $folder = '';
         }
         if (!$folder) {

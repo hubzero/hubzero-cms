@@ -393,7 +393,7 @@ class Tools extends Plugin
                     }
                 }
                 for ($j = $cur_year; $j >= $year_data_start; $j--) {
-                    for ($i = 12; $i > 0; $i = $i - 3) {
+                    for ($i = 12; $i > 0; $i -= 3) {
                         $value = $j . '-' . sprintf("%02d", $i);
                         if ($this->checkForData($value, 3)) {
                             $html .= '<option value="' . $value . '"';
@@ -570,7 +570,7 @@ class Tools extends Plugin
                 }
             }
         }
-        if (isset($this->totals) && isset($this->totals[$yearmonth]) && $this->totals[$yearmonth] > 0) {
+        if (isset($this->totals, $this->totals[$yearmonth]) && $this->totals[$yearmonth] > 0) {
             return true;
         }
         return false;

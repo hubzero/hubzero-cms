@@ -50,7 +50,7 @@ if (!$miniquote) {
 }
 
 if (strlen($short_quote) >= 271) {
-    $short_quote = $short_quote . '...';
+    $short_quote .= '...';
 }
 ?>
 

@@ -151,7 +151,7 @@ class File extends Handler
 
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
-            if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)) {
+            if (!Filesystem::makeDirectory($uploadDirectory, 0o755, true)) {
                 return ['error' => 'Server error. Unable to create upload directory'];
             }
         }

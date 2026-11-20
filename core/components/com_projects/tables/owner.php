@@ -1388,7 +1388,7 @@ class Owner extends Table
             $d = 0;
 
             foreach ($result as $r) {
-                $c = $c + $r->members;
+                $c += $r->members;
                 $d++;
             }
 

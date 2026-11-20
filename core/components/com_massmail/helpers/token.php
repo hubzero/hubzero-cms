@@ -47,7 +47,7 @@ class Token
      * @param   string   $token
      * @return  boolean
      */
-    public static function verify($mailingId, $email, $token)
+    public static function verify($mailingId, $email, #[\SensitiveParameter] $token)
     {
         return hash_equals(self::make($mailingId, $email), (string) $token);
     }

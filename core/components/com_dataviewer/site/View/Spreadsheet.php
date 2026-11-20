@@ -187,7 +187,7 @@ class Spreadsheet
 
 
             $return = '';
-            if (isset($dd['return']) && isset($dd['return']['raw'])) {
+            if (isset($dd['return']['raw'])) {
                 $return = $dd['return']['raw'];
             } elseif (isset($dd['return'])) {
                 $return = '<span id="dv_return_link"'

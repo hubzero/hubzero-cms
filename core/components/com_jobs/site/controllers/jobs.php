@@ -282,7 +282,7 @@ class Jobs extends SiteController
 
         // Call the trigger
         $results = Event::trigger('members.' . $trigger, []);
-        if (isset($results[0]) && isset($results[0]['html'])) {
+        if (isset($results[0]['html'])) {
             $html = $results[0]['html'];
         }
 
@@ -2122,8 +2122,7 @@ class Jobs extends SiteController
             $this->getServiceParams($service);
             $maxads      = $service->get('maxads') > 0 ? $service->get('maxads') : 1;
             $activejobs  = $job->countMyActiveOpenings(User::get('id'), 1);
-            $allowedAds = $maxads - $activejobs;
-            return $allowedAds;
+            return $maxads - $activejobs;
         }
     }
 

@@ -296,7 +296,7 @@ class Activity extends Plugin
 
         $scope = (string) $log->get('scope');
 
-        return !($scope == 'group' || strpos($scope, 'group.') === 0 || substr($scope, -9) == '.settings');
+        return !($scope == 'group' || str_starts_with($scope, 'group.')  || substr($scope, -9) == '.settings');
     }
 
     /**

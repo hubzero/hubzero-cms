@@ -211,8 +211,8 @@ class Supporttickets extends Module
                 if ($k == $year && $i > $month) {
                     break;
                 } else {
-                    $this->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
-                    $this->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
+                    $this->closedmonths[$k][$i] = (isset($closed[$k], $closed[$k][$i])) ? $closed[$k][$i] : 0;
+                    $this->openedmonths[$k][$i] = (isset($open[$k], $open[$k][$i])) ? $open[$k][$i] : 0;
                 }
             }
         }

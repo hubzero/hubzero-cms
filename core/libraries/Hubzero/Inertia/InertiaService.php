@@ -506,7 +506,7 @@ class InertiaService
         $incoming = [];
         foreach ($this->allIncomingHeaders() as $name => $value) {
             $lower = strtolower((string) $name);
-            if (strpos($lower, 'x-inertia') === 0 || $lower === 'x-requested-with') {
+            if (str_starts_with($lower, 'x-inertia')  || $lower === 'x-requested-with') {
                 $incoming[$name] = $value;
             }
         }

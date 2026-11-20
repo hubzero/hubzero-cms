@@ -29,7 +29,7 @@ class Citations extends Plugin
     {
         $terms = $request->getTermAr();
         $weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\''
-            . join(' ', $terms['stemmed'])
+            . implode(' ', $terms['stemmed'])
             . '\')';
 
         //get com_citations params
@@ -74,7 +74,8 @@ class Citations extends Plugin
             $sql = "SELECT
 						c.title AS title,
 						c.abstract AS description,
-					 	concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link,
+					 	concat('/citations/browse?search=" . implode(' ', $terms['optional'])
+                        . "&year=', c.year) AS link,
 						$weight AS weight
 					FROM #__citations c
 					WHERE
@@ -86,7 +87,8 @@ class Citations extends Plugin
 						c.id as id,
 						c.title as title,
 						c.abstract as description,
-						concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link
+						concat('/citations/browse?search=" . implode(' ', $terms['optional'])
+                        . "&year=', c.year) AS link
 					 FROM
 						#__citations c,
 						#__tags as tag,
@@ -256,8 +258,7 @@ class Citations extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__citations;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

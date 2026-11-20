@@ -229,7 +229,7 @@ class Toolbar extends Obj
             $fullname = $path . '/' . $file;
 
             // Is the path based on a stream?
-            if (strpos($path, '://') === false) {
+            if (!str_contains($path, '://')) {
                 // Not a stream, so do a realpath() to avoid directory
                 // traversal attempts on the local file system.
                 $path = realpath($path); // needed for substr() later

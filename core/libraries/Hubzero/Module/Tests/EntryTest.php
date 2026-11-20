@@ -104,7 +104,7 @@ class EntryTest extends Basic
     public function testLoaderEntersThroughDisplay()
     {
         $this->probe = PATH_APP . '/modules/mod_entryprobe';
-        @mkdir($this->probe, 0700, true);
+        @mkdir($this->probe, 0o700, true);
         file_put_contents($this->probe . '/mod_entryprobe.php', <<<'PHP'
             <?php
 

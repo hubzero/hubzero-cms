@@ -1467,8 +1467,6 @@ class Questions extends SiteController
             }
         }
 
-        $recipients = array_unique($recipients);
-
-        return $recipients;
+        return array_unique($recipients);
     }
 }

@@ -115,7 +115,7 @@ class Migration20260911120200ComStorefront extends Base
                 continue;
             }
 
-            if (strpos($target->link, 'option=com_storefront') !== false) {
+            if (str_contains($target->link, 'option=com_storefront')) {
                 $ids[] = (int) $alias->id;
             }
         }

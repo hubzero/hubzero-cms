@@ -263,7 +263,7 @@ class Resources extends Plugin
                     // Ensure a matching array of totals exist
                     if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
                         // Add to the parent category's total
-                        $cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
+                        $cats[$i]['total'] += $totals[$i][$z];
                         // Get some info for each sub-category
                         $subs[$z] = [
                             'category' => $s,
@@ -281,7 +281,7 @@ class Resources extends Plugin
             }
 
             // Add to the overall total
-            $total = $total + intval($cats[$i]['total']);
+            $total += intval($cats[$i]['total']);
             $i++;
         }
 
@@ -582,7 +582,7 @@ class Resources extends Plugin
             if (isset($filters['group_cn'])) {
                 $rows = Entry::allWithFilters($filters)
                     ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
-                    ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'], 1)
+                    ->whereEquals('#__resources.group_owner', (string) $filters['group_cn'], 1)
                     ->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'], 1)
                     ->resetDepth()
                     ->order($filters['sortby'], $filters['sortdir'])

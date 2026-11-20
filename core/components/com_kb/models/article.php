@@ -684,8 +684,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**
@@ -707,8 +706,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'kb-article';
-        return $searchNamespace;
+        return 'kb-article';
     }
 
     /**
@@ -718,8 +716,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**

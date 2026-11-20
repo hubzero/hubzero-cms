@@ -108,14 +108,13 @@ class Discussions extends Plugin
      */
     public function onCourseAreas()
     {
-        $area = [
+        return [
             'name' => $this->pluginName,
             'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => true,
             'icon' => 'f086',
         ];
-        return $area;
     }
 
     /**

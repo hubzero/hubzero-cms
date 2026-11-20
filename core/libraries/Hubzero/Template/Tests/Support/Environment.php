@@ -69,14 +69,14 @@ class Environment
         $env->siteTemplate = $env->root . '/templates/site';
         $env->groupBase = $env->root . '/groups/42';
 
-        mkdir($env->siteTemplate, 0700, true);
-        mkdir($env->groupBase . ($groupTemplate ? '/template' : ''), 0700, true);
+        mkdir($env->siteTemplate, 0o700, true);
+        mkdir($env->groupBase . ($groupTemplate ? '/template' : ''), 0o700, true);
 
         // withSuperGroup() hands out a base that climbs out of PATH_APP with
         // "..", which is_dir() can only follow if PATH_APP itself exists. It
         // does on a hub; in a bare checkout (CI) app/ is untracked.
         if (!is_dir(PATH_APP)) {
-            mkdir(PATH_APP, 0700, true);
+            mkdir(PATH_APP, 0o700, true);
             $env->madePathApp = true;
         }
 
@@ -230,7 +230,7 @@ class Environment
         $path = $this->root . '/' . $relative;
 
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0700, true);
+            mkdir(dirname($path), 0o700, true);
         }
 
         file_put_contents($path, $contents);

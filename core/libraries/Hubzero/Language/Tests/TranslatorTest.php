@@ -20,7 +20,7 @@ namespace Hubzero\Language\Tests {
         {
             $this->fixtureDir = sys_get_temp_dir() . '/hubzero_lang_test_' . getmypid();
             $this->removeDir($this->fixtureDir);
-            mkdir($this->fixtureDir, 0755, true);
+            mkdir($this->fixtureDir, 0o755, true);
         }
 
         protected function tearDown(): void
@@ -51,7 +51,7 @@ namespace Hubzero\Language\Tests {
             $path = $this->fixtureDir . '/' . $relativePath;
             $dir = dirname($path);
             if (!is_dir($dir)) {
-                mkdir($dir, 0755, true);
+                mkdir($dir, 0o755, true);
             }
             $lines = [];
             foreach ($entries as $key => $value) {
@@ -681,7 +681,7 @@ namespace Hubzero\Language\Tests {
         public function existsReturnsTrueForExistingDir(): void
         {
             $langDir = $this->fixtureDir . '/language/en-GB';
-            mkdir($langDir, 0755, true);
+            mkdir($langDir, 0o755, true);
 
             $this->assertTrue(Translator::exists('en-GB', $this->fixtureDir));
         }

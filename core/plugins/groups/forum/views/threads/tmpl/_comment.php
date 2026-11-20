@@ -168,7 +168,7 @@ if ($this->comment->isReported()) {
                                 $links[] = '<a href="' . $userProfileUrl . '" target="_blank">'
                                     . $this->escape($userName) . '</a>';
                             }
-                            echo join(", ", $links) . " liked this";
+                            echo implode(", ", $links) . " liked this";
                             ?>
                         </div>
                         <?php } ?>

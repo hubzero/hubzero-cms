@@ -2360,9 +2360,9 @@ class AseDriver extends BaseSqlDriver
         // Exception: BIT type cannot be NULL in ASE.
         $defUpper = strtoupper($definition);
         if (
-            strpos($defUpper, ' NULL') === false
-            && strpos($defUpper, ' NOT NULL') === false
-            && strpos($defUpper, ' DEFAULT ') === false
+            !str_contains($defUpper, ' NULL')
+            && !str_contains($defUpper, ' NOT NULL')
+            && !str_contains($defUpper, ' DEFAULT ')
         ) {
             if (preg_match('/^\s*BIT\b/i', $definition)) {
                 $definition .= ' DEFAULT 0 NOT NULL';

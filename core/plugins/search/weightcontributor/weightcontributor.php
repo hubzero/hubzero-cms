@@ -34,7 +34,7 @@ class Weightcontributor extends Plugin
 
         foreach (array_map('strtolower', $res->getContributors()) as $contributor) {
             foreach ($pos_terms as $term) {
-                if (strpos($contributor, $term) !== false) {
+                if (str_contains($contributor, $term)) {
                     return 1.0;
                 }
             }

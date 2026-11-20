@@ -347,8 +347,7 @@ class Blog extends Plugin
             $blog = '/groups/' . $this->group->get('cn') . '/blog';
 
             if ($path == $blog) {
-                $path = [];
-                return $path;
+                return [];
             }
 
             $path = ltrim($path, '/');

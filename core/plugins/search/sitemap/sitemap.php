@@ -39,7 +39,7 @@ class Sitemap extends Plugin
     public static function onSearch($request, &$results)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(s.title, s.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(s.title, s.description) against (\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -54,7 +54,7 @@ class Sitemap extends Plugin
 				title, description, link, $weight as weight
 			FROM
 				`#__ysearch_site_map` s
-			WHERE $weight > 0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+			WHERE $weight > 0" . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : ''),
         ));
     }
 
@@ -158,7 +158,7 @@ class Sitemap extends Plugin
         $html[] = '</tbody>';
         $html[] = '</table>';
         $html[] = '</form>';
-        return ['Site Map', join("\n", $html)];
+        return ['Site Map', implode("\n", $html)];
     }
 
     /**

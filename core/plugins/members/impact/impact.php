@@ -199,13 +199,12 @@ class Impact extends Plugin
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
-        $query = "SELECT COUNT(DISTINCT P.id) FROM `#__publications` AS P,
+        return "SELECT COUNT(DISTINCT P.id) FROM `#__publications` AS P,
 				`#__publication_versions` as V,
 				`#__publication_authors` as A
 				WHERE V.publication_id=P.id AND A.publication_version_id = V.id
 				AND A.user_id=" . $user_id . " AND
 				V.state=1 AND A.status=1 AND A.role!='submitter'";
-        return $query;
     }
 
     /**
@@ -265,8 +264,7 @@ class Impact extends Plugin
                 return 0;
             }
 
-            $results = $objP->getCount($filters);
-            return $results;
+            return $objP->getCount($filters);
         } else {
             if (!$this->params->get('contributions')) {
                 return [];

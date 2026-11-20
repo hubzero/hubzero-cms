@@ -114,7 +114,7 @@ class Entity extends Obj
 
             // The minimum required data is a path and a type
             $metadata = [
-                'type' => (strpos($end, '.') !== false) ? 'file' : 'dir',
+                'type' => (str_contains($end, '.') ) ? 'file' : 'dir',
                 'path' => $path,
             ];
         }

@@ -126,11 +126,11 @@ class Paginator extends Obj
 
         $i = $start_loop;
         if ($stop_loop > $this->get('pages.total')) {
-            $i = $i + ($this->get('pages.total') - $stop_loop);
+            $i += ($this->get('pages.total') - $stop_loop);
             $stop_loop = $this->get('pages.total');
         }
         if ($i <= 0) {
-            $stop_loop = $stop_loop + (1 - $i);
+            $stop_loop += (1 - $i);
             $i = 1;
         }
 
@@ -180,9 +180,7 @@ class Paginator extends Obj
      */
     public function getAdditionalUrlParam($key)
     {
-        $result = isset($this->additionalUrlParams[$key]) ? $this->additionalUrlParams[$key] : null;
-
-        return $result;
+        return isset($this->additionalUrlParams[$key]) ? $this->additionalUrlParams[$key] : null;
     }
 
     /**

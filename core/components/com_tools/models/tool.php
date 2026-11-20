@@ -1194,7 +1194,7 @@ class Tool
         $db = App::get('db');
 
         $query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered,"
-            . " t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v "
+            . " t.state_changed,t.state FROM #__tool as t, #__tool_version as v "
             . " where t.id=v.toolid ";
         $query .= self::buildQuerySearch($filters, $admin);
         $query .= self::buildQueryState($filters, $admin);
@@ -1823,7 +1823,7 @@ class Tool
         $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, "
             . "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
             . " FROM $filter";
-        if (isset($filters['start']) && isset($filters['limit'])) {
+        if (isset($filters['start'], $filters['limit'])) {
             $sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
         }
 

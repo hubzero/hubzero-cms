@@ -58,7 +58,7 @@ class File extends None
         // The path names a client's directory inside the cache directory, and
         // on a new install neither of them is there yet
         if (!is_dir($this->directory)) {
-            mkdir($this->directory, 0775, true);
+            mkdir($this->directory, 0o775, true);
         }
 
         if (!is_dir($this->directory) || !is_readable($this->directory) || !is_writable($this->directory)) {
@@ -389,7 +389,7 @@ class File extends None
         $dir = pathinfo($filename, PATHINFO_DIRNAME);
 
         if (!file_exists($dir)) {
-            $mod = $this->options['chmod'] ? $this->options['chmod'] : 0777;
+            $mod = $this->options['chmod'] ? $this->options['chmod'] : 0o777;
             mkdir($dir, $mod);
         }
 

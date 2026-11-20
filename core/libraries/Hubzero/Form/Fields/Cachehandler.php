@@ -40,8 +40,6 @@ class Cachehandler extends Select
                 . $store), 'value', 'text');
         }
 
-        $options = array_merge(parent::getOptions(), $options);
-
-        return $options;
+        return array_merge(parent::getOptions(), $options);
     }
 }

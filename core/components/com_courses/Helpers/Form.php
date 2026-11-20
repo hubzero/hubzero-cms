@@ -44,7 +44,7 @@ class Form
             }
         }
 
-        return join(', ', $rv);
+        return implode(', ', $rv);
     }
 
     /**

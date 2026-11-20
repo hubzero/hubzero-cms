@@ -319,7 +319,7 @@ class Attachments extends SiteController
         $sizeLimit = $this->config->get('maxAllowed', 40000000);
 
         // get the file
-        if (isset($_GET['qqfile']) && isset($_SERVER["CONTENT_LENGTH"])) { // make sure we actually have a file
+        if (isset($_GET['qqfile'], $_SERVER["CONTENT_LENGTH"])) { // make sure we actually have a file
             $stream = true;
             $file = $_GET['qqfile'];
             $size = (int) $_SERVER["CONTENT_LENGTH"];
@@ -1145,8 +1145,6 @@ class Attachments extends SiteController
         }
         $dir_id = Str::pad($id);
 
-        $path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
-
-        return $path;
+        return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
     }
 }

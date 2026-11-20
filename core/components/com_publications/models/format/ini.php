@@ -150,7 +150,7 @@ class INI extends Base
                 } elseif (is_numeric($value)) {
                     // If the value is numeric than it is either a float or int.
                     // If there is a period then we assume a float.
-                    if (strpos($value, '.') !== false) {
+                    if (str_contains($value, '.')) {
                         $value = (float) $value;
                     } else {
                         $value = (int) $value;

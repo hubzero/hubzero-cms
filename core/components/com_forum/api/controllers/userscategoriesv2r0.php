@@ -76,7 +76,7 @@ class UsersCategoriesv2r0 extends ApiController
      */
     protected function instantiateUsersCategories($categoriesIds, $currentUserId)
     {
-        $usersCategories = array_map(function ($categoryId) use ($currentUserId) {
+        return array_map(function ($categoryId) use ($currentUserId) {
             $usersCategory = UsersCategory::blank();
             $usersCategory->set([
                 'category_id' => $categoryId,
@@ -84,8 +84,6 @@ class UsersCategoriesv2r0 extends ApiController
             ]);
             return $usersCategory;
         }, $categoriesIds);
-
-        return $usersCategories;
     }
 
     /**

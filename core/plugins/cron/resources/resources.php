@@ -182,7 +182,7 @@ class Resources extends Plugin
 				LIMIT 0," . $nlimit,
             );
             if ($data2 = $db->loadAssocList()) {
-                $data = $data + $data2;
+                $data += $data2;
             }
         }
 

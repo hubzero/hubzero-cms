@@ -381,8 +381,7 @@ class Events extends GroupMacro
         }
 
         // Default to 1 year
-        $for = "1 year";
-        return $for;
+        return "1 year";
     }
 
     /**
@@ -423,8 +422,7 @@ class Events extends GroupMacro
         }
 
         // Default to today
-        $from = Date::of('now')->format('Y-m-d 00:00:00');
-        return $from;
+        return Date::of('now')->format('Y-m-d 00:00:00');
     }
 
     /**

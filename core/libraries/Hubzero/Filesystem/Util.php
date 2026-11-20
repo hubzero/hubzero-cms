@@ -51,16 +51,16 @@ class Util
      */
     public static function checkPath($path, $ds = DIRECTORY_SEPARATOR)
     {
-        if (strpos($path, '..') !== false) {
+        if (str_contains($path, '..')) {
             throw new PathViolationException('Use of relative paths not permitted');
         }
 
         $path = self::normalizePath($path);
         if (
-            PATH_ROOT != '' && strpos(
+            PATH_ROOT != '' && !str_starts_with(
                 $path,
                 self::normalizePath(PATH_ROOT),
-            ) !== 0 && strpos($path, self::normalizePath(PATH_CORE)) !== 0
+            )  && !str_starts_with($path, self::normalizePath(PATH_CORE))
         ) {
             // Don't translate
             throw new PathViolationException('Snooping out of bounds @ ' . $path);

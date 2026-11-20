@@ -64,8 +64,8 @@ class Redirect extends Plugin
 
         // Attempt to ignore idiots.
         if (
-            (strpos($current, 'mosConfig_') !== false)
-            || (strpos($current, '=http://') !== false)
+            (str_contains($current, 'mosConfig_') )
+            || (str_contains($current, '=http://') )
         ) {
             // Render the error page.
             $renderer->render($error);

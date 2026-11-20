@@ -45,7 +45,7 @@ $linkUrl = Route::url($model->link('files')
 . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
 $linkTarget = '';
 
-if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {
+if ($itemMimeType && str_starts_with($itemMimeType, 'application/vnd.google')) {
     // https://developers.google.com/drive/api/v3/mime-types
     $formatMappings = [
         'document'     => 'document',      // Google Docs

@@ -59,7 +59,7 @@ class IdPResponseTest extends Basic
         }
 
         $this->dir = sys_get_temp_dir() . '/com_saml_test_' . bin2hex(random_bytes(4));
-        mkdir($this->dir, 0700, true);
+        mkdir($this->dir, 0o700, true);
 
         $key = openssl_pkey_new([
             'private_key_bits' => 2048,

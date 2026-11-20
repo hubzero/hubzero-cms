@@ -46,7 +46,7 @@ class SqlParser
             $trimmed = trim($line);
 
             // Skip empty lines and full-line comments
-            if ($trimmed === '' || strpos($trimmed, '--') === 0) {
+            if ($trimmed === '' || str_starts_with($trimmed, '--')) {
                 continue;
             }
 

@@ -59,9 +59,7 @@ class Xml extends Base
         foreach ($xml->children() as $node) {
             $data->{$node['name']} = $this->getValueFromNode($node);
         }
-        $data = json_decode((string) json_encode($data), true);
-
-        return $data;
+        return json_decode((string) json_encode($data), true);
     }
 
     /**

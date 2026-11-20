@@ -198,8 +198,7 @@ class Curation extends Obj
             // This is important for published drafts
             if ($masterManifest) {
                 if (
-                    isset($b->params->published_editing)
-                    && isset($masterManifest->blocks->$blockId->params->published_editing)
+                    isset($b->params->published_editing, $masterManifest->blocks->$blockId->params->published_editing)
                 ) {
                     $b->params->published_editing = $masterManifest->blocks->$blockId->params->published_editing;
                 }
@@ -208,7 +207,7 @@ class Curation extends Obj
                 if (!empty($b->elements) && !empty($masterManifest->blocks->$blockId->elements)) {
                     $masterElements = $masterManifest->blocks->$blockId->elements;
                     foreach ($b->elements as $elementId => $el) {
-                        if (isset($el->params) && isset($masterElements->$elementId->params->published_editing)) {
+                        if (isset($el->params, $masterElements->$elementId->params->published_editing)) {
                             $el->params->published_editing = $masterElements->$elementId->params->published_editing;
                         }
                     }
@@ -1575,9 +1574,7 @@ class Curation extends Obj
             $this->tblHistory = new Tables\CurationHistory($this->db);
         }
 
-        $history = $this->tblHistory->getRecords($this->pub->version_id, $filters);
-
-        return $history;
+        return $this->tblHistory->getRecords($this->pub->version_id, $filters);
     }
 
     /**
@@ -1594,9 +1591,7 @@ class Curation extends Obj
             $this->tblHistory = new Tables\CurationHistory($this->db);
         }
 
-        $history = $this->tblHistory->getLastRecord($this->pub->version_id);
-
-        return $history;
+        return $this->tblHistory->getLastRecord($this->pub->version_id);
     }
 
     /**
@@ -1904,7 +1899,7 @@ class Curation extends Obj
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
         } else {
-            $bundleName = 'Publication' . '_' . $this->pub->id;
+            $bundleName = 'Publication_' . $this->pub->id;
             if ($linkName) {
                 $bundleName .= '_' . $this->pub->version->get('version_number');
             }
@@ -2174,7 +2169,7 @@ class Curation extends Obj
         // Add license information
         $objL = new Tables\License($this->db);
         if ($objL->loadLicense($this->pub->license_type) && $objL->id) {
-            $readme .= "\n " . "\n ";
+            $readme .= "\n \n ";
             $readme .= 'License: ' . "\n ";
             $readme .= $objL->title . "\n ";
 
@@ -2592,8 +2587,7 @@ class Curation extends Obj
         if (!is_dir($sftpPath)) {
             return false;
         }
-        $link = $sftpPath . '/' . $this->getBundleName(true);
-        return $link;
+        return $sftpPath . '/' . $this->getBundleName(true);
     }
 
     /**

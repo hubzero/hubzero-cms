@@ -857,15 +857,15 @@ class Newsletters extends AdminController
         $mailHeaders .= "Reply-To: {$mailReplyTo}" . "\r\n";
 
         //set mail priority
-        $mailHeaders .= "X-Priority: 3" . "\r\n";
+        $mailHeaders .= "X-Priority: 3\r\n";
         //$mailHeaders .= "X-MSMail-Priority: Normal" . "\r\n";
         //$mailHeaders .= "Importance: Normal\n";
 
         //set extra headers
         $mailHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $mailHeaders .= "X-Component: " . $this->option . "\r\n";
-        $mailHeaders .= "X-Component-Object: Campaign Mailing" . "\r\n";
-        $mailHeaders .= "X-Component-ObjectId: {{CAMPAIGN_MAILING_ID}}" . "\r\n";
+        $mailHeaders .= "X-Component-Object: Campaign Mailing\r\n";
+        $mailHeaders .= "X-Component-ObjectId: {{CAMPAIGN_MAILING_ID}}\r\n";
         //$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";
 
         //set mail args

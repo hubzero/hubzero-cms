@@ -543,7 +543,7 @@ trait Revisionable
      */
     public function pruneOldRevisions(?int $keep = null): int
     {
-        $keep = $keep ?? $this->getMaxRevisions();
+        $keep ??= $this->getMaxRevisions();
 
         if ($keep <= 0 || !$this->getPkValue()) {
             return 0;

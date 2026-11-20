@@ -253,8 +253,6 @@ class Manager
             }
         }
 
-        $stores = array_map('strtolower', $stores);
-
-        return $stores;
+        return array_map('strtolower', $stores);
     }
 }

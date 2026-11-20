@@ -780,8 +780,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'blog';
-        return $searchNamespace;
+        return 'blog';
     }
 
     /**
@@ -791,8 +790,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**
@@ -892,8 +890,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**

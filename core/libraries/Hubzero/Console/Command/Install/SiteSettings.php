@@ -240,11 +240,10 @@ class SiteSettings
         $sitename = $settings['sitename'] ?? 'myhub';
 
         $settings['sitename']  = $sitename;
-        $settings['mailfrom']  = $settings['mailfrom'] ?? 'admin@localhost';
-        $settings['live_site'] = $settings['live_site'] ?? '';
-        $settings['offset']    = $settings['offset'] ?? 'UTC';
-        $settings['MetaDesc']  = $settings['MetaDesc']
-            ?? ($sitename . ' - A Hubzero-powered hub for research and collaboration.');
+        $settings['mailfrom']  ??= 'admin@localhost';
+        $settings['live_site'] ??= '';
+        $settings['offset']    ??= 'UTC';
+        $settings['MetaDesc']  ??= ($sitename . ' - A Hubzero-powered hub for research and collaboration.');
 
         self::output("\n", $ansi);
         self::output("\e[33mSite Settings\e[39m\n", $ansi);

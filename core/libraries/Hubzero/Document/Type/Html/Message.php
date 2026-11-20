@@ -38,7 +38,7 @@ class Message extends Renderer
         // Build the sorted message list
         if (is_array($messages) && !empty($messages)) {
             foreach ($messages as $msg) {
-                if (isset($msg['type']) && isset($msg['message'])) {
+                if (isset($msg['type'], $msg['message'])) {
                     $lists[$msg['type']][] = $msg['message'];
                 }
             }

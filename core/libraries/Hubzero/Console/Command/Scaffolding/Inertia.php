@@ -34,7 +34,7 @@ class Inertia extends Scaffolding
         }
 
         $component = strtolower(trim((string) $component));
-        if (strpos($component, 'com_') === 0) {
+        if (str_starts_with($component, 'com_')) {
             $component = substr($component, 4);
         }
 
@@ -130,7 +130,7 @@ class Inertia extends Scaffolding
             return;
         }
 
-        if (!mkdir($path, 0755, true) && !is_dir($path)) {
+        if (!mkdir($path, 0o755, true) && !is_dir($path)) {
             $this->output->error('Error: unable to create directory: ' . $path);
         }
     }

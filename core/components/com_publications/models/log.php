@@ -167,7 +167,7 @@ class Log extends Model
                     if (is_file($fpath)) {
                         // Get count of unique views/accesses
                         $count = (int) $this->parseLog($pubLog, $fpath, $type);
-                        $stats['unique'][$type][$mo] = $stats['unique'][$type][$mo] + $count;
+                        $stats['unique'][$type][$mo] += $count;
 
                         // Log unique
                         $pubLog->logParsed(
@@ -182,7 +182,7 @@ class Log extends Model
 
                         // Get filtered count
                         $count = (int) $this->parseLog($pubLog, $fpath, $type, 'filtered');
-                        $stats['filtered'][$type][$mo] = $stats['filtered'][$type][$mo] + $count;
+                        $stats['filtered'][$type][$mo] += $count;
 
                         // Log filtered
                         $pubLog->logParsed(

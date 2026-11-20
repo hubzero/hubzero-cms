@@ -466,7 +466,6 @@ class Collection
 				AND c.`cActive` = 1";
 
         $db->setQuery($sql);
-        $cId = $db->loadResult();
-        return $cId;
+        return $db->loadResult();
     }
 }

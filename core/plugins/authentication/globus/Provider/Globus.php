@@ -52,7 +52,7 @@ class Globus extends AbstractProvider
      *
      * @return string
      */
-    public function getResourceOwnerDetailsUrl(AccessToken $token)
+    public function getResourceOwnerDetailsUrl(#[\SensitiveParameter] AccessToken $token)
     {
         return 'https://auth.globus.org/v2/oauth2/userinfo';
     }
@@ -123,7 +123,7 @@ class Globus extends AbstractProvider
      * @param AccessToken $token
      * @return GlobusResourceOwner
      */
-    protected function createResourceOwner(array $response, AccessToken $token)
+    protected function createResourceOwner(array $response, #[\SensitiveParameter] AccessToken $token)
     {
         return new GlobusResourceOwner($response);
     }

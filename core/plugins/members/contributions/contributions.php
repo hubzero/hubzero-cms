@@ -134,7 +134,7 @@ class Contributions extends Plugin
                     // Ensure a matching array of totals exist
                     if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) {
                         // Add to the parent category's total
-                        $cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
+                        $cats[$i]['total'] += $totals[$i][$z];
                         // Get some info for each sub-category
                         $subs[$z] = [
                             'category' => $s,
@@ -152,7 +152,7 @@ class Contributions extends Plugin
             }
 
             // Add to the overall total
-            $total = $total + intval($cats[$i]['total']);
+            $total += intval($cats[$i]['total']);
             $i++;
         }
 

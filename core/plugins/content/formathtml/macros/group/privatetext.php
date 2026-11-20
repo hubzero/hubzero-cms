@@ -92,8 +92,6 @@ class Privatetext extends GroupMacro
             $text = (string) preg_replace('/<private>(.*?)<\/private>/iusm', '', $text);
         }
 
-        $text = str_replace(['<private>', '</private>'], '', $text);
-
-        return $text;
+        return str_replace(['<private>', '</private>'], '', $text);
     }
 }

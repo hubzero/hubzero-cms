@@ -65,7 +65,7 @@ class File extends Entity
      */
     public function isImage()
     {
-        return strpos($this->getMimetype(), 'image/') !== false ? true : false;
+        return str_contains($this->getMimetype(), 'image/')  ? true : false;
     }
 
     /**

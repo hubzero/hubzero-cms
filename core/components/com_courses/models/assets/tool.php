@@ -136,7 +136,7 @@ class Tool extends Content
                     return ['error' => 'Move file failed'];
                 }
                 // Set the file permissions for the tool to be able to access it
-                chmod($target_path, 0664);
+                chmod($target_path, 0o664);
             }
         }
         $projectId = Request::getInt('project_id', 0);
@@ -179,7 +179,7 @@ class Tool extends Content
                 $identifier = urldecode($identifier);
 
                 // Keep the attached repo file inside the project repository
-                if (in_array('..', explode('/', $identifier), true) || strpos($identifier, "\0") !== false) {
+                if (in_array('..', explode('/', $identifier), true) || str_contains($identifier, "\0")) {
                     continue;
                 }
                 $filePath = $repoPath . '/' . $identifier;
@@ -246,7 +246,6 @@ class Tool extends Content
             }
 
             // Create file objects
-            $conFile = Entity::fromPath($identifier, $connection->adapter());
             /*
             if (!$conFile->isLocal())
             {
@@ -254,7 +253,7 @@ class Tool extends Content
             }
             */
             // It it doesn't have to be local (iData storage): https://mygeohub.org/support/ticket/1536#c9499
-            return $conFile;
+            return Entity::fromPath($identifier, $connection->adapter());
         }
         return false;
     }

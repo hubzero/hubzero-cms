@@ -178,7 +178,7 @@ class Component extends Obj
         $isNew = true;
 
         // Save the rules.
-        if (isset($data['params']) && isset($data['params']['rules'])) {
+        if (isset($data['params']['rules'])) {
             $rules = new \Hubzero\Access\Rules($data['params']['rules']);
             $asset = \Hubzero\Access\Asset::oneByName($data['option']);
 

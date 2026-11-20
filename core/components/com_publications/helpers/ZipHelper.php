@@ -22,9 +22,7 @@ class ZipHelper
     public static function getArchiveContents($path)
     {
         $archive  = self::getArchive($path);
-        $contents = self::parseArchiveContents($archive);
-
-        return $contents;
+        return self::parseArchiveContents($archive);
     }
 
     /**
@@ -124,9 +122,7 @@ class ZipHelper
         array_shift($pathSegments);
         array_pop($pathSegments);
 
-        $directory = implode($pathSegments);
-
-        return $directory;
+        return implode($pathSegments);
     }
 
     /**
@@ -139,8 +135,6 @@ class ZipHelper
     {
         $pathSegments = explode('/', $name);
 
-        $name = array_pop($pathSegments);
-
-        return $name;
+        return array_pop($pathSegments);
     }
 }

@@ -95,10 +95,8 @@ class Courses extends Macro
 
         // get a list of courses
         // make sure to clear in case we have more then one
-        $courses = $model->courses($filters, true);
-
         // return courses
-        return $courses;
+        return $model->courses($filters, true);
     }
 
     /**

@@ -36,7 +36,7 @@ final class Version
      *
      * @var  string
      */
-    protected static $latestVersion;
+    private static $latestVersion;
 
     /**
      * Compare the specified version string $version

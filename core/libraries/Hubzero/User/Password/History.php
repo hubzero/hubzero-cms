@@ -101,7 +101,7 @@ class History
      * @param   string|null  $since
      * @return  boolean
      */
-    public function exists($password = null, $since = null)
+    public function exists(#[\SensitiveParameter] $password = null, $since = null)
     {
         $db = App::get('db');
 

@@ -743,9 +743,7 @@ class Project
         }
 
         $db->setQuery($query);
-        $result = $db->loadColumn() ?? [];
-
-        return $result;
+        return $db->loadColumn() ?? [];
     }
 
     /**
@@ -773,8 +771,6 @@ class Project
         }
 
         $db->setQuery($query);
-        $result = $db->loadColumn() ?? [];
-
-        return $result;
+        return $db->loadColumn() ?? [];
     }
 }

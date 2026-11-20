@@ -253,7 +253,7 @@ class Database implements StepInterface
 
         // Create config directory if needed
         if (!is_dir($configDir)) {
-            if (!mkdir($configDir, 0755, true)) {
+            if (!mkdir($configDir, 0o755, true)) {
                 return false;
             }
         }

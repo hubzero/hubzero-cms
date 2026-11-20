@@ -99,10 +99,10 @@ class Router extends Base
             unset($query['view']);
 
             if ($view == 'article') {
-                if (isset($query['id']) && isset($query['catid']) && $query['catid']) {
+                if (isset($query['id'], $query['catid']) && $query['catid']) {
                     $catid = $query['catid'];
                     // Make sure we have the id and the alias
-                    if (strpos($query['id'], ':') === false) {
+                    if (!str_contains($query['id'], ':')) {
                         $db = App::get('db');
                         $db->setQuery(
                             $db
@@ -189,7 +189,7 @@ class Router extends Base
                 }
             }
 
-            if (isset($query['year']) && isset($query['month'])) {
+            if (isset($query['year'], $query['month'])) {
                 if ($menuItemGiven) {
                     $segments[] = $query['month'];
                     unset($query['month']);
@@ -268,7 +268,7 @@ class Router extends Base
         // then we assume it is a category.  If they don't we assume it is an article
         if ($count == 1) {
             // we check to see if an alias is given.  If not, we assume it is an article
-            if (strpos($segments[0], ':') === false) {
+            if (!str_contains($segments[0], ':')) {
                 $vars['view'] = 'article';
                 $id   = $segments[0];
                 //if ($id+0 == 0) // check if an alias, not an integer id

@@ -614,7 +614,7 @@ class Installer
 
         // When run through framework (index.php), use /install path
         // When run standalone, use the script directory
-        if (defined('_HZEXEC_') || strpos($_SERVER['SCRIPT_NAME'], '/index.php') !== false) {
+        if (defined('_HZEXEC_') || str_contains($_SERVER['SCRIPT_NAME'], '/index.php')) {
             return $protocol . '://' . $host . '/install';
         }
 
@@ -898,12 +898,12 @@ class Installer
 
             // Error 1045 = Access denied - server IS reachable, just need credentials
             // Error 1044 = Access denied for user - server IS reachable
-            if ($code == 1045 || $code == 1044 || strpos($msg, 'Access denied') !== false) {
+            if ($code == 1045 || $code == 1044 || str_contains($msg, 'Access denied')) {
                 return ['success' => true, 'message' => 'Server is available'];
             }
 
             // Error 2002 = Can't connect to local MySQL server through socket
-            if ($code == 2002 || strpos($msg, 'No such file') !== false) {
+            if ($code == 2002 || str_contains($msg, 'No such file')) {
                 if ($connectionType === 'socket') {
                     return ['success' => false, 'message' => 'Socket file not found or MySQL is not running'];
                 }
@@ -916,7 +916,7 @@ class Installer
             }
 
             // Connection refused
-            if (strpos($msg, 'Connection refused') !== false) {
+            if (str_contains($msg, 'Connection refused')) {
                 return ['success' => false, 'message' => 'Connection refused - MySQL may not be running on this port'];
             }
 
@@ -981,7 +981,7 @@ class Installer
         } catch (PDOException $e) {
             $msg = $e->getMessage();
 
-            if (strpos($msg, 'Access denied') !== false) {
+            if (str_contains($msg, 'Access denied')) {
                 return ['success' => false, 'message' => 'Access denied - check username and password'];
             }
 
@@ -1086,7 +1086,7 @@ class Installer
         } catch (PDOException $e) {
             $msg = $e->getMessage();
 
-            if (strpos($msg, 'Access denied') !== false) {
+            if (str_contains($msg, 'Access denied')) {
                 return ['success' => false, 'message' => 'Access denied - admin user lacks privileges'];
             }
 
@@ -1105,7 +1105,7 @@ class Installer
         $configDir = PATH_APP . '/config';
 
         if (!is_dir($configDir)) {
-            if (!mkdir($configDir, 0755, true)) {
+            if (!mkdir($configDir, 0o755, true)) {
                 return false;
             }
         }

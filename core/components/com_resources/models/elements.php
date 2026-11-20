@@ -368,9 +368,7 @@ class Elements
         }
 
         // Get the old value if exists so we can return it
-        $result = $node->{$nodes[$i]} = $value;
-
-        return $result;
+        return $node->{$nodes[$i]} = $value;
     }
 
     /**

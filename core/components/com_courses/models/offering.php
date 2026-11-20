@@ -455,7 +455,7 @@ class Offering extends Base
         ) {
             $this->manager = null;
 
-            if (isset($this->managers) && isset($this->managers[$user_id])) {
+            if (isset($this->managers, $this->managers[$user_id])) {
                 $this->manager = $this->managers[$user_id];
             } else {
                 $this->manager = Manager::getInstance(

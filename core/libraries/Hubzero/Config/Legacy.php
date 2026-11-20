@@ -282,7 +282,7 @@ class Legacy extends Registry
 
         if (is_file($file)) {
             // Track original permissions
-            $original = '0' . decoct(fileperms($file) & 0777);
+            $original = '0' . decoct(fileperms($file) & 0o777);
 
             // First try and make sure the file is writable
             @chmod($file, (int) octdec('0640'));

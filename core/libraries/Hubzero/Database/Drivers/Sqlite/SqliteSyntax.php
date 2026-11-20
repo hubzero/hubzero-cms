@@ -413,11 +413,11 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     protected function extractColumnTableRef(string $expr): ?string
     {
         $expr = trim($expr);
-        if (strpos($expr, '.') === false) {
+        if (!str_contains($expr, '.')) {
             return null;
         }
 
-        return substr($expr, 0, strpos($expr, '.'));
+        return explode('.', $expr, 2)[0];
     }
 
     /**
@@ -663,26 +663,26 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         // Apply SQLite's type affinity rules
         $upperType = strtoupper($type);
 
-        if (strpos($upperType, 'INT') !== false) {
+        if (str_contains($upperType, 'INT')) {
             return 'INTEGER';
         }
 
         if (
-            strpos($upperType, 'CHAR') !== false
-            || strpos($upperType, 'CLOB') !== false
-            || strpos($upperType, 'TEXT') !== false
+            str_contains($upperType, 'CHAR')
+            || str_contains($upperType, 'CLOB')
+            || str_contains($upperType, 'TEXT')
         ) {
             return 'TEXT';
         }
 
-        if (strpos($upperType, 'BLOB') !== false) {
+        if (str_contains($upperType, 'BLOB')) {
             return 'BLOB';
         }
 
         if (
-            strpos($upperType, 'REAL') !== false
-            || strpos($upperType, 'FLOA') !== false
-            || strpos($upperType, 'DOUB') !== false
+            str_contains($upperType, 'REAL')
+            || str_contains($upperType, 'FLOA')
+            || str_contains($upperType, 'DOUB')
         ) {
             return 'REAL';
         }

@@ -514,9 +514,7 @@ class Db2Grammar extends BaseSchemaGrammar
             // Handle both formats: ['columns' => [...]] or just [...]
             $pkColumns = isset($addPk['columns']) ? $addPk['columns'] : $addPk;
             if (is_array($pkColumns) && !empty($pkColumns)) {
-                $columns = array_map(function ($c) {
-                    return $this->wrap($c);
-                }, $pkColumns);
+                $columns = array_map($this->wrap(...), $pkColumns);
                 $statements[] = "ALTER TABLE " . $quotedTable . " ADD PRIMARY KEY (" . implode(', ', $columns) . ")";
             }
         }
@@ -548,9 +546,7 @@ class Db2Grammar extends BaseSchemaGrammar
         // 10. Add Indexes
         foreach ($builder->getAddIndexes() as $name => $index) {
             $type = (!empty($index['unique'])) ? 'UNIQUE' : '';
-            $columns = array_map(function ($c) {
-                return $this->wrap($c);
-            }, $index['columns'] ?? []);
+            $columns = array_map($this->wrap(...), $index['columns'] ?? []);
             $statements[] = "CREATE $type INDEX "
                 . $this->wrap($name) . " ON " . $quotedTable
                 . " (" . implode(', ', $columns) . ")";
@@ -558,9 +554,7 @@ class Db2Grammar extends BaseSchemaGrammar
 
         // 11. Add Fulltext Indexes (DB2 doesn't support fulltext - create as regular indexes)
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
-            $columnList = array_map(function ($c) {
-                return $this->wrap($c);
-            }, is_array($columns) ? $columns : [$columns]);
+            $columnList = array_map($this->wrap(...), is_array($columns) ? $columns : [$columns]);
             $statements[] = "CREATE INDEX "
                 . $this->wrap($name) . " ON " . $quotedTable
                 . " (" . implode(', ', $columnList) . ")";

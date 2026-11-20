@@ -102,8 +102,6 @@ class Confirm extends Button
         Behavior::framework();
 
         $message = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
-        $message = str_replace('"', '&quot;', $message);
-
-        return $message;
+        return str_replace('"', '&quot;', $message);
     }
 }

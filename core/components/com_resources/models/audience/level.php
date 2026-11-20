@@ -84,10 +84,8 @@ class Level extends Relational
      */
     public static function oneByLabel($label)
     {
-        $result = self::all()
+        return self::all()
             ->whereEquals('label', $label)
             ->row();
-
-        return $result;
     }
 }

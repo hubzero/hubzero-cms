@@ -164,9 +164,7 @@ class SolrQueryAdapter implements QueryInterface
             ->setQuery($terms)
             ->setCount(5);
         // This executes the query and returns the result
-        $spellcheckResults = $this->connection->select($scQuery)->getSpellcheck();
-
-        return $spellcheckResults;
+        return $this->connection->select($scQuery)->getSpellcheck();
     }
 
     /**
@@ -303,8 +301,7 @@ class SolrQueryAdapter implements QueryInterface
      */
     public function getFacetCount($name)
     {
-        $count = $this->resultset->getFacetSet()->getFacet($name)->getValue();
-        return $count;
+        return $this->resultset->getFacetSet()->getFacet($name)->getValue();
     }
 
     /**
@@ -316,8 +313,7 @@ class SolrQueryAdapter implements QueryInterface
      */
     public function getFacetMultiQuery($name)
     {
-        $facet = $this->query->getFacetSet()->createFacetMultiQuery($name);
-        return $facet;
+        return $this->query->getFacetSet()->createFacetMultiQuery($name);
     }
 
     /**
@@ -532,8 +528,7 @@ class SolrQueryAdapter implements QueryInterface
         $results = $this->connection->select($query);
         foreach ($results as $document) {
             foreach ($document as $field => $value) {
-                $result = $value;
-                return $result;
+                return $value;
             }
         }
 

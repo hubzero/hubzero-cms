@@ -835,9 +835,7 @@ class Sku
 
         $productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
 
-        $sku = self::getProperInstance($productType, $sId);
-
-        return $sku;
+        return self::getProperInstance($productType, $sId);
     }
 
     /**

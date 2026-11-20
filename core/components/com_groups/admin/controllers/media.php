@@ -89,7 +89,7 @@ class Media extends AdminController
         // Confine downloads to this group's own media directory
         $real = realpath(PATH_ROOT . DS . $file);
         $base = realpath($this->path);
-        if ($real === false || $base === false || strpos($real, $base . DS) !== 0) {
+        if ($real === false || $base === false || !str_starts_with($real, $base . DS)) {
             App::abort(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
         }
 

@@ -162,10 +162,8 @@ class Pages
         }
 
         // get path segments & clean up
-        $segments = array_values(array_filter($segments));
-
         // return path segments
-        return $segments;
+        return array_values(array_filter($segments));
     }
 
     /**
@@ -780,7 +778,7 @@ class Pages
 
         // if there is PHP were safe to assume its not Wiki content
         $formatHandler = '';
-        if (strpos($document, '<?php') !== false) {
+        if (str_contains($document, '<?php')) {
             $formatHandler = '<!-- {FORMAT:HTML} -->';
         }
 
@@ -790,8 +788,7 @@ class Pages
             $eval = function () use ($document) {
                 ob_start();
                 eval("?>$document<?php ");
-                $document = (string) ob_get_clean();
-                return $document;
+                return (string) ob_get_clean();
             };
             $document = $eval();
         }
@@ -854,8 +851,7 @@ class Pages
             $eval = function () use ($content) {
                 ob_start();
                 eval("?>$content<?php ");
-                $content = (string) ob_get_clean();
-                return $content;
+                return (string) ob_get_clean();
             };
             $content = $eval();
         }
@@ -875,7 +871,8 @@ class Pages
         }
 
         // output html
-        $html = '<!DOCTYPE html>
+        // return html
+        return '<!DOCTYPE html>
 				<html>
 					<head>
 						<title>' . $group->get('description') . '</title>
@@ -886,8 +883,5 @@ class Pages
 						' . $content . '
 					</body>
 				</html>';
-
-        // return html
-        return $html;
     }
 }

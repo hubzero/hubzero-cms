@@ -300,14 +300,12 @@ class Author extends Relational
      */
     public static function oneByRelationship($resource_id, $user_id)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('subid', $resource_id)
             ->whereEquals('authorid', $user_id)
             ->whereEquals('subtable', 'resources')
             ->order('ordering', 'asc')
             ->row();
-
-        return $row;
     }
 
     /**
@@ -319,14 +317,12 @@ class Author extends Relational
      */
     public static function oneByName($resource_id, $name)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('subid', $resource_id)
             ->where('authorid', '<', 0)
             ->whereEquals('subtable', 'resources')
             ->whereEquals('name', $name)
             ->order('ordering', 'asc')
             ->row();
-
-        return $row;
     }
 }

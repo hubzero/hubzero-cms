@@ -86,7 +86,7 @@ defined('_HZEXEC_') or die();
                         echo $xml->description; ?></dd>
                     <?php endif; ?>
 
-                    <?php if (isset($xml->images) && isset($xml->images->image) && !empty($xml->images->image)) : ?>
+                    <?php if (isset($xml->images->image) && !empty($xml->images->image)) : ?>
                         <dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_SCREENSHOTS'); ?></dt>
                         <dd>
                             <?php foreach ($xml->images->image as $image) : ?>

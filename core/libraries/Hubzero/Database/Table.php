@@ -581,7 +581,7 @@ abstract class Table extends \stdClass
         // Get the default values for the class from the table.
         foreach ($this->getFields() as $k => $v) {
             // If the property is not the primary key or private, reset it.
-            if ($k != $this->tableKey && (strpos($k, '_') !== 0)) {
+            if ($k != $this->tableKey && (!str_starts_with($k, '_') )) {
                 $this->$k = $v->Default;
             }
         }
@@ -1114,10 +1114,8 @@ abstract class Table extends \stdClass
             . $db->quoteName('userid')
             . ' = '
             . (int) $against);
-        $checkedOut = (bool) $db->loadResult();
-
         // If a session exists for the user then it is checked out.
-        return $checkedOut;
+        return (bool) $db->loadResult();
     }
 
     /**
@@ -1428,7 +1426,7 @@ abstract class Table extends \stdClass
             }
 
             if (count($msg)) {
-                $this->setError("noDeleteRecord" . ": " . implode(', ', $msg));
+                $this->setError("noDeleteRecord: " . implode(', ', $msg));
 
                 return false;
             } else {

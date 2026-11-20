@@ -48,12 +48,10 @@ class Billboards extends Module
 
         // Grab all the buildboards associated with the selected collection
         // Make sure we only grab published billboards
-        $rows = Billboard::all()->whereEquals('published', 1)
+        return Billboard::all()->whereEquals('published', 1)
             ->whereEquals('collection_id', $collection)
             ->order('ordering', 'asc')
             ->rows();
-
-        return $rows;
     }
 
     /**
@@ -106,7 +104,7 @@ class Billboards extends Module
         // @TODO: there should be a better way of doing this
         if ($this->pager != 'null') {
             $js_pager    = "'#{$this->pager}{$this->collection}'";
-            $this->pager = $this->pager . $this->collection;
+            $this->pager .= $this->collection;
             $pager
                 = ".slider #{$this->pager} a.activeSlide {
 					opacity:1.0;

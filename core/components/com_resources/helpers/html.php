@@ -856,7 +856,7 @@ class Html
         $html = '';
 
         switch ($resource->get('type')) {
-            # Tools
+            // Tools
             case 7:
                 $authorized = User::authorise('core.manage', 'com_tools.' . $resource->id);
 
@@ -985,7 +985,7 @@ class Html
                         );
                         $routedLurl = Route::url($lurl);
                         $newUrl = $routedLurl
-                            . (strpos($routedLurl, '?') !== false ? '&newinstance=1' : '?newinstance=1');
+                            . (str_contains($routedLurl, '?')  ? '&newinstance=1' : '?newinstance=1');
                         $html .= self::primaryButton(
                             'resumetool',
                             $resumeUrl,

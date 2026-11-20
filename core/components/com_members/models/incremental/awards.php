@@ -65,7 +65,7 @@ class Awards
     public function __construct($profile)
     {
         $this->profile = $profile;
-        $this->uid = is_integer($profile) ? $profile : (int) $this->profile->get('uidNumber');
+        $this->uid = is_int($profile) ? $profile : (int) $this->profile->get('uidNumber');
         self::getDbh();
         do {
             $columns = [

@@ -32,13 +32,13 @@ class Converter
                 $originalUrl = $matches[1];
 
                 // Skip anchor-only or javascript links
-                if (strpos($originalUrl, '#') === 0 || stripos($originalUrl, 'javascript:') === 0) {
+                if (str_starts_with($originalUrl, '#')  || stripos($originalUrl, 'javascript:') === 0) {
                     return $matches[0];
                 }
                 $host = parse_url($originalUrl);
                 if (!$host || !isset($host['host'])) {
                     $newTag =  $matches[0];
-                } elseif (strpos($host['host'], $_SERVER['HTTP_HOST']) !== false) {
+                } elseif (str_contains($host['host'], $_SERVER['HTTP_HOST'])) {
                     $newTag =  $matches[0];
                 } elseif (in_array($host['host'], $whitelist) !== false) {
                     $newTag =  $matches[0];
@@ -70,7 +70,6 @@ class Converter
     public static function encode($originalUrl)
     {
         $encoded = urlencode(base64_encode($originalUrl));
-        $newHref = Route::url('index.php?option=com_redirect&id=' . $encoded);
-        return $newHref;
+        return Route::url('index.php?option=com_redirect&id=' . $encoded);
     }
 }

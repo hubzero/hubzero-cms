@@ -60,7 +60,7 @@ class Warnings extends AdminController
                 'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_PHPUPLOADNOTSETDESC'),
             ];
         } else {
-            if (!is_writeable($upload_dir)) {
+            if (!is_writable($upload_dir)) {
                 $messages[] = [
                     'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_PHPUPLOADNOTWRITEABLE'),
                     'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_PHPUPLOADNOTWRITEABLEDESC', $upload_dir),
@@ -75,7 +75,7 @@ class Warnings extends AdminController
                 'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTSETDESC'),
             ];
         } else {
-            if (!is_writeable($tmp_path)) {
+            if (!is_writable($tmp_path)) {
                 $messages[] = [
                     'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLE'),
                     'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLEDESC', $tmp_path),

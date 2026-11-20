@@ -138,11 +138,9 @@ class Asset extends Nested
      */
     public static function oneByName($name)
     {
-        $model = self::all()
+        return self::all()
             ->whereEquals('name', $name)
             ->row();
-
-        return $model;
     }
 
     /**

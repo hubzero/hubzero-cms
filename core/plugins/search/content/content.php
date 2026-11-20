@@ -30,7 +30,7 @@ class Content extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
@@ -69,7 +69,7 @@ class Content extends Plugin
 			state = 1 AND
 			(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down)
 			AND $weight > 0"
-            . ' AND ' . join(' AND ', $addtl_where)
+            . ' AND ' . implode(' AND ', $addtl_where)
         . " ORDER BY $weight DESC";
 
         $sql = new \Components\Search\Models\Basic\Result\Sql($query);
@@ -171,8 +171,7 @@ class Content extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__content;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

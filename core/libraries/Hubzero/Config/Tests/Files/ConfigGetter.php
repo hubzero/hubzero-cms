@@ -10,7 +10,7 @@ class ConfigGetter
      */
     public function getConfig()
     {
-        $config = [
+        return [
             'app' => [
                 'application_env' => 'development',
                 'editor' => 'ckeditor',
@@ -34,8 +34,6 @@ class ConfigGetter
                 'sitename_pagetitles' => '0',
             ],
         ];
-
-        return $config;
     }
 }
 // @codeCoverageIgnoreEnd

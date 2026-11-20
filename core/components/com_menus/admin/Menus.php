@@ -35,7 +35,7 @@ class Menus extends AbstractComponent
 
         // Determine task
         $task = Request::getCmd('task');
-        if (strpos($task, '.') !== false) {
+        if (str_contains($task, '.')) {
             $splitTask = explode('.', $task);
             Request::setVar('task', $splitTask[1]);
         }

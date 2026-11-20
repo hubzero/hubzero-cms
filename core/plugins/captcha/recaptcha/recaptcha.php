@@ -162,7 +162,6 @@ class Recaptcha extends Plugin
         }
 
         // Cut the last '&'
-        $req = substr($req, 0, strlen($req) - 1);
-        return $req;
+        return substr($req, 0, strlen($req) - 1);
     }
 }

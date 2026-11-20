@@ -338,11 +338,11 @@ class Certificate extends Base
 
         foreach ($this->properties()->elements as $element) {
             // Convert pixel values to percents
-            $element->x = $element->x / $this->properties()->width;
-            $element->y = $element->y / $this->properties()->height;
+            $element->x /= $this->properties()->width;
+            $element->y /= $this->properties()->height;
 
-            $element->w = $element->w / $this->properties()->width;
-            $element->h = $element->h / $this->properties()->height;
+            $element->w /= $this->properties()->width;
+            $element->h /= $this->properties()->height;
 
             $val = '';
             switch ($element->id) {

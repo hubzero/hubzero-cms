@@ -431,13 +431,13 @@ use Hubzero\System\Requirements;
     {
         // Filter out unwanted lines
         if ($event === 'output') {
-            if (strpos($data, 'Use the `composer fund` command') !== false) {
+            if (str_contains($data, 'Use the `composer fund` command')) {
                 return;
             }
-            if (strpos($data, 'vendor/bin/phpcs" --config-set installed_paths') !== false) {
+            if (str_contains($data, 'vendor/bin/phpcs" --config-set installed_paths')) {
                 return;
             }
-            if (strpos($data, 'Using config file:') !== false && strpos($data, 'CodeSniffer.conf') !== false) {
+            if (str_contains($data, 'Using config file:')  && str_contains($data, 'CodeSniffer.conf')) {
                 return;
             }
         }

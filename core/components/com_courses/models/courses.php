@@ -158,9 +158,7 @@ class Courses extends Obj
             $results = [];
         }
 
-        $courses = new Iterator($results);
-
-        return $courses;
+        return new Iterator($results);
     }
 
     /**

@@ -352,9 +352,7 @@ class Arr
         self::$sortKey       = (array) $k;
         self::$sortLocale    = $locale;
 
-        usort($a, function ($a, $b) {
-            return static::compareObjects($a, $b);
-        });
+        usort($a, static::compareObjects(...));
 
         self::$sortCase      = null;
         self::$sortDirection = null;
@@ -450,11 +448,9 @@ class Arr
      */
     public static function filterKeys($unfiltered, $whitelist)
     {
-        $filtered = array_filter($unfiltered, function ($key) use ($whitelist) {
+        return array_filter($unfiltered, function ($key) use ($whitelist) {
             return in_array($key, $whitelist);
         }, ARRAY_FILTER_USE_KEY);
-
-        return $filtered;
     }
 
     /**

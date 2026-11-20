@@ -139,7 +139,7 @@ class MenuItem extends Element
                         }
                     }
 
-                    $disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
+                    $disable = str_contains($node->attributes('disable'), $item->type)  ? true : false;
                     $options[] = Select::option($item->id, '&#160;&#160;&#160;'
                         . $item->treename, 'value', 'text', $disable);
                 }

@@ -300,7 +300,7 @@ class EventsDate
         }
 
         $century = floor($year / 100);
-        $year = $year % 100;
+        $year %= 100;
 
         if ($month > 2) {
             $month -= 3;

@@ -728,7 +728,7 @@ class AdminUser
      * @param   string  $password  Plain text password
      * @return  string  Hashed password in {CRYPT} format
      **/
-    private static function hashPassword($password)
+    private static function hashPassword(#[\SensitiveParameter] $password)
     {
         // Eight hex characters between the markers, which is the shape the
         // hub's own password code writes and the only one it reads back

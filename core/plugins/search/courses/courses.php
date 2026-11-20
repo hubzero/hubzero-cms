@@ -31,7 +31,7 @@ class Courses extends Plugin
         $authorization = 'state = 1';
 
         $terms = $request->getTermAr();
-        $weight = '(match(c.alias, c.title, c.blurb) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $weight = '(match(c.alias, c.title, c.blurb) against (\'' . implode(' ', $terms['stemmed']) . '\'))';
         $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(c.title LIKE '%$mand%' OR c.blurb LIKE '%$mand%')";
@@ -54,7 +54,7 @@ class Courses extends Plugin
 			WHERE
 				$authorization AND
 				$weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : ''),
         );
         $rows = $rows->toAssociative();
 
@@ -182,8 +182,7 @@ class Courses extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__courses;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

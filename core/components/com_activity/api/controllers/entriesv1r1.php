@@ -211,7 +211,7 @@ class Entriesv1r1 extends ApiController
         }
 
         if ($filters['scope']) {
-            if (strpos($filters['scope'], '*') !== false) {
+            if (str_contains($filters['scope'], '*')) {
                 if ($filters['scope'] == '*') {
                     // They want all scopes so don't apply any query filter
                 } else {

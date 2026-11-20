@@ -64,8 +64,6 @@ class Message extends Relational
         $content = str_replace('#XXX', '#' . $ticket_id, $content);
         $content = str_replace('{ticket#}', (string) $ticket_id, $content);
         $content = str_replace('{sitename}', Config::get('sitename'), $content);
-        $content = str_replace('{siteemail}', Config::get('mailfrom'), $content);
-
-        return $content;
+        return str_replace('{siteemail}', Config::get('mailfrom'), $content);
     }
 }

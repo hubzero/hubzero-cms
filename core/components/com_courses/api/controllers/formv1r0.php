@@ -61,7 +61,7 @@ class Formv1r0 extends Base
         $filename = urldecode($filename);
 
         // Keep the request within the form image directory
-        if (strpos($filename, '..') !== false) {
+        if (str_contains($filename, '..')) {
             App::abort(404, 'Image not found');
         }
         $filename = PATH_APP

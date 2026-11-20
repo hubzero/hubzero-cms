@@ -340,7 +340,7 @@ if (User::authorise('core.manage', 'com_menus')) {
         if ($menuType->home == 0) {
             $titleicon = '';
         } elseif ($menuType->home == 1 && $menuType->language == '*') {
-            $titleicon = ' <span class="home" title="' . Lang::txt('MOD_MENU_HOME_DEFAULT') . '">' . '*' . '</span>';
+            $titleicon = ' <span class="home" title="' . Lang::txt('MOD_MENU_HOME_DEFAULT') . '">*</span>';
         } elseif ($menuType->home > 1) {
             $titleicon = ' <span class="home multiple" title="' . Lang::txt('MOD_MENU_HOME_MULTIPLE') . '">'
                 . $menuType->home . '</span>';

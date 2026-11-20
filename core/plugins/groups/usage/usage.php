@@ -467,7 +467,7 @@ class Usage extends Plugin
             }
         }
 
-        $script = "
+        return "
 			google.charts.load('current', {
 				packages:['corechart']
 			});
@@ -518,8 +518,6 @@ class Usage extends Plugin
 				}).observe(chartEl, {childList: true, subtree: true, attributes: true});
 				chart.draw(data, options);
 			}";
-
-        return $script;
     }
 
     /**
@@ -534,13 +532,11 @@ class Usage extends Plugin
             return 0;
         }
 
-        $total = \Components\Blog\Models\Entry::all()
+        return \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $gid)
             ->where('state', '!=', \Components\Blog\Models\Entry::STATE_DELETED)
             ->total();
-
-        return $total;
     }
 
     /**

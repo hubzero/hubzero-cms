@@ -30,7 +30,7 @@ class Groups extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(g.cn, g.description, g.public_desc) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(g.cn, g.description, g.public_desc) AGAINST (\'' . implode(' ', $terms['stemmed']) . '\')';
 
         $from = '';
 
@@ -58,7 +58,7 @@ class Groups extends Plugin
 			FROM `#__xgroups` g $from
 			WHERE
 				(g.type = 1 OR g.type = 3) AND g.published=1 AND g.approved=1 AND g.discoverability = 0 AND $weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         ));
     }
@@ -162,8 +162,7 @@ class Groups extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT gidNumber FROM #__xgroups WHERE type=1 OR type=3;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

@@ -77,12 +77,11 @@ class UpdateTimezoneDatabase extends Base
                 return false;
             }
 
-            $return = [
+            return [
                 'success' => false,
                 'message' => "Insufficient privileges to update timezone tables. "
                     . "Try running with: sudo muse migration run",
             ];
-            return $return;
         }
 
         // MariaDB 10.5 renamed the converter; older servers have only the old name
@@ -113,10 +112,10 @@ class UpdateTimezoneDatabase extends Base
 
             if (
                 $s == ''
-                || strpos($s, 'Riyadh') !== false
-                || strpos($s, 'zone.tab') !== false
-                || strpos($s, 'iso3166.tab') !== false
-                || strpos($s, 'Local time zone must be set') !== false
+                || str_contains($s, 'Riyadh')
+                || str_contains($s, 'zone.tab')
+                || str_contains($s, 'iso3166.tab')
+                || str_contains($s, 'Local time zone must be set')
             ) {
                 continue;
             }
@@ -124,12 +123,10 @@ class UpdateTimezoneDatabase extends Base
             try {
                 $this->db->setQuery($s)->execute();
             } catch (\Exception $e) {
-                $return = [
+                return [
                     'success' => false,
                     'message' => $e->getMessage(),
                 ];
-
-                return $return;
             }
         }
 

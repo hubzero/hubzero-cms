@@ -120,7 +120,7 @@ $updated = $curatorStatus->updated
 
 $elementUrl = Route::url(
     $this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId
-        . '&move=continue' . '&el=' . $this->elementId . '#' . $elName,
+        . '&move=continue&el=' . $this->elementId . '#' . $elName,
 );
 ?>
 

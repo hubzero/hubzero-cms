@@ -83,7 +83,7 @@ class Menu extends Module
         $levels = User::getAuthorisedViewLevels();
         asort($levels);
 
-        $key = 'mod_menu.' . 'menu_items' . $params . implode(',', $levels) . '.' . ($active ? $active->id : 0);
+        $key = 'mod_menu.menu_items' . $params . implode(',', $levels) . '.' . ($active ? $active->id : 0);
 
         if (!($items = Cache::get($key))) {
             // Initialise variables.
@@ -175,8 +175,8 @@ class Menu extends Module
 
 
                         case 'url':
-                            $isInternalLink = (strpos($item->link, 'index.php?') === 0);
-                            $hasNoItemid = (strpos($item->link, 'Itemid=') === false);
+                            $isInternalLink = (str_starts_with($item->link, 'index.php?') );
+                            $hasNoItemid = (!str_contains($item->link, 'Itemid=') );
                             if ($isInternalLink && $hasNoItemid) {
                                 // If this is an internal link, ensure the Itemid is set.
                                 $item->flink = $item->link . '&Itemid=' . $item->id;
@@ -194,7 +194,7 @@ class Menu extends Module
                     }
 
                     $isNotHttp = strcasecmp(substr($item->flink, 0, 4), 'http');
-                    $hasIndexPhp = (strpos($item->flink, 'index.php?') !== false);
+                    $hasIndexPhp = (str_contains($item->flink, 'index.php?') );
                     if ($isNotHttp && $hasIndexPhp) {
                         $item->flink = Route::url($item->flink, true, $item->params->get('secure'));
                     } else {

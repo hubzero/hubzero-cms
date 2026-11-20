@@ -79,7 +79,7 @@ $this->css('jquery.colpick.css', 'system');
 
 
 // Include media tracking
-if (isset($this->entityId) && isset($this->entityType)) {
+if (isset($this->entityId, $this->entityType)) {
     // Get tracking for this user for this resource
     $tracking = Components\System\Models\Mediatracking::oneByUserAndObject(
         $this->entityId,
@@ -100,12 +100,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
         $redirect = Request::current(true);
 
         // do we have tmpl=component in url?
-        $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+        $delimeter = (!str_contains($redirect, '?') ) ? '?' : '&';
         if (Request::getCmd('tmpl', '') == 'component') {
             $redirect .= $delimeter . 'tmpl=component';
         }
 
-        $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+        $delimeter = (!str_contains($redirect, '?') ) ? '?' : '&';
 
         // Append current position to redirect
         $redirect .= $delimeter . 'time=' . gmdate("H:i:s", (int) $tracking->current_position);

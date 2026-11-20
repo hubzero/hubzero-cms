@@ -412,7 +412,7 @@ class Git extends Models\Adapter
         }
 
         if (!$this->get('remote')) {
-            if (Filesystem::makeDirectory($file->get('fullPath'), 0755, true, true)) {
+            if (Filesystem::makeDirectory($file->get('fullPath'), 0o755, true, true)) {
                 $this->checkin($params);
                 return true;
             }
@@ -758,7 +758,7 @@ class Git extends Models\Adapter
 
         if ($git == false && $working == true) {
             $gitUsage = $this->getDiskUsage();
-            $used = $used - $gitUsage;
+            $used -= $gitUsage;
         }
 
         return $used;

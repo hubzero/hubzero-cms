@@ -129,8 +129,7 @@ $isEmpty = $noFilters && !$rows->count();
                         <?php } elseif (!isset($this->filters['year']) || !$this->filters['year']) { ?>
                             <?php echo Lang::txt('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
                         <?php } elseif (
-                            isset($this->filters['year'])
-                            && isset($this->filters['month'])
+                            isset($this->filters['year'], $this->filters['month'])
                             && $this->filters['month'] == 0
 ) { ?>
                             <?php echo Lang::txt('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->filters['year']); ?>
@@ -323,65 +322,63 @@ $isEmpty = $noFilters && !$rows->count();
                 <div class="container blog-entries-years">
                     <h4><?php echo Lang::txt('PLG_GROUPS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
                     <ol>
-                        <?php { ?>
-                            <?php
-                                $start = intval(substr($first->get('publish_up'), 0, 4));
-                                $now = date("Y");
-                            ?>
-                            <?php for ($i = $now, $n = $start; $i >= $n; $i--) { ?>
-                                <li>
-                                    <a href="<?php echo Route::url($base . '&scope=' . $i); ?>">
-                                        <?php echo $i; ?>
-                                    </a>
-                                    <?php
-                                    $isSelectedYear = $this->filters['year'] && $i == $this->filters['year'];
-                                    $isCurrentYear = !$this->filters['year'] && $i == $now;
-                                    ?>
-                                    <?php if ($isSelectedYear || $isCurrentYear) { ?>
-                                        <ol>
+                        <?php
+                            $start = intval(substr($first->get('publish_up'), 0, 4));
+                            $now = date("Y");
+                        ?>
+                        <?php for ($i = $now, $n = $start; $i >= $n; $i--) { ?>
+                            <li>
+                                <a href="<?php echo Route::url($base . '&scope=' . $i); ?>">
+                                    <?php echo $i; ?>
+                                </a>
+                                <?php
+                                $isSelectedYear = $this->filters['year'] && $i == $this->filters['year'];
+                                $isCurrentYear = !$this->filters['year'] && $i == $now;
+                                ?>
+                                <?php if ($isSelectedYear || $isCurrentYear) { ?>
+                                    <ol>
+                                        <?php
+                                            $m = [
+                                                'PLG_GROUPS_BLOG_JANUARY',
+                                                'PLG_GROUPS_BLOG_FEBRUARY',
+                                                'PLG_GROUPS_BLOG_MARCH',
+                                                'PLG_GROUPS_BLOG_APRIL',
+                                                'PLG_GROUPS_BLOG_MAY',
+                                                'PLG_GROUPS_BLOG_JUNE',
+                                                'PLG_GROUPS_BLOG_JULY',
+                                                'PLG_GROUPS_BLOG_AUGUST',
+                                                'PLG_GROUPS_BLOG_SEPTEMBER',
+                                                'PLG_GROUPS_BLOG_OCTOBER',
+                                                'PLG_GROUPS_BLOG_NOVEMBER',
+                                                'PLG_GROUPS_BLOG_DECEMBER',
+                                            ];
+                                            if ($i == $now) {
+                                                $months = date("m");
+                                            } else {
+                                                $months = 12;
+                                            }
+                                            ?>
+                                        <?php for ($k = 0, $z = $months; $k < $z; $k++) { ?>
                                             <?php
-                                                $m = [
-                                                    'PLG_GROUPS_BLOG_JANUARY',
-                                                    'PLG_GROUPS_BLOG_FEBRUARY',
-                                                    'PLG_GROUPS_BLOG_MARCH',
-                                                    'PLG_GROUPS_BLOG_APRIL',
-                                                    'PLG_GROUPS_BLOG_MAY',
-                                                    'PLG_GROUPS_BLOG_JUNE',
-                                                    'PLG_GROUPS_BLOG_JULY',
-                                                    'PLG_GROUPS_BLOG_AUGUST',
-                                                    'PLG_GROUPS_BLOG_SEPTEMBER',
-                                                    'PLG_GROUPS_BLOG_OCTOBER',
-                                                    'PLG_GROUPS_BLOG_NOVEMBER',
-                                                    'PLG_GROUPS_BLOG_DECEMBER',
-                                                ];
-                                                if ($i == $now) {
-                                                    $months = date("m");
-                                                } else {
-                                                    $months = 12;
-                                                }
-                                                ?>
-                                            <?php for ($k = 0, $z = $months; $k < $z; $k++) { ?>
-                                                <?php
-                                                $monthNum = $k + 1;
-                                                $activeClass = '';
-                                                if ($this->filters['month'] && $this->filters['month'] == $monthNum) {
-                                                    $activeClass = ' class="active"';
-                                                }
-                                                $monthUrl = Route::url(
-                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum),
-                                                );
-                                                ?>
-                                                <li>
-                                                    <a<?php echo $activeClass; ?>
-                                                        href="<?php echo $monthUrl; ?>">
-                                                        <?php echo Lang::txt($m[$k]); ?>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                        </ol>
-                                    <?php } ?>
-                                </li>
-                            <?php } ?>
+                                            $monthNum = $k + 1;
+                                            $activeClass = '';
+                                            if ($this->filters['month'] && $this->filters['month'] == $monthNum) {
+                                                $activeClass = ' class="active"';
+                                            }
+                                            $monthUrl = Route::url(
+                                                $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum),
+                                            );
+                                            ?>
+                                            <li>
+                                                <a<?php echo $activeClass; ?>
+                                                    href="<?php echo $monthUrl; ?>">
+                                                    <?php echo Lang::txt($m[$k]); ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ol>
+                                <?php } ?>
+                            </li>
                         <?php } ?>
                     </ol>
                 </div>

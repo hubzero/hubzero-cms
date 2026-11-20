@@ -211,7 +211,7 @@ class SecurityGuard
             return true;
         }
 
-        return strpos($realPath, $realDocRoot . '/') === 0;
+        return str_starts_with($realPath, $realDocRoot . '/') ;
     }
 
     /**
@@ -271,7 +271,7 @@ class SecurityGuard
             return false;
         }
 
-        return @mkdir($dir, 0700, true);
+        return @mkdir($dir, 0o700, true);
     }
 
     /**
@@ -284,13 +284,13 @@ class SecurityGuard
         $dir = $this->getStorageDir();
 
         if (!is_dir($dir)) {
-            if (!@mkdir($dir, 0700, true)) {
+            if (!@mkdir($dir, 0o700, true)) {
                 return false;
             }
         }
 
         // Add protections if inside docroot
-        if (strpos($dir, $this->docRoot) === 0) {
+        if (str_starts_with($dir, $this->docRoot)) {
             $this->ensureStorageDirProtected($dir);
         }
 
@@ -306,7 +306,7 @@ class SecurityGuard
     private function ensureStorageDirProtected(string $dir): void
     {
         if (!is_dir($dir)) {
-            @mkdir($dir, 0700, true);
+            @mkdir($dir, 0o700, true);
         }
 
         // .htaccess for Apache
@@ -398,7 +398,7 @@ class SecurityGuard
      * @param  string  $secret
      * @return bool
      */
-    private function saveSecretToPhpFile(string $file, string $secret): bool
+    private function saveSecretToPhpFile(string $file, #[\SensitiveParameter] string $secret): bool
     {
         $content = "<?php\n";
         $content .= "/**\n";
@@ -415,7 +415,7 @@ class SecurityGuard
         $result = file_put_contents($file, $content);
 
         if ($result !== false) {
-            chmod($file, 0600);
+            chmod($file, 0o600);
         }
 
         return $result !== false;
@@ -820,7 +820,7 @@ class SecurityGuard
                 if (!empty($_SERVER[$header])) {
                     // X-Forwarded-For may contain multiple IPs, get the first
                     $ip = $_SERVER[$header];
-                    if (strpos($ip, ',') !== false) {
+                    if (str_contains($ip, ',')) {
                         $ip = trim(explode(',', $ip)[0]);
                     }
                     if (filter_var($ip, FILTER_VALIDATE_IP)) {
@@ -964,7 +964,7 @@ class SecurityGuard
 
         // Read and verify file contents contain the fingerprint
         $contents = (string) file_get_contents($filePath);
-        if (strpos($contents, $storedFingerprint) === false) {
+        if (!str_contains($contents, $storedFingerprint)) {
             $this->clearVerification();
             return [
                 'valid' => false,
@@ -1188,7 +1188,7 @@ class SecurityGuard
      * @param  string|null  $token
      * @return bool
      */
-    public function validateCsrfToken(?string $token): bool
+    public function validateCsrfToken(#[\SensitiveParameter] ?string $token): bool
     {
         $stored = $_SESSION[self::SESSION_PREFIX . 'csrf_token'] ?? '';
         return $token !== null && hash_equals($stored, $token);
@@ -1205,7 +1205,7 @@ class SecurityGuard
     {
         $logDir = $this->docRoot . '/app/logs';
         if (!is_dir($logDir)) {
-            @mkdir($logDir, 0755, true);
+            @mkdir($logDir, 0o755, true);
         }
 
         $logFile = $logDir . '/install-security.log';
@@ -1341,7 +1341,7 @@ class SecurityGuard
     private function extractHostname(string $host): string
     {
         // Handle IPv6 addresses in brackets [::1]
-        if (strpos($host, '[') === 0) {
+        if (str_starts_with($host, '[')) {
             $closeBracket = strpos($host, ']');
             if ($closeBracket !== false) {
                 return substr($host, 0, $closeBracket + 1);

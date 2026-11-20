@@ -167,9 +167,7 @@ class Filters
         }
 
         // Distil down the results to only unique filters
-        $filters = array_map('unserialize', array_unique(array_map('serialize', $filters)));
-
-        return $filters;
+        return array_map('unserialize', array_unique(array_map('serialize', $filters)));
     }
 
     /**

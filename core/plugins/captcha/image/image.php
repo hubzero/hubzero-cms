@@ -331,7 +331,7 @@ class Image extends Plugin
                     if ($newcolor > 255) {
                         $newcolor = 255;
                     }
-                    $newcolor = $newcolor / 255;
+                    $newcolor /= 255;
                     $newcolor0 = 1 - $newcolor;
 
                     $newred   = $newcolor0 * $foreground_color[0] + $newcolor * $background_color[0];
@@ -350,7 +350,7 @@ class Image extends Plugin
         $security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
         //Set the session to store the security code
-        App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
+        App::get('session')->set('securiy_code' . Request::getInt('instanceNo'), $security_code);
         $width = 120;
         $height = 40;
 
@@ -388,7 +388,7 @@ class Image extends Plugin
         $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));
 
         // Set the session to store the security code
-        App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
+        App::get('session')->set('securiy_code' . Request::getInt('instanceNo'), $security_code);
 
         $width = 120;
         $height = 40;

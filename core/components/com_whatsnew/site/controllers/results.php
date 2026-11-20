@@ -75,7 +75,7 @@ class Results extends SiteController
             $searchstring = strtolower($period);
             foreach ($areas as $c => $t) {
                 $regexp = '/' . $c . ':/';
-                if (strpos($searchstring, $c . ':') !== false) {
+                if (str_contains($searchstring, $c . ':')) {
                     // We found an active category
                     // NOTE: this will override any category sent in the querystring
                     $area = $c;
@@ -88,7 +88,7 @@ class Results extends SiteController
                     // It does - loop through them and perform the same check
                     foreach ($t as $sc => $st) {
                         $regexp = '/' . $sc . ':/';
-                        if (strpos($searchstring, $sc . ':') !== false) {
+                        if (str_contains($searchstring, $sc . ':')) {
                             // We found an active category
                             // NOTE: this will override any category sent in the querystring
                             $area = $sc;
@@ -160,7 +160,7 @@ class Results extends SiteController
                         && isset($totals[$i][$z])
                     ) {
                         // Add to the parent category's total
-                        $cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
+                        $cats[$i]['total'] += $totals[$i][$z];
                         // Get some info for each sub-category
                         $subs[$z] = [
                             'category' => $s,
@@ -272,7 +272,7 @@ class Results extends SiteController
             $searchstring = strtolower($period);
             foreach ($areas as $c => $t) {
                 $regexp = '/' . $c . ':/';
-                if (strpos($searchstring, $c . ':') !== false) {
+                if (str_contains($searchstring, $c . ':')) {
                     // We found an active category
                     // NOTE: this will override any category sent in the querystring
                     $area = $c;
@@ -285,7 +285,7 @@ class Results extends SiteController
                     // It does - loop through them and perform the same check
                     foreach ($t as $sc => $st) {
                         $regexp = '/' . $sc . ':/';
-                        if (strpos($searchstring, $sc . ':') !== false) {
+                        if (str_contains($searchstring, $sc . ':')) {
                             // We found an active category
                             // NOTE: this will override any category sent in the querystring
                             $area = $sc;

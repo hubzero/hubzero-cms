@@ -226,7 +226,7 @@ class Media extends AdminController
         // As deletefileTask: normalizePath() does not strip '..', and this is a
         // recursive delete. buildUploadPath() now refuses a traversing listdir
         // or subdir; this covers the folder name itself.
-        if (strpos($folder, '..') !== false) {
+        if (str_contains($folder, '..')) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
             $this->displayTask();
 
@@ -291,7 +291,7 @@ class Media extends AdminController
         }
 
         // Keep the target within the upload directory
-        if (strpos($file, '..') !== false) {
+        if (str_contains($file, '..')) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_FILE_NOT_FOUND'));
             $this->displayTask();
 

@@ -90,8 +90,7 @@ class Sliders
 
         if (!array_key_exists($group, $loaded)) {
             $loaded[$group] = true;
-            $display = (isset($params['startOffset'])
-                && isset($params['startTransition'])
+            $display = (isset($params['startOffset'], $params['startTransition'])
                 && $params['startTransition'])
                 ? (int) $params['startOffset']
                 : null;

@@ -1127,7 +1127,7 @@ class Db2DriverTest extends AbstractDriverTestCase
             $this->assertCount(0, $items);
         } catch (\PDOException $e) {
             // Expected pdo_ibm limitation with empty whereIn and DECIMAL columns
-            if (strpos($e->getMessage(), 'SQL0420N') !== false || strpos($e->getMessage(), 'DECFLOAT') !== false) {
+            if (str_contains($e->getMessage(), 'SQL0420N')  || str_contains($e->getMessage(), 'DECFLOAT')) {
                 $this->addToAssertionCount(1); // Empty whereIn with DECIMAL columns triggers known pdo_ibm limitation
             } else {
                 throw $e;

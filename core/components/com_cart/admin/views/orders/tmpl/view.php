@@ -180,7 +180,7 @@ $this
                                         . $itemInfo->pId,
                                 ) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName))
                                 . '</a>';
-                            $product .= ', ' . '<a href="'
+                            $product .= ', <a href="'
                                 . Route::url(
                                     'index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId,
                                 ) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku))
@@ -226,7 +226,7 @@ $this
 
         $genericNotesLabel = '';
         if (!empty($notes)) {
-            $genericNotesLabel = '<strong>' . 'Other notes/comments' . '</strong>';
+            $genericNotesLabel = '<strong>Other notes/comments</strong>';
         }
 
         if ($this->tInfo->tiNotes) {

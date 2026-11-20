@@ -42,7 +42,7 @@ $paths = [];
 foreach (array_slice($argv, 1) as $arg) {
     if ($arg === '--quiet') {
         $quiet = true;
-    } elseif (strpos($arg, '--max=') === 0) {
+    } elseif (str_starts_with($arg, '--max=')) {
         $max = (int) substr($arg, 6);
     } elseif ($arg === '--help' || $arg === '-h') {
         fwrite(STDOUT, "usage: php core/bin/lint/undefined-language-keys.php [--quiet] [--max=N] [path ...]\n\n"
@@ -73,7 +73,7 @@ $definedKeys = function ($root) {
             new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
-            if ($file->getExtension() !== 'ini' || strpos($file->getPathname(), '/language/') === false) {
+            if ($file->getExtension() !== 'ini' || !str_contains($file->getPathname(), '/language/')) {
                 continue;
             }
             foreach (file($file->getPathname(), FILE_IGNORE_NEW_LINES) ?: [] as $line) {
@@ -148,7 +148,7 @@ foreach ($paths as $spec) {
             new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
-            if ($file->getExtension() === 'php' && strpos($file->getPathname(), '/vendor/') === false) {
+            if ($file->getExtension() === 'php' && !str_contains($file->getPathname(), '/vendor/')) {
                 $files[] = $file->getPathname();
             }
         }

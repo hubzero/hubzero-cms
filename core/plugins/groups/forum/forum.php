@@ -410,8 +410,7 @@ class Forum extends Plugin
             $blog = '/groups/' . $this->group->get('cn') . '/forum';
 
             if ($path == $blog) {
-                $path = [];
-                return $path;
+                return [];
             }
 
             $path = ltrim($path, DS);
@@ -2191,15 +2190,11 @@ class Forum extends Plugin
      */
     protected function loadExistingUsers($userIds)
     {
-        $users = array_map(function ($userId) {
-            return User::getInstance($userId);
-        }, $userIds);
+        $users = array_map(User::getInstance(...), $userIds);
 
-        $existingUsers = array_filter($users, function ($user) {
+        return array_filter($users, function ($user) {
             return ($user->get('id') && !$user->get('block') && $user->get('approved') > 0);
         });
-
-        return $existingUsers;
     }
 
     /**

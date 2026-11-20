@@ -357,7 +357,7 @@ class Loader
         $default  = $layout;
         $explicit = false;
 
-        if (strpos($layout, ':') !== false) {
+        if (str_contains($layout, ':')) {
             // Get the template and file name from the string
             $temp = explode(':', $layout);
 

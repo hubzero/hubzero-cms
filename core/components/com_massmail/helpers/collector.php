@@ -62,10 +62,10 @@ class PostfixCollector
      */
     protected static function isExternalSent($line)
     {
-        if (strpos($line, 'status=sent') === false) {
+        if (!str_contains($line, 'status=sent')) {
             return false;
         }
-        if (strpos($line, 'relay=local') !== false || strpos($line, 'relay=virtual') !== false) {
+        if (str_contains($line, 'relay=local')  || str_contains($line, 'relay=virtual')) {
             return false;
         }
         return true;

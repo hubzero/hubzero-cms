@@ -224,7 +224,7 @@ class Ftp implements AdapterInterface
      * @param   string  $password
      * @return  $this  $this
      */
-    public function setPassword($password)
+    public function setPassword(#[\SensitiveParameter] $password)
     {
         $this->password = $password;
 
@@ -538,7 +538,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function makeDirectory($path, $mode = 0755, $recursive = true, $force = false)
+    public function makeDirectory($path, $mode = 0o755, $recursive = true, $force = false)
     {
         $result = false;
 
@@ -654,9 +654,7 @@ class Ftp implements AdapterInterface
     public function isDirectory($directory)
     {
         $result = @ftp_chdir($this->getConnection(), $directory);
-        $result = $result ? true : false;
-
-        return $result;
+        return $result ? true : false;
     }
 
     /**
@@ -679,9 +677,7 @@ class Ftp implements AdapterInterface
     public function isFile($file)
     {
         $result = @ftp_chdir($this->getConnection(), $file);
-        $result = $result ? false : true;
-
-        return $result;
+        return $result ? false : true;
     }
 
     /**

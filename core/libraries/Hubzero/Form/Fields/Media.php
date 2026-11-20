@@ -152,7 +152,7 @@ class Media extends Field
 
         // The button.
         $html[] = '	<span class="input-cell">';
-        $html[] = '		<a class="button modal" title="' . $lang->txt('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
+        $html[] = '		<a class="button modal" title="' . $lang->txt('JLIB_FORM_BUTTON_SELECT') . '" href="'
             . ($element['readonly']
             ? ''
             : ($link
@@ -164,7 +164,7 @@ class Media extends Field
         $html[] = '	</span>';
 
         $html[] = '	<span class="input-cell">';
-        $html[] = '		<a class="button" title="' . $lang->txt('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
+        $html[] = '		<a class="button" title="' . $lang->txt('JLIB_FORM_BUTTON_CLEAR') . '" href="#" onclick="';
         $html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
         $html[] = 'return false;';
         $html[] = '">';

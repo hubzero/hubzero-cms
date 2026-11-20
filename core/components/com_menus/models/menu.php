@@ -126,11 +126,9 @@ class Menu extends Relational
      */
     public function modules()
     {
-        $query = Module::all()
+        return Module::all()
             ->whereEquals('module', 'mod_menu')
             ->whereLike('params', '"menutype":' . json_encode($this->get('menutype')));
-
-        return $query;
     }
 
     /**
@@ -442,10 +440,8 @@ class Menu extends Relational
      */
     public static function oneByMenutype($menutype)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('menutype', $menutype)
             ->row();
-
-        return $row;
     }
 }

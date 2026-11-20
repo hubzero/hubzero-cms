@@ -62,9 +62,7 @@ class SubscriptionsHelper
 			left join #__user_profile_fields pf on es.profile_field_name = pf.name
 			left join #__user_profiles up on pf.name = up.profile_key and up.user_id = $userId;");
 
-        return array_map(function ($sub) {
-            return $this->subToMap($sub);
-        }, $this->db->loadObjectList());
+        return array_map($this->subToMap(...), $this->db->loadObjectList());
     }
 
     /**

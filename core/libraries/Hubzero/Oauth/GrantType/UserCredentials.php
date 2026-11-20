@@ -137,8 +137,12 @@ class UserCredentials implements GrantTypeInterface
      * @param   string  $scope        Client application scope
      * @return  array<mixed>  Access token
      */
-    public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
-    {
+    public function createAccessToken(
+        #[\SensitiveParameter] AccessTokenInterface $accessToken,
+        $client_id,
+        $user_id,
+        $scope,
+    ) {
         return $accessToken->createAccessToken($client_id, $user_id, $scope);
     }
 }

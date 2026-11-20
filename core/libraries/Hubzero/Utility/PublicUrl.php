@@ -47,7 +47,7 @@ class PublicUrl
             || !isset($parts['scheme'], $parts['host'])
             || !in_array(strtolower($parts['scheme']), $schemes, true)
             || isset($parts['user']) || isset($parts['pass'])
-            || strpos($url, '\\') !== false
+            || str_contains($url, '\\')
             || preg_match('#^[^:]*://[^/?\#]*@#', $url)
         ) {
             return false;
@@ -76,7 +76,7 @@ class PublicUrl
         }
 
         $literal   = (bool) filter_var($host, FILTER_VALIDATE_IP);
-        $authority = ($literal && strpos($host, ':') !== false) ? '[' . $host . ']' : $host;
+        $authority = ($literal && str_contains($host, ':') ) ? '[' . $host . ']' : $host;
 
         $fetch = $scheme . '://' . $authority . (isset($parts['port']) ? ':' . $port : '')
             . (isset($parts['path']) && $parts['path'] !== '' ? $parts['path'] : '/')
@@ -137,7 +137,7 @@ class PublicUrl
         $curl = curl_version() ?: [];
 
         usort($addresses, function ($a, $b) {
-            return (strpos($a, ':') !== false) - (strpos($b, ':') !== false);
+            return (str_contains($a, ':') ) - (str_contains($b, ':') );
         });
 
         if (version_compare($curl['version'], '7.59.0', '<')) {
@@ -147,7 +147,7 @@ class PublicUrl
         $brackets = version_compare($curl['version'], '7.57.0', '>=');
 
         foreach ($addresses as $k => $address) {
-            $addresses[$k] = ($brackets && strpos($address, ':') !== false) ? '[' . $address . ']' : $address;
+            $addresses[$k] = ($brackets && str_contains($address, ':') ) ? '[' . $address . ']' : $address;
         }
 
         return $host . ':' . $port . ':' . implode(',', $addresses);

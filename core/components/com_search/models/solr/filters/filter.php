@@ -80,8 +80,7 @@ class Filter extends Relational
      */
     public function transformParams()
     {
-        $params = new Registry($this->get('params'));
-        return $params;
+        return new Registry($this->get('params'));
     }
 
     /**
@@ -136,8 +135,7 @@ class Filter extends Relational
      */
     public function getQueryName()
     {
-        $name = str_replace(' ', '_', $this->field);
-        return $name;
+        return str_replace(' ', '_', $this->field);
     }
 
     /**

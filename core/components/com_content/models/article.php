@@ -330,11 +330,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function categories()
     {
-        $categories = Category::all()
+        return Category::all()
             ->whereEquals('extension', 'com_content')
             ->whereIn('published', [0, 1])
             ->order('lft', 'asc');
-        return $categories;
     }
 
     /**
@@ -717,8 +716,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**
@@ -740,8 +738,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'content';
-        return $searchNamespace;
+        return 'content';
     }
 
     /**
@@ -751,8 +748,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**
@@ -765,7 +761,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $page = new stdClass();
         $path = $this->category->path;
 
-        if (strpos((string) $path, 'uncategorized') === false && strpos((string) $path, 'uncategorised') === false) {
+        if (!str_contains((string) $path, 'uncategorized')  && !str_contains((string) $path, 'uncategorised')) {
             $url = $path . '/' . $this->alias;
         } else {
             $url = $this->alias;

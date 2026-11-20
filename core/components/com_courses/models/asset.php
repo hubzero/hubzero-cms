@@ -102,7 +102,7 @@ class Asset extends Base
             $this->set('publish_down', $tbl->get('publish_down', ''));
 
             return $tbl->get($property, $default);
-        } elseif (strpos($property, '.') !== false) {
+        } elseif (str_contains($property, '.')) {
             $parts = explode('.', $property);
             if (array_key_exists($parts[0], self::$auxTablekeys)) {
                 $tbl = $this->auxTable($parts[0]);
@@ -440,11 +440,11 @@ class Asset extends Base
         // "file" parameter cannot traverse out and read arbitrary files.
         // realpath() is false for a missing file too, so this is also the
         // existence check -- and the message never echoes the server path.
-        $allowedBase = realpath(PATH_APP . (strpos($base_path, DS) === 0 ? '' : DS) . $base_path);
+        $allowedBase = realpath(PATH_APP . (str_starts_with($base_path, DS)  ? '' : DS) . $base_path);
         $resolved    = realpath($filename);
         if (
             $allowedBase === false || $resolved === false || !is_file($resolved)
-            || strpos($resolved . DS, rtrim($allowedBase, DS) . DS) !== 0
+            || !str_starts_with($resolved . DS, rtrim($allowedBase, DS) . DS)
         ) {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
         }
@@ -610,7 +610,7 @@ class Asset extends Base
 
             // Make sure upload directory exists and is writable
             if (!is_dir($uploadDirectory)) {
-                if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)) {
+                if (!Filesystem::makeDirectory($uploadDirectory, 0o755, true)) {
                     Log::debug(var_export('Server error. Unable to create upload directory', true));
                     return ['error' => 'Server error. Unable to create upload directory'];
                 }
@@ -643,8 +643,7 @@ class Asset extends Base
         $handlerName = $this->get('type');
         $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
         if (is_a($handlerClassString, Assets\Handler::class, true)) {
-            $handlerModel = new $handlerClassString($this->db);
-            return $handlerModel;
+            return new $handlerClassString($this->db);
         }
         return false;
     }

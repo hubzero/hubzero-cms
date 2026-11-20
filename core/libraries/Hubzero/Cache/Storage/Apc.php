@@ -143,7 +143,7 @@ class Apc extends None
         $allinfo = apcu_cache_info() ?: [];
 
         foreach ($allinfo['cache_list'] as $key) {
-            if (strpos($key['info'], $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
+            if (str_starts_with($key['info'], $hash . '-cache-' . $group . '-')) { // xor $mode != 'group')
                 apcu_delete($key['info']);
             }
         }
@@ -163,7 +163,7 @@ class Apc extends None
 
         foreach ($allinfo['cache_list'] as $key) {
             // Fetching an expired entry is what removes it
-            if (strpos($key['info'], $hash . '-cache-') === 0) {
+            if (str_starts_with($key['info'], $hash . '-cache-')) {
                 apcu_fetch($key['info']);
             }
         }

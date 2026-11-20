@@ -619,9 +619,7 @@ class Wishlist extends Relational
                 unset($arr[$key]);
             }
         }
-        $arr  = array_unique($arr);
-
-        return $arr;
+        return array_unique($arr);
     }
 
     /**

@@ -263,7 +263,7 @@ class Media extends SiteController
         }
 
         // Keep the target within the resource media directory
-        if (strpos($file, '..') !== false) {
+        if (str_contains($file, '..')) {
             $this->setError(Lang::txt('FILE_NOT_FOUND'));
             $this->displayTask();
 

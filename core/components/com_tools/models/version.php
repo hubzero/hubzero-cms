@@ -417,9 +417,7 @@ class Version
         }
 
         $db->setQuery("SELECT instance FROM #__tool_version WHERE $where_clause;");
-        $result = $db->loadColumn();
-
-        return $result;
+        return $db->loadColumn();
     }
 
     /**
@@ -1185,8 +1183,7 @@ class Version
                 . " LIMIT 1";
         }
         $db->setQuery($query);
-        $result = $db->loadResult();
-        return $result;
+        return $db->loadResult();
     }
 
     /**

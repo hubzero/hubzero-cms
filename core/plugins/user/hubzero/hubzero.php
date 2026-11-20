@@ -865,7 +865,7 @@ class Hubzero extends Plugin
      * @param   string $secret   User secret
      * @return  boolean True if secret column successfully populated in database
      */
-    protected function saveUserSecret($userId, $secret)
+    protected function saveUserSecret($userId, #[\SensitiveParameter] $secret)
     {
         $query = App::get('db')->getQuery();
 

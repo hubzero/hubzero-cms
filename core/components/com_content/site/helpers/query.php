@@ -154,12 +154,10 @@ class Query
             $join = '';
         }
 
-        $results = [
+        return [
             'select' => $select,
             'join'   => $join,
         ];
-
-        return $results;
     }
 
     /**

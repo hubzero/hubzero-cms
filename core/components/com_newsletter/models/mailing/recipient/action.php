@@ -66,12 +66,10 @@ class Action extends Relational
      */
     public static function oneForMailingAndEmail($mailingid, $email, $action)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('mailingid', $mailingid)
             ->whereEquals('email', $email)
             ->whereEquals('action', $action)
             ->row();
-
-        return $row;
     }
 }

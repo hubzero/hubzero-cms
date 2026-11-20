@@ -46,7 +46,7 @@ class Migration20150626201931Core extends Base
                 return false;
             }
         } elseif (!is_dir($old) && !is_dir($new)) {
-            if (!mkdir($new, 0775)) {
+            if (!mkdir($new, 0o775)) {
                 $this->setError(
                     'Unable to create new site directory (there was no old site directory).',
                     'warning',
@@ -97,7 +97,7 @@ class Migration20150626201931Core extends Base
                 return false;
             }
         } elseif (!is_dir($old) && !is_dir($new)) {
-            if (!mkdir($new, 0775)) {
+            if (!mkdir($new, 0o775)) {
                 $this->setError(
                     'Unable to create new site directory (there was no old site directory).',
                     'warning',

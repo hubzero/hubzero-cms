@@ -66,8 +66,7 @@ class BaseSubscription
                 . ' AND c.`uidNumber` = ' . $this->db->quote($this->uId);
         $this->db->setQuery($sql);
 
-        $membershipInfo = $this->db->loadAssoc();
-        return $membershipInfo;
+        return $this->db->loadAssoc();
     }
 
     /**

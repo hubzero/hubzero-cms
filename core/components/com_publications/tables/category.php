@@ -115,7 +115,7 @@ class Category extends Table
                 break;
         }
 
-        if (isset($filters['start']) && isset($filters['limit'])) {
+        if (isset($filters['start'], $filters['limit'])) {
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 

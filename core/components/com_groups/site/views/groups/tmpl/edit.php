@@ -64,7 +64,7 @@ $referrer = Request::getString("HTTP_REFERER", "", "SERVER");
 
 //check to make sure referrer is a valid url
 //check to make sure the referrer is a link within the HUB
-if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false) :
+if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || !str_contains($referrer, $host)) :
     $link = Route::url('index.php?option=' . $this->option);
 else :
         $link = $referrer;

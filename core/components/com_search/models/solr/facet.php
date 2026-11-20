@@ -75,8 +75,7 @@ class Facet extends Relational
      */
     public function getQueryName()
     {
-        $name = str_replace(' ', '_', $this->name);
-        return $name;
+        return str_replace(' ', '_', $this->name);
     }
 
     /**

@@ -2349,7 +2349,7 @@ class Resources extends SiteController
 
                 App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
             }
-        } elseif (strpos($resource_path, '/') !== false) {
+        } elseif (str_contains($resource_path, '/')) {
             // Not using a protected directory, we
             // need the base to be the directory the main
             // file is in so we can download supporting peer
@@ -2763,7 +2763,7 @@ class Resources extends SiteController
      */
     protected function readfileChunked($filename, $retbytes = true)
     {
-        $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
+        $chunksize = 1024 * 1024; // How many bytes per chunk
         $buffer = '';
         $cnt = 0;
         $handle = fopen($filename, 'rb');

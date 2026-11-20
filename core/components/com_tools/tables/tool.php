@@ -175,7 +175,7 @@ class Tool extends Table
         $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, "
             . "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
             . " FROM " . $this->buildQuery($filters, $admin);
-        if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0) {
+        if (isset($filters['start'], $filters['limit']) && $filters['limit'] > 0) {
             $sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
@@ -509,7 +509,7 @@ class Tool extends Table
             'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
             'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
             'resource_modified' => (
-                isset($toolinfo[0]) && isset($toolinfo[0]->rmodified)
+                isset($toolinfo[0]->rmodified)
                 && $toolinfo[0]->rmodified && $toolinfo[0]->rmodified != '0000-00-00 00:00:00'
                 && isset($version[0]) && $version[0]->fulltxt != ''
             ) ? 1 : 0,

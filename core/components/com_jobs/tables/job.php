@@ -404,7 +404,6 @@ class Job extends Table
 
         $this->db->setQuery($sql);
         $result = $this->db->loadObjectList();
-        $result = $result ? $result[0] : null;
-        return $result;
+        return $result ? $result[0] : null;
     }
 }

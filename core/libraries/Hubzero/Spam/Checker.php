@@ -116,9 +116,7 @@ class Checker
             $this->mark($id, $spam, $msg);
         }
 
-        $result = new Result($failure > 0, $messages);
-
-        return $result;
+        return new Result($failure > 0, $messages);
     }
 
     /**

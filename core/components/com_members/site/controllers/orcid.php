@@ -74,7 +74,7 @@ class Orcid extends SiteController
      * @param   string  $orcid
      * @return  array<mixed>
      */
-    private function getUserName($orcid, $token)
+    private function getUserName($orcid, #[\SensitiveParameter] $token)
     {
         $srv = $this->config->get('orcid_service', 'members');
         $url = Request::scheme() . '://' . $this->services[$srv] . '/v2.0/' . $orcid . '/person';
@@ -493,7 +493,7 @@ class Orcid extends SiteController
         $output->message = '';
 
         $srv = $this->config->get('orcid_service', 'members');
-        $url = Request::scheme() . '://' . $this->services[$srv] . '/v1.2' . '/orcid-profile';
+        $url = Request::scheme() . '://' . $this->services[$srv] . '/v1.2/orcid-profile';
 
         $tkn = $this->config->get('orcid_' . $srv . '_token');
 
@@ -688,7 +688,7 @@ class Orcid extends SiteController
      *
      * @return  void
      */
-    public static function saveORCIDToCollaboratorTable($name, $orcid, $accessToken)
+    public static function saveORCIDToCollaboratorTable($name, $orcid, #[\SensitiveParameter] $accessToken)
     {
 
         $row = Collaborator::oneByName($name);

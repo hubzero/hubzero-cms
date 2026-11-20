@@ -49,8 +49,6 @@ class Sql extends Base
             $dir = '/var/log/hubzero-cms';
         }
 
-        $path = $dir . '/sql.log';
-
-        return $path;
+        return $dir . '/sql.log';
     }
 }

@@ -1131,7 +1131,7 @@ class Git extends Obj
                 $content = $binary ? null : $this->gitLog($name, $hash, 'content');
 
                 // SFTP?
-                if (strpos($message, '[SFTP]') !== false) {
+                if (str_contains($message, '[SFTP]')) {
                     $profile = User::getInstance(trim($author));
                     if ($profile->get('id')) {
                         $author = $profile->get('name');

@@ -91,23 +91,23 @@ class Vendor
 
             // Filter out composer fund advertisement lines
             if (
-                strpos($plainLine, 'composer fund') !== false
-                || strpos($plainLine, 'are looking for funding') !== false
+                str_contains($plainLine, 'composer fund')
+                || str_contains($plainLine, 'are looking for funding')
             ) {
                 continue;
             }
 
             // Add blank line before certain lines for readability
             if (
-                strpos($plainLine, 'Generating autoload') !== false
-                || strpos($plainLine, 'Using config file:') !== false
-                || strpos($plainLine, 'Nothing to install') !== false
+                str_contains($plainLine, 'Generating autoload')
+                || str_contains($plainLine, 'Using config file:')
+                || str_contains($plainLine, 'Nothing to install')
             ) {
                 echo "\n";
             }
 
             // Remove "> " prefix from script output lines
-            if (strpos($plainLine, '> ') === 0) {
+            if (str_starts_with($plainLine, '> ')) {
                 $line = preg_replace('/^(\e\[[0-9;]*m)?> /', '$1', $line);
             }
 
@@ -115,8 +115,8 @@ class Vendor
 
             // Add blank line after "Package operations:" and "Generating autoload" for readability
             if (
-                strpos($plainLine, 'Package operations:') !== false
-                || strpos($plainLine, 'Generating autoload') !== false
+                str_contains($plainLine, 'Package operations:')
+                || str_contains($plainLine, 'Generating autoload')
             ) {
                 echo "\n";
             }

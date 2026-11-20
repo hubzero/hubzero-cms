@@ -74,7 +74,6 @@ class Googledrive extends Plugin
         $path = end($path);
         $client->setAccessToken($accessToken);
         $service = new \Google_Service_Drive($client);
-        $adapter = new GoogleDriveAdapter($service, $path);
-        return $adapter;
+        return new GoogleDriveAdapter($service, $path);
     }
 }

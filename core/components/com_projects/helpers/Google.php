@@ -37,8 +37,7 @@ class Google extends Obj
 
         try {
             // Patch remote file
-            $resource = $apiService->files->get($id);
-            return $resource;
+            return $apiService->files->get($id);
         } catch (Exception $e) {
             return false;
         }
@@ -1335,9 +1334,7 @@ class Google extends Obj
         $ext   = count($parts) > 1 ? array_pop($parts) : '';
         $parts[] = $importExt;
 
-        $result = implode('.', $parts);
-
-        return $result;
+        return implode('.', $parts);
     }
 
     /**
@@ -1380,7 +1377,7 @@ class Google extends Obj
      */
     public static function getGoogleConversionExts()
     {
-        $formats = [
+        return [
             'doc',
             'docx',
             'html',
@@ -1402,8 +1399,6 @@ class Google extends Obj
             'pdf',
             'tex',
         ];
-
-        return $formats;
     }
 
     /**
@@ -1413,7 +1408,7 @@ class Google extends Obj
      */
     public static function getGoogleNativeExts()
     {
-        $formats = [
+        return [
             'gdoc',
             'gsheet',
             'gslides',
@@ -1424,8 +1419,6 @@ class Google extends Obj
             'glink',
             'gvp',
         ];
-
-        return $formats;
     }
 
     /**

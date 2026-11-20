@@ -397,9 +397,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function aclusers()
     {
-        $result = AclUser::listUsers($this->get('id'));
-
-        return $result;
+        return AclUser::listUsers($this->get('id'));
     }
 
     /**
@@ -409,9 +407,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function aclgroups()
     {
-        $result = AclGroup::listGroups($this->get('id'));
-
-        return $result;
+        return AclGroup::listGroups($this->get('id'));
     }
 
     /**
@@ -741,9 +737,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function transformPath()
     {
-        $path = stripslashes($this->get('path'));
-
-        return $path;
+        return stripslashes($this->get('path'));
     }
 
     /**
@@ -921,9 +915,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         $content = Html::content('prepare', $content);
 
-        $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-
-        return $content;
+        return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
     }
 
     /**
@@ -1506,7 +1498,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public static function getInstance($id, $revision = null)
     {
-        if (is_integer($id)) {
+        if (is_int($id)) {
             $result = self::oneOrNew($id);
         } else {
             $result = self::oneByAlias($id);
@@ -1669,8 +1661,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         $description = $this->description . ' ' . $this->introtext;
         $description = html_entity_decode($description);
-        $description = \Hubzero\Utility\Sanitize::stripAll($description);
-        return $description;
+        return \Hubzero\Utility\Sanitize::stripAll($description);
     }
 
     /**
@@ -1744,8 +1735,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchNamespace()
     {
-        $searchNamespace = 'resource';
-        return $searchNamespace;
+        return 'resource';
     }
 
     /**
@@ -1755,8 +1745,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchId()
     {
-        $searchId = self::searchNamespace() . '-' . $this->id;
-        return $searchId;
+        return self::searchNamespace() . '-' . $this->id;
     }
 
     /**
@@ -1826,7 +1815,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             ? $fields['publicationdate']
             : $publicationDate;
         if (strlen($publicationDate) == 4) {
-            $publicationDate = $publicationDate . '-01-01 00:00:00';
+            $publicationDate .= '-01-01 00:00:00';
             $publicationDate = Date::of($publicationDate)->format($solrDateFormat);
         }
 
@@ -1864,8 +1853,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public static function searchTotal()
     {
-        $total = self::all()->total();
-        return $total;
+        return self::all()->total();
     }
 
     /**

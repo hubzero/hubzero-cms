@@ -86,7 +86,7 @@ class Help extends Button
      */
     public function fetchId()
     {
-        return $this->parentOrFail()->getName() . '-' . 'help';
+        return $this->parentOrFail()->getName() . '-help';
     }
 
     /**
@@ -102,10 +102,9 @@ class Help extends Button
     {
         // Get Help URL
         $url = self::createURL($ref, $com, (string) $override, $component);
-        $url = htmlspecialchars($url, ENT_QUOTES);
         //$cmd = "Hubzero.popupWindow('$url', '" . Lang::txt('JHELP', true) . "', 700, 500, 1)";
 
-        return $url; //$cmd;
+        return htmlspecialchars($url, ENT_QUOTES); //$cmd;
     }
 
     /**
@@ -211,8 +210,6 @@ class Help extends Button
             }
         }
 
-        $url = str_replace($search, $replace, $url);
-
-        return $url;
+        return str_replace($search, $replace, $url);
     }
 }

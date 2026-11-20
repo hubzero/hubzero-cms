@@ -279,8 +279,7 @@ class Mozify extends Obj
      */
     private function mozifyEndMsoHack()
     {
-        $msoHack = '<!--[if mso]>*/</style><![endif]-->';
-        return $msoHack;
+        return '<!--[if mso]>*/</style><![endif]-->';
     }
 
     /**

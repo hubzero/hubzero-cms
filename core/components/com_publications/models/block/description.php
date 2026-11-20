@@ -354,8 +354,7 @@ class Description extends Base
         // Get block element model
         $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
-        $status = $elModel->getStatus($element->type, $element, $pub);
-        return $status;
+        return $elModel->getStatus($element->type, $element, $pub);
     }
 
     /**

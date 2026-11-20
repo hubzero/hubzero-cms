@@ -144,9 +144,7 @@ class Token
         $rv = bin2hex((string) pack("C", $version))
             . bin2hex((string) pack("C", $action))
             . bin2hex((string) $encrypted);
-        $rv = substr($rv, 0, 36);
-
-        return $rv;
+        return substr($rv, 0, 36);
     }
 
     /**

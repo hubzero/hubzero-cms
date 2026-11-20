@@ -41,7 +41,7 @@ class BundleBuilderTest extends Basic
     {
         $this->builder = new BundleBuilder();
         $this->root    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'bb_removestage_' . uniqid('', true);
-        mkdir($this->root, 0775, true);
+        mkdir($this->root, 0o775, true);
     }
 
     /**
@@ -185,14 +185,14 @@ class BundleBuilderTest extends Basic
 
         // Real source the build would read from.
         $src = $this->root . $ds . 'src';
-        mkdir($src . $ds . 'sub', 0775, true);
+        mkdir($src . $ds . 'sub', 0o775, true);
         file_put_contents($src . $ds . 'a.txt', 'AAA');
         file_put_contents($src . $ds . 'sub' . $ds . 'b.txt', 'BBB');
 
         // Staging tree: real dirs holding file symlinks to the sources, plus a
         // DIRECTORY symlink to the whole source dir (the dangerous case).
         $stage = $this->root . $ds . 'D.zip.stage.' . getmypid();
-        mkdir($stage . $ds . 'DOI' . $ds . 'data' . $ds . 'sub', 0775, true);
+        mkdir($stage . $ds . 'DOI' . $ds . 'data' . $ds . 'sub', 0o775, true);
         symlink($src . $ds . 'a.txt', $stage . $ds . 'DOI' . $ds . 'data' . $ds . 'a.txt');
         symlink($src . $ds . 'sub' . $ds . 'b.txt', $stage . $ds . 'DOI' . $ds . 'data' . $ds . 'sub' . $ds . 'b.txt');
         symlink($src, $stage . $ds . 'DOI' . $ds . 'dlink');
@@ -219,7 +219,7 @@ class BundleBuilderTest extends Basic
     {
         $ds  = DIRECTORY_SEPARATOR;
         $src = $this->root . $ds . 'realdir';
-        mkdir($src, 0775, true);
+        mkdir($src, 0o775, true);
         file_put_contents($src . $ds . 'keep.txt', 'KEEP');
 
         $link = $this->root . $ds . 'linkdir';
@@ -253,7 +253,7 @@ class BundleBuilderTest extends Basic
     {
         $ds    = DIRECTORY_SEPARATOR;
         $stage = $this->root . $ds . 'X.zip.stage.' . getmypid();
-        mkdir($stage . $ds . 'a' . $ds . 'b', 0775, true);
+        mkdir($stage . $ds . 'a' . $ds . 'b', 0o775, true);
         file_put_contents($stage . $ds . 'a' . $ds . 'stray.txt', 'x');
         file_put_contents($stage . $ds . 'a' . $ds . 'b' . $ds . 'deep.txt', 'y');
 
@@ -397,7 +397,7 @@ class BundleBuilderTest extends Basic
         $ds     = DIRECTORY_SEPARATOR;
         $target = $this->root . $ds . 'served.zip';
         $link   = $this->root . $ds . 'ftp' . $ds . 'DOI.zip';
-        mkdir(dirname($link), 0775, true);
+        mkdir(dirname($link), 0o775, true);
         file_put_contents($target, 'BUNDLE');
 
         $this->assertTrue($this->linkInto($target, $link));

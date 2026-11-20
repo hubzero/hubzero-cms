@@ -563,7 +563,7 @@ class SqliteGrammar extends BaseSchemaGrammar
             $currentIndexes = $this->driver->getTableIndexList($table);
 
             foreach ($currentIndexes as $index) {
-                if (strpos($index->name, 'sqlite_autoindex_') === 0) {
+                if (str_starts_with($index->name, 'sqlite_autoindex_')) {
                     continue;
                 }
 

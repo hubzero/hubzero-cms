@@ -126,7 +126,7 @@ class Request
     {
         $dbh = \App::get('db');
 
-        $stemmed = $dbh->escape(join(' ', $this->term_ar['stemmed']));
+        $stemmed = $dbh->escape(implode(' ', $this->term_ar['stemmed']));
         $weight = 'match(t.raw_tag, t.description) against (\'' . $stemmed . '\')';
 
         $addtl_where = [];
@@ -152,7 +152,7 @@ class Request
 			FROM `#__tags` t
 			WHERE
 				$weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
             . " ORDER BY $weight DESC",
         );
         $this->tags = $tags->toAssociative();
@@ -165,7 +165,7 @@ class Request
         if ($tag_ids) {
             $dbh = App::get('db');
             $dbh->setQuery(
-                'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')',
+                'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . implode(',', $tag_ids) . ')',
             );
             foreach ($dbh->loadAssocList() ?? [] as $row) {
                 if (!array_key_exists($row['tbl'], $this->object_tags)) {

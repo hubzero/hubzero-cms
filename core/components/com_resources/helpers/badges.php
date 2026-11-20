@@ -88,11 +88,9 @@ class Badges
     protected function parseBadgesString($newBadgesString)
     {
         $rawTagNames = explode(',', $newBadgesString);
-        $rawTagNames = array_map(function ($rawTagName) {
+        return array_map(function ($rawTagName) {
             return trim($rawTagName);
         }, $rawTagNames);
-
-        return $rawTagNames;
     }
 
     /**
@@ -107,7 +105,7 @@ class Badges
     {
         $nameFormatter = Tag::blank();
 
-        $ids = array_map(function ($rawTagName) use ($nameFormatter, $taggerId, $admin) {
+        return array_map(function ($rawTagName) use ($nameFormatter, $taggerId, $admin) {
             $tagName = $nameFormatter->normalize($rawTagName);
             $tag = Tag::oneByTag($tagName);
 
@@ -117,8 +115,6 @@ class Badges
 
             return $tag->get('id');
         }, $rawTagNames);
-
-        return $ids;
     }
 
     /**
@@ -142,9 +138,7 @@ class Badges
         ];
         $tag->set($tagData);
 
-        $saved = $tag->save();
-
-        return $saved;
+        return $tag->save();
     }
 
     /**
@@ -252,12 +246,10 @@ class Badges
             ->whereEquals('objectid', $this->scopeId)
             ->whereEquals('label', self::LABEL)
             ->rows()->toArray();
-        $badges = array_map(function ($badgeId) {
+        return array_map(function ($badgeId) {
             $badgeId = $badgeId['tagid'];
             return Tag::one($badgeId);
         }, $badgeIds);
-
-        return $badges;
     }
 
     /**
@@ -290,8 +282,6 @@ class Badges
         foreach ($badges as $badge) {
             $output .= $badge->raw_tag . ', ';
         }
-        $output = rtrim($output, ', ');
-
-        return $output;
+        return rtrim($output, ', ');
     }
 }

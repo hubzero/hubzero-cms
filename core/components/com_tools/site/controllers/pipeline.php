@@ -576,7 +576,7 @@ class Pipeline extends SiteController
                 $path = DS . 'site/protected';
                 if (is_dir(PATH_APP . $path)) {
                     $log  = 'By: ' . User::get('name') . ' (' . User::get('username') . ') ' . "\n";
-                    $log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
+                    $log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ') - ' . $hztv->instance . "\n";
                     $log .= 'Time : ' . date('c') . "\n";
                     $log .= 'Reason for closed source: ' . "\n";
                     $log .= $reason . "\n";
@@ -1834,8 +1834,7 @@ class Pipeline extends SiteController
         // see what changed
         if ($oldstuff != $newstuff) {
             if (
-                isset($oldstuff['toolname'])
-                && isset($newstuff['toolname'])
+                isset($oldstuff['toolname'], $newstuff['toolname'])
                 && $oldstuff['toolname'] != $newstuff['toolname']
             ) {
                 $rowc->changelog()->changed(
@@ -1911,8 +1910,7 @@ class Pipeline extends SiteController
                 $summary .= strtolower(Lang::txt('COM_TOOLS_WIKI_ACCESS'));
             }
             if (
-                isset($oldstuff['vncGeometry'])
-                && isset($newstuff['vncGeometry'])
+                isset($oldstuff['vncGeometry'], $newstuff['vncGeometry'])
                 && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']
             ) {
                 $rowc->changelog()->changed(
@@ -1924,8 +1922,7 @@ class Pipeline extends SiteController
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VNC_GEOMETRY'));
             }
             if (
-                isset($oldstuff['developers'])
-                && isset($newstuff['developers'])
+                isset($oldstuff['developers'], $newstuff['developers'])
                 && $oldstuff['developers'] != $newstuff['developers']
             ) {
                 $rowc->changelog()->changed(

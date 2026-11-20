@@ -228,7 +228,7 @@ abstract class Cart
             $sql .= " ORDER BY `tLastUpdated` DESC";
         }
 
-        if (isset($filters['limit']) && isset($filters['start']) && empty($filters['count'])) {
+        if (isset($filters['limit'], $filters['start']) && empty($filters['count'])) {
             $sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
         }
 
@@ -566,7 +566,7 @@ abstract class Cart
      * @param   int|string|false     $tId    Transaction ID
      * @return  bool
      */
-    public static function verifySecurityToken($token, $tId)
+    public static function verifySecurityToken(#[\SensitiveParameter] $token, $tId)
     {
         if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
@@ -771,8 +771,7 @@ abstract class Cart
             return false;
         }
 
-        $transactionInfo = $db->loadObject();
-        return $transactionInfo;
+        return $db->loadObject();
     }
 
     /**

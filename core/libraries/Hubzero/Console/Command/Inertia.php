@@ -137,11 +137,11 @@ class Inertia extends Base implements CommandInterface
         $warnings = [];
         $lower = strtolower($contents);
 
-        $hasInertiaBehavior = strpos($lower, "behavior('inertia") !== false
-            || strpos($lower, 'behavior("inertia') !== false;
-        $hasRootNode = strpos($contents, 'inertiaRootNode(') !== false
-            || strpos($contents, 'Inertia::renderRootNode(') !== false
-            || strpos($lower, 'data-page=') !== false;
+        $hasInertiaBehavior = str_contains($lower, "behavior('inertia")
+            || str_contains($lower, 'behavior("inertia') ;
+        $hasRootNode = str_contains($contents, 'inertiaRootNode(')
+            || str_contains($contents, 'Inertia::renderRootNode(')
+            || str_contains($lower, 'data-page=') ;
         if ($hasInertiaBehavior && !$hasRootNode) {
             $warnings[] = [
                 'file' => $file,

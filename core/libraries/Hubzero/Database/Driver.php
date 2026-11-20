@@ -588,7 +588,7 @@ abstract class Driver implements LoggerAwareInterface
             return;
         }
 
-        $now = $now ?? microtime(true);
+        $now ??= microtime(true);
 
         foreach (self::$instances as $signature => $instance) {
             if (!$instance instanceof self) {
@@ -766,8 +766,8 @@ abstract class Driver implements LoggerAwareInterface
         if ($resetInstances) {
             $instanceOptions = $options;
             $instanceOptions['soft_close'] = $softCloseInstances;
-            $instanceOptions['flush_query_state'] = $instanceOptions['flush_query_state'] ?? false;
-            $instanceOptions['flush_relational_state'] = $instanceOptions['flush_relational_state'] ?? false;
+            $instanceOptions['flush_query_state'] ??= false;
+            $instanceOptions['flush_relational_state'] ??= false;
             $nonPersistentSignatures = [];
 
             foreach (self::$instances as $signature => $instance) {
@@ -1427,7 +1427,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function quoteName($name, $as = null)
     {
-        $parts = (strpos((string) $name, '.') !== false) ? explode('.', $name) : (array) $name;
+        $parts = (str_contains((string) $name, '.') ) ? explode('.', $name) : (array) $name;
         $bits  = [];
 
         // A quote character inside an identifier can only be an attempt to
@@ -1467,7 +1467,7 @@ abstract class Driver implements LoggerAwareInterface
         if (strlen($unwrapped) >= 2) {
             $open  = $unwrapped[0];
             $close = $unwrapped[strlen($unwrapped) - 1];
-            if (strpos($value, $open) !== false) {
+            if (str_contains($value, $open)) {
                 $value = str_replace([$open, $close], '', $value);
                 $value = trim($value);
             }
@@ -3107,9 +3107,9 @@ abstract class Driver implements LoggerAwareInterface
     {
         $message = strtolower($e->getMessage());
 
-        return strpos($message, 'deadlock') !== false
-            || strpos($message, 'lock wait timeout') !== false
-            || strpos($message, 'serialization failure') !== false;
+        return str_contains($message, 'deadlock')
+            || str_contains($message, 'lock wait timeout')
+            || str_contains($message, 'serialization failure') ;
     }
 
     /**
@@ -3260,12 +3260,12 @@ abstract class Driver implements LoggerAwareInterface
         // ASE/PDO_DBLIB: "duplicate key row" in error message
         return in_array($sqlState, ['23000', '23505'], true)
             || ($sqlState === 'HY000' && (
-                strpos($errorMessage, '-803') !== false
-                || strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false
-                || strpos($errorMessage, 'UNIQUE KEY constraint') !== false
-                || strpos($errorMessage, 'ORA-00001') !== false
+                str_contains($errorMessage, '-803')
+                || str_contains($errorMessage, 'violation of PRIMARY or UNIQUE KEY')
+                || str_contains($errorMessage, 'UNIQUE KEY constraint')
+                || str_contains($errorMessage, 'ORA-00001')
             ))
-            || strpos($errorMessage, 'duplicate key row') !== false;
+            || str_contains($errorMessage, 'duplicate key row') ;
     }
 
     /**

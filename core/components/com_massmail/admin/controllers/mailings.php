@@ -691,7 +691,7 @@ class Mailings extends AdminController
 
         $dir = PATH_APP . DS . 'site' . DS . 'massmail' . DS . $mailing->get('id');
         if (!is_dir($dir)) {
-            Filesystem::makeDirectory($dir, 0755, true);
+            Filesystem::makeDirectory($dir, 0o755, true);
         }
         // Defense in depth: never let anything in the attachment store execute
         // or be fetched directly, even if it lands under a served path.

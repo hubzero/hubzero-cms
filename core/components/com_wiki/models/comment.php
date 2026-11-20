@@ -208,8 +208,7 @@ class Comment extends Relational
                 $this->set('chtml', $parsed);
 
                 if ($shorten) {
-                    $content = Str::truncate((string) $parsed, $shorten, ['html' => true]);
-                    return $content;
+                    return Str::truncate((string) $parsed, $shorten, ['html' => true]);
                 }
 
                 return (string) $parsed;

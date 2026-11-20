@@ -142,7 +142,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     protected function quoteSelectColumns(string $column): string
     {
         // If it contains commas (but not inside parentheses), split and quote each part
-        if (strpos($column, ',') !== false && !$this->commaIsInsideParens($column)) {
+        if (str_contains($column, ',')  && !$this->commaIsInsideParens($column)) {
             $parts = $this->splitSelectColumns($column);
             $quoted = [];
             foreach ($parts as $part) {
@@ -184,7 +184,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         // If it contains parentheses, it's a function/expression — leave as-is
-        if (strpos($column, '(') !== false) {
+        if (str_contains($column, '(')) {
             return $column;
         }
 
@@ -853,14 +853,12 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             );
         }
 
-        $sql = 'MERGE INTO ' . $this->connection->quoteName($this->upsertTable) . ' t '
+        return 'MERGE INTO ' . $this->connection->quoteName($this->upsertTable) . ' t '
             . 'USING (SELECT ' . implode(', ', $sourceColumns) . ' FROM DUAL) s '
             . 'ON (' . implode(' AND ', $onConditions) . ') '
             . 'WHEN MATCHED THEN UPDATE SET ' . implode(', ', $updateSets) . ' '
             . 'WHEN NOT MATCHED THEN INSERT (' . implode(', ', $quotedColumns) . ') '
             . 'VALUES (' . implode(', ', array_map(fn($c) => 's.' . $this->connection->quoteName($c), $columns)) . ')';
-
-        return $sql;
     }
 
     /**

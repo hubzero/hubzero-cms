@@ -177,10 +177,8 @@ class Import extends Relational
         // primary key leaves isNew() false, so the UPDATE matched no rows and still
         // returned success. Casting here holds the containment for every caller
         // rather than relying on four controllers each to remember.
-        $uploadPath = PATH_APP . DS . trim($uploadPath, DS) . DS . (int) $this->get('id');
-
         // return path
-        return $uploadPath;
+        return PATH_APP . DS . trim($uploadPath, DS) . DS . (int) $this->get('id');
     }
 
     /**

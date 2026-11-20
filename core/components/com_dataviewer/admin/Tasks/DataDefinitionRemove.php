@@ -27,7 +27,7 @@ class DataDefinitionRemove
         // a filesystem path or the generated PHP: they name a database directory and
         // a data-definition file, so restrict them to a safe identifier character set.
         foreach ([$db_id, $dd_name] as $__id) {
-            if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $__id) || strpos((string) $__id, '..') !== false) {
+            if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $__id) || str_contains((string) $__id, '..')) {
                 \App::abort(400, 'Invalid identifier');
             }
         }

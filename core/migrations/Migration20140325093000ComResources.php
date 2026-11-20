@@ -30,7 +30,7 @@ class Migration20140325093000ComResources extends Base
         $const = (defined('PATH_APP') ? PATH_APP : PATH_ROOT);
 
         if (!is_dir($const . DS . trim($upload, DS))) {
-            mkdir($const . DS . trim($upload, DS), 0775, true);
+            mkdir($const . DS . trim($upload, DS), 0o775, true);
         }
 
         $path = $const . DS . trim($upload, DS) . DS . 'import' . DS;

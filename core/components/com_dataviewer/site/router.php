@@ -23,9 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = [];
-
-        return $segments;
+        return [];
     }
 
     /**

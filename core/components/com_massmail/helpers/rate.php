@@ -97,14 +97,14 @@ class Rate
                 continue;
             }
             $step = 1;
-            if (strpos($part, '/') !== false) {
+            if (str_contains($part, '/')) {
                 list($part, $s) = explode('/', $part, 2);
                 $step = max(1, (int) $s);
             }
             if ($part === '*' || $part === '') {
                 $lo = $min;
                 $hi = $max;
-            } elseif (strpos($part, '-') !== false) {
+            } elseif (str_contains($part, '-')) {
                 list($lo, $hi) = explode('-', $part, 2);
                 $lo = (int) $lo;
                 $hi = (int) $hi;

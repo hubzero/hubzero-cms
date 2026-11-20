@@ -1343,7 +1343,7 @@ class Database
                 $grantUpper = strtoupper((string) $grant);
 
                 // ALL PRIVILEGES includes everything
-                if (strpos($grantUpper, 'ALL PRIVILEGES') !== false) {
+                if (str_contains($grantUpper, 'ALL PRIVILEGES')) {
                     $hasAllPrivileges = true;
                     $hasCreateUser = true;
                     $hasGrant = true;
@@ -1351,15 +1351,15 @@ class Database
                 }
 
                 // Check individual privileges
-                if (strpos($grantUpper, 'CREATE USER') !== false) {
+                if (str_contains($grantUpper, 'CREATE USER')) {
                     $hasCreateUser = true;
                 }
-                if (strpos($grantUpper, 'WITH GRANT OPTION') !== false) {
+                if (str_contains($grantUpper, 'WITH GRANT OPTION')) {
                     $hasGrant = true;
                 }
                 if (
-                    strpos($grantUpper, 'CREATE') !== false
-                    && strpos($grantUpper, 'ON *.*') !== false
+                    str_contains($grantUpper, 'CREATE')
+                    && str_contains($grantUpper, 'ON *.*')
                 ) {
                     $hasCreateDb = true;
                 }
@@ -1778,7 +1778,7 @@ class Database
         $adminPdo,
         $database,
         $username,
-        $password,
+        #[\SensitiveParameter] $password,
         $userHost,
         $ansi,
     ) {
@@ -1931,7 +1931,7 @@ class Database
      * @param   bool    $ansi        Whether to use ANSI colors
      * @return  array<mixed>|null           Connection with credentials, or null on failure
      **/
-    private static function testAndReturnCredentials($connection, $username, $password, $ansi)
+    private static function testAndReturnCredentials($connection, $username, #[\SensitiveParameter] $password, $ansi)
     {
         try {
             $options = [];
@@ -2583,7 +2583,7 @@ class Database
             }
 
             // Parse key=value pairs in client section
-            if ($inClientSection && strpos($line, '=') !== false) {
+            if ($inClientSection && str_contains($line, '=')) {
                 list($key, $value) = explode('=', $line, 2);
                 $key = trim($key);
                 $value = trim($value);
@@ -2756,7 +2756,7 @@ class Database
     private static function connectWithPdoConnectorFromDsn(
         string $dsn,
         string $username = '',
-        string $password = '',
+        #[\SensitiveParameter] string $password = '',
         array $options = [],
     ): \PDO {
         self::resolveInstallerDriverFromDsn($dsn);

@@ -166,7 +166,7 @@ defined('_HZEXEC_') or die();
                 }
                 for ($p = 1; $p <= $numunits; $p++) {
                     $units_select[$unitsize] = $unitsize;
-                    $unitsize = $unitsize + $currentService->unitsize;
+                    $unitsize += $currentService->unitsize;
                 }
 
                 $unitsChoice = \Components\Jobs\Helpers\Html::formSelect(

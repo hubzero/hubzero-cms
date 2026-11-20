@@ -207,9 +207,7 @@ class Geocode
         $geocoder->registerProvider($chain);
 
         // Try to get some data...
-        $data = $geocoder->geocode($address);
-
-        return $data;
+        return $geocoder->geocode($address);
     }
 
     /**
@@ -535,7 +533,7 @@ class Geocode
             return null;
         }
 
-        if (strpos($ip, ':') === false) {
+        if (!str_contains($ip, ':')) {
             return [$table, $gdb->quote(ip2long($ip))];
         }
 

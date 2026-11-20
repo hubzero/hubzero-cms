@@ -921,7 +921,7 @@ class Team extends Plugin
 
                 $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 $url = Route::url('index.php?option=' . $this->componentOption
-                    . '&task=team' . '&alias=' . $this->model->get('alias'), false);
+                    . '&task=team&alias=' . $this->model->get('alias'), false);
                 Notify::success(Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_APPROVED'));
                 App::redirect($url);
             }
@@ -984,7 +984,7 @@ class Team extends Plugin
                 $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 Notify::success('Membership request has been denied');
                 $url = Route::url('index.php?option=' . $this->componentOption
-                    . '&task=team' . '&alias=' . $this->model->get('alias'), false);
+                    . '&task=team&alias=' . $this->model->get('alias'), false);
                 App::redirect($url);
             }
         } else {

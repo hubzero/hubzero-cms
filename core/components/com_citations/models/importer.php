@@ -160,7 +160,7 @@ class Importer extends Obj
     public function setTmpPath($path)
     {
         if (!is_dir($path)) {
-            $this->filesystem->makeDirectory($path, 0755);
+            $this->filesystem->makeDirectory($path, 0o755);
         }
 
         $this->path = $path;

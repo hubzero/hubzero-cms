@@ -50,9 +50,7 @@ class Html
         $version_dir =  \Hubzero\Utility\Str::pad($vid);
         $path        = $base . DS . $pub_dir . DS . $version_dir;
         $path        = $filedir ? $path . DS . $filedir : $path;
-        $path        = $root ? PATH_APP . $path : $path;
-
-        return $path;
+        return $root ? PATH_APP . $path : $path;
     }
 
     /**
@@ -418,7 +416,7 @@ class Html
 
         // Show DOI if available
         if ($publication->version->get('doi')) {
-            $text .= "\t\t" . '<span class="doi">' . 'doi:' . $publication->version->get('doi');
+            $text .= "\t\t" . '<span class="doi">doi:' . $publication->version->get('doi');
             $text .= ' - <span><a href="' . Route::url($publication->link() . '&active=about') . '#citethis">'
                 . Lang::txt('cite this') . '</a></span></span>' . "\n";
         }
@@ -610,7 +608,7 @@ class Html
         $action = $publication->isPublished()
             ? Lang::txt('COM_PUBLICATIONS_LISTED_IN')
             : Lang::txt('COM_PUBLICATIONS_IN');
-        $html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url($publication->link('category')) . '">'
+        $html = '<p class="pubinfo">' . $action . '  <a href="' . Route::url($publication->link('category')) . '">'
             . $publication->category()->name . '</a>';
 
         // Publication belongs to group?
@@ -643,9 +641,7 @@ class Html
         }
 
         $html  = '<h2>' . htmlspecialchars((string) $txt, ENT_COMPAT, 'UTF-8') . '</h2>' . "\n";
-        $html  = '<header id="content-header">' . $html . '</header>';
-
-        return $html;
+        return '<header id="content-header">' . $html . '</header>';
     }
 
     /**
@@ -967,7 +963,7 @@ class Html
             '>' => '&#62;',
         ];
         if ($quotes) {
-            $a = $a + [
+            $a += [
                 "'" => '&#39;',
                 '"' => '&#34;',
             ];
@@ -1003,9 +999,7 @@ class Html
         if ($elipse) {
             $text .= '&#8230;';
         }
-        $text = trim($text);
-
-        return $text;
+        return trim($text);
     }
 
     /**
@@ -1042,8 +1036,7 @@ class Html
         $pee = str_replace('<p>', '', $pee);
         $pee = str_replace('</p>', "\n", $pee);
         $pee = str_replace('<br />', '', $pee);
-        $pee = trim($pee);
-        return $pee;
+        return trim($pee);
     }
 
     /**
@@ -1085,11 +1078,11 @@ class Html
                         $row = new \Components\Publications\Models\Publication($row);
                     }
                     $pub_size = self::computeDiskUsage($row->path('content'), PATH_APP, false);
-                    $pub_size = $pub_size + self::computeDiskUsage($row->path('data'), PATH_APP, false);
+                    $pub_size += self::computeDiskUsage($row->path('data'), PATH_APP, false);
                     $used += $pub_size;
                 } else {
                     // Otherwise, we'll count the size of everything in the entire publication directory
-                    $used = $used + self::computeDiskUsage($path, PATH_APP, false);
+                    $used += self::computeDiskUsage($path, PATH_APP, false);
                 }
             }
         }
@@ -1307,7 +1300,7 @@ class Html
         $pubType,
         $publication_id,
         $publication_version_id,
-        $secret,
+        #[\SensitiveParameter] $secret,
         $attachments,
         $fast = false,
     ) {
@@ -1360,7 +1353,7 @@ class Html
     public static function getMIMEtypesOfPrimarySupportFiles(
         $publication_id,
         $publication_version_id,
-        $secret,
+        #[\SensitiveParameter] $secret,
         $role,
         $attachments,
         &$mimeTypes,

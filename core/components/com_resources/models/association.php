@@ -75,13 +75,11 @@ class Association extends Relational
      */
     public static function oneByRelationship($parent_id, $child_id)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('parent_id', $parent_id)
             ->whereEquals('child_id', $child_id)
             ->order('ordering', 'asc')
             ->row();
-
-        return $row;
     }
 
     /**

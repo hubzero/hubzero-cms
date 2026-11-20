@@ -202,13 +202,12 @@ class Helper
                     $baseMemberPath  = DS . $apppath . DS . self::niceidformat($member->get('uidNumber'));
 
                     // if we want to serve file & path is within /site
-                    if ($serveFile && strpos($path, $baseMemberPath) !== false) {
+                    if ($serveFile && str_contains($path, $baseMemberPath)) {
                         // get picture name (allows to pics in subfolder)
                         $pic = trim(str_replace($baseMemberPath, '', $path), DS);
 
                         // build serve link
-                        $link = with(new \Hubzero\Content\Moderator(PATH_ROOT . $path))->getUrl();
-                        return $link;
+                        return with(new \Hubzero\Content\Moderator(PATH_ROOT . $path))->getUrl();
                     }
                 }
 

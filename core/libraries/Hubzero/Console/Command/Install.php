@@ -930,7 +930,7 @@ class Install extends Base implements CommandInterface
             $db->setQuery('SELECT @@GLOBAL.sql_mode');
             $mode = (string) $db->loadResult();
 
-            if (strpos($mode, 'STRICT_TRANS_TABLES') === false) {
+            if (!str_contains($mode, 'STRICT_TRANS_TABLES')) {
                 $this->report(
                     'warn',
                     "MariaDB's SQL mode is not strict ('{$mode}'). Leave it at the server's default",

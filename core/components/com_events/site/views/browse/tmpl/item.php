@@ -108,9 +108,9 @@ if ($start_date == $stop_date) {
         $html .= "\t\t\t" . '<div class="event-time starttime">' . Lang::txt('EVENTS_ALL_DAY') . '</div>' . "\n";
     } else {
         $html .= "\t\t\t" . '<div class="event-time starttime">'
-            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;</div>' . "\n";
         $html .= "\t\t\t" . '<div class="event-time endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' '
-            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;</div>' . "\n";
     }
 } else {
     if ($this->showdate) {
@@ -119,7 +119,7 @@ if ($start_date == $stop_date) {
     }
     if (!$allday) {
         $html .= "\t\t\t" . '<div class="event-time starttime">'
-            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;</div>' . "\n";
     }
     if ($this->showdate) {
         $html .= "\t\t\t" . '<div class="event-date endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' '
@@ -127,7 +127,7 @@ if ($start_date == $stop_date) {
     }
     if (!$allday) {
         $html .= "\t\t\t" . '<div class="event-time endtime">'
-            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;</div>' . "\n";
     }
 }
 $html .= "\t\t" . '</div><div class="ewrap">' . "\n";

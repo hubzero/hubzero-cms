@@ -85,15 +85,13 @@ class FileWriter
             return null;
         }
 
-        $file = $path
+        return $path
             . DIRECTORY_SEPARATOR
             . ($client ? $client
             . DIRECTORY_SEPARATOR : '')
             . $group
             . '.'
             . $this->format;
-
-        return $file;
     }
 
     /**
@@ -126,7 +124,7 @@ class FileWriter
         $path = dirname($file);
 
         if (!is_dir($path)) {
-            if (!@mkdir($path, 0750)) {
+            if (!@mkdir($path, 0o750)) {
                 return false;
             }
         }

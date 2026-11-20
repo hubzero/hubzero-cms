@@ -852,9 +852,7 @@ class Mailinglists extends AdminController
         $parsedEmails = array_values($parsedEmails);
 
         // remove duplicates
-        $parsedEmails = array_unique($parsedEmails);
-
         // return parse emails
-        return $parsedEmails;
+        return array_unique($parsedEmails);
     }
 }

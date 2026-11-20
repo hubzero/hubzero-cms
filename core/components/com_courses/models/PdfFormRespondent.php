@@ -207,9 +207,7 @@ class PdfFormRespondent
 
         $dbh->setQuery($query);
 
-        $questions = $dbh->loadObjectList();
-
-        return $questions;
+        return $dbh->loadObjectList();
     }
 
     /**

@@ -494,8 +494,13 @@ class Version extends Table
      * @param   integer  $main            Default?
      * @return  mixed    integer or False
      */
-    public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
-    {
+    public function createNewVersion(
+        $dev,
+        $state = 1,
+        #[\SensitiveParameter] $secret = '',
+        $version_number = 1,
+        $main = 1,
+    ) {
         $new = $dev;
         $new->id = 0;
         $new->rating = '0.0';

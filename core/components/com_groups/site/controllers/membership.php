@@ -204,7 +204,7 @@ class Membership extends Base
         // turn usernames into proper IDs
         foreach ($la as $k => $l) {
             // ignore uids & email addresses
-            if (!is_numeric($l) && strpos($l, '@') === false) {
+            if (!is_numeric($l) && !str_contains($l, '@')) {
                 // load by username
                 $profile = User::getInstance($l);
                 if ($profile->get('id')) {

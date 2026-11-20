@@ -54,9 +54,7 @@ class Post extends Base
 
         // Generate key and decrypt
         $key       = md5(App::get('config')->get('secret'));
-        $plaintext = openssl_decrypt($ciphertext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
-
-        return $plaintext;
+        return openssl_decrypt($ciphertext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
     }
 
     /**
@@ -72,8 +70,6 @@ class Post extends Base
             $dir = '/var/log/hubzero-cms';
         }
 
-        $path = $dir . '/cmspost.log';
-
-        return $path;
+        return $dir . '/cmspost.log';
     }
 }

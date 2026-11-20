@@ -228,7 +228,7 @@ class Schema extends Base implements CommandInterface
         // Apply prefix filter (unless --all)
         if (!$showAll) {
             $tables = array_filter($tables, function ($table) use ($prefix) {
-                return strpos($table, $prefix) === 0;
+                return str_starts_with($table, $prefix) ;
             });
         }
 
@@ -1931,14 +1931,14 @@ class Schema extends Base implements CommandInterface
 
             // Check for negation prefix
             $isNegation = false;
-            if (strpos($pattern, '!') === 0) {
+            if (str_starts_with($pattern, '!')) {
                 $isNegation = true;
                 $pattern = substr($pattern, 1);
             }
 
             // Check if it's a regex (starts with /)
             $isRegex = false;
-            if (strpos($pattern, '/') === 0) {
+            if (str_starts_with($pattern, '/')) {
                 $isRegex = true;
                 // Validate regex
                 if (@preg_match($pattern, '') === false) {
@@ -1970,7 +1970,7 @@ class Schema extends Base implements CommandInterface
                             break;
                         }
                     } else {
-                        if (strpos($table, $p['pattern']) !== false) {
+                        if (str_contains($table, $p['pattern'])) {
                             $included = true;
                             break;
                         }
@@ -1988,7 +1988,7 @@ class Schema extends Base implements CommandInterface
                         return false;
                     }
                 } else {
-                    if (strpos($table, $p['pattern']) !== false) {
+                    if (str_contains($table, $p['pattern'])) {
                         return false;
                     }
                 }
@@ -2028,14 +2028,14 @@ class Schema extends Base implements CommandInterface
 
             // Check for negation prefix
             $isNegation = false;
-            if (strpos($pattern, '!') === 0) {
+            if (str_starts_with($pattern, '!')) {
                 $isNegation = true;
                 $pattern = substr($pattern, 1);
             }
 
             // Check if it's a regex (starts with /)
             $isRegex = false;
-            if (strpos($pattern, '/') === 0) {
+            if (str_starts_with($pattern, '/')) {
                 $isRegex = true;
                 // Validate regex
                 if (@preg_match($pattern, '') === false) {
@@ -2066,7 +2066,7 @@ class Schema extends Base implements CommandInterface
                             break;
                         }
                     } else {
-                        if (strpos($table, $p['pattern']) !== false) {
+                        if (str_contains($table, $p['pattern'])) {
                             $included = true;
                             break;
                         }
@@ -2084,7 +2084,7 @@ class Schema extends Base implements CommandInterface
                         return false;
                     }
                 } else {
-                    if (strpos($table, $p['pattern']) !== false) {
+                    if (str_contains($table, $p['pattern'])) {
                         return false;
                     }
                 }
@@ -2114,7 +2114,7 @@ class Schema extends Base implements CommandInterface
         // Ensure directory exists
         $dir = dirname($path);
         if (!is_dir($dir)) {
-            if (!mkdir($dir, 0755, true)) {
+            if (!mkdir($dir, 0o755, true)) {
                 $this->output->error("Failed to create directory: {$dir}");
             }
         }

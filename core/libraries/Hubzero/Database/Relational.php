@@ -862,7 +862,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                     5,
                 ) == 'where' || substr($name, 0, 7) == 'orWhere') && $name != 'whereRaw' && $name != 'orWhereRaw'
             ) {
-                $arguments[0] = (strpos($arguments[0], '.') === false)
+                $arguments[0] = (!str_contains($arguments[0], '.') )
                                 ? $this->getQualifiedFieldName($arguments[0])
                                 : $arguments[0];
             }
@@ -2331,7 +2331,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         // Handle datetime with format: 'datetime:Y-m-d'
-        if (strpos($castType, ':') !== false) {
+        if (str_contains($castType, ':')) {
             return explode(':', $castType, 2)[0];
         }
 
@@ -2347,7 +2347,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     protected function isCustomCastClass($castType)
     {
         // Class names contain backslashes or start with uppercase
-        if (strpos($castType, '\\') !== false) {
+        if (str_contains($castType, '\\')) {
             return class_exists($castType) && is_subclass_of($castType, Casts\CastsAttributes::class);
         }
 
@@ -2383,7 +2383,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         $castType = $this->casts[$key];
 
-        if (strpos($castType, ':') !== false) {
+        if (str_contains($castType, ':')) {
             return explode(':', $castType, 2)[1];
         }
 
@@ -2635,7 +2635,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     {
         $castDefinition = $this->casts[$key] ?? 'decimal:2';
 
-        if (strpos($castDefinition, ':') !== false) {
+        if (str_contains($castDefinition, ':')) {
             $parts = explode(':', $castDefinition, 2);
             if (isset($parts[1]) && is_numeric($parts[1])) {
                 return (int) $parts[1];
@@ -2679,7 +2679,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 '1970-01-01 00:00:00', // Unix epoch sometimes indicates "no date"
             ];
 
-            if (in_array($trimmed, $invalidDates, true) || strpos($trimmed, '0000-00-00') === 0) {
+            if (in_array($trimmed, $invalidDates, true) || str_starts_with($trimmed, '0000-00-00')) {
                 return null;
             }
 
@@ -2992,7 +2992,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function snakeToCamel($text)
     {
-        if (strpos($text, '_') !== false) {
+        if (str_contains($text, '_')) {
             $bits = explode('_', $text);
             $bits = array_map('ucfirst', $bits);
             $text = lcfirst(implode('', $bits));
@@ -3959,8 +3959,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             throw new \InvalidArgumentException('Chunk size must be at least 1');
         }
 
-        $column = $column ?? $this->getPrimaryKey();
-        $alias = $alias ?? $column;
+        $column ??= $this->getPrimaryKey();
+        $alias ??= $column;
         $lastId = null;
 
         do {
@@ -4039,8 +4039,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             throw new \InvalidArgumentException('Chunk size must be at least 1');
         }
 
-        $column = $column ?? $this->getPrimaryKey();
-        $alias = $alias ?? $column;
+        $column ??= $this->getPrimaryKey();
+        $alias ??= $column;
         $lastId = null;
 
         do {
@@ -4457,7 +4457,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Perform DB writes atomically so parent and cascade operations
         // are committed or rolled back together.
-        $result = $this->executeAtomically(function () use ($method, $isNew) {
+        return $this->executeAtomically(function () use ($method, $isNew) {
             $result = $this->$method();
 
             if (!$result) {
@@ -4522,8 +4522,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             return $result;
         });
-
-        return $result;
     }
 
     /**
@@ -5376,7 +5374,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $qualifiedOrderBy = $this->orderBy;
 
         // If we have a '.' we'll assume the prefix is a relationship name
-        if (strpos($this->orderBy, '.') !== false) {
+        if (str_contains($this->orderBy, '.')) {
             list($relationship, $field) = explode('.', $this->orderBy);
 
             // We have to join to apply the order by clause
@@ -6340,7 +6338,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Simple string
         if (is_string($relation)) {
             // Handle nested: 'posts.comments' -> 'posts'
-            if (strpos($relation, '.') !== false) {
+            if (str_contains($relation, '.')) {
                 return explode('.', $relation, 2)[0];
             }
             return $relation;
@@ -6354,7 +6352,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 foreach ($keys as $key) {
                     if (is_string($key)) {
                         // Handle nested in key
-                        if (strpos($key, '.') !== false) {
+                        if (str_contains($key, '.')) {
                             return explode('.', $key, 2)[0];
                         }
                         return $key;
@@ -6363,7 +6361,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 // Fallback: first value might be a string relation name
                 $first = reset($relation);
                 if (is_string($first)) {
-                    return strpos($first, '.') !== false
+                    return str_contains($first, '.')
                         ? explode('.', $first, 2)[0]
                         : $first;
                 }
@@ -6372,7 +6370,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             // Indexed array: ['posts', fn() => ...]
             if (isset($relation[0]) && is_string($relation[0])) {
                 $name = $relation[0];
-                return strpos($name, '.') !== false
+                return str_contains($name, '.')
                     ? explode('.', $name, 2)[0]
                     : $name;
             }
@@ -6416,7 +6414,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         // If we have subs and a constraint, the constraint should apply to the subs
-        if (isset($subs) && isset($constraint)) {
+        if (isset($subs, $constraint)) {
             $subs = [$subs, $constraint];
             $constraint = null;
         }
@@ -6461,7 +6459,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             // If we have subs and a constraint, the constraint should apply to the subs
-            if (isset($subs) && isset($constraint)) {
+            if (isset($subs, $constraint)) {
                 $subs = [$subs, $constraint];
                 $constraint = null;
             }
@@ -6692,7 +6690,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             // If we have subs and a constraint, the constraint should apply to the subs, not the intermediate relation
-            if (isset($subs) && isset($constraint)) {
+            if (isset($subs, $constraint)) {
                 $subs       = [$subs, $constraint];
                 $constraint = null;
             }
@@ -6745,7 +6743,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             // If we have subs and a constraint, the constraint should apply to the subs
-            if (isset($subs) && isset($constraint)) {
+            if (isset($subs, $constraint)) {
                 $subs = [$subs, $constraint];
                 $constraint = null;
             }

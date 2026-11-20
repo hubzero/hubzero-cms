@@ -26,7 +26,7 @@ $props    = $this->pub->curation('blocks', $this->step, 'props');
 $required = $this->pub->curation('blocks', $this->step, 'required');
 
 // Build url
-$selectUrl = Route::url($this->pub->link('editversionid') . '&active=publications&action=select' . '&p=' . $props);
+$selectUrl = Route::url($this->pub->link('editversionid') . '&active=publications&action=select&p=' . $props);
 
 $elName = "licensePick";
 

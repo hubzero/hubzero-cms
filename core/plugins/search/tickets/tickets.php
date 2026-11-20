@@ -119,8 +119,7 @@ class Tickets extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM `#__support_tickets`;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

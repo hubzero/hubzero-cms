@@ -2734,9 +2734,7 @@ class Wishlists extends SiteController
             $users = $database->loadObjectList();
         }
 
-        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-        return $users;
+        return Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 
     /**

@@ -211,7 +211,7 @@ class Memcache extends None
         }
 
         foreach ($index as $key => $value) {
-            if (strpos($value->name, $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
+            if (str_starts_with($value->name, $hash . '-cache-' . $group . '-')) { // xor $mode != 'group')
                 $this->engine->delete($value->name, 0);
                 unset($index[$key]);
             }

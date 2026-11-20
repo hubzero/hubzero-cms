@@ -392,13 +392,11 @@ class Captcha extends Plugin
         $enc = strrev(md5($input));
 
         // Get only a few chars out of the string
-        $enc = substr($enc, 26, 1)
+        return substr($enc, 26, 1)
             . substr($enc, 10, 1)
             . substr($enc, 23, 1)
             . substr($enc, 3, 1)
             . substr($enc, 19, 1);
-
-        return $enc;
     }
 
     /**
@@ -676,7 +674,7 @@ class Captcha extends Plugin
                     if ($newcolor > 255) {
                         $newcolor = 255;
                     }
-                    $newcolor = $newcolor / 255;
+                    $newcolor /= 255;
                     $newcolor0 = 1 - $newcolor;
 
                     $newred = $newcolor0 * $foreground_color[0] + $newcolor * $background_color[0];

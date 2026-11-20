@@ -286,7 +286,7 @@ class Data extends Base
 
         // Create new version path
         if (!is_dir((string) $newConfigs->dataPath)) {
-            if (!Filesystem::makeDirectory((string) $newConfigs->dataPath, 0755, true, true)) {
+            if (!Filesystem::makeDirectory((string) $newConfigs->dataPath, 0o755, true, true)) {
                 $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
@@ -425,7 +425,7 @@ class Data extends Base
 
         // Create new version path
         if (!is_dir($configs->dataPath)) {
-            if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true)) {
+            if (!Filesystem::makeDirectory($configs->dataPath, 0o755, true, true)) {
                 $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
@@ -973,7 +973,7 @@ class Data extends Base
 
                 // If parent dir does not exist, we must create it
                 if (!file_exists(dirname($configs->dataPath . DS . $file))) {
-                    Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
+                    Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0o755, true, true);
                 }
 
                 // Copy the file from the project to the publication

@@ -109,7 +109,7 @@ class Migration20180820101435ComPublications extends Base
      */
     protected function createLink($pubId, $versionId, $versionNum, $doi = '')
     {
-        $bundleName = 'Publication' . '_' . $pubId;
+        $bundleName = 'Publication_' . $pubId;
         $bundleWithVersion = $bundleName . '_' . $versionNum;
 
         if ($doi != '') {
@@ -122,7 +122,7 @@ class Migration20180820101435ComPublications extends Base
 
         $tarname = $bundleName . '.zip';
         $fileName = $bundleWithVersion . '.zip';
-        $tarPath = '..' . '/'
+        $tarPath = '../'
             . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/'
             . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/'
             . $tarname;
@@ -160,7 +160,7 @@ class Migration20180820101435ComPublications extends Base
      */
     protected function removeLink($pubId, $versionId, $versionNum, $doi = '')
     {
-        $bundleName = 'Publication' . '_' . $pubId;
+        $bundleName = 'Publication_' . $pubId;
         $bundleWithVersion = $bundleName . '_' . $versionNum;
         if ($doi != '') {
             $doi = str_replace('.', '_', (string) $doi);

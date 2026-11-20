@@ -76,13 +76,11 @@ class Refreshtoken extends Relational
      * @param   string  $token
      * @return  static
      */
-    public static function oneByToken($token)
+    public static function oneByToken(#[\SensitiveParameter] $token)
     {
-        $code = self::all()
+        return self::all()
             ->whereEquals('refresh_token', $token)
             ->row();
-
-        return $code;
     }
 
     /**

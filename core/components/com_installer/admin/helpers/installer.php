@@ -113,9 +113,7 @@ class Installer
             ->order('type', 'asc');
 
         $db->setQuery($query->toString());
-        $options = $db->loadObjectList();
-
-        return $options;
+        return $db->loadObjectList();
     }
 
     /**
@@ -136,9 +134,7 @@ class Installer
             ->order('folder', 'asc');
 
         $db->setQuery($query->toString());
-        $options = $db->loadObjectList();
-
-        return $options;
+        return $db->loadObjectList();
     }
 
     /**

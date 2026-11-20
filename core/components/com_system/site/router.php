@@ -46,8 +46,6 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = [];
-
-        return $vars;
+        return [];
     }
 }

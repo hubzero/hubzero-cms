@@ -128,7 +128,7 @@ class Preferences extends Table
         if (isset($filters['class_id'])) {
             $where[] = "`class_id` = " . $this->db->quote($filters['class_id']);
         }
-        if (isset($filters['search']) && isset($filters['search_field'])) {
+        if (isset($filters['search'], $filters['search_field'])) {
             // Only the two columns the search form offers
             if (!in_array($filters['search_field'], ['username', 'name'])) {
                 $filters['search_field'] = 'name';

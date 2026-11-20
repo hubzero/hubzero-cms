@@ -26,12 +26,10 @@ class Helper
     {
         $key = App::hash('newletter');
 
-        $crypt = new \Hubzero\Encryption\Encrypter(
+        return new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
             new \Hubzero\Encryption\Key('simple', $key, $key),
         );
-
-        return $crypt;
     }
 
     /**
@@ -91,7 +89,7 @@ class Helper
      * @param   string|mixed  $mailingToken  String Mailing token
      * @return  \stdClass|false|null  The mailing recipient, null when there is none
      */
-    public static function parseMailingToken($mailingToken)
+    public static function parseMailingToken(#[\SensitiveParameter] $mailingToken)
     {
         //we must have a token
         if (!$mailingToken || $mailingToken == '') {
@@ -130,11 +128,9 @@ class Helper
 				WHERE mid=" . $database->quote($mailingId) . "
 				AND email=" . $database->quote($email);
         $database->setQuery($sql);
-        $recipient = $database->loadObject();
-
         //return mailing recipient object which contains (mailing id, email, and mailing status)
         //let invidual methods handle from here
-        return $recipient;
+        return $database->loadObject();
     }
 
     /**
@@ -143,7 +139,7 @@ class Helper
      * @param   mixed  $confirmationToken
      * @return  \stdClass|false|null  The mailing list email row; false or null when the token does not match
      */
-    public static function parseConfirmationToken($confirmationToken)
+    public static function parseConfirmationToken(#[\SensitiveParameter] $confirmationToken)
     {
         //make sure we have a token
         if (!$confirmationToken || $confirmationToken == '') {
@@ -182,9 +178,7 @@ class Helper
 				WHERE mle.mid=" . $database->quote($mailinglistId) . "
 				AND mle.email=" . $database->quote($email);
         $database->setQuery($sql);
-        $mailinglistEmail = $database->loadObject();
-
-        return $mailinglistEmail;
+        return $database->loadObject();
     }
 
     /**
@@ -283,15 +277,13 @@ class Helper
      * @param   string  $emailToken    Email Token to track per message
      * @return  string
      */
-    public static function addTrackingToEmailMessage($emailMessage, $emailToken)
+    public static function addTrackingToEmailMessage($emailMessage, #[\SensitiveParameter] $emailToken)
     {
         $emailMessage = str_replace('&#8203;', '', $emailMessage);
         $emailMessage = self::addclickTrackingtoEmailMessage($emailMessage, $emailToken);
         $emailMessage = self::addOpenTrackingToEmailMessage($emailMessage, $emailToken);
         $emailMessage = self::addPrintTrackingToEmailMessage($emailMessage, $emailToken);
-        $emailMessage = self::addForwardingToEmailMessage($emailMessage, $emailToken);
-
-        return $emailMessage;
+        return self::addForwardingToEmailMessage($emailMessage, $emailToken);
     }
 
     /**
@@ -315,7 +307,7 @@ class Helper
      * @param   string  $emailToken    Email Token to track per message
      * @return  string
      */
-    public static function addclickTrackingtoEmailMessage($emailMessage, $emailToken)
+    public static function addclickTrackingtoEmailMessage($emailMessage, #[\SensitiveParameter] $emailToken)
     {
         //get protocol to track with
         $protocol = self::getNewsletterTrackingProtocol();
@@ -353,7 +345,7 @@ class Helper
      * @param   string  $emailToken    Email Token to track per message
      * @return  string
      */
-    public static function addOpenTrackingToEmailMessage($emailMessage, $emailToken)
+    public static function addOpenTrackingToEmailMessage($emailMessage, #[\SensitiveParameter] $emailToken)
     {
         //get protocol to track with
         $protocol = self::getNewsletterTrackingProtocol();
@@ -364,10 +356,8 @@ class Helper
         $openTracker = '<img src="' . $trackerUrl . '" width="1" height="1" />';
 
         //add to the end of the message body
-        $emailMessage = str_replace('</body>', $openTracker . '</body>', $emailMessage);
-
         //return message body
-        return $emailMessage;
+        return str_replace('</body>', $openTracker . '</body>', $emailMessage);
     }
 
     /**
@@ -377,7 +367,7 @@ class Helper
      * @param   string  $emailToken    Email Token to track per message
      * @return  string
      */
-    public static function addPrintTrackingToEmailMessage($emailMessage, $emailToken)
+    public static function addPrintTrackingToEmailMessage($emailMessage, #[\SensitiveParameter] $emailToken)
     {
         //get protocol to track with
         $protocol = self::getNewsletterTrackingProtocol();
@@ -399,10 +389,8 @@ class Helper
         $printTracker .= "<div id=\"_print\"></div>";
 
         //add to the end of the message body
-        $emailMessage = str_replace('</body>', $printTracker . '</body>', $emailMessage);
-
         //return message body
-        return $emailMessage;
+        return str_replace('</body>', $printTracker . '</body>', $emailMessage);
     }
 
     /**
@@ -412,7 +400,7 @@ class Helper
      * @param   string  $emailToken    Email Token to track per message
      * @return  string
      */
-    public static function addForwardingToEmailMessage($emailMessage, $emailToken)
+    public static function addForwardingToEmailMessage($emailMessage, #[\SensitiveParameter] $emailToken)
     {
         //get protocol to track with
         $protocol = self::getNewsletterTrackingProtocol();
@@ -435,9 +423,7 @@ class Helper
         $forwardTracker .= "<div id=\"_forward\"></div>";
 
         //add to the end of the message body
-        $emailMessage = str_replace('</body>', $forwardTracker . '</body>', $emailMessage);
-
         //return message body
-        return $emailMessage;
+        return str_replace('</body>', $forwardTracker . '</body>', $emailMessage);
     }
 }

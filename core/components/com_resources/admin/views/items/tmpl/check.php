@@ -69,7 +69,7 @@ $actionUrl = Route::url(
                             ($test['totals']['failed'] / $test['total']) * 100,
                             2,
                         );
-                        $passed = $passed + $failed;
+                        $passed += $failed;
 
                         $this->css('
 							.bars .skipped' . $key . ' { width: 100%; }

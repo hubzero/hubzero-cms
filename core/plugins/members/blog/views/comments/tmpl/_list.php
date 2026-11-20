@@ -27,7 +27,6 @@ defined('_HZEXEC_') or die();
 <?php if ($this->comments && count($this->comments) > 0) : ?>
 <ol class="comments" id="t<?php echo (isset($this->parent)) ? $this->parent : '0'; ?>">
     <?php
-    {
         $cls = 'odd';
     if (isset($this->cls)) {
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
@@ -46,7 +45,6 @@ defined('_HZEXEC_') or die();
              ->set('base', $this->base)
              ->set('member', $this->member)
              ->display();
-    }
     }
     ?>
 </ol>

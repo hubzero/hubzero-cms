@@ -116,13 +116,11 @@ class Event extends Relational
      */
     public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
     {
-        $rows = self::all()
+        return self::all()
             ->where('scope', '=', 'event')
             ->where('state', '=', '1')
             ->order($dateField, $sort)
             ->limit($limit);
-
-        return $rows;
     }
 
     /**

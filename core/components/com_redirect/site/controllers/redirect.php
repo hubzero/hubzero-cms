@@ -26,7 +26,7 @@ class Redirect extends SiteController
     {
         $host = (string) preg_replace('/^www\./', '', $host);
         $matches = [];
-        if (strpos($host, "proxy") !== false) {
+        if (str_contains($host, "proxy")) {
             return "Proxy Service";
         } elseif (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {
             return $matches[1]; // e.g., google.com → google
@@ -97,7 +97,7 @@ class Redirect extends SiteController
             // site root (gluing the Referer's path in front of it produced
             // "https://hub//path/from/referer<id>").
             App::redirect(Request::root() . ltrim($url, '/'));
-        } elseif ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false) {
+        } elseif ($this->isHubHost($host['host']) && !str_contains($host['host'], "proxy")) {
             App::redirect($url);
         } elseif (in_array($host['host'], $whitelist) !== false) {
             App::redirect($url);

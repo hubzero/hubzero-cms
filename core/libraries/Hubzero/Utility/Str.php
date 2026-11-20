@@ -61,7 +61,7 @@ class Str
             );
         }
 
-        if (strpos($str, '?') !== false && is_numeric(key($data))) {
+        if (str_contains($str, '?')  && is_numeric(key($data))) {
             $offset = 0;
             while (($pos = strpos($str, '?', $offset)) !== false) {
                 $val = array_shift($data);
@@ -408,9 +408,7 @@ class Str
         }
 
         $excerpt = mb_substr($text, $startPos, $endPos - $startPos);
-        $excerpt = $prepend . $excerpt . $append;
-
-        return $excerpt;
+        return $prepend . $excerpt . $append;
     }
 
     /**
@@ -596,7 +594,7 @@ class Str
     public static function contains($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && strpos((string) $haystack, $needle) !== false) {
+            if ($needle != '' && str_contains((string) $haystack, $needle)) {
                 return true;
             }
         }
@@ -615,7 +613,7 @@ class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && strpos($haystack, $needle) === 0) {
+            if ($needle != '' && str_starts_with($haystack, $needle)) {
                 return true;
             }
         }
@@ -655,9 +653,7 @@ class Str
         $text = str_replace('&amp;', '&', $text);
         $text = (string) preg_replace('|&(?![\w]+;)|', '&amp;', $text);
         $text = str_replace('*-*', '&#', $text);
-        $text = str_replace('*--*', '&&', $text);
-
-        return $text;
+        return str_replace('*--*', '&&', $text);
     }
 
     /**

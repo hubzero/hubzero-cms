@@ -190,7 +190,7 @@ class Auth extends SiteController
                 $rpath  = (string) parse_url($decoded_return, PHP_URL_PATH);
                 $rquery = (string) parse_url($decoded_return, PHP_URL_QUERY);
                 $rbase  = rtrim((string) Request::base(true), '/');
-                if ($rbase !== '' && strpos($rpath, $rbase) === 0) {
+                if ($rbase !== '' && str_starts_with($rpath, $rbase)) {
                     $rpath = substr($rpath, strlen($rbase));
                 }
                 if (

@@ -890,9 +890,7 @@ class Group extends Obj
             $result = [];
         }
 
-        $result = array_merge($result, $userids);
-
-        return $result;
+        return array_merge($result, $userids);
     }
 
     /**
@@ -1323,9 +1321,7 @@ class Group extends Obj
 
         $db->setQuery($query);
 
-        $emails = $db->loadColumn() ?? [];
-
-        return $emails;
+        return $db->loadColumn() ?? [];
     }
 
     /**

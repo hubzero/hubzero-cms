@@ -70,7 +70,7 @@ class Shp
         system('ogr2ogr ' . escapeshellarg($path) . ' ' . escapeshellarg($file_name . '.vrt'));
 
         header('Content-Description: File Transfer');
-        header('Content-Type: ' . 'application/zip');
+        header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename=' . preg_replace('/\W/', '_', $dd['title']) . '.zip');
 
         $tmp = tempnam("/tmp", "shp");
@@ -113,7 +113,7 @@ class Shp
         $dc = (float) $d + ((float) $m / 60) + ((float) $s / (60 * 60));
 
         if ($dir == "S" || $dir == "W") {
-            $dc = $dc * -1;
+            $dc *= -1;
         }
         return $dc;
     }

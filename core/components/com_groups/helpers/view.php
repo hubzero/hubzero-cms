@@ -112,13 +112,11 @@ class View
         $authorized = self::authorize($group);
 
         //get before group content
-        $beforeGroupContent = Event::trigger('groups.onBeforeGroup', [
+        //return any before content
+        return Event::trigger('groups.onBeforeGroup', [
             $group,
             $authorized,
         ]);
-
-        //return any before content
-        return $beforeGroupContent;
     }
 
 
@@ -458,8 +456,8 @@ class View
         foreach ($files as $file) {
             // dont include the default template (default.php or index.php)
             if (
-                strpos($file, 'default.php') !== false
-                || strpos($file, 'index.php') !== false
+                str_contains($file, 'default.php')
+                || str_contains($file, 'index.php')
             ) {
                 continue;
             }
@@ -849,8 +847,7 @@ class View
         $eval = function () use ($phpPageContent) {
             ob_start();
             eval("?>$phpPageContent<?php ");
-            $document = (string) ob_get_clean();
-            return $document;
+            return (string) ob_get_clean();
         };
         $phpPageContent = $eval();
 

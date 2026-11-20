@@ -258,11 +258,9 @@ class Field extends Relational
      */
     public static function getAllGroupFields($group_id)
     {
-        $fields = self::all()->including(['answers', function ($answer) use ($group_id) {
+        return self::all()->including(['answers', function ($answer) use ($group_id) {
             return $answer->whereEquals('group_id', $group_id)->ordered();
         }])->ordered();
-
-        return $fields;
     }
 
     /**
@@ -654,12 +652,10 @@ class Field extends Relational
      */
     public static function oneByName($name)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('name', $name)
             ->order('ordering', 'asc')
             ->limit(1)
             ->row();
-
-        return $row;
     }
 }

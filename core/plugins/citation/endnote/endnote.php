@@ -396,7 +396,6 @@ class Endnote extends Plugin
     protected function cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);
-        $encoded = strtr($string, $translations);
-        return $encoded;
+        return strtr($string, $translations);
     }
 }

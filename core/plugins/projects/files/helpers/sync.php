@@ -72,7 +72,7 @@ class Sync extends \Hubzero\Base\Obj
             false,
         );
         if (!is_dir((string) $this->logPath)) {
-            Filesystem::makeDirectory((string) $this->logPath, 0755, true, true);
+            Filesystem::makeDirectory((string) $this->logPath, 0o755, true, true);
         }
         $this->path    = $this->model->repo()->get('path');
     }
@@ -84,7 +84,7 @@ class Sync extends \Hubzero\Base\Obj
      */
     public function getStatus()
     {
-        $props = [
+        return [
             'service' => $this->get('service'),
             'status'  => $this->get('status'),
             'message' => $this->get('message'),
@@ -92,7 +92,6 @@ class Sync extends \Hubzero\Base\Obj
             'output'  => $this->get('output'),
             'auto'    => $this->get('auto'),
         ];
-        return $props;
     }
 
     /**
@@ -1078,8 +1077,7 @@ class Sync extends \Hubzero\Base\Obj
         $locals = array_merge($localFiles, $localDirectories);
         $localIds = [];
         $localIds = array_map(function ($file) {
-            $path = $file->get('localPath');
-            return $path;
+            return $file->get('localPath');
         }, $locals);
 
         foreach ($remotes['paths'] as $remote) {

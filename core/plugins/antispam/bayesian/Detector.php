@@ -122,8 +122,8 @@ class Detector implements DetectorInterface
 
         foreach ($tokens_prob as $token) {
             $prob = $token->prob;
-            $mult = $mult * $prob;
-            $comb = $comb * (1 - $prob);
+            $mult *= $prob;
+            $comb *= (1 - $prob);
             $index++;
             if ($index >= self::INTERSTING_WORD_COUNT) {
                 break;
@@ -305,9 +305,9 @@ class Detector implements DetectorInterface
 
         foreach ($words as $token => $count) {
             if ($isSpam) {
-                $this->calculateTokenProbality($token, 0, -1 * $count, $tokens_count);
+                $this->calculateTokenProbality($token, 0, -$count, $tokens_count);
             } else {
-                $this->calculateTokenProbality($token, -1 * $count, 0, $tokens_count);
+                $this->calculateTokenProbality($token, -$count, 0, $tokens_count);
             }
         }
     }
@@ -321,7 +321,7 @@ class Detector implements DetectorInterface
      * @param   \Plugins\Antispam\Bayesian\Models\TokenCount   $tokens_count
      * @return  void
      */
-    protected function calculateTokenProbality($token, $good_count, $bad_count, $tokens_count)
+    protected function calculateTokenProbality(#[\SensitiveParameter] $token, $good_count, $bad_count, $tokens_count)
     {
         $g = $good_count;
         $b = $bad_count;

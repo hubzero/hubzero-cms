@@ -54,11 +54,9 @@ class Publications extends Plugin
      */
     public function onMembersContributionsAreas()
     {
-        $areas = [
+        return [
             'publications' => Lang::txt('PLG_MEMBERS_PUBLICATIONS'),
         ];
-
-        return $areas;
     }
 
     /**
@@ -70,12 +68,11 @@ class Publications extends Plugin
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
-        $query = "SELECT COUNT(R.id)
+        return "SELECT COUNT(R.id)
 				FROM `#__publication_versions` AS R
 				LEFT JOIN `#__publication_authors` AS AA ON AA.publication_version_id = R.id
 				WHERE AA.user_id=" . $user_id . " AND
 				AND R.state=1";
-        return $query;
     }
 
     /**
@@ -170,14 +167,12 @@ class Publications extends Plugin
             // Get results
             $query = self::allWithFilters($filters);
 
-            $rows = $query
+            // Return the results
+            return $query
                 ->limit($filters['limit'])
                 ->start($filters['limitstart'])
                 ->order($filters['sortby'], 'desc')
                 ->rows();
-
-            // Return the results
-            return $rows;
         } else {
             return self::allWithFilters($filters)->total();
         }

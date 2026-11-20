@@ -438,7 +438,7 @@ $this->css();
 
                 $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
                     . $this->escape($editor->get('name')) . '<br />' . $date . '<br />' . $time . '">';
-                $checked .= '<span class="checkedout"></span>' . '</span>';
+                $checked .= '<span class="checkedout"></span></span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
                          ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': '

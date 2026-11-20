@@ -150,7 +150,7 @@ class OciDriver extends BaseSqlDriver
         // Establish connection string (TNS or Easy Connect)
         if (!isset($options['dsn'])) {
             // Support Easy Connect syntax: host:port/service_name
-            if (isset($options['host']) && isset($options['database'])) {
+            if (isset($options['host'], $options['database'])) {
                 $host = $options['host'];
                 $port = isset($options['port']) ? $options['port'] : '1521';
                 $service = $options['database'];
@@ -408,7 +408,7 @@ class OciDriver extends BaseSqlDriver
             return $quotedArray;
         }
 
-        $parts = (strpos($name, '.') !== false)
+        $parts = (str_contains($name, '.') )
             ? explode('.', $name)
             : (array) $name;
         $bits = [];

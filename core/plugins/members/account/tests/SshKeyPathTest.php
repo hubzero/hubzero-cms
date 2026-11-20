@@ -62,8 +62,8 @@ class SshKeyPathTest extends Basic
     {
         $this->base = sys_get_temp_dir() . DS . 'plg_members_account_' . bin2hex(random_bytes(6));
 
-        mkdir($this->base . DS . 'member', 0755, true);
-        mkdir($this->base . DS . 'victim' . DS . '.ssh', 0700, true);
+        mkdir($this->base . DS . 'member', 0o755, true);
+        mkdir($this->base . DS . 'victim' . DS . '.ssh', 0o700, true);
 
         file_put_contents($this->base . DS . 'victim' . DS . '.ssh' . DS . 'authorized_keys', self::VICTIM_KEY);
 
@@ -174,7 +174,7 @@ class SshKeyPathTest extends Basic
         $this->assertEquals($expected, $ssh);
         $this->assertTrue(is_dir($expected));
         $this->assertFalse(is_link($expected));
-        $this->assertEquals(0700, fileperms($expected) & 0777);
+        $this->assertEquals(0o700, fileperms($expected) & 0o777);
     }
 
     /**
@@ -341,7 +341,7 @@ class SshKeyPathTest extends Basic
 
         $this->assertTrue($this->plugin->writeAuthorizedKeys($auth, $content));
         $this->assertEquals($content, file_get_contents($auth));
-        $this->assertEquals(0600, fileperms($auth) & 0777);
+        $this->assertEquals(0o600, fileperms($auth) & 0o777);
         $this->assertEquals([], glob($ssh . DS . '.authorized_keys.*'));
     }
 

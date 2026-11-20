@@ -332,14 +332,12 @@ class Parameter extends Registry
             if ($elementFile = App::get('filesystem')->find($dirs, $file)) {
                 include_once $elementFile;
             } else {
-                $false = false;
-                return $false;
+                return false;
             }
         }
 
         if (!is_a($elementClass, Parameter\Element::class, true)) {
-            $false = false;
-            return $false;
+            return false;
         }
 
         $this->elements[$signature] = new $elementClass($this);

@@ -61,7 +61,7 @@ class HubType extends Relational
     {
         $classpath = $this->get('class_path');
 
-        if (strpos($classpath, 'Tables') === false) {
+        if (!str_contains($classpath, 'Tables')) {
             $model = new $classpath();
         } else {
             $database = App::get('db');

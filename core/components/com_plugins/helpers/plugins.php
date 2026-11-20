@@ -79,8 +79,6 @@ class Plugins
             ->order('folder', 'asc');
 
         $db->setQuery($query->toString());
-        $options = $db->loadObjectList();
-
-        return $options;
+        return $db->loadObjectList();
     }
 }

@@ -44,7 +44,7 @@ class Weighttitle extends Plugin
         $quoted_weight = 0;
         foreach ($terms->getPositiveChunks() as $idx => $chunk) {
             if ($terms->isQuoted($idx)) {
-                if (strpos($title, $chunk) !== false) {
+                if (str_contains($title, $chunk)) {
                     $quoted_weight += count(explode(' ', $chunk));
                 }
             } else {

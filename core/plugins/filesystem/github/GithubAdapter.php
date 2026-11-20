@@ -82,7 +82,7 @@ class GithubAdapter implements FilesystemAdapter
      **/
     public function __construct(
         $repository,
-        $token = null,
+        #[\SensitiveParameter] $token = null,
         $reference = 'HEAD',
         ?Client $client = null,
     ) {
@@ -205,8 +205,8 @@ class GithubAdapter implements FilesystemAdapter
         $message = strtolower($e->getMessage());
 
         return $e->getCode() == 401
-            || strpos($message, 'bad credentials') !== false
-            || strpos($message, 'requires authentication') !== false;
+            || str_contains($message, 'bad credentials')
+            || str_contains($message, 'requires authentication') ;
     }
 
     //////////////////////////////// EXISTENCE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -506,7 +506,7 @@ class GithubAdapter implements FilesystemAdapter
             $path .= '/';
 
             return array_filter($tree, function ($entry) use ($path, $recursive) {
-                if (strpos($entry[self::KEY_PATH], $path) !== 0) {
+                if (!str_starts_with($entry[self::KEY_PATH], $path)) {
                     return false;
                 }
 
@@ -520,7 +520,7 @@ class GithubAdapter implements FilesystemAdapter
 
         if ($recursive === false) {
             return array_filter($tree, function ($entry) {
-                return strpos($entry[self::KEY_PATH], '/') === false;
+                return !str_contains($entry[self::KEY_PATH], '/') ;
             });
         }
 
@@ -560,7 +560,7 @@ class GithubAdapter implements FilesystemAdapter
             return null;
         }
 
-        return (octdec($entry[self::KEY_MODE]) & 0044) ? Visibility::PUBLIC : Visibility::PRIVATE;
+        return (octdec($entry[self::KEY_MODE]) & 0o044) ? Visibility::PUBLIC : Visibility::PRIVATE;
     }
 
     /**

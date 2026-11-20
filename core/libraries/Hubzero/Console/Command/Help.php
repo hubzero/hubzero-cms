@@ -107,7 +107,7 @@ class Help extends Base implements CommandInterface
         $files = array_diff(scandir($cur), ['..', '.']);
 
         foreach ($files as $file) {
-            if (is_file($cur . DS . $file) && strpos($file, '.php') !== false) {
+            if (is_file($cur . DS . $file) && str_contains($file, '.php')) {
                 $namespace  = str_replace($root . DS, '', $cur . DS . $file);
                 $namespace  = str_replace(DS, '\\', $namespace);
                 $class      = str_replace('.php', '', $namespace);

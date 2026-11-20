@@ -462,19 +462,19 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         // Don't wrap if already wrapped (starts with backtick)
-        if (strpos($column, '`') === 0) {
+        if (str_starts_with($column, '`')) {
             return $column;
         }
 
         // Don't wrap expressions with parentheses (functions, etc.)
-        if (strpos($column, '(') !== false) {
+        if (str_contains($column, '(')) {
             return $column;
         }
 
         // Handle comma-separated column lists (e.g., "table.col1, table2.col2")
         // Split on commas that are NOT inside parentheses
         // Must check AFTER the parenthesis check above, so we don't split function arguments
-        if (strpos($column, ',') !== false) {
+        if (str_contains($column, ',')) {
             $parts = $this->splitOnCommasOutsideParens($column);
             // Only split if we got multiple parts (meaning commas were at top level)
             if (count($parts) > 1) {
@@ -488,7 +488,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         }
 
         // Handle table.column syntax - wrap each part separately
-        if (strpos($column, '.') !== false) {
+        if (str_contains($column, '.')) {
             $parts = explode('.', $column);
             $wrapped = [];
             foreach ($parts as $part) {
@@ -1019,9 +1019,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             ? $this->buildWhereClause()
             : parent::buildWhere();
 
-        $where = $this->appendDeferredExistsPredicatesToWhere($where);
-
-        return $where;
+        return $this->appendDeferredExistsPredicatesToWhere($where);
     }
 
     /**

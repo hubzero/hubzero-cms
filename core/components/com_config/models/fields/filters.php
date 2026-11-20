@@ -147,8 +147,6 @@ class Filters extends Field
             ->group('a.lft')
             ->order('a.lft', 'ASC');
         $db->setQuery($query->toString());
-        $options = $db->loadObjectList();
-
-        return $options;
+        return $db->loadObjectList();
     }
 }

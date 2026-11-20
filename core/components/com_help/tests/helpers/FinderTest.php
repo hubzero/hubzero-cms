@@ -63,7 +63,7 @@ class FinderTest extends Basic
         parent::setUp();
 
         $this->root = sys_get_temp_dir() . '/hz-help-finder-' . getmypid() . '-' . uniqid();
-        mkdir($this->root, 0700, true);
+        mkdir($this->root, 0o700, true);
 
         $root = $this->root;
         $app  = new Container();
@@ -210,7 +210,7 @@ class FinderTest extends Basic
     {
         $path = $this->root . '/' . $relative;
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0700, true);
+            mkdir(dirname($path), 0o700, true);
         }
         touch($path);
         return $path;

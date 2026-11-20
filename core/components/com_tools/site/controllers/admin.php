@@ -776,7 +776,7 @@ class Admin extends SiteController
             }
             fwrite($handle, $status['license']);
             fclose($handle);
-            chmod($fname, 0664);
+            chmod($fname, 0o664);
 
             if (!file_exists('/usr/bin/finalizetool.sh')) {
                 $command  = '/usr/bin/sudo -u apps ';

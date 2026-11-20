@@ -327,7 +327,7 @@ abstract class Field
         // Add the required class if the field is required.
         if ($this->required) {
             if ($class) {
-                if (strpos($class, 'required') === false) {
+                if (!str_contains($class, 'required')) {
                     $this->element['class'] = $class . ' required';
                 }
             } else {
@@ -410,9 +410,7 @@ abstract class Field
         }
 
         // Clean up any invalid characters.
-        $id = (string) preg_replace('#\W#', '_', $id);
-
-        return $id;
+        return (string) preg_replace('#\W#', '_', $id);
     }
 
     /**
@@ -439,9 +437,7 @@ abstract class Field
         // Get the label text from the XML element, defaulting to the element name.
         $element = $this->fieldElement();
         $title = $element['label'] ? (string) $element['label'] : (string) $element['name'];
-        $title = $this->translateLabel ? Lang::txt($title) : $title;
-
-        return $title;
+        return $this->translateLabel ? Lang::txt($title) : $title;
     }
 
     /**
@@ -552,7 +548,7 @@ abstract class Field
             return $fieldName;
         }
 
-        self::$count = self::$count + 1;
+        self::$count += 1;
         return self::$generated_fieldname . self::$count;
     }
 

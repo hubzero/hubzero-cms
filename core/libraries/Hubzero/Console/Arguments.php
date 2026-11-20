@@ -150,7 +150,7 @@ class Arguments
                 }
 
                 // Args with an "=" will use the value before as key and the value after as value
-                if (strpos($this->raw[$i], "=") !== false) {
+                if (str_contains($this->raw[$i], "=")) {
                     $parts = explode("=", $this->raw[$i], 2);
                     $key   = preg_replace("/^([-]{1,2})/", "", $parts[0]);
                     $value = ($parts[1]);
@@ -228,7 +228,7 @@ class Arguments
         // Aliases take precedence, so parse for them first
         if ($aliases = Config::get('aliases')) {
             if (property_exists($aliases, $command)) {
-                if (strpos($aliases->$command, '::') !== false) {
+                if (str_contains($aliases->$command, '::')) {
                     $bits      = explode('::', $aliases->$command);
                     $command   = $bits[0];
                     $aliasTask = $bits[1];
@@ -301,7 +301,7 @@ class Arguments
         // Aliases take precedence, so parse for them first
         if ($aliases = Config::get('aliases')) {
             if (property_exists($aliases, $command)) {
-                if (strpos($aliases->$command, '::') !== false) {
+                if (str_contains($aliases->$command, '::')) {
                     $bits = explode('::', $aliases->$command);
                     $task = $bits[1];
                 }

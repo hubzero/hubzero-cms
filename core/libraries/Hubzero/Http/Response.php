@@ -103,11 +103,11 @@ class Response extends BaseResponse
             return $encoding;
         }
 
-        if (false !== strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
+        if (str_contains($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
             $encoding = 'gzip';
         }
 
-        if (false !== strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip')) {
+        if (str_contains($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip')) {
             $encoding = 'x-gzip';
         }
 

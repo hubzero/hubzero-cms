@@ -85,9 +85,7 @@ class Pagedown extends Plugin
             'editorForm.php?INPUT_ID=' . self::INPUT_ID,
         ];
 
-        $scriptPaths = $this->buildAssetPaths($scriptNames, self::JS_DIRECTORY);
-
-        return $scriptPaths;
+        return $this->buildAssetPaths($scriptNames, self::JS_DIRECTORY);
     }
 
     /**
@@ -101,9 +99,7 @@ class Pagedown extends Plugin
             'markdown.css',
         ];
 
-        $stylesheetPaths = $this->buildAssetPaths($stylesheetNames, self::CSS_DIRECTORY);
-
-        return $stylesheetPaths;
+        return $this->buildAssetPaths($stylesheetNames, self::CSS_DIRECTORY);
     }
 
     /**
@@ -115,11 +111,9 @@ class Pagedown extends Plugin
      */
     protected function buildAssetPaths($assetFileNames, $assetDirectory)
     {
-        $assetPaths = array_map(function ($fileName) use ($assetDirectory) {
+        return array_map(function ($fileName) use ($assetDirectory) {
             return str_replace('/administrator', '/', Request::base(true)) . "$assetDirectory/$fileName";
         }, $assetFileNames);
-
-        return $assetPaths;
     }
 
     /**
@@ -157,11 +151,7 @@ class Pagedown extends Plugin
         $this->parseClasses($params);
         $this->setDefaultHeight($params, $rows);
 
-        $editorDomElements = $this->buildEditorDomElements($content, $name, $columns, $rows);
-
-        $editorDomContent = $editorDomElements;
-
-        return $editorDomContent;
+        return $this->buildEditorDomElements($content, $name, $columns, $rows);
     }
 
     /**

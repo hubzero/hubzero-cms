@@ -137,14 +137,12 @@ class Option extends Relational
      */
     public static function oneByOrdering($ordering, $field_id)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('ordering', $ordering)
             ->whereEquals('field_id', $field_id)
             ->order('ordering', 'asc')
             ->limit(1)
             ->row();
-
-        return $row;
     }
 
     /**
@@ -156,13 +154,11 @@ class Option extends Relational
      */
     public static function oneByValue($value, $field_id)
     {
-        $row = self::all()
+        return self::all()
             ->whereEquals('value', $value)
             ->whereEquals('field_id', $field_id)
             ->order('ordering', 'asc')
             ->limit(1)
             ->row();
-
-        return $row;
     }
 }

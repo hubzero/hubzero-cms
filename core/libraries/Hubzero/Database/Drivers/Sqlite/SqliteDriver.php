@@ -1903,7 +1903,7 @@ class SqliteDriver extends BaseSqlDriver
             // Recreate indexes (excluding auto-created ones and PRIMARY)
             foreach ($indexes as $indexName => $indexInfo) {
                 // Skip auto-generated indexes (sqlite_autoindex_*) and PRIMARY
-                if (strpos($indexName, 'sqlite_autoindex_') === 0 || $indexName === 'PRIMARY') {
+                if (str_starts_with($indexName, 'sqlite_autoindex_')  || $indexName === 'PRIMARY') {
                     continue;
                 }
 
@@ -2218,7 +2218,7 @@ class SqliteDriver extends BaseSqlDriver
 
         foreach ($indexes as $indexName => $indexInfo) {
             // Skip auto-generated indexes (sqlite_autoindex_*) - they're managed by SQLite
-            if (strpos($indexName, 'sqlite_autoindex_') === 0) {
+            if (str_starts_with($indexName, 'sqlite_autoindex_')) {
                 continue;
             }
 
@@ -2323,7 +2323,7 @@ class SqliteDriver extends BaseSqlDriver
             // Recreate indexes (excluding those that referenced the dropped column)
             foreach ($indexes as $indexName => $indexInfo) {
                 // Skip auto-generated indexes (sqlite_autoindex_*) and PRIMARY
-                if (strpos($indexName, 'sqlite_autoindex_') === 0 || $indexName === 'PRIMARY') {
+                if (str_starts_with($indexName, 'sqlite_autoindex_')  || $indexName === 'PRIMARY') {
                     continue;
                 }
 
@@ -2477,7 +2477,7 @@ class SqliteDriver extends BaseSqlDriver
             // Recreate indexes (excluding auto-created ones and PRIMARY)
             foreach ($indexes as $indexName => $indexInfo) {
                 // Skip auto-generated indexes (sqlite_autoindex_*) and PRIMARY
-                if (strpos($indexName, 'sqlite_autoindex_') === 0 || $indexName === 'PRIMARY') {
+                if (str_starts_with($indexName, 'sqlite_autoindex_')  || $indexName === 'PRIMARY') {
                     continue;
                 }
 
@@ -2686,7 +2686,7 @@ class SqliteDriver extends BaseSqlDriver
 
         $indexesToRecreate = [];
         foreach ($currentIndexes as $index) {
-            if (strpos($index->name, 'sqlite_autoindex_') === 0) {
+            if (str_starts_with($index->name, 'sqlite_autoindex_')) {
                 continue;
             }
             $this->setQuery("PRAGMA index_info(`{$index->name}`)");
@@ -2924,7 +2924,7 @@ class SqliteDriver extends BaseSqlDriver
             $currentIndexes = $this->loadObjectList();
 
             foreach ($currentIndexes as $index) {
-                if (strpos($index->name, 'sqlite_autoindex_') === 0) {
+                if (str_starts_with($index->name, 'sqlite_autoindex_')) {
                     continue;
                 }
 

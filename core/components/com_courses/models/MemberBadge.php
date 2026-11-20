@@ -82,7 +82,7 @@ class MemberBadge extends Base
      * @param    string $token Badge assertion token
      * @return   mixed  Object on success, False on error
      */
-    public static function loadByToken($token)
+    public static function loadByToken(#[\SensitiveParameter] $token)
     {
         $obj = new MemberBadge();
         $obj->table->load(['validation_token' => $token]);

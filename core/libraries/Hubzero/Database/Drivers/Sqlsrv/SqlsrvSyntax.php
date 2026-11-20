@@ -609,7 +609,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
             case 'CONCAT':
                 $parts = array_map(
-                    fn($a) => $this->buildExpressionArgument($a),
+                    $this->buildExpressionArgument(...),
                     $args,
                 );
                 return 'CONCAT(' . implode(', ', $parts) . ')';

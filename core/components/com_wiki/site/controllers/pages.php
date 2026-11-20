@@ -1276,7 +1276,7 @@ class Pages extends SiteController
 
                 if (file_exists($tmpPng)) {
                     if (!is_dir($hashDir)) {
-                        @mkdir($hashDir, 0775, true);
+                        @mkdir($hashDir, 0o775, true);
                     }
                     @rename($tmpPng, $pngPath);
                 }
@@ -1291,7 +1291,7 @@ class Pages extends SiteController
         // Suppress TCPDF warnings about unsupported HTML features (trids, cols)
         // that the CMS error handler would escalate to 500 errors
         $previousHandler = set_error_handler(function ($errno, $errstr, $errfile) use (&$previousHandler) {
-            if (strpos($errfile, 'tcpdf.php') !== false) {
+            if (str_contains($errfile, 'tcpdf.php')) {
                 return true; // suppress TCPDF warnings
             }
             return $previousHandler

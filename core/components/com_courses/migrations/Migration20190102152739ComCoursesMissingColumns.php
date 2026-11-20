@@ -104,13 +104,11 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
 
     protected function generateSafeAddColumns($table, $columns)
     {
-        $query = $this->generateSafeAlterTableColumnOperation(
+        return $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
             'safeAddColumn',
         );
-
-        return $query;
     }
 
     protected function safeAddColumn($table, $columnData)
@@ -128,13 +126,11 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
 
     protected function generateSafeDropColumns($table, $columns)
     {
-        $query = $this->generateSafeAlterTableColumnOperation(
+        return $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
             'safeDropColumn',
         );
-
-        return $query;
     }
 
     protected function safeDropColumn($table, $columnData)
@@ -158,9 +154,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
             $query .= $this->$functionName($table, $columnData) . ',';
         }
 
-        $query = rtrim($query, ',') . ';';
-
-        return $query;
+        return rtrim($query, ',') . ';';
     }
 
     protected function queryIfTableExists($tableName, $query)

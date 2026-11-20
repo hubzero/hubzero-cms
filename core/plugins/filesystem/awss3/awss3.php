@@ -42,7 +42,6 @@ class Awss3 extends Plugin
             'region'  => $region,
             'version' => 'latest',
         ]);
-        $adapter = new AwsS3V3Adapter($client, $bucket, $path);
-        return $adapter;
+        return new AwsS3V3Adapter($client, $bucket, $path);
     }
 }

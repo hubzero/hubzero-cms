@@ -61,9 +61,9 @@ class Questions extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $qweight  = 'match(q.question, q.subject) against(\'' . join(' ', $terms['stemmed']) . '\')';
-        $rweight  = 'match(r.answer) against(\'' . join(' ', $terms['stemmed']) . '\')';
-        $r2weight = 'match(r2.answer) against(\'' . join(' ', $terms['stemmed']) . '\')';
+        $qweight  = 'match(q.question, q.subject) against(\'' . implode(' ', $terms['stemmed']) . '\')';
+        $rweight  = 'match(r.answer) against(\'' . implode(' ', $terms['stemmed']) . '\')';
+        $r2weight = 'match(r2.answer) against(\'' . implode(' ', $terms['stemmed']) . '\')';
 
         /*$qaddtl_where = array();
         $raddtl_where = array();
@@ -282,8 +282,7 @@ class Questions extends Plugin
             } else {
                 $db = App::get('db');
                 $sql = "SELECT id FROM #__answers_questions;";
-                $ids = $db->setQuery($sql)->query()->loadColumn();
-                return $ids;
+                return $db->setQuery($sql)->query()->loadColumn();
             }
         }
 

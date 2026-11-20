@@ -139,11 +139,11 @@ class Server extends Obj
             return false;
         }
         // Disallow \
-        if (strpos($filename, '\\') !== false) {
+        if (str_contains($filename, '\\')) {
             return false;
         }
         // Disallow ..
-        if (strpos($filename, '..') !== false) {
+        if (str_contains($filename, '..')) {
             return false;
         }
 

@@ -37,7 +37,7 @@ class Migration20131021211223Core extends Base
                 $params = json_decode($result->params);
 
                 if ($params->upload_maxsize > 1000000) {
-                    $params->upload_maxsize = $params->upload_maxsize / 1000000;
+                    $params->upload_maxsize /= 1000000;
 
                     $this->db
                         ->getQuery()

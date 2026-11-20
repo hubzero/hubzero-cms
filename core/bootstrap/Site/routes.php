@@ -518,7 +518,7 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
         $length = strlen($item->route);
 
         if (
-            $length > 0 && strpos($route_lowercase . '/', $item->route . '/') === 0
+            $length > 0 && str_starts_with($route_lowercase . '/', $item->route . '/')
             && $item->type != 'alias'
             && (!App::get('language.filter') || $item->language == '*' || $item->language == $lang_tag)
         ) {
@@ -540,7 +540,7 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
                 }
 
                 // Pass local URLs through, but record Itemid (we want the content parser to handle this)
-                if (strpos($item->route, '://') === false) {
+                if (!str_contains($item->route, '://')) {
                     $vars['Itemid'] = $item->id;
                     break;
                 }
