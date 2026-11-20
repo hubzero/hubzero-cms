@@ -1,0 +1,123 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Shopping Cart: Software Downloads</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#list-filters">List Filters</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists software downloads made through the shopping cart, one row per download.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<p>Click the <strong>Product</strong>, <strong>Downloaded by</strong>, <strong>Downloaded</strong> or
+			<strong>Status</strong> heading to sort the list by that column. Click it again to reverse the order.</p>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading.
+				After one or more boxes are checked, click a toolbar button to take an action on the selected item or
+				items.</dd>
+
+			<dt>Product</dt>
+			<dd>The product name, with its SKU on the line below. Click the product name to list only downloads of
+				that product, or the SKU to list only downloads of that SKU. <em>Product n/a</em> or <em>n/a</em> is
+				shown when the product or SKU no longer exists.</dd>
+
+			<dt>Downloaded by</dt>
+			<dd>The name and username of the member who downloaded. Click it to list only that member's downloads.
+				<em>(unknown)</em> is shown when the download has no member.</dd>
+
+			<dt>User Info</dt>
+			<dd>The user details recorded with the download, separated by commas.</dd>
+
+			<dt>EULA</dt>
+			<dd>Shows <em>EULA accepted</em> when the download recorded that the end user licence agreement was
+				accepted.</dd>
+
+			<dt>Downloaded</dt>
+			<dd>The date and time of the download.</dd>
+
+			<dt>IP</dt>
+			<dd>The IP address the download came from.</dd>
+
+			<dt>Status</dt>
+			<dd><strong>Active</strong> or <strong>Inactive</strong>. Users who may change the state of items can
+				click the status to switch it.</dd>
+		</dl>
+
+		<p>When the list is limited to one member, product or SKU, a row above the headings names it
+			(<em>Orders for</em> or <em>Orders of</em>) with a <strong>Clear</strong> button.</p>
+	</section>
+	<section id="list-filters">
+		<h2><span>List Filters</span></h2>
+
+		<dl>
+			<dt>Search</dt>
+			<dd>Lists only downloads whose product name, SKU, member name or username contains the text.</dd>
+
+			<dt>SKU</dt>
+			<dd>Shown only when the list is limited to one SKU. Choose <strong>All SKUs</strong> to remove that
+				limit.</dd>
+
+			<dt>From &mdash; To</dt>
+			<dd>Lists only downloads made between these dates. The default is from one month ago to today.</dd>
+
+			<dt>Update</dt>
+			<dd>Applies the filters.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Options</dt>
+			<dd>Opens the Options window where settings such as default parameters or permissions can be edited.
+				Shown only to users who may configure the component.</dd>
+
+			<dt>Publish</dt>
+			<dd>Shown only to users who may change the state of items. This screen has no publish action, so the
+				list reloads unchanged. To make a download active, click its <strong>Status</strong>.</dd>
+
+			<dt>Unpublish</dt>
+			<dd>Shown only to users who may change the state of items. This screen has no unpublish action, so the
+				list reloads unchanged. To make a download inactive, click its <strong>Status</strong>.</dd>
+
+			<dt>Download CSV</dt>
+			<dd>Downloads a CSV file of every download matching the current search, dates, SKU, member and product
+				filters. Its columns are Downloaded, Product, SKU, User, Username, User ID, User Details, EULA, IP
+				and Status.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Software Downloads (this page)</dt>
+			<dt>Orders</dt>
+		</dl>
+		<p>Below them, a second row of links chooses the report:</p>
+		<dl>
+			<dt>All downloads (this page)</dt>
+			<dt>Downloads by SKU</dt>
+		</dl>
+	</section>
+</article>

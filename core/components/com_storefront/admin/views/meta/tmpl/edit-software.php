@@ -32,7 +32,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 Toolbar::spacer();
-Toolbar::help('category');
+Toolbar::help('metasoftware');
 
 // Setup default values
 if (empty($this->meta->eulaRequired)) {

@@ -33,7 +33,7 @@ $this->js();
 Toolbar::title(Lang::txt('COM_MESSAGES_WRITE_PRIVATE_MESSAGE'), 'new-privatemessage.png');
 Toolbar::save('save', 'COM_MESSAGES_TOOLBAR_SEND');
 Toolbar::cancel('cancel');
-Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
+Toolbar::help('write');
 ?>
 
 <form action="<?= Route::url('index.php?option=com_messages') ?>" method="post" name="adminForm" id="item-form"

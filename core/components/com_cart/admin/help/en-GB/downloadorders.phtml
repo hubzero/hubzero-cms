@@ -1,0 +1,82 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Shopping Cart: Items Ordered</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists the items in shopping cart orders, one row per SKU in each order. It has no search or
+			date filters.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<dl>
+			<dt>SKU ID</dt>
+			<dd>The SKU's ID number. Click it to edit the SKU in the Storefront component.</dd>
+
+			<dt>Product</dt>
+			<dd>The product name and the SKU, separated by a comma. Click either one to edit it in the Storefront
+				component. <em>Product n/a</em> or <em>SKU n/a</em> is shown when the name is missing.</dd>
+
+			<dt>QTY</dt>
+			<dd>The quantity ordered.</dd>
+
+			<dt>Price</dt>
+			<dd>The price recorded for the item in the order.</dd>
+
+			<dt>Order ID</dt>
+			<dd>The order's number. Click it to view the order.</dd>
+
+			<dt>Order placed</dt>
+			<dd>The date and time the order was last updated.</dd>
+
+			<dt>Purchased by</dt>
+			<dd>The name of the member who placed the order.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Options</dt>
+			<dd>Opens the Options window where settings such as default parameters or permissions can be edited.
+				Shown only to users who may configure the component.</dd>
+
+			<dt>Download CSV</dt>
+			<dd>Downloads a CSV file of the items ordered, using the search, dates and order last set on the
+				<strong>Items ordered</strong> screen. Its columns are SKU ID, Product, QTY, Price, Order ID, Order
+				Placed, Purchased By and Purchased By (userId).</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Software Downloads</dt>
+			<dt>Orders (this page)</dt>
+		</dl>
+		<p>Below them, a second row of links chooses the report:</p>
+		<dl>
+			<dt>All orders</dt>
+			<dt>Items ordered</dt>
+		</dl>
+	</section>
+</article>

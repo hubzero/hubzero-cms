@@ -30,7 +30,7 @@ if ($canDo->get('core.admin')) {
 Toolbar::custom('downloadSku', 'download.png', '', 'Download CSV', false);
 
 //Toolbar::spacer();
-//Toolbar::help('downloads');
+//Toolbar::help('downloadsku');
 
 $this->js();
 ?>

@@ -34,7 +34,7 @@ Toolbar::title(
     Lang::txt('COM_MEMBERS_VIEW_DEBUG_USER_TITLE', $this->user->get('id'), $this->escape($this->user->get('name'))),
     'user',
 );
-Toolbar::help('JHELP_USERS_DEBUG_USERS');
+Toolbar::help('debuguser');
 
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);

@@ -34,7 +34,7 @@ if (
     Toolbar::custom('reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
 }
 Toolbar::cancel('cancel');
-Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');
+Toolbar::help('message');
 
 ?>
 <form action="<?php echo Route::url('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="adminForm">

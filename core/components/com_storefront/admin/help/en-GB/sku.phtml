@@ -1,0 +1,161 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Storefront: SKU</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#fields">Fields</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This is where you can add a new SKU to a product or edit an existing SKU. Some fields only appear for
+			certain product types, as noted below.</p>
+	</section>
+	<section id="fields">
+		<h2><span>Fields</span></h2>
+
+		<h3>Details</h3>
+		<dl>
+			<dt>Title</dt>
+			<dd>The name of the SKU. Required.</dd>
+
+			<dt>Price</dt>
+			<dd>The price of the SKU. Required.</dd>
+
+			<dt>Weight</dt>
+			<dd>The weight of the SKU. Only shown for products of the Shippable merchandise type.</dd>
+		</dl>
+
+		<h3>Checkout options</h3>
+		<dl>
+			<dt>Checkout notes/comments message</dt>
+			<dd>A text field.</dd>
+
+			<dt>Checkout notes/comments required</dt>
+			<dd>A choice of No or Yes.</dd>
+		</dl>
+
+		<h3>Product options</h3>
+		<p>Only shown when the product has option groups.</p>
+		<dl>
+			<dt>One field per option group</dt>
+			<dd>A drop-down list, labeled with the name of the option group, to pick the option this SKU has.
+				Required. It lists the published options of the group, and any option the SKU already has. If the
+				group has no such options, a warning with a link to the group's options is shown instead.</dd>
+		</dl>
+
+		<h3>General Software-related Options</h3>
+		<p>Only shown for products of the Software Download type.</p>
+		<dl>
+			<dt>EULA (overrides product-level EULA)</dt>
+			<dd>The text of the end-user license agreement for this SKU, entered in a text editor.</dd>
+
+			<dt>Download file</dt>
+			<dd>A text field. Required.</dd>
+
+			<dt>Total Downloads Limit</dt>
+			<dd>A text field.</dd>
+
+			<dt>Downloads Limit per Single User</dt>
+			<dd>A text field.</dd>
+		</dl>
+
+		<h3>Serial numbers</h3>
+		<p>Only shown for products of the Software Download type.</p>
+		<dl>
+			<dt>Serial Number Management</dt>
+			<dd>No management, Single Universal Number or Multiple Unique Numbers. When the saved choice is
+				Multiple Unique Numbers, a <strong>Manage multiple serial numbers</strong> link appears below,
+				which opens the list of the SKU's serial numbers.</dd>
+
+			<dt>Single Serial Number</dt>
+			<dd>A text field, used with the Single Universal Number choice.</dd>
+		</dl>
+
+		<p>The right-hand column shows:</p>
+		<dl>
+			<dt>ID</dt>
+			<dd>The identification number of the SKU, assigned by the system. It cannot be changed.</dd>
+
+			<dt>Product</dt>
+			<dd>The name of the product the SKU belongs to.</dd>
+
+			<dt>Downloaded</dt>
+			<dd>How many times the SKU has been downloaded. Only shown for products of the Software Download
+				type.</dd>
+
+			<dt>Direct URL</dt>
+			<dd>The address of the product in the storefront, followed by the IDs of the SKU's options, if it has
+				any.</dd>
+		</dl>
+
+		<h3>Options</h3>
+		<dl>
+			<dt>Allow multiple</dt>
+			<dd>A choice of No or Yes.</dd>
+
+			<dt>Track Inventory</dt>
+			<dd>Whether the inventory level is kept track of. If Yes, set the Inventory field.</dd>
+
+			<dt>Inventory</dt>
+			<dd>The number of items available for sale. A whole number, zero or more.</dd>
+
+			<dt>Inventory notification threshold</dt>
+			<dd>When the inventory is at or below this number, an email is sent to the admin on each inventory
+				change.</dd>
+		</dl>
+		<p>Track Inventory and Inventory are not shown for a Software Download SKU that uses Multiple Unique
+			Numbers.</p>
+
+		<h3>Publishing options</h3>
+		<dl>
+			<dt>State</dt>
+			<dd>Unpublished or Published.</dd>
+
+			<dt>Publish up</dt>
+			<dd>A date and time, chosen with a calendar.</dd>
+
+			<dt>Publish down</dt>
+			<dd>A date and time, chosen with a calendar.</dd>
+		</dl>
+
+		<h3>Restrictions</h3>
+		<dl>
+			<dt>Restrict by users</dt>
+			<dd>A choice of No or Yes. When the saved choice is Yes, a <strong>Manage restrictions</strong> link
+				appears below, which opens the list of the SKU's restrictions.</dd>
+		</dl>
+
+		<h3>Whitelist</h3>
+		<p>Whitelisting grants users access to the SKU despite any other existing access controls or restrictions.
+			The <strong>Manage whitelist</strong> link opens the SKU's whitelist.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Saves the SKU and stays on this screen.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Saves the SKU and returns to the list of SKUs of its product.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discards any changes and returns to the list of SKUs of its product.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+		<p>Save and Save &amp; Close only appear if you may edit products.</p>
+	</section>
+</article>

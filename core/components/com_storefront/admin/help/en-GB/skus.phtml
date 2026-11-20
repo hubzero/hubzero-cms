@@ -1,0 +1,88 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Storefront: SKUs</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists the SKUs of one product. It opens from the SKU count of a product in the
+			<strong>Products</strong> list.</p>
+		<p>The heading of the list reads &quot;SKUs for:&quot; followed by the name of the product. The name links to
+			the editing screen of the product.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading.
+				After one or more boxes are checked, click a toolbar button to take an action on the selected item or
+				items. Publish, Unpublish and Delete work with multiple items. Edit only works on one item at a time.
+				If multiple items are checked and you press Edit, the first item will be opened for editing.</dd>
+
+			<dt>Title</dt>
+			<dd>The name of the SKU. If you may edit SKUs, the name links to the SKU's editing screen.</dd>
+
+			<dt>State</dt>
+			<dd>Shows whether the SKU is Published, Unpublished or Trashed. If you may change the state, click the
+				icon to publish an unpublished or trashed SKU, or to unpublish a published one.</dd>
+
+			<dt>Restrictions</dt>
+			<dd>Shows &quot;restricted&quot; when the SKU is restricted by users. If you may edit SKUs, it links to
+				the list of the SKU's restrictions.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Options</dt>
+			<dd>Opens the Storefront configuration options in a pop-up window.</dd>
+
+			<dt>Publish</dt>
+			<dd>Publishes the selected SKUs.</dd>
+
+			<dt>Unpublish</dt>
+			<dd>Unpublishes the selected SKUs.</dd>
+
+			<dt>New</dt>
+			<dd>Opens the editing screen to create a new SKU for this product.</dd>
+
+			<dt>Edit</dt>
+			<dd>Opens the editing screen for the selected SKU. If more than one SKU is selected, only the first one
+				will be opened. The editing screen can also be opened by clicking on the <strong>Title</strong> of the
+				SKU.</dd>
+
+			<dt>Delete</dt>
+			<dd>Opens a confirmation screen for the selected SKUs. Check &quot;I'm positive. Go ahead and do the
+				delete.&quot; and press <strong>Next</strong> to delete them. Pressing Next without the check cancels
+				the delete.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Products</dt>
+			<dt>Collections</dt>
+			<dt>Option Groups</dt>
+		</dl>
+	</section>
+</article>

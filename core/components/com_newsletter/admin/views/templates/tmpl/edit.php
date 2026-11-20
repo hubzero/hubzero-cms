@@ -31,7 +31,7 @@ if ($canDo->get('core.edit')) {
     Toolbar::spacer();
 }
 Toolbar::cancel();
-Toolbar::help('index.php?option=com_help&component=com_newsletter&page=template', true);
+Toolbar::help('template');
 ?>
 
 <?php $formAction = Route::url('index.php?option=' . $this->option); ?>

@@ -45,9 +45,9 @@ class Help extends Button
         $msg   = Lang::txt('JHELP', true);
 
         if (
-            !strstr('?', $url)
-            && !strstr('&', $url)
-            && substr($url, 0, 4) != 'http'
+            !str_contains($url, '?')
+            && !str_contains($url, '&')
+            && !str_starts_with($url, 'http')
         ) {
             $url = Route::url('index.php?option=com_help&component=' . Request::getCmd('option') . '&page=' . $url);
         } else {

@@ -1,0 +1,100 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Language Manager: Edit Override</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#fields">Fields</a></li>
+		<li><a href="#search">Search</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>Here you create or edit a language override: text that replaces the text of one language constant. The
+			form on the left holds the override. The panel on the right searches the known language strings so you
+			can find the constant to override.</p>
+	</section>
+	<section id="fields">
+		<h2><span>Fields</span></h2>
+
+		<p>The fields are under <strong>Create a New Override</strong>, or <strong>Edit this Override</strong>
+			when an existing override is open.</p>
+
+		<dl>
+			<dt>Language Constant (Required)</dt>
+			<dd>The language constant of the string you want to override. Each language output text on your site is
+				identified by a specific language constant which you have to use for creating an override of the
+				text.</dd>
+
+			<dt>Text</dt>
+			<dd>The text which you want to be displayed instead of the overridden one. There may be placeholders
+				(e.g. %s, %d or %1$s) in the text which are replaced by other texts before displaying, so you should
+				leave them in there.</dd>
+
+			<dt>For both locations</dt>
+			<dd>A checkbox, shown only when the override's location is administrator.</dd>
+
+			<dt>Language</dt>
+			<dd>Read only. The language for which the constant is overridden: the language chosen in the filter on
+				the Overrides screen.</dd>
+
+			<dt>Location</dt>
+			<dd>Read only. Whether the override is for the site (frontend) or administrator (backend), as chosen in
+				the filter on the Overrides screen.</dd>
+
+			<dt>File</dt>
+			<dd>Read only. The INI file the override is stored in.</dd>
+		</dl>
+	</section>
+	<section id="search">
+		<h2><span>Search</span></h2>
+
+		<p>The panel <strong>Search text you want to change</strong> searches the known language strings.</p>
+
+		<dl>
+			<dt>Search for</dt>
+			<dd>Whether to search constant names (<strong>Constant</strong>) or the texts (<strong>Value</strong>).
+				<strong>Value</strong> is selected at first.</dd>
+
+			<dt>Search text box and Search button</dt>
+			<dd>Enter the text to look for and click <strong>Search</strong>.</dd>
+
+			<dt>Search Results</dt>
+			<dd>Matching strings, ten at a time, each showing its constant and text. Click <strong>More
+				Results</strong> to load the next ten. Click a result to copy its constant into
+				<strong>Language Constant</strong> and its text into <strong>Text</strong>. <em>No matching texts
+				found</em> is shown when nothing matches.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Saves the override and stays on this screen. Shown only to users who may edit.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Saves the override and returns to the list of overrides. Shown only to users who may edit.</dd>
+
+			<dt>Save &amp; New</dt>
+			<dd>Saves the override and opens an empty form for a new one. Shown only to users who may both edit and
+				create.</dd>
+
+			<dt>Cancel / Close</dt>
+			<dd>Returns to the list of overrides without saving. The button reads <strong>Cancel</strong> for a new
+				override and <strong>Close</strong> for an existing one.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+</article>

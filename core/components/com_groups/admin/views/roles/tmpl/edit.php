@@ -35,7 +35,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 Toolbar::spacer();
-Toolbar::help('edit');
+Toolbar::help('role');
 
 Html::behavior('framework');
 Html::behavior('formvalidation');

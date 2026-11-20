@@ -32,7 +32,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 Toolbar::spacer();
-Toolbar::help('category');
+Toolbar::help('option');
 
 Html::behavior('formvalidation');
 Html::behavior('keepalive');

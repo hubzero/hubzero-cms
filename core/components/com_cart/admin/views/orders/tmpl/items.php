@@ -31,7 +31,7 @@ if ($canDo->get('core.admin')) {
 Toolbar::custom('downloadOrders', 'download.png', '', 'Download CSV', false);
 
 Toolbar::spacer();
-Toolbar::help('downloads');
+Toolbar::help('orderitems');
 
 $this->js();
 ?>

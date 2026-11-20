@@ -1,0 +1,95 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Private Messages: Messages</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#filters">Filters</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists the private messages sent to you. Messages sent to other people are not shown.</p>
+		<p>Click a message's <strong>Subject</strong> to read it.</p>
+	</section>
+	<section id="filters">
+		<h2><span>Filters</span></h2>
+
+		<dl>
+			<dt>Filter:</dt>
+			<dd>A text box (with the placeholder <em>Search in message subject or description</em>) and
+				<strong>Search</strong> and <strong>Clear</strong> buttons.</dd>
+
+			<dt>- Select Status -</dt>
+			<dd>A drop-down with <em>Read</em>, <em>Unread</em> and <em>Trashed</em>.</dd>
+		</dl>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+		<p>Click a column heading to sort the list by that column.</p>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more messages. To select all messages, check the box in the column
+				heading. After one or more boxes are checked, click a toolbar button to take an action on the selected
+				messages.</dd>
+
+			<dt>Subject</dt>
+			<dd>The subject of the message. Click it to read the message.</dd>
+
+			<dt>Read</dt>
+			<dd>Whether you have read the message: <em>Read</em> or <em>Unread</em>.
+				If you may change message states, click the marker to switch it.</dd>
+
+			<dt>From</dt>
+			<dd>The name of the person who sent the message.</dd>
+
+			<dt>Date</dt>
+			<dd>The date and time the message was sent.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>New</dt>
+			<dd>Opens the screen to write a new private message.</dd>
+
+			<dt>Mark As Read</dt>
+			<dd>Marks the selected messages as read.</dd>
+
+			<dt>Mark as Unread</dt>
+			<dd>Marks the selected messages as unread.</dd>
+
+			<dt>Trash</dt>
+			<dd>Shown in place of <strong>Empty trash</strong> unless the list is showing trashed messages.</dd>
+
+			<dt>Empty trash</dt>
+			<dd>Shown when the list is showing trashed messages. Permanently deletes the selected messages.</dd>
+
+			<dt>My Settings</dt>
+			<dd>Opens a pop-up window with your own messaging settings: <em>Lock Inbox</em>,
+				<em>Email New Messages</em> and <em>Auto-purge Messages (days)</em>.</dd>
+
+			<dt>Options</dt>
+			<dd>Opens the component's options, which hold its permissions.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+		<p><strong>New</strong> is shown only to users who may create messages. <strong>Mark As Read</strong>,
+			<strong>Mark as Unread</strong> and <strong>Trash</strong> are shown only to users who may change
+			message states. <strong>Empty trash</strong> is shown only to users who may delete messages.
+			<strong>Options</strong> is shown only to users who may configure the component.</p>
+	</section>
+</article>

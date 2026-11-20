@@ -1,0 +1,81 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Groups: Custom Fields</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>Custom fields are extra fields shown on the group edit form.</p>
+		<p>The <strong>Custom Fields</strong> sub-menu link opens the custom fields editor, where all fields are
+			added, changed and removed on one screen. See the help for that screen.</p>
+		<p>This list screen is not normally shown. Its column headings and title are not translated,
+			so they appear as language keys (for example <code>COM_CAREERPLANS_COL_ID</code>).</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading.
+				After one or more boxes are checked, click a toolbar button to take an action on the selected item or
+				items.</dd>
+
+			<dt><code>COM_CAREERPLANS_COL_ID</code></dt>
+			<dd>The item's identification number.</dd>
+
+			<dt><code>COM_CAREERPLANS_COL_COMMENT</code></dt>
+			<dd>The start of the item's content, linked to the editing screen.</dd>
+
+			<dt><code>COM_CAREERPLANS_COL_CREATOR</code></dt>
+			<dd>The name of the person who created the item.</dd>
+
+			<dt><code>COM_CAREERPLANS_COL_ANONYMOUS</code></dt>
+			<dd>An on/off marker.</dd>
+
+			<dt><code>COM_CAREERPLANS_COL_CREATED</code></dt>
+			<dd>The date the item was created.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Delete</dt>
+			<dd>Opens the custom fields editor. Fields are removed in the editor.</dd>
+
+			<dt>Edit</dt>
+			<dd>Opens the custom fields editor.</dd>
+
+			<dt>New</dt>
+			<dd>Opens the custom fields editor. Fields are added in the editor.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Groups</dt>
+			<dt>Import</dt>
+			<dt>Custom Fields (this page)</dt>
+		</dl>
+		<p><strong>Import</strong> and <strong>Custom Fields</strong> are shown only to users who may configure
+			the Groups component.</p>
+	</section>
+</article>

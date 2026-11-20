@@ -1,0 +1,129 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Members: Debug Access Group Permissions</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#filters">Filters</a></li>
+		<li><a href="#legend">Legend</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen is a permissions report for one access group. It is titled
+			<em>Debug Permissions Report for Group #ID, Title</em>.</p>
+		<p>Each row is an asset: the whole site, a component, or an item inside a component.
+			Each action column shows whether the access group may take that action on that asset.</p>
+		<p>The screen is opened with the <strong>Debug Permissions Report</strong> button next to a group's title in
+			the Access Groups list. That button is shown only when <em>Debug System</em> is turned on in the
+			Global Configuration.</p>
+		<p>The screen only reports. Nothing can be changed here.</p>
+	</section>
+	<section id="filters">
+		<h2><span>Filters</span></h2>
+
+		<dl>
+			<dt>Search</dt>
+			<dd>A text box (with the placeholder <em>Search Users</em>) and <strong>Search</strong> and
+				<strong>Reset</strong> buttons.</dd>
+
+			<dt>- Select Component -</dt>
+			<dd>Lists the enabled components. Choosing one limits the rows to assets whose name contains the
+				component's name. The action columns then show that component's own actions, if it defines any.</dd>
+
+			<dt>- Select Start Level -</dt>
+			<dd>Shows only assets at this level or deeper. The levels are <em>1 (component)</em>,
+				<em>2 (top category)</em>, <em>3 (deeper)</em>, 4, 5 and 6.</dd>
+
+			<dt>- Select End Level -</dt>
+			<dd>Shows only assets at this level or higher. If it is set lower than the start level, the start level
+				is used.</dd>
+		</dl>
+	</section>
+	<section id="legend">
+		<h2><span>Legend</span></h2>
+		<p>The legend above the table explains the marks in the action columns:</p>
+		<dl>
+			<dt>[ &#160; ] Not Applicable</dt>
+			<dd>The cell is blank. The action was not checked for this asset.</dd>
+
+			<dt>[ - ] Not Allowed</dt>
+			<dd>No rule allows or denies the action, so it is not allowed.</dd>
+
+			<dt>[ &#10003; ] Allowed</dt>
+			<dd>The access group is allowed to take the action.</dd>
+
+			<dt>[ &#10007; ] Forbidden</dt>
+			<dd>The access group is denied the action.</dd>
+		</dl>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+		<p>Click a column heading with a link to sort the list by that column.</p>
+
+		<dl>
+			<dt>Asset Title</dt>
+			<dd>The title of the asset.</dd>
+
+			<dt>Asset Name</dt>
+			<dd>The internal name of the asset, such as <code>com_members</code>.
+				The name is indented with <code>|&mdash;</code> marks, one for each level of the asset.</dd>
+
+			<dt>Action columns</dt>
+			<dd>
+				<p>One column for each action. Hover over a heading to see a description of the action.</p>
+				<p>When no component is selected, or the selected component defines no actions, the global actions
+					are shown: Site Login, Admin Login, Offline Access, Super Admin, Access Administration Interface,
+					Create, Delete, Edit, Edit State and Edit Own.</p>
+			</dd>
+
+			<dt>LFT</dt>
+			<dd>The asset's left and right values in the asset tree, shown as <em>left - right</em>.</dd>
+
+			<dt>ID</dt>
+			<dd>This is a unique identification number for the asset assigned automatically by the system.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Members</dt>
+			<dt>Notes</dt>
+			<dt>Access (this page)</dt>
+			<dt>Points</dt>
+			<dd>Shown only when <em>Bank Accounts</em> is turned on in the Members options.</dd>
+			<dt>Passwords</dt>
+			<dd>Shown only to users who may configure the Members component.</dd>
+			<dt>Quotas</dt>
+			<dt>Registration</dt>
+			<dt>Import</dt>
+			<dd>Shown only to users who may configure the Members component.</dd>
+			<dt>Plugins</dt>
+		</dl>
+		<p>Below the title are two more links:</p>
+		<dl>
+			<dt>Access Groups (this page)</dt>
+			<dt>Viewing Levels</dt>
+		</dl>
+	</section>
+</article>

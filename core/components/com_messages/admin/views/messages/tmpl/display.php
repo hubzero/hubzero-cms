@@ -60,7 +60,7 @@ if ($canDo->get('core.admin')) {
 }
 
 Toolbar::divider();
-Toolbar::help('JHELP_COMPONENTS_MESSAGING_INBOX');
+Toolbar::help('messages');
 
 // Include the component HTML helpers.
 Html::behavior('tooltip');

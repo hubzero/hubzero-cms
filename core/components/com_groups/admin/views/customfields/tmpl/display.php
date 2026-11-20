@@ -34,7 +34,7 @@ if ($canDo->get('core.create')) {
     Toolbar::addNew();
 }
 Toolbar::spacer();
-Toolbar::help('forms');
+Toolbar::help('customfields');
 
 Html::behavior('tooltip');
 ?>

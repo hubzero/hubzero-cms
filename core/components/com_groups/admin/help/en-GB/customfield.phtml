@@ -1,0 +1,86 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Groups: Custom Fields</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#fields">Fields</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen is a form builder for the custom fields shown on the group edit form.
+			All custom fields are edited here together, as one form.</p>
+		<p>The form builder shows the current fields in a column, with a list of field types beside it.
+			Drag a field type into the column, or click it, to add a field.
+			Fields can be dragged to change their order.
+			Each field has buttons to edit its settings, copy it or remove it.</p>
+		<p>Changes are not stored until you click <strong>Save</strong>.
+			Fields that were removed in the builder are deleted when you save.</p>
+	</section>
+	<section id="fields">
+		<h2><span>Fields</span></h2>
+
+		<h3><span>Field types</span></h3>
+		<p>These field types can be added:</p>
+		<dl>
+			<dt>Checkbox Group</dt>
+			<dt>Date Field</dt>
+			<dt>Hidden Input</dt>
+			<dt>Number</dt>
+			<dt>Paragraph</dt>
+			<dd>Text shown on the form. It takes no input.</dd>
+			<dt>Radio Group</dt>
+			<dt>Select</dt>
+			<dt>Text Field</dt>
+			<dt>Text Area</dt>
+		</dl>
+
+		<h3><span>Field settings</span></h3>
+		<p>Editing a field opens its settings, such as its label, name, whether it is required, and its options for
+			fields that have a list of options. The settings offered depend on the field type.
+			These settings are added to every field type:</p>
+		<dl>
+			<dt>Privacy</dt>
+			<dd>A choice of <em>public</em>, <em>registered</em> or <em>private</em>.</dd>
+		</dl>
+		<p>For fields with options, each option also has a <strong>Dependent fields</strong> box.
+			When it holds field names, the named fields are coloured to match the option in the builder.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Saves all the fields and reopens this screen.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Reloads this screen with the saved fields. Any changes you have not saved are lost.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+		<p><strong>Save</strong> is shown only to users who may manage the Groups component.</p>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Groups</dt>
+			<dt>Import</dt>
+			<dt>Custom Fields (this page)</dt>
+		</dl>
+		<p><strong>Import</strong> and <strong>Custom Fields</strong> are shown only to users who may configure
+			the Groups component.</p>
+	</section>
+</article>

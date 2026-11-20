@@ -42,7 +42,7 @@ if (empty($this->item->key)) {
     Toolbar::cancel('cancel', 'JTOOLBAR_CLOSE');
 }
 Toolbar::divider();
-Toolbar::help('JHELP_EXTENSIONS_LANGUAGE_MANAGER_OVERRIDES_EDIT');
+Toolbar::help('override');
 
 Html::behavior('framework', true);
 Html::behavior('tooltip');

@@ -1,0 +1,76 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Groups: Edit Role</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#fields">Fields</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This is where you create a new member role for a group or edit an existing one.
+			A role has a name and a set of permissions.
+			Members of the group who are assigned the role get those permissions.</p>
+		<p>The screen is reached from the group's <strong>Roles</strong> list.
+			The <strong>Roles</strong> button on the group's membership screen opens that list in a pop-up window.</p>
+		<p>When the screen is opened in the pop-up window, the toolbar is not shown.
+			<strong>Save</strong> and <strong>Cancel</strong> buttons appear at the top of the form instead.</p>
+	</section>
+	<section id="fields">
+		<h2><span>Fields</span></h2>
+
+		<h3><span>Details</span></h3>
+		<dl>
+			<dt>Name</dt>
+			<dd>The name of the role. Required.</dd>
+		</dl>
+
+		<h3><span>Permissions</span></h3>
+		<p>Check a box to give members with this role that permission in the group.</p>
+		<dl>
+			<dt>Invite New Members</dt>
+			<dd>Members with this role can invite new members to the group.</dd>
+
+			<dt>Edit Group Settings</dt>
+			<dd>Members with this role can edit the group's settings.</dd>
+
+			<dt>Create/Edit Group Pages &amp; Categories</dt>
+			<dd>Members with this role can create and edit the group's pages and page categories.</dd>
+		</dl>
+
+		<h3><span>Information</span></h3>
+		<dl>
+			<dt>ID</dt>
+			<dd>This is a unique identification number for this role assigned automatically by the system.
+				It cannot be changed. A new role gets its number when it is first saved.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Saves the role and stays in the current screen.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Saves the role and returns to the group's list of roles.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Returns to the group's list of roles without saving any changes you may have made.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+		<p><strong>Save</strong> and <strong>Save &amp; Close</strong> are shown only to users who may edit groups.</p>
+	</section>
+</article>

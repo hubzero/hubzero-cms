@@ -1,0 +1,112 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Members: Member Disk Quotas</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#filters">Filters</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists the members who have a file system quota, with their quota class and disk usage.</p>
+		<p>Click a member's <strong>User ID</strong> or <strong>Username</strong> to edit that member's quota.</p>
+	</section>
+	<section id="filters">
+		<h2><span>Filters</span></h2>
+
+		<dl>
+			<dt>Search</dt>
+			<dd>A drop-down with <em>Username</em> and <em>Name</em>, a <em>for</em> text box and a <strong>Go</strong>
+				button. The text is matched against both the member's name and username.</dd>
+
+			<dt>- Quota Class -</dt>
+			<dd>Lists the quota classes by alias. Choosing one shows only members in that class.</dd>
+		</dl>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+		<p>Click a column heading with a link to sort the list by that column.</p>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more members. To select all members, check the box in the column
+				heading. After one or more boxes are checked, click a toolbar button to take an action on the selected
+				members.</dd>
+
+			<dt>User ID</dt>
+			<dd>The member's user ID. Click it to edit the member's quota.</dd>
+
+			<dt>Username</dt>
+			<dd>The member's username. Click it to edit the member's quota.</dd>
+
+			<dt>Name</dt>
+			<dd>The member's name.</dd>
+
+			<dt>Quota class</dt>
+			<dd>The alias of the quota class the member is assigned. It shows <em>custom</em> when the member has no
+				class.</dd>
+
+			<dt>Disk usage (blocks)</dt>
+			<dd>
+				<p>A bar showing the space used as a share of the member's soft blocks limit.
+					A full bar means the soft limit has been reached or passed.</p>
+				<p>The usage is fetched from the storage host set in the Tools component's options after the page
+					loads. <em>[calculating...]</em> is shown while it loads, and <em>unavailable</em> if it could not
+					be fetched.</p>
+			</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Sync Selected User Quotas</dt>
+			<dd>Sends the saved soft and hard blocks limits of each selected member to the file system again.
+				Select at most 100 members. With more, it stops partway with a <em>Sync limit exceeded</em> error.</dd>
+
+			<dt>New</dt>
+			<dd>Opens the editing screen to add a quota for a member.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+		<p><strong>Sync Selected User Quotas</strong> is shown only to users who may edit members.
+			<strong>New</strong> is shown only to users who may create members.</p>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Members</dt>
+			<dt>Notes</dt>
+			<dt>Access</dt>
+			<dt>Points</dt>
+			<dd>Shown only when <em>Bank Accounts</em> is turned on in the Members options.</dd>
+			<dt>Passwords</dt>
+			<dd>Shown only to users who may configure the Members component.</dd>
+			<dt>Quotas (this page)</dt>
+			<dt>Registration</dt>
+			<dt>Import</dt>
+			<dd>Shown only to users who may configure the Members component.</dd>
+			<dt>Plugins</dt>
+		</dl>
+		<p>Below the title are three more links:</p>
+		<dl>
+			<dt>Member disk quotas (this page)</dt>
+			<dt>Quota classes</dt>
+			<dt>Import quotas</dt>
+		</dl>
+	</section>
+</article>

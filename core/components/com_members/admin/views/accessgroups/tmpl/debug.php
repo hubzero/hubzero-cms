@@ -36,7 +36,7 @@ $title = Lang::txt(
     $this->group->get('title'),
 );
 Toolbar::title($title, 'groups');
-Toolbar::help('JHELP_USERS_DEBUG_GROUPS');
+Toolbar::help('debuggroup');
 
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);

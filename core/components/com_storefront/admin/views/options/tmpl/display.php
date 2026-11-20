@@ -43,7 +43,7 @@ if ($canDo->get('core.delete')) {
 //Toolbar::spacer();
 //Toolbar::cancel();
 Toolbar::spacer();
-Toolbar::help('categories');
+Toolbar::help('options');
 ?>
 
 <?php

@@ -27,7 +27,7 @@ if ($canDo->get('core.manage')) {
 }
 Toolbar::cancel();
 Toolbar::divider();
-Toolbar::help('form');
+Toolbar::help('customfield');
 
 $elements = [];
 

@@ -37,7 +37,7 @@ if ($canDo->get('core.delete')) {
     Toolbar::deleteList();
 }
 //Toolbar::spacer();
-//Toolbar::help('categories');
+//Toolbar::help('optiongroups');
 ?>
 
 <?php

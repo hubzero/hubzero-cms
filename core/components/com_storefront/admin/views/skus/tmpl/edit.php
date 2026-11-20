@@ -51,7 +51,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 Toolbar::spacer();
-Toolbar::help('category');
+Toolbar::help('sku');
 
 $this->css();
 

@@ -1,0 +1,106 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Shopping Cart: Orders</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#list-filters">List Filters</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists completed shopping cart orders, newest first.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<p>Click the <strong>Order ID</strong>, <strong>Order placed</strong>, <strong>Purchased by</strong> or
+			<strong>Payment method</strong> heading to sort the list by that column. Click it again to reverse the
+			order.</p>
+
+		<dl>
+			<dt>Order ID</dt>
+			<dd>The order's number. Click it to view the order.</dd>
+
+			<dt>Order total</dt>
+			<dd>The total of the order.</dd>
+
+			<dt>Items ordered</dt>
+			<dd>The number of different items in the order. Click it to see those items on the
+				<strong>Items ordered</strong> screen.</dd>
+
+			<dt>Order placed</dt>
+			<dd>The date and time the order was last updated.</dd>
+
+			<dt>Purchased by</dt>
+			<dd>The name of the member who placed the order. Click it to list only that member's orders.
+				<em>(unknown)</em> is shown when the order has no member name.</dd>
+
+			<dt>Payment method</dt>
+			<dd>The payment method recorded for the order.</dd>
+		</dl>
+
+		<p>When the list is limited to one member, a row above the headings shows <em>Orders for</em> and the
+			member's name, with a <strong>Clear</strong> button that removes that limit.</p>
+	</section>
+	<section id="list-filters">
+		<h2><span>List Filters</span></h2>
+
+		<dl>
+			<dt>Search</dt>
+			<dd>Lists only orders with this exact order ID, or whose member name, username, SKU or product name
+				contains the text.</dd>
+
+			<dt>Order notes</dt>
+			<dd><strong>All notes</strong> lists every order. <strong>Only nonempty notes</strong> lists only orders
+				that have notes.</dd>
+
+			<dt>From &mdash; To</dt>
+			<dd>Lists only orders placed between these dates. The default is from one month ago to today.</dd>
+
+			<dt>Update</dt>
+			<dd>Applies the filters.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Options</dt>
+			<dd>Opens the Options window where settings such as default parameters or permissions can be edited.
+				Shown only to users who may configure the component.</dd>
+
+			<dt>Download CSV</dt>
+			<dd>Downloads a CSV file of every order matching the current search, order notes, dates and member
+				filters. Its columns are Order ID, Order Placed, Purchased By, Purchased By (userId) and Order
+				Notes.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Software Downloads</dt>
+			<dt>Orders (this page)</dt>
+		</dl>
+		<p>Below them, a second row of links chooses the report:</p>
+		<dl>
+			<dt>All orders (this page)</dt>
+			<dt>Items ordered</dt>
+		</dl>
+	</section>
+</article>

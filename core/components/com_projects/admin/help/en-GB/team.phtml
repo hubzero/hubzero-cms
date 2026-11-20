@@ -1,0 +1,92 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+	<h1><span>Projects: Team</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>This screen lists the team members of one project. A heading row shows <strong>Projects</strong> &gt;
+			(alias) title of the project. <strong>Projects</strong> links back to the list of projects.</p>
+		<p>If the project's membership is synced with a group, a warning names that group and links to its
+			membership screen. Members of that group must be added or removed there.</p>
+		<p>Some rows have no checkbox and cannot be selected: members who come from the synced group, and the
+			project's only manager.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading.
+				After one or more boxes are checked, click a toolbar button to take an action on the selected item or
+				items.</dd>
+
+			<dt>User ID</dt>
+			<dd>The user ID of the member.</dd>
+
+			<dt>Name</dt>
+			<dd>The name of the member. For a member with an account, it links to the member's editing screen in
+				<strong>Members</strong>.</dd>
+
+			<dt>Username</dt>
+			<dd>The username of the member, or the email address of a person who was invited without an
+				account.</dd>
+
+			<dt>Role</dt>
+			<dd>For the project owner, shows <strong>Owner</strong> and the owner's role. For everyone else, a
+				drop-down list of Manager, Collaborator and Reviewer. Choosing a role saves it at once. A project
+				must keep at least one manager.</dd>
+
+			<dt>Joined</dt>
+			<dd>The date the member was added, or <strong>Invited</strong> for a person who has only been
+				invited.</dd>
+
+			<dt>Last Visit</dt>
+			<dd>How long ago the member last visited, or &quot;(never)&quot;.</dd>
+
+			<dt>Group</dt>
+			<dd>For a member added as part of a group, the group's description and name. Otherwise
+				&quot;(none)&quot;.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Add Members</dt>
+			<dd>Opens a pop-up window to add new members. Enter <strong>Individuals</strong> (a comma-separated list
+				of usernames or user IDs), <strong>OR</strong> add everyone from groups (a comma-separated list of
+				group aliases or group IDs). Pick a <strong>Role</strong> for them: Manager, Collaborator or
+				Reviewer.</dd>
+
+			<dt>Delete</dt>
+			<dd>Asks &quot;Are you sure you want to remove these members?&quot;, then removes the selected members
+				from the project. A project must keep at least one manager.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Projects (this section)</dt>
+			<dt>Activity</dt>
+		</dl>
+	</section>
+</article>
