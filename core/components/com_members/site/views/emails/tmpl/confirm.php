@@ -35,12 +35,12 @@ $link = $this->baseURL . Route::urlForClient('site', $relativeUrl, false);
 $link = str_replace('/administrator', '', $link);
 ?>
 
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED') . ": $this->registerDate (UTC)"; ?>
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME') . ": $this->name"; ?>
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME') . ": $this->login"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED') . ": $this->registerDate (UTC)\n"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME') . ": $this->name\n"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME') . ": $this->login\n"; ?>
 
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename) . "\n"; ?>
 
-<?php echo $link; ?>
+<?php echo $link . "\n"; ?>
 
 <?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY');

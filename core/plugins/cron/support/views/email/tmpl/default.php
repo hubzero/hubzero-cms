@@ -18,8 +18,8 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{severities: mixed, sitename: mixed} $this
  */
 ?>
-This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?>
-support tickets.  It includes a list of tickets, highest to
+This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?> support
+tickets.  It includes a list of tickets, highest to
 lowest priority, that need to be acted upon.
 
 #   (created)   ::   Link    ::    Summary

@@ -34,5 +34,5 @@ echo strip_tags(
 );
 ?>
 
-<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_REVIEW_LINK'); ?>
+<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_REVIEW_LINK') . "\n"; ?>
 <?php echo rtrim($base, '/') . Route::url('index.php?option=com_members&id=' . $this->user['id']);

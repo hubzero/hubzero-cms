@@ -50,7 +50,7 @@ Latest Discussions:
     <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
         <?php $val = Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
-        <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo $val; ?>
+        <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo $val . "\n"; ?>
         <?php echo $post->comment . "\n"; ?>
 ----------------------------------------
 
