@@ -11,6 +11,7 @@ namespace Components\Wiki\Api\Controllers;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Author;
+use Components\Wiki\Models\Version;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Hubzero\Facades\Request;
@@ -129,6 +130,8 @@ class Pagesv1r0 extends ApiController
     /**
      * Create a page
      *
+     * The caller is its creator; a page name already used in the scope is a 409.
+     *
      * @apiMethod POST
      * @apiUri    /wiki
      * @apiParameter {
@@ -140,7 +143,7 @@ class Pagesv1r0 extends ApiController
      * }
      * @apiParameter {
      *      "name":        "pagename",
-     *      "description": "Page name",
+     *      "description": "Page name (letters, digits, _ and :); made from the title when absent",
      *      "type":        "string",
      *      "required":    false,
      *      "default":     null
@@ -153,43 +156,50 @@ class Pagesv1r0 extends ApiController
      *      "default":     null
      * }
      * @apiParameter {
-     *      "name":        "created",
-     *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "name":        "summary",
+     *      "description": "Summary of the first revision",
      *      "type":        "string",
      *      "required":    false,
-     *      "default":     "now"
+     *      "default":     null
      * }
      * @apiParameter {
-     *      "name":        "created_by",
-     *      "description": "User ID of entry creator",
-     *      "type":        "integer",
+     *      "name":        "tags",
+     *      "description": "Comma-separated list of tags",
+     *      "type":        "string",
      *      "required":    false,
-     *      "default":     0
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "authors",
+     *      "description": "Comma-separated usernames who may also edit the page",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "state",
-     *      "description": "Published state (0 = unpublished, 1 = published)",
+     *      "description": "Published state (0 = unpublished, 1 = published); managers only",
      *      "type":        "integer",
      *      "required":    false,
-     *      "default":     0
+     *      "default":     1
      * }
      * @apiParameter {
      *      "name":        "access",
-     *      "description": "Access level (0 = public, 1 = registered users, 4 = private)",
+     *      "description": "Access level (0 = public, 1 = registered users, 4 = private); managers only",
      *      "type":        "integer",
      *      "required":    false,
      *      "default":     0
      * }
      * @apiParameter {
      *      "name":        "scope",
-     *      "description": "Page scope",
+     *      "description": "Page scope: site, or group (with scope_id)",
      *      "type":        "string",
      *      "required":    false,
      *      "default":     "site"
      * }
      * @apiParameter {
      *      "name":        "scope_id",
-     *      "description": "Page scope ID",
+     *      "description": "Group ID, for a group page",
      *      "type":        "integer",
      *      "required":    false,
      *      "default":     0
@@ -206,6 +216,95 @@ class Pagesv1r0 extends ApiController
     public function createTask()
     {
         $this->requiresAuthentication();
+
+        $title    = trim(Request::getString('title', ''));
+        $pagetext = Request::getString('pagetext', '');
+
+        if ($title === '') {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_MISSING_TITLE'), 422);
+        }
+        if (trim($pagetext) === '') {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_MISSING_PAGETEXT'), 422);
+        }
+
+        // The site wiki or a group's; the site controller takes this from the
+        // wiki in the URL, here it is asked for
+        $scope   = preg_replace('/[^a-z_]/i', '', Request::getString('scope', 'site')) ?: 'site';
+        $scopeId = $scope == 'site' ? 0 : Request::getInt('scope_id', 0);
+        if (!in_array($scope, ['site', 'group'], true) || ($scope == 'group' && !$scopeId)) {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_INVALID_SCOPE'), 422);
+        }
+
+        $pagename = Page::normalize(Request::getString('pagename', '') ?: $title);
+        if ($pagename === '') {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_MISSING_TITLE'), 422);
+        }
+
+        if (Page::oneByPath($pagename, $scope, $scopeId)->get('id')) {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST'), 409);
+        }
+
+        $page = Page::blank();
+        $page->set('scope', $scope);
+        $page->set('scope_id', $scopeId);
+
+        // As on the site: creating takes what editing the blank page takes
+        if (!$page->access('edit') && !$page->access('modify')) {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
+        }
+
+        $page->set('title', $title);
+        $page->set('pagename', $pagename);
+        $page->set('created', Date::toSql());
+        $page->set('created_by', User::get('id'));
+        $page->set('modified', Date::toSql());
+
+        // A new page starts public and published; managers may say otherwise
+        $page->set('access', 0);
+        $page->set('state', Page::STATE_PUBLISHED);
+        if ($page->access('manage')) {
+            if (!is_null(Request::getVar('access', null))) {
+                $page->set('access', Request::getInt('access', 0));
+            }
+            if (!is_null(Request::getVar('state', null))) {
+                $page->set('state', Request::getInt('state', Page::STATE_PUBLISHED));
+            }
+        }
+
+        $params = new \Hubzero\Config\Registry('');
+        $params->merge(Request::getArray('params', [], 'post'));
+        $page->set('params', $params->toString());
+
+        if (!$page->save()) {
+            throw new \Exception($page->getError(), 500);
+        }
+
+        if (!Author::setForPage(Request::getString('authors', '', 'post'), $page->get('id'))) {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'), 500);
+        }
+
+        $revision = Version::blank();
+        $revision->set('page_id', $page->get('id'));
+        $revision->set('version', 1);
+        $revision->set('pagetext', $pagetext);
+        $revision->set('summary', Request::getString('summary', ''));
+        $revision->set('created', Date::toSql());
+        $revision->set('created_by', User::get('id'));
+        $revision->set('approved', 1);
+        $revision->set('pagehtml', $revision->content());
+
+        if (!$revision->save()) {
+            throw new \Exception(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'), 500);
+        }
+
+        $page->set('version_id', $revision->get('id'));
+        if (!$page->save()) {
+            throw new \Exception($page->getError(), 500);
+        }
+
+        $page->tag(Request::getString('tags', ''));
+
+        $this->send($page->toObject(), 201);
     }
 
     /**
