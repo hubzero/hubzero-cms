@@ -2204,9 +2204,10 @@ class Wishlists extends SiteController
                 $row->set('item_type', $category);
             }
 
-            // Save the data
+            // Save the data. A refusal (an empty comment) is the poster's to fix,
+            // not a server error: back to the wish with the reason.
             if (!$row->save()) {
-                App::abort(500, $row->getError());
+                App::redirect(Route::url($objWish->link()), $row->getError(), 'error');
             }
 
             // Build e-mail components

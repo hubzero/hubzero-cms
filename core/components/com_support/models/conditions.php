@@ -107,7 +107,7 @@ class Conditions extends Obj
 
         if ($xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members')) {
             foreach ($xgroups as $xgroup) {
-                $xgroup->description = trim($xgroup->description) ?: $xgroup->cn;
+                $xgroup->description = trim((string) $xgroup->description) ?: $xgroup->cn;
                 $items[] = $this->value($xgroup->cn, stripslashes($xgroup->description), false);
             }
         }
