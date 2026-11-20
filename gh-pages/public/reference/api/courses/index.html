@@ -761,7 +761,7 @@
 </table>
 <h2 id="get-courses-form-image">GET /courses/form/image</h2>
 <p>Gets form images</p>
-<p>API version 1.0, task <code>image</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/formv1r0.php#L21"><code>formv1r0.php</code></a>.</p>
+<p>API version 1.0, task <code>image</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/formv1r0.php#L20"><code>formv1r0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -795,11 +795,18 @@
 <td>Image filename</td>
 </tr>
 <tr>
+<td><code>expires</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Unix time the signed URL stops working</td>
+</tr>
+<tr>
 <td><code>token</code></td>
 <td>string</td>
 <td>yes</td>
 <td>—</td>
-<td>Session authentication token</td>
+<td>Signature of the URL, from the page that showed the image</td>
 </tr>
 </tbody>
 </table>

@@ -54,8 +54,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:209`](../../../core/components/com_courses/site/controllers/offering.php#L209) with `[ $this->course, $this->course->offering(), true, ]`
-- [`core/components/com_courses/site/controllers/offering.php:228`](../../../core/components/com_courses/site/controllers/offering.php#L228) with `[ $this->course, $this->course->offering(), ]`
+- [`core/components/com_courses/site/controllers/offering.php:216`](../../../core/components/com_courses/site/controllers/offering.php#L216) with `[ $this->course, $this->course->offering(), true, ]`
+- [`core/components/com_courses/site/controllers/offering.php:235`](../../../core/components/com_courses/site/controllers/offering.php#L235) with `[ $this->course, $this->course->offering(), ]`
 - [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:27`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L27) with `[ $this->course, $this->offering, true, ]`
 
 Listeners:
@@ -156,7 +156,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:376`](../../../core/components/com_courses/site/controllers/offering.php#L376) with `[ $this->course, $offering, $offering->section(), ]`
+- [`core/components/com_courses/site/controllers/offering.php:383`](../../../core/components/com_courses/site/controllers/offering.php#L383) with `[ $this->course, $offering, $offering->section(), ]`
 
 Listeners:
 

@@ -180,14 +180,15 @@ API version 1.0, task `save` in [`assetgroupv1r0.php`](../../../core/components/
 
 Gets form images
 
-API version 1.0, task `image` in [`formv1r0.php`](../../../core/components/com_courses/api/controllers/formv1r0.php#L21).
+API version 1.0, task `image` in [`formv1r0.php`](../../../core/components/com_courses/api/controllers/formv1r0.php#L20).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `id` | integer | yes | — | Form ID |
 | `form_version` | integer | no | — | Form version number |
 | `file` | string | yes | — | Image filename |
-| `token` | string | yes | — | Session authentication token |
+| `expires` | integer | yes | — | Unix time the signed URL stops working |
+| `token` | string | yes | — | Signature of the URL, from the page that showed the image |
 
 ## POST /courses/list
 

@@ -11,7 +11,7 @@ Events in the `usage` group. A plugin in `core/plugins/usage/` receives an event
 
 Fired from:
 
-- [`core/components/com_usage/site/controllers/results.php:74`](../../../core/components/com_usage/site/controllers/results.php#L74)
+- [`core/components/com_usage/site/controllers/results.php:75`](../../../core/components/com_usage/site/controllers/results.php#L75)
 
 Listeners:
 
@@ -27,7 +27,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_usage/site/controllers/results.php:98`](../../../core/components/com_usage/site/controllers/results.php#L98) with `[ $this->option, $this->task, $udb, $months, $monthsReverse, $enddate, ]`
+- [`core/components/com_usage/site/controllers/results.php:112`](../../../core/components/com_usage/site/controllers/results.php#L112) with `[ $this->option, $this->task, $udb, $months, $monthsReverse, $enddate, ]`
 
 Listeners:
 
