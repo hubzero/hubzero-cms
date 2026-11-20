@@ -139,7 +139,7 @@ class Job extends Model
 
             case 'raw':
             default:
-                $content = stripslashes($this->get('description'));
+                $content = stripslashes((string) $this->get('description'));
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }

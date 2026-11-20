@@ -266,7 +266,7 @@ class Review extends \Hubzero\Base\Model
 
             case 'raw':
             default:
-                $content = stripslashes($this->get('comment'));
+                $content = stripslashes((string) $this->get('comment'));
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }

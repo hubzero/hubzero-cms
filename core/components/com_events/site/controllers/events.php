@@ -1526,7 +1526,7 @@ class Events extends SiteController
             }
 
             //get timezone
-            $time_zone = $row->time_zone;
+            $time_zone = $row->time_zone ?: null; // empty: the hub's default zone
 
             // get start date and time
             $start_publish = Date::of($row->publish_up, $time_zone)->format('Y-m-d', true);

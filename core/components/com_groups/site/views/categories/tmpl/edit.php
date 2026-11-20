@@ -37,8 +37,13 @@ endif;
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
-            <li><a class="icon-prev prev btn" href="<?php echo $url . '&controller=pages#categories'; ?>">
+            <?php
+            $url = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                    . '&controller=pages',
+            );
+            ?>
+            <li><a class="icon-prev prev btn" href="<?php echo $url; ?>#categories">
                 <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_MANAGE_PAGES'); ?>
             </a></li>
         </ul>

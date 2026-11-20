@@ -168,7 +168,7 @@ class ResourceMapGenerator
      */
     private function formatDate($date)
     {
-        $date_ary = date_parse($date);
+        $date_ary = date_parse((string) $date);
         return $date_ary['year'] . '-'
                 . str_pad($date_ary['month'], 2, "0", STR_PAD_LEFT) . '-'
                 . str_pad($date_ary['day'], 2, "0", STR_PAD_LEFT) . 'T'

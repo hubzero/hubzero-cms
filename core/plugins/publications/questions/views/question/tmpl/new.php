@@ -86,14 +86,14 @@ $this->css();
                 <input type="text"
                     name="question[subject]"
                     id="field-subject"
-                    value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>"/>
+                    value="<?php echo $this->escape(stripslashes((string) $this->row->get('subject'))); ?>"/>
             </label>
 
             <label for="field-question">
                 <?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
                 <?php
                 $questionContent = $this->escape(
-                    stripslashes($this->row->get('question')),
+                    stripslashes((string) $this->row->get('question')),
                 );
                 echo $this->editor(
                     'question[question]',

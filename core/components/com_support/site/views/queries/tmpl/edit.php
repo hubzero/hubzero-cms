@@ -102,7 +102,7 @@ if (!$tmpl && !$no_html) {
                                 for="field-title"><?= Lang::txt('COM_SUPPORT_FIELD_TITLE') ?></label></td>
                             <td colspan="2"><input type="text" name="fields[title]" id="field-title"
                                 data-empty="<?= Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE') ?>"
-                                value="<?= $this->escape(stripslashes($this->row->title)) ?>" /></td>
+                                value="<?= $this->escape(stripslashes((string) $this->row->title)) ?>" /></td>
                         </tr>
                         <tr>
                             <td colspan="3">
@@ -200,7 +200,7 @@ if (!$tmpl && !$no_html) {
 
         <input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
         <input type="hidden" name="fields[conditions]" id="field-conditions"
-            value="<?= $this->escape(stripslashes($this->row->conditions)) ?>" />
+            value="<?= $this->escape(stripslashes((string) $this->row->conditions)) ?>" />
         <input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

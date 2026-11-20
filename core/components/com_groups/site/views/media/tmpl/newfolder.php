@@ -20,8 +20,13 @@ defined('_HZEXEC_') or die();
  */
 ?>
 
-<?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
-<form action="<?php echo $url . '&controller=media&task=savefolder&no_html=1'; ?>" method="post" class="hubForm">
+<?php
+$url = Route::url(
+    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+        . '&controller=media&task=savefolder&no_html=1',
+);
+?>
+<form action="<?php echo $url; ?>" method="post" class="hubForm">
     <fieldset>
         <legend><?php echo Lang::txt('Add Folder'); ?></legend>
         <label>

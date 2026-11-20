@@ -35,9 +35,15 @@ class Tools extends Obj
      */
     public function getApplicationTools()
     {
-        $dh = @opendir('/opt/trac/tools');
         $dirs = [];
 
+        // A hub without the tool development area (/opt/trac/tools) has none;
+        // @ hides nothing from the error handler, which logs it anyway
+        if (!is_dir('/opt/trac/tools')) {
+            return $dirs;
+        }
+
+        $dh = opendir('/opt/trac/tools');
         if (empty($dh)) {
             return $dirs;
         }

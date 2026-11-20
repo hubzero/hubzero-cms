@@ -91,7 +91,7 @@ class QueryFolder extends Relational
      */
     public function automaticAlias($data)
     {
-        $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+        $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : ($data['title'] ?? ''));
         $alias = str_replace(' ', '-', $alias);
         return (string) preg_replace("/[^a-zA-Z0-9]/", '', strtolower($alias));
     }

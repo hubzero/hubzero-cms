@@ -353,8 +353,11 @@ $this
                                         <label for="field-title">
                                             <?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE') ?> <span
                                                 class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
+                                            <?php
+                                            $pageTitle = $this->escape(stripslashes((string) $page->get('title')));
+                                            ?>
                                             <input type="text" name="page[title]" id="field-title" class="form-control"
-                                                value="<?= $this->escape(stripslashes($page->get('title'))) ?>" />
+                                                value="<?= $pageTitle ?>" />
                                             <?php
                                             $hintText = Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT');
                                             ?>
@@ -367,8 +370,11 @@ $this
                                         <label for="field-url">
                                             <?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS') ?> <span
                                                 class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
+                                            <?php
+                                            $pageUrl = $this->escape(stripslashes((string) $page->get('url')));
+                                            ?>
                                             <input type="text" name="page[url]" id="field-url" class="form-control"
-                                                value="<?= $this->escape(stripslashes($page->get('url'))) ?>" />
+                                                value="<?= $pageUrl ?>" />
                                             <?php
                                             $hintText = Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT');
                                             ?>
@@ -382,7 +388,7 @@ $this
                                 <label for="field_description">
                                     <?= $this->editor(
                                         'page[content]',
-                                        $this->escape(stripslashes($page->get('content'))),
+                                        $this->escape(stripslashes((string) $page->get('content'))),
                                         35,
                                         50,
                                         'field_content',

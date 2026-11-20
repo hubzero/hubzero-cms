@@ -437,7 +437,7 @@ $formatSelected = function ($value) use ($view) {
             <label for="formatted">
                 <?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
                 <textarea name="fields[formatted]" id="formatted" rows="8"
-                    cols="10"><?= $this->escape(stripslashes($this->row->get('formatted', ''))) ?></textarea>
+                    cols="10"><?= $this->escape(stripslashes((string) $this->row->get('formatted', ''))) ?></textarea>
             </label>
         </fieldset><div class="clear"></div>
 

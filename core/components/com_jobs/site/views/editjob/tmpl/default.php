@@ -99,7 +99,7 @@ if ($this->getError()) { ?>
 
         $model = new \Components\Jobs\Models\Job($job);
 
-        $job->title = trim(stripslashes($job->title));
+        $job->title = trim(stripslashes((string) $job->title));
         $job->description = $model->content('raw');
         $job->companyLocation = $id ? $job->companyLocation : $employer->companyLocation;
         $job->companyLocationCountry = $id
@@ -257,7 +257,7 @@ if ($this->getError()) { ?>
                 <div class="col span6 omega">
                     <label for="applyExternalUrl">
                         <?php echo Lang::txt('COM_JOBS_EDITJOB_EXTERNAL_URL'); ?>:
-                        <?php $extUrlVal = $this->escape(stripslashes($job->applyExternalUrl)); ?>
+                        <?php $extUrlVal = $this->escape(stripslashes((string) $job->applyExternalUrl)); ?>
                         <input type="text" name="applyExternalUrl"
                             id="applyExternalUrl" size="100" maxlength="250"
                             value="<?php echo $extUrlVal; ?>" />
@@ -306,7 +306,7 @@ if ($this->getError()) { ?>
                 <?php
                 $contactPhoneVal = $job->contactPhone
                     ? $this->escape(stripslashes($job->contactPhone))
-                    : $this->escape(stripslashes($profile->get('phone')));
+                    : $this->escape(stripslashes((string) $profile->get('phone')));
                 ?>
                 <input name="contactPhone" id="contactPhone" maxlength="100"
                     type="text" value="<?php echo $contactPhoneVal; ?>" />

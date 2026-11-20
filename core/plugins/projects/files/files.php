@@ -1284,6 +1284,8 @@ class Files extends Plugin
 
             if (empty($items)) {
                 $view->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+                $view->set('item', '');
+                $view->set('type', 'file');
             } else {
                 // Get selected item
                 foreach ($items[0] as $type => $item) {
@@ -2116,11 +2118,21 @@ class Files extends Plugin
             'name'    => 'compiled',
         ]);
 
+        // What the template reads on its error path too
+        $view->set('subdir', $this->subdir);
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('url', Route::url($this->model->link('files')));
+        $view->set('data', null);
+        $view->set('cType', '');
+        $view->set('embed', null);
+        $view->set('image', null);
+
         // Get selected item
         if (!$items) {
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
-            $view->loadTemplate();
-            return;
+            return $view->loadTemplate();
         } else {
             foreach ($items as $element) {
                 foreach ($element as $type => $item) {
@@ -2134,8 +2146,7 @@ class Files extends Plugin
         // We need a file
         if (empty($file)) {
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
-            $view->loadTemplate();
-            return;
+            return $view->loadTemplate();
         }
 
         // Path for storing temp previews

@@ -98,8 +98,13 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
             <?php endif; ?>
         </ul>
 
-        <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
-        <form action="<?php echo $url . '&task=pages'; ?>" method="post" id="hubForm" class="full">
+        <?php
+        $url = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
+                . '&task=pages',
+        );
+        ?>
+        <form action="<?php echo $url; ?>" method="post" id="hubForm" class="full">
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
             <input type="hidden" name="task" value="pages" />

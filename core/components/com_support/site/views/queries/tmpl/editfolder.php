@@ -50,7 +50,7 @@ if (!$tmpl && !$no_html) {
                     type="text"
                     name="fields[title]"
                     id="field-title"
-                    value="<?php echo $this->escape(stripslashes($this->row->title)); ?>"
+                    value="<?php echo $this->escape(stripslashes((string) $this->row->title)); ?>"
                 />
 
                 <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->id); ?>" />

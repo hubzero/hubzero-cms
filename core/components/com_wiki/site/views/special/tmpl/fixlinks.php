@@ -98,7 +98,7 @@ $rows = $this->book
         <?php
         $pageNav = $rows->pagination;
         $pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
-        $pageNav->setAdditionalUrlParam('pagename', 'Special:' . $this->page->get('pagename'));
+        $pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
         echo $pageNav;
         ?>

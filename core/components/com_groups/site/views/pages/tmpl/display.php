@@ -26,8 +26,10 @@ defined('_HZEXEC_') or die();
 ?>
 <ul class="toolbar toolbar-pages">
     <li class="new">
-        <?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
-        <a class="btn icon-add" href="<?php echo $url . '&controller=pages&task=add'; ?>">
+        <?php
+        $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=add');
+        ?>
+        <a class="btn icon-add" href="<?php echo $url; ?>">
             <?php echo Lang::txt('COM_GROUPS_PAGES_NEW_PAGE'); ?>
         </a>
     </li>
