@@ -4832,7 +4832,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Add any automatic fields
         $this->parseAutomatics('initiate');
 
-        $data = $this->nullEmptyDates($this->getTableColumnsOnly());
+        $data = $this->fillRequiredText($this->nullEmptyDates($this->getTableColumnsOnly()));
 
         if ($this->query === null) {
             $this->newQuery();
@@ -4895,15 +4895,34 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         foreach ($values as $key => $value) {
             $column = $columns[$key] ?? null;
 
-            if (!is_array($column) || !is_string($value) || $value === '') {
+            if (!is_array($column) || !is_string($value)) {
                 continue;
             }
 
             $type = strtolower((string) ($column['type'] ?? ''));
 
+            // A blank for a number the column must hold, with no default to
+            // stand in, is no number at all (one with a default gets it below)
+            if ($value === '') {
+                if (
+                    preg_match(self::NUMERIC_TYPE, $type)
+                    && empty($column['allownull'])
+                    && ($column['default'] ?? null) === null
+                    && empty($column['pk'])
+                ) {
+                    $errors[] = $key . ' must be a number';
+                }
+                continue;
+            }
+
             if (preg_match(self::NUMERIC_TYPE, $type)) {
                 if (!is_numeric(trim($value))) {
                     $errors[] = $key . ' must be a number';
+                }
+            } elseif (preg_match('/^(date|datetime|timestamp)\b/', $type)) {
+                // Strict SQL refuses text that is no date; say so, as for numbers
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}/', trim($value)) && strtotime($value) === false) {
+                    $errors[] = $key . ' must be a date';
                 }
             } elseif (preg_match('/^(var)?char\((\d+)\)/', $type, $m)) {
                 if (mb_strlen($value) > (int) $m[2]) {
@@ -4952,6 +4971,46 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 )
             ) {
                 $data[$key] = null;
+            } elseif (
+                is_array($column)
+                && ($column['default'] ?? null) !== null
+                && preg_match(self::NUMERIC_TYPE, (string) ($column['type'] ?? ''))
+            ) {
+                // A number the column must hold: its default is what '' means
+                $data[$key] = $column['default'];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Give a new row's required text columns an empty value
+     *
+     * Many tables have NOT NULL text columns with no default (MySQL allowed
+     * none on TEXT for years). Non-strict MySQL stored '' when an insert left
+     * one out, and the code was written for that; strict SQL refuses the
+     * insert ("Field 'description' doesn't have a default value"). A text
+     * column the model has no value for is written as '' instead.
+     *
+     * @param   array<string, mixed>  $data  Column values about to be inserted
+     * @return  array<string, mixed>
+     **/
+    private function fillRequiredText(array $data): array
+    {
+        foreach ($this->getTableColumns() as $key => $column) {
+            if (
+                !is_array($column)
+                || !empty($column['allownull'])
+                || ($column['default'] ?? null) !== null
+                || !empty($column['pk'])
+                || ($data[$key] ?? null) !== null
+            ) {
+                continue;
+            }
+
+            if (preg_match('/^(tiny|medium|long)?text\b|^(var)?char\b/i', (string) ($column['type'] ?? ''))) {
+                $data[$key] = '';
             }
         }
 

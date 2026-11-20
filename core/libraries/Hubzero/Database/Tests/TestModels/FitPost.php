@@ -37,6 +37,8 @@ class FitPost extends Relational
             'count'        => $column('count', 'int(11)', false, '0'),
             'score'        => $column('score', 'int(11)', true),
             'published_at' => $column('published_at', 'datetime', true),
+            'body'         => $column('body', 'text', false),
+            'rank'         => $column('rank', 'int(11)', false),
         ];
     }
 }

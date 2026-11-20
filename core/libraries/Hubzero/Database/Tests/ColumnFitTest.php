@@ -40,6 +40,8 @@ class ColumnFitTest extends AbstractDriverTestCase
             ->integer('count')->default(0)
             ->integer('score')->nullable()
             ->dateTime('published_at')->nullable()
+            ->text('body')->nullable()
+            ->integer('rank')->nullable()
             ->execute();
     }
 
@@ -114,5 +116,43 @@ class ColumnFitTest extends AbstractDriverTestCase
         $post->set('score', '7');
         $this->assertNotFalse($post->save(), implode('; ', $post->getErrors()));
         $this->assertEquals(7, (int) FitPost::oneOrFail($post->get('id'))->get('score'));
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testRequiredTextLeftOutIsWrittenEmpty(string $dbName, BaseSqlDriver $driver): void
+    {
+        // body is NOT NULL TEXT with no default, as MySQL describes it: strict
+        // SQL refuses an insert that leaves it out, so it is written as ''
+        $this->setupTestData($driver);
+
+        $post = FitPost::blank()->set(['title' => 'No body']);
+        $this->assertNotFalse($post->save(), implode('; ', $post->getErrors()));
+        $this->assertSame('', (string) FitPost::oneOrFail($post->get('id'))->get('body'));
+        $this->assertNotNull(FitPost::oneOrFail($post->get('id'))->get('body'), $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testBlankNumberTakesTheDefaultOrIsAnError(string $dbName, BaseSqlDriver $driver): void
+    {
+        // count is NOT NULL DEFAULT 0: a blank is its default. rank is NOT NULL
+        // with no default: a blank is no number, refused before strict SQL is
+        $this->setupTestData($driver);
+
+        $post = FitPost::blank()->set(['title' => 'Blank count', 'count' => '', 'rank' => '3']);
+        $this->assertNotFalse($post->save(), implode('; ', $post->getErrors()));
+        $this->assertEquals(0, (int) FitPost::oneOrFail($post->get('id'))->get('count'), $dbName);
+
+        $post = FitPost::blank()->set(['title' => 'Blank rank', 'rank' => '']);
+        $this->assertFalse($post->save());
+        $this->assertContains('rank must be a number', $post->getErrors(), $dbName);
+
+        $post = FitPost::blank()->set(['title' => 'Bad date', 'rank' => '1', 'published_at' => 'next sometime']);
+        $this->assertFalse($post->save());
+        $this->assertContains('published_at must be a date', $post->getErrors(), $dbName);
+
+        $post = FitPost::blank()->set(['title' => 'Good date', 'rank' => '1', 'published_at' => '2026-11-21 02:00:00']);
+        $this->assertNotFalse($post->save(), implode('; ', $post->getErrors()));
     }
 }
