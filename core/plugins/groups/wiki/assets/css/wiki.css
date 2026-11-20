@@ -579,7 +579,7 @@
 	}
 	.qq-upload-spinner {
 		display: inline-block;
-		background: url("/components/com_wiki/assets/img/loading.gif");
+		background: url("../../../../../components/com_wiki/site/assets/img/loading.gif");
 		width: 15px;
 		height: 15px;
 		vertical-align: text-bottom;
@@ -1027,7 +1027,7 @@
 	}
 
 	.wikipage .embedded-plugin {
-		background: url("/components/com_wiki/site/assets/img/checkered.png");
+		background: url("../../../../../components/com_wiki/site/assets/img/checkered.png");
 		text-align: center;
 		vertical-align: middle;
 	}

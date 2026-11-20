@@ -1505,13 +1505,13 @@
 		z-index: 2;
 		border-right: 1px solid #c8cfd8;
 		border-left: 1px solid #e8e8e8;
-		background: #f4f5f7 url("/components/com_publications/assets/img/showcase_prev.png") 100% 50% no-repeat;
+		background: #f4f5f7 url("../../../../../components/com_publications/site/assets/img/showcase_prev.png") 100% 50% no-repeat;
 	}
 	#showcase-next {
 		float: right;
 		border-left: 1px solid #c8cfd8;
 		border-right: 1px solid #e8e8e8;
-		background: #f4f5f7 url("/components/com_publications/assets/img/showcase_next.png") 0 50% no-repeat;
+		background: #f4f5f7 url("../../../../../components/com_publications/site/assets/img/showcase_next.png") 0 50% no-repeat;
 	}
 	#showcase-window {
 		float: left;
@@ -1763,7 +1763,7 @@
 /* Publication info tips
 --------------------------------------------- */
 	.pub-info-pop {
-		*background: transparent url("/components/com_projects/assets/img/icons/questionmark.png") 0 0 no-repeat;
+		*background: transparent url("../../../../../components/com_projects/site/assets/img/icons/questionmark.png") 0 0 no-repeat;
 		padding: 0.2em 1em;
 		margin: 0;
 		color: #999;
@@ -1774,7 +1774,7 @@
 		margin-top: -0.5em;
 	}
 	.pub-info {
-		*background: transparent url("/components/com_projects/assets/img/icons/questionmark.png") 0 0 no-repeat;
+		*background: transparent url("../../../../../components/com_projects/site/assets/img/icons/questionmark.png") 0 0 no-repeat;
 		*text-indent: 20px;
 		color: #999;
 		line-height: 1.2em;
@@ -1791,19 +1791,19 @@
 		padding: 0.5em 0 10px 22px;
 		}
 	.opensource {
-		background: url("/components/com_publications/assets/img/logos/opensource.gif") 0 0 no-repeat;
+		background: url("../../../../../components/com_publications/site/assets/img/logos/opensource.gif") 0 0 no-repeat;
 		}
 	.closedsource {
-		background: url("/components/com_publications/assets/img/logos/closedsource.gif") 0 0 no-repeat;
+		background: url("../../../../../components/com_publications/site/assets/img/logos/closedsource.gif") 0 0 no-repeat;
 		}
 	.cc {
-		background: url("/components/com_publications/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat;
+		background: url("../../../../../components/com_publications/site/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat;
 		}
 	.com_publications .custom, .content-publications .custom {
-		background: url("/components/com_publications/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
+		background: url("../../../../../components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 	.standard {
-		background: url("/components/com_publications/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
+		background: url("../../../../../components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 /* Citation
 -------------------------------------------- */

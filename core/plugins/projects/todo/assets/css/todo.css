@@ -88,7 +88,7 @@
 	}
 	.pinboard li .comment-blurb a {
 		padding: 0.2em 1em 0.2em 1.3em;
-		*background: transparent url("/components/com_projects/assets/img/icons/comment.png") 0 0 no-repeat;
+		*background: transparent url("../../../../../components/com_projects/site/assets/img/icons/comment.png") 0 0 no-repeat;
 	}
 	.pinboard li .comment-blurb a:hover, .pinboard li .comment-blurb a:focus {
 		border: none;
@@ -757,7 +757,7 @@
 	  display: inline;
 	}
 	button.todocal {
-	  background: url("/components/com_projects/assets/img/icons/cal.png") 0 0 no-repeat;
+	  background: url("../../../../../components/com_projects/site/assets/img/icons/cal.png") 0 0 no-repeat;
 	  border: 0;
 	  cursor: pointer;
 	  display: inline;
@@ -891,7 +891,7 @@
 	}
 	.pinboard h4.comment-blurb {
 		*padding-left: 18px !important;
-		*background: url("/components/com_projects/assets/img/icons/comment.png") 0 2px no-repeat;
+		*background: url("../../../../../components/com_projects/site/assets/img/icons/comment.png") 0 2px no-repeat;
 	}
 	.pinboard ul#td-comments {
 		display: block;

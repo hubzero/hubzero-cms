@@ -462,7 +462,7 @@
 	}
 	.qq-upload-spinner {
 		display: inline-block;
-		background: url("/components/com_wiki/assets/img/loading.gif");
+		background: url("../../../../../components/com_wiki/site/assets/img/loading.gif");
 		width: 15px;
 		height: 15px;
 		vertical-align: text-bottom;
