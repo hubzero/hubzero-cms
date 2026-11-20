@@ -369,7 +369,20 @@ class Credentials extends SiteController
         // requests in the same second (a double click, or a retry after the
         // mail failed) made the choice arbitrary and the mailed code could be
         // refused as "user not found"
-        $parts = explode(':', $user->tokens()->latest('id')->get('token'));
+        $tokenRow = $user->tokens()->latest('id');
+
+        // A reset link is good only for reset_time hours after it was issued;
+        // an older link must not reset the account.
+        if ($this->resetTokenExpired($tokenRow)) {
+            $this->finish(
+                Route::url('index.php?option=' . $this->option . '&task=reset', false),
+                Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKEN_EXPIRED'),
+                'warning',
+            );
+            return;
+        }
+
+        $parts = explode(':', (string) $tokenRow->get('token'));
         $crypt = $parts[0];
 
         if (!isset($parts[1])) {
@@ -464,8 +477,12 @@ class Credentials extends SiteController
         // Get the user object
         $user = \Hubzero\User\User::oneOrFail($id);
 
-        // Check for a user and that the tokens match
-        if (!hash_equals((string) $user->tokens()->latest('id')->get('token'), (string) $token)) {
+        // Check for a user and that the tokens match and have not expired
+        $tokenRow = $user->tokens()->latest('id');
+        if (
+            $this->resetTokenExpired($tokenRow)
+            || !hash_equals((string) $tokenRow->get('token'), (string) $token)
+        ) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
@@ -565,6 +582,12 @@ class Credentials extends SiteController
                     'warning',
                 );
             }
+        }
+
+        // The reset is done, so spend the tokens: a reset link is single-use and
+        // must not reset the account again if it is seen later.
+        foreach ($user->tokens()->rows() as $spentToken) {
+            $spentToken->destroy();
         }
 
         // Flush the user data from the session
@@ -683,6 +706,35 @@ class Credentials extends SiteController
      *
      * @param   \Hubzero\User\User $user \Hubzero\User\User
      *
+     * @return  bool
+     */
+    /**
+     * Has a reset token passed its lifetime (reset_time hours since issued)?
+     *
+     * Returns false when there is no usable token row, so the caller's own
+     * missing-token handling still applies.
+     *
+     * @param   \Hubzero\Database\Relational  $tokenRow  The newest token row for the user
+     * @return  bool
+     */
+    private function resetTokenExpired($tokenRow)
+    {
+        $created = $tokenRow->get('created');
+
+        if (!$created || $created == '0000-00-00 00:00:00') {
+            return false;
+        }
+
+        $resetHours = (int) Component::params('com_members')->get('reset_time', 1);
+        $threshold  = strtotime(Date::toSql() . " {$resetHours} hours ago");
+
+        return strtotime($created) < $threshold;
+    }
+
+    /**
+     * Has the user asked for too many password resets lately?
+     *
+     * @param   \Hubzero\User\User  $user
      * @return  bool
      */
     private function hasExceededResetLimit($user)
