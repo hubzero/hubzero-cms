@@ -132,6 +132,9 @@ class Pipeline extends AdminController
             }
 
             $row = Tool::getInstance($id);
+            if (!$row) {
+                App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+            }
         }
 
         // Display results

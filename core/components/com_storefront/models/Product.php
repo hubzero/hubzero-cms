@@ -77,7 +77,7 @@ class Product
         $productInfo = $db->loadObject();
 
         if (!$productInfo) {
-            throw new \Exception(Lang::txt('Error loading product'));
+            throw new \Exception(Lang::txt('Error loading product'), 404);
         }
 
         $this->setType($productInfo->ptId);

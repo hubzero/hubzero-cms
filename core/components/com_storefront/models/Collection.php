@@ -65,7 +65,7 @@ class Collection
             $this->setActiveStatus($cInfo->cActive);
             $this->setType($cInfo->cType);
         } else {
-            throw new \Exception(Lang::txt('Error loading collection'));
+            throw new \Exception(Lang::txt('Error loading collection'), 404);
         }
     }
 
