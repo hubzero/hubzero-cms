@@ -35,6 +35,12 @@ class Group extends Base implements CommandInterface
     {
         parent::__construct($output, $arguments);
 
+        // Help (and the bare command, which shows it) needs no group: asking
+        // "muse group help" anywhere but a super group's folder was an error
+        if (in_array($arguments->get('task'), ['help', 'execute'], true)) {
+            return;
+        }
+
         // Do we have a group arg?
         if ($cname = $this->arguments->getOpt('group')) {
             $group = \Hubzero\User\Group::getInstance($cname);

@@ -39,6 +39,8 @@ class Repository extends Base implements CommandInterface
      **/
     public function show()
     {
+        $this->requireComposerJson();
+
         $repositories = Composer::getRepositoryConfigs();
         $this->output->addRawFromAssocArray($repositories);
     }
@@ -52,6 +54,8 @@ class Repository extends Base implements CommandInterface
      **/
     public function add()
     {
+        $this->requireComposerJson();
+
         //Add via composer.json for now
     }
 
@@ -64,6 +68,8 @@ class Repository extends Base implements CommandInterface
      **/
     public function remove()
     {
+        $this->requireComposerJson();
+
         //Remove via composer.json for now
     }
 
@@ -77,5 +83,22 @@ class Repository extends Base implements CommandInterface
         $this->helpOutput()
             ->addOverview('Add, remove, and update repositories for packages')
             ->addTasks($this);
+    }
+
+    /**
+     * Stop with a message when the hub has no app/composer.json
+     *
+     * The Composer helper these tasks use read it unchecked, so a hub without
+     * one ended the command in an uncaught exception and its stack trace.
+     *
+     * @return  void
+     **/
+    private function requireComposerJson()
+    {
+        if (!is_file(PATH_APP . '/composer.json')) {
+            $this->output->error(
+                'This hub has no app/composer.json; its packages and repositories are listed there.',
+            );
+        }
     }
 }

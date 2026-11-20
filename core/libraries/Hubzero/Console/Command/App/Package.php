@@ -39,6 +39,8 @@ class Package extends Base implements CommandInterface
      **/
     public function show()
     {
+        $this->requireComposerJson();
+
         $package = $this->arguments->getOpt('package');
         if (!empty($package)) {
             $versions = Composer::findRemotePackages($package, '*');
@@ -58,6 +60,8 @@ class Package extends Base implements CommandInterface
      **/
     public function available()
     {
+        $this->requireComposerJson();
+
         $package = $this->arguments->getOpt('package');
         if (!empty($package)) {
             $versions = Composer::findRemotePackages($package, '*');
@@ -77,6 +81,8 @@ class Package extends Base implements CommandInterface
      **/
     public function install()
     {
+        $this->requireComposerJson();
+
         if ($this->arguments->getOpt('package')) {
             $package = $this->arguments->getOpt('package');
         }
@@ -103,6 +109,8 @@ class Package extends Base implements CommandInterface
      **/
     public function update()
     {
+        $this->requireComposerJson();
+
         $package = $this->arguments->getOpt('package');
         if (empty($package)) {
             $this->output->error('A package name is required');
@@ -121,6 +129,8 @@ class Package extends Base implements CommandInterface
      **/
     public function remove()
     {
+        $this->requireComposerJson();
+
         $package = $this->arguments->getOpt('package');
         if (empty($package)) {
             $this->output->error('A package name is required');
@@ -140,5 +150,22 @@ class Package extends Base implements CommandInterface
         $this->helpOutput()
             ->addOverview('Add, remove, and update packages')
             ->addTasks($this);
+    }
+
+    /**
+     * Stop with a message when the hub has no app/composer.json
+     *
+     * The Composer helper these tasks use read it unchecked, so a hub without
+     * one ended the command in an uncaught exception and its stack trace.
+     *
+     * @return  void
+     **/
+    private function requireComposerJson()
+    {
+        if (!is_file(PATH_APP . '/composer.json')) {
+            $this->output->error(
+                'This hub has no app/composer.json; its packages and repositories are listed there.',
+            );
+        }
     }
 }
