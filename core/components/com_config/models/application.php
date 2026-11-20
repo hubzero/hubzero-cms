@@ -250,7 +250,7 @@ class Application extends Obj
             $past = time() + 1;
             $query = $db
                 ->getQuery()
-                ->delete('#__sessions')
+                ->delete('#__session')
                 ->where('time', '<', (int) $past);
 
             $db->setQuery($query->toString());

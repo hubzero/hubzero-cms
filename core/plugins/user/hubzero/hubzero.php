@@ -129,6 +129,17 @@ class Hubzero extends Plugin
         $db->setQuery($query->toString());
         $db->query();
 
+        // The account's password hash and the hashes it used before stayed
+        // behind after the account was gone
+        foreach (['#__users_password', '#__users_password_history'] as $table) {
+            $query = $db
+                ->getQuery()
+                ->delete($table)
+                ->whereEquals('user_id', (int) $user['id']);
+            $db->setQuery($query->toString());
+            $db->query();
+        }
+
         return true;
     }
 
