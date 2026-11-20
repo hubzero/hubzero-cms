@@ -404,7 +404,10 @@ class Projects extends AdminController
         $model->set('type', $type);
         $model->set('modified', Date::toSql());
         $model->set('modified_by', User::get('id'));
-        $model->set('private', Request::getInt('private', $this->config->get('private', 1)));
+        // The form no longer has a privacy field (access says it): keep what the
+        // project has, or every save made it private
+        $private = (int) $model->get('private', $this->config->get('private', 1));
+        $model->set('private', Request::getInt('private', $private));
         $model->set('access', Request::getInt('access', $this->config->get('access', 5)));
 
         $this->message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
