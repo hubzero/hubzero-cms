@@ -31,7 +31,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('sku');
 if ($tmpl != 'component') {
     Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . $text, 'storefront');
     if ($canDo->get('core.edit')) {
-        Toolbar::save();
+        Toolbar::save('addusers');
     }
     Toolbar::cancel();
 }

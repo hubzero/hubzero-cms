@@ -51,7 +51,10 @@ if ($canChangeState) {
     Toolbar::archiveList();
     Toolbar::checkin();
 }
-if ($canDelete) {
+// Trashed articles can be deleted for good; the others go to the trash
+if ($canDelete && $this->filters['published'] == -2) {
+    Toolbar::deleteList('', 'remove', 'JTOOLBAR_EMPTY_TRASH');
+} elseif ($canDelete) {
     Toolbar::deleteList('', 'trash');
 }
 if ($canAdmin) {

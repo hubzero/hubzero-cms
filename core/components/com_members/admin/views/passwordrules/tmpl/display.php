@@ -27,9 +27,9 @@ $canDo = Components\Members\Helpers\Admin::getActions();
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_RULES'), 'user');
 if ($canDo->get('core.manage')) {
     // Toolbar::confirm('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM', 'refresh',
-    // 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restore_default_content');
+    // 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restoreDefaultContent');
     Toolbar::custom(
-        'restore_default_content',
+        'restoreDefaultContent',
         'refresh',
         'refresh',
         'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS',
@@ -224,7 +224,7 @@ if ($canDo->get('core.delete')) {
                         $toggleUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=toggle_enabled&id=' . $row->get('id')
+                            . '&task=toggleEnabled&id=' . $row->get('id')
                             . '&' . Session::getFormToken() . '=1',
                         );
                         ?>

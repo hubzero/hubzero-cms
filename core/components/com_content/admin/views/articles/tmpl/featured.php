@@ -53,7 +53,7 @@ if ($this->filters['published'] == -2 && $canDo->get('core.delete')) {
     Toolbar::divider();
 } elseif ($canDo->get('core.edit.state')) {
     Toolbar::divider();
-    Toolbar::trash();
+    Toolbar::trash('trash');
 }
 
 if ($canDo->get('core.admin')) {

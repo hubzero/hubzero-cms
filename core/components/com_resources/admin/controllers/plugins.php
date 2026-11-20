@@ -38,14 +38,15 @@ class Plugins extends AdminController
         }
 
         // States
-        $this->registerTask('unpublish', 'publish');  // Value = 0
-        $this->registerTask('archive', 'publish');  // Value = 2
-        $this->registerTask('trash', 'publish');  // Value = -2
-        $this->registerTask('report', 'publish'); // Value = -3
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');  // Value = 0
+        $this->registerTask('archive', 'state');  // Value = 2
+        $this->registerTask('trash', 'state');  // Value = -2
+        $this->registerTask('report', 'state'); // Value = -3
 
         // Reordering
-        $this->registerTask('orderup', 'reorder');
-        $this->registerTask('orderdown', 'reorder');
+        $this->registerTask('orderup', 'order');
+        $this->registerTask('orderdown', 'order');
 
         parent::execute();
     }

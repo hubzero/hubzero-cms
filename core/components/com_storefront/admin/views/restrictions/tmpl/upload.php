@@ -27,7 +27,7 @@ $text = 'Upload a CSV file';
 
 if ($tmpl != 'component') {
     Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . $text, 'storefront');
-    Toolbar::save();
+    Toolbar::save('uploadcsv');
     Toolbar::cancel();
 }
 

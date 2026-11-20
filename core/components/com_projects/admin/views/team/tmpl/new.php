@@ -31,7 +31,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 if ($tmpl != 'component') {
     Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . $text);
     if (User::authorise('core.edit', $this->option)) {
-        Toolbar::save();
+        Toolbar::save('addusers');
     }
     Toolbar::cancel();
 }

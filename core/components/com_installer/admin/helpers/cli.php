@@ -247,9 +247,13 @@ class Cli
             $processUser = $processUser['name'] ?? '';
         }
 
+        // A hub whose core lives outside its document root runs muse through
+        // its own wrapper, which tells muse where the hub is; core's own muse
+        // would look for the hub around core and find no configuration
+        $muse = is_file(PATH_ROOT . '/muse') ? PATH_ROOT . '/muse' : PATH_CORE . '/bin/muse';
+
         if ($user == 'apache') {
-            $cmd = PATH_CORE
-                . '/bin/muse'
+            $cmd = $muse
                 . ' '
                 . $task
                 . ' '
@@ -260,8 +264,7 @@ class Cli
         } else {
             $sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . escapeshellarg($user) . ' ' : '';
             $cmd = $sudo
-                . PATH_CORE
-                . '/bin/muse'
+                . $muse
                 . ' '
                 . $task
                 . ' '

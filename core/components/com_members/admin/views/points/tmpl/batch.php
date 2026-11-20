@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
  */
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': Manage Points', 'user.png');
-Toolbar::save('process_batch', 'Process Batch');
+Toolbar::save('processBatch', 'Process Batch');
 Toolbar::cancel();
 
 ?>
@@ -91,7 +91,7 @@ Toolbar::cancel();
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-    <input type="hidden" name="task" value="process_batch" />
+    <input type="hidden" name="task" value="processBatch" />
 
     <?php echo Html::input('token'); ?>
 </form>

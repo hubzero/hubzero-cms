@@ -72,7 +72,7 @@ $this->css('create.css');
             <?php echo Html::input('token'); ?>
 
             <p><strong><?php echo $this->escape(stripslashes($this->row->title)); ?></strong><br />
-            <?php echo $this->escape(stripslashes($this->row->typetitle)); ?></p>
+            <?php echo $this->escape(stripslashes((string) $this->row->typetitle)); ?></p>
 
             <label><input type="checkbox"
                           name="confirm"

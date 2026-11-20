@@ -96,7 +96,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
     <input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-    <input type="hidden" name="task" value="saveClass" />
+    <input type="hidden" name="task" value="save" />
 
     <?php echo Html::input('token'); ?>
 </form>

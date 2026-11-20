@@ -14,6 +14,9 @@ use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Manage member notes
@@ -31,6 +34,13 @@ class Notes extends AdminController
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
+        $this->registerTask('save2new', 'save');
+        $this->registerTask('save2copy', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
+        $this->registerTask('archive', 'state');
+        $this->registerTask('trash', 'state');
+        $this->registerTask('delete', 'remove');
 
         parent::execute();
     }
@@ -171,8 +181,13 @@ class Notes extends AdminController
         // Incoming password blacklist edits
         $fields = Request::getArray('fields', [], 'post');
 
+        // Save as Copy: a new note with this one's fields
+        if ($this->getTask() == 'save2copy') {
+            $fields['id'] = 0;
+        }
+
         // Load the record
-        $row = Note::oneOrNew($fields['id'])->set($fields);
+        $row = Note::oneOrNew($fields['id'] ?? 0)->set($fields);
 
         // Try to save
         if (!$row->save()) {
@@ -185,13 +200,102 @@ class Notes extends AdminController
         Notify::success(Lang::txt('COM_MEMBERS_NOTES_SAVE_SUCCESS'));
 
         // Fall through to edit form
-        if ($this->getTask() == 'apply') {
+        if ($this->getTask() == 'apply' || $this->getTask() == 'save2copy') {
             $this->editTask($row);
 
             return;
         }
 
+        if ($this->getTask() == 'save2new') {
+            App::redirect(
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=add',
+                    false,
+                ),
+            );
+        }
+
         // Redirect
+        $this->cancelTask();
+    }
+
+    /**
+     * Publish, unpublish, archive or trash one or more notes
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
+
+        if (!User::authorise('core.edit.state', $this->option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $states = [
+            'publish'   => [1, 'COM_MEMBERS_NOTES_N_ITEMS_PUBLISHED'],
+            'unpublish' => [0, 'COM_MEMBERS_NOTES_N_ITEMS_UNPUBLISHED'],
+            'archive'   => [2, 'COM_MEMBERS_NOTES_N_ITEMS_ARCHIVED'],
+            'trash'     => [-2, 'COM_MEMBERS_NOTES_N_ITEMS_TRASHED'],
+        ];
+        [$state, $message] = $states[$this->getTask()] ?? $states['unpublish'];
+
+        $changed = 0;
+        foreach (Request::getArray('id', []) as $id) {
+            $row = Note::oneOrNew((int) $id);
+            if ($row->isNew()) {
+                continue;
+            }
+
+            $row->set('state', $state);
+            if (!$row->save()) {
+                Notify::error($row->getError());
+                continue;
+            }
+
+            $changed++;
+        }
+
+        if ($changed) {
+            Notify::success(Lang::txt($message, $changed));
+        }
+
+        $this->cancelTask();
+    }
+
+    /**
+     * Check in one or more notes left checked out
+     *
+     * @return  void
+     */
+    public function checkinTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
+
+        if (!User::authorise('core.edit.state', $this->option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $changed = 0;
+        foreach (Request::getArray('id', []) as $id) {
+            $row = Note::oneOrNew((int) $id);
+            if ($row->isNew()) {
+                continue;
+            }
+
+            // checked_out_time is NOT NULL; checked_out alone says who holds it
+            $row->set('checked_out', 0);
+            if ($row->save()) {
+                $changed++;
+            }
+        }
+
+        if ($changed) {
+            Notify::success(Lang::txt('COM_MEMBERS_NOTES_N_ITEMS_CHECKED_IN', $changed));
+        }
+
         $this->cancelTask();
     }
 
@@ -204,6 +308,10 @@ class Notes extends AdminController
     {
         // Check for request forgeries
         Request::checkToken();
+
+        if (!User::authorise('core.delete', $this->option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
         // Incoming
         $ids = Request::getArray('id', []);

@@ -27,7 +27,7 @@ $toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': '
 Toolbar::title($toolbarTitle, 'wiki');
 
 if ($canDo->get('core.delete')) {
-    Toolbar::deleteList('COM_WIKI_CONFIRM_DELETE', 'delete');
+    Toolbar::deleteList('COM_WIKI_CONFIRM_DELETE', 'remove');
 }
 if ($canDo->get('core.edit')) {
     Toolbar::editList();

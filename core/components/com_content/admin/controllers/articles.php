@@ -799,6 +799,59 @@ class Articles extends AdminController
     }
 
     /**
+     * Permanently delete one or more articles (the toolbar's Empty trash)
+     *
+     * Their featured entry and rating go with them.
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        Request::checkToken();
+
+        $ids = array_map('intval', Request::getArray('cid', []));
+
+        if (empty($ids)) {
+            Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
+            $this->cancelTask();
+
+            return;
+        }
+
+        $removed = 0;
+        foreach (Article::all()->whereIn('id', $ids)->rows() as $article) {
+            if (!User::authorise('core.delete', $article->asset_id)) {
+                Notify::error(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+                continue;
+            }
+
+            $featured = $article->frontpage()->row();
+            $rating   = $article->rating()->row();
+
+            if (!$article->destroy()) {
+                Notify::error($article->getError());
+                continue;
+            }
+
+            if (!$featured->isNew()) {
+                $featured->destroy();
+            }
+            if (!$rating->isNew()) {
+                $rating->destroy();
+            }
+
+            $removed++;
+        }
+
+        if ($removed) {
+            $title = Inflector::pluralize('article', $removed);
+            Notify::success(Lang::txt('COM_CONTENT_N_ITEMS_DELETED', $removed, $title));
+        }
+
+        $this->cancelTask();
+    }
+
+    /**
      * Cancel a task
      *
      * @return  void

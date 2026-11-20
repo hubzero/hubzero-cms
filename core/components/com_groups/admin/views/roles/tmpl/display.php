@@ -33,7 +33,7 @@ if ($canDo->get('core.edit')) {
     Toolbar::editList();
 }
 if ($canDo->get('core.delete')) {
-    Toolbar::deleteList('COM_GROUPS_DELETE_CONFIRM', 'delete');
+    Toolbar::deleteList('COM_GROUPS_DELETE_CONFIRM', 'remove');
 }
 Toolbar::spacer();
 Toolbar::help('groups');

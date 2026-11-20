@@ -47,7 +47,7 @@ if ($this->filters['state'] == -2 && $canDo->get('core.delete')) {
     Toolbar::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
     Toolbar::divider();
 } elseif ($canDo->get('core.edit.state')) {
-    Toolbar::trash();
+    Toolbar::trash('trash');
     Toolbar::divider();
 }
 

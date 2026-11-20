@@ -69,6 +69,10 @@ class Migrations extends AdminController
 
         if ($migrations && count((array) $migrations) > 0) {
             foreach ($migrations as $status => $files) {
+                // Next to the lists of files, the output carries messages as strings
+                if (!is_array($files)) {
+                    continue;
+                }
                 $files = array_reverse($files);
                 foreach ($files as $entry) {
                     $row = [

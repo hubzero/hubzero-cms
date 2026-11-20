@@ -1423,7 +1423,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <td>
                                     <?php
                                         $criteriaVal = $this->escape(
-                                            stripslashes($this->badge->get('criteria_text')),
+                                            stripslashes((string) $this->badge->get('criteria_text')),
                                         );
                                     echo $this->editor(
                                         'badge[criteria]',

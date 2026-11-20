@@ -126,19 +126,19 @@ class Collect extends Module
                     $found = [];
                     foreach ($posts as $post) {
                         foreach ($this->myboards as $board) {
-                            if (!in_array($board->id, $found) && $board->id == $post->collection_id) {
+                            if (!in_array($board->id, $found) && $board->id == $post->get('collection_id')) {
                                 $this->collections[] = new Collection($board);
                                 $found[] = $board->id;
                             }
                         }
-                        if (!in_array($post->collection_id, $found)) {
+                        if (!in_array($post->get('collection_id'), $found)) {
                             foreach ($this->groupboards as $optgroup => $boards) {
                                 if (count($boards) <= 0) {
                                     continue;
                                 }
 
                                 foreach ($boards as $board) {
-                                    if (!in_array($board->id, $found) && $board->id == $post->collection_id) {
+                                    if (!in_array($board->id, $found) && $board->id == $post->get('collection_id')) {
                                         $this->collections[] = new Collection($board);
                                         $found[] = $board->id;
                                     }

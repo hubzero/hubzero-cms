@@ -83,7 +83,7 @@ $this->css();
                 <input type="text"
                     name="question[subject]"
                     id="field-subject"
-                    value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>"/>
+                    value="<?php echo $this->escape(stripslashes((string) $this->row->get('subject'))); ?>"/>
             </label>
 
             <label for="field-question">

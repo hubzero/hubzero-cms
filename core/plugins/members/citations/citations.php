@@ -368,11 +368,11 @@ class Citations extends Plugin
         foreach ($view->get('types') as $type) {
             if (isset($type->fields)) {
                 $f = $type->fields;
-                if (str_contains($f, ',')) {
+                if (str_contains((string) $f, ',')) {
                     $f = str_replace(',', "\n", $f);
                 }
 
-                $f = array_map('trim', explode("\n", $f));
+                $f = array_map('trim', explode("\n", (string) $f));
                 $f = array_values(array_filter($f));
 
                 $fields[strtolower(str_replace(' ', '', $type->type_title ?? ''))] = $f;
@@ -404,7 +404,7 @@ class Citations extends Plugin
 
         // Make sure title isnt too long
         $maxTitleLength = 30;
-        $shortenedTitle = (strlen($view->get('row')->title) > $maxTitleLength)
+        $shortenedTitle = (strlen((string) $view->get('row')->title) > $maxTitleLength)
         ? substr($view->get('row')->title, 0, $maxTitleLength) . '&hellip;'
         : $view->get('row')->title;
 

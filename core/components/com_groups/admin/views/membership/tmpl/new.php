@@ -30,7 +30,7 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 if ($tmpl != 'component') {
     Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . $text, 'groups');
     if ($canDo->get('core.edit')) {
-        Toolbar::save();
+        Toolbar::save('addusers');
     }
     Toolbar::cancel();
 }
