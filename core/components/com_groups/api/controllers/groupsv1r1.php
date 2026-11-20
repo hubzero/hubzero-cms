@@ -363,7 +363,7 @@ class Groupsv1r1 extends ApiController
                         $group[$field] = str_replace(
                             '/api',
                             '',
-                            rtrim(Request::base(), '/') . ltrim($record->getLogo(), '/'),
+                            rtrim(Request::base(), '/') . '/' . ltrim($record->getLogo(), '/'),
                         );
                         break;
                     case 'link':

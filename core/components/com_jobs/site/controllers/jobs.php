@@ -303,9 +303,11 @@ class Jobs extends SiteController
         // Call the trigger
         $results = Event::trigger('members.shortlist', [$oid, $ajax = 0]);
 
-        // Go back to the page
+        // Go back to the page they came from; without a Referer (a browser may
+        // not send one) that was a redirect to '' and a 500, so the candidates
+        $back = (string) Request::getString('HTTP_REFERER', '', 'server');
         App::redirect(
-            (string) Request::getString('HTTP_REFERER', null, 'server'),  // What page they came from
+            $back ?: Route::url('index.php?option=' . $this->option . '&task=resumes', false),
         );
     }
 
