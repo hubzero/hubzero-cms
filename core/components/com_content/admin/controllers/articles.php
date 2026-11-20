@@ -527,10 +527,10 @@ class Articles extends AdminController
                 }
             }
 
-            // Need to offset publish up date with user timezone
-            $userTimezone = App::get('user')->getParam('timezone', App::get('config')->get('offset'));
-            $article->set('publish_up', Date::of($article->get('publish_up'), $userTimezone)->toSql());
-
+            // The form's calendar shows publish_up in the user's time zone itself
+            // (filter="user_utc") and converts it back on save. Converting here as
+            // well, and saving it with the check-out, moved the stored date by the
+            // zone's offset every time the article was opened for editing.
             $article->set('checked_out', User::getInstance()->get('id'));
             $article->set('checked_out_time', Date::of('now')->toSql());
             $article->save();
@@ -636,6 +636,15 @@ class Articles extends AdminController
             $article->assetRules = new Rules($rules);
         }
         unset($items['rules']);
+
+        // The calendars show these in the user's time zone (filter="user_utc");
+        // store them as UTC
+        $userTimezone = App::get('user')->getParam('timezone', App::get('config')->get('offset'));
+        foreach (['publish_up', 'publish_down'] as $key) {
+            if (!empty($items[$key]) && intval($items[$key])) {
+                $items[$key] = Date::of($items[$key], $userTimezone)->toSql();
+            }
+        }
 
         $article->set($items);
 

@@ -201,6 +201,10 @@ class Jobs extends AdminController
 
         // Initiate extended database class
         $row = Job::oneOrNew($fields['id'])->set($fields);
+        if ($row->get('id')) {
+            $row->set('modified', Date::toSql());
+            $row->set('modified_by', User::get('id'));
+        }
 
         if ($row->get('recurrence')) {
             // A bad custom expression throws here; report it the way a failed

@@ -38,16 +38,16 @@ defined('_HZEXEC_') or die();
     $id = $this->jobid;
 
     $startdate = ($job->startdate && $job->startdate != '0000-00-00 00:00:00')
-        ? Date::of($job->startdate)->toLocal('Y-m-d 00:00:00')
+        ? Date::of($job->startdate)->format('Y-m-d 00:00:00')
         : '';
     $closedate = ($job->closedate && $job->closedate != '0000-00-00 00:00:00')
-        ? Date::of($job->closedate)->toLocal('Y-m-d 00:00:00')
+        ? Date::of($job->closedate)->format('Y-m-d 00:00:00')
         : '';
     $defaultExpire = ($this->config->get('expiry', 0)
         ? Date::of(strtotime('180 days'))->toLocal('Y-m-d 00:00:00')
         : '');
     $expiredate = ($job->expiredate && $job->expiredate != '0000-00-00 00:00:00')
-        ? Date::of($job->expiredate)->toLocal('Y-m-d 00:00:00')
+        ? Date::of($job->expiredate)->format('Y-m-d 00:00:00')
         : $defaultExpire;
 
     $status = $this->task != 'addjob' ? $job->status : 4; // draft mode

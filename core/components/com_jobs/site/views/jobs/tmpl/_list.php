@@ -62,7 +62,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         $model = new Components\Jobs\Models\Job($this->jobs[$i]);
 
         $closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00')
-            ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y')
+            ? Date::of($this->jobs[$i]->closedate)->format('d&\n\b\s\p;M&\n\b\s\p;y')
             : 'ASAP';
         if (
             $this->jobs[$i]->closedate
@@ -161,7 +161,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                         <?= Lang::txt('COM_JOBS_JOB_WITHDREW_ON') ?> <span class="datedisplay"><?= $spanText ?></span>
                     </span>
                 <?php } else { ?>
-                    <?php echo $closedate ? '<span class="datedisplay">' . $closedate . '</span>' : ''; ?>
+                    <span class="datedisplay"><?php echo $closedate; ?></span>
                 <?php } ?>
             </td>
         <?php if ($this->filters['search']) { ?>

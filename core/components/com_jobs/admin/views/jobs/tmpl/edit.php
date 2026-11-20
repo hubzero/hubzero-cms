@@ -52,16 +52,16 @@ $this->row->code = !$this->isnew
     : Lang::txt('COM_JOBS_ISNEW');
 
 $startdate = ($this->row->startdate && $this->row->startdate != '0000-00-00 00:00:00')
-    ? Date::of($this->row->startdate)->toLocal('Y-m-d 00:00:00')
+    ? Date::of($this->row->startdate)->format('Y-m-d 00:00:00')
     : '';
 $closedate = ($this->row->closedate && $this->row->closedate != '0000-00-00 00:00:00')
-    ? Date::of($this->row->closedate)->toLocal('Y-m-d 00:00:00')
+    ? Date::of($this->row->closedate)->format('Y-m-d 00:00:00')
     : '';
 $opendate = ($this->row->opendate && $this->row->opendate != '0000-00-00 00:00:00')
-    ? Date::of($this->row->opendate)->toLocal('Y-m-d 00:00:00')
+    ? Date::of($this->row->opendate)->format('Y-m-d 00:00:00')
     : '';
 $expiredate = ($this->row->expiredate && $this->row->expiredate != '0000-00-00 00:00:00')
-    ? Date::of($this->row->expiredate)->toLocal('Y-m-d 00:00:00')
+    ? Date::of($this->row->expiredate)->format('Y-m-d 00:00:00')
     : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode

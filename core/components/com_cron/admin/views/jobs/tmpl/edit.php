@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
@@ -459,7 +458,8 @@ foreach ($this->getErrors() as $error) {
                         <td>
                             <?php echo $this->escape($this->row->get('created')); ?>
                             <?php
-                            $fieldValue = $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'));
+                            // Stored (UTC) as it is: local time posted back moved the date by the offset each save
+                            $fieldValue = $this->escape($this->row->get('created'));
                             ?>
                             <input type="hidden" name="fields[created]" id="field-created" value="<?= $fieldValue ?>" />
                         </td>
@@ -480,7 +480,7 @@ foreach ($this->getErrors() as $error) {
                         <td>
                             <?php echo $this->escape($this->row->get('modified')); ?>
                             <?php
-                            $fieldValue = $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'));
+                            $fieldValue = $this->escape($this->row->get('modified'));
                             ?>
                             <input type="hidden" name="fields[modified]" id="field-modified"
                                 value="<?= $fieldValue ?>" />
