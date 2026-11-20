@@ -407,21 +407,41 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		if (($key = trim(isset($_COOKIE['shib-session']) ? $_COOKIE['shib-session'] : (isset($_GET['shib-session']) ? $_GET['shib-session'] : ''))))
 		{
 			self::log('status', $key);
-			$dbh = App::get('db');
-			$dbh->setQuery('SELECT data FROM `#__shibboleth_sessions` WHERE session_key = '.$dbh->quote($key));
-			$dbh->execute();
-			$sess = $dbh->loadResult();
+			$sess = self::storedSession($key);
 		}
 
 		if ($sess)
 		{
-			$sess = json_decode($sess, true);
 			self::log('found resumable session:', $sess);
 			return $sess;
 		}
 		self::log('no shib session', $_GET);
 		self::log('no shib session', $_COOKIE);
 		return array();
+	}
+
+	/**
+	 * The attributes login() stored under a key, optionally deleting them
+	 *
+	 * @param   string   $key      Session key
+	 * @param   boolean  $consume  Delete the stored attributes once read
+	 * @return  array    Attributes, or an empty array
+	 */
+	private static function storedSession($key, $consume = false)
+	{
+		$dbh = App::get('db');
+		$dbh->setQuery('SELECT data FROM `#__shibboleth_sessions` WHERE session_key = ' . $dbh->quote($key));
+		$data = $dbh->loadResult();
+
+		if ($consume)
+		{
+			$dbh->setQuery('DELETE FROM `#__shibboleth_sessions` WHERE session_key = ' . $dbh->quote($key));
+			$dbh->execute();
+		}
+
+		$data = $data ? json_decode($data, true) : null;
+
+		return is_array($data) ? $data : array();
 	}
 
 	/**
@@ -465,17 +485,28 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			App::redirect($return ? $return : $service . '/index.php');
 		}
 
-		// If someone is logged in already, then we're linking an account
-		if (!User::get('guest'))
+		$sid = isset($_SERVER['REDIRECT_Shib-Session-ID'])
+			? $_SERVER['REDIRECT_Shib-Session-ID']
+			: (isset($_SERVER['Shib-Session-ID']) ? $_SERVER['Shib-Session-ID'] : null);
+
+		// If someone is logged in already, then we're linking an account.
+		//
+		// Coming back from the IdP (mod_shib set a session), fall through: the
+		// attributes it just set are stored below and the link uses them.
+		// Without one, nothing in this request says whose identity to link. A
+		// sign-in stored earlier in this browser may be someone else's (a shared
+		// computer), so it is not reused: link() reports the failure.
+		if (!User::get('guest') && !$sid)
 		{
-			self::log('already logged in, redirect for link');
+			self::log('already logged in without an IdP session, redirect for link');
+			App::get('session')->clear('shibboleth.link');
 			list($service, $com_user, $task) = self::getLoginParams();
-			App::redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session']));
+			App::redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth');
 		}
 
 		// Extract variables set by mod_shib, if any
 		// https://www.incommon.org/federation/attributesummary.html
-		if (($sid = isset($_SERVER['REDIRECT_Shib-Session-ID']) ? $_SERVER['REDIRECT_Shib-Session-ID'] : (isset($_SERVER['Shib-Session-ID']) ? $_SERVER['Shib-Session-ID'] : null)))
+		if ($sid)
 		{
 			$attrs = array(
 				'id' => $sid,
@@ -549,6 +580,25 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$dbh = App::get('db');
 			$dbh->setQuery('INSERT INTO `#__shibboleth_sessions` (session_key, data) VALUES('.$dbh->quote($key).', '.$dbh->quote(json_encode($attrs)).')');
 			$dbh->execute();
+
+			// Signed in and back from the IdP (see above): link the sign-in just
+			// stored. Returning instead would let com_users log this identity in
+			// over the signed-in account, as a new placeholder account when it is
+			// not linked yet.
+			//
+			// The key stays on the server, in this member's session, for link()
+			// to use once. In the URL it would be a credential: anyone could sign
+			// in, take their own key, and hand a signed-in member a link that
+			// ties the attacker's identity to the member's account.
+			if (!User::get('guest'))
+			{
+				App::get('session')->set('shibboleth.link', $key);
+				self::log('already logged in, redirect for link');
+				list($service, $com_user, $task) = self::getLoginParams();
+				App::redirect(
+					$service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth'
+				);
+			}
 		}
 	}
 
@@ -783,47 +833,72 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	public function link($options = array())
 	{
 		self::log('do link', $options);
-		if (($status = $this->status()))
-		{
-			self::log('link', $status);
-			// Get unique username
-			$username = $status['eppn'];
-			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'shibboleth', $status['idp']);
 
-			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
-			{
-				self::log('already linked', array('domain' => $hzad->id, 'username' => $username));
-				App::redirect(
-					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This account appears to already be linked to a hub account',
-					'error'
-				);
-			}
-			else
-			{
-				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
-				// if `$hzal` === false, then either:
-				//    the authenticator Domain couldn't be found,
-				//    no username was provided,
-				//    or the Link record failed to be created
-				if ($hzal)
-				{
-					$hzal->set('user_id', User::get('id'));
-					$hzal->set('email', $status['email']);
-					self::log('setting link', $hzal);
-					$hzal->update();
-				}
-				else
-				{
-					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false', $status['idp'], $username));
-				}
-			}
-		}
-		else
+		$account = Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account');
+		$failed  = 'There was an error linking your account, please try again later.';
+
+		// Only the sign-in login() put in this member's session when they came
+		// back from the IdP, and only once. Never one named in the request or by
+		// the shib-session cookie: either can be another person's.
+		$session = App::get('session');
+		$key     = $session->get('shibboleth.link');
+		$session->clear('shibboleth.link');
+
+		$status = $key ? self::storedSession($key, true) : array();
+
+		if (empty($status['eppn']) || empty($status['idp']))
 		{
-			self::log('link failed, bad status, redir');
-			// User somehow got redirect back without being authenticated (not sure how this would happen?)
-			App::redirect(Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'), 'There was an error linking your account, please try again later.', 'error');
+			self::log('link failed, no sign-in from the IdP, redir');
+			App::redirect($account, $failed, 'error');
+			return;
+		}
+
+		self::log('link', $status);
+		$username = $status['eppn'];
+
+		$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
+
+		// find_or_create() is false when the domain cannot be found or created,
+		// or the link row cannot be saved
+		if (!$hzal)
+		{
+			Log::error(sprintf(
+				'Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false',
+				$status['idp'],
+				$username
+			));
+			App::redirect($account, $failed, 'error');
+			return;
+		}
+
+		// A row with no account behind it (an earlier login that never finished
+		// registering) belongs to nobody, and the IdP has just vouched for this
+		// member, so it is claimed. A row another account owns is refused.
+		$owner = (int) $hzal->get('user_id');
+
+		if ($owner && $owner != (int) User::get('id'))
+		{
+			self::log('already linked', array(
+				'domain'   => $hzal->get('auth_domain_id'),
+				'username' => $username,
+				'owner'    => $owner
+			));
+			App::redirect($account, 'This account appears to already be linked to a hub account', 'error');
+			return;
+		}
+
+		if (!$owner)
+		{
+			$hzal->set('user_id', User::get('id'));
+			$hzal->set('email', isset($status['email']) ? $status['email'] : null);
+			self::log('setting link', $hzal);
+
+			if (!$hzal->update())
+			{
+				Log::error(sprintf('Saving the link of %s to user %d failed', $username, User::get('id')));
+				App::redirect($account, $failed, 'error');
+				return;
+			}
 		}
 	}
 }
