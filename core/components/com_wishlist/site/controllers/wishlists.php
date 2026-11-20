@@ -1413,6 +1413,8 @@ class Wishlists extends SiteController
         }
 
         if ($this->task == 'editprivacy') {
+            Request::checkToken();
+
             $private = Request::getInt('private', 0, 'get');
             if ($wish->get('private') != $private) {
                 $wish->set('private', $private);
@@ -1421,6 +1423,8 @@ class Wishlists extends SiteController
         }
 
         if ($this->task == 'editwish' && ($status = Request::getWord('status', ''))) {
+            Request::checkToken();
+
             $former_status   = $wish->get('status');
             $former_accepted = $wish->get('accepted');
             switch ($status) {

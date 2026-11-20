@@ -286,17 +286,15 @@ $categoryChecked = function ($value) use ($view) {
                             </li>
                         <?php if ($this->wish->isPrivate()) { ?>
                             <li>
-                                <a class="icon-eye-open makepublic"
-                                    href="<?= Route::url($this->wish->link('privacy', ['private' => '0'])) ?>">
-                                    <?php echo Lang::txt('COM_WISHLIST_MAKE_PUBLIC'); ?>
-                                </a>
+                                <button type="submit" form="hz-post-action" class="icon-eye-open makepublic"
+                                    formaction="<?= Route::url($this->wish->link('privacy', ['private' => '0'])) ?>"
+                                    ><?php echo Lang::txt('COM_WISHLIST_MAKE_PUBLIC'); ?></button>
                             </li>
                         <?php } else { ?>
                             <li>
-                                <a class="icon-eye-close makeprivate"
-                                    href="<?= Route::url($this->wish->link('privacy', ['private' => '1'])) ?>">
-                                    <?php echo Lang::txt('COM_WISHLIST_MAKE_PRIVATE'); ?>
-                                </a>
+                                <button type="submit" form="hz-post-action" class="icon-eye-close makeprivate"
+                                    formaction="<?= Route::url($this->wish->link('privacy', ['private' => '1'])) ?>"
+                                    ><?php echo Lang::txt('COM_WISHLIST_MAKE_PRIVATE'); ?></button>
                             </li>
                         <?php } ?>
                     <?php } ?>
