@@ -69,7 +69,7 @@ class Solr extends SiteController
         $section = Request::getString('section', 'content');
         $tagSearchEnabled = !!$config->get('solr_tagsearch', 0);
         $tagString = Request::getString('tags', '');
-        $filters = Request::getArray('filters', '');
+        $filters = Request::getArray('filters', []);
         $queryFields = $config->get('solr_queryfields', 'url^10 title^5 description fulltext author');
         $phraseFields = $config->get('solr_phrasefields', 'title^5 description fulltext author');
         $phraseSlop = $config->get('solr_phraseslop', '10');

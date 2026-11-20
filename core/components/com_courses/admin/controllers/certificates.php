@@ -224,8 +224,8 @@ class Certificates extends AdminController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', '', 'files');
-        if (!$file['name']) {
+        $file = Request::getArray('upload', [], 'files');
+        if (empty($file['name'])) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
             $this->displayTask();
             return;

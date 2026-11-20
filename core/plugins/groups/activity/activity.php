@@ -582,7 +582,7 @@ class Activity extends Plugin
         }
 
         // Process attachment
-        $upload = Request::getArray('activity_file', '', 'files');
+        $upload = Request::getArray('activity_file', [], 'files');
 
         if (!empty($upload['name'])) {
             if ($upload['error']) {

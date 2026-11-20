@@ -2723,7 +2723,7 @@ class Discussions extends Plugin
         }
 
         // Incoming file
-        $file = Request::getArray('upload', '', 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!$file || !isset($file['name']) || !$file['name']) {
             if ($attachment->get('id')) {
                 // Only updating the description

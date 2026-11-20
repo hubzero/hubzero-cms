@@ -1141,7 +1141,7 @@ class Collections extends Plugin
             }
 
             // Add some data
-            if ($files  = Request::getArray('fls', '', 'files')) {
+            if ($files  = Request::getArray('fls', [], 'files')) {
                 $item->set('_files', $files);
             }
             $item->set('_assets', Request::getArray('assets', [], 'post'));

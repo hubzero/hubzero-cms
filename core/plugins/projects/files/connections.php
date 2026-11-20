@@ -856,7 +856,7 @@ class Connections
             }
         } else {
             // Regular upload
-            $upload = Request::getArray('upload', '', 'files');
+            $upload = Request::getArray('upload', [], 'files');
 
             if (empty($upload['name']) or $upload['name'][0] == '') {
                 throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
@@ -1153,7 +1153,7 @@ class Connections
             $files = [];
 
             // Regular upload
-            $upload = Request::getArray('upload', '', 'files');
+            $upload = Request::getArray('upload', [], 'files');
 
             if (empty($upload['name']) || $upload['name'][0] == '') {
                 throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);

@@ -35,7 +35,7 @@ class Media extends AdminController
         // Incoming
         $id      = Request::getInt('id', 0);
         $curfile = Request::getString('file', '');
-        $file    = Request::getArray('upload', '', 'files');
+        $file    = Request::getArray('upload', [], 'files');
 
         // Build upload path
         $dir  = Str::pad($id);
@@ -60,7 +60,7 @@ class Media extends AdminController
         }
 
         // make sure we have a file
-        if (!$file['name']) {
+        if (empty($file['name'])) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
             $this->displayTask('', $id);
 

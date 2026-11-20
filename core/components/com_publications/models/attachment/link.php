@@ -298,9 +298,9 @@ class Link extends Base
      */
     public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
-        $toAttach = $toAttach ? $toAttach : Request::getArray('url', '', 'post');
-        $titles   = Request::getArray('title', '', 'post');
-        $desc     = Request::getArray('desc', '', 'post');
+        $toAttach = $toAttach ? $toAttach : Request::getArray('url', [], 'post');
+        $titles   = Request::getArray('title', [], 'post');
+        $desc     = Request::getArray('desc', [], 'post');
 
         // Incoming selections
 

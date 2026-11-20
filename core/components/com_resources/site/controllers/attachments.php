@@ -324,7 +324,7 @@ class Attachments extends SiteController
             $file = $_GET['qqfile'];
             $size = (int) $_SERVER["CONTENT_LENGTH"];
         } elseif (isset($_FILES['qqfile'])) {
-            //$files = Request::getArray('qqfile', '', 'files');
+            //$files = Request::getArray('qqfile', [], 'files');
 
             $stream = false;
             $file = $_FILES['qqfile']['name'];
@@ -645,8 +645,8 @@ class Attachments extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', '', 'files');
-        if (!$file['name']) {
+        $file = Request::getArray('upload', [], 'files');
+        if (empty($file['name'])) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_FILE'));
             $this->displayTask($pid);
 

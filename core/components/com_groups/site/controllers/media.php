@@ -545,10 +545,10 @@ class Media extends Base
         }
 
         // get request vars
-        $file = Request::getArray('upload', '', 'files');
+        $file = Request::getArray('upload', [], 'files');
 
         // make sure we have file
-        if (!$file['name'] || $file['size'] == 0) {
+        if (empty($file['name']) || empty($file['size'])) {
             $returnObj->error   = true;
             $returnObj->message = Lang::txt('COM_GROUPS_MEDIA_NO_FILE');
             return $returnObj;

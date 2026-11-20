@@ -76,8 +76,8 @@ class Media extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', '', 'files');
-        if (!$file['name']) {
+        $file = Request::getArray('upload', [], 'files');
+        if (empty($file['name'])) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
             $this->displayTask();
 

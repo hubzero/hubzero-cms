@@ -66,8 +66,8 @@ class Premis extends AdminController
             return;
         }
 
-        $file = Request::getArray('upload', '', 'files');
-        if (!$file['name']) {
+        $file = Request::getArray('upload', [], 'files');
+        if (empty($file['name'])) {
             $this->setError(Lang::txt('Check the file please.'));
             $this->displayTask();
             return;
