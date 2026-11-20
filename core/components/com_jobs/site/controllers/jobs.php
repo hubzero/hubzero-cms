@@ -1256,17 +1256,20 @@ class Jobs extends SiteController
         if (!$job) {
             $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_INACTIVE'));
 
+            // Not there (or not open to this visitor): say so with the status too
+            App::get('response')->setStatusCode(404);
+
             // Set the pathway
             if (Pathway::count() <= 0) {
                 Pathway::append(
-                    Lang::txt(strtoupper($this->name)),
+                    Lang::txt(strtoupper($this->option)),
                     'index.php?option=' . $this->option,
                 );
             }
 
             // Output HTML
             $view = new View(['name' => 'error']);
-            $view->set('title', Lang::txt(strtoupper($this->name)));
+            $view->set('title', Lang::txt(strtoupper($this->option)));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }

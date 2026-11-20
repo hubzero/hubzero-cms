@@ -16,6 +16,7 @@ use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Usage controller class for results
@@ -80,6 +81,19 @@ class Results extends SiteController
             }
         }
         $this->task = ($this->task) ? $this->task : 'overview';
+
+        // Only areas an enabled usage plugin offers: /usage/tools with the tools
+        // plugin off drew an empty page titled with its language key
+        $areas = [];
+        foreach ((array) $this->view->get('cats') as $cat) {
+            if (is_array($cat)) {
+                $areas = array_merge($areas, array_keys($cat));
+            }
+        }
+        if ($areas && !in_array($this->task, $areas)) {
+            App::abort(404, Lang::txt('COM_USAGE_ERROR_AREA_NOT_FOUND'));
+        }
+
         $this->view->task = $this->task;
 
         // Set the pathway
