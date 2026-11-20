@@ -93,11 +93,11 @@ class Media extends SiteController
         // Refuse server-executable extensions and the markup types a download
         // handler would serve inline -- the same rule as resource media.
         //
-        // This is a deny-list, so .svg, .js and double extensions such as
-        // foo.php.jpg all pass; it closes code execution and inline HTML in the
-        // hub origin, not upload typing in general. An allow-list would be
-        // better and is worth doing, but com_media's list is not the one to
-        // borrow: it is a media-manager list, not a tool-media list.
+        // This is a deny-list; double extensions such as foo.php.jpg still pass,
+        // so it closes code execution and documents the browser runs in the hub
+        // origin, not upload typing in general. An allow-list would be better and
+        // is worth doing, but com_media's list is not the one to borrow: it is a
+        // media-manager list, not a tool-media list, and it allows svg.
         $blockedExtensions = [
             'php',
             'php3',
@@ -121,6 +121,12 @@ class Media extends SiteController
             'htm',
             'xhtml',
             'xml',
+            // svg is an XML document that runs its own script when opened directly
+            'svg',
+            'svgz',
+            'js',
+            'mhtml',
+            'xht',
         ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
