@@ -440,6 +440,8 @@ class Form extends SiteController
                 break;
 
             case 'active':
+                $this->refuseWhenEnded();
+
                 $attempt = Request::getInt('attempt', 1);
 
                 // Make sure they're not trying to take the form too many times
@@ -565,6 +567,8 @@ class Form extends SiteController
         if (!$crumb = Request::getString('crumb', false)) {
             App::abort(422);
         }
+
+        $this->refuseWhenEnded();
 
         $attempt = Request::getInt('attempt', 1);
         $att     = ($attempt > 1) ? '&attempt=' . $attempt : '';
@@ -708,5 +712,21 @@ class Form extends SiteController
     public function authorizeCourse()
     {
         return $this->course->access('manage');
+    }
+
+    /**
+     * Refuse to take or submit a form in an offering that has ended
+     *
+     * Its students may still read it (see the offering controller); managers
+     * are not held to the dates.
+     *
+     * @return  void
+     */
+    protected function refuseWhenEnded()
+    {
+        $offering = $this->course->offering();
+        if ($offering->ended() && !$offering->access('manage', 'section')) {
+            App::abort(403, Lang::txt('COM_COURSES_OFFERING_ENDED'));
+        }
     }
 }

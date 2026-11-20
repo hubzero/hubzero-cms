@@ -169,11 +169,18 @@ class Offering extends SiteController
      */
     public function displayTask()
     {
-        // Check if the offering is available
-        $canManage = $this->course->offering()->access('manage', 'section');
-        $isAvailable = $this->course->offering()->isAvailable();
-        if (!$canManage && !$isAvailable) {
+        // Check if the offering is available. One that has ended stays open to
+        // its students, to read: their materials and progress, nothing to submit
+        // (the form controller refuses that).
+        $offering    = $this->course->offering();
+        $canManage   = $offering->access('manage', 'section');
+        $isAvailable = $offering->isAvailable();
+        $hasEnded    = !$isAvailable && $offering->started() && $offering->ended() && $offering->isStudent();
+        if (!$canManage && !$isAvailable && !$hasEnded) {
             App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
+        }
+        if ($hasEnded) {
+            Notify::info(Lang::txt('COM_COURSES_OFFERING_ENDED_READ_ONLY'));
         }
 
         $tmpl = $this->config->get('tmpl', '');
