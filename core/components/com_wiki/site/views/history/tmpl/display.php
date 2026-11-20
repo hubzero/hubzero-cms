@@ -278,9 +278,8 @@ $revisions = $this->page
                                             $this->page->link('approve', 'oldid=' . $revision->get('id')),
                                         );
                                         ?>
-                                        <a href="<?= $linkUrl ?>">
-                                            <?php echo Lang::txt('COM_WIKI_ACTION_APPROVED'); ?>
-                                        </a>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $linkUrl ?>"
+                                            ><?php echo Lang::txt('COM_WIKI_ACTION_APPROVED'); ?></button>
                                     <?php } ?>
                                 </td>
                                 <?php
@@ -302,10 +301,10 @@ $revisions = $this->page
                                             ),
                                         );
                                         ?>
-                                        <a class="icon-circle-arrow-up" href="<?= $linkUrl ?>"
-                                            title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
-                                            <?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?>
-                                        </a>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $linkUrl ?>"
+                                            class="icon-circle-arrow-up"
+                                            title="<?= Lang::txt('COM_WIKI_HISTORY_SET_CURRENT') ?>"
+                                            ><?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?></button>
                                     </td>
                                     <?php } ?>
                                 <td>

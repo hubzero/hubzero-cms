@@ -202,10 +202,10 @@ $this
                                     href="<?php echo $step5Url; ?>"
                                 ><?php echo Lang::txt('Review &amp; Submit &rsaquo;'); ?></a>
                             <?php } elseif ($submission->published == 3) { ?>
-                                <br /><a
+                                <br /><button type="submit" form="hz-post-action"
                                     class="retract"
-                                    href="<?php echo $retractUrl; ?>"
-                                ><?php echo Lang::txt('&lsaquo; Retract'); ?></a>
+                                    formaction="<?php echo $retractUrl; ?>"
+                                ><?php echo Lang::txt('&lsaquo; Retract'); ?></button>
                             <?php } ?>
                         </td>
                         <td>

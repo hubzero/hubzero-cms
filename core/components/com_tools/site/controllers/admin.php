@@ -95,6 +95,9 @@ class Admin extends SiteController
             );
         }
 
+        // Every task here changes the tool (repository, install, publish, retire)
+        Request::checkToken(['get', 'post']);
+
         // Load the com_resources component config
         $rconfig = Component::params('com_resources');
         $this->rconfig = $rconfig;

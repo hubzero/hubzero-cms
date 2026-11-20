@@ -72,6 +72,7 @@ if ($this->getError()) {
         <input type="hidden" name="reviewer" value="<?php echo $this->reviewer; ?>" />
         <input type="hidden" name="filterby" value="<?php echo $this->escape($this->filterby); ?>" />
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <?php echo Html::input('token'); ?>
     </fieldset>
     <div class="info_blurb">
         <div class="pthumb"><img src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" /></div>

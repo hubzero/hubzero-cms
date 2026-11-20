@@ -33,6 +33,7 @@ $this
         <fieldset>
             <input type="hidden" name="controller" value="form" />
             <input type="hidden" name="task" value="createDeployment" />
+            <?php echo Html::input('token'); ?>
             <input type="hidden" name="formId" value="<?php echo $this->pdf->getId(); ?>" />
             <?php if ($tmpl = Request::getWord('tmpl', false)) : ?>
                 <input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />

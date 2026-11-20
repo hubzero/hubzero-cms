@@ -472,6 +472,8 @@ class Orcid extends SiteController
             return;
         }
 
+        Request::checkToken(['get', 'post']);
+
         $orcid = Request::getString('orcid', '');
 
         $state = $this->save($orcid);

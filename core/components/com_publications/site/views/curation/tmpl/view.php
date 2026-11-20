@@ -67,6 +67,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
         <input type="hidden" name="id" id="pid" value="<?= $this->pub->id ?>" data-route="<?= $saveUrl ?>" />
         <input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
         <input type="hidden" name="task" id="task" value="save" />
+        <?php echo Html::input('token'); ?>
 
         <div class="curation-wrap">
             <div class="pubtitle">
@@ -171,6 +172,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
                     <input type="hidden" name="no_html" value="1" />
                     <input type="hidden" name="p" id="props" value="" />
                     <input type="hidden" name="pass" value="0" />
+                    <?php echo Html::input('token'); ?>
 
                     <p class="notice-item" id="notice-item"></p>
 

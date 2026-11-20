@@ -1564,6 +1564,8 @@ class Publications extends SiteController
             return;
         }
 
+        Request::checkToken();
+
         // Make sure the actor is allowed to view the source version BEFORE any
         // project is provisioned for the fork, so a refused fork leaves nothing behind
         $version   = Models\Orm\Version::oneOrFail($vid);

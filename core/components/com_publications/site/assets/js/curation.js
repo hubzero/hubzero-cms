@@ -97,7 +97,7 @@ HUB.PublicationsCuration = {
 			url = url + '&pass=1';
 
 			// Ajax call to get current status of a block
-			$.post(url, {}, 
+			$.post(url, $('#hz-post-action').serialize(), 
 				function (response) {
 				response = $.parseJSON(response);
 

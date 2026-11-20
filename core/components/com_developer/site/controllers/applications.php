@@ -684,6 +684,8 @@ class Applications extends SiteController
      */
     public function removeMemberTask()
     {
+        Request::checkToken('get');
+
         // get request vars
         $id        = Request::getInt('id', 0);
         $uidNumber = Request::getInt('uidNumber', 0);

@@ -46,6 +46,7 @@ $this
         <fieldset>
             <input type="hidden" name="controller" value="form" />
             <input type="hidden" name="task" value="updateDeployment" />
+            <?php echo Html::input('token'); ?>
             <input type="hidden" name="formId" value="<?php echo $this->pdf->getId(); ?>" />
             <input type="hidden" name="deploymentId" value="<?php echo $this->dep->getId(); ?>" />
             <input type="hidden" name="id" value="<?php echo $this->dep->getId(); ?>" />

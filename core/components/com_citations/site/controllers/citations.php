@@ -852,6 +852,8 @@ class Citations extends SiteController
             );
         }
 
+        Request::checkToken(['get', 'post']);
+
         // Incoming (we're expecting an array)
         $ids = Request::getArray('id', []);
 

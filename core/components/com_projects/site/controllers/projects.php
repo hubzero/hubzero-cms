@@ -1027,6 +1027,8 @@ class Projects extends Base
         $params = $this->model->params;
 
         if ($action == 'save' && !$this->getError()) {
+            Request::checkToken();
+
             $cbase = $this->model->get('admin_notes');
 
             // Meta data for comment

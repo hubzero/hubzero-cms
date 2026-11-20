@@ -369,6 +369,8 @@ class History extends SiteController
             );
         }
 
+        Request::checkToken();
+
         // Incoming
         $id = Request::getInt('oldid', 0);
 
@@ -463,6 +465,8 @@ class History extends SiteController
         }
 
         // Incoming
+        Request::checkToken();
+
         $newversion_id = trim(Request::getString('version_id', ''));
         $newversion = Version::oneOrFail($newversion_id);
         if ($this->page->get('id') != $newversion->get('page_id')) {

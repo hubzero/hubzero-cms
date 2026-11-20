@@ -412,7 +412,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <?php
                                 $addrepoUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=addrepo&app='
-                                        . $this->status['toolname'],
+                                        . $this->status['toolname'] . '&' . Session::getFormToken() . '=1',
                                 );
                                 $titleText = Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');
                                 ?>
@@ -423,7 +423,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <?php
                                 $installUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=install&app='
-                                        . $this->status['toolname'],
+                                        . $this->status['toolname'] . '&' . Session::getFormToken() . '=1',
                                 );
                                 $titleText = Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');
                                 ?>
@@ -433,7 +433,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <?php
                                 $publishUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=publish&app='
-                                        . $this->status['toolname'],
+                                        . $this->status['toolname'] . '&' . Session::getFormToken() . '=1',
                                 );
                                 $titleText = Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');
                                 ?>
@@ -443,7 +443,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <?php
                                 $retireUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=retire&app='
-                                        . $this->status['toolname'],
+                                        . $this->status['toolname'] . '&' . Session::getFormToken() . '=1',
                                 );
                                 $titleText = Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');
                                 ?>

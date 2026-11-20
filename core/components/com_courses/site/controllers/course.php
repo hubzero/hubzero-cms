@@ -592,6 +592,8 @@ class Course extends SiteController
             return;
         }
 
+        Request::checkToken();
+
         $this->course->set('state', 2);
 
         // Delete course (update() is a Table method the model does not have)

@@ -90,6 +90,7 @@ $this
         <input type="hidden" name="controller" value="course" />
         <input type="hidden" name="task" value="delete" />
         <input type="hidden" name="process" value="1" />
+        <?php echo Html::input('token'); ?>
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
         <p class="submit">

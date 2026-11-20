@@ -42,6 +42,7 @@ if (!$this->ajax) {
             <input type="hidden" name="vid" value="<?php echo $this->pub->version->id; ?>" />
             <input type="hidden" name="task" value="assign" />
             <input type="hidden" name="confirm" value="1" />
+            <?php echo Html::input('token'); ?>
 
             <p class="info"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_INSTRUCT'); ?></p>
 

@@ -372,6 +372,8 @@ class Curation extends SiteController
 
         // Perform assignment
         if ($confirm) {
+            Request::checkToken();
+
             $previousOwner = $this->pub->version->get('curator');
             $selected = Request::getInt('selected', 0);
 
@@ -482,6 +484,8 @@ class Curation extends SiteController
      */
     public function approveTask()
     {
+        Request::checkToken();
+
         // Incoming
         $pid = $this->_id ? $this->_id : Request::getInt('id', 0);
         $vid = Request::getInt('vid', 0);
@@ -721,6 +725,8 @@ class Curation extends SiteController
      */
     public function kickbackTask()
     {
+        Request::checkToken();
+
         // Incoming
         $pid = $this->_id ? $this->_id : Request::getInt('id', 0);
         $vid = Request::getInt('vid', 0);
@@ -773,6 +779,8 @@ class Curation extends SiteController
      */
     public function saveTask()
     {
+        Request::checkToken();
+
         // Incoming
         $pid    = $this->_id ? $this->_id : Request::getInt('id', 0);
         $vid    = Request::getInt('vid', 0);

@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
             <?php if (!$me) : ?>
                 <a class="btn btn-danger btn-secondary remove confirm"
                     data-txt-confirm="<?= Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE_CONFIRM') ?>"
-                    href="<?= Route::url($member->link('remove')) ?>">
+                    href="<?= Route::url($member->link('remove') . '&' . Session::getFormToken() . '=1') ?>">
                     <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE'); ?>
                 </a>
             <?php endif; ?>

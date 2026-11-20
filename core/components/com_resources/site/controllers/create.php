@@ -1687,6 +1687,8 @@ class Create extends SiteController
      */
     public function retractTask()
     {
+        Request::checkToken();
+
         // Incoming
         $id = Request::getInt('id', 0);
 

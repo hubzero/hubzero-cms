@@ -31,10 +31,10 @@ defined('_HZEXEC_') or die();
                 . $this->publication->version_id,
             );
             ?>
-            <p><a class="btn btn-success"
-                href="<?php echo $forkUrl; ?>"><?php
+            <p><button type="submit" form="hz-post-action" class="btn btn-success"
+                formaction="<?php echo $forkUrl; ?>"><?php
                     echo Lang::txt('PLG_PUBLICATIONS_FORKS_CREATE');
-                ?></a></p>
+                ?></button></p>
         </div>
         <div class="col span7 omega fork-to-project">
             <h4><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORK_EXISTING_PROJECT'); ?></h4>
@@ -59,10 +59,10 @@ defined('_HZEXEC_') or die();
                                 . '&project=' . $project->get('id'),
                             );
                             ?>
-                            <a class="btn btn-success icon-plus"
-                                href="<?php echo $projectForkUrl; ?>">
+                            <button type="submit" form="hz-post-action" class="btn btn-success icon-plus"
+                                formaction="<?php echo $projectForkUrl; ?>">
                                 <?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_ADD'); ?>
-                            </a>
+                            </button>
                         </li>
                     <?php } ?>
                 </ul>
