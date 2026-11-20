@@ -94,11 +94,11 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/projects.php:540`](../../../core/components/com_projects/admin/controllers/projects.php#L540) with `[$this->model]`
-- [`core/components/com_projects/admin/controllers/projects.php:710`](../../../core/components/com_projects/admin/controllers/projects.php#L710) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:761`](../../../core/components/com_projects/admin/controllers/projects.php#L761) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:814`](../../../core/components/com_projects/admin/controllers/projects.php#L814) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:865`](../../../core/components/com_projects/admin/controllers/projects.php#L865) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:543`](../../../core/components/com_projects/admin/controllers/projects.php#L543) with `[$this->model]`
+- [`core/components/com_projects/admin/controllers/projects.php:713`](../../../core/components/com_projects/admin/controllers/projects.php#L713) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:764`](../../../core/components/com_projects/admin/controllers/projects.php#L764) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:817`](../../../core/components/com_projects/admin/controllers/projects.php#L817) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:868`](../../../core/components/com_projects/admin/controllers/projects.php#L868) with `[$model]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:564`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L564) with `[&$row, $isNew]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:1069`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L1069) with `[&$row, $isNew]`
 - [`core/components/com_projects/site/controllers/setup.php:348`](../../../core/components/com_projects/site/controllers/setup.php#L348) with `[$this->model]`

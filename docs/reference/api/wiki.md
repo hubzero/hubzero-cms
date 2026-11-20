@@ -19,26 +19,27 @@ Endpoints under `/api/wiki`, from the `com_wiki` API controllers. Authenticate w
 
 Create a page
 
-API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L129).
+API version 1.0, task `create` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L130).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `title` | string | yes | — | Entry title |
-| `pagename` | string | no | — | Page name |
+| `pagename` | string | no | — | Page name (letters, digits, _ and :); made from the title when absent |
 | `pagetext` | string | yes | — | Page content |
-| `created` | string | no | now | Created timestamp (YYYY-MM-DD HH:mm:ss) |
-| `created_by` | integer | no | 0 | User ID of entry creator |
-| `state` | integer | no | 0 | Published state (0 = unpublished, 1 = published) |
-| `access` | integer | no | 0 | Access level (0 = public, 1 = registered users, 4 = private) |
-| `scope` | string | no | site | Page scope |
-| `scope_id` | integer | no | 0 | Page scope ID |
+| `summary` | string | no | — | Summary of the first revision |
+| `tags` | string | no | — | Comma-separated list of tags |
+| `authors` | string | no | — | Comma-separated usernames who may also edit the page |
+| `state` | integer | no | 1 | Published state (0 = unpublished, 1 = published); managers only |
+| `access` | integer | no | 0 | Access level (0 = public, 1 = registered users, 4 = private); managers only |
+| `scope` | string | no | site | Page scope: site, or group (with scope_id) |
+| `scope_id` | integer | no | 0 | Group ID, for a group page |
 | `params` | array | no | — | Page options |
 
 ## GET /wiki/list
 
 Display a list of pages
 
-API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L28).
+API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L29).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +55,7 @@ API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_w
 
 Delete a page
 
-API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L500).
+API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L599).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -64,7 +65,7 @@ API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com
 
 Display info for a page
 
-API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L211).
+API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L310).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -75,7 +76,7 @@ API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_w
 
 Update a page
 
-API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L276).
+API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L375).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

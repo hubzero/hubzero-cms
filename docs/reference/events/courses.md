@@ -36,7 +36,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:213`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L213)
-- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:47`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L47)
+- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:48`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L48)
 
 Listeners:
 

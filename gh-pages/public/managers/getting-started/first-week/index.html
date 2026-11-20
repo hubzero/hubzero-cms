@@ -275,11 +275,11 @@ accounts.</p>
 </table>
 <p>A new hub is online. Set <strong>Site Offline</strong> to <strong>Yes</strong> and the public front end
 returns the template's offline page with a <code>503 Service Temporarily Unavailable</code> status:</p>
-<pre><code class="language-php">                $file = 'index';
-            }
-
-            if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline')) {
+<pre><code class="language-php">            if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline')) {
                 $file = 'offline';
+
+                $response-&gt;headers-&gt;set('Status', '503 Service Temporarily Unavailable', 'true');
+            }
 </code></pre>
 <p>Anyone holding <code>core.login.offline</code> still sees the real site. On a new hub
 that permission is granted to the <strong>Manager</strong> access group and inherited by

@@ -44,8 +44,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:155`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L155)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:126`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L126)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:157`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L157)
 
 Listeners:
 
@@ -78,8 +78,8 @@ Listeners:
 
 Fired from:
 
-- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:120`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L120)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:145`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L145)
+- [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:122`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L122)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:147`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L147)
 
 No plugin in the source tree listens for this event.
 
@@ -157,7 +157,7 @@ Fired from:
 - [`core/components/com_groups/models/orm/member.php:118`](../../../core/components/com_groups/models/orm/member.php#L118) with `[$this->getTableName(), $this]`
 - [`core/components/com_modules/models/menu.php:71`](../../../core/components/com_modules/models/menu.php#L71) with `[$this->getTableName(), $this]`
 - [`core/libraries/Hubzero/Database/Relational.php:4509`](../../../core/libraries/Hubzero/Database/Relational.php#L4509) with `[$this->getTableName(), $this, $this->changes]`
-- [`core/libraries/Hubzero/Database/Table.php:747`](../../../core/libraries/Hubzero/Database/Table.php#L747) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Table.php:783`](../../../core/libraries/Hubzero/Database/Table.php#L783) with `[$this->getTableName(), $this]`
 
 Listeners:
 

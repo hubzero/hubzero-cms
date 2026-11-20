@@ -101,7 +101,7 @@ Fired from:
 - [`core/components/com_forum/models/category.php:329`](../../../core/components/com_forum/models/category.php#L329) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
 - [`core/components/com_forum/models/post.php:656`](../../../core/components/com_forum/models/post.php#L656) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
 - [`core/components/com_groups/site/controllers/groups.php:707`](../../../core/components/com_groups/site/controllers/groups.php#L707) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
-- [`core/components/com_kb/models/comment.php:381`](../../../core/components/com_kb/models/comment.php#L381) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_kb/models/comment.php:382`](../../../core/components/com_kb/models/comment.php#L382) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_media/admin/controllers/media.php:140`](../../../core/components/com_media/admin/controllers/media.php#L140) with `['com_media.folder', &$object_file, true]`
 - [`core/components/com_media/admin/controllers/media.php:209`](../../../core/components/com_media/admin/controllers/media.php#L209) with `['com_media.folder', &$object_file, true]`
 - [`core/components/com_media/admin/controllers/media.php:329`](../../../core/components/com_media/admin/controllers/media.php#L329) with `['com_media.file', &$object_file, true]`

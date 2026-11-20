@@ -44,7 +44,7 @@ Fired from:
 - [`core/components/com_courses/site/controllers/course.php:639`](../../../core/components/com_courses/site/controllers/course.php#L639) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
 - [`core/components/com_groups/site/controllers/membership.php:886`](../../../core/components/com_groups/site/controllers/membership.php#L886) with `[ 'groups_cancelled_me', $subject, $message, $from, $this->view->get('group')->get('managers'), $this->option, ]`
 - [`core/components/com_jobs/admin/controllers/jobs.php:328`](../../../core/components/com_jobs/admin/controllers/jobs.php#L328) with `$messageParams`
-- [`core/components/com_projects/admin/controllers/projects.php:573`](../../../core/components/com_projects/admin/controllers/projects.php#L573) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
+- [`core/components/com_projects/admin/controllers/projects.php:576`](../../../core/components/com_projects/admin/controllers/projects.php#L576) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
 - [`core/components/com_projects/helpers/html.php:1227`](../../../core/components/com_projects/helpers/html.php#L1227) with `[ $component, $subject, $body, $from, $addressees, $option, ]`
 - and 26 more call sites
 
