@@ -141,7 +141,7 @@ $formAction = Route::url(
                         . '&controller=items&menutype=' . $menutype,
                     );
                     ?>
-                    <a href="<?php echo $itemsUrl; ?> ">
+                    <a href="<?php echo $itemsUrl; ?>">
                         <?php echo $this->escape($item->get('title')); ?>
                     </a>
                     <?php $typeLabel = Lang::txt('COM_MENUS_MENU_MENUTYPE_LABEL'); ?>

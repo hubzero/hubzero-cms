@@ -185,14 +185,17 @@ class Utilities
     public static function thumb($template, $protected = 0)
     {
         $basePath = ($protected == 0 ? PATH_APP : PATH_CORE) . '/templates/' . $template;
-        $baseUrl  = Request::root(true) . ($protected == 0 ? '/app' : '/core');
+        $baseUrl  = rtrim(Request::root(true), '/') . ($protected == 0 ? '/app' : '/core');
         $thumb    = $basePath . '/template_thumbnail.png';
         $preview  = $basePath . '/template_preview.png';
         $html     = '';
 
         if (file_exists($thumb)) {
-            $thumbPath = ltrim(substr($thumb, strlen(PATH_ROOT)), DS);
-            $html = Html::asset('image', $thumbPath, Lang::txt('COM_TEMPLATES_PREVIEW'));
+            // By URL, as the preview below: Html::asset() looks for the file
+            // under the document root, which core is outside of on some hubs
+            $thumbUrl = $baseUrl . '/templates/' . $template . '/template_thumbnail.png';
+            $html = '<img src="' . htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8') . '" alt="'
+                . htmlspecialchars(Lang::txt('COM_TEMPLATES_PREVIEW'), ENT_QUOTES, 'UTF-8') . '" />';
 
             if (file_exists($preview)) {
                 $preview = $baseUrl . '/templates/' . $template . '/template_preview.png';

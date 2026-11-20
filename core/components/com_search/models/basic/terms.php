@@ -311,7 +311,7 @@ class Terms extends Obj
             }
             return $al > $bl ? -1 : 1;
         });
-        return '(' . join('|', array_map('preg_quote', $chunks)) . '[[:alpha:]]*)';
+        return '(' . implode('|', array_map(fn($chunk) => preg_quote($chunk, '#'), $chunks)) . '[[:alpha:]]*)';
     }
 
     /**

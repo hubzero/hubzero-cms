@@ -168,8 +168,9 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
         if ($this->no_html) {
             $height = '100%';
         }
-        $rufle_path =  Component::path('com_resources') . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'ruffle';
-        $rufle_path = (substr($rufle_path, strlen(PATH_ROOT) + 0));
+        $rufle_path = \Hubzero\Filesystem\Util::urlPath(
+            Component::path('com_resources') . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'ruffle',
+        );
         $html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" '
             . 'codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" '
             . 'width="100%" height="' . $height . '" id="SlideContent" VIEWASTEXT>' . "\n";
