@@ -1180,6 +1180,11 @@ class Collections extends Plugin
             $view->set('collection', $this->model->collection($view->get('entry')->get('collection_id')));
         }
 
+        // Only the caller's own post may be edited, as save() requires
+        if ($view->get('entry')->exists() && $view->get('entry')->get('created_by') != User::get('id')) {
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
+        }
+
         if ($remove = Request::getInt('remove', 0)) {
             // As com_collections' own posts controller: the post is chosen by id
             // and resolves to any row, so the item whose asset is deleted was the

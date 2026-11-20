@@ -1032,12 +1032,12 @@ class Collections extends Plugin
         }
 
         // post= resolves any row on the hub, and the form prints the item's
-        // title, description, assets and tags. Only what _save() will accept is
-        // shown: the caller's own post (a repost included) or their own item.
+        // title, description, assets and tags. Only what save() will accept is
+        // shown: the caller's own post (a repost included). Owning the item is
+        // not enough: someone else's repost of it is theirs, and save() refuses it.
         if (
             $view->get('entry')->exists()
             && $view->get('entry')->get('created_by') != User::get('id')
-            && $view->get('entry')->item()->get('created_by') != User::get('id')
         ) {
             App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }

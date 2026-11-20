@@ -117,7 +117,7 @@ $this
                         </p>
                         <div class="actions">
                             <?php if (!User::isGuest()) { ?>
-                                <?php if ($item->get('created_by') == User::get('id')) { ?>
+                                <?php if ($row->get('created_by') == User::get('id')) { ?>
                                     <a class="btn edit" data-id="<?= $row->get('id') ?>"
                                         href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>

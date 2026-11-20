@@ -109,7 +109,7 @@ if ($this->rows->total() > 0) {
                     </p>
                     <?php if (!User::isGuest()) { ?>
                         <div class="actions">
-                        <?php if ($item->get('created_by') == User::get('id')) { ?>
+                        <?php if ($row->get('created_by') == User::get('id')) { ?>
                             <a class="edit" data-id="<?= $row->get('id') ?>"
                                 href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
                                 <span><?php echo Lang::txt('Edit'); ?></span>
