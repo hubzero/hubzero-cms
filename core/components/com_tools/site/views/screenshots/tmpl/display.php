@@ -52,7 +52,7 @@ if ($this->getError()) { ?>
     </h3>
 
 <?php
-$d = @dir($this->upath);
+$d = is_dir($this->upath) ? dir($this->upath) : false;
 
 $images = [];
 $tns = [];

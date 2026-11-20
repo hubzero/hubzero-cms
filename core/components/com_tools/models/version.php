@@ -730,7 +730,7 @@ class Version
                 $list = [$list];
             }
 
-            if (is_array($list)) {
+            if (is_array($list) && count($list) > 0) {
                 $first = true;
 
                 if ($property == 'author') {

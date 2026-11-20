@@ -894,7 +894,7 @@ class Project extends Model
 
             case 'raw':
             default:
-                $content = stripslashes($this->get('about'));
+                $content = stripslashes((string) $this->get('about'));
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }

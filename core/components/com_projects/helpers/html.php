@@ -89,7 +89,7 @@ class Html extends Obj
      */
     public static function timeAgo($timestamp, $utc = true)
     {
-        $timestamp = strtotime($timestamp);
+        $timestamp = strtotime((string) $timestamp);
 
         // Get current time
         $current_time = $utc ? Date::toUnix() : strtotime(date('c'));

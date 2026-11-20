@@ -120,7 +120,7 @@ class Base extends SiteController
             $group = Group::getInstance($this->cn);
             if ($group) {
                 Pathway::append(
-                    stripslashes($group->get('description')),
+                    stripslashes((string) $group->get('description')),
                     'index.php?option=' . $this->option . '&cn=' . $this->cn,
                 );
             }
@@ -201,7 +201,8 @@ class Base extends SiteController
         if ($this->cn) {
             $group = Group::getInstance($this->cn);
             if (is_object($group)) {
-                $this->_title = Lang::txt('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
+                $this->_title = Lang::txt('COM_GROUPS_GROUP') . ': '
+                    . stripslashes((string) $group->get('description'));
             }
         }
 
