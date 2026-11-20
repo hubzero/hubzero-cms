@@ -57,6 +57,17 @@ class Api implements RendererInterface
 
         $content = new \StdClass();
         $content->message = $error->getMessage();
+        // What a database or PHP error says (the SQL, table and column names,
+        // file paths) is for the log; a client sees it only with debug on.
+        // Messages the API throws on purpose are left as they are.
+        if (
+            !$this->debug
+            && ($error instanceof \Hubzero\Database\Exception\QueryFailedException
+                || $error instanceof \PDOException
+                || $error instanceof \Error)
+        ) {
+            $content->message = Response::$statusTexts[$status];
+        }
         $content->code    = $status;
 
         $this->response->setStatusCode($content->code);
