@@ -81,12 +81,3 @@ Parameters from [`core/components/com_tools/config/config.xml`](../../../../core
 | `doi_publisher` | DOI publisher | text | — | Publisher name (use full site name) for DOI service |
 | `doi_resolve` | DOI resolve url | text | `https://doi.org/` | URL for resolving DOIs |
 | `doi_verify` | DOI verify url | text | `http://n2t.net/ezid/id/` | URL for verifying DOIs |
-
-## Windows
-
-| Parameter | Label | Type | Default | Description |
-|---|---|---|---|---|
-| `windows_key_id` | Access Key ID | text | — | Amazon Web Services (AWS) Access Key ID |
-| `windows_secret_key` | Secret Access Key | text | — | Amazon Web Services (AWS) Secret Access Key |
-| `windows_type` | Resource Type | resourcetype | — | Resource type to use for tool information |
-| `windows_monthly_max_hours` | Max Monthly Hours | text | — | Max hours of windows applicaiton sessions per month |

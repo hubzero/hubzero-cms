@@ -84,7 +84,6 @@ Go to **Components → Tools**. The submenu holds:
 | **Sessions** | always |
 | **User Preferences** | always |
 | **File Handlers** | always |
-| **Windows** | only when the **Access Key ID** option is set |
 
 Every screen needs `core.manage` on `com_tools`. That is separate from the
 pipeline's own controls, which are granted by membership of the group named
@@ -301,8 +300,7 @@ the `default` class.
 
 > **Note:** The screenshot above predates two changes: the **Search by** and
 > **for** labels beside the filter, which were missing strings, and the
-> **Zones** and **Windows** submenu entries, which appear when those options
-> are on.
+> **Zones** submenu entry, which appears when that option is on.
 
 ## File Handlers
 
@@ -321,15 +319,3 @@ rule** and **Delete rule** build the list.
 
 If the drop-down says *No tools installed*, no tool has reached the
 **Installed** state yet.
-
-## Windows
-
-Present only when the component's **Access Key ID** option holds an Amazon
-Web Services key. The AWS side of this — what the instances are, how they
-are built and what the CMS expects to find running on them — is outside this
-repository and could not be verified. It manages Windows tool instances on AWS: **ID**, **Name**,
-**Title**, **UUID**, in-use and available session counts, and **State**, with
-per-instance session and usage views and a **Terminate** action.
-
-Leave the option empty on a hub with no Windows tools and the screen never
-appears.

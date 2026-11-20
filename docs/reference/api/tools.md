@@ -21,7 +21,6 @@ Endpoints under `/api/tools`, from the `com_tools` API controllers. Authenticate
 | `POST` | [`/tools/storage/rename`](#post-tools-storage-rename) | Rename a file or folder in the member's storage. |
 | `POST` | [`/tools/storage/upload`](#post-tools-storage-upload) | Upload one or more files into a directory of the member's storage. |
 | `GET` | [`/tools/storage/usage`](#get-tools-storage-usage) | Current disk-usage / quota for the authenticated member (read-only). |
-| `GET` | [`/tools/{sessionid}/fileshare`](#get-tools-sessionid-fileshare) | Method to setup Windows filesharing connection |
 | `GET` | [`/tools/{sessionid}/screenshot`](#get-tools-sessionid-screenshot) | Method to return session screenshot |
 | `DELETE` | [`/tools/{session}`](#delete-tools-session) | Method to stop tool session |
 | `GET` | [`/tools/{session}`](#get-tools-session) | Method to view tool session |
@@ -138,19 +137,6 @@ API version 1.0, task `upload` in [`storagev1r0.php`](../../../core/components/c
 Current disk-usage / quota for the authenticated member (read-only).
 
 API version 1.0, task `usage` in [`storagev1r0.php`](../../../core/components/com_tools/api/controllers/storagev1r0.php#L25).
-
-## GET /tools/{sessionid}/fileshare
-
-Method to setup Windows filesharing connection
-
-API version 1.0, task `fileshare` in [`sessionsv1r0.php`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1765).
-
-| Parameter | Type | Required | Default | Description |
-|---|---|---|---|---|
-| `sessionid` | integer | yes | 0 | Tool session identifier |
-| `username` | string | no | — | Username |
-| `private_ip` | string | no | — | Private IP Address |
-| `public_ip` | string | no | — | Public IP Address |
 
 ## GET /tools/{sessionid}/screenshot
 

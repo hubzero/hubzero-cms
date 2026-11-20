@@ -81,14 +81,6 @@ class Tools extends AbstractComponent
             $controllerName == 'handlers',
         );
 
-        if (Component::params('com_tools')->get('windows_key_id')) {
-            Submenu::addEntry(
-                Lang::txt('COM_TOOLS_WINDOWS'),
-                Route::url('index.php?option=com_tools&controller=windows'),
-                $controllerName == 'windows',
-            );
-        }
-
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

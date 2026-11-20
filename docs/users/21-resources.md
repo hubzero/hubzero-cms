@@ -117,7 +117,6 @@ type and on what the hub has enabled:
 | Usage | Usage statistics and a map of where it is used. Tools only. |
 | Versions | The released versions of a tool. Tools only. |
 | Find this Text | Links that help you locate a copy elsewhere. |
-| Setup/Instructions | How to launch a Windows tool. |
 
 A sidebar beside the tabs may show the group that owns the resource, a
 **See also** list of related pages, the resource's sponsor, and a **Watch

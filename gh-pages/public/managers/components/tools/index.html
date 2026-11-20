@@ -140,7 +140,6 @@
 <li class="toc__item toc__item--l3"><a href="#session-classes">Session classes</a></li>
 <li class="toc__item toc__item--l2"><a href="#user-preferences">User Preferences</a></li>
 <li class="toc__item toc__item--l2"><a href="#file-handlers">File Handlers</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows">Windows</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
@@ -269,10 +268,6 @@ you try to move a contribution along.</p>
 <tr>
 <td><strong>File Handlers</strong></td>
 <td>always</td>
-</tr>
-<tr>
-<td><strong>Windows</strong></td>
-<td>only when the <strong>Access Key ID</strong> option is set</td>
 </tr>
 </tbody>
 </table>
@@ -457,8 +452,7 @@ deleted. Do not rename it.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The screenshot above predates two changes: the <strong>Search by</strong> and
 <strong>for</strong> labels beside the filter, which were missing strings, and the
-<strong>Zones</strong> and <strong>Windows</strong> submenu entries, which appear when those options
-are on.</p>
+<strong>Zones</strong> submenu entry, which appears when that option is on.</p>
 </aside>
 <h2 id="file-handlers">File Handlers</h2>
 <p>A file handler is the &quot;open with&quot; list: a user looking at a <code>.dat</code> file in
@@ -473,15 +467,6 @@ shown to the user, and a list of rules. Each rule is an <strong>Extension</stron
 rule</strong> and <strong>Delete rule</strong> build the list.</p>
 <p>If the drop-down says <em>No tools installed</em>, no tool has reached the
 <strong>Installed</strong> state yet.</p>
-<h2 id="windows">Windows</h2>
-<p>Present only when the component's <strong>Access Key ID</strong> option holds an Amazon
-Web Services key. The AWS side of this — what the instances are, how they
-are built and what the CMS expects to find running on them — is outside this
-repository and could not be verified. It manages Windows tool instances on AWS: <strong>ID</strong>, <strong>Name</strong>,
-<strong>Title</strong>, <strong>UUID</strong>, in-use and available session counts, and <strong>State</strong>, with
-per-instance session and usage views and a <strong>Terminate</strong> action.</p>
-<p>Leave the option empty on a hub with no Windows tools and the screen never
-appears.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
