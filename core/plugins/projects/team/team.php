@@ -856,6 +856,8 @@ class Team extends Plugin
 
             return $view->loadTemplate();
         } else {
+            Request::checkToken(['get', 'post']);
+
             // Get all managers
             $all = $objO->getIds($this->model->get('id'), $role = 1);
             $remaining = array_diff($all, $checked);
@@ -1030,6 +1032,8 @@ class Team extends Plugin
         $group   = Request::getInt('owned_by_group', 0, 'post');
 
         if ($confirm) {
+            Request::checkToken();
+
             // The group must be one the owner belongs to (the choices the form offers)
             if ($group && $group != $this->model->get('owned_by_group')) {
                 $allowed = [];
@@ -1241,6 +1245,8 @@ class Team extends Plugin
             }
             return $view->loadTemplate();
         } else {
+            Request::checkToken(['get', 'post']);
+
             // Changing role(s) to collaborator
             $left = $checked;
             if ($role == 0) {

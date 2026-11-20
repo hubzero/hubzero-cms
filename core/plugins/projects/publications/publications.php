@@ -1887,6 +1887,10 @@ class Publications extends Plugin
             return $this->editDraft();
         }
 
+        // Publishing, archiving and reverting change the publication: only from
+        // the review form or the revert button, not from a link anywhere
+        Request::checkToken(['get', 'post']);
+
         // Load publication model
         $pub  = new \Components\Publications\Models\Publication($pid, $version);
 
@@ -2512,6 +2516,8 @@ class Publications extends Plugin
 
         // Unpublish/delete version
         if ($confirm) {
+            Request::checkToken(['get', 'post']);
+
             if (!$this->getError()) {
                 $pubtitle = \Hubzero\Utility\Str::truncate($pub->version->get('title'), 100);
 

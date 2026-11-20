@@ -363,7 +363,11 @@ if ($revertAllowed && $this->pub->accepted()) {
                                     : '' ?>
                                 <span class="revert-options">
                                 <?php if ($revertAllowed) {
-                                    echo ' <a href="' . Route::url($this->pub->link('editversion') . '&action=revert')
+                                    echo ' <a href="'
+                                        . Route::url(
+                                            $this->pub->link('editversion') . '&action=revert'
+                                            . '&' . Session::getFormToken() . '=1',
+                                        )
                                         . '" class="btn icon-revert" id="action-revert">'
                                         . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT')
                                         . '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR')

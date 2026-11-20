@@ -37,6 +37,7 @@ $i = 1;
             <fieldset >
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="action" value="assignrole" />
+                <?php echo Html::input('token'); ?>
                 <input type="hidden" name="task" value="view" />
                 <input type="hidden" name="ajax" value="1" />
                 <input type="hidden" name="no_html" value="1" />

@@ -135,6 +135,7 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
                         <?php } ?>
              </div>
         </div>
+        <?php echo Html::input('token'); ?>
     </form>
 </div>
 

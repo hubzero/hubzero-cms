@@ -277,7 +277,7 @@ HUB.ProjectTeam = {
 
 		$('#' + save).on('click', function(e){
 			e.preventDefault();
-			$.ajax({ type:'POST', url: formAction, data:$('#' + form).serialize(), success: function(response) {
+			$.ajax({ type:'POST', url: formAction, data:$('#' + form).serialize() + '&' + $('#hz-post-action').serialize(), success: function(response) {
 				$('#cbody').html(response);
 				HUB.ProjectTeam.initialize();
 			}});

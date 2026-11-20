@@ -35,6 +35,7 @@ $team = $this->model->team($filters = ['status' => 1]);
     <fieldset >
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
         <input type="hidden" name="action" value="changeowner" />
+        <?php echo Html::input('token'); ?>
         <input type="hidden" name="task" value="view" />
         <input type="hidden" name="active" value="team" />
         <input type="hidden" name="confirm" value="1" />

@@ -38,6 +38,7 @@ $i = 1;
             <fieldset>
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="action" value="deleteit" />
+                <?php echo Html::input('token'); ?>
                 <input type="hidden" name="controller" value="projects" />
                 <input type="hidden" name="active" value="team" />
                 <input type="hidden" name="ajax" value="1" />

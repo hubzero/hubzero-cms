@@ -79,6 +79,7 @@ $crumbs = $draft
         <input type="hidden" name="active" value="publications" />
         <input type="hidden" name="action" value="cancel" />
         <input type="hidden" name="confirm" value="1" />
+        <?php echo Html::input('token'); ?>
         
         <input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
         <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
