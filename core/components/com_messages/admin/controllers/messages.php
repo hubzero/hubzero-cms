@@ -36,6 +36,7 @@ class Messages extends AdminController
         $this->registerTask('apply', 'save');
         $this->registerTask('publish', 'state');
         $this->registerTask('unpublish', 'state');
+        $this->registerTask('trash', 'state');
 
         parent::execute();
     }
@@ -53,10 +54,11 @@ class Messages extends AdminController
                 'search',
                 '',
             )),
+            // -1: read and unread; 1 read, 0 unread, -2 trashed
             'state' => Request::getState(
                 $this->option . '.' . $this->controller . '.state',
                 'state',
-                0,
+                -1,
                 'int',
             ),
             // Get sorting variables
@@ -83,11 +85,11 @@ class Messages extends AdminController
         if ($filters['search']) {
             $entries
                 ->whereLike('subject', strtolower((string) $filters['search']), 1)
-                ->whereLike('message', strtolower((string) $filters['search']), 1)
+                ->orWhereLike('message', strtolower((string) $filters['search']), 1)
                 ->resetDepth();
         }
 
-        if ($filters['state']) {
+        if (in_array($filters['state'], [0, 1, -2], true)) {
             $entries->whereEquals('state', (int) $filters['state']);
         } else {
             $entries->whereIn('state', [0, 1]);
@@ -171,6 +173,16 @@ class Messages extends AdminController
         if ($row->isNew()) {
             $row->set('user_id_from', User::get('id'));
             $row->set('date_time', Date::toSql());
+
+            // A reply goes back to the sender of a message sent to this user
+            $replyId = Request::getInt('reply_id');
+            if ($replyId && !$row->get('user_id_to')) {
+                $original = Message::oneOrNew($replyId);
+                if (!$original->isNew() && (int) $original->get('user_id_to') === (int) User::get('id')) {
+                    $row->set('user_id_to', $original->get('user_id_from'));
+                    $row->set('subject', Lang::txt('COM_MESSAGES_RE') . ' ' . $original->get('subject'));
+                }
+            }
         }
 
         // Output the HTML
@@ -200,8 +212,13 @@ class Messages extends AdminController
         // Incoming
         $fields = Request::getArray('fields', [], 'post');
 
-        // Initiate extended database class
-        $row = Message::oneOrNew($fields['message_id'])->set($fields);
+        // The form composes a new message; its sender is whoever sends it
+        $row = Message::blank()->set([
+            'user_id_from' => (int) User::get('id'),
+            'user_id_to'   => (int) ($fields['user_id_to'] ?? 0),
+            'subject'      => (string) ($fields['subject'] ?? ''),
+            'message'      => (string) ($fields['message'] ?? ''),
+        ]);
 
         // Store new content
         if (!$row->save()) {
@@ -239,7 +256,12 @@ class Messages extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $state = $this->task == 'publish' ? Message::STATE_PUBLISHED : Message::STATE_UNPUBLISHED;
+        // Read (published), unread (unpublished) or trashed (-2, as the state filter has it)
+        $state = match ($this->task) {
+            'publish' => Message::STATE_PUBLISHED,
+            'trash'   => -2,
+            default   => Message::STATE_UNPUBLISHED,
+        };
 
         // Incoming
         $ids = Request::getArray('id', [0]);
@@ -251,7 +273,7 @@ class Messages extends AdminController
             $message = Message::oneOrNew(intval($id));
             $message->set('state', $state);
 
-            if ($message->get('user_id_to') !== User::get('id')) {
+            if ((int) $message->get('user_id_to') !== (int) User::get('id')) {
                 Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
                 continue;
             }
@@ -269,6 +291,8 @@ class Messages extends AdminController
             // Anything but publish unpublished them (see $state above)
             if ($this->task == 'publish') {
                 $text = Lang::txt('COM_MESSAGES_N_ITEMS_PUBLISHED', $success);
+            } elseif ($this->task == 'trash') {
+                $text = Lang::txt('COM_MESSAGES_N_ITEMS_TRASHED', $success);
             } else {
                 $text = Lang::txt('COM_MESSAGES_N_ITEMS_UNPUBLISHED', $success);
             }
@@ -304,7 +328,7 @@ class Messages extends AdminController
             foreach ($ids as $id) {
                 $message = Message::oneOrFail(intval($id));
 
-                if ($message->get('user_id_to') !== User::get('id')) {
+                if ((int) $message->get('user_id_to') !== (int) User::get('id')) {
                     Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
                     continue;
                 }

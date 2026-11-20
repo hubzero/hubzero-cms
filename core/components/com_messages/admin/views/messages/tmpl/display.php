@@ -76,15 +76,15 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <div class="grid">
             <div class="col span6 filter-search">
                 <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('JSEARCH_FILTER_LABEL') ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter"
+                <input type="text" name="search" id="filter_search" class="filter"
                     value="<?= $this->escape($this->filters['search']) ?>"
                     placeholder="<?= Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6 filter-select">
-                <select name="filter_state" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
+                <select name="state" class="inputbox filter filter-submit">
+                    <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Messages\Helpers\Utilities::getStateOptions(),
