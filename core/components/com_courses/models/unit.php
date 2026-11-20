@@ -440,7 +440,8 @@ class Unit extends Base
                 $dt->set('created_by', User::get('id'));
             }
 
-            if (!$dt->store()) {
+            // check() stores blank dates as NULL; a new unit has none
+            if (!$dt->check() || !$dt->store()) {
                 $this->setError($dt->getError());
             }
         }

@@ -99,6 +99,9 @@ class Unit extends Table
             return false;
         }
 
+        // NOT NULL with no default: a unit made in the outline builder has none
+        $this->description = (string) $this->description;
+
         if (!$this->alias) {
             $this->alias = strtolower($this->title);
         }
