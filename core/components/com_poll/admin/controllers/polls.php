@@ -233,18 +233,28 @@ class Polls extends AdminController
 
         $row->checkin();
 
-        // Save the poll options
-        $options = Request::getArray('polloption', [], 'post');
-
-        foreach ($options as $i => $text) {
-            $option = new Option();
-            $option->set('poll_id', (int) $row->get('id'));
-            $option->set('text', htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
-
-            if ($fields['id']) {
-                $option->set('id', (int) $i);
+        // Save the poll options: the existing ones by ID, then any new ones that
+        // were filled in. New ones came as polloption[] alongside polloption[ID],
+        // so PHP numbered them on from the highest ID, which are the next poll's
+        // options: saving one poll blanked another's and moved them over.
+        $options = [];
+        foreach (Request::getArray('polloption', [], 'post') as $id => $text) {
+            $option = Option::oneOrNew((int) $id);
+            if ($option->isNew() || $option->get('poll_id') != $row->get('id')) {
+                continue;
             }
+            $options[] = $option->set('text', htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'));
+        }
+        foreach (Request::getArray('polloption_new', [], 'post') as $text) {
+            if (trim((string) $text) === '') {
+                continue;
+            }
+            $options[] = Option::blank()
+                ->set('poll_id', (int) $row->get('id'))
+                ->set('text', htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'));
+        }
 
+        foreach ($options as $option) {
             if (!$option->save()) {
                 Notify::error($option->getError());
                 $this->editTask($row);

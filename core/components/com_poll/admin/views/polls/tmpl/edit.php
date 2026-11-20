@@ -208,7 +208,7 @@ $stateSelected = function ($value) use ($view) {
                         <input
                             class="inputbox"
                             type="text"
-                            name="polloption[]"
+                            name="polloption_new[]"
                             id="polloption<?php echo $i + 1; ?>"
                             value=""
                         />
