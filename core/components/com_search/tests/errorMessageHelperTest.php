@@ -10,7 +10,6 @@ namespace Components\Search\Tests;
 
 use Components\Search\Helpers\ErrorMessageHelper;
 use Hubzero\Test\Basic;
-use Component;
 
 class ErrorMessageHelperTest extends Basic
 {

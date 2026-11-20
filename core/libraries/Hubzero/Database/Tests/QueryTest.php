@@ -15,7 +15,6 @@ use Hubzero\Database\Query;
 use Hubzero\Database\Expression;
 use Hubzero\Database\Exception\UnsupportedSyntaxException;
 use Hubzero\Database\Value\Basic;
-use Hubzero\Database\Value\Raw;
 
 /**
  * Base query tests

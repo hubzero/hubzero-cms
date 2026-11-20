@@ -365,8 +365,6 @@ class Create extends SiteController
                         $this->step = $step;
                     }
                 }
-            } else {
-                $this->step = $this->step;
             }
 
             $this->view->set('config', $this->config);

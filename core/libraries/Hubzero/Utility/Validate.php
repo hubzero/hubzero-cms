@@ -631,7 +631,7 @@ class Validate
     {
         self::populateIp();
 
-        $validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~[]|') . '\/0-9a-z\p{L}\p{N}]|(%[0-9a-f]{2}))';
+        $validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~[]|', '/') . '\/0-9a-z\p{L}\p{N}]|(%[0-9a-f]{2}))';
 
         // 'localhost' is a legitimate host but carries no dot, so the hostname
         // pattern rejects it. Allowed here rather than in that pattern, which is

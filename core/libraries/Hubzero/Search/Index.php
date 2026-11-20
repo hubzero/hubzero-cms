@@ -8,8 +8,6 @@
 
 namespace Hubzero\Search;
 
-use Hubzero\Search\Adapters;
-
 /**
  * Index - For indexing operations
  *

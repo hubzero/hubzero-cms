@@ -507,9 +507,6 @@ class Version extends Table
             $resource->tool          = $resource->alias . '_r' . $revision;
             $resource->toolpublished = 1;
             $resource->license       = '';
-            $resource->title         = $resource->title;
-            $resource->introtext     = $resource->introtext;
-            $resource->fulltxt       = $resource->fulltxt;
             $resource->toolsource    = 0;
             $resource->doi           = '';
             $resource->doi_label     = 0;

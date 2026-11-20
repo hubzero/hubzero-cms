@@ -308,14 +308,7 @@ class Handlers extends Obj
      */
     public function ini($name)
     {
-        // Load
-        $handler = $this->loadHandler($name);
-
-        if ($handler === false) {
-            return false;
-        }
-
-        return $handler;
+        return $this->loadHandler($name);
     }
 
     /**

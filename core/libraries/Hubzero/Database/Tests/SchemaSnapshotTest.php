@@ -10,9 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\SchemaSnapshot;
-use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DatabaseInfo;
-use Hubzero\Database\Schema\TableInfo;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -96,14 +94,6 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
             ->text('body')
             ->timestamp('created_at')
             ->execute();
-    }
-
-    /**
-     * Set up before each test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
     }
 
     // =========================================================================

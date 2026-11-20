@@ -9,7 +9,6 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Components\Groups\Models\Orm\Answer;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;

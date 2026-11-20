@@ -13,7 +13,6 @@ use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
-use Hubzero\Facades\Component;
 
 class BoostFactoryTest extends Basic
 {

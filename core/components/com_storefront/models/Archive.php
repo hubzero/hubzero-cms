@@ -8,7 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-use Components\Storefront\Models\Warehouse;
 use Hubzero\Facades\App;
 
 /**

@@ -102,8 +102,6 @@ class Period
             return;
         }
 
-        $this->period = $this->period;
-
         // Determine last week and last month date
         switch ($this->period) {
             case 'week':

@@ -170,7 +170,7 @@ class Detector implements DetectorInterface
                 if (isset($value[0]) && $value[0] == '[') {
                     $value = substr($value, 1, -1);
                 } else {
-                    $value = preg_quote($value);
+                    $value = preg_quote($value, '~');
                 }
 
                 return '(?:' . $value . ')';

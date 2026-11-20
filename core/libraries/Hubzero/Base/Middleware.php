@@ -8,7 +8,6 @@
 
 namespace Hubzero\Base;
 
-use Hubzero\Base\ServiceProvider;
 use Hubzero\Http\Request;
 
 /**

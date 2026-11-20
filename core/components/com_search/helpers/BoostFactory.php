@@ -9,7 +9,6 @@
 namespace Components\Search\Helpers;
 
 use Components\Search\Helpers\BoostDocumentTypeMap as Map;
-use Components\Search\Helpers\MockProxy;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Date;

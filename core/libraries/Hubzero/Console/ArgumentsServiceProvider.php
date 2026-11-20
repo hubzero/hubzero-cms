@@ -8,7 +8,6 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Console\Arguments;
 use Hubzero\Console\Exception\UnsupportedCommandException;
 use Hubzero\Console\Exception\UnsupportedTaskException;
 use Hubzero\Base\Middleware;

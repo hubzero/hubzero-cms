@@ -9,7 +9,6 @@
 namespace Components\Resources\Site\Controllers;
 
 use Components\Resources\Models\Entry;
-use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;

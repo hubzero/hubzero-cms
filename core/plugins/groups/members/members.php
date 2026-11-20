@@ -232,7 +232,7 @@ class Members extends Plugin
                     $this->display_system_users = 'no';
                     break;
                 case 'global':
-                    $this->display_system_users = $this->display_system_users;
+                    // Keep the global setting
                     break;
             }
 

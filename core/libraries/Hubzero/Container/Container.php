@@ -12,7 +12,6 @@ use InvalidArgumentException;
 use RuntimeException;
 use SplObjectStorage;
 use ArrayAccess;
-use Closure;
 
 /**
  * Container main class.

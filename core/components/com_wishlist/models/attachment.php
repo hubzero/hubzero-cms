@@ -11,7 +11,6 @@ namespace Components\Wishlist\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Component;
-use Route;
 use Hubzero\Facades\Lang;
 
 /**

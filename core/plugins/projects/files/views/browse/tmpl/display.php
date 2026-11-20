@@ -281,7 +281,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 </th>
                 <?php if ($this->repo->getAdapterName() == 'git') { ?>
                 <th scope="col"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
-                <?php }; ?>
+                <?php } ?>
                 <th scope="col" class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span
                     class="sr-only">Options</span></th>
                 <?php if ($this->publishing) { ?>

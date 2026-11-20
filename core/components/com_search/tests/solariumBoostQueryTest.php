@@ -11,7 +11,6 @@ namespace Components\Search\Tests;
 use Components\Search\Helpers\SolariumBoostQuery as Query;
 use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
-use Component;
 
 class SolariumBoostQueryTest extends Basic
 {

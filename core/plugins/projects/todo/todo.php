@@ -440,7 +440,6 @@ class Todo extends Plugin
             $objTD->created_by = $this->uid;
             $objTD->created    = Date::toSql();
             $objTD->projectid  = $this->model->get('id');
-            $assigned          = $assigned;
             $new               = 1;
         } else {
             $content = $content ? $content : $objTD->content;

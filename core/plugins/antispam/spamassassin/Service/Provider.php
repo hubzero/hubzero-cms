@@ -8,7 +8,6 @@
 
 namespace Plugins\Antispam\SpamAssassin\Service;
 
-use Plugins\Antispam\SpamAssassin\Service\Client;
 use Hubzero\Spam\Detector\Service as AbstractService;
 use Exception;
 use Hubzero\Facades\Lang;

@@ -15,10 +15,6 @@ use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DiffSqlGenerator;
 use Hubzero\Database\Schema\DatabaseInfo;
 use Hubzero\Database\Schema\TableInfo;
-use Hubzero\Database\Schema\ColumnInfo;
-use Hubzero\Database\Schema\Diff\TableDiff;
-use Hubzero\Database\Schema\Diff\SchemaDiff;
-use Hubzero\Database\Schema\Diff\ColumnDiff;
 
 /**
  * Migration Generator test

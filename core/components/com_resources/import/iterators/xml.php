@@ -51,7 +51,6 @@ class Xml implements \Iterator
      *
      * @return  \stdClass|null  XML node as a stdClass; null when it cannot be read
      */
-
     #[\ReturnTypeWillChange]
     public function current()
     {
@@ -72,7 +71,6 @@ class Xml implements \Iterator
      *
      * @return  int  Current position
      */
-
     #[\ReturnTypeWillChange]
     public function key()
     {
@@ -84,7 +82,6 @@ class Xml implements \Iterator
      *
      * @return  void
      */
-
     #[\ReturnTypeWillChange]
     public function next()
     {
@@ -98,7 +95,6 @@ class Xml implements \Iterator
      *
      * @return  void
      */
-
     #[\ReturnTypeWillChange]
     public function rewind()
     {
@@ -117,7 +113,6 @@ class Xml implements \Iterator
      *
      * @return  bool  Is valid?
      */
-
     #[\ReturnTypeWillChange]
     public function valid()
     {

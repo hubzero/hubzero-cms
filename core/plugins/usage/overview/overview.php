@@ -358,7 +358,6 @@ class Overview extends Plugin
         $data->downloads->total        = number_format((float) ($result ?? 0.0));
         $data->downloads->residence    = $residence ?: '';
         $data->downloads->organization = $organization ?: '';
-        ;
 
         $db->setQuery(
             "SELECT value

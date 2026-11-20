@@ -8,7 +8,6 @@
 
 namespace Hubzero\Form\Fields;
 
-use Hubzero\Form\Fields\Radio;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Document;
 

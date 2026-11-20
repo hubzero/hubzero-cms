@@ -130,16 +130,6 @@ class SyntaxTest extends AbstractDriverTestCase
         $query->push(self::$testTable3, ['name' => 'User 6', 'email' => 'user6@example.com', 'status' => 1]);
     }
 
-    /**
-     * Clean up after all tests
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-    }
-
     // =========================================================================
     // Basic SELECT Query Tests
     // =========================================================================

@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
-use Hubzero\Database\Relationship\Relationship;
 use Hubzero\Database\Relationship\OneToMany;
 use Hubzero\Database\Tests\TestModels\CascadePost;
 use Hubzero\Database\Tests\TestModels\CascadePostNoCascade;

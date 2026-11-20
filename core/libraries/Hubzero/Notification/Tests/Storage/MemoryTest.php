@@ -9,7 +9,6 @@
 namespace Hubzero\Notification\Tests;
 
 use Hubzero\Test\Basic;
-use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Memory;
 
 /**

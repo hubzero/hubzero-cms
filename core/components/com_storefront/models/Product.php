@@ -8,8 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-use Components\Storefront\Models\Course;
-use Components\Storefront\Models\Warehouse;
 use Exception;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Component;

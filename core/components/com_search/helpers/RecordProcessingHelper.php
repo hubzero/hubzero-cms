@@ -8,10 +8,7 @@
 
 namespace Components\Search\Helpers;
 
-use Components\Search\Helpers\ErrorMessageHelper;
-use Components\Search\Helpers\MockProxy;
 use Hubzero\Utility\Arr;
-use Notify;
 
 class RecordProcessingHelper
 {

@@ -17,7 +17,6 @@ use Hubzero\Database\Casts\AsCollection;
 use Hubzero\Database\Casts\AsDateTime;
 use Hubzero\Database\Casts\AsEncryptedString;
 use Hubzero\Database\Casts\StringEncrypter;
-use Hubzero\Database\Relational;
 use ArrayObject;
 use Hubzero\Database\Tests\TestModels\CastTestModelJson;
 use Hubzero\Database\Tests\TestModels\CastTestModelDateTime;

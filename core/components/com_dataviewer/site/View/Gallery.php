@@ -42,17 +42,25 @@ class Gallery
             return;
         }
 
-        //  $file_list = scandir(PATH_ROOT . $real_path);
-        $cmd = 'find ' . PATH_ROOT . $real_path . ' -type f|grep -v small|grep -v medium';
-        $file_list = explode("\n", (string) ((`$cmd`)));
-        array_pop($file_list);
+        // Every file below the gallery but the small/ and medium/ copies (this
+        // was find(1) in a shell, with the path unquoted)
+        $file_list = [];
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(PATH_ROOT . $real_path, \FilesystemIterator::SKIP_DOTS),
+        );
+        foreach ($files as $entry) {
+            $path = $entry->getPathname();
+            if ($entry->isFile() && !str_contains($path, 'small') && !str_contains($path, 'medium')) {
+                $file_list[] = $path;
+            }
+        }
 
         foreach ($file_list as $file) {
             $pi = pathinfo($file);
             $dir_name = str_replace(PATH_ROOT, '', $pi['dirname'] ?? '');
             $ext = strtolower($pi['extension'] ?? '');
 
-            $desc_file = str_replace($pi['extension'] ?? '', 'txt', PATH_ROOT . $real_path . '/' . $file);
+            $desc_file = ($pi['dirname'] ?? '') . '/' . $pi['filename'] . '.txt';
             $desc = '';
             if (file_exists($desc_file)) {
                 $desc = htmlentities((string) file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');

@@ -24,10 +24,7 @@ class TaskList
 
         $base = DvConfig::$conf['dir_base'];
         $arry = [];
-        $list = `cd $base; ls ./*/database.json`;
-
-        $list = explode("\n", $list ? $list : '');
-        array_pop($list);
+        $list = glob($base . '/*/database.json') ?: [];
 
         ?>
         <table class="adminlist">
@@ -44,9 +41,7 @@ class TaskList
         $c = 0;
 
         foreach ($list as $item) {
-            chdir($base);
-            $id = explode('/', $item);
-            $id = $id[1];
+            $id = basename(dirname($item));
             $db = json_decode((string) file_get_contents($item), true);
 
             print '<tr>';

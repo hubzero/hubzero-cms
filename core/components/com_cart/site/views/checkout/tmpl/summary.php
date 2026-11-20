@@ -155,7 +155,7 @@ if (!empty($this->notifications)) {
             echo rtrim(Route::url('index.php?option=com_cart'), '/') . '/checkout/notes';
             echo '">Change</a>';
             echo '</div>';
-        };
+        }
 
         if (in_array('shipping', $this->transactionInfo->steps)) {
             $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_shippinginfo']);

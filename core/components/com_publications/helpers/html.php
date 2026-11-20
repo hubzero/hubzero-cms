@@ -746,7 +746,6 @@ class Html
 
             if (substr($normalized, -3) == 'ies') {
                 $title = $normalized;
-                $cls = $cls;
             } else {
                 $title = substr($normalized, 0, -1);
                 $cls = substr((string) $cls, 0, -1);

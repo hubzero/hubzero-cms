@@ -9,7 +9,6 @@
 namespace Plugins\Filesystem\Dropbox;
 
 use Hubzero\Plugin\Plugin;
-use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Spatie\Dropbox\Client as DropboxClient;
 use Hubzero\Utility\Arr;

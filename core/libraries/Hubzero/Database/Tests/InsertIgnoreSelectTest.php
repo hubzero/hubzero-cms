@@ -11,7 +11,6 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
-use Hubzero\Database\Drivers\Base\BaseSqlSyntax;
 
 /**
  * INSERT IGNORE and INSERT ... SELECT tests

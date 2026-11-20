@@ -1177,8 +1177,6 @@ if ($this->getError()) {
                     $ckd = 'checked="checked"';
                 } elseif ($rollover == 0 && is_numeric($rollover)) {
                     $ckd = '';
-                } else {
-                    $ckd = $ckd;
                 }
 
                 $rolloverLabel = Lang::txt(

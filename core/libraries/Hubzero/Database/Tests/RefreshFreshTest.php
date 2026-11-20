@@ -13,7 +13,6 @@ use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\RefreshTestItem;
-use Hubzero\Database\Tests\TestModels\RefreshTestComment;
 
 /**
  * Refresh and Fresh method tests

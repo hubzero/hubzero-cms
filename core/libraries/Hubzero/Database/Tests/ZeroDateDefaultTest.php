@@ -14,7 +14,6 @@ use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver as SqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Schema\Column;
-use Hubzero\Database\Schema\ColumnDefinitionTrait;
 
 /**
  * Zero-date default translation tests

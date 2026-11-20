@@ -8,7 +8,6 @@
 
 namespace Components\Cart\Models;
 
-use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\Helper;
 use Hubzero\Facades\User;
 use Components\Storefront\Models\Product;
@@ -322,7 +321,7 @@ class CurrentCart extends Cart
             $this->cart->hasMessages = false;
             // Erase messages
             unset($this->cart->messages);
-        };
+        }
 
         // Get cart changes
         $changes = [];

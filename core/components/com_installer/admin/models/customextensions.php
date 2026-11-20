@@ -125,16 +125,6 @@ class CustomExtensions extends Relational
     ];
 
     /**
-     * Delete the existing/current model
-     *
-     * @return  bool
-     */
-    public function destroy()
-    {
-        return parent::destroy();
-    }
-
-    /**
      * Publsh an entry
      *
      * @return  bool

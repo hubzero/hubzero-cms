@@ -55,7 +55,6 @@ class Csv implements \Iterator
      *
      * @return  \stdClass|null  XML node as a stdClass
      */
-
     #[\ReturnTypeWillChange]
     public function current()
     {
@@ -97,7 +96,6 @@ class Csv implements \Iterator
      *
      * @return  int  Current position
      */
-
     #[\ReturnTypeWillChange]
     public function key()
     {
@@ -109,7 +107,6 @@ class Csv implements \Iterator
      *
      * @return  bool
      */
-
     #[\ReturnTypeWillChange]
     public function next()
     {
@@ -121,7 +118,6 @@ class Csv implements \Iterator
      *
      * @return  void
      */
-
     #[\ReturnTypeWillChange]
     public function rewind()
     {
@@ -134,7 +130,6 @@ class Csv implements \Iterator
      *
      * @return  bool  Is valid?
      */
-
     #[\ReturnTypeWillChange]
     public function valid()
     {

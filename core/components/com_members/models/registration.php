@@ -8,7 +8,6 @@
 
 namespace Components\Members\Models;
 
-use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
@@ -489,7 +488,7 @@ class Registration
         }
 
         if ($registrationPassword != self::REG_HIDE && $registrationConfirmPassword != self::REG_HIDE) {
-            if ($registration['password'] != $registration['confirmPassword']) {
+            if ($registration['password'] !== $registration['confirmPassword']) {
                 $this->invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
             }
         }

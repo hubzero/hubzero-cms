@@ -9,7 +9,6 @@
 namespace Hubzero\Database\Tests\TestModels;
 
 use Hubzero\Database\Factory;
-use Hubzero\Database\Tests\TestModels\User;
 
 /**
  * Factory for creating User test models

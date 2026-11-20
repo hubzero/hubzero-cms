@@ -228,7 +228,7 @@ class CartMessenger
                 }
                 $summary .= $note['notes'] . "\n";
             }
-        };
+        }
 
         $summary .= "\n\nItems ordered:";
         $summary .= "\n--------------------\n";

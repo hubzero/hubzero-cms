@@ -377,7 +377,7 @@ class Html extends Obj
         $text  = (string) $text;
 
         foreach ($icons as $icon => $image) {
-            $pat  =  '#(?<=\s|^)(' . preg_quote($icon) . ')(?=\s|$)#';
+            $pat  =  '#(?<=\s|^)(' . preg_quote($icon, '#') . ')(?=\s|$)#';
             $rep  = '<span class="icon-emo-' . $image . '"></span>';
             $text = (string) preg_replace($pat, $rep, $text);
         }

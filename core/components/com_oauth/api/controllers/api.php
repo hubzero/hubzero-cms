@@ -212,7 +212,8 @@ class Api extends ApiController
 
             if (!empty($result->callback_url)) {
                 $redirectUrl = $result->callback_url . "?oauth_token="
-                    . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier;
+                    . urlencode((string) $_REQUEST['oauth_token'])
+                    . "&oauth_verifier=" . urlencode((string) $result->verifier);
                 $this->response->headers->set('Location', $redirectUrl);
                 $this->send('Redirect', 302);
             }

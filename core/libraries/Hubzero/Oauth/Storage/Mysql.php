@@ -17,8 +17,6 @@ use OAuth2\Storage\ClientCredentialsInterface;
 use OAuth2\Storage\UserCredentialsInterface;
 use OAuth2\Storage\AuthorizationCodeInterface;
 use OAuth2\Storage\RefreshTokenInterface;
-use Hubzero\Oauth\Storage\SessionTokenInterface;
-use Hubzero\Oauth\Storage\ToolSessionTokenInterface;
 use Hubzero\Facades\App;
 
 /**

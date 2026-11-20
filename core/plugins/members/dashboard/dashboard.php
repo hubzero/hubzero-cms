@@ -140,7 +140,6 @@ class Dashboard extends Plugin
 
             // set up some vars
             $this->member   = $member;
-            $this->params   = $this->params;
             $this->database = App::get('db');
             $this->option   = $option;
             $this->action   = Request::getCmd('action', 'display');

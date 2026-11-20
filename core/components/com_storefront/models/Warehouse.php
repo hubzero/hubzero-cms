@@ -8,10 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-use Components\Storefront\Models\Product;
-use Components\Storefront\Models\Course;
-use Components\Storefront\Models\Coupon;
-use Components\Storefront\Models\Collection;
 use Components\Storefront\Admin\Helpers\RestrictionsHelper;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;

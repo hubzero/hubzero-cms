@@ -11,7 +11,6 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Hubzero\Database\Driver;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Informix\InformixDriver as Informix;
 use Hubzero\Database\Query;
@@ -157,11 +156,6 @@ class InformixDriverTest extends AbstractDriverTestCase
                 }
             }
         }
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
     }
 
     #[Test]

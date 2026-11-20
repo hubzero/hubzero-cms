@@ -8,7 +8,6 @@
 
 namespace Components\Cart\Models;
 
-use Components\Storefront\Models\Product;
 use Hubzero\Facades\Lang;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\Helper;

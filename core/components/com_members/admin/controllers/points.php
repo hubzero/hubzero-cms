@@ -14,7 +14,6 @@ use Hubzero\Bank\Transaction;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
-use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;

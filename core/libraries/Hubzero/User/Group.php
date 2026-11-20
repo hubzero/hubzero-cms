@@ -11,7 +11,6 @@ namespace Hubzero\User;
 use Hubzero\Base\Obj;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Str;
-use Hubzero\User\User;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Event;

@@ -628,7 +628,6 @@ class Hubzero extends Plugin
         $update_SupportTicketsByLogin_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', "
             . "name='' where login="
             . $db->quote($userName);
-        ;
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByLogin_Query);
 
         $delete_SessionGeo_Query = "DELETE from `#__session_geo` where username=" . $db->quote($userName);

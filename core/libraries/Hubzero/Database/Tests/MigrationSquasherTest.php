@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\MigrationSquasher;
 use Hubzero\Database\Schema\DatabaseInfo;
-use Hubzero\Database\Schema\TableInfo;
 
 /**
  * Tests for MigrationSquasher

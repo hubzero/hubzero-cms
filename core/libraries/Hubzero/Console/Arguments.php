@@ -8,7 +8,6 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Console\Config;
 use Hubzero\Console\Exception\UnsupportedCommandException;
 use Hubzero\Console\Exception\UnsupportedTaskException;
 use Hubzero\Console\Exception\InvalidPropertyException;

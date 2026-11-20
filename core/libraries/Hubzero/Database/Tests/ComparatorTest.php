@@ -12,9 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\TableInfo;
 use Hubzero\Database\Schema\ColumnInfo;
-use Hubzero\Database\Schema\IndexInfo;
-use Hubzero\Database\Schema\ForeignKeyInfo;
-use Hubzero\Database\Schema\Diff\TableDiff;
 use Hubzero\Database\Schema\Diff\ColumnDiff;
 
 /**

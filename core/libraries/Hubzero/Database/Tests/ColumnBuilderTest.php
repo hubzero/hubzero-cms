@@ -10,7 +10,6 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Schema\ColumnDefinitionTrait;
 use Hubzero\Database\Query;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 

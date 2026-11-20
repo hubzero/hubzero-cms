@@ -125,7 +125,7 @@ class Batchcreate extends AdminController
 
         // Collect all errors
         while (@$this->reader->read()) {
-        }; // empty loop
+        } // empty loop
         $errors = libxml_get_errors();
 
         // Errors found - stop
@@ -175,7 +175,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // Master type ID must be supplied
@@ -189,7 +189,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
         $mt = new Tables\MasterType($this->database);
         $this->mastertype = $mt->getType($mtid);
@@ -205,7 +205,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // Check for file
@@ -219,7 +219,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // Check for correct type
@@ -233,7 +233,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // Get data from XML file
@@ -250,7 +250,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
         // Load reader
         libxml_use_internal_errors(true);
@@ -267,7 +267,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // Set schema
@@ -295,7 +295,7 @@ class Batchcreate extends AdminController
                 exit();
             } else {
                 return;
-            };
+            }
         }
 
         // return results to user
@@ -309,7 +309,7 @@ class Batchcreate extends AdminController
             exit();
         } else {
             return;
-        };
+        }
     }
 
     /**

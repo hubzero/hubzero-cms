@@ -579,7 +579,7 @@ class Orders extends AdminController
                     $notesValue .= $note['notes'];
                     $notesCount++;
                 }
-            };
+            }
 
             $rows[] = [$row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue];
         }

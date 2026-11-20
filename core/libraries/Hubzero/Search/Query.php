@@ -8,8 +8,6 @@
 
 namespace Hubzero\Search;
 
-use Hubzero\Search\Adapters;
-
 /**
  * Query - Class to provide search engine query functionality
  */

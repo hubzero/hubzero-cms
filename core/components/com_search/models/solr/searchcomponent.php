@@ -11,7 +11,6 @@ namespace Components\Search\Models\Solr;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
-use Components\Search\Models\Solr\Blacklist;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;

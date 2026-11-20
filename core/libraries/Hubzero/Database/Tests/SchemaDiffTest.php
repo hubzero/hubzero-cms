@@ -10,8 +10,6 @@ namespace Hubzero\Database\Tests;
 
 use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\Comparator;
-use Hubzero\Database\Schema\DatabaseInfo;
-use Hubzero\Database\Schema\TableInfo;
 use Hubzero\Database\Schema\Diff\SchemaDiff;
 use Hubzero\Database\Schema\Diff\TableDiff;
 use PHPUnit\Framework\Attributes\Test;

@@ -2910,7 +2910,6 @@ class Migration20130924000005Core extends Base
                         'state'             => 0,
                     ])
                     ->execute();
-                continue;
             }
 
             // Look for any components we missed...(frontend?)

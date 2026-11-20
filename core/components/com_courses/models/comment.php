@@ -9,7 +9,6 @@
 namespace Components\Courses\Models;
 
 use Hubzero\Item\Comment as ItemComment;
-use Components\Courses\Models\Course;
 
 /**
  * Courses model for a comment

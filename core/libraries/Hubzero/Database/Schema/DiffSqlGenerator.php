@@ -9,7 +9,6 @@
 namespace Hubzero\Database\Schema;
 
 use Hubzero\Database\Driver;
-use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Schema\Diff\SchemaDiff;
 use Hubzero\Database\Schema\Diff\TableDiff;
 use Hubzero\Database\Schema\Diff\ColumnDiff;

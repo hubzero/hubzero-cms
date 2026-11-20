@@ -891,9 +891,4 @@ class SchemaTest extends AbstractDriverTestCase
         $this->assertArrayHasKey('users', $create);
         $this->assertStringContainsString('CREATE', strtoupper($create['users']));
     }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-    }
 }

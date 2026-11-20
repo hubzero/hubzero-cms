@@ -9,7 +9,6 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
-use Components\Courses\Models\Assets;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Date;

@@ -9,7 +9,6 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Form;
-use Hubzero\Form\Fields\Text;
 use Hubzero\Base\ClientManager;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Lang;

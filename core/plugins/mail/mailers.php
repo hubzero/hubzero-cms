@@ -8,7 +8,6 @@
 
 namespace Hubzero\Form\Fields;
 
-use Hubzero\Form\Fields\Select;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;

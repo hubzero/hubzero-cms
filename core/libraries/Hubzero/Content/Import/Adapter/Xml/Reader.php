@@ -67,7 +67,6 @@ class Reader implements Iterator
      *
      * @return  \stdClass|null  XML node as a stdClass; null when the node cannot be converted
      */
-
     #[\ReturnTypeWillChange]
     public function current()
     {
@@ -88,7 +87,6 @@ class Reader implements Iterator
      *
      * @return  int  Current position
      */
-
     #[\ReturnTypeWillChange]
     public function key()
     {
@@ -100,7 +98,6 @@ class Reader implements Iterator
      *
      * @return  void
      */
-
     #[\ReturnTypeWillChange]
     public function next()
     {
@@ -114,7 +111,6 @@ class Reader implements Iterator
      *
      * @return  void
      */
-
     #[\ReturnTypeWillChange]
     public function rewind()
     {
@@ -133,7 +129,6 @@ class Reader implements Iterator
      *
      * @return  bool  Is valid?
      */
-
     #[\ReturnTypeWillChange]
     public function valid()
     {

@@ -257,7 +257,6 @@ class Router extends Base
                 }
                 $db->setQuery($query);
                 $id = $db->loadResult();
-                ;
             }
             $vars['id'] = (int) $id;
 
@@ -277,7 +276,6 @@ class Router extends Base
                     $query = 'SELECT id FROM `#__content` WHERE alias = ' . $db->Quote($id);
                     $db->setQuery($query);
                     $id = $db->loadResult();
-                    ;
                 }
                 $vars['id'] = (int) $id;
                 return $vars;

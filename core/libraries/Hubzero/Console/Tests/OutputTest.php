@@ -10,7 +10,6 @@ namespace Hubzero\Console\Tests;
 
 use Hubzero\Test\Basic;
 use Hubzero\Console\Output;
-use Mockery as m;
 
 /**
  * Base relational model tests

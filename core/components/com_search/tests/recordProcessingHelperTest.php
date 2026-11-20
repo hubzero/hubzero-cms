@@ -11,7 +11,6 @@ namespace Components\Search\Tests;
 use Components\Search\Helpers\RecordProcessingHelper as Helper;
 use Components\Search\Tests\Traits\CanMock;
 use Hubzero\Test\Basic;
-use Component;
 
 class RecordProcessingHelperTest extends Basic
 {

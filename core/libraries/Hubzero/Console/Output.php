@@ -8,8 +8,6 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Console\Config;
-
 /**
  * Output class for rendering content to command line
  **/
