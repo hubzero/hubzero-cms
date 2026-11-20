@@ -305,7 +305,32 @@ class Versions extends AdminController
 
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
+        // editTask() reads the IDs from the request, where the form sent them as fields[]
+        Request::setVar('id', $fields['id']);
+        Request::setVar('version', $fields['version']);
+
         $this->editTask();
+    }
+
+    /**
+     * Return to the tool's version list
+     *
+     * The list needs the tool's ID; without it (an edit form opened
+     * directly, so none is remembered) it is a 404.
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        $fields = Request::getArray('fields', []);
+        $id = Request::getInt('id', (int) ($fields['id'] ?? 0));
+
+        App::redirect(
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . ($id ? '&id=' . $id : ''),
+                false,
+            ),
+        );
     }
 
     /**

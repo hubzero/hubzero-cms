@@ -346,42 +346,42 @@ class Collectionsv1r0 extends ApiController
      *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
      *      "type":        "string",
      *      "required":    false,
-     *      "default":     "now"
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "created_by",
      *      "description": "User ID of entry creator",
      *      "type":        "integer",
      *      "required":    false,
-     *      "default":     0
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "state",
      *      "description": "Published state (0 = unpublished, 1 = published)",
      *      "type":        "integer",
      *      "required":    false,
-     *      "default":     0
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "access",
      *      "description": "Access level (0 = public, 1 = registered users, 4 = private)",
      *      "type":        "integer",
      *      "required":    false,
-     *      "default":     0
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "layout",
      *      "description": "How to display posts",
      *      "type":        "string",
      *      "required":    false,
-     *      "default":     "grid"
+     *      "default":     null
      * }
      * @apiParameter {
      *      "name":        "sort",
      *      "description": "How to sort posts (created, ordering)",
      *      "type":        "string",
      *      "required":    false,
-     *      "default":     "created"
+     *      "default":     null
      * }
      * @return    void
      */
@@ -389,20 +389,26 @@ class Collectionsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
+        // Only what the caller sent: with create's defaults here, a PUT of just a
+        // title blanked the owner type (so the row would not save), unpublished
+        // the collection and reset its created date to now
         $fields = [
-            'id'             => Request::getInt('id', 0, 'put'),
-            'object_type'    => Request::getString('object_type', '', 'put'),
-            'object_id'      => Request::getInt('object_id', 0, 'put'),
-            'title'          => Request::getString('title', null, 'put'),
-            'alias'          => Request::getString('alias', 0, 'put'),
-            'description'    => Request::getString('description', null, 'put'),
-            'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'put'),
-            'created_by'     => Request::getInt('created_by', 0, 'put'),
-            'state'          => Request::getInt('state', 0, 'put'),
-            'access'         => Request::getInt('access', 0, 'put'),
-            'layout'         => Request::getWord('layout', 'grid', 'put'),
-            'sort'           => Request::getString('sort', 'created', 'put'),
+            'id' => Request::getInt('id', 0, 'put'),
         ];
+        foreach (['object_type', 'title', 'alias', 'description', 'created', 'sort'] as $key) {
+            $value = Request::getString($key, null, 'put');
+            if ($value !== null) {
+                $fields[$key] = $value;
+            }
+        }
+        foreach (['object_id', 'state', 'access'] as $key) {
+            if (Request::getVar($key, null, 'put') !== null) {
+                $fields[$key] = Request::getInt($key, 0, 'put');
+            }
+        }
+        if (Request::getVar('layout', null, 'put') !== null) {
+            $fields['layout'] = Request::getWord('layout', 'grid', 'put');
+        }
 
         $row = new Collection($fields['id']);
 
@@ -423,8 +429,6 @@ class Collectionsv1r0 extends ApiController
         ) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }
-        unset($fields['created_by']);
-
         if (!$row->bind($fields)) {
             throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_BINDING_DATA'), 422);
         }

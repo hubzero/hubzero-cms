@@ -17,6 +17,13 @@ use Hubzero\Facades\App;
 class Router extends Base
 {
     /**
+     * Controllers besides tickets that answer /support/{controller}
+     *
+     * @var  array<int,string>
+     */
+    private const CONTROLLERS = ['categories', 'comments', 'messages', 'outstandingtickets', 'statuses'];
+
+    /**
      * Build the route for the component.
      *
      * @param   array<string, mixed>  &$query  An array of URL arguments
@@ -57,6 +64,29 @@ class Router extends Base
         // GET /support/tickets/{id} answered "Task [...] not found")
         if (isset($segments[0]) && $segments[0] == 'tickets') {
             array_shift($segments);
+        }
+
+        // These have controllers of their own, which every route used to miss
+        // (each was taken for a ticket task: "Task [categories] not found"):
+        //  /support/{controller}         (POST: create; outstandingtickets: the list)
+        //  /support/{controller}/list
+        //  /support/{controller}/{id}    (GET: read; PUT/DELETE as the method says)
+        if (isset($segments[0]) && in_array($segments[0], self::CONTROLLERS)) {
+            $vars['controller'] = $segments[0];
+            $method = App::get('request')->method();
+
+            if (isset($segments[1]) && is_numeric($segments[1])) {
+                $vars['id'] = $segments[1];
+                if ($method == 'GET') {
+                    $vars['task'] = 'read';
+                }
+            } elseif (isset($segments[1])) {
+                $vars['task'] = $segments[1];
+            } elseif ($method == 'GET' && $segments[0] == 'outstandingtickets') {
+                $vars['task'] = 'list';
+            }
+
+            return $vars;
         }
 
         if (isset($segments[0])) {

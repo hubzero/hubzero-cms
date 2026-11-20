@@ -132,7 +132,7 @@ API version 1.0, task `update` in [`postsv1r0.php`](../../../core/components/com
 
 Delete a collection
 
-API version 1.0, task `delete` in [`collectionsv1r0.php`](../../../core/components/com_collections/api/controllers/collectionsv1r0.php#L445).
+API version 1.0, task `delete` in [`collectionsv1r0.php`](../../../core/components/com_collections/api/controllers/collectionsv1r0.php#L449).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -162,9 +162,9 @@ API version 1.0, task `update` in [`collectionsv1r0.php`](../../../core/componen
 | `title` | string | yes | — | Entry title |
 | `alias` | string | no | — | Entry alias |
 | `description` | string | no | — | Entry description |
-| `created` | string | no | now | Created timestamp (YYYY-MM-DD HH:mm:ss) |
-| `created_by` | integer | no | 0 | User ID of entry creator |
-| `state` | integer | no | 0 | Published state (0 = unpublished, 1 = published) |
-| `access` | integer | no | 0 | Access level (0 = public, 1 = registered users, 4 = private) |
-| `layout` | string | no | grid | How to display posts |
-| `sort` | string | no | created | How to sort posts (created, ordering) |
+| `created` | string | no | — | Created timestamp (YYYY-MM-DD HH:mm:ss) |
+| `created_by` | integer | no | — | User ID of entry creator |
+| `state` | integer | no | — | Published state (0 = unpublished, 1 = published) |
+| `access` | integer | no | — | Access level (0 = public, 1 = registered users, 4 = private) |
+| `layout` | string | no | — | How to display posts |
+| `sort` | string | no | — | How to sort posts (created, ordering) |
