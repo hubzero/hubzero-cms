@@ -349,15 +349,22 @@ abstract class Table extends \stdClass
     public function getFields()
     {
         if ($this->fieldCache === null) {
-            // Lookup the fields for this table only once.
+            // Lookup the fields for this table only once per connection: a page
+            // listing rows builds a Table for each, and each asked the server
             $name = $this->tableName;
-            $fields = $this->db->getTableColumns($name, false);
+            $key = Driver::RAW_COLUMNS_KEY . $name;
+            if ($this->db->hasCachedTableColumns($key)) {
+                $fields = $this->db->getCachedTableColumns($key);
+            } else {
+                $fields = $this->db->getTableColumns($name, false);
+            }
 
             if (empty($fields)) {
                 $e = new Exception('Columns not found for table ' . $this->tableName);
                 $this->setError($e);
                 return false;
             }
+            $this->db->setCachedTableColumns($key, $fields);
             $this->fieldCache = $fields;
         }
 

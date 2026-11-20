@@ -207,6 +207,13 @@ abstract class Driver implements LoggerAwareInterface
     protected $tableColumnsCache = [];
 
     /**
+     * Prefix of the column cache entries that hold getTableColumns($table, false)
+     * as is, for the legacy Table (Relational keeps its normalized columns
+     * under the bare table name)
+     */
+    public const RAW_COLUMNS_KEY = "\0raw:";
+
+    /**
      * The character(s) used to quote items such as table names or field names
      *
      * Default uses SQL standard double-quote identifiers. MySQL and SQLite
@@ -1241,6 +1248,8 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         unset($this->tableColumnsCache[$tableName]);
+        // and the raw SHOW COLUMNS rows the legacy Table keeps beside them
+        unset($this->tableColumnsCache[self::RAW_COLUMNS_KEY . $tableName]);
 
         return $this;
     }
@@ -2758,14 +2767,11 @@ abstract class Driver implements LoggerAwareInterface
      **/
     public function hasConnectionOrFail()
     {
+        // Only that there is one: asking the server (isConnected() runs SELECT 1)
+        // doubled the round trips of every query, and a connection that has gone
+        // away fails the query itself with the server's own error
         if (!$this->connection) {
             throw new ConnectionFailedException('No database connection.', 500);
-        }
-
-        if ($this->connection instanceof ConnectionInterface) {
-            if (!$this->connection->isConnected()) {
-                throw new ConnectionFailedException('No database connection.', 500);
-            }
         }
 
         return $this;
