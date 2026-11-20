@@ -154,7 +154,8 @@ jQuery(document).ready(function(jq){
 			}
 
 			if (fileName) {
-				label.html(fileName);
+				// A file name is text (labelVal, below, is the label's own markup)
+				label.text(fileName);
 			} else {
 				label.html(labelVal);
 			}

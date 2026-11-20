@@ -145,7 +145,7 @@ function addAssetItems(files, asset_id) {
 	if ($('.tool-files-available ul').length) {
 		$.each(files, function ( i, file ) {
 			html += '<li class="tool-file">';
-			html += '<span class="tool-files-filename">' + file.name + '</span>';
+			html += '<span class="tool-files-filename">' + $('<span>').text(file.name).html() + '</span>';
 			html += '<div class="tool-files-delete"></div>';
 			html += '</li>';
 		});
@@ -155,7 +155,7 @@ function addAssetItems(files, asset_id) {
 		html  = '<ul class="tool-files-list">';
 		$.each(files, function ( i, file ) {
 			html += '<li class="tool-file">';
-			html += '<span class="tool-files-filename">' + file.name + '</span>';
+			html += '<span class="tool-files-filename">' + $('<span>').text(file.name).html() + '</span>';
 			html += '<div class="tool-files-delete"></div>';
 			html += '</li>';
 		});

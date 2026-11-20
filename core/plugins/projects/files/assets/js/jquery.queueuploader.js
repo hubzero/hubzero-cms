@@ -455,7 +455,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
         while (item) {    
 	        
 			var fBlock  = this._find(item, 'name');
-			var fName 	= fBlock ? fBlock.innerHTML : null;
+			var fName 	= fBlock ? fBlock.textContent : null;
 						
             if (fName == fileName) return item;            
             item = item.nextSibling;
@@ -563,7 +563,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		}
 		   
 		elSize.innerHTML = this._formatSize(size);
-		elExt.innerHTML  = ext;
+		qq.setText(elExt, ext);
 		
 		var over = this.checkMaxSize(size);
 		if (over && elError)
@@ -572,7 +572,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		}
 		
 		var elName  = this._find(item, 'name'); 
-		elName.innerHTML = fileName;
+		// The name is text: as HTML a file called <b>x.png showed as a bold x.png
+		qq.setText(elName, fileName);
 		
 		css = this._getCss(ext);
 		

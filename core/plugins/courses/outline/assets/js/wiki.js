@@ -39,7 +39,7 @@ jQuery(document).ready(function($) {
 			if ($('.wiki-files-available ul').length) {
 				$.each(data.files, function ( i, file ) {
 					html += '<li class="wiki-file">';
-					html += '<span class="wiki-files-filename">' + file.name + '</span>';
+					html += '<span class="wiki-files-filename">' + $('<span>').text(file.name).html() + '</span>';
 					html += '<div class="wiki-files-delete"></div>';
 					html += '</li>';
 				});
@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
 				html  = '<ul class="wiki-files-list">';
 				$.each(data.files, function ( i, file ) {
 					html += '<li class="wiki-file">';
-					html += '<span class="wiki-files-filename">' + file.name + '</span>';
+					html += '<span class="wiki-files-filename">' + $('<span>').text(file.name).html() + '</span>';
 					html += '<div class="wiki-files-delete"></div>';
 					html += '</li>';
 				});
