@@ -47,6 +47,7 @@ defined('_HZEXEC_') or die();
             <input type="hidden" name="redirect_uri"
                 value="<?= $this->escape(Request::getString('redirect_uri', '')) ?>" />
             <input type="hidden" name="state" value="<?php echo $this->escape(Request::getCmd('state', '')); ?>" />
+            <?php echo Html::input('token'); ?>
         </form>
     </div>
 </section>

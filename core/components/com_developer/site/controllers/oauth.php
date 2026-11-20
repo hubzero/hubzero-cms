@@ -14,6 +14,7 @@ use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
 use OAuth2;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
@@ -95,6 +96,13 @@ class Oauth extends SiteController
      */
     public function doAuthorizeTask()
     {
+        // The answer must come from the consent form, by the signed-in user:
+        // without these another site could post it and get a code for them
+        if (User::isGuest()) {
+            App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
+        }
+        Request::checkToken();
+
         $request  = OAuth2\Request::createFromGlobals();
         $response = new OAuth2\Response();
         $is_authorized = ($request->request('authorize')) ? true : false;
