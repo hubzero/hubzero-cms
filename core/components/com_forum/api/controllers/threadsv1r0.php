@@ -59,11 +59,7 @@ class Threadsv1r0 extends ApiController
         ];
 
         if ($filters['scope'] == 'group') {
-            $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
-
-            if ($group && in_array(User::get('id'), $group->get('members'))) {
-                $filters['access'][] = 5; // Private
-            }
+            $filters['access'] = $this->groupForumAccess($filters['scope_id'], $filters['access']);
         }
 
         $model = new Manager($filters['scope'], $filters['scope_id']);
@@ -185,11 +181,7 @@ class Threadsv1r0 extends ApiController
         ];
 
         if ($filters['scope'] == 'group') {
-            $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
-
-            if ($group && in_array(User::get('id'), $group->get('members'))) {
-                $filters['access'][] = 5; // Private
-            }
+            $filters['access'] = $this->groupForumAccess($filters['scope_id'], $filters['access']);
         }
 
         $forum = new Manager($filters['scope'], $filters['scope_id']);
@@ -387,11 +379,7 @@ class Threadsv1r0 extends ApiController
         ];
 
         if ($filters['scope'] == 'group') {
-            $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
-
-            if ($group && in_array(User::get('id'), $group->get('members'))) {
-                $filters['access'][] = 5; // Private
-            }
+            $filters['access'] = $this->groupForumAccess($filters['scope_id'], $filters['access']);
         }
 
         $entries = Post::all()
@@ -941,11 +929,7 @@ class Threadsv1r0 extends ApiController
         // anyone who named the group's scope_id, and state= from the request
         // handed out unpublished and deleted posts as well.
         if ($filters['scope'] == 'group') {
-            $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
-
-            if ($group && in_array(User::get('id'), $group->get('members'))) {
-                $filters['access'][] = 5; // Private
-            }
+            $filters['access'] = $this->groupForumAccess($filters['scope_id'], $filters['access']);
         }
 
         $forum = new Manager($filters['scope'], $filters['scope_id']);
@@ -1115,5 +1099,42 @@ class Threadsv1r0 extends ApiController
             }
         }
         return $list;
+    }
+
+    /**
+     * The view levels a group's forum shows the caller
+     *
+     * Checks the group's own setting for its forum first (anyone, registered,
+     * members, nobody), as the group's Forum tab does: going by each post's
+     * access level alone, a members-only forum listed its threads to anyone.
+     *
+     * @param   integer             $groupId  Group ID
+     * @param   array<int, mixed>   $levels   View levels so far
+     * @return  array<int, mixed>
+     * @throws  Exception  403 when the group keeps its forum from the caller
+     */
+    protected function groupForumAccess($groupId, array $levels)
+    {
+        $group = \Hubzero\User\Group::getInstance($groupId);
+        if (!$group) {
+            return $levels;
+        }
+
+        $isMember = in_array(User::get('id'), (array) $group->get('members'));
+        $setting  = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
+
+        if (
+            $setting == 'nobody'
+            || ($setting == 'registered' && User::isGuest())
+            || ($setting == 'members' && !$isMember && !User::authorise('core.admin', 'com_groups'))
+        ) {
+            throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        if ($isMember) {
+            $levels[] = 5; // Private
+        }
+
+        return $levels;
     }
 }
