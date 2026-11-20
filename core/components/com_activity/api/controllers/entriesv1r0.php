@@ -244,7 +244,7 @@ class Entriesv1r0 extends ApiController
             $parent = Activity::oneOrNew($fields['parent']);
 
             if (!$parent->get('id')) {
-                throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_PARENT_NOT_FOUND'), 402);
+                throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_PARENT_NOT_FOUND'), 404);
             }
         }
 

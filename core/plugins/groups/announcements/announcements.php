@@ -933,36 +933,27 @@ class Announcements extends Plugin
             // the text was never read (see onGroupsApiCreate); a PUT body is not
             // in the 'post' hash, so read it from the request
             'content'      => trim((string) Request::getString('content', (string) $model->get('content'))),
-            'sticky'       => Request::getInt('sticky', $model->get('sticky', 0), 'post'),
-            'priority'     => Request::getInt('priority', $model->get('priority', 0), 'post'),
-            'publish_up'   => Request::getString('publish_up', $model->get('publish_up'), 'post'),
-            'publish_down' => Request::getString('publish_down', $model->get('publish_down'), 'post'),
+            // read like content: a PUT body is not in the 'post' hash, so these
+            // could never be changed
+            'sticky'       => Request::getInt('sticky', $model->get('sticky', 0)),
+            'priority'     => Request::getInt('priority', $model->get('priority', 0)),
+            'publish_up'   => $model->get('publish_up'),
+            'publish_down' => $model->get('publish_down'),
             'created'      => $model->get('created'),
             'created_by'   => $model->get('created_by'),
         ];
 
-        // Format publish up
-        if (
-            isset($fields['publish_up'])
-            && $fields['publish_up'] != ''
-            && $fields['publish_up'] != '0000-00-00 00:00:00'
-        ) {
-            $fields['publish_up'] = Date::of(
-                str_replace('@', '', $fields['publish_up']),
-                Config::get('offset'),
-            )->toSql();
-        }
-
-        // Format publish down
-        if (
-            isset($fields['publish_down'])
-            && $fields['publish_down'] != ''
-            && $fields['publish_down'] != '0000-00-00 00:00:00'
-        ) {
-            $fields['publish_down'] = Date::of(
-                str_replace('@', '', $fields['publish_down']),
-                Config::get('offset'),
-            )->toSql();
+        // A date the caller sends is in the hub's time zone; the stored one is
+        // already UTC. (Every update converted the stored value again, moving
+        // the announcement by the zone's offset each time: 18:04 became 23:04.)
+        foreach (['publish_up', 'publish_down'] as $field) {
+            $sent = Request::getVar($field, null);
+            if (!is_string($sent)) {
+                continue;
+            }
+            $fields[$field] = ($sent == '' || $sent == '0000-00-00 00:00:00')
+                ? null
+                : Date::of(str_replace('@', '', $sent), Config::get('offset'))->toSql();
         }
 
         // Bind data
