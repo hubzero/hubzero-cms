@@ -1345,8 +1345,8 @@ class Profiles extends SiteController
             $message .= "\r\n";
             $message .= "Email: " . $profile->get('email') . "\r\n";
             $message .= "Username: " . $profile->get('username') . "\r\n\r\n";
-            $message .= 'Has requested an increases in their ' . $sitename;
-            $message .= $resourcemessage . "\r\n\r\n";
+            // (the session message has no leading space, the others do: one each)
+            $message .= 'Has requested an increase in their ' . $sitename . ' ' . ltrim($resourcemessage) . "\r\n\r\n";
             $message .= "Reason: ";
             if (empty($request)) {
                 $message .= "NONE GIVEN\r\n\r\n";
@@ -1381,19 +1381,15 @@ class Profiles extends SiteController
                 App::abort(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
             }
 
-            // Output the view
-            $this->view
-                ->set('resourcemessage', $resourcemessage)
-                ->setLayout('success')
-                ->display();
-            return;
+            // Back to the limits, saying so (the 'success' layout this rendered
+            // never existed: the page failed after the mail had gone)
+            App::redirect(
+                Route::url($profile->link() . '&task=raiselimit'),
+                Lang::txt('COM_MEMBERS_RAISELIMIT_REQUEST_SENT'),
+                'passed',
+            );
         } elseif (User::authorise('core.manage', $this->option) && !empty($resourcemessage)) {
-            // Output the view
-            $this->view
-                ->set('resourcemessage', $resourcemessage)
-                ->setLayout('success')
-                ->display();
-            return;
+            App::redirect(Route::url($profile->link() . '&task=raiselimit'), $resourcemessage, 'passed');
         }
 
         // Output the view: the table of limits to ask more of (with no
