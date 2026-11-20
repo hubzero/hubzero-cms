@@ -38,6 +38,8 @@ class ShibTestFixture
 		$app['notification'] = new ShibTestNotify();
 		$app['router']       = new ShibTestRouter();
 		$app['document']     = new ShibTestDocument();
+		// Log::error() and friends: accepts any call, records nothing
+		$app['log']          = new ShibTestDocument();
 		$app['template']     = (object) array('template' => 'kameleon', 'path' => PATH_CORE . '/templates/kameleon', 'protected' => 1);
 		$app['component']    = new ShibTestComponents(array(
 			'com_members' => array('allowUserRegistration' => 1, 'guest_usergroup' => 1, 'new_usertype' => 2)
@@ -93,11 +95,15 @@ class ShibTestDocument
 class ShibTestRedirect extends Exception
 {
 	public $url;
+	public $text;
+	public $type;
 
-	public function __construct($url)
+	public function __construct($url, $text = null, $type = null)
 	{
 		parent::__construct('redirect to ' . $url);
-		$this->url = $url;
+		$this->url  = $url;
+		$this->text = $text;
+		$this->type = $type;
 	}
 }
 
@@ -109,7 +115,7 @@ class ShibTestApplication extends \Hubzero\Base\Application
 {
 	public function redirect($url, $message = null, $type = 'success')
 	{
-		throw new ShibTestRedirect((string) $url);
+		throw new ShibTestRedirect((string) $url, $message, $type);
 	}
 }
 
