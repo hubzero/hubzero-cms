@@ -1054,9 +1054,10 @@ class ApiController implements ControllerInterface
 
         $model = $this->modelClass;
 
-        // Make sure the class exists
+        // Without a model the generic task is no endpoint of this controller:
+        // a request for it is a missing page, not a server failure
         if (!class_exists($model)) {
-            App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
+            App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
         }
 
         // The generic tasks that use this read the table's structure and keys

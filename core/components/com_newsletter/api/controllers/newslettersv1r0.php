@@ -22,7 +22,7 @@ class Newslettersv1r0 extends ApiController
      * Return data for the current newsletter
      *
      * @apiMethod GET
-     * @apiUri    /newsletters/current
+     * @apiUri    /newsletter/current
      * @return    void
      */
     public function currentTask()
@@ -46,7 +46,7 @@ class Newslettersv1r0 extends ApiController
      * Return data for newsletters
      *
      * @apiMethod GET
-     * @apiUri    /newsletters/list
+     * @apiUri    /newsletter/list
      * @apiParameter {
      *      "name":          "limit",
      *      "description":   "Number of result to return.",
@@ -85,7 +85,7 @@ class Newslettersv1r0 extends ApiController
      * Return data for past newsletters
      *
      * @apiMethod GET
-     * @apiUri    /newsletters/archive
+     * @apiUri    /newsletter/archive
      * @apiParameter {
      *      "name":          "limit",
      *      "description":   "Number of result to return.",

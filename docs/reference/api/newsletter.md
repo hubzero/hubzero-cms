@@ -9,11 +9,11 @@ Endpoints under `/api/newsletter`, from the `com_newsletter` API controllers. Au
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | [`/newsletters/archive`](#get-newsletters-archive) | Return data for past newsletters |
-| `GET` | [`/newsletters/current`](#get-newsletters-current) | Return data for the current newsletter |
-| `GET` | [`/newsletters/list`](#get-newsletters-list) | Return data for newsletters |
+| `GET` | [`/newsletter/archive`](#get-newsletter-archive) | Return data for past newsletters |
+| `GET` | [`/newsletter/current`](#get-newsletter-current) | Return data for the current newsletter |
+| `GET` | [`/newsletter/list`](#get-newsletter-list) | Return data for newsletters |
 
-## GET /newsletters/archive
+## GET /newsletter/archive
 
 Return data for past newsletters
 
@@ -24,13 +24,13 @@ API version 1.0, task `archive` in [`newslettersv1r0.php`](../../../core/compone
 | `limit` | integer | no | 5 | Number of result to return. |
 | `start` | integer | no | 0 | Number of where to start returning results. |
 
-## GET /newsletters/current
+## GET /newsletter/current
 
 Return data for the current newsletter
 
 API version 1.0, task `current` in [`newslettersv1r0.php`](../../../core/components/com_newsletter/api/controllers/newslettersv1r0.php#L21).
 
-## GET /newsletters/list
+## GET /newsletter/list
 
 Return data for newsletters
 

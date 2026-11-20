@@ -22,7 +22,7 @@ class Eventsv1r0 extends ApiController
      * List active events
      *
      * @apiMethod GET
-     * @apiUri    /calendar/list
+     * @apiUri    /events/list
      * @apiParameter {
      *      "name":          "limit",
      *      "description":   "Number of result to return.",

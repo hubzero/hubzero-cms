@@ -11,7 +11,7 @@ Events in the `members` group. A plugin in `core/plugins/members/` receives an e
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:167`](../../../core/components/com_members/admin/controllers/plugins.php#L167)
+- [`core/components/com_members/admin/controllers/plugins.php:168`](../../../core/components/com_members/admin/controllers/plugins.php#L168)
 
 Listeners:
 
@@ -37,7 +37,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:195`](../../../core/components/com_members/admin/controllers/plugins.php#L195) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
+- [`core/components/com_members/admin/controllers/plugins.php:196`](../../../core/components/com_members/admin/controllers/plugins.php#L196) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
 
 Listeners:
 

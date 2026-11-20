@@ -11,7 +11,7 @@ Events in the `resources` group. A plugin in `core/plugins/resources/` receives 
 
 Fired from:
 
-- [`core/components/com_resources/admin/controllers/plugins.php:158`](../../../core/components/com_resources/admin/controllers/plugins.php#L158)
+- [`core/components/com_resources/admin/controllers/plugins.php:159`](../../../core/components/com_resources/admin/controllers/plugins.php#L159)
 
 Listeners:
 
@@ -21,7 +21,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/admin/controllers/plugins.php:186`](../../../core/components/com_resources/admin/controllers/plugins.php#L186) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
+- [`core/components/com_resources/admin/controllers/plugins.php:187`](../../../core/components/com_resources/admin/controllers/plugins.php#L187) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
 
 Listeners:
 

@@ -9,10 +9,10 @@ Endpoints under `/api/events`, from the `com_events` API controllers. Authentica
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | [`/calendar/list`](#get-calendar-list) | List active events |
+| `GET` | [`/events/list`](#get-events-list) | List active events |
 | `GET` | [`/events/{id}`](#get-events-id) | Get user profile info |
 
-## GET /calendar/list
+## GET /events/list
 
 List active events
 

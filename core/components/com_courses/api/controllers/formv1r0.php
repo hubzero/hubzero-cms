@@ -79,7 +79,7 @@ class Formv1r0 extends Base
 
         // Add silly simple security check -- before the existence test, so an
         // unauthorised caller cannot probe which files exist
-        $token      = Request::getString('token', false);
+        $token      = Request::getString('token', '');
         $session_id = App::get('session')->getId();
         $secret     = Config::get('secret');
         $hash       = hash('sha256', $session_id . ':' . $secret);

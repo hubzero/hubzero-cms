@@ -51,18 +51,37 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
+        // Threads answer the documented routes; likes and users' categories
+        // have controllers of their own. This parsed every first segment as an
+        // ID and never named a controller, so each route was "Component not
+        // found":
+        //  /forum              (POST: create a thread)
+        //  /forum/list | sections | categories
+        //  /forum/{thread}
+        //  /forum/likes/list
+        //  /forum/userscategories/create | destroy
         $vars = [];
+
+        $vars['controller'] = 'threads';
 
         if (empty($segments)) {
             return $vars;
         }
 
-        if (isset($segments[0])) {
-            $vars['id'] = $segments[0];
+        if (in_array($segments[0], ['likes', 'userscategories'])) {
+            $vars['controller'] = $segments[0];
+            if (isset($segments[1])) {
+                $vars['task'] = $segments[1];
+            }
+
+            return $vars;
         }
 
-        if (isset($segments[1])) {
-            $vars['task'] = $segments[1];
+        if (is_numeric($segments[0])) {
+            $vars['thread'] = $segments[0];
+            $vars['task'] = $segments[1] ?? 'read';
+        } else {
+            $vars['task'] = $segments[0];
         }
 
         return $vars;
