@@ -220,9 +220,15 @@ $rows = $this->archive
                                         </dd>
                                     <?php } ?>
                                     <?php
+                                    // whom the edit task lets in: an editor or manager, or the
+                                    // author when they may write entries at all
                                     $isOwnerOrAdmin = (
-                                        User::get('id') == $row->get('created_by')
-                                        || User::authorise('core.manage', $this->option)
+                                        User::authorise('core.manage', $this->option)
+                                        || User::authorise('core.edit', $this->option)
+                                        || (
+                                            User::get('id') == $row->get('created_by')
+                                            && User::authorise('core.create', $this->option)
+                                        )
                                     );
                                     if ($isOwnerOrAdmin) {
                                         ?>

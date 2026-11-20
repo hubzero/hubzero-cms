@@ -206,6 +206,22 @@ class Entries extends SiteController
             $entry = Entry::oneOrNew(Request::getInt('entry', 0));
         }
 
+        // As saveTask() decides: an existing entry is a site entry, opened by its
+        // author or an editor/manager. Creating entries let anyone with
+        // core.create open (and read) any entry here, a draft included.
+        if (!$entry->isNew()) {
+            if ($entry->get('scope') != 'site') {
+                App::abort(404, Lang::txt('COM_BLOG_NOT_FOUND'));
+            }
+            if (
+                $entry->get('created_by') != User::get('id')
+                && !$this->config->get('access-edit-entry')
+                && !$this->config->get('access-manage-entry')
+            ) {
+                App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+            }
+        }
+
         if ($entry->isNew()) {
             $entry->set('allow_comments', 1);
             $entry->set('state', Entry::STATE_PUBLISHED);

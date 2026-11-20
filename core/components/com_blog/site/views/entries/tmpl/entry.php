@@ -137,8 +137,15 @@ $first = $this->archive
                     </dd>
                 <?php } ?>
                 <?php
+                // whom the edit task lets in: an editor or manager, or the author
+                // when they may write entries at all
                 if (
-                    User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)
+                    User::authorise('core.manage', $this->option)
+                    || User::authorise('core.edit', $this->option)
+                    || (
+                        User::get('id') == $this->row->get('created_by')
+                        && User::authorise('core.create', $this->option)
+                    )
                 ) { ?>
                     <dd class="state <?php echo strtolower($this->row->visibility('text')); ?>">
                         <?php echo $this->row->visibility('text'); ?>
