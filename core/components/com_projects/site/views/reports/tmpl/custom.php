@@ -33,7 +33,7 @@ $to     = Request::getString('todate', Date::of('now')->toLocal('Y-m'));
 $filter = Request::getString('searchterm', '');
 ?>
 <header id="content-header" class="reports">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section custom-reports" id="custom-reports">

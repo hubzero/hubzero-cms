@@ -176,7 +176,7 @@ $this->css();
                             Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL');
 ?></option>
                     <?php foreach ($this->licenses as $license) { ?>
-                        <option value="<?php echo $license->get('name'); ?>"<?php
+                        <option value="<?php echo $this->escape($license->get('name')); ?>"<?php
                                 echo
                                 ($this->filters['license']
                                 == $license->get('name'))

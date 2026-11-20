@@ -38,7 +38,7 @@ $author = $boost->getAuthor();
             <td>
                 <a href="<?php echo $author->link(); ?>"
                     class="meta-link">
-                    <?php echo $author->get('name'); ?>
+                    <?php echo $this->escape($author->get('name')); ?>
                 </a>
             </td>
         </tr>

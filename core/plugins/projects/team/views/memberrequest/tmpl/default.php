@@ -40,7 +40,7 @@ $i = 1;
                 <p class="anote"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST_NOTE'); ?></p>
                 <p><?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST_PROMPT'); ?></p>
                 <p class="prominent"> 
-                    <?php echo $this->owner->user->name; ?>
+                    <?php echo $this->escape($this->owner->user->name); ?>
                 </p>
                 <label>Reason:</label>
                 <textarea name="message"></textarea>

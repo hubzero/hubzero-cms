@@ -47,7 +47,8 @@ $this
                 <?php if (count($tools) > 0) : ?>
                     <?php foreach ($tools as $tool) : ?>
                         <?php $sel = $tool->id == $this->row->tool_id ? ' selected="selected"' : ''; ?>
-                        <option value="<?php echo $tool->id; ?>"<?php echo $sel; ?>><?php echo $tool->title; ?></option>
+                        <option value="<?php echo $tool->id; ?>"<?php echo $sel; ?>>
+                            <?php echo $this->escape($tool->title); ?></option>
                     <?php endforeach; ?>
                 <?php else : ?>
                     <option value=""><?php echo Lang::txt('COM_TOOLS_HANDLERS_NO_TOOLS'); ?></option>

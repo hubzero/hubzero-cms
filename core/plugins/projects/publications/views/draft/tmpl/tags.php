@@ -101,7 +101,7 @@ $categoryChecked = function ($value) use ($view) {
                         <input type="radio"
                             name="pubtype"
                             value="<?= $cat->id ?>" <?= $categoryChecked($cat->id) ?> class="radio" />
-                        <?php echo $cat->name; ?>
+                        <?php echo $this->escape($cat->name); ?>
                         <span><?php echo $cat->description; ?></span>
                     </div>
             <?php } ?>

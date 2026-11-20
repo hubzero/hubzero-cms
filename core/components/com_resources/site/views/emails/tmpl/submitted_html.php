@@ -189,7 +189,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->resource->li
                                     border="0">
                                     <div style="line-height: 1.6em; margin: 1em 0;
                                          padding: 0; text-align: left;">
-                                        <b><?php echo $this->resource->title; ?></b>
+                                        <b><?php echo $this->escape($this->resource->title); ?></b>
                                     </div>
                                 </td>
                             </tr>

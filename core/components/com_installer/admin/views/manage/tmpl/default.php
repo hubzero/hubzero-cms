@@ -259,7 +259,7 @@ $saveOrder = $listOrder == 'ordering';
                     <td>
                         <?php $tipTitle = htmlspecialchars($item->get('name') . '::' . $item->get('description')); ?>
                         <span class="bold hasTip" title="<?php echo $tipTitle; ?>">
-                            <?php echo $item->get('name'); ?>
+                            <?php echo $this->escape($item->get('name')); ?>
                         </span>
                     </td>
                     <td class="priority-2 center">

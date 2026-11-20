@@ -28,9 +28,9 @@ $item_heading = $params->get('item_heading', 'h4');
     <<?php echo $item_heading; ?> class="newsflash-title<?php echo $params->get('moduleclass_sfx'); ?>">
     <?php if ($params->get('link_titles') && $item->link != '') : ?>
         <a href="<?php echo $item->link; ?>">
-            <?php echo $item->title; ?></a>
+            <?php echo $this->escape($item->title); ?></a>
     <?php else : ?>
-        <?php echo $item->title; ?>
+        <?php echo $this->escape($item->title); ?>
     <?php endif; ?>
     </<?php echo $item_heading; ?>>
 

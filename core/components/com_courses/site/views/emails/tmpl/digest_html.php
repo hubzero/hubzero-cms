@@ -78,7 +78,7 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
         <td width="565" style="padding: 14px; border-bottom: 1px solid #CCCCCC;">
             <span style="font-weight: bold; font-size:14px;">Course Update:</span>
             <br />
-            <span><?php echo $this->course->get('title'); ?></span>
+            <span><?php echo $this->escape($this->course->get('title')); ?></span>
         </td>
     </tr>
     <tr>

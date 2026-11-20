@@ -120,7 +120,8 @@ $emailnewSelected = function ($value) use ($view) {
                                         continue;
                                     } ?>
                                     <option selected="selected"
-                                        value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                        value="<?= $importHook->get('id') ?>">
+                                        <?= $this->escape($importHook->get('name')) ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
@@ -131,7 +132,8 @@ $emailnewSelected = function ($value) use ($view) {
                                 ) {
                                     continue;
                                 } ?>
-                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
+                                <option value="<?= $hook->get('id') ?>">
+                                    <?= $this->escape($hook->get('name')) ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">
@@ -157,7 +159,8 @@ $emailnewSelected = function ($value) use ($view) {
                                     continue;
                                 } ?>
                                 <option selected="selected"
-                                    value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                    value="<?= $importHook->get('id') ?>">
+                                    <?= $this->escape($importHook->get('name')) ?></option>
                             <?php endforeach; ?>
 
                             <?php foreach ($this->hooks as $hook) : ?>
@@ -165,7 +168,8 @@ $emailnewSelected = function ($value) use ($view) {
                                 if ($hook->get('event') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) {
                                     continue;
                                 } ?>
-                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
+                                <option value="<?= $hook->get('id') ?>">
+                                    <?= $this->escape($hook->get('name')) ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">
@@ -191,7 +195,8 @@ $emailnewSelected = function ($value) use ($view) {
                                     continue;
                                 } ?>
                                 <option selected="selected"
-                                    value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                    value="<?= $importHook->get('id') ?>">
+                                    <?= $this->escape($importHook->get('name')) ?></option>
                             <?php endforeach; ?>
                             <?php foreach ($this->hooks as $hook) : ?>
                                 <?php
@@ -201,7 +206,8 @@ $emailnewSelected = function ($value) use ($view) {
                                 ) {
                                     continue;
                                 } ?>
-                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
+                                <option value="<?= $hook->get('id') ?>">
+                                    <?= $this->escape($hook->get('name')) ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">

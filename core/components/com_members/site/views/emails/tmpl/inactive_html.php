@@ -123,7 +123,7 @@ $this->css($css);
     <tbody>
         <tr>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                <p>Hello <?php echo $this->user->name; ?>,</p>
+                <p>Hello <?php echo $this->escape($this->user->name); ?>,</p>
 
                 <p>
                     A request has been made to reset your <?= $this->config->get('sitename') ?> account password.

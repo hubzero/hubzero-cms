@@ -40,7 +40,7 @@ $this
 <div id="project-wrap">
     <section class="main section">
         <header id="content-header">
-            <h2><?php echo $this->title; ?></h2>
+            <h2><?php echo $this->escape($this->title); ?></h2>
         </header>
 
         <h3 class="prov-header"><a

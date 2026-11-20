@@ -139,7 +139,7 @@ $accept = $base . '/'
                                 ?>
                                 <th style="<?= $thStyle ?>" align="right"><?= Lang::txt('Invited by:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <?php echo $this->user->get('name'); ?>
+                                    <?php echo $this->escape($this->user->get('name')); ?>
                                 </td>
                             </tr>
                         </tbody>

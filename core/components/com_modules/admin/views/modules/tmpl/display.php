@@ -410,7 +410,7 @@ $saveOrder = $listOrder == 'ordering';
                     <?php endif; ?>
                 </td>
                 <td class="priority-3 left">
-                    <?php echo $item->name; ?>
+                    <?php echo $this->escape($item->name); ?>
                 </td>
                 <td class="priority-4 center">
                     <?php

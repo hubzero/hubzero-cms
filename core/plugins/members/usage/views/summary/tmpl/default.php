@@ -137,7 +137,7 @@ $this->css('usage', 'com_usage');
                     <?php
                     $linkUrl = Route::url('index.php?option=com_resources&id=' . $row->id);
                     ?>
-                    <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $row->title ?></a></td>
+                    <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $this->escape($row->title) ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
                     $linkText = number_format((float) $user_count_12);
@@ -266,7 +266,8 @@ $this->css('usage', 'com_usage');
                     $linkUrl = Route::url('index.php?option=com_resources&id=' . $row->id);
                     ?>
                     <td class="textual-data">
-                        <a href="<?= $linkUrl ?>"><?= $row->title ?></a> <span class="small"><?= $row->type ?></span>
+                        <a href="<?= $linkUrl ?>"><?= $this->escape($row->title) ?></a>
+                        <span class="small"><?= $row->type ?></span>
                     </td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
@@ -296,7 +297,7 @@ $this->css('usage', 'com_usage');
                             $linkUrl = Route::url('index.php?option=com_resources&id=' . $rw->id);
                             ?>
                             <td class="highlight textual-data"><span class="child-connector">|-</span> <a
-                                href="<?= $linkUrl ?>"><?= $rw->title ?></a> <span
+                                href="<?= $linkUrl ?>"><?= $this->escape($rw->title) ?></a> <span
                                 class="small"><?= $rw->type ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>

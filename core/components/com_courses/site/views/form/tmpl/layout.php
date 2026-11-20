@@ -49,7 +49,7 @@ $this
                     id="title"
                     value="<?php echo str_replace('"', '&quot;', $this->title ?? ''); ?>" />
             <?php else : ?>
-                <?php echo $this->title; ?>
+                <?php echo $this->escape($this->title); ?>
             <?php endif; ?>
                 <span>
             <p id="title-error" class="error"></p>

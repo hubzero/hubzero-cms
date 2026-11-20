@@ -469,7 +469,7 @@ $progress_timeline .= '</div>';
     <div class="clear"></div>
 
     <p class="info grading-policy-explanation">
-        <?php echo $gradePolicy->get('description'); ?>
+        <?php echo $this->escape($gradePolicy->get('description')); ?>
     </p>
 
     <div class="units">

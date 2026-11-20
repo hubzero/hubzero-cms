@@ -80,7 +80,7 @@ $this->js();
                                     ? ' selected="selected"'
                                     : ''; ?>
                                 <option value="<?php echo $collection->id; ?>"<?php echo $selected; ?>>
-                                    <?php echo $collection->name; ?>
+                                    <?php echo $this->escape($collection->name); ?>
                                 </option>
                             <?php endforeach; ?>
                         <?php else : ?>

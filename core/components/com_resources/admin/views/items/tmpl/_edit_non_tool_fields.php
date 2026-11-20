@@ -74,7 +74,7 @@ $time = $this->time;
                     Lang::txt('COM_RESOURCES_NONE');
 ?></option>
             <?php foreach ($this->licenses as $license) { ?>
-                <option value="<?php echo $license->get('name'); ?>"<?php
+                <option value="<?php echo $this->escape($license->get('name')); ?>"<?php
                         echo
                         ($this->row->get(
                             'license',

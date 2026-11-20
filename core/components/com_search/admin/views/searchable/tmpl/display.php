@@ -124,7 +124,7 @@ $sort = Request::getString('filter_order', 'id');
                         );
                     ?>
                     <a href="<?php echo $editUrl; ?>">
-                        <?php echo $component->title; ?>
+                        <?php echo $this->escape($component->title); ?>
                     </a>
                 </td>
                 <td>

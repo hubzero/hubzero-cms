@@ -163,7 +163,7 @@ tooltip: true,
                         alt=""/>
                     <span class="h-title">
                         <a href="<?php echo $pubUrl; ?>">
-                            <?php echo $stat->title; ?>
+                            <?php echo $this->escape($stat->title); ?>
                         </a>
                     </span>
                     <span class="block mini faded">
@@ -172,7 +172,7 @@ tooltip: true,
                             |
                             <?php echo $fromProject; ?>
                             <a href="<?php echo $projectUrl; ?>">
-                                <?php echo $projectTitle; ?>
+                                <?php echo $this->escape($projectTitle); ?>
                             </a>
                         </span>
                     </span>

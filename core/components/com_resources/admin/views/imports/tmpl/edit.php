@@ -184,7 +184,8 @@ $titlematchSelected = function ($value) use ($view) {
 ) {
                                 continue;
                             } ?>
-                            <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                            <option value="<?php echo $hook->get('id'); ?>">
+                                <?php echo $this->escape($hook->get('name')); ?></option>
                         <?php endforeach; ?>
                     </select>
                     <a class="hook-up" href="#">
@@ -218,7 +219,8 @@ $titlematchSelected = function ($value) use ($view) {
                             <?php if ($hook->get('type') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) {
                                 continue;
                             } ?>
-                            <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                            <option value="<?php echo $hook->get('id'); ?>">
+                                <?php echo $this->escape($hook->get('name')); ?></option>
                         <?php endforeach; ?>
                     </select>
                     <a class="hook-up" href="#">
@@ -254,7 +256,8 @@ $titlematchSelected = function ($value) use ($view) {
 ) {
                                 continue;
                             } ?>
-                            <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                            <option value="<?php echo $hook->get('id'); ?>">
+                                <?php echo $this->escape($hook->get('name')); ?></option>
                         <?php endforeach; ?>
                     </select>
                     <a class="hook-up" href="#">

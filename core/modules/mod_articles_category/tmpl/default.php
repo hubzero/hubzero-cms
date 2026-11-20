@@ -39,14 +39,14 @@ defined('_HZEXEC_') or die;
                             <a class="mod-articles-category-title <?php echo $item->active; ?>"
                                 href="/<?php echo $item->link; ?>"
                             >
-                            <?php echo $item->title; ?>
+                            <?php echo $this->escape($item->title); ?>
                             <?php if ($item->displayHits) : ?>
                                 <span class="mod-articles-category-hits">
                                     (<?php echo $item->displayHits; ?>)
                                 </span>
                             <?php endif; ?></a>
                         <?php else : ?>
-                            <?php echo $item->title; ?>
+                            <?php echo $this->escape($item->title); ?>
                             <?php if ($item->displayHits) : ?>
                                 <span class="mod-articles-category-hits">
                                     (<?php echo $item->displayHits; ?>)
@@ -117,13 +117,13 @@ defined('_HZEXEC_') or die;
         <h<?php echo $item_heading; ?>>
         <?php if ($params->get('link_titles') == 1) : ?>
             <a class="mod-articles-category-title <?php echo $item->active; ?>" href="/<?php echo $item->link; ?>">
-                <?php echo $item->title; ?>
+                <?php echo $this->escape($item->title); ?>
                 <?php if ($item->displayHits) : ?>
                     <span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
                 <?php endif; ?>
             </a>
         <?php else : ?>
-            <?php echo $item->title; ?>
+            <?php echo $this->escape($item->title); ?>
             <?php if ($item->displayHits) : ?>
                 <span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
             <?php endif; ?>

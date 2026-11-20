@@ -108,7 +108,7 @@ $thStyle = 'font-weight: normal;'
 ?>
                 <th style="<?php echo $thStyle; ?>"
                     align="left">
-                    <strong><?php echo $group->get('description'); ?></strong>,
+                    <strong><?php echo $this->escape($group->get('description')); ?></strong>,
                     <a href="<?php echo $groupLink; ?>"><?php echo $groupLink; ?></a>
                 </th>
             </tr>

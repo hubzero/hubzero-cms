@@ -539,7 +539,7 @@ if ($secondaries->count() > 0) {
                                                 <td class="key">
                                                     <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:
                                                 </td>
-                                                <td><?php echo $secondary->title; ?></td>
+                                                <td><?php echo $this->escape($secondary->title); ?></td>
                                             </tr>
                                             <tr>
                                                 <td class="key">

@@ -46,7 +46,7 @@ $filterbySelected = function ($value) use ($view) {
 };
 ?>
 <header id="content-header">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 
     <?php if (User::authorise('core.create', $this->option)) { ?>
         <div id="content-header-extra">

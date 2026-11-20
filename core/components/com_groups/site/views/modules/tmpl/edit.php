@@ -193,7 +193,7 @@ foreach ($menus as $menu) {
                                     ? 'checked="checked"'
                                     : ''; ?>
                                 <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]"
-                                    value="<?= $page->get('id') ?>" /> <?= $page->get('title') ?>
+                                    value="<?= $page->get('id') ?>" /> <?= $this->escape($page->get('title')) ?>
                             </label>
                         <?php endforeach; ?>
                     </fieldset>

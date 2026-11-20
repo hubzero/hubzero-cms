@@ -67,7 +67,7 @@ $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
                                 <?php foreach ($zones as $zone) : ?>
                                     <?php $sel = ($zone->id == $this->row->zone_id) ? 'selected="selected"' : ''; ?>
                                     <option value="<?php echo $zone->id; ?>" <?php echo $sel; ?>>
-                                        <?php echo $zone->title; ?>
+                                        <?php echo $this->escape($zone->title); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

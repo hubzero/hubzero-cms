@@ -194,7 +194,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                                     cellspacing="0"
                                     border="0">
                                     <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
-                                        <?php echo $this->wish->get('subject'); ?>
+                                        <?php echo $this->escape($this->wish->get('subject')); ?>
                                     </div>
                                 </td>
                             </tr>

@@ -102,9 +102,9 @@ if ($this->rows) {
             <tr>
                 <td>
                     <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
-                        value="<?php echo $row->name; ?>" class="checkbox-toggle" />
+                        value="<?php echo $this->escape($row->name); ?>" class="checkbox-toggle" />
                     <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
-                        <?php echo $row->name; ?></label>
+                        <?php echo $this->escape($row->name); ?></label>
                 </td>
                 <td>
                     <a href="<?php echo $editUrl; ?>">

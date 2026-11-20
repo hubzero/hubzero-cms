@@ -136,7 +136,7 @@ $todoContent = $this->row->get('details')
                                         : '';
                                     ?>
                                 <option value="<?php echo $member->userid; ?>"
-                                    class="nameopt" <?= $selectedAttr ?>><?= $member->name ?></option>
+                                    class="nameopt" <?= $selectedAttr ?>><?= $this->escape($member->name) ?></option>
                                 <?php } ?>
                             <?php } ?>
                             </select>

@@ -172,9 +172,9 @@ if (
             <div class="video-meta">
                 <h3>
                     <?php if (trim($lecture->get('title')) !== '--') : ?>
-                        <?php echo $lecture->get('title'); ?>
+                        <?php echo $this->escape($lecture->get('title')); ?>
                     <?php else : ?>
-                        <?php echo $used_title; ?>
+                        <?php echo $this->escape($used_title); ?>
                     <?php endif; ?>
                 </h3>
 

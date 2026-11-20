@@ -332,7 +332,7 @@ class Impact extends Plugin
             $html .= ' <span>|</span> Project: ';
             $html .= '<a href="';
             $html .= Route::url($url) . '">';
-            $html .= $row->project_title;
+            $html .= htmlspecialchars((string) $row->project_title, ENT_COMPAT, 'UTF-8');
             $html .= '</a>';
             $html .= "\n";
         }

@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die;
     <?php foreach ($list as $item) : ?>
         <li>
             <a href="<?php echo $item->link; ?>">
-                <?php echo $item->title; ?>
+                <?php echo $this->escape($item->title); ?>
             </a>
         </li>
     <?php endforeach; ?>

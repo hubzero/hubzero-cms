@@ -256,7 +256,7 @@ $contentTableStyle = 'background-color: ' . $backgroundColor . ';'
                         <a
                             href="<?php echo $link; ?>"
                             style="<?php echo $titleStyle; ?>"
-                        ><?php echo $stat->title; ?></a>
+                        ><?php echo $this->escape($stat->title); ?></a>
                     </p>
 
                     <table cellpadding="0" cellspacing="0" border="0" style="font-size: 12px; padding: 0; margin: 0;">

@@ -50,7 +50,7 @@ $p_url = Route::url($route . '&active=team');
         <input type="hidden" name="task" value="submit" />
         <?php } ?>
         <label for="from"><span class="leftshift"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_FROM')); ?>:</span>
-        <input type="text" name="from" value="<?php echo $this->name; ?>" maxlength="100" /></label>
+        <input type="text" name="from" value="<?php echo $this->escape($this->name); ?>" maxlength="100" /></label>
         <label for="to"><span class="leftshift"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TO')); ?>:
             <span class="hint block mini"><?= Lang::txt('PLG_PROJECTS_TEAM_COMMA_SEPARATED_LIST') ?></span></span>
             <textarea name="to" cols="4" rows="4" class="emailstring" ></textarea>

@@ -90,7 +90,7 @@ if ($this->project->isProvisioned()) {
         <tr>
             <td align="left" valign="bottom"
                 style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-            <?php echo $this->subject; ?>
+            <?php echo $this->escape($this->subject); ?>
             </td>
         </tr>
     </tbody>

@@ -138,7 +138,7 @@ defined('_HZEXEC_') or die();
                                 <td
                                     style="text-align: left; padding: 0 0.5em;"
                                     width="100%"
-                                    align="left"><?php echo $this->user->get('name'); ?></td>
+                                    align="left"><?php echo $this->escape($this->user->get('name')); ?></td>
                             </tr>
                             <tr>
                                 <th

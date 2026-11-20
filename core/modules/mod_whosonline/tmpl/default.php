@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
             <tbody>
                 <?php foreach ($this->loggedInList as $loggedin) : ?>
                     <tr>
-                        <td><?php echo $loggedin->get('name'); ?></td>
+                        <td><?php echo $this->escape($loggedin->get('name')); ?></td>
                         <td>
                             <?php
                             $memberUrl = Route::url(

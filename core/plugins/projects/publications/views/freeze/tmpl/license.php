@@ -47,7 +47,7 @@ $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
         <div class="chosenitem">
             <p class="item-title">
                 <?= '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />' ?>
-                <?php echo $this->license->title; ?>
+                <?php echo $this->escape($this->license->title); ?>
                 <span class="item-details"><?php echo $info; ?></span>
             </p>
             <?php if ($text) { ?>

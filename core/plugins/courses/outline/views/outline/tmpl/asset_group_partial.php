@@ -60,10 +60,11 @@ defined('_HZEXEC_') or die();
         </form>
     </div>
     <div class="asset-group-item-container">
-        <div class="asset-group-item-title title toggle-editable"><?php echo $this->ag->get('title'); ?></div>
+        <?php $agTitle = $this->escape($this->ag->get('title')); ?>
+        <div class="asset-group-item-title title toggle-editable"><?php echo $agTitle; ?></div>
         <div class="title-edit">
             <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
-                <input class="title-text" name="title" type="text" value="<?php echo $this->ag->get('title'); ?>" />
+                <input class="title-text" name="title" type="text" value="<?php echo $agTitle; ?>" />
                 <input class="assetgroup-title-save" type="submit" value="Save" />
                 <input class="assetgroup-title-reset" type="reset" value="Cancel" />
                 <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />

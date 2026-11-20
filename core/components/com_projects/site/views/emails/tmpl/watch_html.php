@@ -68,7 +68,7 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                 . 'font-size: 1.5em;';
             ?>
             <td align="left" valign="bottom" style="<?= $tdStyle ?>" colspan="2">
-                <?php echo $this->subject; ?>
+                <?php echo $this->escape($this->subject); ?>
             </td>
         </tr>
     </tbody>

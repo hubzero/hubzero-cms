@@ -55,7 +55,7 @@ $pubParams = $this->publication->params;
             <?php
             $titleText = $item->icon ? '<img src="' . $icon . '" alt="' . htmlentities($item->title) . '" />' : '';
             ?>
-            <?= $titleText ?><?= $item->title ?>
+            <?= $titleText ?><?= $this->escape($item->title) ?>
             </span>
             <span class="item-fullinfo">
                 <?php echo $info; ?>

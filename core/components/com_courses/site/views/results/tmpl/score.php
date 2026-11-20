@@ -26,7 +26,7 @@ $record = $resp->getAnswers();
 ?>
 
 <header id="content-header">
-    <h2>Results: <?php echo $this->title; ?></h2>
+    <h2>Results: <?php echo $this->escape($this->title); ?></h2>
 
     <div id="content-header-extra">
         <p>

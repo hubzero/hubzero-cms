@@ -357,7 +357,7 @@ foreach ($this->blocks as $b) {
                                 name="curation[blocks][<?php echo $blockId; ?>][title]"
                                 id="field-block-<?php echo $blockId; ?>-title"
                                 maxlength="255"
-                                value="<?php echo $block->title;  ?>"
+                                value="<?php echo $this->escape($block->title); ?>"
                             />
                         </div>
                         <div class="input-wrap">

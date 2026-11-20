@@ -29,7 +29,7 @@ foreach ($list as $item) : ?>
         <?php $levelup = $item->level - $startLevel - 1; ?>
         <h<?php echo $params->get('item_heading') + $levelup; ?>>
             <a href="<?php echo $catRoute; ?>">
-                <?php echo $item->title; ?>
+                <?php echo $this->escape($item->title); ?>
             </a>
         </h<?php echo $params->get('item_heading') + $levelup; ?>>
 

@@ -44,7 +44,7 @@ $resultsUrl = Route::url(
     <?php if ($this->options->count() > 0) { ?>
         <div class="poll">
             <div class="details">
-                <h3><?php echo stripslashes($this->poll->title); ?></h3>
+                <h3><?php echo $this->escape(stripslashes($this->poll->title)); ?></h3>
 
                 <form
                     id="pollform"

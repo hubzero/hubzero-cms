@@ -59,7 +59,7 @@ $formAction = Route::url(
             <input type="text"
                 name="calendar[title]"
                 id="field-title"
-                value="<?php echo $this->calendar->get('title'); ?>"/>
+                value="<?php echo $this->escape($this->calendar->get('title')); ?>"/>
         </label>
 
         <label for="field-url">

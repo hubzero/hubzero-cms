@@ -47,7 +47,8 @@ $assetTitle = $this->escape(
     </div>
     <div class="title-edit">
         <form action="<?php echo Request::base(true); ?>/api/courses/asset/save" class="asset-title-form">
-            <input class="title-text" name="title" type="text" value="<?php echo $this->a->get('title'); ?>" />
+            <input class="title-text" name="title" type="text"
+                value="<?php echo $this->escape($this->a->get('title')); ?>" />
             <input class="asset-title-save" type="submit" value="Save" />
             <input class="asset-title-reset" type="reset" value="Cancel" />
             <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />

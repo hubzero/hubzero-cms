@@ -29,7 +29,7 @@ defined('_HZEXEC_') or die();
             <?php $cls = (in_array($module->id, $this->mymodules)) ? ' class="installed"' : ''; ?>
             <li <?php echo $cls; ?>>
                 <a href="javascript:void(0);" data-module="<?php echo $module->id; ?>">
-                    <?php echo $module->title; ?>
+                    <?php echo $this->escape($module->title); ?>
                 </a>
             </li>
         <?php endforeach; ?>
@@ -51,7 +51,7 @@ defined('_HZEXEC_') or die();
                         </a>
                     <?php endif; ?>
 
-                    <h3><?php echo $module->title; ?></h3>
+                    <h3><?php echo $this->escape($module->title); ?></h3>
                 </div>
                 <dl class="module-details">
                 <?php

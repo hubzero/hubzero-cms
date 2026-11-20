@@ -90,7 +90,7 @@ if ($this->getError()) {
                         <?php $notEditableTxt = Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?>
                         <td>
                             <?php if (!$template->editable) : ?>
-                                <?php echo $template->name; ?>
+                                <?php echo $this->escape($template->name); ?>
                                 <br/>
                                 <span class="hint"><?php echo $notEditableTxt; ?></span>
                             <?php else : ?>
@@ -102,7 +102,7 @@ if ($this->getError()) {
                                 );
                                 ?>
                                 <a href="<?php echo $editUrl; ?>">
-                                    <?php echo $template->name; ?>
+                                    <?php echo $this->escape($template->name); ?>
                                 </a>
                             <?php endif; ?>
                         </td>

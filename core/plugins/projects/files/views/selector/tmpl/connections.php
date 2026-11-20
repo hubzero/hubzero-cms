@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die();
         <span class="item-wrap collapsor">
             <span class="collapsor-indicator">&nbsp;</span>
             <img src="/core/plugins/filesystem/local/assets/img/icon.png" alt="" />
-            <span title=""><?php echo $this->model->get('title'); ?> Master Repository</span>
+            <span title=""><?php echo $this->escape($this->model->get('title')); ?> Master Repository</span>
         </span>
     </li>
 
@@ -41,7 +41,7 @@ defined('_HZEXEC_') or die();
             <span class="item-wrap collapsor">
                 <span class="collapsor-indicator">&nbsp;</span>
                 <img src="<?php echo $img; ?>" alt="" />
-                <span title=""><?php echo $connection->name; ?></span>
+                <span title=""><?php echo $this->escape($connection->name); ?></span>
             </span>
         </li>
     <?php endforeach; ?>

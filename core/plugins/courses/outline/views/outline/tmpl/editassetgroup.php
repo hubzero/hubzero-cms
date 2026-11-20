@@ -29,7 +29,8 @@ $ag = new \Components\Courses\Models\Assetgroup($this->scope_id);
 
         <p>
             <label for="title">Title:</label>
-            <input type="text" name="title" value="<?php echo $ag->get('title'); ?>" placeholder="Asset Group Title" />
+            <input type="text" name="title" value="<?php echo $this->escape($ag->get('title')); ?>"
+                placeholder="Asset Group Title" />
         </p>
         <p>
             <label for="state">Published:</label>

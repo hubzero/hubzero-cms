@@ -67,7 +67,7 @@ $this
     ->js('flot/jquery.flot.resize.js', 'system');
 ?>
 <header id="content-header" class="reports">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">

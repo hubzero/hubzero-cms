@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
                 <select name="module">
                     <option value=""><?php echo Lang::txt('- Select Module to Push -'); ?></option>
                     <?php foreach ($this->modules as $module) : ?>
-                        <option value="<?php echo $module->id; ?>"><?php echo $module->title; ?></option>
+                        <option value="<?php echo $module->id; ?>"><?php echo $this->escape($module->title); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

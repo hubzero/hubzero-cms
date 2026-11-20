@@ -547,7 +547,7 @@ $area = Request::getString('area', 'about');
                             <th><?php echo Lang::txt('COM_CITATIONS_SUBMITTED_BY'); ?></th>
                             <td>
                                 <a href="<?= Route::url('index.php?option=com_members&id=' . $profile->get('id')) ?>">
-                                    <?php echo $profile->get('name'); ?>
+                                    <?php echo $this->escape($profile->get('name')); ?>
                                 </a>
                             </td>
                         </tr>

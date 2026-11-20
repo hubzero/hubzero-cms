@@ -26,7 +26,7 @@ $token = Session::getFormToken();
 if ($this->mailinglist instanceof \stdClass) : ?>
     <div class="mailinglist-details">
         <span class="name">
-            <?php echo $this->mailinglist->name; ?>
+            <?php echo $this->escape($this->mailinglist->name); ?>
         </span>
         <span class="description">
             <?php echo nl2br($this->mailinglist->description); ?>

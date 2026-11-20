@@ -243,7 +243,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                         <?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS'); ?>:
                                     </th>
                                     <td style="<?php echo $tdStyleL; ?>" align="left">
-                                        <?php echo $this->ticket->status->get('title'); ?>
+                                        <?php echo $this->escape($this->ticket->status->get('title')); ?>
                                     </td>
                                 </tr>
                                 <tr>

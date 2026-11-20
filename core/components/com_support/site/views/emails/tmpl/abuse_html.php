@@ -247,7 +247,7 @@ $this->css(
             ?>
             <tr>
                 <th style="text-align: left;" align="left">
-                    <?php echo $this->commentor->get('name'); ?>
+                    <?php echo $this->escape($this->commentor->get('name')); ?>
                     (<?php echo $this->commentor->get('username'); ?>)
                 </th>
                 <th class="timestamp" style="color: #999; text-align: right;" align="right">
