@@ -142,9 +142,24 @@ class Member extends Base
      */
     public function delete()
     {
-        // Remove gradebook information
+        $id = (int) $this->get('id');
 
-        return parent::delete();
+        if (!parent::delete()) {
+            return false;
+        }
+
+        // Remove gradebook information: the grades are keyed by this
+        // membership, which nothing can point at again (enrolling anew makes
+        // another one), so they go with it. Left in place from 2013, when this
+        // was a note only, they were rows no gradebook could reach.
+        if ($id) {
+            $this->db->setQuery(
+                'DELETE FROM `#__courses_grade_book` WHERE `member_id` = ' . $this->db->quote($id),
+            );
+            $this->db->query();
+        }
+
+        return true;
     }
 
     /**
