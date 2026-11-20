@@ -122,6 +122,13 @@ class Assetgroup extends Base
         } elseif (isset($this->table->{'__' . $property})) {
             return $this->table->{'__' . $property};
         } elseif (in_array($property, self::$sectionKeys)) {
+            // A list already joined in the section's dates (NULL when the item
+            // has none); isset() above took that NULL for "not loaded", and each
+            // item asked again (33 of a course outline's queries)
+            if (property_exists($this->table, '__' . $property)) {
+                return $this->table->{'__' . $property} ?? '';
+            }
+
             $tbl = new Tables\SectionDate($this->db);
             $tbl->loadForScope($this->get('id'), 'asset_group', $this->get('section_id'));
 
