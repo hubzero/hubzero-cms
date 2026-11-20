@@ -1039,6 +1039,7 @@ class Files extends Plugin
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
+        Request::checkToken(['get', 'post']);
 
         // Repo::makeDirectory() runs the name through Filesystem::cleanPath(),
         // which normalises separators but does not remove '..'.
@@ -1089,6 +1090,14 @@ class Files extends Plugin
         if (!$this->model->access('content')) {
             App::abort(403, Lang::txt('ALERTNOTAUTH'));
         }
+
+        // A recursive delete: as the file delete, only a POST with the token
+        // (nothing links here; any page could otherwise empty a folder for a
+        // collaborator who opened it)
+        if (Request::method() !== 'POST') {
+            App::abort(405, Lang::txt('PLG_PROJECTS_FILES_ERROR_METHOD_NOT_ALLOWED'));
+        }
+        Request::checkToken();
 
         // As the rename/move/restore paths: Repo::deleteDirectory() gates only on
         // dirExists(), which is true for a traversing path, and the git adapter
@@ -1306,6 +1315,8 @@ class Files extends Plugin
             return $view->loadTemplate();
         }
 
+        Request::checkToken(['get', 'post']);
+
         // Confine the rename source/target to the repo (reject any traversal),
         // mirroring the subdir guard above.
         $from = \Hubzero\Filesystem\SafePath::relative((string) Request::getString('oldname', ''));
@@ -1414,6 +1425,8 @@ class Files extends Plugin
             }
             return $view->loadTemplate();
         }
+
+        Request::checkToken(['get', 'post']);
 
         // Set counts
         $moved  = 0;
@@ -1782,6 +1795,7 @@ class Files extends Plugin
         if (!$this->model->access('content')) {
             App::abort(403, Lang::txt('ALERTNOTAUTH'));
         }
+        Request::checkToken(['get', 'post']);
 
         // Incoming — confine the asset path to the repo (reject traversal)
         $item = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('asset', '')));
@@ -2490,6 +2504,8 @@ class Files extends Plugin
         // Send file for remote editing on Google (the error above returned
         // when there was no file)
         if ($this->task == 'shareit' && $file) {
+            Request::checkToken(['get', 'post']);
+
             // Get convertable formats
             $formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
 

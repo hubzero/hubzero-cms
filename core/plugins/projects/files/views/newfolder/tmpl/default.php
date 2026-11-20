@@ -37,6 +37,7 @@ if ($this->getError()) {
             <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
             <input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />
             <input type="hidden" name="action" value="savedir" />
+            <?php echo Html::input('token'); ?>
             <label>
                 <?php
                 $folderImg = rtrim(Request::base(true), '/')

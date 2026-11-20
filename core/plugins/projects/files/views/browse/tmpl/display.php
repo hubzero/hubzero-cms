@@ -403,4 +403,5 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         </span>
         <?php } ?>
     </p>
+    <?php echo Html::input('token'); ?>
  </form>

@@ -43,6 +43,7 @@ defined('_HZEXEC_') or die();
             <fieldset>
                 <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
                 <input type="hidden" name="action" value="savedir" />
+                <?php echo Html::input('token'); ?>
                 <label>
                     <?php
                         $folderImg = rtrim(Request::base(true), '/')

@@ -46,6 +46,7 @@ $lang  = $this->item->isDir() ? 'folder' : 'file';
             <fieldset>
                 <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
                 <input type="hidden" name="action" value="renameit" />
+                <?php echo Html::input('token'); ?>
                 <input type="hidden" name="type" value="<?php echo $lang; ?>" />
                 <input type="hidden" name="oldname" value="<?php echo $this->escape($this->item->getPath()); ?>" />
                 <h5><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_NAME'); ?></h5>
