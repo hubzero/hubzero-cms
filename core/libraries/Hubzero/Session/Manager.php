@@ -599,6 +599,29 @@ class Manager extends Obj
     }
 
     /**
+     * Give the active session a new id, keeping its data
+     *
+     * For signing in: an id known before (planted in the browser, or seen)
+     * must not go on to carry the signed-in session.
+     *
+     * @return  bool
+     */
+    public function regenerate()
+    {
+        if ($this->state !== 'active' || session_status() !== PHP_SESSION_ACTIVE) {
+            return false;
+        }
+
+        $old = (string) session_id();
+        // Keep the data: the store moves it to the new id
+        if (!session_regenerate_id(false)) {
+            return false;
+        }
+
+        return $this->store->regenerated($old, (string) session_id());
+    }
+
+    /**
      * Create a new session and copy variables from the old one
      *
      * @return  boolean  $result  True on success

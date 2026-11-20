@@ -155,6 +155,36 @@ class Database extends Store
      * @param   string   $id  The session identifier.
      * @return  boolean  True on success, false otherwise.
      */
+    /**
+     * The session now goes by a new id: move its row. write() only updates a
+     * row, and the row is created when a session starts, so a new id with no
+     * row of its own would lose the session (and who it belongs to).
+     *
+     * @param   string  $old  The id the session had
+     * @param   string  $new  The id it has now
+     * @return  bool
+     */
+    public function regenerated($old, $new)
+    {
+        if (!$this->connection->connected()) {
+            return false;
+        }
+
+        try {
+            $query = $this->connection
+                ->getQuery()
+                ->update('#__session')
+                ->set(['session_id' => $new])
+                ->whereEquals('session_id', $old);
+
+            $this->connection->setQuery($query->toString());
+
+            return (bool) $this->connection->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     #[\ReturnTypeWillChange]
     public function destroy($id)
     {

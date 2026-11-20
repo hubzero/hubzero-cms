@@ -91,6 +91,14 @@ class Manager
                 }
             }
 
+            // A new session id for the signed-in session, before the user plugins
+            // record the user against it: the id the browser had before signing
+            // in (which someone else may have planted or seen) was kept, so it
+            // went on to carry the signed-in session
+            if ($this->app->has('session')) {
+                $this->app['session']->regenerate();
+            }
+
             // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
             $results = $this->app['dispatcher']->trigger('user.onUserLogin', [(array) $response, $options]);
 

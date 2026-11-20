@@ -143,6 +143,20 @@ abstract class Store extends Obj implements SessionHandlerInterface
     }
 
     /**
+     * The session now goes by a new id (see Manager::regenerate()): PHP writes
+     * its data under the new id when the request ends, so what the old id
+     * held is dropped.
+     *
+     * @param   string  $old  The id the session had
+     * @param   string  $new  The id it has now
+     * @return  bool
+     */
+    public function regenerated($old, $new)
+    {
+        return (bool) $this->destroy($old);
+    }
+
+    /**
      * Garbage collect stale sessions from the SessionHandler backend.
      *
      * @param   int|null  $maxlifetime  The maximum age of a session.
