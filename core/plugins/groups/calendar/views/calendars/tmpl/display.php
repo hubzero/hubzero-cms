@@ -156,6 +156,7 @@ defined('_HZEXEC_') or die();
                             </select>
                             <input class="btn btn-danger" type="submit" value="Delete" />
                             <input class="btn btn-secondary delete-cancel" type="reset" value="Cancel" />
+                            <?php echo Html::input('token'); ?>
                         </form>
                     </td>
                 </tr>

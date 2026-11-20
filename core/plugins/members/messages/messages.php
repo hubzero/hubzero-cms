@@ -747,6 +747,9 @@ class Messages extends Plugin
      */
     public function emptytrash($database, $option, $member)
     {
+        // as the other message actions: deletes everything in the trash
+        Request::checkToken(['get', 'post']);
+
         $recipient = \Hubzero\Message\Recipient::blank();
 
         if (!$recipient->deleteTrash($member->get('id'))) {

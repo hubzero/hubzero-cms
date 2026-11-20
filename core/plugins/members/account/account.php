@@ -639,6 +639,8 @@ class Account extends Plugin
      */
     private function unlink()
     {
+        Request::checkToken();
+
         // Determine what type of password change the user needs
         $hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
         if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::findByUserId($this->member->get('id')) ?: []) <= 1) {

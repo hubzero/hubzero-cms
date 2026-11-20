@@ -76,8 +76,8 @@ $this
                     ?>
                     <div class="account active <?php echo $hzala['auth_domain_name']; ?>">
                         <div class="x">
-                            <a title="<?php echo $removeTitle; ?>"
-                                href="<?php echo $unlinkUrl; ?>">x</a>
+                            <button type="submit" form="hz-post-action" title="<?php echo $removeTitle; ?>"
+                                formaction="<?php echo $unlinkUrl; ?>">x</button>
                         </div>
                         <div class="account-info">
                             <div class="account-type">

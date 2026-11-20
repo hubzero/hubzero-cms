@@ -2085,6 +2085,7 @@ class Calendar extends Plugin
         if ($this->authorized != 'manager') {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
+        Request::checkToken();
 
         //get the passed in event id
         $calendarId   = Request::getInt('calendar_id', 0);
