@@ -75,7 +75,9 @@ class DocumentServiceProvider extends Middleware
             // Default look for action buttons, whatever the template
             $document->addActionStyleSheet();
 
-            $file = $request->getCmd('tmpl', 'index');
+            // An empty tmpl (links that pass the page's own, often none) means the
+            // default page; as '' it named no template file and every such page was a 404
+            $file = $request->getCmd('tmpl', 'index') ?: 'index';
             if (!$this->app['config']->get('offline') && $file == 'offline') {
                 $file = 'index';
             }
