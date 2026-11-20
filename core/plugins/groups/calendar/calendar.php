@@ -1314,6 +1314,9 @@ class Calendar extends Plugin
 
         //get incoming
         $file = Request::getArray('import', [], 'files');
+        if (empty($file['tmp_name'])) {
+            App::abort(400, Lang::txt('PLG_GROUPS_CALENDAR_IMPORT_NO_FILE'));
+        }
 
         // parse file & get first event
         $icalparser = new IcalParser($file['tmp_name']);
@@ -1332,6 +1335,16 @@ class Calendar extends Plugin
             : new \DateTime();
         $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : [];
 
+        // The form takes times in the event's time zone, the hub's by default;
+        // the file's are absolute (UTC, or converted from its TZID), so 15:00Z
+        // came out as 3:00 pm. A date-only value (all day) stays on its date.
+        $hubZone = new \DateTimeZone(Config::get('offset') ?: 'UTC');
+        foreach ([$start, $end] as $moment) {
+            if ($moment->getTimestamp() % 86400 !== 0) {
+                $moment->setTimezone($hubZone);
+            }
+        }
+
         // normalize until date
         if (isset($recurrence['UNTIL'])) {
             $tz = Config::get('offset');
@@ -1344,10 +1357,18 @@ class Calendar extends Plugin
         $event             = new \stdClass();
         $event->title      = $title;
         $event->content    = stripslashes(str_replace('\n', "\n", $description));
-        $event->start      = $start->format("m/d/Y");
-        $event->start_time = $start->format("g:i a");
-        $event->end        = $end->format("m/d/Y");
-        $event->end_time   = $end->format("g:i a");
+        // Hubzero's Date formats in UTC unless told to use the zone it was given
+        $inZone = function ($moment, $format) {
+            if ($moment instanceof \Hubzero\Utility\Date) {
+                return $moment->format($format, true);
+            }
+            return $moment->format($format);
+        };
+
+        $event->start      = $inZone($start, "m/d/Y");
+        $event->start_time = $inZone($start, "g:i a");
+        $event->end        = $inZone($end, "m/d/Y");
+        $event->end_time   = $inZone($end, "g:i a");
         $event->location   = $location;
         $event->website    = $website;
         $event->recurrence = $recurrence;
