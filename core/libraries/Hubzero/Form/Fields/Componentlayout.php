@@ -56,7 +56,7 @@ class Componentlayout extends Field
             $extn = $this->formValue('extension');
         }
 
-        $extn = preg_replace('#\W#', '', $extn);
+        $extn = preg_replace('#\W#', '', (string) $extn);
 
         // Get the template.
         $template = (string) $element['template'];

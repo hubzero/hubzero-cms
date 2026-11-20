@@ -188,7 +188,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         $aliasHint = Lang::txt('COM_COURSES_FIELD_ALIAS_HINT');
                         $aliasTxt = Lang::txt('COM_COURSES_FIELD_ALIAS');
                         $aliasVal = $this->escape(
-                            stripslashes($this->row->get('alias')),
+                            stripslashes((string) $this->row->get('alias')),
                         );
                         ?>
                         <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
@@ -212,7 +212,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             </label><br />
                             <?php
                             $titleVal = $this->escape(
-                                stripslashes($this->row->get('title')),
+                                stripslashes((string) $this->row->get('title')),
                             );
                             ?>
                             <input

@@ -56,7 +56,7 @@ $this
                 <!-- Name -->
                 <div class="input-wrap">
                     <label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_TITLE'); ?>:</label>
-                    <?php $titleVal = $this->escape(stripslashes($this->searchComponent->title)); ?>
+                    <?php $titleVal = $this->escape(stripslashes((string) $this->searchComponent->title)); ?>
                     <input type="text"
                         name="fields[title]"
                         id="field-title"
@@ -67,7 +67,7 @@ $this
                 </div> <!-- /.input-wrap -->
                 <div class="input-wrap">
                     <label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_CUSTOM'); ?>:</label>
-                    <?php $customVal = $this->escape(stripslashes($this->searchComponent->custom)); ?>
+                    <?php $customVal = $this->escape(stripslashes((string) $this->searchComponent->custom)); ?>
                     <input type="text"
                         name="fields[custom]"
                         id="field-custom"

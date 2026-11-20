@@ -149,10 +149,16 @@ foreach ($this->rows as $row) {
                     <?php } ?>
                 </td>
                 <td>
-                    <?php echo $pageNav->orderUpIcon($i, ($row->ordering != @$this->rows[$i - 1]->ordering)); ?>
+                    <?php
+                    $previous = $this->rows[$i - 1]->ordering ?? null;
+                    echo $pageNav->orderUpIcon($i, ($row->ordering != $previous));
+                    ?>
                 </td>
                 <td>
-                    <?php echo $pageNav->orderDownIcon($i, $n, ($row->ordering != @$this->rows[$i + 1]->ordering)); ?>
+                    <?php
+                    $next = $this->rows[$i + 1]->ordering ?? null;
+                    echo $pageNav->orderDownIcon($i, $n, ($row->ordering != $next));
+                    ?>
                 </td>
                 <td>
                     <?php echo $this->escape(stripslashes($row->ordering)); ?>

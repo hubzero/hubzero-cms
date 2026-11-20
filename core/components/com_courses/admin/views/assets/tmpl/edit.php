@@ -174,17 +174,17 @@ $stateSelected = function ($value) use ($view) {
                 <label for="field-title"><?= Lang::txt('COM_COURSES_FIELD_TITLE') ?>:  <span
                     class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
                 <input type="text" name="fields[title]" id="field-title" class="required"
-                    value="<?= $this->escape(stripslashes($this->row->get('title'))) ?>" size="50" />
+                    value="<?= $this->escape(stripslashes((string) $this->row->get('title'))) ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_URL'); ?>:</label>
                 <input type="text" name="fields[url]" id="field-url"
-                    value="<?= $this->escape(stripslashes($this->row->get('url'))) ?>" size="50" />
+                    value="<?= $this->escape(stripslashes((string) $this->row->get('url'))) ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label>
                 <textarea name="fields[content]" id="field-content" rows="4"
-                    cols="35"><?= $this->escape(stripslashes($this->row->get('content'))) ?></textarea>
+                    cols="35"><?= $this->escape(stripslashes((string) $this->row->get('content'))) ?></textarea>
             </div>
 
             <?php

@@ -112,11 +112,9 @@ $privacySelected = function ($value) use ($view) {
                     <div class="input-wrap">
                         <label for="field-order"><?php echo Lang::txt('COM_GROUPS_PAGES_PARENT'); ?>:</label><br />
                         <select name="page[parent]" id="field-order">
-                            <?php if (!count($this->pages)) { ?>
-                            <option value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_TEMPLATE_OPTION_NULL'); ?></option>
-                            <?php } ?>
+                            <option value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_PARENT_NONE'); ?></option>
                             <?php foreach ($this->pages as $page) : ?>
-                                <?php if ($page->get('id') == $this->page->get('id')) {
+                                <?php if ($this->page->get('id') && $this->page->parentIsDescendant($page->get('id'))) {
                                     continue;
                                 } ?>
                                 <?php $sel = ($this->page->get('parent') == $page->get('id'))

@@ -407,7 +407,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <th class="key">
                             <label for="field-ipREGION"><?php echo Lang::txt('COM_TOOLS_FIELD_REGION'); ?>:</label></th>
                         <td>
-                            <?php $ipRegionVal = $this->escape(stripslashes($this->row->get('ipREGION'))); ?>
+                            <?php $ipRegionVal = $this->escape(stripslashes((string) $this->row->get('ipREGION'))); ?>
                             <input type="text" name="fields[ipREGION]" id="field-ipREGION"
                                 value="<?php echo $ipRegionVal; ?>" /></td>
                     </tr>
@@ -415,7 +415,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <th class="key">
                             <label for="field-ipCITY"><?php echo Lang::txt('COM_TOOLS_FIELD_CITY'); ?>:</label></th>
                         <td>
-                            <?php $ipCityVal = $this->escape(stripslashes($this->row->get('ipCITY'))); ?>
+                            <?php $ipCityVal = $this->escape(stripslashes((string) $this->row->get('ipCITY'))); ?>
                             <input type="text" name="fields[ipCITY]" id="field-ipCITY"
                                 value="<?php echo $ipCityVal; ?>" /></td>
                     </tr>
@@ -423,7 +423,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <th class="key">
                             <label for="field-notes"><?php echo Lang::txt('COM_TOOLS_FIELD_NOTES'); ?>:</label></th>
                         <td>
-                            <?php $notesVal = $this->escape(stripslashes($this->row->get('notes'))); ?>
+                            <?php $notesVal = $this->escape(stripslashes((string) $this->row->get('notes'))); ?>
                             <textarea name="fields[notes]" id="field-notes"
                                 rows="4" cols="35"><?php echo $notesVal; ?></textarea>
                         </td>

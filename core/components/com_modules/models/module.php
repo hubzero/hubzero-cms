@@ -134,7 +134,7 @@ class Module extends Relational
         if (is_null($this->manifest)) {
             $paths = [];
 
-            if (substr($this->get('module'), 0, 4) == 'mod_') {
+            if (substr((string) $this->get('module'), 0, 4) == 'mod_') {
                 $paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
             }
 
@@ -214,7 +214,7 @@ class Module extends Relational
 
         $paths[] = $this->path() . DS . 'config' . DS . 'config.xml';
 
-        if (substr($this->get('module'), 0, 4) == 'mod_') {
+        if (substr((string) $this->get('module'), 0, 4) == 'mod_') {
             $paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
         }
 

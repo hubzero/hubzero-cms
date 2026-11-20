@@ -104,7 +104,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:
                         <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                     </label><br />
-                    <?php $titleVal = $this->escape(stripslashes($this->row->get('title'))); ?>
+                    <?php $titleVal = $this->escape(stripslashes((string) $this->row->get('title'))); ?>
                     <input
                         type="text"
                         name="fields[title]"
@@ -116,7 +116,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <?php $aliasHint = Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>
                 <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <?php $aliasVal = $this->escape(stripslashes($this->row->get('alias'))); ?>
+                    <?php $aliasVal = $this->escape(stripslashes((string) $this->row->get('alias'))); ?>
                     <input
                         type="text"
                         name="fields[alias]"
@@ -130,7 +130,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <label for="field-description">
                         <?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:
                     </label><br />
-                    <?php $descVal = $this->escape(stripslashes($this->row->get('description'))); ?>
+                    <?php $descVal = $this->escape(stripslashes((string) $this->row->get('description'))); ?>
                     <input
                         type="text"
                         name="fields[description]"

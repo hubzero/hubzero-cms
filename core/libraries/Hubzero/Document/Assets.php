@@ -513,7 +513,8 @@ class Assets
 
         $template = DS . 'core' . DS . 'templates' . DS . 'system';
         if ($t = self::app('template')) {
-            $template = substr($t->path, strlen(PATH_ROOT));
+            // Core templates may live outside the document root
+            $template = \Hubzero\Filesystem\Util::urlPath($t->path);
         }
 
         $paths = [];

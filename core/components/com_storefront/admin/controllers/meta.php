@@ -82,7 +82,8 @@ class Meta extends AdminController
         }
 
         // See what layout to load
-        if ($this->view->get('row')->getTypeInfo()->name == 'Software Download') {
+        $typeInfo = $this->view->get('row')->getTypeInfo();
+        if ($typeInfo && $typeInfo->name == 'Software Download') {
             // Software
             $layout = 'edit-software';
         } else {

@@ -153,9 +153,15 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-review_time"><?php echo $text; ?>:</label>
                     <?php
                     $reviewTime = $this->row->get('review_time');
-                    $reviewVal = ($reviewTime && $reviewTime != '0000-00-00 00:00:00')
-                        ? $this->escape(Date::of($reviewTime)->toLocal('Y-m-d H:i:s'))
-                        : '';
+                    // A value the save refused as no date comes back as typed
+                    $hasReview = $reviewTime && $reviewTime != '0000-00-00 00:00:00';
+                    $reviewDate = $hasReview ? Date::parse($reviewTime) : null;
+                    $reviewVal = '';
+                    if ($reviewDate) {
+                        $reviewVal = $this->escape($reviewDate->toLocal('Y-m-d H:i:s'));
+                    } elseif ($hasReview) {
+                        $reviewVal = $this->escape((string) $reviewTime);
+                    }
                     echo Html::input(
                         'calendar',
                         'fields[review_time]',

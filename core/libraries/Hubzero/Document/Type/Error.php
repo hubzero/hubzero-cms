@@ -118,7 +118,7 @@ class Error extends Base
         $this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(
             Request::root(true),
             '/',
-        ) . rtrim(substr(dirname($directory), strlen(PATH_ROOT)), '/'));
+        ) . rtrim(\Hubzero\Filesystem\Util::urlPath(dirname($directory)), '/'));
         $this->template = $template;
         $this->debug    = isset($params['debug']) ? $params['debug'] : false;
 

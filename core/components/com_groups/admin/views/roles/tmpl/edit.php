@@ -78,7 +78,7 @@ $this->js();
                     id="field-name"
                     size="30"
                     maxlength="250"
-                    value="<?php echo $this->escape(stripslashes($this->model->get('name'))); ?>" />
+                    value="<?php echo $this->escape(stripslashes((string) $this->model->get('name'))); ?>" />
             </div>
 
             <fieldset class="adminform">

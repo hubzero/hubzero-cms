@@ -56,7 +56,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
         <div class="input-wrap">
             <?php
             $sponsorVal = $this->escape(
-                stripslashes($this->sponsor->get('sponsor')),
+                stripslashes((string) $this->sponsor->get('sponsor')),
             );
             ?>
             <label for="field-sponsor">
@@ -72,7 +72,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
         <div class="input-wrap">
             <?php
             $linkVal = $this->escape(
-                stripslashes($this->sponsor->get('link')),
+                stripslashes((string) $this->sponsor->get('link')),
             );
             ?>
             <label for="field-link">
@@ -88,7 +88,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
         <div class="input-wrap">
             <?php
             $imageVal = $this->escape(
-                stripslashes($this->sponsor->get('image')),
+                stripslashes((string) $this->sponsor->get('image')),
             );
             ?>
             <label for="field-image">

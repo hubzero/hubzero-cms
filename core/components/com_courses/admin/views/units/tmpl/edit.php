@@ -115,7 +115,7 @@ $stateSelected = function ($value) use ($view) {
                         type="text"
                         name="fields[alias]"
                         id="field-alias"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('alias'))); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
                 <div class="input-wrap">
@@ -128,16 +128,17 @@ $stateSelected = function ($value) use ($view) {
                         name="fields[title]"
                         id="field-title"
                         class="title"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('title'))); ?>" />
                 </div>
                 <div class="input-wrap">
                     <?php $txt = Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>
                     <label for="field-description"><?php echo $txt; ?>:</label><br />
+                    <?php $description = $this->escape(stripslashes((string) $this->row->get('description'))); ?>
                     <textarea
                         name="fields[description]"
                         id="field-description"
                         cols="35"
-                        rows="20"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+                        rows="20"><?php echo $description; ?></textarea>
                 </div>
             </fieldset>
 

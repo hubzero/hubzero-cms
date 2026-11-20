@@ -558,6 +558,12 @@ class Tag extends Relational
     {
         $action = $this->isNew() ? 'tag_created' : 'tag_edited';
 
+        // description is NOT NULL TEXT with no default: a tag made on the fly
+        // (typed into a resource's tags) has none, which strict SQL refuses
+        if ($this->get('description') === null) {
+            $this->set('description', '');
+        }
+
         $result = parent::save();
 
         if ($result) {

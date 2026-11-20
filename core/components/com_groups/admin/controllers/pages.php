@@ -217,6 +217,14 @@ class Pages extends AdminController
             App::abort(403, 'You are not authorized to modify this page.');
         }
 
+        // A page cannot go under itself or one of its own pages
+        if ($this->page->parentIsDescendant($this->page->get('parent'))) {
+            Notify::error(Lang::txt('COM_GROUPS_PAGES_PARENT_IS_DESCENDANT'));
+            $this->editTask();
+
+            return;
+        }
+
         // set page vars
         $this->page->set('gidNumber', $this->group->get('gidNumber'));
         $this->page->set('alias', $this->page->uniqueAlias());

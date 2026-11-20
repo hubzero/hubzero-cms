@@ -306,6 +306,36 @@ class Page extends Model
     }
 
     /**
+     * Whether the chosen parent is this page or lies under it
+     *
+     * Saving that would make the page its own ancestor: the parent chain loops,
+     * and walking up it (breadcrumbs, links, the pages list) never ends.
+     *
+     * @param   int  $parentId  The parent chosen for this page
+     * @return  bool
+     */
+    public function parentIsDescendant($parentId)
+    {
+        $id = (int) $this->get('id');
+        $parentId = (int) $parentId;
+        if (!$id || !$parentId) {
+            return false;
+        }
+
+        // Walk up from the chosen parent; stop on a loop already in the data
+        $seen = [];
+        while ($parentId && !isset($seen[$parentId])) {
+            if ($parentId == $id) {
+                return true;
+            }
+            $seen[$parentId] = true;
+            $parentId = (int) (new Page($parentId))->get('parent');
+        }
+
+        return false;
+    }
+
+    /**
      * Get Parent Parent
      *
      * @return  \Components\Groups\Models\Page  \Components\Groups\Models\Page Object

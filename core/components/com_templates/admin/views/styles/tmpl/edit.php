@@ -63,7 +63,7 @@ $invalidMsg = $this->escape(
 $titleLabel = Lang::txt('COM_TEMPLATES_FIELD_TITLE_LABEL');
 $requiredTxt = Lang::txt('JOPTION_REQUIRED');
 $titleValue = $this->escape(
-    stripslashes($this->item->get('title')),
+    stripslashes((string) $this->item->get('title')),
 );
 $homeDesc = Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC');
 $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');

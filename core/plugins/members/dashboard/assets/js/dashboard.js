@@ -106,6 +106,13 @@ HUB.Plugins.MemberDashboard = {
 			}
 		}).data('gridster');
 
+		// A page without the module grid (the add-module view opened on its
+		// own) has nothing for gridster to manage
+		if (!dashboard.modules)
+		{
+			return;
+		}
+
 		// is the dashboard customizable?
 		// if not disable dragging and resize
 		if (!$('.modules').hasClass('customizable'))

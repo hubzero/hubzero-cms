@@ -151,7 +151,7 @@ $formAction = Route::url(
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $item->get('id'),
+                                . '&task=edit&cid=' . $item->get('id'),
                             );
                             $desc = $this->escape($item->get('description'));
                             $menutypeEsc = $this->escape($menutype);

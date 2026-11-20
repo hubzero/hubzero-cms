@@ -66,7 +66,7 @@ $this->js();
                         name="fields[word]"
                         id="field-word"
                         class="required"
-                        value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->get('word'))); ?>"/>
                 </div>
             </fieldset>
         </div>

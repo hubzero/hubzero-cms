@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
 $canDo = Components\Newsletter\Helpers\Permissions::getActions('campaign');
 
 // If current record has a secret, then we are editing, otherwise we are new.
-$hasSecret = strlen($this->campaign->secret) > 0;
+$hasSecret = strlen((string) $this->campaign->secret) > 0;
 
 // Language to match whether we are adding or editing:
 $text = ($hasSecret ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));

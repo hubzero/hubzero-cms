@@ -1739,7 +1739,7 @@ class Sessionsv1r0 extends ApiController
         $error_num = 0;
         $error_str = '';
         // open stream to purge files
-        if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) {
+        if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 5)) {
             throw new Exception("$error_str ($error_num)", 500);
         } else {
             fwrite($fp, 'purge user=' . $result->get('username') . ",degree=$degree \n");

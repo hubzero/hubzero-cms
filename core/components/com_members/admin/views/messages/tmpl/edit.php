@@ -51,7 +51,7 @@ Toolbar::cancel();
                         type="text"
                         name="fields[component]"
                         id="field-component"
-                        value="<?php echo $this->escape(stripslashes($this->row->component)); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->component)); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-action">
@@ -62,7 +62,7 @@ Toolbar::cancel();
                         type="text"
                         name="fields[action]"
                         id="field-action"
-                        value="<?php echo $this->escape(stripslashes($this->row->action)); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->action)); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-component">
@@ -73,7 +73,7 @@ Toolbar::cancel();
                         type="text"
                         name="fields[title]"
                         id="field-title"
-                        value="<?php echo $this->escape(stripslashes($this->row->title)); ?>"/>
+                        value="<?php echo $this->escape(stripslashes((string) $this->row->title)); ?>"/>
                 </div>
             </fieldset>
         </div>

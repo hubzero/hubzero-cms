@@ -292,6 +292,14 @@ class Pages extends Base
             App::abort(403, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
         }
 
+        // A page cannot go under itself or one of its own pages
+        if ($this->page->parentIsDescendant($this->page->get('parent'))) {
+            $this->setNotification(Lang::txt('COM_GROUPS_PAGES_PARENT_IS_DESCENDANT'), 'error');
+            $this->editTask();
+
+            return;
+        }
+
         // set page vars
         $this->page->set('gidNumber', $this->group->get('gidNumber'));
 

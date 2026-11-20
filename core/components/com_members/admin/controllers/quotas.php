@@ -564,7 +564,14 @@ class Quotas extends AdminController
         ];
 
         $quota = Quota::oneOrNew($id);
-        $user  = User::getInstance($quota->get('user_id'));
+
+        // A new quota has no member yet; getInstance(0) would be the
+        // administrator looking at the form
+        if (!$quota->get('user_id')) {
+            return $return;
+        }
+
+        $user = User::getInstance($quota->get('user_id'));
 
         if (!$user->get('id')) {
             return $return;
@@ -578,7 +585,9 @@ class Quotas extends AdminController
         if ($username && $host) {
             $errno = 0;
             $errstr = '';
-            $fp = @stream_socket_client($host, $errno, $errstr, 30);
+            // A storage host that does not answer would hold the page (and each
+            // row of the quota list, which asks per member) for the full timeout
+            $fp = @stream_socket_client($host, $errno, $errstr, 5);
 
             if (!$fp) {
                 $info[] = "$errstr ($errno)\n";

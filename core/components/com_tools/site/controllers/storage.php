@@ -230,7 +230,7 @@ class Storage extends SiteController
 
         $errno = 0;
         $errstr = '';
-        $fp = stream_socket_client($shost, $errno, $errstr, 30);
+        $fp = stream_socket_client($shost, $errno, $errstr, 5);
         if (!$fp) {
             $info[] = "$errstr ($errno)\n";
             $this->setError("$errstr ($errno)\n");

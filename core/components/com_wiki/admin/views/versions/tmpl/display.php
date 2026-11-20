@@ -50,10 +50,10 @@ Toolbar::help('revisions');
         <tbody>
             <tr>
                 <th><?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?></th>
-                <td><?php echo $this->escape(stripslashes($this->page->title)); ?></td>
+                <td><?php echo $this->escape(stripslashes((string) $this->page->title)); ?></td>
                 <th class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_SCOPE'); ?></th>
                 <?php
-                $scopeStr = $this->escape(stripslashes($this->page->get('scope')))
+                $scopeStr = $this->escape(stripslashes((string) $this->page->get('scope')))
                     . ':' . $this->page->get('scope_id');
                 ?>
                 <td class="priority-2"><?php echo $scopeStr; ?></td>
@@ -61,10 +61,10 @@ Toolbar::help('revisions');
             <tr>
                 <th>(<?php echo Lang::txt('COM_WIKI_COL_ID'); ?>) <?php echo Lang::txt('COM_WIKI_COL_PAGENAME'); ?></th>
                 <td>(<?php echo $this->page->get('id'); ?>)
-                    <?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?>
+                    <?php echo $this->escape(stripslashes((string) $this->page->get('pagename'))); ?>
                 </td>
                 <th class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_PATH'); ?></th>
-                <td class="priority-2"><?php echo $this->escape(stripslashes($this->page->get('path'))); ?></td>
+                <td class="priority-2"><?= $this->escape(stripslashes((string) $this->page->get('path'))) ?></td>
             </tr>
         </tbody>
     </table>

@@ -103,7 +103,7 @@ $this->js();
                     <label for="field-code"><?= Lang::txt('COM_COURSES_FIELD_CODE') ?>: <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <input type="text" name="fields[code]" id="field-code" class="required" maxlength="10"
-                        value="<?= $this->escape(stripslashes($this->row->get('code'))) ?>" />
+                        value="<?= $this->escape(stripslashes((string) $this->row->get('code'))) ?>" />
                 </div>
             </fieldset>
 

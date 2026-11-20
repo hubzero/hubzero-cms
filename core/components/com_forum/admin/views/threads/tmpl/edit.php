@@ -159,7 +159,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>:</label><br />
-                    <?php $titleVal = $this->escape(stripslashes($this->row->get('title'))); ?>
+                    <?php $titleVal = $this->escape(stripslashes((string) $this->row->get('title'))); ?>
                     <input type="text"
                         name="fields[title]"
                         id="field-title"

@@ -113,7 +113,12 @@ $emailnewSelected = function ($value) use ($view) {
                         <select name="hooks[postparse][]" multiple="multiple">
                             <?php if (isset($hooks->postparse)) : ?>
                                 <?php foreach ($hooks->postparse as $hook) : ?>
-                                    <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                    <?php
+                                    // Rows are keyed by ID; a hook since removed is left out
+                                    $importHook = $this->hooks->seek($hook);
+                                    if (!$importHook) {
+                                        continue;
+                                    } ?>
                                     <option selected="selected"
                                         value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                                 <?php endforeach; ?>
@@ -145,7 +150,12 @@ $emailnewSelected = function ($value) use ($view) {
                         </label>
                         <select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple">
                             <?php foreach ($hooks->postmap as $hook) : ?>
-                                <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                <?php
+                                    // Rows are keyed by ID; a hook since removed is left out
+                                    $importHook = $this->hooks->seek($hook);
+                                if (!$importHook) {
+                                    continue;
+                                } ?>
                                 <option selected="selected"
                                     value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
@@ -174,7 +184,12 @@ $emailnewSelected = function ($value) use ($view) {
                         </label>
                         <select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple">
                             <?php foreach ($hooks->postconvert as $hook) : ?>
-                                <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                <?php
+                                    // Rows are keyed by ID; a hook since removed is left out
+                                    $importHook = $this->hooks->seek($hook);
+                                if (!$importHook) {
+                                    continue;
+                                } ?>
                                 <option selected="selected"
                                     value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>

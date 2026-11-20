@@ -150,7 +150,7 @@ class Xhubtags extends Plugin
      */
     private function templateDir()
     {
-        return substr(App::get('template')->path, strlen(PATH_ROOT));
+        return \Hubzero\Filesystem\Util::urlPath(App::get('template')->path);
     }
 
     /**

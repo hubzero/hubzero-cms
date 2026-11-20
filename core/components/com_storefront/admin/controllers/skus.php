@@ -146,8 +146,9 @@ class Skus extends AdminController
                 $row = false;
             }
 
+            // A SKU belongs to a product: without one there is nothing to edit
             if (!$row) {
-                throw new \Exception('SKU was not found');
+                App::abort(404, Lang::txt('SKU was not found'));
             }
             $this->view->set('row', $row);
         }

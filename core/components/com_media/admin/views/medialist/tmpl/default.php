@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
 use Hubzero\Facades\Request;
 
 // No direct access.
@@ -18,6 +19,8 @@ defined('_HZEXEC_') or die();
  */
 
 if (!Request::getInt('no_html') && Request::getWord('format') != 'raw') {
+    // The script runs on jQuery, which the list frame does not otherwise load
+    Html::behavior('framework');
     $this
         ->css()
         ->js();

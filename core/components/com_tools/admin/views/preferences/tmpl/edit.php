@@ -90,7 +90,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                 <div class="input-wrap">
                     <label for="field-jobs"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_JOBS'); ?>:</label>
                     <?php $jobsReadonly = ($this->row->class_id) ? 'readonly' : ''; ?>
-                    <?php $jobsVal = $this->escape(stripslashes($this->row->jobs)); ?>
+                    <?php $jobsVal = $this->escape(stripslashes((string) $this->row->jobs)); ?>
                     <input <?php echo $jobsReadonly; ?> type="text" name="fields[jobs]" id="field-jobs"
                         value="<?php echo $jobsVal; ?>" />
                 </div>

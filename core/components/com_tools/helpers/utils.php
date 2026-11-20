@@ -89,7 +89,7 @@ class Utils
         if ($username && $host) {
             $errno = 0;
             $errstr = '';
-            $fp = @stream_socket_client($host, $errno, $errstr, 30);
+            $fp = @stream_socket_client($host, $errno, $errstr, 5);
             if (!$fp) {
                 $info[] = "$errstr ($errno)\n";
             } else {

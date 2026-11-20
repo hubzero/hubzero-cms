@@ -329,8 +329,11 @@ if ($this->page->get('id')) {
                             <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_PARENT') ?>:</strong> <span
                                 class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
                             <select name="page[parent]" class="page-parent">
+                                <option value="0"><?= Lang::txt('COM_GROUPS_PAGES_PARENT_NONE') ?></option>
                                 <?php foreach ($this->pages as $page) : ?>
-                                    <?php if ($page->get('id') == $id) {
+                                    <?php
+                                    // Not the page itself, nor one of its own pages
+                                    if ($this->page->get('id') && $this->page->parentIsDescendant($page->get('id'))) {
                                         continue;
                                     } ?>
                                     <?php $sel = ($parent == $page->get('id')) ? 'selected="selected"' : ''; ?>

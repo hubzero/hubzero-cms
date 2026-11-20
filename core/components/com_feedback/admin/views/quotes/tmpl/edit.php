@@ -40,10 +40,10 @@ Html::behavior('keepalive');
 
 $this->js();
 
-$short_quote = stripslashes($this->row->get('short_quote'));
-$miniquote   = stripslashes($this->row->get('miniquote'));
+$short_quote = stripslashes((string) $this->row->get('short_quote'));
+$miniquote   = stripslashes((string) $this->row->get('miniquote'));
 if (!$short_quote) {
-    $short_quote =  substr(stripslashes($this->row->get('quote')), 0, 270);
+    $short_quote =  substr(stripslashes((string) $this->row->get('quote')), 0, 270);
 }
 if (!$miniquote) {
     $miniquote =  substr(stripslashes($short_quote), 0, 150);
@@ -92,7 +92,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php echo Lang::txt('COM_FEEDBACK_FULL_NAME'); ?>:
                         <span class="required"><?php echo $reqLabel; ?></span>
                     </label><br />
-                    <?php $fullnameVal = $this->escape(stripslashes($this->row->get('fullname'))); ?>
+                    <?php $fullnameVal = $this->escape(stripslashes((string) $this->row->get('fullname'))); ?>
                     <input
                         type="text"
                         name="fields[fullname]"
@@ -107,7 +107,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php echo Lang::txt('COM_FEEDBACK_ORGANIZATION'); ?>:
                         <span class="required"><?php echo $reqLabel; ?></span>
                     </label><br />
-                    <?php $orgVal = $this->escape(stripslashes($this->row->org)); ?>
+                    <?php $orgVal = $this->escape(stripslashes((string) $this->row->org)); ?>
                     <input
                         type="text"
                         name="fields[org]"
@@ -123,7 +123,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php echo Lang::txt('COM_FEEDBACK_USER_ID'); ?>:
                     </label><br />
                     <?php
-                    $userIdVal = $this->escape(stripslashes($this->row->get('user_id')));
+                    $userIdVal = $this->escape(stripslashes((string) $this->row->get('user_id')));
                     $readonlyAttr = ($this->row->get('id') && $this->row->get('user_id'))
                         ? 'readonly="readonly"'
                         : '';
@@ -213,7 +213,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <span class="required"><?php echo $reqLabel; ?></span>
                     </label><br />
                     <?php
-                    $quoteVal = stripslashes($this->row->get('quote'));
+                    $quoteVal = stripslashes((string) $this->row->get('quote'));
                     echo $this->editor(
                         'fields[quote]',
                         $quoteVal,
@@ -244,7 +244,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <?php echo Lang::txt('COM_FEEDBACK_EDITOR_NOTES'); ?>:
                     </label><br />
                     <?php
-                    $notesVal = stripslashes($this->row->get('notes'));
+                    $notesVal = stripslashes((string) $this->row->get('notes'));
                     echo $this->editor('fields[notes]', $notesVal, 50, 10, 'field-notes');
                     ?>
                     <span class="hint"><?php echo $notesHint; ?></span>

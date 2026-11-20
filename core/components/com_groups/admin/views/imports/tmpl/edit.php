@@ -90,7 +90,7 @@ $this->js();
 
             <?php
                 // parse our hooks
-                $hooks              = json_decode($this->import->get('hooks'));
+                $hooks              = json_decode((string) $this->import->get('hooks'));
             if (!$hooks instanceof \stdClass) {
                 $hooks = new stdClass();
             }
@@ -110,7 +110,12 @@ $this->js();
                         <select name="hooks[postparse][]" multiple="multiple">
                             <?php if (isset($hooks->postparse)) : ?>
                                 <?php foreach ($hooks->postparse as $hook) : ?>
-                                    <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                    <?php
+                                    // Rows are keyed by ID; a hook since removed is left out
+                                    $importHook = $this->hooks->seek($hook);
+                                    if (!$importHook) {
+                                        continue;
+                                    } ?>
                                     <?php $v1 = $importHook->get('id'); ?>
                                     <?php $v0 = $importHook->get('name'); ?>
                                     <option selected="selected" value="<?php echo $v1; ?>"><?php echo $v0; ?></option>
@@ -146,7 +151,12 @@ $this->js();
                         </label>
                         <select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple">
                             <?php foreach ($hooks->postmap as $hook) : ?>
-                                <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                <?php
+                                // Rows are keyed by ID; a hook since removed is left out
+                                $importHook = $this->hooks->seek($hook);
+                                if (!$importHook) {
+                                    continue;
+                                } ?>
                                 <?php $v1 = $importHook->get('id'); ?>
                                 <?php $v0 = $importHook->get('name'); ?>
                                 <option selected="selected" value="<?php echo $v1; ?>"><?php echo $v0; ?></option>
@@ -181,7 +191,12 @@ $this->js();
                         </label>
                         <select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple">
                             <?php foreach ($hooks->postconvert as $hook) : ?>
-                                <?php $importHook = $this->hooks->fetch('id', $hook); ?>
+                                <?php
+                                // Rows are keyed by ID; a hook since removed is left out
+                                $importHook = $this->hooks->seek($hook);
+                                if (!$importHook) {
+                                    continue;
+                                } ?>
                                 <?php $v1 = $importHook->get('id'); ?>
                                 <?php $v0 = $importHook->get('name'); ?>
                                 <option selected="selected" value="<?php echo $v1; ?>"><?php echo $v0; ?></option>

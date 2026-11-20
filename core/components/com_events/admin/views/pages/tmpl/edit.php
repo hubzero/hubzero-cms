@@ -63,7 +63,7 @@ $pagetextValue = $this->escape(
 
                 <div class="input-wrap">
                     <a href="<?php echo $eventEditUrl; ?>">
-                        <?php echo $this->escape(stripslashes($this->event->title)); ?>
+                        <?php echo $this->escape(stripslashes((string) $this->event->title)); ?>
                     </a>
                 </div>
 

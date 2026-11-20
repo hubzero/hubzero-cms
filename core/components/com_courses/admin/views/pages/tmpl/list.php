@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
@@ -20,6 +21,8 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{course_id: mixed, docs: mixed, listdir: mixed, subdir: mixed} $this
  */
 
+// media.js runs on jQuery, which this frame does not otherwise load
+Html::behavior('framework');
 $this->js('media.js');
 ?>
 <div id="attachments">
