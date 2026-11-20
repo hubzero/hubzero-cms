@@ -75,7 +75,10 @@ class General extends Base
      */
     public function exists()
     {
-        return true;
+        // The hub's own list is the one a visit may set up. Saying yes for any
+        // number let every /wishlist/general/N a signed-in visitor opened create
+        // a list; other general lists are made by an administrator.
+        return (int) $this->get('referenceid') === 1;
     }
 
     /**
