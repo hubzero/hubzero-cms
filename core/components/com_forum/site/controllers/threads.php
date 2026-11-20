@@ -292,8 +292,8 @@ class Threads extends SiteController
                 );
             }
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
-                    . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+                Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
         }
@@ -325,6 +325,12 @@ class Threads extends SiteController
 
         if ($loaded) {
             $post = Post::oneOrNew($id);
+
+            // A thread that is not there drew the new-thread form, whose save
+            // started a thread
+            if ($id && $post->isNew()) {
+                App::abort(404, Lang::txt('COM_FORUM_THREAD_NOT_FOUND'));
+            }
         }
 
         $this->authorize('thread', $id);
