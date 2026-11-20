@@ -302,7 +302,7 @@ class Credentials extends SiteController
             );
 
             $this->finish(
-                Route::url('index.php?option=' . $this->option . '&task=remind', false),
+                Route::url('index.php?option=' . $this->option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
                 'warning',
             );

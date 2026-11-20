@@ -24,6 +24,13 @@ class Members extends AbstractComponent
     protected function execute(): void
     {
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'profiles'));
+
+        // com_users hands /login/remind and /login/reset over as view=remind or
+        // view=reset (the router names the controller for /members/reset); there
+        // is no such controller, so these showed the member directory instead
+        if (in_array($controllerName, ['remind', 'reset'])) {
+            $controllerName = 'credentials';
+        }
         if (
             !is_subclass_of(
                 __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)),
