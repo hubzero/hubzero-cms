@@ -51,6 +51,12 @@ defined('_HZEXEC_') or die;
     prev($list);
     $penult_item_key = key($list);
 
+    // Names come escaped from some callers and raw (titles people typed) from
+    // others: decode, then escape, so both print as text
+    $crumbText = function ($name) {
+        return htmlspecialchars(html_entity_decode((string) $name), ENT_COMPAT, 'UTF-8');
+    };
+
     // Generate the trail
     foreach ($list as $key => $item) :
         // Make a link if not the last item in the breadcrumbs
@@ -59,10 +65,10 @@ defined('_HZEXEC_') or die;
             // Render all but last item - along with separator
             if (!empty($item->link)) {
                 echo '<a href="' . $item->link . '" class="pathway" aria-label="'
-                    . htmlspecialchars(html_entity_decode($item->name), ENT_COMPAT, 'UTF-8') . ' (breadcrumb)">'
-                    . html_entity_decode($item->name) . '</a>';
+                    . $crumbText($item->name) . ' (breadcrumb)">'
+                    . $crumbText($item->name) . '</a>';
             } else {
-                echo '<span>' . $item->name . '</span>';
+                echo '<span>' . $crumbText($item->name) . '</span>';
             }
 
             if (($key != $penult_item_key) || $show_last) {
@@ -70,7 +76,7 @@ defined('_HZEXEC_') or die;
             }
         } elseif ($show_last) {
             // Render last item if reqd.
-            echo '<span aria-current="page">' . $item->name . '</span>';
+            echo '<span aria-current="page">' . $crumbText($item->name) . '</span>';
         }
     endforeach;
     ?>

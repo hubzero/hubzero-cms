@@ -37,7 +37,8 @@ foreach ($this->categories as $anode) {
         $selected = ($this->value && ($anode->id == $this->value || $anode->name == $this->value))
               ? ' selected="selected"'
               : '';
-        $html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>' . $anode->name . '</option>' . "\n";
+        $html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>'
+            . htmlspecialchars((string) $anode->name, ENT_COMPAT, 'UTF-8') . '</option>' . "\n";
     }
 }
 $html .= '</select>' . "\n";

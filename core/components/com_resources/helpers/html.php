@@ -162,7 +162,8 @@ class Html
                 if ($value == $group->cn) {
                     $html .= ' selected="selected"';
                 }
-                $html .= '>' . stripslashes((string) $group->description) . '</option>' . "\n";
+                $html .= '>' . htmlspecialchars(stripslashes((string) $group->description), ENT_COMPAT, 'UTF-8')
+                    . '</option>' . "\n";
             }
         }
         $html .= '</select>' . "\n";
@@ -370,10 +371,7 @@ class Html
             foreach ($children as $child) {
                 $docs++;
                 $child->title = $child->title ? stripslashes($child->title) : '';
-                $child->title = str_replace('"', '&quot;', $child->title);
-                $child->title = str_replace('&amp;', '&', $child->title);
-                $child->title = str_replace('&', '&amp;', $child->title);
-                $child->title = str_replace('&amp;quot;', '&quot;', $child->title);
+                $child->title = htmlspecialchars($child->title, ENT_COMPAT, 'UTF-8', false);
 
                 $title = ($child->logicaltitle)
                         ? stripslashes($child->logicaltitle)
@@ -1076,9 +1074,7 @@ class Html
                 break;
 
             default:
-                $firstChild->title = str_replace('"', '&quot;', $firstChild->title);
-                $firstChild->title = str_replace('&amp;', '&', $firstChild->title);
-                $firstChild->title = str_replace('&', '&amp;', $firstChild->title);
+                $firstChild->title = htmlspecialchars($firstChild->title, ENT_COMPAT, 'UTF-8', false);
 
                 $mesg   = '';
                 $class  = '';

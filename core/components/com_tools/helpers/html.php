@@ -654,7 +654,7 @@ class Html
             if ($value == $group->cn) {
                 $html .= ' selected="selected"';
             }
-            $html .= '>' . $group->description . '</option>' . "\n";
+            $html .= '>' . htmlspecialchars((string) $group->description, ENT_COMPAT, 'UTF-8') . '</option>' . "\n";
         }
         $html .= '</select>' . "\n";
         return $html;

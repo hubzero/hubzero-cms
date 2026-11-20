@@ -99,7 +99,7 @@ if ($this->params->get('stamp_logo')) {
                                     <?php foreach ($this->member_roles as $role) { ?>
                                         <?php $sel = ($role['name'] == $role_name) ? 'selected="selected"' : ''; ?>
                                         <option <?= $sel ?> value="role_<?= $role['id'] ?>">
-                                            <?= $role['name'] ?>
+                                            <?= $this->escape($role['name']) ?>
                                         </option>
                                     <?php } ?>
                                 </optgroup>
@@ -109,7 +109,9 @@ if ($this->params->get('stamp_logo')) {
                                     <?php foreach ($this->members as $m) { ?>
                                         <?php $u = User::getInstance($m); ?>
                                         <?php $sel = ($u->get('id') == $this->users[0]) ? 'selected="selected"' : ''; ?>
-                                        <option <?= $sel ?> value="<?= $u->get('id') ?>"><?= $u->get('name') ?></option>
+                                        <option <?= $sel ?> value="<?= $u->get('id') ?>">
+                                            <?= $this->escape($u->get('name')) ?>
+                                        </option>
                                     <?php } ?>
                                 </optgroup>
                             <?php } ?>

@@ -555,8 +555,7 @@ class Tags extends Cloud
                 }
 
                 $tag->raw_tag = stripslashes($tag->raw_tag);
-                $tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
-                $tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
+                $tag->raw_tag = htmlspecialchars($tag->raw_tag, ENT_COMPAT, 'UTF-8', false);
                 if ($showsizes == 1) {
                     $size = $min_font_size + ($tag->count - $min_qty) * $step;
                     $tll[$tag->tag] = "\t" . '<li' . $class . '><span data-size="' . round($size, 1) . 'em"><a '

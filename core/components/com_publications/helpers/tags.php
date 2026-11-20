@@ -891,8 +891,7 @@ class Tags extends \Hubzero\Base\Obj
                 }
 
                 $tag->raw_tag = stripslashes($tag->raw_tag);
-                $tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
-                $tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
+                $tag->raw_tag = htmlspecialchars($tag->raw_tag, ENT_COMPAT, 'UTF-8', false);
                 $tagUrl = Route::url(
                     'index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst),
                 );

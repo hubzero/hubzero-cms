@@ -235,7 +235,7 @@ $privacySelected = function ($value) use ($view) {
                                 <?php
                                     $profile = User::getInstance($this->firstversion->get('created_by'));
                                     echo ($profile->get('id'))
-                                        ? $profile->get('name') . ' (' . $profile->get('id') . ')'
+                                        ? $this->escape($profile->get('name')) . ' (' . $profile->get('id') . ')'
                                         : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
@@ -250,7 +250,7 @@ $privacySelected = function ($value) use ($view) {
                                 <?php
                                     $profile = User::getInstance($this->version->get('created_by'));
                                     echo ($profile->get('id'))
-                                        ? $profile->get('name') . ' (' . $profile->get('id') . ')'
+                                        ? $this->escape($profile->get('name')) . ' (' . $profile->get('id') . ')'
                                         : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
@@ -280,7 +280,7 @@ $privacySelected = function ($value) use ($view) {
                                             $profile = User::getInstance($version->get('created_by'));
                                             $name = (
                                                 ($profile->get('id'))
-                                                    ? $profile->get('name')
+                                                    ? $this->escape($profile->get('name'))
                                                     : Lang::txt('COM_GROUPS_PAGES_SYSTEM')
                                             );
                                             echo Lang::txt(
@@ -296,7 +296,7 @@ $privacySelected = function ($value) use ($view) {
                                             $profile = User::getInstance($version->get('approved_by'));
                                             $name = (
                                                 ($profile->get('id'))
-                                                    ? $profile->get('name')
+                                                    ? $this->escape($profile->get('name'))
                                                     : Lang::txt('COM_GROUPS_PAGES_SYSTEM')
                                             );
                                             echo Lang::txt(

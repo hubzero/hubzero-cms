@@ -41,10 +41,7 @@ if ($children) {
     foreach ($children as $child) {
         $docs++;
         $child->title = $child->title ? stripslashes($child->title) : '';
-        $child->title = str_replace('"', '&quot;', $child->title);
-        $child->title = str_replace('&amp;', '&', $child->title);
-        $child->title = str_replace('&', '&amp;', $child->title);
-        $child->title = str_replace('&amp;quot;', '&quot;', $child->title);
+        $child->title = htmlspecialchars($child->title, ENT_COMPAT, 'UTF-8', false);
 
         $params = new \Hubzero\Config\Registry($child->params);
 

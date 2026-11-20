@@ -256,7 +256,11 @@ class Jsonld extends Plugin
             $data['encodingFormat'] = $mimeTypes;
         }
 
-        Document::addScriptDeclaration((string) json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
+        // JSON_HEX_TAG: a title or keyword holding </script> must not end the block
+        Document::addScriptDeclaration(
+            (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG),
+            'application/ld+json',
+        );
 
         /*
         Example
