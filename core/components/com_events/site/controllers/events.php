@@ -749,7 +749,10 @@ class Events extends SiteController
         // Parse http and mailto
         $alphadigit = "([a-z]|[A-Z]|[0-9])";
 
-        // Adresse
+        // Adresse: printed as HTML with links made below. Saves through the
+        // event form clean it, but events imported from a group's subscribed
+        // calendar feed (LOCATION) are stored as the feed has them
+        $row->adresse_info = \Hubzero\Utility\Sanitize::clean((string) $row->adresse_info);
         $row->adresse_info = preg_replace(
             "/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
             "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>",

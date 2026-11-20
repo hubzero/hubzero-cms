@@ -59,7 +59,7 @@ $listName = $this->todo->getListName($this->model->get('id'), $color);
 $diff = null;
 // How long did it take to complete
 if ($this->row->isComplete()) {
-    $diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
+    $diff = strtotime((string) $this->row->get('closed')) - strtotime($this->row->get('created'));
     $diff = ProjectsHtml::timeDifference($diff);
 }
 $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('PLG_PROJECTS_TODO_NOONE');

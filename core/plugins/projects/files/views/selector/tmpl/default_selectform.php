@@ -64,7 +64,7 @@ defined('_HZEXEC_') or die();
                 $view->set('option', $this->option);
                 $view->set('model', $this->model);
                 $view->set('items', $this->items);
-                $view->set('publication', $this->publication);
+                $view->set('publication', $this->publication ?? null);
                 $view->set('selected', $this->selected);
 
                 echo $view->loadTemplate();
