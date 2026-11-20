@@ -1089,7 +1089,7 @@ $categoryChecked = function ($value) use ($view) {
                                 <?php echo $assigned; ?>
 
                                 <?php echo Lang::txt('COM_WISHLIST_PLAN_IS_DUE'); ?>
-                                <a href="<?php echo Route::url($this->wish->link('editplan')); ?>'">
+                                <a href="<?php echo Route::url($this->wish->link('editplan')); ?>">
                                     <?= ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00')
                                         ? $this->wish->due()
                                         : Lang::txt('COM_WISHLIST_DUE_NEVER') ?>
@@ -1102,7 +1102,7 @@ $categoryChecked = function ($value) use ($view) {
                             <?php echo Lang::txt('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?>
                             <?php echo $assigned; ?>
                             <?php echo Lang::txt('COM_WISHLIST_PLAN_IS_DUE'); ?>
-                            <a href="<?php echo Route::url($this->wish->link('editplan')); ?>'">
+                            <a href="<?php echo Route::url($this->wish->link('editplan')); ?>">
                                 <?= ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00')
                                     ? $this->wish->due()
                                     : Lang::txt('COM_WISHLIST_DUE_NEVER') ?>
