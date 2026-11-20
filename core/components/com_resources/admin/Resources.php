@@ -32,7 +32,7 @@ class Resources extends AbstractComponent
         $task = Request::getWord('task', '');
 
         if (!User::authorise('core.manage', $option)) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         // Get controller name

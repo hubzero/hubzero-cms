@@ -27,7 +27,7 @@ class Poll extends AbstractComponent
     {
         // Authorization check
         if (!User::authorise('core.manage', 'com_poll')) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         // Create the controller

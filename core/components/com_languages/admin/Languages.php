@@ -30,7 +30,7 @@ class Languages extends AbstractComponent
     {
         // Access check.
         if (!User::authorise('core.manage', 'com_languages')) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $controllerName = Request::getCmd('controller', 'installed');

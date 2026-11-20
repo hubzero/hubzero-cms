@@ -28,7 +28,7 @@ class Plugins extends AbstractComponent
     {
         // Access check.
         if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $task = Request::getCmd('task');
@@ -43,7 +43,7 @@ class Plugins extends AbstractComponent
                 \Hubzero\Component\ControllerInterface::class,
             )
         ) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
 

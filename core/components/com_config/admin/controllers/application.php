@@ -48,7 +48,7 @@ class Application extends AdminController
     {
         // Access check.
         if (!User::authorise('core.admin', $this->option)) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $model = new Models\Application();

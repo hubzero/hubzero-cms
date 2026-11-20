@@ -43,7 +43,7 @@ class Config extends AbstractComponent
                 \Hubzero\Component\ControllerInterface::class,
             )
         ) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

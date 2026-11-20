@@ -29,7 +29,7 @@ class Support extends AbstractComponent
     protected function execute(): void
     {
         if (!User::authorise('core.manage', 'com_support')) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $controllerName = Request::getCmd('controller', 'tickets');

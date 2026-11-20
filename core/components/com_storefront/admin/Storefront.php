@@ -31,7 +31,7 @@ class Storefront extends AbstractComponent
         $option = 'com_storefront';
 
         if (!User::authorise('core.manage', $option)) {
-            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $scope = Request::getCmd('scope', 'site');
