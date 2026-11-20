@@ -174,7 +174,8 @@ class Comment extends Relational
         if (!$this->get('section')) {
             $article = Article::oneOrFail($this->get('entry_id'));
 
-            $this->set('category', $article->parentCategory()->get('alias'));
+            // The section is the category's path, as Article::link() builds it
+            $this->set('section', Category::oneOrNew($article->get('category'))->get('path'));
             $this->set('article', $article->get('alias'));
         }
         $link .= '&section=' . $this->get('section');

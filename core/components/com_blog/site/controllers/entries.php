@@ -547,7 +547,7 @@ class Entries extends SiteController
                 $item->link        = Route::url($row->link());
                 $item->date        = date('r', strtotime($row->published()));
                 $item->category    = '';
-                $item->author      = $row->creator()->get('name');
+                $item->author      = $row->creator()->row()->get('name');
 
                 // Loads item info into rss array
                 $doc->addItem($item);

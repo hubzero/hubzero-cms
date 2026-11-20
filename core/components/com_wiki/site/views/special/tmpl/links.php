@@ -57,7 +57,7 @@ if ($v = Request::getInt('version', 0)) :
         ->whereEquals('id', $v)
         ->row();
 else :
-            $revision = $page->version();
+            $revision = $page->version()->row();
 endif;
 
         $permalink = rtrim(Request::base(), '/') . '/'

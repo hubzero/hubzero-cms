@@ -1221,7 +1221,7 @@ class Pages extends SiteController
         // Set font
         //$pdf->SetFont('dejavusans', '', 11, '', true);
 
-        $pdf->setAuthor($this->page->creator()->get('name'));
+        $pdf->setAuthor($this->page->creator()->row()->get('name'));
         $pdf->setCreator(Config::get('sitename'));
 
         $pdf->setDocModificationTimeStamp($this->page->modified());

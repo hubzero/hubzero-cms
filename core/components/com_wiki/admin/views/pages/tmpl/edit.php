@@ -134,7 +134,7 @@ $stateSelected = function ($value) use ($view) {
                     <textarea name="page[authors]" id="pageauthors" cols="35" rows="3"><?php
                         $authors = [];
                     foreach ($this->row->authors()->rows() as $author) {
-                        $authors[] = $author->user()->get('username');
+                        $authors[] = $author->user()->row()->get('username');
                     }
                         echo $this->escape(implode(', ', $authors));
                     ?></textarea>
