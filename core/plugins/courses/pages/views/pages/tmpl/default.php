@@ -55,7 +55,7 @@ if (!$this->page) {
     <?php
 } else {
     Pathway::append(
-        stripslashes($this->page->get('title')),
+        stripslashes((string) $this->page->get('title')),
         $base . '&unit=' . $this->page->get('url'),
     );
 

@@ -198,7 +198,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                 continue;
                             }
 
-                            if (!trim($attachment->get('description'))) {
+                            if (!trim((string) $attachment->get('description'))) {
                                 $attachment->set('description', $attachment->get('filename'));
                             }
 

@@ -225,7 +225,7 @@ $idSelected = function ($value) use ($view) {
                     <label for="field-title">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>
                         <input type="text" name="fields[title]" id="field-title" size="35"
-                            value="<?= $this->escape(stripslashes($item->get('title'))) ?>" />
+                            value="<?= $this->escape(stripslashes((string) $item->get('title'))) ?>" />
                     </label>
     <?php } ?>
                     <label for="field_description">
