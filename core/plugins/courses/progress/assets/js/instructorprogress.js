@@ -22,6 +22,18 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($){
+	// Every change this page posts to the progress form carries the page's form
+	// token (the page-wide hz-post-action form holds it)
+	$.ajaxPrefilter(function (options) {
+		var url = $('.progress-form').attr('action');
+		if ((options.type || '').toUpperCase() === 'POST' && url && options.url === url) {
+			var token = $('#hz-post-action').serialize();
+			if (token) {
+				options.data = (options.data ? options.data + '&' : '') + token;
+			}
+		}
+	});
+
 	HUB.Plugins.CoursesProgress.initHandlebarsHelpers();
 	HUB.Plugins.CoursesProgress.initializeButtons();
 	HUB.Plugins.CoursesProgress.loadProgressData();

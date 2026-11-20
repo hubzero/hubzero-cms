@@ -109,6 +109,17 @@ class Progress extends Plugin
         $this->view->set('option', 'com_courses');
         $this->view->set('base', $this->base);
 
+        // The gradebook and grading-policy changes come from the instructor
+        // page's scripts, which send the page's form token with each
+        if (
+            in_array(Request::getWord('action'), [
+                'savegradebookitem', 'deletegradebookitem', 'savegradebookentry',
+                'resetgradebookentry', 'policysave', 'restoredefaults',
+            ])
+        ) {
+            Request::checkToken(['get', 'post']);
+        }
+
         switch (Request::getWord('action')) {
             case 'assessmentdetails':
                 $this->assessmentdetails();
