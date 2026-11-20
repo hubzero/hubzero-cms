@@ -184,7 +184,7 @@ $this->css();
                                        : '';
                                         ?>><?php
                                 echo
-                                $license->get('title');
+                                $this->escape($license->get('title'));
 ?></option>
                     <?php } ?>
                 </select>

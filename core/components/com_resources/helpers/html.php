@@ -217,7 +217,7 @@ class Html
                     . '"'
                     . $selected
                     . '>'
-                    . stripslashes((string) $anode->type)
+                    . htmlspecialchars(stripslashes((string) $anode->type), ENT_COMPAT, 'UTF-8')
                     . '</option>'
                     . "\n";
             }

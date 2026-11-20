@@ -306,9 +306,9 @@ if ($categories->count()) {
                     );
                     ?>
                     <h3><a href="<?php echo $catUrl; ?>"><?php
-                        echo stripslashes($category->get('type'));
+                        echo $this->escape(stripslashes($category->get('type')));
                     ?></a></h3>
-                    <p><?php echo stripslashes($category->description); ?></p>
+                    <p><?php echo $this->escape(stripslashes($category->description)); ?></p>
                 </div>
             </div><!-- / .col span-third <?php echo $clm; ?> -->
             <?php

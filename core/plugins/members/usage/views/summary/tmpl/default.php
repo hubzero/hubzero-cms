@@ -267,7 +267,7 @@ $this->css('usage', 'com_usage');
                     ?>
                     <td class="textual-data">
                         <a href="<?= $linkUrl ?>"><?= $this->escape($row->title) ?></a>
-                        <span class="small"><?= $row->type ?></span>
+                        <span class="small"><?= $this->escape($row->type) ?></span>
                     </td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
@@ -298,7 +298,7 @@ $this->css('usage', 'com_usage');
                             ?>
                             <td class="highlight textual-data"><span class="child-connector">|-</span> <a
                                 href="<?= $linkUrl ?>"><?= $this->escape($rw->title) ?></a> <span
-                                class="small"><?= $rw->type ?></span></td>
+                                class="small"><?= $this->escape($rw->type) ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>
                             <td class="highlight"><?php echo $cites; ?></td>

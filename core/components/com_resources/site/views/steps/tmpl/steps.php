@@ -79,7 +79,7 @@ $this->set('group_cn', (isset($this->group_cn) ? $this->group_cn : Request::getS
         <tbody>
             <tr>
                 <td>
-                    <?php echo $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
+                    <?php echo $this->escape($this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE'))); ?>
                 </td>
                 <td>
                     <?php

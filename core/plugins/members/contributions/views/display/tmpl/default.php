@@ -263,7 +263,7 @@ foreach ($this->results as $category) {
                 }
             }
         }
-        $name = stripslashes($name);
+        $name = htmlspecialchars(stripslashes((string) $name), ENT_COMPAT, 'UTF-8');
 
         // A function for category specific items that may be needed
         // Check if a function exist (using old style plugins)
