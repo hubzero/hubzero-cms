@@ -42,7 +42,8 @@ $actionUrl = Route::url(
 <form action="<?= $actionUrl ?>" method="post" name="adminForm" id="item-form">
 
     <p class="error">
-        <?php echo Lang::txt('COM_GROUPS_MODULES_ERROR_LIST', $this->module->get('title'), $this->error); ?>
+        <?php $moduleTitle = $this->escape($this->module->get('title')); ?>
+        <?php echo Lang::txt('COM_GROUPS_MODULES_ERROR_LIST', $moduleTitle, $this->error); ?>
     </p>
 
     <h3><?php echo Lang::txt('COM_GROUPS_MODULES_RAW_CODE'); ?></h3>

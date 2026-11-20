@@ -50,7 +50,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
     <div class="connection-wrap default <?php echo $layout; ?>">
         <a class="connection" href="<?php echo Route::url($this->model->link('files') . '&action=browse'); ?>">
             <img src="/core/plugins/filesystem/local/assets/img/icon.png" alt="">
-            <div class="name"><?php echo Lang::txt($defaultName, $this->model->get('title')); ?></div>
+            <div class="name"><?php echo Lang::txt($defaultName, $this->escape($this->model->get('title'))); ?></div>
         </a>
     </div>
 

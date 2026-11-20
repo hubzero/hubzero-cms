@@ -52,7 +52,7 @@ $formAction = Route::url(
             <legend><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
             <p class="warning">
-                <?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->entry->title); ?>
+                <?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape($this->entry->title)); ?>
             </p>
 
             <label>
