@@ -760,7 +760,8 @@ class Ticket extends Relational
         }
 
         $sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, "
-            . "f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date` ";
+            . "f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date`, "
+            . "f.`closed`, f.`type` ";
         if ($having) {
             $sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
         }
@@ -793,9 +794,24 @@ class Ticket extends Relational
             $filters['sort'] = 'group_id';
         }
 
-        // Prevent ORDER BY injection: restrict column to identifier charset and direction to ASC/DESC.
-        $filters['sort']    = (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: 'id');
-        $filters['sortdir'] = (strtoupper(trim($filters['sortdir'])) == 'ASC') ? 'ASC' : 'DESC';
+        // Sort only by what a saved query or the list's sort links offer. The sort
+        // is kept in the session, so anything else (a column that doesn't exist,
+        // from a link someone sent) would break the list until signing out.
+        $sortable = [
+            'id', 'summary', 'report', 'category', 'open', 'status', 'severity', 'resolved', 'group_id',
+            'owner', 'created', 'closed', 'login', 'name', 'email', 'type', 'target_date',
+        ];
+        $joinedTags = str_contains($sql, '`#__tags` AS t');
+        $filters['sort'] = trim((string) $filters['sort']);
+        if ($filters['sort'] == 'tag' && $joinedTags) {
+            $orderBy = 't.`tag`';
+        } elseif (in_array($filters['sort'], $sortable, true)) {
+            $orderBy = 'f.`' . $filters['sort'] . '`';
+        } else {
+            $filters['sort'] = 'id';
+            $orderBy = 'f.`id`';
+        }
+        $filters['sortdir'] = (strtoupper(trim((string) $filters['sortdir'])) == 'ASC') ? 'ASC' : 'DESC';
 
         if ($filters['sort'] == 'severity') {
             $sql .= " ORDER BY CASE severity ";
@@ -806,7 +822,7 @@ class Ticket extends Relational
             $sql .= " WHEN 'trivial'  THEN 1";
             $sql .= " END " . $filters['sortdir'];
         } else {
-            $sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
+            $sql .= ' ORDER BY ' . $orderBy . ' ' . $filters['sortdir'];
         }
 
         $sql .= ($filters['limit']) ? " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']) : "";
