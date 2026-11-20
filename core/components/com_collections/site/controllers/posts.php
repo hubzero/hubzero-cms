@@ -21,6 +21,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;
 
 /**
@@ -187,6 +188,11 @@ class Posts extends SiteController
 
         // Load the post
         $this->view->set('entry', $this->view->get('collection')->post($id));
+
+        // A post that is gone drew an empty form, whose save made a new item
+        if ($id && !$this->view->get('entry')->exists()) {
+            App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_POST_NOT_FOUND'));
+        }
         if ($row instanceof Item) {
             // Show what was typed rather than what is stored
             $this->view->get('entry')->item($row);
@@ -344,8 +350,10 @@ class Posts extends SiteController
             return;
         }
 
-        // The owner is never the submitter's to set
+        // The owner is never the submitter's to set, nor the creation date (a
+        // blank one, from a form drawn without an item, was an SQL error)
         $row->set('created_by', $__iid ? $__existing->get('created_by') : User::get('id'));
+        $row->set('created', $__iid ? $__existing->get('created') : Date::toSql());
 
         // Add some data
         //$row->set('_files', $files);
