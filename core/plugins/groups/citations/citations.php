@@ -564,7 +564,7 @@ class Citations extends Plugin
             $view->get('row')->id = -time();
         } else {
             if ($view->get('row')->relatedAuthors->count()) {
-                $view->set('authors', $view->get('row')->relatedAuthors()->order('ordering', 'asc'));
+                $view->set('authors', $view->get('row')->relatedAuthors()->order('ordering', 'asc')->rows());
             } elseif ($view->get('row')->relatedAuthors->count() == 0 && $view->get('row')->author != '') {
                 // formats the author for the multi-author plugin
                 $authors = explode(';', $view->get('row')->author);

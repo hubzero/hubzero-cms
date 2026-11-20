@@ -438,11 +438,10 @@ class Citations extends Plugin
 
             $view->get('row')->id = -time();
         } else {
-            $view->set('authors', $view->get('row')->relatedAuthors()->order('ordering', 'asc'));
-            if (
-                !$view->get('authors')
-                && ($view->get('row')->relatedAuthors->count() == 0 && $view->get('row')->author != '')
-            ) {
+            // The rows, not the query: the form counts and lists them, and count()
+            // on the query is a TypeError (it was a warning before PHP 8)
+            $view->set('authors', $view->get('row')->relatedAuthors()->order('ordering', 'asc')->rows());
+            if ($view->get('authors')->count() == 0 && $view->get('row')->author != '') {
                 // Formats the author for the multi-author plugin
                 $authors = explode(';', $view->get('row')->author);
 
