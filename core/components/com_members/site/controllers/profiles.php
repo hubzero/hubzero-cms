@@ -1225,6 +1225,8 @@ class Profiles extends SiteController
         $raiselimit = Request::getArray('raiselimit', [], 'post');
 
         if ($raiselimit) {
+            Request::checkToken();
+
             $k = key($raiselimit);
 
             switch ($k) {
@@ -1232,7 +1234,7 @@ class Profiles extends SiteController
                     $preferences = new \Components\Tools\Tables\Preferences($this->database);
                     $preferences->loadByUser($profile->get('id'));
                     if (!$preferences->id) {
-                        $default = $preferences->find('one', ['alias' => 'default']);
+                        $default = $this->defaultSessionClass();
                         $preferences->user_id  = $profile->get('id');
                         $preferences->class_id = $default->id;
                         $preferences->jobs     = $default->jobs;
@@ -1317,6 +1319,10 @@ class Profiles extends SiteController
                     // Show limit selection form
                     $this->view
                         ->set('title', $title)
+                        ->set('resource', 'select')
+                        ->set('jobs_allowed', $this->sessionLimit($profile->get('id')))
+                        ->set('quota', Lang::txt('COM_MEMBERS_UNKNOWN'))
+                        ->set('max_meetings', Lang::txt('COM_MEMBERS_UNKNOWN'))
                         ->display();
                     return;
             }
@@ -1390,11 +1396,46 @@ class Profiles extends SiteController
             return;
         }
 
-        // Output the view
+        // Output the view: the table of limits to ask more of (with no
+        // resource the template showed the reason form, for no limit at all)
         $this->view
-            ->set('resource', null)
+            ->set('resource', 'select')
+            ->set('jobs_allowed', $this->sessionLimit($profile->get('id')))
+            ->set('quota', Lang::txt('COM_MEMBERS_UNKNOWN'))
+            ->set('max_meetings', Lang::txt('COM_MEMBERS_UNKNOWN'))
             ->set('title', $title)
             ->display();
+    }
+
+    /**
+     * How many tool sessions a member may run at once: their own preference,
+     * else the hub's default class
+     *
+     * @param   int  $userId
+     * @return  int
+     */
+    protected function sessionLimit($userId)
+    {
+        $preferences = new \Components\Tools\Tables\Preferences($this->database);
+        $preferences->loadByUser($userId);
+        if ($preferences->id) {
+            return (int) $preferences->jobs;
+        }
+
+        return (int) $this->defaultSessionClass()->jobs;
+    }
+
+    /**
+     * The hub's default tool session class (alias "default")
+     *
+     * @return  \Components\Tools\Tables\SessionClass
+     */
+    protected function defaultSessionClass()
+    {
+        $class = new \Components\Tools\Tables\SessionClass($this->database);
+        $class->load(['alias' => 'default']);
+
+        return $class;
     }
 
     /**

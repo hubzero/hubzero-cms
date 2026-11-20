@@ -127,5 +127,6 @@ $this->css();
         </fieldset>
         <div class="clear"></div>
     <?php } ?>
+        <?php echo Html::input('token'); ?>
     </form>
 </section><!-- / .main section -->
