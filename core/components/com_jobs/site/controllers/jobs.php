@@ -701,8 +701,12 @@ class Jobs extends SiteController
         // get service
         $service = Service::oneOrNew($serviceid);
 
+        // A form sent without choosing a service goes back to the choice
         if (!$serviceid or !$service->get('id')) {
-            throw new Exception(Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_CHOOSE_SERVICE'), 500);
+            Notify::error(Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_CHOOSE_SERVICE'));
+            App::redirect(
+                Route::url('index.php?option=com_jobs&task=subscribe'),
+            );
         }
 
         $units      = Request::getInt('units_' . $serviceid, 0);

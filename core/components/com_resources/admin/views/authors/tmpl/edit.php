@@ -90,7 +90,7 @@ Toolbar::cancel();
                                 <input type="text"
                                        name="fields[<?php echo $i; ?>][organization]"
                                        maxlength="250"
-                                       value="<?php echo $this->escape(stripslashes($row->organization)); ?>"
+                                       value="<?php echo $this->escape(stripslashes((string) $row->organization)); ?>"
                                        />
                             </td>
                             <td>

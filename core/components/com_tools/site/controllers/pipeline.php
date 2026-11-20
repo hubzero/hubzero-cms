@@ -762,7 +762,8 @@ class Pipeline extends SiteController
                 'index.php?option=' . $this->option,
             );
         }
-        if (Pathway::count() <= 1) {
+        // A tool being registered has no status, nor name, to point back to yet
+        if (Pathway::count() <= 1 && !empty($status['toolname'])) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
                 . $status['toolname'],
