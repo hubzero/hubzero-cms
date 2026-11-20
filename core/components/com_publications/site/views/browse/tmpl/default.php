@@ -44,7 +44,7 @@ $categorySelected = function ($value) use ($view) {
 };
 ?>
 <header id="content-header">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 </header><!-- / #content-header -->
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" id="resourcesform" method="get">

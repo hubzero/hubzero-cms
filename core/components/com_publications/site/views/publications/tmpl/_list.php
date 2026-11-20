@@ -34,7 +34,7 @@ foreach ($this->results as $row) {
 
     $info = [];
     $info[] = Date::of($row->published_up)->toLocal('d M Y');
-    $info[] = $row->cat_name;
+    $info[] = $this->escape($row->cat_name);
     $info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
         . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
 

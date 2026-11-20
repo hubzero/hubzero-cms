@@ -118,7 +118,7 @@ $no_html = Request::getInt('no_html', 0);
             aria-label="<?= $this->escape($this->group->get('description')) ?> — Group Home"><?= $linkText ?></a></h1>
         <span class="divider" aria-hidden="true"></span>
         <h2>
-            <?php echo \Components\Groups\Helpers\View::displayTab($this->group); ?>
+            <?php echo $this->escape(\Components\Groups\Helpers\View::displayTab($this->group)); ?>
         </h2>
 
         <?php

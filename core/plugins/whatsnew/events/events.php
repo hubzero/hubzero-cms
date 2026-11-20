@@ -129,7 +129,7 @@ class Events extends Plugin
             . '<span class="day">' . Date::of($row->publish_up)->toLocal('d') . '</span> '
             . '<span class="year">' . Date::of($row->publish_up)->toLocal('Y') . '</span></p>' . "\n";
         $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
-            . stripslashes($row->title) . '</a></p>' . "\n";
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</a></p>' . "\n";
         if ($row->itext) {
             $row->itext = str_replace('[[BR]]', '', $row->itext);
             $text = \Hubzero\Utility\Str::truncate(

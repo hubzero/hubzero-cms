@@ -34,7 +34,7 @@ $this
 
 ?>
 <header id="content-header">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 </header><!-- / #content-header -->
 
 <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>

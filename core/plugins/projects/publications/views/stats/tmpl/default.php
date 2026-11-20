@@ -169,7 +169,7 @@ $base = rtrim(Request::base(true), '/');
                     <?php
                     $spanText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' '
                         . Date::of($stat->published_up)->toLocal('M d, Y') . ' '
-                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name;
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $this->escape($stat->cat_name);
                     ?>
                     <span class="block mini faded"><?= $spanText ?></span>
                 </td></tr>

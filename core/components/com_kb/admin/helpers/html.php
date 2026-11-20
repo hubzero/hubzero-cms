@@ -43,7 +43,8 @@ class Html
             }
 
             $out .= '<option value="' . $category->get('id') . '"' . $selected . '>'
-                . $prfx . stripslashes($category->get('title')) . '</option>';
+                . $prfx . htmlspecialchars(stripslashes((string) $category->get('title')), ENT_COMPAT, 'UTF-8')
+                . '</option>';
         }
         $out .= '</select>';
         return $out;

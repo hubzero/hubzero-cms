@@ -160,7 +160,7 @@ foreach ($this->blocks as $b) {
                             <option
                                 value="<?php echo $cat->id; ?>"
                                 <?php echo $isSel ? ' selected="selected"' : ''; ?>
-                            ><?php echo $cat->name; ?></option>
+                            ><?php echo $this->escape($cat->name); ?></option>
                         <?php } ?>
                         </select>
                     </div>

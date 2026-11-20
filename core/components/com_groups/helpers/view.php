@@ -285,10 +285,12 @@ class View
                     ($pageAccess == 'registered' && User::isGuest())
                     || ($pageAccess == 'members' && !in_array(User::get("id"), $group->get('members')))
                 ) {
-                    $out .= "<li class=\"protected\"><span class=\"page\">" . $page->get('title') . "</span></li>";
+                    $out .= '<li class="protected"><span class="page">'
+                        . htmlspecialchars($page->get('title'), ENT_COMPAT, 'UTF-8') . '</span></li>';
                 } else {
                     $out .= '<li class="' . $cls . '">';
-                    $out .= '<a class="page" href="' . $page->url() . '">' . $page->get('title') . '</a>';
+                    $out .= '<a class="page" href="' . $page->url() . '">'
+                        . htmlspecialchars($page->get('title'), ENT_COMPAT, 'UTF-8') . '</a>';
                 }
 
                 // do we have child menu items

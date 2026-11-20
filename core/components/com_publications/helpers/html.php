@@ -609,7 +609,7 @@ class Html
             ? Lang::txt('COM_PUBLICATIONS_LISTED_IN')
             : Lang::txt('COM_PUBLICATIONS_IN');
         $html = '<p class="pubinfo">' . $action . '  <a href="' . Route::url($publication->link('category')) . '">'
-            . $publication->category()->name . '</a>';
+            . htmlspecialchars((string) $publication->category()->name, ENT_COMPAT, 'UTF-8') . '</a>';
 
         // Publication belongs to group?
         if ($publication->groupOwner()) {
@@ -748,7 +748,7 @@ class Html
             }
         }
 
-        $html .= '<span class="' . $cls . '"></span> ' . $title;
+        $html .= '<span class="' . $cls . '"></span> ' . htmlspecialchars((string) $title, ENT_COMPAT, 'UTF-8');
 
         return $html;
     }

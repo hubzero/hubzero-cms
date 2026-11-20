@@ -137,7 +137,7 @@ class Content extends Plugin
 
         $html = "\t" . '<li>' . "\n";
         $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
-            . stripslashes($row->title) . '</a></p>' . "\n";
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</a></p>' . "\n";
         if ($row->text) {
             $text = \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)),

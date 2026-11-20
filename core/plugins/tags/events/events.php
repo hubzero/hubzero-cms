@@ -134,7 +134,8 @@ class Events extends Plugin
         $html  = "\t" . '<li class="event">' . "\n";
         $html .= "\t\t" . '<p class="event-date"><span class="month">' . $month . '</span> <span class="day">'
             . $day . '</span> <span class="year">' . $year . '</span></p>' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title)
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8')
             . '</a></p>' . "\n";
         if ($row->ftext) {
             $row->ftext = str_replace('[[BR]]', '', $row->ftext);

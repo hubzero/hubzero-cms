@@ -31,7 +31,7 @@ $this
      ->js();
 ?>
 <header id="content-header">
-    <h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 
     <nav id="content-header-extra">
         <ul id="useroptions">

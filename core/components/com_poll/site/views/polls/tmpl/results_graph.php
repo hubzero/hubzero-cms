@@ -54,7 +54,7 @@ $votes = 0;
                             </div>
                         </td>
                         <td>
-                            <?php echo stripslashes($vote->text); ?>
+                            <?php echo $this->escape(stripslashes($vote->text)); ?>
                         </td>
                         <td class="votes">
                             <?php

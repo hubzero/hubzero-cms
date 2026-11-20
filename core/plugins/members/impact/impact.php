@@ -311,9 +311,11 @@ class Impact extends Plugin
         $authors = $pa->getAuthors($row->version_id);
 
         $html = "\t" . '<li class="resource">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title)
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8')
             . '</a></p>' . "\n";
-        $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
+        $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> '
+            . htmlspecialchars(stripslashes((string) $row->cat_name), ENT_COMPAT, 'UTF-8');
         if ($authors) {
             $html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': '
                 . \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";

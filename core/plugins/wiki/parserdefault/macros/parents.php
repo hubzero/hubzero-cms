@@ -97,7 +97,7 @@ class Parents extends WikiMacro
             // Build the HTML
             $html .= '<ul>';
             $html .= '<li><a href="' . Route::url($row->link()) . '">';
-            $html .= stripslashes($row->title);
+            $html .= htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8');
             $html .= '</a>';
             $html .= $this->buildTree($rows);
             $html .= '</li>' . "\n";

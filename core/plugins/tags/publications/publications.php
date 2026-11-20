@@ -295,9 +295,10 @@ class Publications extends Plugin
         $html  = "\t" . '<li class="';
         $html .= 'publication">' . "\n";
         $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '/?v=' . $row->alias . '">'
-            . stripslashes($row->title) . '</a></p>' . "\n";
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</a></p>' . "\n";
 
-        $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
+        $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> '
+            . htmlspecialchars((string) $row->area, ENT_COMPAT, 'UTF-8');
         if ($authors) {
             $html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS') . ' '
                 . stripslashes(\Components\Publications\Helpers\Html::showContributors(

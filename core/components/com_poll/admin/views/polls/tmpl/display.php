@@ -194,7 +194,7 @@ $canEdit = $canDo->get('core.edit');
                 </td>
                 <td>
                     <?php if ($noEdit) {
-                        echo $row->get('title');
+                        echo $this->escape($row->get('title'));
                     } else { ?>
                         <span
                             class="editlinktip hasTip"

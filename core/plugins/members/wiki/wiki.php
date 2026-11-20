@@ -135,7 +135,7 @@ class Wiki extends Plugin
     {
         $html = "\t" . '<li class="resource">' . "\n";
         $html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">'
-            . stripslashes($row->title) . '</a></p>' . "\n";
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</a></p>' . "\n";
         $html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
         $html .= "\t\t" . '<p>'
             . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";

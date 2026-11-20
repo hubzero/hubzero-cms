@@ -46,7 +46,7 @@ $this
      ->js('jquery.cycle2', 'system');
 ?>
 <header id="content-header">
-    <h2><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_FOR_PAGE', $this->page->get('title')); ?></h2>
+    <h2><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_FOR_PAGE', $this->escape($this->page->get('title'))); ?></h2>
 
     <div id="content-header-extra">
         <ul id="useroptions">

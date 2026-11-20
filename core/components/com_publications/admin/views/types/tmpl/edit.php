@@ -353,7 +353,9 @@ $required = ['content', 'description', 'authors'];
                     <select name="params[default_category]" id="field-default_category">
                     <?php foreach ($this->cats as $cat) { ?>
                         <?php $val = ($params->get('default_category', 1) == $cat->id) ? ' selected="selected"' : ''; ?>
-                        <option value="<?php echo $cat->id; ?>" <?php echo $val; ?>><?php echo $cat->name; ?></option>
+                        <option value="<?php echo $cat->id; ?>" <?php echo $val; ?>>
+                            <?php echo $this->escape($cat->name); ?>
+                        </option>
                     <?php } ?>
                     </select>
                 </div>

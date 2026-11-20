@@ -125,7 +125,7 @@ class Kb extends Plugin
             . '<p class="title"><a href="'
             . $row->href
             . '">'
-            . stripslashes($row->title)
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8')
             . '</a></p>'
             . "\n";
         if ($row->ftext) {

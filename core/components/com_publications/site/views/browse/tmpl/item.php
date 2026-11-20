@@ -50,7 +50,7 @@ if ($this->thedate) :
 endif;
 
 if (($this->line->category && !intval($this->filters['category']))) :
-    $info[] = $this->line->cat_name;
+    $info[] = $this->escape($this->line->cat_name);
 endif;
 
 if ($this->authors && $this->params->get('show_authors')) :

@@ -167,9 +167,10 @@ class Publications extends Plugin
         ) . '/Image:thumb';
         $html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . $imgUrl . '" alt="" /></span>';
         $html .= '<span class="pub-details"><a href="' . $row->href . '">'
-            . stripslashes($row->title) . '</a>' . "\n";
+            . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</a>' . "\n";
         $html .= "\t\t" . '<span class="block details">'
-            . Date::of($row->published_up)->toLocal('d M Y') . ' <span>|</span> ' . $row->cat_name;
+            . Date::of($row->published_up)->toLocal('d M Y') . ' <span>|</span> '
+            . htmlspecialchars((string) $row->cat_name, ENT_COMPAT, 'UTF-8');
         if ($authors) {
             $html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' '
                 . \Components\Publications\Helpers\Html::showContributors($authors, false, true);

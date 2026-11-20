@@ -284,14 +284,15 @@ class Tools extends Plugin
                         . '<td class="textual-data"><a href="'
                         . Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage')
                         . '">'
-                        . stripslashes($row->title)
+                        . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8')
                         . '</a></td>';
                     $html .= "\t\t\t" . '<td>' . $row->citations . '</td>' . "\n";
                     $html .= "\t\t" . '</tr>' . "\n";
                 } else {
                     $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
                     $html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data">' . stripslashes($row->title) . '</td>';
+                    $html .= "\t\t\t" . '<td class="textual-data">'
+                        . htmlspecialchars(stripslashes($row->title), ENT_COMPAT, 'UTF-8') . '</td>';
                     $html .= "\t\t\t" . '<td>' . $row->citations . '</td>' . "\n";
                     $html .= "\t\t" . '</tr>' . "\n";
                 }

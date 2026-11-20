@@ -141,7 +141,7 @@ tooltip: true,
         $pubDetails = Lang::txt('PLG_MEMBERS_IMPACT_PUBLISHED')
             . ' ' . $publishedDate . ' '
             . Lang::txt('PLG_MEMBERS_IMPACT_IN')
-            . ' ' . $stat->cat_name;
+            . ' ' . $this->escape($stat->cat_name);
 
         $projectUrl = Route::url(
             'index.php?option=com_projects&task=view&alias='
