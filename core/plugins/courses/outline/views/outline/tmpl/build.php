@@ -26,7 +26,7 @@ $section = $offering->section();
 $sectionId = $section->get('id');
 $units = $offering->units();
 
-HTML::behavior('core');
+Html::behavior('core');
 
 ?>
 

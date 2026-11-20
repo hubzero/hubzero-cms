@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-HTML::behavior('core');
+Html::behavior('core');
 
 //is this a share session thats read-only
 $readOnly = false;
