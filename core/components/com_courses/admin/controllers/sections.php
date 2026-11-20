@@ -222,7 +222,7 @@ class Sections extends AdminController
             return;
         }
 
-        $p = new \Hubzero\Config\Registry(Request::getArray('params', '', 'post'));
+        $p = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
 
         // Make sure the logo gets carried over
         $op = new \Hubzero\Config\Registry($model->get('params'));

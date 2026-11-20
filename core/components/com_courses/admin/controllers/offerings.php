@@ -192,7 +192,7 @@ class Offerings extends AdminController
         }
 
         $p = new \Hubzero\Config\Registry('');
-        $p->parse(Request::getArray('params', '', 'post'));
+        $p->parse(Request::getArray('params', [], 'post'));
 
         // Make sure the logo gets carried over
         $op = new \Hubzero\Config\Registry($model->get('params'));

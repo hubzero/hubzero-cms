@@ -1359,7 +1359,7 @@ class Items extends AdminController
         }
 
         // Save parameters
-        $params = Request::getArray('params', '', 'post');
+        $params = Request::getArray('params', [], 'post');
         foreach ($params as $k => $v) {
             $this->model->version->saveParam($this->model->version->id, $k, $v);
         }

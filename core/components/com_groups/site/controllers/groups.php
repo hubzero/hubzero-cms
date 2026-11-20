@@ -610,7 +610,7 @@ class Groups extends Base
         $tags              = trim(Request::getString('tags', ''));
         $lid               = Request::getInt('lid', 0, 'post');
         $customization     = Request::getArray('group', [], 'POST');
-        $plugins           = Request::getArray('group_plugin', '', 'POST');
+        $plugins           = Request::getArray('group_plugin', [], 'POST');
         $params            = Request::getArray('params', [], 'POST');
 
         $g_discussion_email_autosubscribe = Request::getInt('discussion_email_autosubscribe', 0, 'post');

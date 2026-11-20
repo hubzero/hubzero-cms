@@ -865,7 +865,7 @@ class Types extends AdminController
             $row->curation = json_encode($manifest);
         } else {
             // Get parameters
-            $params = Request::getArray('params', '', 'post');
+            $params = Request::getArray('params', [], 'post');
             $txt = [];
             foreach ($params as $k => $v) {
                 $txt[] = "$k=$v";

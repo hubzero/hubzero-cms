@@ -909,7 +909,7 @@ class Repo extends Obj
             }
         } else {
             // Regular upload
-            $upload = Request::getArray('upload', '', 'files');
+            $upload = Request::getArray('upload', [], 'files');
 
             if (empty($upload['name']) or $upload['name'][0] == '') {
                 $this->setError(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'));

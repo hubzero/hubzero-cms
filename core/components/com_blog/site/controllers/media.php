@@ -138,9 +138,9 @@ class Media extends SiteController
         Request::checkToken();
 
         // Incoming file
-        $file = Request::getArray('upload', '', 'files');
+        $file = Request::getArray('upload', [], 'files');
 
-        if (!$file['name'] || $file['size'] == 0) {
+        if (empty($file['name']) || empty($file['size'])) {
             $this->setError(Lang::txt('COM_BLOG_NO_FILE'));
             $this->displayTask();
 

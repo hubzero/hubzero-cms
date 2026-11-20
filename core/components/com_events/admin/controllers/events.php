@@ -530,7 +530,7 @@ class Events extends AdminController
         }
 
         // Get parameters
-        $params = Request::getArray('params', '', 'post');
+        $params = Request::getArray('params', [], 'post');
         //email is reaquired
         $params['show_email'] = 1;
         $p = new \Hubzero\Config\Registry($params);
