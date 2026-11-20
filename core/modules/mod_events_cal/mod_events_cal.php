@@ -255,32 +255,46 @@ class EventsCal extends Module
 
         $monthHasEvent = false;
         $lastDayOfMonth = date("t", (int) mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year));
+
+        // The month's events in one query (it was one per day), then each day
+        // picks the ones that touch it by the same three tests the query made
+        $monthStart = "$cal_year-$cal_month-01 00:00:00";
+        $monthEnd = "$cal_year-$cal_month-$lastDayOfMonth 23:59:59";
+        $sql = "SELECT `#__events`.publish_up, `#__events`.publish_down FROM `#__events`, `#__categories` as b"
+            . " WHERE #__events.catid = b.id "
+            . " AND ((publish_up >= '$monthStart' AND publish_up <= '$monthEnd')"
+            . " OR (publish_down >= '$monthStart' AND publish_down <= '$monthEnd')"
+            . " OR (publish_up <= '$monthEnd' AND publish_down >= '$monthStart')) AND state='1'"
+            . " AND (#__events.scope IS NULL OR #__events.scope="
+            . $database->quote('event') . ")";
+        $database->setQuery($sql);
+        $monthEvents = (array) $database->loadObjectList();
+
         $rd = 0;
         for ($d = 1; $d <= $lastDayOfMonth; $d++) {
             $do = ($d < 10) ? "0$d" : "$d";
             $selected_date = "$cal_year-$cal_month-$do";
+            $dayStart = "$selected_date 00:00:00";
+            $dayEnd = "$selected_date 23:59:59";
 
-            $sql = "SELECT `#__events`.* FROM `#__events`, `#__categories` as b"
-                . " WHERE #__events.catid = b.id "
-                // AND b.access <= $gid AND #__events.access <= $gid
-                . " AND ((publish_up >= '$selected_date 00:00:00' "
-                . "AND publish_up <= '$selected_date 23:59:59')"
-                . " OR (publish_down >= '$selected_date 00:00:00' "
-                . "AND publish_down <= '$selected_date 23:59:59')"
-                . " OR (publish_up <= '$selected_date 00:00:00' "
-                . "AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
-                . " AND (#__events.scope IS NULL OR #__events.scope="
-                . $database->quote('event') . ")"
-                . " ORDER BY publish_up ASC";
-
-            $database->setQuery($sql);
-            $rows = $database->loadObjectList();
-            $mark_bold = '';
-            $mark_close_bold = '';
+            $hasEvents = false;
+            foreach ($monthEvents as $event) {
+                // a missing date (NULL) passed none of the tests that read it
+                $up = $event->publish_up === null ? null : (string) $event->publish_up;
+                $down = $event->publish_down === null ? null : (string) $event->publish_down;
+                if (
+                    ($up !== null && $up >= $dayStart && $up <= $dayEnd)
+                    || ($down !== null && $down >= $dayStart && $down <= $dayEnd)
+                    || ($up !== null && $down !== null && $up <= $dayStart && $down >= $dayEnd)
+                ) {
+                    $hasEvents = true;
+                    break;
+                }
+            }
             $class = ($selected_date == $to_day) ? 'todaynoevents' : 'daynoevents';
 
             // do we have events
-            if (count($rows) > 0) {
+            if ($hasEvents) {
                 $monthHasEvent = true;
                 $class = 'daywithevents';
                 if ($selected_date == $to_day) {
