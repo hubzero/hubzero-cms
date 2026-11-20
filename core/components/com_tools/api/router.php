@@ -58,6 +58,13 @@ class Router extends Base
             return $vars;
         }
 
+        // /tools/screenshots/{user_id}: the task works on the signed-in user, and
+        // the id after it was taken for the task name ("Task [1002] not found")
+        if (isset($segments[0]) && $segments[0] == 'screenshots') {
+            $vars['task'] = 'screenshots';
+            return $vars;
+        }
+
         if (isset($segments[0])) {
             if (is_numeric($segments[0])) {
                 $vars['sessionid'] = $segments[0];

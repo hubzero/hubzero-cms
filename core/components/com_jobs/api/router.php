@@ -45,7 +45,14 @@ class Router extends Base
         $vars['controller'] = 'jobs';
 
         if (isset($segments[0])) {
-            $vars['task'] = $segments[0];
+            // /jobs/{jobcode} (documented, and what jobTask reads) went to a
+            // task named after the code, which never exists
+            if (ctype_digit((string) $segments[0])) {
+                $vars['task']    = 'job';
+                $vars['jobcode'] = $segments[0];
+            } else {
+                $vars['task'] = $segments[0];
+            }
         }
 
         return $vars;

@@ -57,7 +57,15 @@ class Router extends Base
                 $vars['task'] = 'read';
             } elseif (is_numeric($segments[0])) {
                 $vars['id'] = $segments[0];
-                if (isset($segments[1])) {
+                if (isset($segments[1]) && $segments[1] == 'tools') {
+                    // /members/{id}/tools/{sessions|recent|diskusage}, as documented;
+                    // it asked the profiles controller for a task named 'tools'
+                    $vars['controller'] = 'tools';
+                    $vars['task'] = $segments[2] ?? 'index';
+                    if ($vars['task'] == 'recent') {
+                        $vars['task'] = 'recenttools';
+                    }
+                } elseif (isset($segments[1])) {
                     $vars['task'] = $segments[1];
                 } elseif (App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';

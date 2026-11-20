@@ -12,6 +12,9 @@ use Hubzero\Component\ApiController;
 use stdClass;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Exception;
 
 /**
  * API controller for the time component
@@ -111,7 +114,13 @@ class Jobsv1r0 extends ApiController
 
         $obj = new \Components\Jobs\Tables\Job($database);
         $filters = [];
-        $job = $obj->getOpening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
+        // As on the site: getOpening() shows an opening that is not open (a
+        // draft, pending) only to its employer and to a jobs administrator
+        $admin = User::authorise('core.manage', 'com_jobs') ? 1 : 0;
+        $job = $jobCode ? $obj->getOpening(0, (int) User::get('id'), $admin, $jobCode) : null;
+        if (!$job) {
+            throw new Exception(Lang::txt('COM_JOBS_ERROR_JOB_NOT_FOUND'), 404);
+        }
 
         // Create object with records property
         $response = new stdClass();
