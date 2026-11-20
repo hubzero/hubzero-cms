@@ -797,10 +797,9 @@
 
 			<field
 				name="helpurl"
-				type="helpsite"
+				type="text"
 				label="COM_CONFIG_FIELD_HELP_SERVER_LABEL"
-				description="COM_CONFIG_FIELD_HELP_SERVER_DESC"
-				required="true" />
+				description="COM_CONFIG_FIELD_HELP_SERVER_DESC" />
 		</fieldset>
 	</fields>
 	<fields name="session">

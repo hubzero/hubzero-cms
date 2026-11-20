@@ -194,15 +194,19 @@ class Application extends Obj
         // Note: We can't use array_merge() as we're trying to preserve
         //       options that were explicitely set to blank and merging
         //       will return the previous, filled-in value
+        $form = $this->getForm();
         foreach ($prev as $key => $vals) {
             $values = isset($data[$key]) ? $data[$key] : [];
 
             foreach ($vals as $k => $v) {
                 if (!isset($values[$k])) {
-                    // Database password isn't apart of the config form
-                    // and we don't want to overwrite it. So we need to
-                    // inherit from previous settings.
-                    if ($key == 'database' && $k == 'password') {
+                    // A setting the form has no field for keeps its value: the
+                    // database password, and the app's secret, live_site,
+                    // virus_scanner, ... Blanking those on every save logged
+                    // everyone out (the secret seeds session names and form
+                    // tokens) and dropped what they configured. A field the
+                    // form has that came back without a value is blanked.
+                    if (($key == 'database' && $k == 'password') || !$form->getField($k, $key)) {
                         $values[$k] = $v;
                         continue;
                     }

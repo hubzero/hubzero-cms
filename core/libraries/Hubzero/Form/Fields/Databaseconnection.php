@@ -24,6 +24,25 @@ class Databaseconnection extends Select
     public $type = 'Databaseconnection';
 
     /**
+     * The list, with a stored 'pdo' shown as the 'mysql' it is
+     *
+     * Hubs installed before the drivers were split say 'pdo', which the database
+     * layer reads as mysql but which is not in this list: the browser picked the
+     * first entry instead, and saving the configuration switched the hub's
+     * database type (to mariadb) without anyone choosing it.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        if ($this->value === 'pdo' && !isset($this->getOptions()['pdo'])) {
+            $this->value = 'mysql';
+        }
+
+        return parent::getInput();
+    }
+
+    /**
      * Method to get the list of database options.
      *
      * This method produces a drop down list of available databases supported
