@@ -31,6 +31,7 @@ $link = $this->baseURL
         'site',
         'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email='
             . urlencode($this->xprofile->get('email')) . ($return ? '&return=' . urlencode($return) : ''),
+        false, // plain text: '&', not '&amp;' (the link's email came through as 'amp;email')
     );
 
 //$link = $this->baseURL . $link;

@@ -29,6 +29,6 @@ link to confirm your new email address and reactivate your account:
     . '&task=confirm&confirm='
     . -$this->xprofile->get('activation')
     . '&email='
-    . urlencode($this->xprofile->get('email'))); ?>
+    . urlencode($this->xprofile->get('email')), false); ?>
 
 Do not reply to this email.  Replying to this email will not confirm or activate your account.
