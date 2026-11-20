@@ -455,7 +455,7 @@ $sortDirSelected = function ($value) use ($view) {
                                 $_org = '';
                             foreach ($this->fields as $_f) {
                                 if (in_array($_f->get('name'), ['org', 'organization'])) {
-                                    $_org = trim(stripslashes($row->get($_f->get('name'))));
+                                    $_org = trim(stripslashes((string) $row->get($_f->get('name'))));
                                     break;
                                 }
                             }

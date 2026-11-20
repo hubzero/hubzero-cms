@@ -67,7 +67,7 @@ if (!$this->config->get('email_terse')) {
     $creatorName    = $this->comment->creator->get('name');
     $creatorLogin   = $this->comment->creator->get('username');
     $commentCreated = $this->comment->get('created');
-    $message .= $commentPosted . ': ' . $creatorName . '(' . $creatorLogin . ")\n";
+    $message .= $commentPosted . ': ' . $creatorName . ' (' . $creatorLogin . ")\n";
     $message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $commentCreated . "\n\n";
     if ($this->comment->changelog()->lists()) {
         foreach ($this->comment->changelog()->lists() as $type => $log) {

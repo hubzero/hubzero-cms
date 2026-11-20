@@ -81,11 +81,11 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                             break;
 
                         case 'moved':
-                            echo 'Wish #' . $this->escape($this->wish->get('id')) . 'has been moved to a new list.';
+                            echo 'Wish #' . $this->escape($this->wish->get('id')) . ' has been moved to a new list.';
                             break;
 
                         case 'updated':
-                            echo 'Wish #' . $this->escape($this->wish->get('id')) . 'has been updated.';
+                            echo 'Wish #' . $this->escape($this->wish->get('id')) . ' has been updated.';
                             break;
                     }
                     ?>
