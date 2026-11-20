@@ -311,4 +311,14 @@ class MorphOne extends Relationship
     {
         return $this->morphName;
     }
+
+    /**
+     * Whether the relationship is to a single record (rows() gives a model, not a list)
+     *
+     * @return  bool
+     **/
+    protected function isSingular()
+    {
+        return true;
+    }
 }

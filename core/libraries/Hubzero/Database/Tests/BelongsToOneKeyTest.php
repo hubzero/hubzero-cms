@@ -86,4 +86,49 @@ class BelongsToOneKeyTest extends AbstractDriverTestCase
         $this->assertSame('owner_key', $note->owner()->getRelatedKey(), $dbName);
         $this->assertSame('Grace', $note->owner->get('name'), $dbName);
     }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testGetThroughTheRelationshipReadsTheRelatedRecord(string $dbName, BaseSqlDriver $driver): void
+    {
+        $this->setupTestData($driver);
+        $ada = PlainOwner::blank()->set('name', 'Ada');
+        $ada->save();
+        KeyedNote::blank()->set('owner_id', $ada->get('id'))->save();
+
+        $note = KeyedNote::all()->row();
+
+        // $note->owner()->get() used to read the unrun query, which had no attributes
+        $this->assertSame('Ada', $note->owner()->get('name'), $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testGetThroughTheRelationshipWithNoRecordGivesTheDefault(
+        string $dbName,
+        BaseSqlDriver $driver,
+    ): void {
+        $this->setupTestData($driver);
+        KeyedNote::blank()->set('owner_id', 999)->save();
+
+        $note = KeyedNote::all()->row();
+
+        $this->assertSame('nobody', $note->owner()->get('name', 'nobody'), $dbName);
+        $this->assertNull($note->owner()->get('name'), $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testQueryMethodsStillGoToTheQuery(string $dbName, BaseSqlDriver $driver): void
+    {
+        $this->setupTestData($driver);
+        $ada = PlainOwner::blank()->set('name', 'Ada');
+        $ada->save();
+        KeyedNote::blank()->set('owner_id', $ada->get('id'))->save();
+
+        $note = KeyedNote::all()->row();
+
+        $this->assertSame(1, (int) $note->owner()->total(), $dbName);
+        $this->assertSame('Ada', $note->owner()->whereEquals('name', 'Ada')->row()->get('name'), $dbName);
+    }
 }

@@ -374,4 +374,14 @@ class MorphTo extends Relationship
             . 'The parent table cannot be determined at query time.',
         );
     }
+
+    /**
+     * Whether the relationship is to a single record (rows() gives a model, not a list)
+     *
+     * @return  bool
+     **/
+    protected function isSingular()
+    {
+        return true;
+    }
 }

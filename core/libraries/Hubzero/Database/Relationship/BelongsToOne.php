@@ -11,4 +11,15 @@ namespace Hubzero\Database\Relationship;
 /**
  * Database belongs to one relationship
  */
-class BelongsToOne extends Relationship {}
+class BelongsToOne extends Relationship
+{
+    /**
+     * Whether the relationship is to a single record (rows() gives a model, not a list)
+     *
+     * @return  bool
+     **/
+    protected function isSingular()
+    {
+        return true;
+    }
+}

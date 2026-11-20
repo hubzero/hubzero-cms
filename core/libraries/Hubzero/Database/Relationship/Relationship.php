@@ -151,7 +151,33 @@ class Relationship
      **/
     public function __call($name, $arguments)
     {
+        // get() and link() read a record. On the query they found nothing (no
+        // attributes yet), so $note->owner()->get('name') was always null: on
+        // a relationship to a single record, ask that record.
+        if ($this->isSingular() && in_array($name, ['get', 'link'], true)) {
+            $row = $this->rows();
+
+            if ($name === 'get') {
+                return $row instanceof \Hubzero\Database\Relational
+                    ? $row->get(...$arguments)
+                    : ($arguments[1] ?? null);
+            }
+
+            // link() is each model's own; a model without one has no link either
+            return method_exists($row, 'link') ? $row->link(...$arguments) : '';
+        }
+
         return $this->constrain()->$name(...$arguments);
+    }
+
+    /**
+     * Whether the relationship is to a single record (rows() gives a model, not a list)
+     *
+     * @return  bool
+     **/
+    protected function isSingular()
+    {
+        return false;
     }
 
     /**

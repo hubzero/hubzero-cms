@@ -239,4 +239,14 @@ class OneToOneThrough extends Relationship
 
         return $rows;
     }
+
+    /**
+     * Whether the relationship is to a single record (rows() gives a model, not a list)
+     *
+     * @return  bool
+     **/
+    protected function isSingular()
+    {
+        return true;
+    }
 }
