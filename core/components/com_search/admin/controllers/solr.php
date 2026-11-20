@@ -34,6 +34,16 @@ class Solr extends AdminController
      */
     public function execute()
     {
+        // Only a hub that searches with Solr has anything here. On any other
+        // engine, opening one of these pages (any task) ran configure(): it
+        // made a search account in every access group, an OAuth client and
+        // app/config/solr.json with their secrets, then failed building a Solr
+        // index (500).
+        if (Component::params('com_search')->get('engine', 'basic') != 'solr') {
+            Notify::warning(Lang::txt('COM_SEARCH_SOLR_NOT_THE_ENGINE'));
+            App::redirect(Route::url('index.php?option=com_search', false));
+        }
+
         $solrUser = User::oneByUsername('hubzerosolrworker')->get('id');
 
         if (file_exists(PATH_APP . '/config/solr.json') && $solrUser >= 0) {
