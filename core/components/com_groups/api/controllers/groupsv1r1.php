@@ -294,7 +294,7 @@ class Groupsv1r1 extends ApiController
             throw new Exception(Lang::txt('Failed to create group.'), 500);
         }
 
-        $this->send($group);
+        $this->send($this->record($group));
     }
 
     /**
@@ -639,7 +639,7 @@ class Groupsv1r1 extends ApiController
             throw new Exception(Lang::txt('COM_GROUPS_ERROR_SAVING_DATA'), 500);
         }
 
-        $this->send($group);
+        $this->send($this->record($group));
     }
 
     /**
@@ -679,5 +679,33 @@ class Groupsv1r1 extends ApiController
         }
 
         $this->send(null, 204);
+    }
+
+    /**
+     * What create and update answer with: the saved group's fields. (They sent
+     * the Group object itself, whose properties are protected, so the reply
+     * was {} and a client never learned the new group's id.)
+     *
+     * @param   \Hubzero\User\Group  $group
+     * @return  array<string, mixed>
+     */
+    protected function record($group)
+    {
+        $record = [];
+        foreach (
+            ['gidNumber', 'cn', 'description', 'published', 'approved', 'type', 'join_policy', 'discoverability',
+                'created', 'created_by'] as $field
+        ) {
+            $record[$field] = $group->get($field);
+        }
+        $record['public_desc'] = $group->getDescription('raw', 0, 'public');
+        $record['url'] = str_replace(
+            '/api',
+            '',
+            rtrim(Request::base(), '/') . '/'
+                . ltrim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/'),
+        );
+
+        return $record;
     }
 }
