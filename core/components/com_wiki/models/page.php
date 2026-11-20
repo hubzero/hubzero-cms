@@ -44,6 +44,13 @@ class Page extends Relational
     protected $adapter = null;
 
     /**
+     * What the adapter was built from (scope, scope id, path, page name)
+     *
+     * @var  string|null
+     */
+    protected $adapterKey = null;
+
+    /**
      * Component config
      *
      * @var  \Hubzero\Config\Registry|null
@@ -489,6 +496,20 @@ class Page extends Relational
      */
     public function adapter()
     {
+        // The adapter holds the page name and scope it was built with, and a new
+        // page builds one (checking access) before it has a name: after saving
+        // it linked to "?pagename=", and a renamed page to its old name
+        $key = implode('|', [
+            $this->get('scope'),
+            $this->get('scope_id'),
+            $this->get('path'),
+            $this->get('pagename'),
+        ]);
+        if ($key !== $this->adapterKey) {
+            $this->adapter = null;
+            $this->adapterKey = $key;
+        }
+
         if (!($this->adapter instanceof BaseAdapter)) {
             $scope = $this->get('scope', 'site');
             $scope = $scope ?: 'site';
