@@ -37,6 +37,13 @@ class Loader
     protected static $components = [];
 
     /**
+     * Whether every component's row has been read (see load())
+     *
+     * @var  bool
+     */
+    protected static $preloaded = false;
+
+    /**
      * The component router cache
      *
      * @var  array<mixed>
@@ -575,34 +582,40 @@ class Loader
         try {
             $db = $this->app->get('db');
 
-            $query = $db
-                ->getQuery()
-                ->select('extension_id', 'id')
-                ->select('element', '"option"')
-                ->select('params')
-                ->select('enabled')
-                ->from('#__extensions')
-                ->whereEquals('type', 'component')
-                ->whereEquals('element', $option);
+            // Every component's row at once, the first time one is asked for: a
+            // page asks about dozens (the administrator menu checks each one),
+            // and a query apiece was 37 of an administrator page's 60
+            if (!self::$preloaded) {
+                $query = $db
+                    ->getQuery()
+                    ->select('extension_id', 'id')
+                    ->select('element', '"option"')
+                    ->select('params')
+                    ->select('enabled')
+                    ->from('#__extensions')
+                    ->whereEquals('type', 'component');
 
-            $db->setQuery($query->toString());
+                $db->setQuery($query->toString());
+                $rows = $db->loadObjectList();
 
-            if (!$this->app->has('cache.store') || !($cache = $this->app['cache.store'])) {
-                $cache = new \Hubzero\Cache\Storage\None();
-            }
+                if ($error = $db->getErrorMsg()) {
+                    $message = $this->app['language']->translate(
+                        'JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING',
+                        $option,
+                        $error,
+                    );
+                    throw new Exception($message, 500);
+                }
 
-            if (!($data = $cache->get('_system.' . $option))) {
-                $data = $db->loadObject();
-                $cache->put('_system.' . $option, $data, $this->app['config']->get('cachetime', 15));
-            }
-
-            self::$components[$option] = $data;
-
-            if ($error = $db->getErrorMsg()) {
-                throw new Exception(
-                    $this->app['language']->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error),
-                    500,
-                );
+                foreach ((array) $rows as $row) {
+                    if (!isset(self::$components[$row->option])) {
+                        // as below for the one asked for: the rest are returned
+                        // from the top of this method without passing there
+                        $row->params = new Registry((string) $row->params);
+                        self::$components[$row->option] = $row;
+                    }
+                }
+                self::$preloaded = true;
             }
         } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
         }
