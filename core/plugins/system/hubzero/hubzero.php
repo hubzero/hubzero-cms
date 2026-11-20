@@ -43,8 +43,12 @@ class Hubzero extends Plugin
             );
 
             if ($str = Request::getString($hash, '', 'cookie')) {
+                // The cookie is a scalar array; refuse to build objects from it. The
+                // cipher is a repeating-key XOR whose keystream leaks from a visitor's
+                // own cookie (known plaintext), so a forged cookie must not be able to
+                // instantiate classes. Matches Hubzero\Utility\Cookie.
                 $sstr = $crypt->decrypt($str);
-                $tracker = @unserialize($sstr);
+                $tracker = @unserialize($sstr, ['allowed_classes' => false]);
 
                 if ($tracker === false) {
                     // old tracking cookies encrypted with UA which is too short term for a tracking cookie
@@ -55,7 +59,7 @@ class Hubzero extends Plugin
                         new \Hubzero\Encryption\Key('simple', $key, $key),
                     );
                     $sstr = $crypt->decrypt($str);
-                    $tracker = @unserialize($sstr);
+                    $tracker = @unserialize($sstr, ['allowed_classes' => false]);
                 }
             }
 
