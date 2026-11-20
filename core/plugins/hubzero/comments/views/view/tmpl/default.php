@@ -164,7 +164,7 @@ $this
                             </div>
                             <div class="form-group">
                                 <div class="form-check">
-                                    <label class="comment-anonymous-label" class="form-check-label">
+                                    <label class="comment-anonymous-label form-check-label">
                                         <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
                                             id="comment-anonymous"
                                             value="1"<?= $comment->get('anonymous') ? ' checked="checked"' : '' ?> />

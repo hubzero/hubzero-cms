@@ -17,6 +17,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for knowledge base categories
@@ -204,6 +205,26 @@ class Downloads extends AdminController
     }
 
     /**
+     * Calls stateTask to publish entries (the toolbar's Publish)
+     *
+     * @return     void
+     */
+    public function publishTask()
+    {
+        $this->stateTask(1);
+    }
+
+    /**
+     * Calls stateTask to unpublish entries (the toolbar's Unpublish)
+     *
+     * @return     void
+     */
+    public function unpublishTask()
+    {
+        $this->stateTask(0);
+    }
+
+    /**
      * Calls stateTask to publish entries
      *
      * @return     void
@@ -231,6 +252,13 @@ class Downloads extends AdminController
      */
     public function stateTask($state = 0)
     {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
+
+        if (!User::authorise('core.edit.state', $this->option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
         $ids = Request::getArray('id', []);
 
         // Check for an ID

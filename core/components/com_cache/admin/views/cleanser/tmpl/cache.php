@@ -37,7 +37,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 <form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-select">
-            <select name="filter_client_id" class="inputbox" class="filter filter-submit">
+            <select name="filter_client_id" class="inputbox filter filter-submit">
                 <?php foreach (\Components\Cache\Helpers\Helper::getClientOptions() as $option) : ?>
                     <?php
                     $selected = ($option->value == $this->state->get('clientId')) ? ' selected="selected"' : '';

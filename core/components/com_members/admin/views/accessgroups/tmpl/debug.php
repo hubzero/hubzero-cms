@@ -77,17 +77,17 @@ $formAction = Route::url(
                 </label>
                 <input
                     type="text"
-                    name="filter_search"
+                    name="search"
                     id="filter_search"
                     class="filter"
                     value="<?php echo $this->escape($this->filters['search']); ?>"
-                    placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_USERS'); ?>"
+                    placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_ASSETS'); ?>"
                 />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
             </div>
             <div class="filter-select col span7">
-                <select name="filter_component" class="inputbox" class="filter filter-submit">
+                <select name="filter_component" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT'); ?></option>
                     <?php
                     if (!empty($this->components)) :

@@ -57,8 +57,13 @@ jQuery(document).ready(function ($) {
 		this.form.submit();
 	});
 
-	$('#filter_pId-clear').on('click', function(e){
+	$('#filter_sId-clear').on('click', function(e){
 		$('#filter_sId').val('');
+		this.form.submit();
+	});
+
+	$('#filter_ordernum-clear').on('click', function(e){
+		$('#filter_ordernum').val('');
 		this.form.submit();
 	});
 

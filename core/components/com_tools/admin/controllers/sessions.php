@@ -18,6 +18,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for tool sessions
@@ -313,11 +314,17 @@ class Sessions extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
+        if (!User::authorise('core.delete', $this->option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
         // Incoming
         $ids = Request::getArray('id', []);
 
         // Do we have any IDs?
         if (!empty($ids)) {
+            $deleted = 0;
+
             // Loop through each ID and delete the necessary items
             foreach ($ids as $id) {
                 $id = intval($id);
@@ -325,12 +332,10 @@ class Sessions extends AdminController
                 $row = new Tables\SessionClass($this->database);
                 $row->load($id);
 
+                // The default class stays; the rest of the selection still goes
                 if ($row->alias == 'default') {
-                    // Output message and redirect
                     Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'));
-                    $this->cancelclassTask();
-
-                    return;
+                    continue;
                 }
 
                 // Remove the record
@@ -338,6 +343,14 @@ class Sessions extends AdminController
 
                 $prefs = new Tables\Preferences($this->database);
                 $prefs->restoreDefaultClass($id);
+
+                $deleted++;
+            }
+
+            if (!$deleted) {
+                $this->cancelclassTask();
+
+                return;
             }
         } else { // no rows were selected
             // Output message and redirect

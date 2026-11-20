@@ -52,9 +52,9 @@ $debugUrl = Route::url(
             <div class="filter-search col span5">
                 <label class="filter-search-lbl"
                     for="filter_search"><?= Lang::txt('COM_MEMBERS_SEARCH_ASSETS') ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter"
+                <input type="text" name="search" id="filter_search" class="filter"
                     value="<?= $this->escape($this->filters['search']) ?>"
-                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_USERS') ?>" />
+                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_ASSETS') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
             </div>
@@ -163,7 +163,7 @@ $debugUrl = Route::url(
                             $text  = '<span class="state no"><span>&#10007;</span></span>';
                     elseif ($check === null) :
                             $class = 'check-0';
-                            $text  = '<span class="state no"><span>&#10007;</span></span>';
+                            $text  = '<span class="state no"><span>-</span></span>';
                     else :
                             $class = '';
                             $text  = '&#160;';

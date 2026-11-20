@@ -11,7 +11,6 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
@@ -23,59 +22,16 @@ use Hubzero\Facades\Route;
 class Meta extends AdminController
 {
     /**
-     * Display a list of all categories
+     * Meta is edited per product, from the product's edit screen; there is no
+     * list of it, so the default task goes to the products list
      *
      * @return  void
      */
     public function displayTask()
     {
-        // Get filters
-        $filters = [
-            'access' => -1,
-        ];
-        $filters['sort'] = trim(Request::getState(
-            $this->option . '.' . $this->controller . '.sort',
-            'filter_order',
-            'title',
-        ));
-        $filters['sort_Dir'] = trim(Request::getState(
-            $this->option . '.' . $this->controller . '.sortdir',
-            'filter_order_Dir',
-            'ASC',
-        ));
-
-        // Get paging variables
-        $filters['limit'] = Request::getState(
-            $this->option . '.' . $this->controller . '.limit',
-            'limit',
-            Config::get('list_limit'),
-            'int',
+        App::redirect(
+            Route::url('index.php?option=' . $this->option . '&controller=products', false),
         );
-        $filters['start'] = Request::getState(
-            $this->option . '.' . $this->controller . '.limitstart',
-            'limitstart',
-            0,
-            'int',
-        );
-
-        $obj = new Archive();
-
-        // Get record count
-        $this->view->set('total', $obj->products('count', $filters));
-
-        // Get records
-        $this->view->set('rows', $obj->products('list', $filters));
-        $this->view->set('filters', $filters);
-
-        // Set any errors
-        if ($this->getError()) {
-            foreach ($this->getErrors() as $error) {
-                $this->view->setError($error);
-            }
-        }
-
-        // Output the HTML
-        $this->view->display();
     }
 
     /**

@@ -25,6 +25,7 @@ use Components\Storefront\Models\Sku;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
 
@@ -334,7 +335,7 @@ $this
                     <?php if ($canDo->get('core.edit.state')) {
                         $linkUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
-                                . '&id=' . $row->dId,
+                                . '&id=' . $row->dId . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
                         <a class="state <?= $class ?>" href="<?= $linkUrl ?>"

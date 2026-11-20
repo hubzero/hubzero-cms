@@ -58,7 +58,7 @@ class Activity extends AdminController
             'state' => Request::getState(
                 $this->option . '.projects.' . $this->controller . '.state',
                 'state',
-                '-1',
+                1,
                 'int',
             ),
             'search' => urldecode(Request::getState(
@@ -107,11 +107,11 @@ class Activity extends AdminController
             ->select($r . '.*')
             ->including('log')
             ->join($l, $l . '.id', $r . '.log_id')
-            ->whereIn($r . '.scope', ['project', 'project_managers'])
-            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
+            ->whereIn($r . '.scope', ['project', 'project_managers']);
 
+        // The state filter decides; it starts at published, and -1 is every state
         if ($filters['state'] >= 0) {
-            $recipient->whereLike($r . '.state', $filters['state']);
+            $recipient->whereEquals($r . '.state', (int) $filters['state']);
         }
 
         if ($filters['project']) {

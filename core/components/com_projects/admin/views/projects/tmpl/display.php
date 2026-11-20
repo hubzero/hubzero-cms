@@ -251,7 +251,7 @@ $quotaSelected = function ($value) use ($view) {
                         : $this->escape(stripslashes($row->authorname));
                     $owner = $owner
                         ? $owner
-                        : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
+                        : '<span class="unknown smallsub">' . Lang::txt('(unknown)') . '</span>';
                     $ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
                     // Determine status

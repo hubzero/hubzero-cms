@@ -83,7 +83,7 @@ $stateSelected = function ($value) use ($view) {
                 ><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
                 <input
                     type="text"
-                    name="filter_search"
+                    name="search"
                     id="filter_search"
                     class="filter"
                     value="<?php echo $searchVal; ?>"
@@ -302,7 +302,7 @@ $stateSelected = function ($value) use ($view) {
                 . '&id=' . $row->get('id')
                 . '&' . Session::getFormToken() . '=1',
             );
-            $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
+            $stateTitle = Lang::txt('COM_PROJECTS_SET_TO', $task);
             $unstarUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller

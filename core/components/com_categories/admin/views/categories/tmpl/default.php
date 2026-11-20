@@ -109,7 +109,7 @@ $formAction = Route::url(
 
             <div class="filter-select span8 align-right">
                 <label for="filter_level"><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS'); ?></label>
-                <select name="filter_level" id="filter_level" class="inputbox" class="filter filter-submit">
+                <select name="filter_level" id="filter_level" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS'); ?></option>
                     <?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
                 </select>

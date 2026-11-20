@@ -261,7 +261,7 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                                 <?php
                                 $ogAdminUrl = Route::url(
                                     'index.php?option=' . $this->option
-                                    . '&controller=options&task=display&id=' . $optionGroup->ogId,
+                                    . '&controller=options&task=display&ogId=' . $optionGroup->ogId,
                                 );
                                 $editOgTitle = Lang::txt('Edit option group');
                                 ?>

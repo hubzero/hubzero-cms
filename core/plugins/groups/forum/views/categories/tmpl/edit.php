@@ -98,7 +98,7 @@ if ($this->category->get('section_id') == 0) {
                 <div class="col span6">
                     <div class="form-group">
                         <div class="form-check">
-                            <label for="field-closed" class="comment-anonymous-label" class="form-check-label">
+                            <label for="field-closed" class="comment-anonymous-label form-check-label">
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
                                 <input class="option form-check-input"
                                     type="checkbox"

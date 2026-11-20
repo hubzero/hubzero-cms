@@ -20,6 +20,12 @@ jQuery(document).ready(function ( $ ) {
 				type     : 'GET',
 				data     : {"id":id},
 				success  : function ( data, textStatus, jqXHR ) {
+					// No storage host, or it could not be reached: no figure to show
+					if (!data || !data.success) {
+						usage.prev('.usage-calculating').hide();
+						usage.next('.usage-unavailable').show();
+						return;
+					}
 					if (data.percent > 100) {
 						data.percent = 100;
 						usage.find('.usage-inner').addClass('max');

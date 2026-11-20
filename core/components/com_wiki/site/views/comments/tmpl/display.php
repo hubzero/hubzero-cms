@@ -265,7 +265,7 @@ $ratingChecked = function ($value) use ($view) {
                     <?php } ?>
 
                     <div class="form-group form-check">
-                        <label class="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
+                        <label class="comment-anonymous-label form-check-label" for="comment-anonymous">
                             <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
                                 id="comment-anonymous"
                                 value="1"<?= $this->mycomment->get('anonymous') != 0 ? ' checked="checked"' : '' ?> />

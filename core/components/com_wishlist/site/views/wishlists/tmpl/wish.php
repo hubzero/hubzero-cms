@@ -961,7 +961,7 @@ $categoryChecked = function ($value) use ($view) {
                         </fieldset>
 
                         <div class="form-group form-check">
-                            <label class="comment-anonymous-label" for="comment-anonymous" class="form-check-label">
+                            <label class="comment-anonymous-label form-check-label" for="comment-anonymous">
                                 <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
                                     value="1" id="comment-anonymous" />
                                 <?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>

@@ -128,7 +128,7 @@ class Categories extends AdminController
             ),
             'language' => Request::getState(
                 $this->option . '.' . $this->controller . 'language',
-                '',
+                'filter_language',
             ),
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',

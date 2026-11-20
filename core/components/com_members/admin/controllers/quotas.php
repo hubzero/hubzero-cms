@@ -90,11 +90,10 @@ class Quotas extends AdminController
             ->join($cats, $cats . '.id', $entries->getTableName() . '.class_id', 'left')
             ->join($users, $users . '.id', $entries->getTableName() . '.user_id', 'left');
 
+        // Search the field the form names: username or name
         if ($filters['search']) {
-            $entries
-                ->whereLike($users . '.name', strtolower((string) $filters['search']), 1)
-                ->orWhereLike($users . '.username', strtolower((string) $filters['search']), 1)
-                ->resetDepth();
+            $field = $filters['search_field'] == 'username' ? 'username' : 'name';
+            $entries->whereLike($users . '.' . $field, strtolower((string) $filters['search']));
         }
 
         if ($filters['class_alias']) {
@@ -260,7 +259,14 @@ class Quotas extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $i = 0;
+
+        // Refuse a selection over the limit before syncing any of it
+        if (count($ids) > 100) {
+            Notify::error(Lang::txt('Sync limit exceeded. Please select at most 100 users.'));
+            $this->cancelTask();
+
+            return;
+        }
 
         // Do we have any IDs?
         if (!empty($ids)) {
@@ -279,15 +285,6 @@ class Quotas extends AdminController
                 $quota_data->set('soft_files', $quota_data->get('soft_files'));
                 $quota_data->set('hard_files', $quota_data->get('hard_files'));
                 $quota_data->save();
-
-                if ($i == 100) {
-                    Notify::error(Lang::txt('Sync limit exceeded. Please select less than 100 users.'));
-                    $this->cancelTask();
-
-                    return;
-                }
-
-                $i++;
             }
         } else { // no rows were selected
             // Output message and redirect

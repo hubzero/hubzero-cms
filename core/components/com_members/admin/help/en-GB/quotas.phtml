@@ -28,7 +28,7 @@
 		<dl>
 			<dt>Search</dt>
 			<dd>A drop-down with <em>Username</em> and <em>Name</em>, a <em>for</em> text box and a <strong>Go</strong>
-				button. The text is matched against both the member's name and username.</dd>
+				button. The text is matched against the field chosen in the drop-down: the member's username or name.</dd>
 
 			<dt>- Quota Class -</dt>
 			<dd>Lists the quota classes by alias. Choosing one shows only members in that class.</dd>
@@ -74,7 +74,8 @@
 		<dl>
 			<dt>Sync Selected User Quotas</dt>
 			<dd>Sends the saved soft and hard blocks limits of each selected member to the file system again.
-				Select at most 100 members. With more, it stops partway with a <em>Sync limit exceeded</em> error.</dd>
+				Select at most 100 members. With more, nothing is synced and a <em>Sync limit exceeded</em> error is
+				shown.</dd>
 
 			<dt>New</dt>
 			<dd>Opens the editing screen to add a quota for a member.</dd>

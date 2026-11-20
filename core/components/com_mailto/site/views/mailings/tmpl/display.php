@@ -65,7 +65,7 @@ $data = $this->get('data');
             <button class="button" id="mailto_send">
                 <?php echo Lang::txt('COM_MAILTO_SEND'); ?>
             </button>
-            <button class="button" id="mailto_cancel" class="cancel">
+            <button class="button cancel" id="mailto_cancel">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </button>
         </p>

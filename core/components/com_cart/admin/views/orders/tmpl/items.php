@@ -95,7 +95,7 @@ $formAction = Route::url(
                 <tr>
                     <th colspan="7"><?php echo Lang::txt('COM_CART_ORDER'); ?>: #<?php echo $this->filters['order']; ?>
                         <?php $clearTxt = Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
-                        <button type="button" class="filter-clear"><?php echo $clearTxt; ?></button>
+                        <button type="button" id="filter_ordernum-clear"><?php echo $clearTxt; ?></button>
                     </th>
                 </tr>
             <?php } ?>
@@ -147,7 +147,7 @@ $formAction = Route::url(
             </tr>
         </thead>
         <tfoot>
-            tr>
+            <tr>
                 <td colspan="7"><?php
                     // Initiate paging
                     echo $this->pagination(

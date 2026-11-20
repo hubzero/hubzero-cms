@@ -62,7 +62,7 @@ $formAction = Route::url(
                 <th scope="col">Price</th>
                 <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', $sortDir, $sort); ?></th>
                 <th scope="col"><?php
-                    echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', $sortDir, $sort);
+                    echo Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', $sortDir, $sort);
                 ?></th>
                 <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', $sortDir, $sort); ?></th>
             </tr>

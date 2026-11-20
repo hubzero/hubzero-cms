@@ -67,7 +67,7 @@ Toolbar::help('notes');
                     for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
                 <input
                     type="text"
-                    name="filter_search"
+                    name="search"
                     id="filter_search"
                     class="filter"
                     value="<?php echo $this->escape($this->filters['search']); ?>"
@@ -77,7 +77,7 @@ Toolbar::help('notes');
             </div>
 
             <div class="col span6">
-                <select name="filter_category_id" id="filter_category_id" class="inputbox filter filter-submit">
+                <select name="category_id" id="filter_category_id" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY'); ?></option>
                     <?php
                     $val = Html::select(
@@ -91,12 +91,12 @@ Toolbar::help('notes');
                     <?php echo $val; ?>
                 </select>
 
-                <select name="filter_published" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
+                <select name="state" class="inputbox filter filter-submit">
+                    <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                     <?php
                     $val = Html::select(
                         'options',
-                        Html::grid('publishedOptions'),
+                        Html::grid('publishedOptions', ['all' => false]),
                         'value',
                         'text',
                         $this->filters['state'],
