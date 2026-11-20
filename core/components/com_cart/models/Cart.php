@@ -50,13 +50,6 @@ abstract class Cart
     public $warehouse;
 
     /**
-     * Salt
-     *
-     * @var  string
-     */
-    protected static $securitySalt = 'ERDCVcvk$sad!ccsso====++!w';
-
-    /**
      * Cart constructor
      *
      * @return  void
@@ -552,6 +545,10 @@ abstract class Cart
     /**
      * Generate security token
      *
+     * A keyed hash of the transaction ID under the hub's own secret. It was the
+     * MD5 of the ID and a salt written in the source, which anyone could
+     * compute for any transaction.
+     *
      * @param   int     $tId    Transaction ID
      * @return  string
      */
@@ -560,7 +557,7 @@ abstract class Cart
         if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
-        return md5(self::$securitySalt . $tId);
+        return hash_hmac('sha256', 'com_cart.transaction.' . (int) $tId, self::securityKey());
     }
 
     /**
@@ -575,7 +572,24 @@ abstract class Cart
         if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
-        return hash_equals(md5(self::$securitySalt . $tId), (string) $token);
+        return hash_equals(self::generateSecurityToken((int) $tId), (string) $token);
+    }
+
+    /**
+     * The key transaction tokens are made with: the hub's secret
+     *
+     * @return  string
+     */
+    private static function securityKey()
+    {
+        $secret = (string) App::get('config')->get('secret');
+
+        // Without one there is nothing to keep a token from being forged
+        if ($secret === '') {
+            throw new \Exception('The hub has no secret configured; cart transactions cannot be secured.');
+        }
+
+        return $secret;
     }
 
     /**
