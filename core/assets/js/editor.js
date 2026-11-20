@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2026 Purdue University. All Rights Reserved.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  *
  * HUB.Editor - Editor-agnostic abstraction layer

@@ -61,10 +61,10 @@ already in its header and extends the range:
 the `@license` line. The documentation under `docs/` is
 [MIT as well](../../LICENSE).
 
-Most of core still reads
-`Copyright (c) 2005-2020 The Regents of the University of California.`, from an
-earlier stewardship of the project. Leave those lines as they are; the change of
-holder applies to new work.
+Files from an earlier stewardship of the project named The Regents of the
+University of California as the holder. UC San Diego transferred those
+copyrights back to Purdue, and since November 2026 every header names Purdue
+University, with each file's first year kept.
 
 The root [`LICENSE`](../../LICENSE) file and `core/composer.json` both say
 MIT, and they agree with the header above. They did not until recently: the

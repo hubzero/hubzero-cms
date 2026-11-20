@@ -23,7 +23,7 @@
         <h3>License Agreement</h3>
         <div class="license-text">
             <p><strong>MIT License</strong></p>
-            <p>Copyright (c) 2005-<?php echo date('Y'); ?> The Regents of the University of California</p>
+            <p>Copyright &copy; 2005-<?php echo date('Y'); ?> Purdue University. All Rights Reserved.</p>
             <p>Permission is hereby granted, free of charge, to any person obtaining a copy
             of this software and associated documentation files (the "Software"), to deal
             in the Software without restriction, including without limitation the rights to

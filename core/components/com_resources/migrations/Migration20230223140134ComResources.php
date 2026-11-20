@@ -2,7 +2,7 @@
 
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2022 The Regents of the University of California.
+ * @copyright  Copyright © 2022-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 

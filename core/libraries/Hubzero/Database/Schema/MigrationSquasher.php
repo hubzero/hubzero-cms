@@ -2,7 +2,7 @@
 
 /**
  * @package    framework
- * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -671,7 +671,7 @@ class MigrationSquasher
 
             /**
              * @package    hubzero-cms
-             * @copyright  Copyright (c) 2005-{$this->copyrightYear} The Regents of the University of California.
+             * @copyright  Copyright © 2005-{$this->copyrightYear} Purdue University. All Rights Reserved.
              * @license    http://opensource.org/licenses/MIT MIT
              */
 

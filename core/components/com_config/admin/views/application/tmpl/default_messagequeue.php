@@ -3,7 +3,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright (c) 2005-2020 The Regents of the University of California.
+ * Copyright © 2005-2026 Purdue University. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 

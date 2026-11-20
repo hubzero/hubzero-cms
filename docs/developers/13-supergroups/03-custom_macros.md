@@ -61,7 +61,7 @@ macro name in the `Plugins\Content\Formathtml\Macros` namespace, extending
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2026 Purdue University. All rights reserved.
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 

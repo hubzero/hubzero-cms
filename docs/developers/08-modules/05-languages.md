@@ -70,7 +70,7 @@ The translator also loads the default language before the requested one unless
 
 ```ini
 ; @package    hubzero-cms
-; @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+; @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
 ; @license    http://opensource.org/licenses/MIT MIT
 
 ; Note : All ini files need to be saved as UTF-8 - No BOM

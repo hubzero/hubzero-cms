@@ -3,10 +3,10 @@
 /**
  * @package     HUBzero CMS
  * @author      Sudheera R. Fernando <sudheera@xconsole.org>
- * @copyright   Copyright (c) 2012-2020 The Regents of the University of California.
+ * @copyright   Copyright © 2012-2026 Purdue University. All Rights Reserved.
  * @license     http://opensource.org/licenses/MIT MIT
  *
- * Copyright (c) 2012-2020 The Regents of the University of California.
+ * Copyright © 2012-2026 Purdue University. All Rights Reserved.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or

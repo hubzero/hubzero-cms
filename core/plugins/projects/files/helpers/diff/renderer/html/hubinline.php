@@ -9,7 +9,7 @@ namespace Plugins\Projects\Files\Helpers\Diff\Renderer\Html;
  * in existing markup. Based on chrisboulton/php-diff.
  *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 class HubInline extends \Diff_Renderer_Abstract

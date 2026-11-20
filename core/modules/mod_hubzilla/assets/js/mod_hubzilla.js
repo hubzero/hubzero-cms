@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2005-2020 The Regents of the University of California.
+ * Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
