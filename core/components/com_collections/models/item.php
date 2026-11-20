@@ -161,7 +161,10 @@ class Item extends Base
                 }
                 break;
             case 'voted':
-                if (!isset($this->table->{'__' . $property})) {
+                // A list joins the viewer's vote in (NULL when they have not
+                // voted); isset() took that NULL for "not loaded" and asked
+                // again, once per item on every collections page
+                if (!property_exists($this->table, '__' . $property)) {
                     $this->set($property, intval($this->table->getVote()));
                 }
                 break;
