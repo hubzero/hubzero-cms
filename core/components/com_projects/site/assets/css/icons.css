@@ -79,10 +79,13 @@
 		content: "\f03f";
 		color: #aea79a;
 	}
+	/* line-height keeps the glyph in its 52px box: at the text's line height it
+	   was drawn below the box, over the words the float lets in beside it */
 	.project-icon:before {
 		width: 52px;
 		height: 52px;
 		font-size: 52px;
+		line-height: 1;
 		padding: 0.5em 0.1em;
 		float: left;
 	}

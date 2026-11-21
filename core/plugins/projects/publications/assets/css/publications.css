@@ -607,6 +607,11 @@
 		padding: 0.5em;
 		margin: 0;
 	}
+	/* The publication's URL breaks only at its hyphens, and a long one held the
+	   table wider than its panel, over the options beside it */
+	table.tbl-panel td.tbl-input {
+		overflow-wrap: anywhere;
+	}
 	table.tbl-panel tr:nth-child(2n-2) td {
 		border-bottom: 1px solid #ebebeb;
 	}
@@ -1790,19 +1795,21 @@
 		text-align: left;
 		padding: 0.5em 0 10px 22px;
 		}
-	.opensource {
+	/* Scoped to .license like the component's own: .custom is also the class every
+	   custom module (the footer) is wrapped in, and .cc and .standard are no safer */
+	.license.opensource {
 		background: url("../../../../../components/com_publications/site/assets/img/logos/opensource.gif") 0 0 no-repeat;
 		}
-	.closedsource {
+	.license.closedsource {
 		background: url("../../../../../components/com_publications/site/assets/img/logos/closedsource.gif") 0 0 no-repeat;
 		}
-	.cc {
+	.license.cc {
 		background: url("../../../../../components/com_publications/site/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat;
 		}
-	.com_publications .custom, .content-publications .custom {
+	.license.custom {
 		background: url("../../../../../components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
-	.standard {
+	.license.standard {
 		background: url("../../../../../components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 /* Citation
