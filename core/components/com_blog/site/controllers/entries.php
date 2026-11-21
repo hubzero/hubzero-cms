@@ -168,6 +168,7 @@ class Entries extends SiteController
             ->set('config', $this->config)
             ->set('row', $row)
             ->set('filters', $filters)
+            ->setErrors($this->getErrors())
             ->setLayout('entry')
             ->display();
     }

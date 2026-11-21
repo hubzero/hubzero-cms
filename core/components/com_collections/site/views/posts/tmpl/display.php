@@ -51,6 +51,9 @@ if (!$no_html) {
 <section class="section">
     <div class="grid">
         <div class="col span8">
+            <?php if ($this->getError()) : ?>
+                <p class="error"><?php echo $this->escape($this->getError()); ?></p>
+            <?php endif; ?>
 
             <div class="post full <?= $item->type() ?>" id="p<?= $this->post->get('id') ?>"
                 data-id="<?= $this->post->get('id') ?>"

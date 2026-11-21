@@ -59,8 +59,24 @@ class Comment extends Relational
      */
     protected $rules = [
         'page_id' => 'positive|nonzero',
-        'ctext'   => 'notempty',
     ];
+
+    /**
+     * The comment's text is required, said in words: the plain notempty rule
+     * named the column, and a reader was told "ctext cannot be empty"
+     *
+     * @return  void
+     */
+    public function setup()
+    {
+        $this->addRule('ctext', function ($data) {
+            if (empty($data['ctext'])) {
+                return Lang::txt('COM_WIKI_ERROR_COMMENT_EMPTY');
+            }
+
+            return false;
+        });
+    }
 
     /**
      * Automatic fields to populate every time a row is created
