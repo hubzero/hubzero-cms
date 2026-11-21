@@ -749,6 +749,15 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                         if ($field->get('type') == 'textarea') {
                             $value = nl2br(Html::content('prepare', $value));
                         }
+                        // A rich-text field (the biography) is stored as the editor's
+                        // HTML, and escaping it showed "<p>...</p>" to everyone. Its
+                        // text, paragraph by paragraph, as the other places a bio
+                        // appears show it.
+                        if ($field->get('type') == 'editor' && is_string($value)) {
+                            $text = preg_replace('#</p>\s*<p[^>]*>|<br\s*/?>#i', "\n", $value);
+                            $text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
+                            $value = nl2br($this->escape(trim($text)));
+                        }
                         // IF the type is a URL, link it
                         if ($field->get('type') == 'url') {
                             $parsed = parse_url($value);
@@ -797,7 +806,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     if (
                         is_string($value)
                         && !str_contains($value, '{')
-                        && !in_array($field->get('type'), ['url', 'textarea', 'tags'])
+                        && !in_array($field->get('type'), ['url', 'textarea', 'tags', 'editor'])
                     ) {
                         $val = $this->escape($value);
                     } else {
