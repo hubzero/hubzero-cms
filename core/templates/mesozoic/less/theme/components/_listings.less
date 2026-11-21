@@ -15,9 +15,18 @@
 	}
 }
 
-// The rating and its stars float beside the title at 190px, and the title
-// keeps a 220px margin clear for them, which on a phone leaves the title a
-// column one word wide. Under the title instead, and the margin given back.
+// The stars come from an icon font whose filled and empty stars are wider than
+// its half star, so at legacy's 190px "4.0 out of 5 stars" (and 0.0 and 5.0)
+// wrapped "5 stars" onto a second line while 4.5 fit. 210px holds every rating
+// on one line and still sits inside the 220px the title keeps clear.
+.entries .metadata,
+.results .metadata {
+	width: 210px;
+}
+
+// The rating and its stars float beside the title, and the title keeps a 220px
+// margin clear for them, which on a phone leaves the title a column one word
+// wide. Under the title instead, and the margin given back.
 @media (max-width: (@sizeM - 1px)) {
 	.entries .metadata,
 	.results .metadata {

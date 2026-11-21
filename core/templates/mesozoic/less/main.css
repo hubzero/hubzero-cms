@@ -8253,6 +8253,10 @@ body #description:after {
 .results h4.title {
   margin-left: 0;
 }
+.entries .metadata,
+.results .metadata {
+  width: 210px;
+}
 @media (max-width: 899px) {
   .entries .metadata,
   .results .metadata {
