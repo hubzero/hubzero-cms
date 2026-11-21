@@ -687,11 +687,12 @@ class Jobs extends SiteController
         $employer->companyWebsite  = Request::getString('companyWebsite', $profile->get('url'));
 
         if (!$employer->companyName || !$employer->companyLocation) {
-            $this->setError(Lang::txt('Please make sure all required fields are filled in'));
-
-            // send to subscription page
+            // Back to the subscription page, saying why: an error set here
+            // did not survive the redirect
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=subscribe'),
+                Lang::txt('Please make sure all required fields are filled in'),
+                'error',
             );
         }
 

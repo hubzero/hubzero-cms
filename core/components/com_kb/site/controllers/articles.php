@@ -201,6 +201,7 @@ class Articles extends SiteController
             ->set('article', $article)
             ->set('category', $category)
             ->set('archive', $this->archive)
+            ->setErrors($this->getErrors())
             ->setLayout('article')
             ->display();
     }
