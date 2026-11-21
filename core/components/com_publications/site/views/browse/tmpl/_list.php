@@ -61,13 +61,13 @@ $authorsByVersion = $pa->getAuthorsForVersions($_versionIds);
                 $thedate = '';
                 break;
             case 1:
-                $thedate = $line->created();
+                $thedate = $line->created('date');
                 break;
             case 2:
-                $thedate = $line->modified();
+                $thedate = $line->modified('date');
                 break;
             case 3:
-                $thedate = $line->published();
+                $thedate = $line->published('date');
                 break;
         endswitch;
 
