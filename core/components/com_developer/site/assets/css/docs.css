@@ -77,6 +77,11 @@
     border-radius: var(--dev-radius-md) 0 0 var(--dev-radius-md);
 }
 
+/* The column beside the menu may shrink below its widest example; the examples scroll instead. */
+.api.docs .subject {
+    min-width: 0;
+}
+
 /* ===== Code Blocks ===== */
 pre {
     background: var(--dev-bg-dark);
