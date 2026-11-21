@@ -52,8 +52,8 @@ Event::trigger('content.onContentPrepare', [
     </div>
 </header>
 
-<div class="wiki-page-body">
-    <p>
+<section class="main section">
+    <div class="wiki-page-body">
         <?php echo $this->model->get('content'); ?>
-    </p>
-</div>
+    </div>
+</section>

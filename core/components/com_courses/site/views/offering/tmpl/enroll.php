@@ -26,7 +26,7 @@ defined('_HZEXEC_') or die();
     <?php if ($logo = $this->course->logo('url')) { ?>
         <p class="course-identity">
             <img
-                src="<?php echo $logo; ?>"
+                src="<?php echo Route::url($logo); ?>"
                 alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
         </p>
     <?php } ?>

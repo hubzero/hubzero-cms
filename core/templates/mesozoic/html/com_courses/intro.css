@@ -1,0 +1,20 @@
+/**
+ * Courses: the front page
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_courses/site/assets/css/intro.css");
+
+/*
+ * A course's picture sits in a 150px-high band and was shown from its top
+ * edge; the square pictures made for courses without one carry the course's
+ * initials in the middle, which the band cut through. Fill the band and keep
+ * the middle.
+ */
+.course-identity img {
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}

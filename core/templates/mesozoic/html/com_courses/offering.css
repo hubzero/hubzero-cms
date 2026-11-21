@@ -29,6 +29,21 @@
 	margin-right: calc(72px + 1.5rem);
 }
 
+/* The offering details kept their full one-line width, so a long course title
+   was squeezed into a narrow column four lines deep. Stacked instead, each
+   label beside its value: "Offering: Open enrolment", "Section: ..." */
+#content-header #page_identity {
+	flex: 0 1 auto;
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 0.5em;
+	align-content: center;
+	justify-content: start;
+}
+#content-header #page_identity a.prev {
+	grid-column: 1 / -1;
+}
+
 /* The component keeps the title 200px clear of the corner box; the tile is
    beside the offering details now, so that margin only squeezed the title */
 #content-header.with-identity h2 {
