@@ -24,3 +24,13 @@ a.fs-dropdown-selected-item {
 	border-color: #D5CBBB;
 	color: #2B2622;
 }
+
+/*
+ * The widget gives the chosen item an 18px height plus 10px of padding, sizes
+ * that assume content-box; this template sizes boxes border-box, so padding
+ * and border came out of the 18px and the text was cut off at the bottom
+ * (a group's page editor: Status, Privacy, Category, ...).
+ */
+a.fs-dropdown-selected-item {
+	box-sizing: content-box;
+}

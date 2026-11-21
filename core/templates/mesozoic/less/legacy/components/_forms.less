@@ -51,7 +51,11 @@ input[type="file"]:focus {
 	width: 100%;
 }
 
-#hubForm input[type='checkbox'] {
+// Radios too: at the full width every other input takes, a radio sat alone
+// in the middle of its own line with its label pushed below it (a group's
+// forum settings, "Allow anonymous posts?")
+#hubForm input[type='checkbox'],
+#hubForm input[type='radio'] {
 	margin-top: 0;
 	width: auto;
 }

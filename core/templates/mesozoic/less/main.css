@@ -2694,7 +2694,8 @@ input[type="file"]:focus {
 #hubForm textarea {
   width: 100%;
 }
-#hubForm input[type='checkbox'] {
+#hubForm input[type='checkbox'],
+#hubForm input[type='radio'] {
   margin-top: 0;
   width: auto;
 }

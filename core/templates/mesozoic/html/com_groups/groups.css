@@ -129,3 +129,27 @@
 .form-group > #logo.preview {
 	margin: 1em 2em 1.5em;
 }
+
+/*
+ * The group page manager's toolbar - New Page, the category filter, "Or" and
+ * the search - places each piece at a fixed offset that assumed a button
+ * under 110px wide; this template's button is wider and ran over the filter.
+ * Laid out as a row instead, so each piece follows the one before it.
+ */
+.group-page-manager #hubForm .toolbar {
+	display: flex;
+	align-items: center;
+	gap: 0.75em;
+	height: auto;
+	padding: 10px;
+}
+.group-page-manager #hubForm .toolbar .new,
+.group-page-manager #hubForm .toolbar .filter,
+.group-page-manager #hubForm .toolbar .filter-search-divider,
+.group-page-manager #hubForm .toolbar .search {
+	position: static;
+	margin: 0;
+}
+.group-page-manager #hubForm .toolbar .search {
+	flex: 1;
+}
