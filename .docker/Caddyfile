@@ -7,7 +7,17 @@
 {$SERVER_NAME} {
 	root * /var/www/hub
 
-	@private path_regexp ^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)
+	# Files the application serves only through a component that checks access
+	# (support ticket attachments, storefront software, mass-mail lists, forum
+	# and wish-list attachments) must not be reachable as static files, or the
+	# access check is bypassed. Other app/site folders (media, members, groups,
+	# resources, publications, courses, quotes) hold avatars, logos and images
+	# that pages link to directly, so they stay served.
+	#
+	# Apache equivalent (in the vhost or an .htaccess at the docroot):
+	#   RewriteRule ^app/(config|logs|tmp|site/(tickets|protected|massmail|forum|wishlist))(/|$) - [F]
+	#   RewriteRule ^core/(bin|vendor/bin)(/|$) - [F]
+	@private path_regexp ^/(app/(config|logs|tmp|site/(tickets|protected|massmail|forum|wishlist))|core/(bin|vendor/bin))(/|$)
 	@dotfiles {
 		path_regexp /\.
 		not path /.well-known/*
