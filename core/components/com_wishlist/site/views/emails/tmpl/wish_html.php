@@ -133,7 +133,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                                     white-space: nowrap;" align="right">Wish:</th>
                                 <td style="text-align: left; padding: 0 0.5em;"
                                     width="100%"
-                                    align="left"># <?php echo $this->wish->get('id'); ?></td>
+                                    align="left">#<?php echo $this->wish->get('id'); ?></td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
