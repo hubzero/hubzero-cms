@@ -52,3 +52,57 @@
 .license {
 	color: #6B6259;
 }
+
+/*
+ * The block under a publication's title (authors and abstract, then the
+ * download button and version) is held to 60% of its column by the
+ * component, for a layout where the metadata box sat beside it inside that
+ * column. Here the box has its own column, so the 60% only squeezed the
+ * button's column to 157px - "Download Bundle (15" cut off, the owner's
+ * notice spilling over it - with the rest of the row empty. As on resources,
+ * the block takes the column.
+ */
+.overviewcontainer {
+	width: auto;
+	float: none;
+}
+
+/*
+ * The tabs and their content keep 250px clear on the right for the same
+ * in-column box, which here has a column of its own: the tabs wrapped to two
+ * rows in what was left, with a wide empty strip beside them.
+ */
+.tabbed {
+	margin-right: 0;
+}
+
+/*
+ * "from project" on the owner's notice is white, for a darker bar than this
+ * template's pale notice, where it could not be read
+ */
+.fromproject {
+	color: #6B6259;
+}
+
+/*
+ * "Start a new project" and "My Projects" on the submit page wrap onto two
+ * lines in this column and sat touching; a little room around each
+ */
+.contrib-start .submitarea span {
+	display: inline-block;
+	margin: 0.25em 0.1em;
+}
+
+/*
+ * "See also" beside a publication: each link's type icon is placed just left
+ * of the link, which starts at the edge of its tinted box, so the icons hung
+ * outside the box. Room for the icon inside it instead.
+ */
+.com_publications .aside.extracontent li a {
+	padding-left: 2.9em;
+	box-sizing: border-box;
+}
+.com_publications div.extracontent li a:before {
+	left: 0.8em;
+	margin-left: 0;
+}
