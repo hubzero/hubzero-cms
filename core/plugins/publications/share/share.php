@@ -160,7 +160,8 @@ class Share extends Plugin
                 break;
 
             case 'twitter':
-                $link = 'http://twitter.com/intent/tweet?text='
+                // http://twitter.com/intent/tweet answers with an error page now
+                $link = 'https://x.com/intent/tweet?text='
                     . urlencode(
                         Lang::txt(
                             'PLG_PUBLICATION_SHARE_VIEWING',
@@ -168,14 +169,6 @@ class Share extends Plugin
                             stripslashes((string) $publication->title) . ' ' . $url,
                         ),
                     );
-                break;
-
-            case 'google':
-                $link = 'https://plus.google.com/share?url=' . $url;
-                break;
-
-            case 'delicious':
-                $link = 'http://del.icio.us/post?url=' . $url . '&title=' . $title;
                 break;
 
             case 'reddit':

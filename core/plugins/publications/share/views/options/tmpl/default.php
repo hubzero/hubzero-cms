@@ -38,7 +38,8 @@ $metadata  = '<div class="share">' . "\n";
 $metadata .= "\t" . Lang::txt('PLG_PUBLICATION_SHARE') . ': ';
 
 // Available options
-$sharing = ['facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit'];
+// Google+ (2019) and Delicious (2017) are gone; their buttons led to unrelated pages
+$sharing = ['facebook', 'twitter', 'pinterest', 'linkedin', 'reddit'];
 
 foreach ($sharing as $shared) {
     if ($this->_params->get('share_' . $shared, 1) == 1) {

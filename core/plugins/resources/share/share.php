@@ -169,7 +169,8 @@ class Share extends Plugin
                 break;
 
             case 'twitter':
-                $link = 'http://twitter.com/intent/tweet?text='
+                // http://twitter.com/intent/tweet answers with an error page now
+                $link = 'https://x.com/intent/tweet?text='
                     . urlencode(
                         Lang::txt(
                             'PLG_RESOURCES_SHARE_VIEWING',
@@ -179,14 +180,6 @@ class Share extends Plugin
                             . ' '
                             . $url,
                     );
-                break;
-
-            case 'google':
-                $link = 'https://plus.google.com/share?url=' . $url;
-                break;
-
-            case 'delicious':
-                $link = 'http://del.icio.us/post?url=' . $url . '&title=' . $title;
                 break;
 
             case 'reddit':
@@ -199,6 +192,16 @@ class Share extends Plugin
                     . '&title='
                     . $title
                     . '&summary='
+                    . $description;
+                break;
+
+            // The page offered a Pinterest button with no case here, so it only reloaded the page
+            case 'pinterest':
+                $link = 'https://pinterest.com/pin/create/button/?url='
+                    . urlencode($url)
+                    . '&description='
+                    . $title
+                    . urlencode(': ')
                     . $description;
                 break;
         }
