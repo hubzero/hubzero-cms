@@ -39,6 +39,7 @@ if (!$this->row->wasViewed()) {
 $creator = User::getInstance($this->row->log->get('created_by'));
 
 $name = Lang::txt('JANONYMOUS');
+$plainName = $name;
 
 $online = false;
 
@@ -46,6 +47,10 @@ $online = false;
 if (!$this->row->log->get('anonymous')) {
     // Get their full name
     $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_GROUPS_ACTIVITY_UNKNOWN'))));
+
+    // The name on its own, for the picture's alt text and title, which can't
+    // hold the link it becomes below
+    $plainName = $name;
 
     // Can we see their profile?
     if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) {
@@ -73,9 +78,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
     ?>
     <div class="activity-actor-picture<?= $tooltipsClass ?>">
         <?php if ($creator->get('public')) { ?>
-            <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
+            <a class="user-img-wrap"
+                href="<?php echo Route::url($creator->link()); ?>"
+                title="<?php echo $plainName; ?>">
                 <img src="<?= $creator->picture() ?>"
-                    alt="<?= Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
+                    alt="<?= Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $plainName) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
@@ -83,7 +90,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
         <?php } else { ?>
             <span class="user-img-wrap">
                 <img src="<?= $creator->picture() ?>"
-                    alt="<?= Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
+                    alt="<?= Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $plainName) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
