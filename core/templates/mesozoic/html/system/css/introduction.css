@@ -86,3 +86,9 @@
 #introduction + form > section.section {
 	padding-top: 2.5rem;
 }
+
+/* Each quick link's "›" is placed at the item's left edge and the link
+   started 5px in, so the two ran together ("›Knowledge Base") */
+#introduction li {
+	padding-left: 1em;
+}

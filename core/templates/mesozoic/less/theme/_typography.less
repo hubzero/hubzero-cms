@@ -27,7 +27,10 @@ a {
 	}
 }
 
+// A link inside a label is running text as much as one in a paragraph: the
+// registration form's "agree to the Terms of Use" read as plain text
 p > a,
+label > a,
 .contentpaneopen a:not(.btn) {
 	text-decoration: underline;
 }

@@ -19,3 +19,12 @@
 	border-radius: 8px;
 	box-shadow: 0 2px 6px rgba(74, 58, 42, 0.10);
 }
+
+/* "Lost username?" and "Forgot password?" were the component's blue, the only
+   blue links on the page; the template's link colours instead */
+.auth .forgots a {
+	color: #6B4420;
+}
+.auth .forgots a:hover {
+	color: #8A5A2B;
+}

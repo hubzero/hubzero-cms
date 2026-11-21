@@ -8302,6 +8302,7 @@ a:focus {
   color: #8A5A2B;
 }
 p > a,
+label > a,
 .contentpaneopen a:not(.btn) {
   text-decoration: underline;
 }
