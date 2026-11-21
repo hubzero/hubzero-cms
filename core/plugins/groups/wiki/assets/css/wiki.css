@@ -741,42 +741,52 @@
 		display: none;
 		content: "";
 	}*/
-/* Admonitions */
-	div.admon-caution, 
-	div.admon-important, 
-	div.admon-note, 
-	div.admon-tip, 
-	div.admon-warning {
-		border: 1pt solid #E5E5E5;
-		background-color: #F9F9FF;
-		color: black;
-		margin: 10pt 30pt 10pt 30pt;
-		background-repeat: no-repeat;
-		background-position: 8px 8px;
-		min-height: 64px; /*64=48+8+8 but doesn't work with IE*/
-		padding-left: 64px;
+/* Admonitions, as the site wiki draws them: the images this block named
+   (/components/com_wiki/site/assets/img/admon-*.png) are long gone, so group
+   wikis showed each admonition with an empty space where its icon was */
+	div.admon-caution,
+	div.admon-important,
+	div.admon-note,
+	div.admon-tip,
+	div.admon-warning,
+	div[class^="admon-"] {
+		border: 1px solid #d5ca78;
+		margin: 1em 1.75em;
+		padding: 0 0 0 5em;
+		background-color: #fffbe2;
+		color: #918263;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		position: relative;
 	}
-	div.admon-caution p, 
-	div.admon-important p, 
-	div.admon-note p, 
-	div.admon-tip p, 
-	div.admon-warning p {
-		margin-top: 8px; /*to align text with bg graphic*/
+	div[class^="admon-"]:before {
+		content: "";
+		position: absolute;
+		top: 0.81803399em;
+		width: 2em;
+		height: 2em;
+		font-size: 2em;
+		line-height: 1;
+		display: inline-block;
+		left: 0.81803399em;
+		font-family: 'Fontcons';
+		margin-top: -0.25em;
 	}
-	div.admon-tip { 
-		background-image: url("/components/com_wiki/site/assets/img/admon-tip.png"); 
+	div.admon-caution:before,
+	div.admon-warning:before {
+		content: "\26A0";
 	}
-	div.admon-note { 
-		background-image: url("/components/com_wiki/site/assets/img/admon-note.png"); 
+	div.admon-important:before {
+		content: "\f05a";
 	}
-	div.admon-important { 
-		background-image: url("/components/com_wiki/site/assets/img/admon-important.png"); 
+	div.admon-note:before {
+		content: "\270D";
 	}
-	div.admon-caution { 
-		background-image: url("/components/com_wiki/site/assets/img/admon-caution.png"); 
-	}
-	div.admon-warning { 
-		background-image: url("/components/com_wiki/site/assets/img/admon-warning.png"); 
+	div.admon-tip:before {
+		content: "\f078";
 	}
 
 /* Wiki pages */
