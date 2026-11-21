@@ -106,5 +106,24 @@
 		button[aria-expanded="true"] {
 			background-color: @color-navigation-dropdown-bg;
 		}
+
+		// Pages under a page in a dropdown (Discover > Resources > What's New):
+		// their list was placed like a dropdown of its own, just under the
+		// panel where it read as the panel's last item, and its toggle wrapped
+		// onto a line of its own under the parent. Listed in place instead,
+		// indented under their parent, without the toggle.
+		ul ul {
+			position: static;
+			box-shadow: none;
+			min-width: 0;
+
+			a {
+				padding-left: 2em;
+			}
+		}
+
+		ul li > .inner > button {
+			display: none;
+		}
 	}
 }

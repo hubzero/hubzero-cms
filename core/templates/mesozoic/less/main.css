@@ -5427,6 +5427,17 @@ template {
 .page-head .main-nav-bar button[aria-expanded="true"] {
   background-color: #F4EFE7;
 }
+.page-head .main-nav-bar ul ul {
+  position: static;
+  box-shadow: none;
+  min-width: 0;
+}
+.page-head .main-nav-bar ul ul a {
+  padding-left: 2em;
+}
+.page-head .main-nav-bar ul li > .inner > button {
+  display: none;
+}
 .page-head .user-account {
   margin: 0;
 }
