@@ -455,12 +455,16 @@ form[name=importevent] fieldset {
 	clear: right;
 	margin: 0 20px;
 	border: 3px dashed #ccc;
-	padding: 100px 20px 20px 20px;
+	padding: 128px 20px 20px 20px;
 }
+/* line-height 1 keeps the 80px icon between 40px and 120px, above the title:
+   at the text's line height it was drawn over "Upload Event". 40px leaves
+   room for a legend a template floats into the top of the box. */
 .upload:before {
 	content: '\f046';
 	position: absolute;
 	top: 40px;
+	line-height: 1;
 	left: 0;
 	right: 0;
 	font-family: 'Fontcons';

@@ -458,11 +458,15 @@
 		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
 	}
+	/* Wraps, so in the narrow file panels "Click or drop file" goes under its
+	   icon rather than running out through the dashed border */
 	.qq-upload-button span,
 	.qq-upload-drop-area span {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: center;
+		padding: 0 0.5em;
 	}
 	.qq-upload-button span:before,
 	.qq-upload-drop-area span:before {
