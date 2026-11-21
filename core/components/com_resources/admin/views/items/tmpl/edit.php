@@ -220,8 +220,12 @@ $this
                     <tr>
                         <th><?php echo Lang::txt('COM_RESOURCES_FIELD_RATING'); ?></th>
                         <td>
-                            <?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
-                            <?php if ($this->row->rating != '0.0') { ?>
+                            <?php
+                            // ->rating is the star CSS class (transformRating); the score is the column
+                            $rating = (float) $this->row->get('rating');
+                            echo number_format($rating, 1) . '/5.0 (' . (int) $this->row->get('times_rated') . ')';
+                            ?>
+                            <?php if ($rating > 0) { ?>
                                 <input type="button" name="reset_rating" id="reset_rating" value="Reset rating"
                                     data-task="resetrating" />
                                 <?php
