@@ -146,7 +146,7 @@ $stateSelected = function ($value) use ($view) {
         <div class="col span12">
             <fieldset class="panelform">
                 <legend><span><?php echo Lang::txt('COM_FORUM_FIELDSET_RULES'); ?></span></legend>
-                <?php echo $this->form->getLabel('rules'); ?>
+                <?php // The legend names the field; its own label is the untranslated JFIELD_RULES_LABEL ?>
                 <?php echo $this->form->getInput('rules'); ?>
             </fieldset>
         </div>
