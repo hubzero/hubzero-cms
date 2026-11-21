@@ -104,7 +104,9 @@ if ($this->subscriptionCode && $this->employer) {
                     <input type="hidden" name="limitstart" value="0" />
                     <input type="hidden" name="performsearch" value="1" />
                 </fieldset>
-                <div class="clearfix"></div>
+            </div><!-- / .container -->
+
+            <div class="container">
                 <div class="container-block">
                     <?php
                     // Display List of items
