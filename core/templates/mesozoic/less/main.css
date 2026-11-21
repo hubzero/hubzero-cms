@@ -8268,6 +8268,10 @@ a.btn {
 ol.comments .comment-options button {
   color: #6B4420;
 }
+.col .btn {
+  max-width: 100%;
+  white-space: normal;
+}
 body #member_browser,
 body #description {
   padding-left: 0;
@@ -8314,6 +8318,19 @@ body {
   font-size: 0.95rem;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
+}
+p,
+dd,
+blockquote,
+figcaption,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+article li {
+  overflow-wrap: break-word;
 }
 a {
   text-decoration: none;

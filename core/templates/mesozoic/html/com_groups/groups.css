@@ -190,3 +190,23 @@
 	margin-top: 0.25em;
 	margin-bottom: 0.25em;
 }
+
+/*
+ * A group's page is a two-cell table, menu and content, and a table grows to
+ * fit what is in it. At about 640px (a desktop window at 200% zoom) the menu's
+ * "Request Group Membership" button and the page's title together came to
+ * more than the window, and the content ran 30px off the right-hand edge. The
+ * layout keeps to the window there (up to the tablet width, where it fits),
+ * and a button in the menu may wrap.
+ */
+@media (max-width: 767px) {
+	#page_container {
+		table-layout: fixed;
+		width: 100%;
+	}
+
+	#page_sidebar .btn {
+		max-width: 100%;
+		white-space: normal;
+	}
+}

@@ -22,3 +22,12 @@ a.btn {
 ol.comments .comment-options button {
 	color: @colorLink;
 }
+
+// A button keeps its label on one line, and in a narrow grid column a long one
+// ("Browse available groups", the feedback page's "Start writing a report")
+// ran out of the column and off the screen. In a column it may wrap, and is
+// never wider than the column; one that fits is unchanged.
+.col .btn {
+	max-width: 100%;
+	white-space: normal;
+}

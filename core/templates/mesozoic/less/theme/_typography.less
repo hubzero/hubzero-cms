@@ -17,6 +17,25 @@ body {
 	line-height: 1.6;
 }
 
+// A word too long for its line - a pasted URL, a file path, an identifier -
+// breaks rather than running past the column and off the page. Only in the
+// text people write: on the whole page it also split menu labels and field
+// names a few pixels too wide for their box ("Contribution / s"), which had
+// been harmless. Tables still size to their words (and scroll on a phone).
+p,
+dd,
+blockquote,
+figcaption,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+article li {
+	overflow-wrap: break-word;
+}
+
 a {
 	text-decoration: none;
 	color: @colorLink;
