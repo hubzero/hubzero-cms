@@ -154,12 +154,26 @@ class RenderedMarkerTest extends TestCase
     }
 
     /**
+     * A forum category's description is plain text: saved as typed, without a marker, and a marker saved
+     * there before is dropped
+     *
+     * @return  void
+     */
+    public function testPlainTextIsSavedAsTyped()
+    {
+        $context = 'com_forum.category.description';
+        $this->assertSame('Tips & <tricks>', $this->save('Tips & <tricks>', $context));
+        $this->assertSame('How the site works', $this->save('<!-- {FORMAT:HTML} -->How the site works', $context));
+    }
+
+    /**
      * What formathtml stores for a post's description
      *
      * @param   string  $content
+     * @param   string  $context
      * @return  string
      */
-    private function save($content)
+    private function save($content, $context = 'com_collections.post.description')
     {
         $plugin = new Formathtml(null, [
             'name'   => 'formathtml',
@@ -169,7 +183,7 @@ class RenderedMarkerTest extends TestCase
         $post = new \Hubzero\Base\Obj();
         $post->set('description', $content);
 
-        $plugin->onContentBeforeSave('com_collections.post.description', $post, false);
+        $plugin->onContentBeforeSave($context, $post, false);
 
         return (string) $post->get('description');
     }

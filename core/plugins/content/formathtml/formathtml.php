@@ -16,6 +16,16 @@ use Hubzero\Plugin\Plugin;
 class Formathtml extends Plugin
 {
     /**
+     * Contexts whose field is plain text: edited in a textarea and escaped where it is shown. Sanitising would
+     * turn its & and < into entities that show as typed, and a format marker would show as text.
+     *
+     * @var  array<int, string>
+     */
+    private const PLAIN_TEXT = [
+        'com_forum.category.description',
+    ];
+
+    /**
      * Before save content method
      *
      * Article is passed by reference, but after the save, so no changes will be saved.
@@ -38,6 +48,13 @@ class Formathtml extends Plugin
         }
 
         $key = $this->key($context);
+
+        // A marker saved there earlier is dropped
+        if (in_array($context, self::PLAIN_TEXT, true)) {
+            $text = (string) $article->get($key);
+            $article->set($key, (string) preg_replace('/^\s*<!-- \{FORMAT:[^}]*\} -->/i', '', $text));
+            return;
+        }
 
         $content = $article->get($key);
 
