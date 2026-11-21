@@ -336,6 +336,16 @@ $categorySelected = function ($value) use ($view) {
                 if (!$this->row->access('read', 'private_comments') && $comment->isPrivate()) {
                     continue;
                 }
+                // A comment that only records changes (status, owner, ...) has
+                // nothing to show anyone who can't see the change log: it came
+                // out as an empty card under the staff member's name
+                if (
+                    !$comment->comment
+                    && !$comment->attachments->count()
+                    && !($this->row->access('update', 'tickets') > 0)
+                ) {
+                    continue;
+                }
                 $i++;
 
                 // Set the CSS class
@@ -475,6 +485,9 @@ $categorySelected = function ($value) use ($view) {
                 </li>
             <?php } ?>
             </ol>
+            <?php if (!$i) { ?>
+                <p class="no-comments"><?php echo Lang::txt('COM_SUPPORT_NO_COMMENTS_FOUND'); ?></p>
+            <?php } ?>
         <?php } else { ?>
             <p class="no-comments"><?php echo Lang::txt('COM_SUPPORT_NO_COMMENTS_FOUND'); ?></p>
         <?php } ?>
