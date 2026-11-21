@@ -11,6 +11,7 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models\Author;
 use Components\Resources\Models\Author\Role;
 use Hubzero\Component\AdminController;
+use Hubzero\Database\Pagination;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use App;
@@ -62,16 +63,42 @@ class Authors extends AdminController
             ),
         ];
 
-        // Get records
+        // One row per person. Each record is a person's entry on one resource,
+        // so listing the records repeated a person once per resource: identical
+        // rows, every one linking to the same edit page, which already gathers
+        // all of that person's entries.
         $model = Author::all();
 
         if ($filters['search']) {
             $model->whereLike('name', strtolower($filters['search']));
         }
 
+        // The pager counts people, not entries: paginated() would count the
+        // grouped query and get the first person's number of entries instead
+        $people = $model->copy()
+            ->deselect()
+            ->select('authorid', 'count', 'distinct')
+            ->unordered()
+            ->rows(false)
+            ->first();
+
+        $model->pagination = Pagination::init(
+            $model->getModelName(),
+            $people ? (int) $people->get('count') : 0,
+            'limitstart',
+            'limit',
+        );
+
+        // A person's name can differ between entries; any one of them names the
+        // row, and sorting by name sorts by that one
         $rows = $model
+            ->deselect()
+            ->select('authorid')
+            ->selectRaw('MAX(name)', [], 'name')
+            ->group('authorid')
             ->ordered('filter_order', 'filter_order_Dir')
-            ->paginated('limitstart', 'limit')
+            ->start($model->pagination->start)
+            ->limit($model->pagination->limit)
             ->rows();
 
         // Output the HTML

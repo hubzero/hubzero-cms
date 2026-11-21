@@ -166,6 +166,7 @@ use Hubzero\Facades\User;
  * adds to the model's query and returns the model. Query has the rest.
  *
  * @method $this select(string $column, string $as = null, bool|string $count = false)
+ * @method $this selectRaw(string $expression, array<mixed> $bindings = [], ?string $as = null)
  * @method $this deselect()
  * @method $this from(string $table, string $as = null)
  * @method $this delete(string $table)
