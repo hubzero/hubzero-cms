@@ -1803,6 +1803,16 @@ abstract class BaseSqlSyntax
     }
 
     /**
+     * Whether the query has a group by
+     *
+     * @return  bool
+     */
+    public function hasGroup()
+    {
+        return count($this->group) > 0;
+    }
+
+    /**
      * Empty group values
      *
      * @return  void

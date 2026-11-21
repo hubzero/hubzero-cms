@@ -3788,15 +3788,23 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // We also reset the 'select' clause to avoid pulling unnecessary records and reset
         // the 'order by' clause to avoid referenced fields in the aforementioned 'select' clauses
         // that mgiht have been removed. Neither of these should have any effect on a count.
-        $first = $this
+        // A grouped query gives one count per group, so the total is the number
+        // of groups, not the first group's count (a list grouped by person
+        // paged by the size of its first group)
+        $grouped = $this->query !== null && $this->query->isGrouped();
+
+        $rows = $this
             ->deselect()
             ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', $count)
             ->unordered()
-            ->rows(false)
-            ->first();
-        //->count;
+            ->rows(false);
 
-        $total = $first ? (int) $first->count : 0;
+        if ($grouped) {
+            $total = $rows->count();
+        } else {
+            $first = $rows->first();
+            $total = $first ? (int) $first->count : 0;
+        }
 
         $this->reset();
 

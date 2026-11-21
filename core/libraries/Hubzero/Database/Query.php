@@ -3019,6 +3019,16 @@ class Query
     }
 
     /**
+     * Whether the query groups its rows (has a group by)
+     *
+     * @return  bool
+     **/
+    public function isGrouped()
+    {
+        return $this->syntax->hasGroup();
+    }
+
+    /**
      * Sets the having element on the query
      *
      * @param   string  $column    The column to which the clause will apply
