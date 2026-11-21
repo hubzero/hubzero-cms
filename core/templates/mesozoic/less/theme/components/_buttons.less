@@ -5,3 +5,20 @@ input[type="reset"],
 a.btn {
 	.transition();
 }
+
+// The owner's Edit button sits inside a resource's title <h2>, and .btn sets
+// no size or face of its own, so it took the heading's 48px serif: a slab
+// beside the title, and in the contribution preview's wider frame, over it.
+// The size and face every other button has, from the body.
+#content-header h2 .btn {
+	font-family: @fontBody;
+	font-size: 0.95rem;
+	vertical-align: middle;
+}
+
+// A comment's Delete is a button (it posts), and the shared comments LESS
+// colours those with its own default link blue, so it stood out blue beside
+// this theme's brown Edit, Reply and Report abuse links.
+ol.comments .comment-options button {
+	color: @colorLink;
+}

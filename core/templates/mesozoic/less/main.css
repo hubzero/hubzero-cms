@@ -8237,6 +8237,14 @@ a.btn {
   -webkit-transition: all ease-in .3s;
   transition: all ease-in .3s;
 }
+#content-header h2 .btn {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+ol.comments .comment-options button {
+  color: #6B4420;
+}
 body #member_browser,
 body #description {
   padding-left: 0;
