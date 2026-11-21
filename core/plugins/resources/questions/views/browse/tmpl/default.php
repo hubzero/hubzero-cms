@@ -47,7 +47,12 @@ $this->css();
                 } else {
                     $end = ($start - 1) + $limit;
                 }
+                // With nothing to list this read "(1-0 of 0)"; say 0, as the wish list tab does
+                if (!$total) {
+                    echo '0';
+                } else {
                     echo Lang::txt('COM_ANSWERS_RESULTS_TOTAL', $start, $end, $total);
+                }
                 ?>)
             </span>
         </caption>
@@ -162,12 +167,14 @@ $this->css();
     <?php } ?>
         </tbody>
     </table>
+    <?php if ($this->count) { ?>
     <form>
         <?php
             $pageNav = $this->rows->pagination;
             echo $pageNav;
         ?>
     </form>
+    <?php } ?>
     <div class="clearfix"></div>
 </div><!-- / .container -->
 
