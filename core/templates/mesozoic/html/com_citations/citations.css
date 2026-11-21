@@ -23,3 +23,62 @@
 .citations thead th {
 	background: #EFE9DF;
 }
+
+/*
+ * A citation's page header
+ *
+ * "Edit" sits inside the title's <h2> and took its 48px serif. The authors
+ * were #AAA (2.3:1). "Find this Text" was a black glossy button no other page
+ * has; this template's button instead. And its 250px float beside the title
+ * squeezed the formatted citation into a narrow box on a phone; below the
+ * width where both fit, it goes underneath.
+ */
+#content-header h2 a.edit {
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 0.95rem;
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.citation-author {
+	color: #6B6259;
+}
+
+.content-header-extra .primary {
+	color: #fff;
+	text-shadow: none;
+	border: 1px solid #6B4420;
+	background: #6B4420;
+	filter: none;
+}
+.content-header-extra .primary:hover,
+.content-header-extra .primary:focus {
+	color: #fff;
+	background: #8A5A2B;
+	border-color: #8A5A2B;
+}
+
+@media (max-width: 767px) {
+	#content-header.half {
+		flex-wrap: wrap;
+	}
+	#content-header.half .content-header-left {
+		float: none;
+		width: 100%;
+	}
+	/* and without the 30px indents the header gives its parts */
+	#content-header .content-header-left h2 {
+		padding: 0 0 10px;
+	}
+	.citation-author {
+		padding-left: 0;
+	}
+	#content-header .citation-citation {
+		margin-left: 0;
+	}
+	.content-header-extra {
+		float: none;
+		width: auto;
+		margin: 1em 0 0;
+	}
+}
