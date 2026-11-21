@@ -2196,11 +2196,17 @@ class Wishlists extends SiteController
 
             // uploadTask() answers with the attachment's markup, or with why the file
             // was refused; that reason was appended to the comment and published.
-            // A refused file sends the poster back with the reason instead.
-            $errorsBefore = count($this->getErrors());
-            $attachment = $this->uploadTask($wishid);
-            if (count($this->getErrors()) > $errorsBefore) {
-                App::redirect(Route::url($objWish->link()), $this->getError(), 'error');
+            // A refused file sends the poster back with the reason instead. Only
+            // when a file was sent: "no file" is one of uploadTask()'s reasons, and
+            // it turned every comment without an attachment away.
+            $attachment = '';
+            $upload = Request::getArray('upload', [], 'files');
+            if (!empty($upload['name'])) {
+                $errorsBefore = count($this->getErrors());
+                $attachment = $this->uploadTask($wishid);
+                if (count($this->getErrors()) > $errorsBefore) {
+                    App::redirect(Route::url($objWish->link()), $this->getError(), 'error');
+                }
             }
             if ($attachment) {
                 $row->set('content', $row->get('content') . "\n" . $attachment);
