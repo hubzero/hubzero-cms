@@ -1,0 +1,32 @@
+/**
+ * Projects: features page
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_projects/site/assets/css/features.css");
+
+/*
+ * Each feature's icon tile is 32px plus padding and a border, sized the
+ * content-box way. This template sizes boxes border-box, which left the tile
+ * no room inside: an empty white square with the icon drawn below it.
+ */
+.feature p.ima {
+	box-sizing: content-box;
+}
+
+/*
+ * The feature names (#bcaf99, #b3acb6) were about 2:1 on their bands, short of
+ * the 3:1 WCAG 2.2 1.4.3 asks of large text; the template's quiet text colour
+ * is over 5:1 on both.
+ */
+.feature h3,
+#feature-section .feature:nth-child(2n-2) h3 {
+	color: #6B6259;
+}
+
+/* The 40px icon on the body's line height drew below the tile. */
+.feature p.ima:before {
+	line-height: 1;
+}

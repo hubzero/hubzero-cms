@@ -22,6 +22,12 @@ textarea {
 	background: #F0F0F0;
 }
 
+// A select is as wide as its longest option; on a phone the poll picker ran
+// off the screen with the question cut off.
+select {
+	max-width: 100%;
+}
+
 textarea:focus,
 input[type="text"]:focus,
 input[type="email"]:focus,
