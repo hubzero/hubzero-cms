@@ -97,42 +97,9 @@ switch ($this->row->access) {
         </div>
     <?php } elseif ($params->get('show_rating')) { ?>
         <?php
-        switch ($this->row->rating) {
-            case 0.5:
-                $class = ' half-stars';
-                break;
-            case 1:
-                $class = ' one-stars';
-                break;
-            case 1.5:
-                $class = ' onehalf-stars';
-                break;
-            case 2:
-                $class = ' two-stars';
-                break;
-            case 2.5:
-                $class = ' twohalf-stars';
-                break;
-            case 3:
-                $class = ' three-stars';
-                break;
-            case 3.5:
-                $class = ' threehalf-stars';
-                break;
-            case 4:
-                $class = ' four-stars';
-                break;
-            case 4.5:
-                $class = ' fourhalf-stars';
-                break;
-            case 5:
-                $class = ' five-stars';
-                break;
-            case 0:
-            default:
-                $class = ' no-stars';
-                break;
-        }
+        // "rating" reads back as the star class (the model's transformRating());
+        // the score itself is the raw value
+        $class = ' ' . $this->row->rating;
         ?>
         <div class="metadata">
             <p class="rating">
@@ -140,7 +107,7 @@ switch ($this->row->access) {
                     <span>
                         <?php echo Lang::txt(
                             'PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',
-                            $this->row->rating,
+                            number_format((float) $this->row->get('rating'), 1),
                         ); ?>
                     </span>&nbsp;
                 </span>
