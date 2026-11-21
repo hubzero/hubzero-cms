@@ -1234,6 +1234,10 @@ class Items extends AdminController
             $removed++;
         }
 
+        if ($removed) {
+            Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $removed));
+        }
+
         $pid = Request::getInt('pid', 0);
 
         // Redirect

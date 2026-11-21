@@ -35,7 +35,9 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources');
+// The Orphans tab lists with this layout too (no parent)
+$heading = $this->filters['parent_id'] > 0 ? 'COM_RESOURCES_CHILDREN' : 'COM_RESOURCES_ORPHANS';
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt($heading), 'resources');
 if ($this->filters['parent_id'] > 0) {
     if ($canDo->get('core.create')) {
         Toolbar::addNew('addchild', 'COM_RESOURCES_ADD_CHILD');
