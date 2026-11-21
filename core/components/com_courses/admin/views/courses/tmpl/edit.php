@@ -313,7 +313,7 @@ $stateSelected = function ($value) use ($view) {
                             . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
                         if (file_exists(PATH_ROOT . $pathl . DS . $logo)) {
-                            $this_size = filesize(PATH_ROOT . $pathl . DS . $file);
+                            $fsize = filesize(PATH_ROOT . $pathl . DS . $file);
                             list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file)
                                 ?: [null, null, null, null];
                             $pic  = $file;
