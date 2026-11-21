@@ -328,6 +328,9 @@ class Publications extends Plugin
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
+        // The layout is the component's and uses its strings ("Ranking")
+        Lang::load('com_publications') || Lang::load('com_publications', Component::path('com_publications') . '/site');
+
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',

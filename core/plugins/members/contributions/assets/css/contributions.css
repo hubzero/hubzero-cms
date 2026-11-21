@@ -35,6 +35,16 @@
 		display: none;
 	}
 
+	/* A category's heading links to the full list; its "See more results"
+	   sits at the right, apart from the name and count */
+	.category-header {
+		position: relative;
+	}
+	.category-header span.more {
+		position: absolute;
+		right: 0;
+	}
+
 	.results .resource .title .resource-status {
 		color: #aaa;
 		font-size: 85%;

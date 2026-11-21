@@ -278,9 +278,9 @@ foreach ($this->results as $category) {
             $html .= $obj::documents();
         }
 
-        $ttl = ($total > 5) ? 5 : $total;
         if (!$dopaging) {
-            $num = '1-' . $ttl . ' of ';
+            // As many as were listed (the overview isn't held to five)
+            $num = '1-' . $amt . ' of ';
         } else {
             $stl = $this->start + 1;
             $ttl = ($total > $this->limit) ? $this->start + $this->limit : $this->start + $total;
