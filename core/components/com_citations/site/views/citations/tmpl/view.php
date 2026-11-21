@@ -128,7 +128,8 @@ $area = Request::getString('area', 'about');
     <div class="content-header-left">
         <h2>
             <?php echo $this->escape(html_entity_decode((string) $citation->title, ENT_QUOTES, 'UTF-8')); ?>
-            <?php if (User::get('id') == $citation->uid) : ?>
+            <?php // A citation imported or seeded without an owner has uid 0, as has a visitor ?>
+            <?php if (!User::isGuest() && User::get('id') == $citation->uid) : ?>
                 <a class="edit"
                     href="<?= Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id) ?>">Edit</a>
             <?php endif; ?>
