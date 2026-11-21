@@ -52,6 +52,9 @@
 		top: 0px;
 		left: 50%;
 		font-size: 5em;
+		/* One line exactly as tall as the 5em of padding kept for it: with the
+		   inherited line height the glyph sat lower and covered the text */
+		line-height: 1;
 		margin-left: -0.5em;
 		content: "\2298";
 		font-family: "Fontcons";
