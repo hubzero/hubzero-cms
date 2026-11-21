@@ -7,6 +7,7 @@
  */
 
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Module;
 use Hubzero\Facades\Route;
 
 // No direct access
@@ -110,13 +111,15 @@ $this
                     <?php if ($this->poll) { ?>
                         <div class="poll">
                             <?php
-                            $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll');
+                            // The poll page here shows the poll module; with no module set up, the poll
+                            // component's own latest poll
+                            $pollUrl = Route::url('index.php?option=com_poll&task=latest');
+                            if (Module::isEnabled('mod_poll')) {
+                                $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll');
+                            }
                             ?>
                             <h3><a href="<?= $pollUrl ?>"><?= Lang::txt('COM_FEEDBACK_POLL_HEADER') ?></a></h3>
                             <p><?php echo Lang::txt('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-                            <?php
-                            $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll');
-                            ?>
                             <p><a class="more btn"
                                 href="<?= $pollUrl ?>"><?= Lang::txt('COM_FEEDBACK_POLL_BUTTON') ?></a></p>
                         </div>
