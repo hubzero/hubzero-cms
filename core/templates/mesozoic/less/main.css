@@ -5573,6 +5573,9 @@ template {
   height: 1px;
   margin: 5px 0;
 }
+.mobile-nav nav.nav nav.main-nav .main-nav-bar .accordion-panel li button {
+  display: none;
+}
 .mobile-nav nav.nav nav.subnav {
   margin-top: 2.5rem;
 }
