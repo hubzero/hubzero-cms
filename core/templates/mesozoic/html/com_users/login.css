@@ -28,3 +28,12 @@
 .auth .forgots a:hover {
 	color: #8A5A2B;
 }
+
+/* The component takes the outline off the sign-in fields with a selector
+   stronger than the template's focus rule, so a keyboard user could not see
+   which field they were in; the template's focus ring, as every other field */
+.auth input[type="text"]:focus,
+.auth input[type="password"]:focus {
+	outline: 2px solid #8A5A2B;
+	border-color: #8A5A2B;
+}

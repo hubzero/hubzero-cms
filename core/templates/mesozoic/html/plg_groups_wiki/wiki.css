@@ -51,3 +51,10 @@
 		transform: translateY(-50%);
 	}
 }
+
+/* The plugin takes the outline off the wiki search's Go button, so it showed
+   no sign of having focus; the template's focus ring */
+.page-search-form input.page-search-submit:focus-visible {
+	outline: 2px solid #8A5A2B;
+	outline-offset: 2px;
+}

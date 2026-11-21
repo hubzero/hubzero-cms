@@ -56,3 +56,12 @@ a.fmanage.inactive {
 #project-wrap .content-header h2 {
 	line-height: 1.2em;
 }
+
+/* A project's sections (Info, Team, Files, ...): the current one already
+   looks as the others do when focused, so a keyboard user on it saw no
+   change; the template's focus ring on all of them (the component's
+   ".main-menu ul.projecttools a:focus { outline: none }" has to be outranked) */
+.main-menu ul.projecttools li a:focus-visible {
+	outline: 2px solid #8A5A2B;
+	outline-offset: -2px;
+}
