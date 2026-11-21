@@ -467,9 +467,12 @@ class Changelog extends Obj
         ) {
             $bstatus = $before->status;
             $astatus = $after->status;
+            // An open ticket with no status of its own is a new one, and the
+            // ticket list calls it that; named "Open" here, giving it its first
+            // status read "changed from 'Open' to 'Open'"
             if ($before->get('open') && !$bstatus->get('id')) {
                 $bstatus->set('open', 1);
-                $bstatus->set('title', Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'));
+                $bstatus->set('title', Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW'));
             }
             if (!$after->get('open') && !$astatus->get('id')) {
                 $astatus->set('open', 0);
