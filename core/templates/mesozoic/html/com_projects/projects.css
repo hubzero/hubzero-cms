@@ -46,3 +46,13 @@ a.fmanage.inactive {
 	padding-left: 86px;
 	min-height: 70px;
 }
+
+/*
+ * A project's title is a page title like any other, but its header sits in
+ * #project-wrap, out of reach of the rule that sets page titles' line height,
+ * so it took the text's 1.6: a two-line title on a phone had a line's worth
+ * of space between its lines
+ */
+#project-wrap .content-header h2 {
+	line-height: 1.2em;
+}

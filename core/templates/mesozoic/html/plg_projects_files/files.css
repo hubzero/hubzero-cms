@@ -1,0 +1,20 @@
+/**
+ * Project files
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/projects/files/assets/css/files.css");
+
+/*
+ * The file browser keeps a 630px minimum width, so on a phone the whole
+ * browser ran past the page's edge and the size and date columns were cut
+ * off, out of reach. Below that width the browser takes the page's width and
+ * its table scrolls sideways inside it, as other tables here do.
+ */
+@media (max-width: 767px) {
+	.content-files {
+		min-width: 0;
+	}
+}
