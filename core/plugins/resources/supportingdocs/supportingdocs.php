@@ -51,7 +51,15 @@ class Supportingdocs extends Plugin
                 ->rows();
         }
 
-        if (count($children) < 2) {
+        // A resource's first document is its main download button, so the tab
+        // is for any others; a tool's main button is Launch Tool, so any
+        // document at all would otherwise be linked from nowhere
+        $least = 2;
+        if ($model->isTool()) {
+            $least = 1;
+        }
+
+        if (count($children) < $least) {
             return $areas;
         }
 

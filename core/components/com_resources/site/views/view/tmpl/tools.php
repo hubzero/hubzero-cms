@@ -268,16 +268,29 @@ $revision = $this->revision;
                                     $this->model->id,
                                 )
                                 : '';
-                            $html .= "\t\t" . '<p class="supdocs">' . "\n";
-                            if ($url) {
-                                $html .= "\t\t\t" . '<span><span class="guide"><a href="' . $url . '">'
-                                    . Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE') . '</a></span></span>'
-                                    . "\n";
+                            // Link to the Supporting Docs tab only when there is one (it needs
+                            // documents); otherwise the link opened an empty page
+                            $docsTab = false;
+                            foreach ($this->cats as $cat) {
+                                if (is_array($cat) && isset($cat['supportingdocs'])) {
+                                    $docsTab = true;
+                                }
                             }
-                            $html .= "\t\t\t" . '<span class="viewalldocs"><a href="'
-                                . Route::url($this->model->link() . '&active=supportingdocs') . '">'
-                                . Lang::txt('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS') . '</a></span>' . "\n";
-                            $html .= "\t\t" . '</p>' . "\n";
+                            if ($url || $docsTab) {
+                                $html .= "\t\t" . '<p class="supdocs">' . "\n";
+                                if ($url) {
+                                    $html .= "\t\t\t" . '<span><span class="guide"><a href="' . $url . '">'
+                                        . Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE') . '</a></span></span>'
+                                        . "\n";
+                                }
+                                if ($docsTab) {
+                                    $html .= "\t\t\t" . '<span class="viewalldocs"><a href="'
+                                        . Route::url($this->model->link() . '&active=supportingdocs') . '">'
+                                        . Lang::txt('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS') . '</a></span>'
+                                        . "\n";
+                                }
+                                $html .= "\t\t" . '</p>' . "\n";
+                            }
                         }
 
                         echo $html;
