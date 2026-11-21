@@ -10,6 +10,7 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+use Hubzero\Utility\Sanitize;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -247,9 +248,16 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <tr>
                 <th scope="row" class="details"><span class="sr-only visually-hidden">Details:</span></th>
                 <td colspan="3">
-                    <?= Plugins\Groups\Calendar\Helper::autoLinkText(
-                        nl2br($this->escape($this->event->get('content'))),
-                    ) ?>
+                    <?php
+                    // Events saved from an editor (or the seed data) hold HTML, the group form plain text.
+                    $content = (string) $this->event->get('content');
+                    if ($content != strip_tags($content)) {
+                        $content = Sanitize::clean($content);
+                    } else {
+                        $content = Plugins\Groups\Calendar\Helper::autoLinkText(nl2br($this->escape($content)));
+                    }
+                    ?>
+                    <?= $content ?>
                 </td>
             </tr>
         <?php endif; ?>
