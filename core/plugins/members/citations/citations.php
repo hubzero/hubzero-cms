@@ -18,7 +18,6 @@ use Hubzero\Facades\Document;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
-use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
@@ -408,13 +407,9 @@ class Citations extends Plugin
         ? substr($view->get('row')->title, 0, $maxTitleLength) . '&hellip;'
         : $view->get('row')->title;
 
-        // Set the pathway
-        if ($id) {
-            Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->get('row')->id);
-            Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
-        } else {
-            Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
-        }
+        // No crumbs of its own: a plugin renders before the profile adds the
+        // member and the tab, so "Add" (or the citation and "Edit") landed
+        // between "Members" and the member's name. As the other member tabs do.
 
         // Set the page title
         Document::setTitle(Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle);
