@@ -8,8 +8,6 @@
 
 namespace Components\Collections\Models\Following;
 
-use Hubzero\Facades\Component;
-
 /**
  * Model class for following a group
  */
@@ -57,13 +55,10 @@ class Group extends Base
     public function image()
     {
         if (!isset($this->image)) {
-            $config = Component::params('com_groups');
-            if ($this->obj->get('logo')) {
-                $this->image = DS . trim($config->get('uploadpath', '/site/groups'), DS)
-                    . DS . $this->obj->get('gidNumber') . DS . $this->obj->get('logo');
-            } else {
-                $this->image = '/core/components/com_groups/site/assets/img/group_default_logo.png';
-            }
+            // The group knows where its logo is (under app/, in uploads/), when
+            // to fall back to the default, and when not to show it at all; the
+            // path built here lacked both parts and every logo was broken
+            $this->image = $this->obj->getLogo();
         }
         return $this->image;
     }
