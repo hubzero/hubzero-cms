@@ -255,6 +255,10 @@ class Resources extends Plugin
     {
         $row = Entry::all()->whereEquals('id', $row->id)->row();
 
+        // The item is the component's own layout and needs its styles (the
+        // rating stars), also when the tag page lists all categories together
+        \Hubzero\Document\Assets::addComponentStylesheet('com_resources');
+
         // Get the component params and merge with resource params
         $config = Component::params('com_resources');
 
