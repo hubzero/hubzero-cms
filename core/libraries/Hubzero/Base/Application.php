@@ -380,6 +380,8 @@ class Application extends Container
 
         $this['config'] = new \Hubzero\Config\Repository(PATH_APP, $client);
 
+        $this->trustConfiguredHost();
+
         $providers = PATH_CORE . '/bootstrap/' . $client . '/services.php';
         $services = file_exists($providers) ? require $providers : [];
 
@@ -405,6 +407,36 @@ class Application extends Container
         $this->registerFacades($aliases);
 
         $this->loaded = true;
+    }
+
+    /**
+     * Trust only the host the hub is configured for
+     *
+     * Absolute URLs the hub builds (password reset mails, feeds) come from the
+     * request's host, so an attacker who can reach the application with a forged
+     * Host header could point those links at another site. When live_site names
+     * the hub's address, hold the request to that host; Symfony then answers an
+     * unexpected host with a 400 rather than trusting it. Nothing is trusted
+     * when live_site is unset, so a fresh install still answers on whatever host
+     * reaches it.
+     *
+     * @return  void
+     */
+    protected function trustConfiguredHost()
+    {
+        $liveSite = (string) $this['config']->get('live_site', '');
+
+        if ($liveSite === '') {
+            return;
+        }
+
+        $host = parse_url($liveSite, PHP_URL_HOST);
+
+        if (!$host) {
+            return;
+        }
+
+        Request::setTrustedHosts(['^' . preg_quote((string) $host) . '$']);
     }
 
     /**
