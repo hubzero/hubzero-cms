@@ -1130,6 +1130,13 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             $cite = str_replace($k, $i, $cite);
         }
 
+        // What runs of empty fields still leave: commas before the full stop or
+        // colon that follows them ("Rivermouth Institute, ."), doubled spaces,
+        // and the template's "Cited by:" when there is no count to link
+        $cite = (string) preg_replace('/(?:,\s*)+([.:;])/', '$1', $cite);
+        $cite = (string) preg_replace('/ {2,}/', ' ', $cite);
+        $cite = (string) preg_replace('/\s*Cited by:\s*$/', '', $cite);
+
         // Strip empty punctuation from the start
         $c = [
             "' ",
