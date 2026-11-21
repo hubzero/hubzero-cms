@@ -1030,6 +1030,10 @@ class BibTex
         $ret = str_replace("LAST", $array['last'], $ret);
         $ret = str_replace("JR", $array['jr'], $ret);
         $ret = str_replace("FIRST", $array['first'], $ret);
+
+        // An empty part leaves its spaces behind: "Berglund , Sofia" for no "jr"
+        $ret = preg_replace('/\s+,/', ',', preg_replace('/\s{2,}/', ' ', $ret));
+
         return trim($ret);
     }
 
