@@ -7918,6 +7918,11 @@ tt {
   font-size: 0.91em;
   padding: 0.2em 0.4em;
 }
+pre code {
+  border: 0;
+  padding: 0;
+  background: none;
+}
 .mobile-nav nav.nav nav.main-nav .main-nav-bar header .accordion-trigger {
   background: #F4EFE7;
 }
@@ -8506,4 +8511,20 @@ p.timestamp {
 .results > li:hover {
   background-color: #FDFBF8;
   box-shadow: 0 1px 2px rgba(74,58,42,0.07);
+}
+@media print {
+  .hub-top,
+  .page-head nav.nav,
+  .page-head .mobile-menu,
+  .page-footer,
+  .dialog-backdrop,
+  #big-search {
+    display: none !important;
+  }
+  * {
+    box-shadow: none !important;
+  }
+  .page-head {
+    background: none !important;
+  }
 }

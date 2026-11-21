@@ -92,3 +92,10 @@
 #introduction li {
 	padding-left: 1em;
 }
+
+/* A button in one of the narrow columns ("Browse available groups") kept to
+   one line and ran out of its column and off a tablet-width screen */
+#introduction .col .btn {
+	max-width: 100%;
+	white-space: normal;
+}

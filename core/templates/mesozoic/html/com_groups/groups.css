@@ -154,6 +154,36 @@
 	flex: 1;
 }
 
+/*
+ * Each page's row pins its published tick, preview and Manage Page button at
+ * fixed distances from the right. The title ran under them wherever the row
+ * was narrow; it now stops short of them. On a phone there is no room beside
+ * the title at all, so the three follow it on a line of their own, and the
+ * toolbar wraps rather than pushing the search off the screen.
+ */
+.group-page-manager .item-list .item-container {
+	padding-right: 290px;
+}
+
+@media (max-width: 599px) {
+	.group-page-manager #hubForm .toolbar {
+		flex-wrap: wrap;
+	}
+
+	.group-page-manager .item-list .item-container {
+		padding-right: 0.75rem;
+	}
+
+	.group-page-manager .item-list .item-state,
+	.group-page-manager .item-list .item-preview,
+	.group-page-manager .item-list .item-controls {
+		position: static;
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0.5em 1em 0 0;
+	}
+}
+
 /* A group page's header buttons (Invite Members, Add a Member Role, ...) wrap
    onto further lines on a narrow screen and sat touching; a little room */
 #page_options .btn {

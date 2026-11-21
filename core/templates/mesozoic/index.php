@@ -79,7 +79,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     <?php endif; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" type="text/css" media="screen"
+    <link rel="stylesheet" type="text/css"
           href="<?php echo $this->asset('less/main.css'); ?>" />
 
     <jdoc:include type="head" />

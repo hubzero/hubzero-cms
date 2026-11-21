@@ -1,0 +1,26 @@
+// Print
+//
+// The stylesheet used to be linked for screens only, so a printed page had no
+// styles at all: every menu as a bulleted list and the search icon drawn the
+// width of the paper. The page now prints in the template's own styles; on
+// paper the parts that are only for getting around the site are left out.
+
+@media print {
+	.hub-top,
+	.page-head nav.nav,
+	.page-head .mobile-menu,
+	.page-footer,
+	.dialog-backdrop,
+	#big-search {
+		display: none !important;
+	}
+
+	// Ink: no shadows, and the decorated header band prints plain
+	* {
+		box-shadow: none !important;
+	}
+
+	.page-head {
+		background: none !important;
+	}
+}

@@ -57,3 +57,24 @@
 	border: 1px solid #E2DACE;
 	border-radius: 5px;
 }
+
+/*
+ * A member's page is a two-cell table, sidebar and content, and a table grows
+ * to fit what is in it. Between the phone layout and about 1000px the usage
+ * tables are wider than the content cell, so the page ran past the window and
+ * their right-hand columns were cut off. There the layout keeps to the window
+ * and a wide table scrolls inside it, as tables do on a phone.
+ */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+	#page_container {
+		table-layout: fixed;
+		width: 100%;
+	}
+
+	#page_container table {
+		display: block;
+		overflow-x: auto;
+		max-width: 100%;
+	}
+}

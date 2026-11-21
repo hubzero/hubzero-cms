@@ -76,3 +76,10 @@ p.course-identity img {
 		display: none;
 	}
 }
+
+/* The enrolment box ("You must be enrolled ...") is 32em wide, wider than a
+   phone: its notice and text ran off the right edge. No wider than the page,
+   with a margin either side. */
+#offering-introduction {
+	max-width: calc(100% - 2rem);
+}

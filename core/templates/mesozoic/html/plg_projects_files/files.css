@@ -11,9 +11,11 @@
  * The file browser keeps a 630px minimum width, so on a phone the whole
  * browser ran past the page's edge and the size and date columns were cut
  * off, out of reach. Below that width the browser takes the page's width and
- * its table scrolls sideways inside it, as other tables here do.
+ * its table scrolls sideways inside it, as other tables here do. On a tablet
+ * (up to about 1000px) the column beside the project menu is narrower than
+ * 630px too, and the same happened there; the table fits that column.
  */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
 	.content-files {
 		min-width: 0;
 	}
