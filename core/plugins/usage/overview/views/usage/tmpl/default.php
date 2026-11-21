@@ -791,9 +791,10 @@ if ($this->message) { ?>
                     },
                     yaxis: {
                         min: 0,
+                        minTickSize: 1,
                         tickFormatter: function (val, axis) {
                             if (val > 1000) {
-                                val = (val / 1000) + ' K';
+                                val = (Math.round(val / 100) / 10) + ' K';
                             }
                             return val;
                         }
@@ -874,9 +875,10 @@ if ($this->message) { ?>
                         },
                         yaxis: {
                             min: 0,
+                            minTickSize: 1,
                             tickFormatter: function (val, axis) {
                                 if (val > 1000) {
-                                    val = (val / 1000) + ' K';
+                                    val = (Math.round(val / 100) / 10) + ' K';
                                 }
                                 return val;
                             },
@@ -962,9 +964,10 @@ if ($this->message) { ?>
                     },
                     yaxis: {
                         min: 0,
+                        minTickSize: 1,
                         tickFormatter: function (val, axis) {
                             if (val > 1000) {
-                                val = (val / 1000) + ' K';
+                                val = (Math.round(val / 100) / 10) + ' K';
                             }
                             return val;
                         }
@@ -1026,9 +1029,10 @@ if ($this->message) { ?>
                     },
                     yaxis: {
                         min: 0,
+                        minTickSize: 1,
                         tickFormatter: function (val, axis) {
                             if (val > 1000) {
-                                val = (val / 1000) + ' K';
+                                val = (Math.round(val / 100) / 10) + ' K';
                             }
                             return val;
                         }
