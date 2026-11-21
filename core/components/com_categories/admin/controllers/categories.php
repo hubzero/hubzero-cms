@@ -9,6 +9,7 @@
 namespace Components\Categories\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Facades\Component;
 use Hubzero\Utility\Inflector;
 use Hubzero\Access\Rules;
 use Components\Categories\Models\Category;
@@ -270,6 +271,13 @@ class Categories extends AdminController
             $category->set('extension', $extension);
             $lang = 'COM_CATEGORIES_CATEGORY_ADD_TITLE';
         }
+
+        // The extension's name ("Articles" for com_content) is in its system
+        // language file, which nothing here had loaded: the title read
+        // "Add A New COM_CONTENT Category"
+        $component = explode('.', $extension)[0];
+        Lang::load($component . '.sys', PATH_APP, null, false, true)
+            || Lang::load($component . '.sys', Component::path($component) . '/admin', null, false, true);
 
         $extensionLang = Lang::txt(strtoupper($extension));
         $title = Lang::txt($lang, $extensionLang);
