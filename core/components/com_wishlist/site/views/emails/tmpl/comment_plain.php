@@ -41,7 +41,7 @@ $message .= Lang::txt('COM_WISHLIST_WISH_DETAILS_SUMMARY')
     . ': ' . stripslashes($this->wish->get('subject')) . "\n";
 $message .= Lang::txt('COM_WISHLIST_PROPOSED_ON') . ' ' . $this->wish->proposed() . "\n";
 $message .= Lang::txt('COM_WISHLIST_BY') . ' ' . $name
-    . ' ' . ($this->wish->get('anonymous') ? '' : '(' . $login . ' )') . "\n";
+    . ' ' . ($this->wish->get('anonymous') ? '' : '(' . $login . ')') . "\n";
 $message .= '----------------------------' . "\n\n";
 
 // Get author name
