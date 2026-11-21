@@ -547,6 +547,13 @@ class Offering extends SiteController
             $asset->download($this->course);
         }
 
+        // The page is the asset's, under the course and offering it belongs to
+        $assetTitle = stripslashes((string) $asset->get('title'));
+        $this->buildPathway();
+        Pathway::append($assetTitle);
+        $this->buildTitle();
+        Document::setTitle($this->_title . ': ' . $assetTitle);
+
         echo $asset->render($this->course);
     }
 
