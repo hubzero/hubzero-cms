@@ -432,14 +432,22 @@ class Helper extends \Hubzero\Base\Obj
         $this->resource->set('times_rated', $calculated['times_rated']);
         $this->resource->save();
 
+        // The contributors hear about a new review. Saving an edit sent every one
+        // of them "Someone has posted a review" again, dated when it was first
+        // posted.
+        if (!$__isNew) {
+            return;
+        }
+
         // Instantiate a helper object and get all the contributor IDs
         $users = $this->resource
             ->authors()
             ->rows()
             ->fieldsByKey('authorid');
 
-        // Build the subject
-        $subject = Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
+        // Build the subject; the e-mail puts the hub's name in front of it, and
+        // this one read "Mesozoic Hub Mesozoic Hub Contributions"
+        $subject = Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
 
         // Message
         $eview = new \Hubzero\Plugin\View([
