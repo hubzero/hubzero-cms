@@ -104,6 +104,13 @@ class Pagination
             $instance->start = 0;
         }
 
+        // The start is remembered per list, so narrowing a list (a tag, a search)
+        // while on a later page would ask for a page past the end and show
+        // nothing at all. Go to the last page there is instead.
+        if ($instance->limit > 0 && $instance->start >= $total) {
+            $instance->start = (int) (max(0, ceil($total / $instance->limit) - 1) * $instance->limit);
+        }
+
         User::setState($namespace . '.start', $instance->start);
         User::setState($namespace . '.limit', $instance->limit);
 
