@@ -153,3 +153,10 @@
 .group-page-manager #hubForm .toolbar .search {
 	flex: 1;
 }
+
+/* A group page's header buttons (Invite Members, Add a Member Role, ...) wrap
+   onto further lines on a narrow screen and sat touching; a little room */
+#page_options .btn {
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}

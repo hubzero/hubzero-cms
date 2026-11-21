@@ -19,3 +19,29 @@
 	background-image: none;
 	box-shadow: none;
 }
+
+/*
+ * The ticket list and its filters are laid out as two table cells side by
+ * side at every width; on a phone the filters took 228 of 390px and the list
+ * was squeezed off the right edge, its age running over the name. Below the
+ * point where both fit, the filters go above the list.
+ */
+@media (max-width: 767px) {
+	section.panel.tickets,
+	section.panel.tickets > .panel-row,
+	section.panel.tickets .pane {
+		display: block;
+		width: auto;
+	}
+	/* The filters' pane is held to 760px high for the side-by-side layout */
+	section.panel.tickets .pane-queries .pane-inner {
+		width: auto;
+		min-height: 0;
+	}
+	/* A ticket's age sits over the top-right of its row; under the name instead */
+	#tktlist .ticket-activity {
+		position: static;
+		display: block;
+		text-align: left;
+	}
+}
