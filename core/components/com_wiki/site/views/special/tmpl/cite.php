@@ -111,6 +111,10 @@ $citeMlaRetr = Date::of($now)->format($mlaFormatRetrieved);
 $citeMhraRetr = Date::of($now)->format($mhraFormatRetrieved);
 $citeCbeDate = Date::of($now)->format($cbeFormat);
 $citeAmaRetr = Date::of($now)->format($amaFormatRetrieved);
+// The BibTeX note's "accessed" date, which was the fixed 1-October-2012
+$citeBibtexRetr = Date::of($now)->format('j-F-Y');
+// "Last visited" and "as of" are when the reader looked, not when the page changed
+$citeBluebookRetr = Date::of($now)->format($bluebookFormat);
 ?>
 <div class="wiki-box">
     <h3>Citation styles for "<?php echo $citeTitle; ?>"</h3>
@@ -162,7 +166,7 @@ $citeAmaRetr = Date::of($now)->format($amaFormatRetrieved);
     <p>
         <?php echo $citeTitle; ?>,
         <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
-        (last visited <?php echo $citeBluebookDate; ?>).
+        (last visited <?php echo $citeBluebookRetr; ?>).
     </p>
 
     <h4>Bluebook: Harvard JOLT style</h4>
@@ -170,7 +174,7 @@ $citeAmaRetr = Date::of($now)->format($amaFormatRetrieved);
         <?php echo $citeSite; ?>,
         <i><?php echo $citeTitle; ?></i>,
         <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
-        (optional description here) (as of <?php echo $citeBluebookDate; ?>).
+        (optional description here) (as of <?php echo $citeBluebookRetr; ?>).
     </p>
 
     <h4>AMA style</h4>
@@ -189,6 +193,6 @@ $citeAmaRetr = Date::of($now)->format($amaFormatRetrieved);
     title = "<?php echo $citeTitle; ?> --- <?php echo $citeSite; ?>",
     year = "<?php echo Date::of($revision->get('created'))->format($yFormat); ?>",
     url = "<?php echo $permalink; ?>",
-    note = "[Online; accessed 1-October-2012]"
+    note = "[Online; accessed <?php echo $citeBibtexRetr; ?>]"
 }
 </code></pre>
